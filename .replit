@@ -1,3 +1,881 @@
-NEXUS AI TRADING SYSTEM
-Copyright © 2026 NEXUS QUANTUM LTD
-CEO: Dr X... - Majority Shareholder
+{
+  "name": "NEXUS AI TRADING SYSTEM",
+  "description": "Plateforme IA de trading algorithmique universelle, autonome, modulaire et professionnelle",
+  "author": "NEXUS QUANTUM LTD",
+  "version": "1.0.0",
+  "copyright": "Copyright © 2026 NEXUS QUANTUM LTD",
+  "ceo": "Dr X... - Majority Shareholder",
+  "language": "python",
+  "run": "python backend/main.py",
+  "entrypoint": "backend/main.py",
+  "environment": "poetry",
+  "packager": "pip",
+  "nix": {
+    "packages": [
+      "python311",
+      "python311Packages.pip",
+      "python311Packages.poetry",
+      "nodejs_20",
+      "yarn",
+      "docker",
+      "docker-compose",
+      "postgresql",
+      "redis",
+      "git",
+      "curl",
+      "wget",
+      "openssl",
+      "gcc",
+      "g++",
+      "make",
+      "cmake",
+      "pkg-config",
+      "openssl.dev",
+      "zlib.dev",
+      "libffi.dev",
+      "libxml2.dev",
+      "libxslt.dev",
+      "postgresql.dev",
+      "redis.dev"
+    ]
+  },
+  "shell": {
+    "command": "/bin/bash",
+    "env": {
+      "PYTHONPATH": "${PYTHONPATH}:${REPLIT_ROOT}",
+      "PYTHONUNBUFFERED": "1",
+      "NODE_ENV": "development",
+      "NEXT_PUBLIC_APP_URL": "https://${REPL_SLUG}.${REPL_OWNER}.repl.co",
+      "NEXT_PUBLIC_API_URL": "https://${REPL_SLUG}.${REPL_OWNER}.repl.co/api/v1",
+      "NEXT_PUBLIC_WEBSOCKET_URL": "wss://${REPL_SLUG}.${REPL_OWNER}.repl.co/ws",
+      "DATABASE_URL": "postgresql://postgres:postgres@localhost:5432/nexus_ai",
+      "REDIS_URL": "redis://localhost:6379/0"
+    }
+  },
+  "compile": {
+    "command": "pip install -r requirements.txt && pip install -r requirements-dev.txt",
+    "triggerFiles": ["requirements.txt", "requirements-dev.txt", "pyproject.toml"]
+  },
+  "scripts": {
+    "start": "python backend/main.py",
+    "dev": "python backend/main.py --reload",
+    "prod": "python backend/main.py --host 0.0.0.0 --port 8000 --workers 4",
+    "test": "pytest",
+    "test:coverage": "pytest --cov=backend --cov-report=html",
+    "lint": "flake8 backend && black --check backend && isort --check-only backend",
+    "format": "black backend && isort backend",
+    "type-check": "mypy backend",
+    "migrate": "alembic upgrade head",
+    "migrate:make": "alembic revision --autogenerate",
+    "docker:build": "docker-compose -f docker-compose.dev.yml build",
+    "docker:up": "docker-compose -f docker-compose.dev.yml up -d",
+    "docker:down": "docker-compose -f docker-compose.dev.yml down",
+    "docker:logs": "docker-compose -f docker-compose.dev.yml logs -f",
+    "docker:clean": "docker-compose -f docker-compose.dev.yml down -v --rmi all",
+    "ai:train": "python ai/training/trainer.py",
+    "ai:predict": "python ai/prediction/predictor.py",
+    "backtest": "python trading/backtesting/backtest_engine.py",
+    "seed": "python backend/database/seeders/main_seeder.py",
+    "reset": "python backend/database/seeders/reset_db.py",
+    "shell": "python -c 'import IPython; IPython.terminal.ipapp.launch_new_instance()'",
+    "format:all": "prettier --write . && black . && isort .",
+    "lint:all": "prettier --check . && flake8 . && black --check . && isort --check-only . && mypy .",
+    "precommit": "yarn format:all && yarn lint:all && yarn test",
+    "clean": "rm -rf .next dist build *.pyc __pycache__ node_modules .pytest_cache .mypy_cache .ruff_cache",
+    "reset:db": "yarn docker:down && yarn docker:up && yarn migrate && yarn seed"
+  },
+  "env": [
+    "APP_NAME",
+    "APP_ENV",
+    "APP_DEBUG",
+    "APP_SECRET_KEY",
+    "APP_TIMEZONE",
+    "APP_SITE_NAME",
+    "APP_SITE_DESCRIPTION",
+    "APP_SITE_URL",
+    "APP_API_URL",
+    "APP_WEBSOCKET_URL",
+    "APP_MAINTENANCE_MODE",
+    "API_HOST",
+    "API_PORT",
+    "API_WORKERS",
+    "API_PREFIX",
+    "API_RATE_LIMIT",
+    "API_RATE_LIMIT_PERIOD",
+    "API_CORS_ORIGINS",
+    "API_CORS_CREDENTIALS",
+    "API_CORS_METHODS",
+    "API_CORS_HEADERS",
+    "API_CORS_MAX_AGE",
+    "JWT_SECRET_KEY",
+    "JWT_ALGORITHM",
+    "JWT_ACCESS_TOKEN_EXPIRE_MINUTES",
+    "JWT_REFRESH_TOKEN_EXPIRE_DAYS",
+    "ENCRYPTION_KEY",
+    "ENCRYPTION_ALGORITHM",
+    "HASH_SALT_ROUNDS",
+    "HASH_ALGORITHM",
+    "SSL_ENABLED",
+    "SSL_CERT_PATH",
+    "SSL_KEY_PATH",
+    "SSL_CA_BUNDLE_PATH",
+    "SSL_VERIFY",
+    "DATABASE_URL",
+    "DATABASE_HOST",
+    "DATABASE_PORT",
+    "DATABASE_USER",
+    "DATABASE_PASSWORD",
+    "DATABASE_NAME",
+    "DATABASE_POOL_SIZE",
+    "DATABASE_MAX_OVERFLOW",
+    "DATABASE_ECHO",
+    "DATABASE_SSL_MODE",
+    "REDIS_URL",
+    "REDIS_HOST",
+    "REDIS_PORT",
+    "REDIS_PASSWORD",
+    "REDIS_DB",
+    "REDIS_SSL",
+    "REDIS_CACHE_TTL",
+    "REDIS_SESSION_TTL",
+    "BINANCE_API_KEY",
+    "BINANCE_API_SECRET",
+    "BINANCE_TESTNET",
+    "BINANCE_TESTNET_API_KEY",
+    "BINANCE_TESTNET_API_SECRET",
+    "ALPACA_API_KEY",
+    "ALPACA_API_SECRET",
+    "ALPACA_PAPER",
+    "BYBIT_API_KEY",
+    "BYBIT_API_SECRET",
+    "KRAKEN_API_KEY",
+    "KRAKEN_API_SECRET",
+    "COINBASE_API_KEY",
+    "COINBASE_API_SECRET",
+    "COINBASE_PASSPHRASE",
+    "OANDA_API_KEY",
+    "OANDA_ACCOUNT_ID",
+    "IB_ACCOUNT_ID",
+    "IB_ENVIRONMENT",
+    "TRADING_ENABLED",
+    "TRADING_MODE",
+    "TRADING_MAX_POSITIONS",
+    "TRADING_MAX_TRADES_PER_DAY",
+    "TRADING_RISK_PER_TRADE",
+    "TRADING_MAX_DRAWDOWN",
+    "TRADING_STOP_LOSS_DEFAULT",
+    "TRADING_TAKE_PROFIT_DEFAULT",
+    "AI_ENABLED",
+    "AI_MODEL_PATH",
+    "AI_USE_GPU",
+    "AI_CUDA_DEVICE",
+    "AI_BATCH_SIZE",
+    "AI_EPOCHS",
+    "AI_LEARNING_RATE",
+    "OPENAI_API_KEY",
+    "OPENAI_MODEL",
+    "HUGGINGFACE_API_KEY",
+    "HUGGINGFACE_MODEL",
+    "LANGCHAIN_API_KEY",
+    "LANGCHAIN_PROJECT",
+    "SENTIMENT_ENABLED",
+    "SENTIMENT_SOURCES",
+    "BACKTESTING_ENABLED",
+    "BACKTESTING_DATA_PATH",
+    "BACKTESTING_MAX_BARS",
+    "PROMETHEUS_ENABLED",
+    "PROMETHEUS_PORT",
+    "GRAFANA_ENABLED",
+    "GRAFANA_PORT",
+    "GRAFANA_ADMIN_USER",
+    "GRAFANA_ADMIN_PASSWORD",
+    "LOKI_ENABLED",
+    "LOKI_URL",
+    "TEMPO_ENABLED",
+    "TEMPO_URL",
+    "SENTRY_ENABLED",
+    "SENTRY_DSN",
+    "SENTRY_ENVIRONMENT",
+    "SMTP_ENABLED",
+    "SMTP_HOST",
+    "SMTP_PORT",
+    "SMTP_USER",
+    "SMTP_PASSWORD",
+    "SMTP_FROM",
+    "SMTP_FROM_NAME",
+    "TELEGRAM_ENABLED",
+    "TELEGRAM_BOT_TOKEN",
+    "TELEGRAM_CHAT_ID",
+    "SLACK_ENABLED",
+    "SLACK_WEBHOOK_URL",
+    "DISCORD_ENABLED",
+    "DISCORD_WEBHOOK_URL",
+    "STRIPE_ENABLED",
+    "STRIPE_API_KEY",
+    "STRIPE_PUBLISHABLE_KEY",
+    "STRIPE_WEBHOOK_SECRET",
+    "STRIPE_SUCCESS_URL",
+    "STRIPE_CANCEL_URL",
+    "STRIPE_CURRENCY",
+    "PAYPAL_ENABLED",
+    "PAYPAL_CLIENT_ID",
+    "PAYPAL_CLIENT_SECRET",
+    "PAYPAL_MODE",
+    "SUBSCRIPTION_ENABLED",
+    "SUBSCRIPTION_TRIAL_DAYS",
+    "SUBSCRIPTION_GRACE_DAYS",
+    "SUBSCRIPTION_DEFAULT_PLAN",
+    "GOOGLE_OAUTH_ENABLED",
+    "GOOGLE_CLIENT_ID",
+    "GOOGLE_CLIENT_SECRET",
+    "GOOGLE_REDIRECT_URI",
+    "GITHUB_OAUTH_ENABLED",
+    "GITHUB_CLIENT_ID",
+    "GITHUB_CLIENT_SECRET",
+    "GITHUB_REDIRECT_URI",
+    "TELEGRAM_OAUTH_ENABLED",
+    "MFA_ENABLED",
+    "MFA_TOTP_ISSUER",
+    "LOG_LEVEL",
+    "LOG_FORMAT",
+    "LOG_FILE_PATH",
+    "LOG_MAX_SIZE",
+    "LOG_MAX_FILES",
+    "CORS_ENABLED",
+    "CORS_ORIGINS",
+    "COOKIE_SECURE",
+    "COOKIE_HTTP_ONLY",
+    "COOKIE_SAMESITE",
+    "UPLOAD_ENABLED",
+    "UPLOAD_PATH",
+    "UPLOAD_MAX_SIZE",
+    "BACKUP_ENABLED",
+    "BACKUP_PATH",
+    "BACKUP_INTERVAL",
+    "BACKUP_RETENTION_DAYS",
+    "HEALTH_CHECK_ENABLED",
+    "HEALTH_CHECK_INTERVAL",
+    "HEALTH_CHECK_PATH",
+    "METRICS_ENABLED",
+    "METRICS_PATH",
+    "METRICS_PORT",
+    "TRACING_ENABLED",
+    "TRACING_SAMPLE_RATE",
+    "DEBUG_ENABLED",
+    "DEPLOYMENT_ENV",
+    "DEPLOYMENT_STRATEGY",
+    "AWS_ENABLED",
+    "AWS_ACCESS_KEY_ID",
+    "AWS_SECRET_ACCESS_KEY",
+    "AWS_REGION",
+    "AWS_S3_BUCKET",
+    "GCP_ENABLED",
+    "GCP_PROJECT_ID",
+    "GCP_CREDENTIALS_PATH",
+    "GCP_STORAGE_BUCKET",
+    "AZURE_ENABLED",
+    "AZURE_STORAGE_CONNECTION_STRING",
+    "AZURE_STORAGE_CONTAINER",
+    "VAULT_ENABLED",
+    "VAULT_ADDR",
+    "VAULT_TOKEN",
+    "VAULT_PATH",
+    "FEATURE_TRADING_ENABLED",
+    "FEATURE_PAPER_TRADING_ENABLED",
+    "FEATURE_LIVE_TRADING_ENABLED",
+    "FEATURE_BACKTESTING_ENABLED",
+    "FEATURE_SENTIMENT_ANALYSIS_ENABLED",
+    "FEATURE_SOCIAL_AUTH_ENABLED",
+    "FEATURE_2FA_ENABLED",
+    "FEATURE_CHAT_ENABLED",
+    "FEATURE_SUPPORT_ENABLED",
+    "FEATURE_SUBSCRIPTIONS_ENABLED",
+    "FEATURE_PAYMENTS_ENABLED",
+    "FEATURE_AI_PREDICTIONS_ENABLED",
+    "FEATURE_MONITORING_ENABLED",
+    "BETA_ENABLED",
+    "BETA_FEATURES",
+    "MAINTENANCE_MODE",
+    "MAINTENANCE_MESSAGE",
+    "MAINTENANCE_ALLOWED_IPS",
+    "NEXUS_VERSION",
+    "NEXUS_BUILD",
+    "NEXUS_COPYRIGHT",
+    "NEXUS_CEO",
+    "NEXUS_ENVIRONMENT",
+    "NEXUS_SECRET_KEY"
+  ],
+  "plugins": [
+    {
+      "name": "python",
+      "enabled": true,
+      "config": {
+        "venv": "venv",
+        "python": "python3",
+        "pip": "pip"
+      }
+    },
+    {
+      "name": "nodejs",
+      "enabled": true,
+      "config": {
+        "npm": "npm",
+        "yarn": "yarn",
+        "node": "node"
+      }
+    },
+    {
+      "name": "docker",
+      "enabled": true,
+      "config": {
+        "compose": "docker-compose"
+      }
+    },
+    {
+      "name": "postgresql",
+      "enabled": true,
+      "config": {
+        "version": "16",
+        "port": 5432
+      }
+    },
+    {
+      "name": "redis",
+      "enabled": true,
+      "config": {
+        "version": "7",
+        "port": 6379
+      }
+    },
+    {
+      "name": "nginx",
+      "enabled": true,
+      "config": {
+        "port": 80
+      }
+    },
+    {
+      "name": "prometheus",
+      "enabled": true,
+      "config": {
+        "port": 9090
+      }
+    },
+    {
+      "name": "grafana",
+      "enabled": true,
+      "config": {
+        "port": 3001
+      }
+    }
+  ],
+  "ports": [
+    {
+      "name": "Frontend",
+      "port": 3000,
+      "public": true,
+      "protocol": "http",
+      "description": "Next.js Dashboard"
+    },
+    {
+      "name": "Backend API",
+      "port": 8000,
+      "public": true,
+      "protocol": "http",
+      "description": "FastAPI Backend"
+    },
+    {
+      "name": "API Docs",
+      "port": 8000,
+      "path": "/docs",
+      "public": true,
+      "protocol": "http",
+      "description": "Swagger API Documentation"
+    },
+    {
+      "name": "Grafana",
+      "port": 3001,
+      "public": true,
+      "protocol": "http",
+      "description": "Monitoring Dashboard"
+    },
+    {
+      "name": "Prometheus",
+      "port": 9090,
+      "public": true,
+      "protocol": "http",
+      "description": "Metrics Server"
+    },
+    {
+      "name": "PostgreSQL",
+      "port": 5432,
+      "public": false,
+      "protocol": "tcp",
+      "description": "Primary Database"
+    },
+    {
+      "name": "Redis",
+      "port": 6379,
+      "public": false,
+      "protocol": "tcp",
+      "description": "Cache & Queue"
+    }
+  ],
+  "templates": {
+    "frontend": {
+      "path": "apps/web"
+    },
+    "backend": {
+      "path": "backend"
+    },
+    "ai": {
+      "path": "ai"
+    },
+    "trading": {
+      "path": "trading"
+    }
+  },
+  "modules": {
+    "frontend": {
+      "build": "cd apps/web && npm run build",
+      "dev": "cd apps/web && npm run dev",
+      "start": "cd apps/web && npm start"
+    },
+    "backend": {
+      "build": "pip install -r requirements.txt",
+      "dev": "python backend/main.py --reload",
+      "start": "python backend/main.py"
+    },
+    "ai": {
+      "train": "python ai/training/trainer.py",
+      "predict": "python ai/prediction/predictor.py"
+    },
+    "trading": {
+      "backtest": "python trading/backtesting/backtest_engine.py"
+    }
+  },
+  "panels": {
+    "frontend": {
+      "name": "Frontend",
+      "type": "webview",
+      "url": "http://localhost:3000",
+      "position": "left"
+    },
+    "backend": {
+      "name": "Backend",
+      "type": "terminal",
+      "command": "python backend/main.py --reload",
+      "position": "bottom"
+    },
+    "logs": {
+      "name": "Logs",
+      "type": "terminal",
+      "command": "tail -f backend/logs/app.log",
+      "position": "bottom"
+    },
+    "api": {
+      "name": "API Docs",
+      "type": "webview",
+      "url": "http://localhost:8000/docs",
+      "position": "right"
+    },
+    "monitoring": {
+      "name": "Monitoring",
+      "type": "webview",
+      "url": "http://localhost:3001",
+      "position": "right"
+    },
+    "db": {
+      "name": "Database",
+      "type": "terminal",
+      "command": "psql postgresql://postgres:postgres@localhost:5432/nexus_ai",
+      "position": "bottom"
+    },
+    "redis": {
+      "name": "Redis",
+      "type": "terminal",
+      "command": "redis-cli",
+      "position": "bottom"
+    }
+  },
+  "secrets": [
+    "APP_SECRET_KEY",
+    "JWT_SECRET_KEY",
+    "ENCRYPTION_KEY",
+    "NEXUS_SECRET_KEY",
+    "DATABASE_PASSWORD",
+    "REDIS_PASSWORD",
+    "BINANCE_API_KEY",
+    "BINANCE_API_SECRET",
+    "ALPACA_API_KEY",
+    "ALPACA_API_SECRET",
+    "BYBIT_API_KEY",
+    "BYBIT_API_SECRET",
+    "KRAKEN_API_KEY",
+    "KRAKEN_API_SECRET",
+    "COINBASE_API_KEY",
+    "COINBASE_API_SECRET",
+    "COINBASE_PASSPHRASE",
+    "OANDA_API_KEY",
+    "STRIPE_API_KEY",
+    "STRIPE_PUBLISHABLE_KEY",
+    "STRIPE_WEBHOOK_SECRET",
+    "PAYPAL_CLIENT_ID",
+    "PAYPAL_CLIENT_SECRET",
+    "OPENAI_API_KEY",
+    "HUGGINGFACE_API_KEY",
+    "LANGCHAIN_API_KEY",
+    "SMTP_PASSWORD",
+    "TELEGRAM_BOT_TOKEN",
+    "SLACK_WEBHOOK_URL",
+    "DISCORD_WEBHOOK_URL",
+    "GOOGLE_CLIENT_ID",
+    "GOOGLE_CLIENT_SECRET",
+    "GITHUB_CLIENT_ID",
+    "GITHUB_CLIENT_SECRET",
+    "SENTRY_DSN",
+    "AWS_ACCESS_KEY_ID",
+    "AWS_SECRET_ACCESS_KEY",
+    "GCP_CREDENTIALS_PATH",
+    "AZURE_STORAGE_CONNECTION_STRING",
+    "VAULT_TOKEN"
+  ],
+  "workspace": {
+    "root": ".",
+    "folders": [
+      "ai",
+      "apps",
+      "backend",
+      "blockchain",
+      "configs",
+      "data",
+      "deployments",
+      "docs",
+      "infrastructure",
+      "scripts",
+      "security",
+      "shared",
+      "tests",
+      "trading"
+    ],
+    "ignored": [
+      ".git",
+      ".next",
+      "node_modules",
+      "venv",
+      "__pycache__",
+      "*.pyc",
+      "dist",
+      "build",
+      "out",
+      ".idea",
+      ".vscode"
+    ]
+  },
+  "preview": {
+    "port": 3000,
+    "command": "npm run dev",
+    "workingDir": "apps/web"
+  },
+  "packages": {
+    "frontend": {
+      "dependencies": {
+        "next": "15.0.0",
+        "react": "19.0.0",
+        "react-dom": "19.0.0",
+        "@radix-ui/react-accordion": "^1.2.0",
+        "@radix-ui/react-alert-dialog": "^1.1.0",
+        "@radix-ui/react-checkbox": "^1.1.0",
+        "@radix-ui/react-dialog": "^1.1.0",
+        "@radix-ui/react-dropdown-menu": "^2.1.0",
+        "@radix-ui/react-label": "^2.1.0",
+        "@radix-ui/react-popover": "^1.1.0",
+        "@radix-ui/react-radio-group": "^1.2.0",
+        "@radix-ui/react-select": "^2.1.0",
+        "@radix-ui/react-separator": "^1.1.0",
+        "@radix-ui/react-slider": "^1.2.0",
+        "@radix-ui/react-switch": "^1.1.0",
+        "@radix-ui/react-tabs": "^1.1.0",
+        "@radix-ui/react-toast": "^1.2.0",
+        "@radix-ui/react-tooltip": "^1.1.0",
+        "tailwindcss": "3.4.17",
+        "framer-motion": "11.13.1",
+        "zod": "3.24.1",
+        "zod-validation-error": "3.4.0",
+        "react-hook-form": "7.54.2",
+        "@hookform/resolvers": "3.10.0",
+        "zustand": "5.0.2",
+        "@tanstack/react-query": "5.66.0",
+        "axios": "1.7.9",
+        "socket.io-client": "4.8.1",
+        "clsx": "2.1.1",
+        "tailwind-merge": "2.6.0",
+        "next-themes": "0.4.4"
+      },
+      "devDependencies": {
+        "@types/node": "22.10.10",
+        "@types/react": "19.0.8",
+        "@types/react-dom": "19.0.3",
+        "typescript": "5.7.3",
+        "@typescript-eslint/eslint-plugin": "8.20.0",
+        "@typescript-eslint/parser": "8.20.0",
+        "eslint": "9.18.0",
+        "eslint-config-next": "15.1.6",
+        "prettier": "3.4.2",
+        "prettier-plugin-tailwindcss": "0.6.10"
+      }
+    },
+    "backend": {
+      "dependencies": {
+        "fastapi": "0.115.8",
+        "uvicorn": "0.34.0",
+        "pydantic": "2.10.4",
+        "pydantic-settings": "2.7.0",
+        "sqlalchemy": "2.0.37",
+        "alembic": "1.14.1",
+        "psycopg2-binary": "2.9.10",
+        "redis": "5.2.1",
+        "asyncpg": "0.30.0",
+        "python-jose": "3.3.0",
+        "passlib": "1.7.4",
+        "python-multipart": "0.0.20",
+        "email-validator": "2.2.0",
+        "httpx": "0.28.1",
+        "aiohttp": "3.11.11",
+        "websockets": "14.1",
+        "celery": "5.4.0",
+        "flower": "2.0.1",
+        "gunicorn": "23.0.0",
+        "python-dotenv": "1.0.1",
+        "pyyaml": "6.0.2",
+        "orjson": "3.10.14"
+      },
+      "devDependencies": {
+        "pytest": "8.3.4",
+        "pytest-asyncio": "0.24.0",
+        "pytest-cov": "6.0.0",
+        "black": "24.10.0",
+        "isort": "5.13.2",
+        "flake8": "7.1.1",
+        "mypy": "1.14.1",
+        "ruff": "0.9.3"
+      }
+    },
+    "ai": {
+      "dependencies": {
+        "torch": "2.5.1",
+        "torchvision": "0.20.1",
+        "torchaudio": "2.5.1",
+        "transformers": "4.48.1",
+        "datasets": "3.2.0",
+        "scikit-learn": "1.6.1",
+        "xgboost": "2.1.3",
+        "lightgbm": "4.5.0",
+        "catboost": "1.2.7",
+        "stable-baselines3": "2.4.1",
+        "langchain": "0.3.14",
+        "langchain-openai": "0.3.2",
+        "openai": "1.60.2",
+        "huggingface-hub": "0.27.1",
+        "sentence-transformers": "3.4.0",
+        "pandas": "2.2.3",
+        "numpy": "2.2.1",
+        "ta-lib": "0.4.28",
+        "polars": "1.19.0",
+        "optuna": "4.1.0"
+      },
+      "devDependencies": {
+        "pytest": "8.3.4",
+        "pytest-asyncio": "0.24.0",
+        "pytest-cov": "6.0.0"
+      }
+    },
+    "trading": {
+      "dependencies": {
+        "ccxt": "4.4.37",
+        "python-binance": "1.0.19",
+        "alpaca-trade-api": "3.0.0",
+        "oandapyV20": "3.0.4",
+        "ib_insync": "0.9.86",
+        "yfinance": "0.2.47",
+        "pandas": "2.2.3",
+        "numpy": "2.2.1"
+      },
+      "devDependencies": {
+        "pytest": "8.3.4",
+        "pytest-cov": "6.0.0"
+      }
+    },
+    "devops": {
+      "dependencies": {
+        "docker": "7.1.0",
+        "docker-compose": "1.0.0",
+        "kubernetes": "31.0.0",
+        "helm": "1.1.0",
+        "terraform": "3.0.0"
+      }
+    }
+  },
+  "services": {
+    "postgresql": {
+      "type": "database",
+      "image": "postgres:16-alpine",
+      "environment": {
+        "POSTGRES_USER": "nexus",
+        "POSTGRES_PASSWORD": "nexus123",
+        "POSTGRES_DB": "nexus_ai"
+      },
+      "ports": {
+        "5432": 5432
+      },
+      "volumes": {
+        "postgres_data": "/var/lib/postgresql/data"
+      },
+      "healthcheck": {
+        "test": ["CMD-SHELL", "pg_isready -U nexus"],
+        "interval": "10s",
+        "timeout": "5s",
+        "retries": 5
+      }
+    },
+    "redis": {
+      "type": "cache",
+      "image": "redis:7-alpine",
+      "ports": {
+        "6379": 6379
+      },
+      "volumes": {
+        "redis_data": "/data"
+      },
+      "healthcheck": {
+        "test": ["CMD", "redis-cli", "ping"],
+        "interval": "10s",
+        "timeout": "5s",
+        "retries": 5
+      }
+    },
+    "postgres-ts": {
+      "type": "database",
+      "image": "timescale/timescaledb:2.17.2-pg16",
+      "environment": {
+        "POSTGRES_USER": "nexus",
+        "POSTGRES_PASSWORD": "nexus123",
+        "POSTGRES_DB": "nexus_ts"
+      },
+      "ports": {
+        "5433": 5432
+      },
+      "volumes": {
+        "timescaledb_data": "/var/lib/postgresql/data"
+      }
+    },
+    "mongodb": {
+      "type": "database",
+      "image": "mongo:7",
+      "environment": {
+        "MONGO_INITDB_ROOT_USERNAME": "nexus",
+        "MONGO_INITDB_ROOT_PASSWORD": "nexus123",
+        "MONGO_INITDB_DATABASE": "nexus_ai"
+      },
+      "ports": {
+        "27017": 27017
+      },
+      "volumes": {
+        "mongodb_data": "/data/db"
+      }
+    },
+    "prometheus": {
+      "type": "monitoring",
+      "image": "prom/prometheus:latest",
+      "ports": {
+        "9090": 9090
+      },
+      "volumes": {
+        "prometheus_data": "/prometheus"
+      },
+      "config": {
+        "scrape_interval": "15s",
+        "evaluation_interval": "15s"
+      }
+    },
+    "grafana": {
+      "type": "monitoring",
+      "image": "grafana/grafana:latest",
+      "environment": {
+        "GF_SECURITY_ADMIN_USER": "admin",
+        "GF_SECURITY_ADMIN_PASSWORD": "admin",
+        "GF_INSTALL_PLUGINS": "grafana-piechart-panel"
+      },
+      "ports": {
+        "3001": 3000
+      },
+      "volumes": {
+        "grafana_data": "/var/lib/grafana"
+      }
+    },
+    "loki": {
+      "type": "logging",
+      "image": "grafana/loki:latest",
+      "ports": {
+        "3100": 3100
+      },
+      "volumes": {
+        "loki_data": "/loki"
+      }
+    },
+    "tempo": {
+      "type": "tracing",
+      "image": "grafana/tempo:latest",
+      "ports": {
+        "3200": 3200,
+        "4317": 4317,
+        "4318": 4318
+      },
+      "volumes": {
+        "tempo_data": "/tempo"
+      }
+    },
+    "nginx": {
+      "type": "proxy",
+      "image": "nginx:alpine",
+      "ports": {
+        "80": 80,
+        "443": 443
+      },
+      "volumes": {
+        "nginx_conf": "/etc/nginx/conf.d"
+      }
+    }
+  },
+  "workflows": {
+    "test": {
+      "steps": [
+        "yarn install",
+        "pip install -r requirements.txt",
+        "pytest",
+        "yarn test"
+      ]
+    },
+    "deploy": {
+      "steps": [
+        "yarn install",
+        "pip install -r requirements.txt",
+        "yarn build",
+        "docker-compose -f docker-compose.prod.yml up -d --build"
+      ]
+    },
+    "backup": {
+      "steps": [
+        "docker exec postgres pg_dump -U nexus nexus_ai > backup.sql",
+        "docker exec redis redis-cli SAVE",
+        "tar -czf backup_$(date +%Y%m%d).tar.gz backup.sql"
+      ]
+    },
+    "migration": {
+      "steps": [
+        "alembic revision --autogenerate",
+        "alembic upgrade head"
+      ]
+    }
+  }
+}
