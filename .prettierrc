@@ -1,3 +1,608 @@
-NEXUS AI TRADING SYSTEM
-Copyright © 2026 NEXUS QUANTUM LTD
-CEO: Dr X... - Majority Shareholder
+{
+  "$schema": "https://json.schemastore.org/prettierrc",
+  "semi": true,
+  "singleQuote": true,
+  "tabWidth": 2,
+  "useTabs": false,
+  "trailingComma": "es5",
+  "bracketSpacing": true,
+  "bracketSameLine": false,
+  "arrowParens": "avoid",
+  "printWidth": 100,
+  "endOfLine": "lf",
+  "quoteProps": "as-needed",
+  "jsxSingleQuote": false,
+  "jsxBracketSameLine": false,
+  "proseWrap": "always",
+  "htmlWhitespaceSensitivity": "css",
+  "vueIndentScriptAndStyle": false,
+  "singleAttributePerLine": false,
+  "embeddedLanguageFormatting": "auto",
+  "overrides": [
+    {
+      "files": ["*.json"],
+      "options": {
+        "tabWidth": 2,
+        "printWidth": 120,
+        "trailingComma": "none"
+      }
+    },
+    {
+      "files": ["*.jsonc", ".vscode/*.json", "tsconfig*.json"],
+      "options": {
+        "tabWidth": 2,
+        "printWidth": 120,
+        "trailingComma": "none",
+        "parser": "jsonc"
+      }
+    },
+    {
+      "files": ["*.yaml", "*.yml"],
+      "options": {
+        "tabWidth": 2,
+        "printWidth": 120,
+        "trailingComma": "none",
+        "singleQuote": false
+      }
+    },
+    {
+      "files": ["*.md", "*.markdown"],
+      "options": {
+        "tabWidth": 2,
+        "printWidth": 80,
+        "proseWrap": "always",
+        "trailingComma": "none"
+      }
+    },
+    {
+      "files": ["*.py"],
+      "options": {
+        "tabWidth": 4,
+        "printWidth": 88,
+        "singleQuote": true,
+        "trailingComma": "es5"
+      }
+    },
+    {
+      "files": ["*.html", "*.htm", "*.xml", "*.svg"],
+      "options": {
+        "tabWidth": 2,
+        "printWidth": 120,
+        "singleQuote": false,
+        "bracketSpacing": true
+      }
+    },
+    {
+      "files": ["*.css", "*.scss", "*.sass", "*.less", "*.styl"],
+      "options": {
+        "tabWidth": 2,
+        "printWidth": 100,
+        "singleQuote": false,
+        "trailingComma": "none"
+      }
+    },
+    {
+      "files": ["*.ts", "*.tsx"],
+      "options": {
+        "tabWidth": 2,
+        "printWidth": 100,
+        "singleQuote": true,
+        "trailingComma": "es5",
+        "arrowParens": "avoid"
+      }
+    },
+    {
+      "files": ["*.js", "*.jsx"],
+      "options": {
+        "tabWidth": 2,
+        "printWidth": 100,
+        "singleQuote": true,
+        "trailingComma": "es5",
+        "arrowParens": "avoid"
+      }
+    },
+    {
+      "files": ["*.sh", "*.bash", "*.zsh"],
+      "options": {
+        "tabWidth": 2,
+        "printWidth": 120,
+        "singleQuote": true,
+        "trailingComma": "none"
+      }
+    },
+    {
+      "files": ["*.toml"],
+      "options": {
+        "tabWidth": 2,
+        "printWidth": 120,
+        "trailingComma": "none"
+      }
+    },
+    {
+      "files": ["*.graphql", "*.gql"],
+      "options": {
+        "tabWidth": 2,
+        "printWidth": 120,
+        "singleQuote": true,
+        "trailingComma": "none"
+      }
+    },
+    {
+      "files": ["*.php"],
+      "options": {
+        "tabWidth": 4,
+        "printWidth": 120,
+        "singleQuote": true,
+        "trailingComma": "es5"
+      }
+    },
+    {
+      "files": ["*.go"],
+      "options": {
+        "tabWidth": 4,
+        "printWidth": 120,
+        "singleQuote": false,
+        "trailingComma": "none"
+      }
+    },
+    {
+      "files": ["*.rs"],
+      "options": {
+        "tabWidth": 4,
+        "printWidth": 100,
+        "singleQuote": true,
+        "trailingComma": "es5"
+      }
+    },
+    {
+      "files": ["*.kt", "*.kts"],
+      "options": {
+        "tabWidth": 4,
+        "printWidth": 120,
+        "singleQuote": true,
+        "trailingComma": "es5"
+      }
+    },
+    {
+      "files": ["*.swift"],
+      "options": {
+        "tabWidth": 4,
+        "printWidth": 120,
+        "singleQuote": false,
+        "trailingComma": "es5"
+      }
+    },
+    {
+      "files": ["*.java"],
+      "options": {
+        "tabWidth": 4,
+        "printWidth": 120,
+        "singleQuote": false,
+        "trailingComma": "none"
+      }
+    },
+    {
+      "files": ["*.c", "*.h", "*.cpp", "*.hpp", "*.cc", "*.hh"],
+      "options": {
+        "tabWidth": 4,
+        "printWidth": 120,
+        "singleQuote": false,
+        "trailingComma": "none"
+      }
+    },
+    {
+      "files": ["*.rb"],
+      "options": {
+        "tabWidth": 2,
+        "printWidth": 120,
+        "singleQuote": true,
+        "trailingComma": "es5"
+      }
+    },
+    {
+      "files": ["*.tf", "*.tfvars"],
+      "options": {
+        "tabWidth": 2,
+        "printWidth": 120,
+        "singleQuote": false,
+        "trailingComma": "none"
+      }
+    },
+    {
+      "files": ["*.sql"],
+      "options": {
+        "tabWidth": 2,
+        "printWidth": 120,
+        "singleQuote": false,
+        "trailingComma": "none"
+      }
+    },
+    {
+      "files": ["*.dockerfile", "Dockerfile"],
+      "options": {
+        "tabWidth": 2,
+        "printWidth": 120,
+        "singleQuote": false,
+        "trailingComma": "none"
+      }
+    },
+    {
+      "files": ["*.vue"],
+      "options": {
+        "tabWidth": 2,
+        "printWidth": 100,
+        "singleQuote": true,
+        "trailingComma": "es5",
+        "vueIndentScriptAndStyle": true
+      }
+    },
+    {
+      "files": ["*.svelte"],
+      "options": {
+        "tabWidth": 2,
+        "printWidth": 100,
+        "singleQuote": true,
+        "trailingComma": "es5"
+      }
+    },
+    {
+      "files": ["*.astro"],
+      "options": {
+        "tabWidth": 2,
+        "printWidth": 100,
+        "singleQuote": true,
+        "trailingComma": "es5"
+      }
+    },
+    {
+      "files": ["*.prisma"],
+      "options": {
+        "tabWidth": 2,
+        "printWidth": 120,
+        "singleQuote": true,
+        "trailingComma": "none"
+      }
+    },
+    {
+      "files": ["*.proto"],
+      "options": {
+        "tabWidth": 2,
+        "printWidth": 120,
+        "singleQuote": false,
+        "trailingComma": "none"
+      }
+    },
+    {
+      "files": ["*.nc", "*.ncl"],
+      "options": {
+        "tabWidth": 2,
+        "printWidth": 120,
+        "singleQuote": true,
+        "trailingComma": "es5"
+      }
+    },
+    {
+      "files": ["*.jl"],
+      "options": {
+        "tabWidth": 4,
+        "printWidth": 92,
+        "singleQuote": false,
+        "trailingComma": "none"
+      }
+    },
+    {
+      "files": ["*.ex", "*.exs"],
+      "options": {
+        "tabWidth": 2,
+        "printWidth": 120,
+        "singleQuote": true,
+        "trailingComma": "es5"
+      }
+    },
+    {
+      "files": ["*.clj", "*.cljs", "*.edn"],
+      "options": {
+        "tabWidth": 2,
+        "printWidth": 120,
+        "singleQuote": false,
+        "trailingComma": "none"
+      }
+    },
+    {
+      "files": ["*.nim"],
+      "options": {
+        "tabWidth": 2,
+        "printWidth": 120,
+        "singleQuote": true,
+        "trailingComma": "none"
+      }
+    },
+    {
+      "files": ["*.cr"],
+      "options": {
+        "tabWidth": 2,
+        "printWidth": 120,
+        "singleQuote": true,
+        "trailingComma": "es5"
+      }
+    },
+    {
+      "files": ["*.zig"],
+      "options": {
+        "tabWidth": 4,
+        "printWidth": 120,
+        "singleQuote": false,
+        "trailingComma": "none"
+      }
+    },
+    {
+      "files": ["*.ml", "*.mli"],
+      "options": {
+        "tabWidth": 2,
+        "printWidth": 120,
+        "singleQuote": false,
+        "trailingComma": "none"
+      }
+    },
+    {
+      "files": ["*.fs", "*.fsi", "*.fsx"],
+      "options": {
+        "tabWidth": 4,
+        "printWidth": 120,
+        "singleQuote": false,
+        "trailingComma": "none"
+      }
+    },
+    {
+      "files": ["*.erl", "*.hrl"],
+      "options": {
+        "tabWidth": 4,
+        "printWidth": 120,
+        "singleQuote": false,
+        "trailingComma": "none"
+      }
+    },
+    {
+      "files": ["*.cob", "*.cbl"],
+      "options": {
+        "tabWidth": 7,
+        "printWidth": 80,
+        "singleQuote": false,
+        "trailingComma": "none"
+      }
+    },
+    {
+      "files": ["*.adb", "*.ads"],
+      "options": {
+        "tabWidth": 3,
+        "printWidth": 120,
+        "singleQuote": false,
+        "trailingComma": "none"
+      }
+    },
+    {
+      "files": ["*.asm", "*.s", "*.S"],
+      "options": {
+        "tabWidth": 4,
+        "printWidth": 120,
+        "singleQuote": false,
+        "trailingComma": "none"
+      }
+    },
+    {
+      "files": ["*.f", "*.for", "*.f90", "*.f95", "*.f03", "*.f08"],
+      "options": {
+        "tabWidth": 3,
+        "printWidth": 72,
+        "singleQuote": false,
+        "trailingComma": "none"
+      }
+    },
+    {
+      "files": ["*.lisp", "*.cl", "*.lsp"],
+      "options": {
+        "tabWidth": 2,
+        "printWidth": 80,
+        "singleQuote": false,
+        "trailingComma": "none"
+      }
+    },
+    {
+      "files": ["*.sql"],
+      "options": {
+        "tabWidth": 2,
+        "printWidth": 120,
+        "singleQuote": false,
+        "trailingComma": "none"
+      }
+    },
+    {
+      "files": ["*.r", "*.R"],
+      "options": {
+        "tabWidth": 2,
+        "printWidth": 80,
+        "singleQuote": true,
+        "trailingComma": "none"
+      }
+    },
+    {
+      "files": ["*.dart"],
+      "options": {
+        "tabWidth": 2,
+        "printWidth": 80,
+        "singleQuote": true,
+        "trailingComma": "es5"
+      }
+    },
+    {
+      "files": ["*.lua"],
+      "options": {
+        "tabWidth": 2,
+        "printWidth": 120,
+        "singleQuote": true,
+        "trailingComma": "none"
+      }
+    },
+    {
+      "files": ["*.pl", "*.pm", "*.t"],
+      "options": {
+        "tabWidth": 4,
+        "printWidth": 80,
+        "singleQuote": true,
+        "trailingComma": "none"
+      }
+    },
+    {
+      "files": ["*.groovy", "*.gvy", "*.gradle"],
+      "options": {
+        "tabWidth": 4,
+        "printWidth": 120,
+        "singleQuote": true,
+        "trailingComma": "none"
+      }
+    },
+    {
+      "files": ["*.scala"],
+      "options": {
+        "tabWidth": 2,
+        "printWidth": 120,
+        "singleQuote": true,
+        "trailingComma": "es5"
+      }
+    },
+    {
+      "files": ["*.hs", "*.lhs"],
+      "options": {
+        "tabWidth": 4,
+        "printWidth": 80,
+        "singleQuote": false,
+        "trailingComma": "none"
+      }
+    },
+    {
+      "files": ["*.el", ".emacs"],
+      "options": {
+        "tabWidth": 2,
+        "printWidth": 120,
+        "singleQuote": false,
+        "trailingComma": "none"
+      }
+    },
+    {
+      "files": ["*.vim", "*.vba"],
+      "options": {
+        "tabWidth": 2,
+        "printWidth": 120,
+        "singleQuote": false,
+        "trailingComma": "none"
+      }
+    },
+    {
+      "files": ["*.tcl"],
+      "options": {
+        "tabWidth": 4,
+        "printWidth": 120,
+        "singleQuote": false,
+        "trailingComma": "none"
+      }
+    },
+    {
+      "files": ["*.awk"],
+      "options": {
+        "tabWidth": 4,
+        "printWidth": 120,
+        "singleQuote": true,
+        "trailingComma": "none"
+      }
+    },
+    {
+      "files": ["*.sed"],
+      "options": {
+        "tabWidth": 4,
+        "printWidth": 120,
+        "singleQuote": true,
+        "trailingComma": "none"
+      }
+    },
+    {
+      "files": ["Makefile", "*.mk"],
+      "options": {
+        "tabWidth": 4,
+        "printWidth": 120,
+        "singleQuote": false,
+        "trailingComma": "none"
+      }
+    },
+    {
+      "files": ["*.cmake", "CMakeLists.txt"],
+      "options": {
+        "tabWidth": 2,
+        "printWidth": 120,
+        "singleQuote": false,
+        "trailingComma": "none"
+      }
+    },
+    {
+      "files": ["*.nix"],
+      "options": {
+        "tabWidth": 2,
+        "printWidth": 120,
+        "singleQuote": true,
+        "trailingComma": "none"
+      }
+    }
+  ],
+  "plugins": [
+    "@trivago/prettier-plugin-sort-imports",
+    "prettier-plugin-tailwindcss",
+    "prettier-plugin-json",
+    "prettier-plugin-multiline-arrays",
+    "prettier-plugin-packagejson",
+    "prettier-plugin-sh",
+    "prettier-plugin-toml",
+    "prettier-plugin-graphql",
+    "prettier-plugin-svelte",
+    "prettier-plugin-astro",
+    "prettier-plugin-java",
+    "prettier-plugin-apex",
+    "prettier-plugin-ruby",
+    "prettier-plugin-go",
+    "prettier-plugin-rust",
+    "prettier-plugin-swift"
+  ],
+  "importOrder": [
+    "^(react|next|next/.*)$",
+    "<THIRD_PARTY_MODULES>",
+    "^(~(?!.*\\.css$)|app|components|lib|hooks|services|store|types|utils|config|constants|helpers|styles|themes|assets|public)",
+    "^@/(.*)$",
+    "^(~/.+\\.[^/]+\\.css$)",
+    "^(~/.+\\.css$)",
+    "^[./]"
+  ],
+  "importOrderSeparation": true,
+  "importOrderSortSpecifiers": true,
+  "importOrderGroupNamespaceSpecifiers": true,
+  "importOrderCaseInsensitive": true,
+  "importOrderParserPlugins": [
+    "typescript",
+    "jsx",
+    "decorators-legacy",
+    "classProperties",
+    "importAssertions"
+  ],
+  "tailwindConfig": "./apps/web/tailwind.config.ts",
+  "tailwindFunctions": ["clsx", "cva", "cx", "tw"],
+  "tailwindAttributes": ["className", "class", "tw", "classNames"],
+  "multilineArraysWrapThreshold": 3,
+  "jsonRecursiveSort": true,
+  "shIndent": 2,
+  "shFunctionNextLine": true,
+  "tomlIndent": 2,
+  "graphqlTrailingComma": true,
+  "svelteSortOrder": "options-scripts-markup-styles",
+  "svelteStrictMode": false,
+  "svelteBracketNewLine": true,
+  "svelteAllowShorthand": true,
+  "svelteIndentScriptAndStyle": true,
+  "astroAllowShorthand": true
+}
