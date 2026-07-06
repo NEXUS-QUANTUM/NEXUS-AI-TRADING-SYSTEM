@@ -1,4 +1,521 @@
+# ============================================
 # NEXUS AI TRADING SYSTEM
 # Copyright © 2026 NEXUS QUANTUM LTD
 # CEO: Dr X... - Majority Shareholder
+# ============================================
+# Docker Compose - Environnement de Développement
+# ============================================
 
+version: '3.8'
+
+# ============================================
+# SERVICES
+# ============================================
+services:
+  # ============================================
+  # POSTGRESQL - Base de données principale
+  # ============================================
+  postgres:
+    image: postgres:16-alpine
+    container_name: nexus_postgres_dev
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: nexus
+      POSTGRES_PASSWORD: nexus123
+      POSTGRES_DB: nexus_ai
+      POSTGRES_INITDB_ARGS: "--encoding=UTF8 --locale=en_US.UTF-8"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./docker/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5432:5432"
+    networks:
+      - nexus_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U nexus"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # ============================================
+  # TIMESCALEDB - Base de données time-series
+  # ============================================
+  timescaledb:
+    image: timescale/timescaledb:2.17.2-pg16
+    container_name: nexus_timescaledb_dev
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: nexus
+      POSTGRES_PASSWORD: nexus123
+      POSTGRES_DB: nexus_ts
+    volumes:
+      - timescaledb_data:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+    networks:
+      - nexus_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U nexus"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # ============================================
+  # MONGODB - Base de données NoSQL
+  # ============================================
+  mongodb:
+    image: mongo:7
+    container_name: nexus_mongodb_dev
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: nexus
+      MONGO_INITDB_ROOT_PASSWORD: nexus123
+      MONGO_INITDB_DATABASE: nexus_ai
+    volumes:
+      - mongodb_data:/data/db
+      - ./docker/mongodb/init.js:/docker-entrypoint-initdb.d/init.js
+    ports:
+      - "27017:27017"
+    networks:
+      - nexus_network
+    healthcheck:
+      test: ["CMD-SHELL", "mongosh --eval 'db.runCommand({ping: 1})'"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # ============================================
+  # REDIS - Cache & Message Broker
+  # ============================================
+  redis:
+    image: redis:7-alpine
+    container_name: nexus_redis_dev
+    restart: unless-stopped
+    command: redis-server --appendonly yes --requirepass nexus123
+    volumes:
+      - redis_data:/data
+      - ./docker/redis/redis.conf:/usr/local/etc/redis/redis.conf
+    ports:
+      - "6379:6379"
+    networks:
+      - nexus_network
+    healthcheck:
+      test: ["CMD", "redis-cli", "--raw", "incr", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # ============================================
+  # REDIS INSIGHT - Interface Redis
+  # ============================================
+  redis-insight:
+    image: redislabs/redisinsight:latest
+    container_name: nexus_redis_insight_dev
+    restart: unless-stopped
+    ports:
+      - "5540:5540"
+    volumes:
+      - redis_insight_data:/db
+    networks:
+      - nexus_network
+    depends_on:
+      - redis
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # ============================================
+  # PGADMIN - Interface PostgreSQL
+  # ============================================
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: nexus_pgadmin_dev
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@nexusquantum.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    ports:
+      - "5050:80"
+    networks:
+      - nexus_network
+    depends_on:
+      - postgres
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # ============================================
+  # BACKEND - FastAPI
+  # ============================================
+  backend:
+    build:
+      context: .
+      dockerfile: infrastructure/docker/backend/Dockerfile.dev
+    container_name: nexus_backend_dev
+    restart: unless-stopped
+    volumes:
+      - ./backend:/app/backend
+      - ./ai:/app/ai
+      - ./trading:/app/trading
+      - ./shared:/app/shared
+      - ./configs:/app/configs
+      - ./data:/app/data
+      - ./backend/logs:/app/logs
+      - ./backend/uploads:/app/uploads
+    environment:
+      - APP_ENV=development
+      - DATABASE_URL=postgresql://nexus:nexus123@postgres:5432/nexus_ai
+      - TIMESCALEDB_URL=postgresql://nexus:nexus123@timescaledb:5432/nexus_ts
+      - MONGODB_URL=mongodb://nexus:nexus123@mongodb:27017
+      - REDIS_URL=redis://:nexus123@redis:6379/0
+      - PYTHONPATH=/app
+      - PYTHONUNBUFFERED=1
+    ports:
+      - "8000:8000"
+    networks:
+      - nexus_network
+    depends_on:
+      postgres:
+        condition: service_healthy
+      timescaledb:
+        condition: service_healthy
+      mongodb:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    command: uvicorn backend.main:app --host 0.0.0.0 --port 8000 --reload
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # ============================================
+  # FRONTEND - Next.js
+  # ============================================
+  frontend:
+    build:
+      context: .
+      dockerfile: infrastructure/docker/frontend/Dockerfile.dev
+    container_name: nexus_frontend_dev
+    restart: unless-stopped
+    volumes:
+      - ./apps/web:/app
+      - /app/node_modules
+      - /app/.next
+    environment:
+      - NODE_ENV=development
+      - NEXT_PUBLIC_API_URL=http://localhost:8000/api/v1
+      - NEXT_PUBLIC_WEBSOCKET_URL=ws://localhost:8000/ws
+    ports:
+      - "3000:3000"
+    networks:
+      - nexus_network
+    depends_on:
+      - backend
+    command: npm run dev
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # ============================================
+  # NGINX - Reverse Proxy
+  # ============================================
+  nginx:
+    build:
+      context: .
+      dockerfile: infrastructure/docker/nginx/Dockerfile.dev
+    container_name: nexus_nginx_dev
+    restart: unless-stopped
+    volumes:
+      - ./infrastructure/docker/nginx/conf.d:/etc/nginx/conf.d
+      - ./infrastructure/docker/nginx/nginx.dev.conf:/etc/nginx/nginx.conf
+      - ./infrastructure/docker/nginx/sites-available:/etc/nginx/sites-available
+      - ./infrastructure/docker/nginx/sites-enabled:/etc/nginx/sites-enabled
+      - ./infrastructure/docker/nginx/logs:/var/log/nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      - nexus_network
+    depends_on:
+      - backend
+      - frontend
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # ============================================
+  # PROMETHEUS - Monitoring
+  # ============================================
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: nexus_prometheus_dev
+    restart: unless-stopped
+    volumes:
+      - ./configs/monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./configs/monitoring/prometheus/alerts:/etc/prometheus/alerts
+      - prometheus_data:/prometheus
+    ports:
+      - "9090:9090"
+    networks:
+      - nexus_network
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles'
+      - '--web.enable-lifecycle'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # ============================================
+  # GRAFANA - Dashboards
+  # ============================================
+  grafana:
+    image: grafana/grafana:latest
+    container_name: nexus_grafana_dev
+    restart: unless-stopped
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_INSTALL_PLUGINS=grafana-piechart-panel,grafana-clock-panel,grafana-simple-json-datasource
+      - GF_AUTH_ANONYMOUS_ENABLED=false
+      - GF_AUTH_BASIC_ENABLED=true
+    volumes:
+      - ./configs/monitoring/grafana/datasources:/etc/grafana/provisioning/datasources
+      - ./configs/monitoring/grafana/dashboards:/etc/grafana/provisioning/dashboards
+      - grafana_data:/var/lib/grafana
+    ports:
+      - "3001:3000"
+    networks:
+      - nexus_network
+    depends_on:
+      - prometheus
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # ============================================
+  # LOKI - Log Aggregation
+  # ============================================
+  loki:
+    image: grafana/loki:latest
+    container_name: nexus_loki_dev
+    restart: unless-stopped
+    volumes:
+      - ./configs/monitoring/loki/loki-config.yaml:/etc/loki/loki-config.yaml
+      - loki_data:/loki
+    ports:
+      - "3100:3100"
+    networks:
+      - nexus_network
+    command: -config.file=/etc/loki/loki-config.yaml
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # ============================================
+  # PROMTAIL - Log Collector
+  # ============================================
+  promtail:
+    image: grafana/promtail:latest
+    container_name: nexus_promtail_dev
+    restart: unless-stopped
+    volumes:
+      - ./configs/monitoring/promtail/promtail-config.yaml:/etc/promtail/promtail-config.yaml
+      - /var/log:/var/log
+      - ./backend/logs:/app/logs
+    ports:
+      - "9080:9080"
+    networks:
+      - nexus_network
+    command: -config.file=/etc/promtail/promtail-config.yaml
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # ============================================
+  # TEMPO - Distributed Tracing
+  # ============================================
+  tempo:
+    image: grafana/tempo:latest
+    container_name: nexus_tempo_dev
+    restart: unless-stopped
+    volumes:
+      - ./configs/monitoring/tempo/tempo-config.yaml:/etc/tempo/tempo-config.yaml
+      - tempo_data:/tempo
+    ports:
+      - "3200:3200"
+      - "4317:4317"
+      - "4318:4318"
+    networks:
+      - nexus_network
+    command: -config.file=/etc/tempo/tempo-config.yaml
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # ============================================
+  # ALERTMANAGER - Alerting
+  # ============================================
+  alertmanager:
+    image: prom/alertmanager:latest
+    container_name: nexus_alertmanager_dev
+    restart: unless-stopped
+    volumes:
+      - ./configs/monitoring/alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.yml
+      - alertmanager_data:/alertmanager
+    ports:
+      - "9093:9093"
+    networks:
+      - nexus_network
+    command:
+      - '--config.file=/etc/alertmanager/alertmanager.yml'
+      - '--storage.path=/alertmanager'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # ============================================
+  # NGINX PROMETHEUS EXPORTER
+  # ============================================
+  nginx-exporter:
+    image: nginx/nginx-prometheus-exporter:latest
+    container_name: nexus_nginx_exporter_dev
+    restart: unless-stopped
+    environment:
+      - SCRAPE_URI=http://nginx:80/stub_status
+    ports:
+      - "9113:9113"
+    networks:
+      - nexus_network
+    depends_on:
+      - nginx
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # ============================================
+  # POSTGRES EXPORTER
+  # ============================================
+  postgres-exporter:
+    image: prometheuscommunity/postgres-exporter:latest
+    container_name: nexus_postgres_exporter_dev
+    restart: unless-stopped
+    environment:
+      DATA_SOURCE_NAME: "postgresql://nexus:nexus123@postgres:5432/nexus_ai?sslmode=disable"
+    ports:
+      - "9187:9187"
+    networks:
+      - nexus_network
+    depends_on:
+      - postgres
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # ============================================
+  # REDIS EXPORTER
+  # ============================================
+  redis-exporter:
+    image: oliver006/redis_exporter:latest
+    container_name: nexus_redis_exporter_dev
+    restart: unless-stopped
+    environment:
+      REDIS_ADDR: "redis://redis:6379"
+      REDIS_PASSWORD: "nexus123"
+    ports:
+      - "9121:9121"
+    networks:
+      - nexus_network
+    depends_on:
+      - redis
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+# ============================================
+# VOLUMES
+# ============================================
+volumes:
+  postgres_data:
+    driver: local
+  timescaledb_data:
+    driver: local
+  mongodb_data:
+    driver: local
+  redis_data:
+    driver: local
+  redis_insight_data:
+    driver: local
+  pgadmin_data:
+    driver: local
+  prometheus_data:
+    driver: local
+  grafana_data:
+    driver: local
+  loki_data:
+    driver: local
+  tempo_data:
+    driver: local
+  alertmanager_data:
+    driver: local
+
+# ============================================
+# NETWORKS
+# ============================================
+networks:
+  nexus_network:
+    driver: bridge
+    name: nexus_network_dev
