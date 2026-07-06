@@ -1,3 +1,604 @@
-NEXUS AI TRADING SYSTEM
-Copyright © 2026 NEXUS QUANTUM LTD
-CEO: Dr X... - Majority Shareholder
+# ============================================
+# NEXUS AI TRADING SYSTEM
+# Copyright © 2026 NEXUS QUANTUM LTD
+# CEO: Dr X... - Majority Shareholder
+# ============================================
+# EditorConfig - Configuration unifiée pour tous les éditeurs
+# ============================================
+
+# Fichier racine
+root = true
+
+# ============================================
+# CONFIGURATION GLOBALE
+# ============================================
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+indent_style = space
+max_line_length = 120
+
+# ============================================
+# PYTHON
+# ============================================
+[*.py]
+indent_size = 4
+indent_style = space
+max_line_length = 88
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+# Python spécifique
+[*.{py,pyi}]
+indent_size = 4
+indent_style = space
+
+# ============================================
+# JAVASCRIPT / TYPESCRIPT
+# ============================================
+[*.{js,jsx,ts,tsx}]
+indent_size = 2
+indent_style = space
+max_line_length = 100
+quote_type = single
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+# ============================================
+# JSON
+# ============================================
+[*.json]
+indent_size = 2
+indent_style = space
+insert_final_newline = false
+trim_trailing_whitespace = false
+
+# ============================================
+# YAML
+# ============================================
+[*.{yaml,yml}]
+indent_size = 2
+indent_style = space
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+# ============================================
+# MARKDOWN
+# ============================================
+[*.md]
+indent_size = 2
+indent_style = space
+max_line_length = 120
+trim_trailing_whitespace = false
+
+# ============================================
+# HTML / CSS / SCSS
+# ============================================
+[*.{html,htm}]
+indent_size = 2
+indent_style = space
+
+[*.{css,scss,sass}]
+indent_size = 2
+indent_style = space
+
+# ============================================
+# SHELL SCRIPTS
+# ============================================
+[*.{sh,bash,zsh,ksh}]
+indent_size = 2
+indent_style = space
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+# ============================================
+# DOCKERFILE
+# ============================================
+[Dockerfile]
+indent_size = 2
+indent_style = space
+
+# ============================================
+# MAKEFILE
+# ============================================
+[Makefile]
+indent_style = tab
+indent_size = 4
+
+# ============================================
+# ENVIRONMENT FILES
+# ============================================
+[*.env]
+indent_size = 2
+indent_style = space
+trim_trailing_whitespace = true
+
+# ============================================
+# SQL
+# ============================================
+[*.sql]
+indent_size = 2
+indent_style = space
+max_line_length = 120
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+# ============================================
+# XML
+# ============================================
+[*.xml]
+indent_size = 2
+indent_style = space
+
+# ============================================
+# TOML
+# ============================================
+[*.toml]
+indent_size = 2
+indent_style = space
+
+# ============================================
+# INI / CONF
+# ============================================
+[*.{ini,conf,cfg}]
+indent_size = 2
+indent_style = space
+
+# ============================================
+# GRADLE
+# ============================================
+[*.gradle]
+indent_size = 4
+indent_style = space
+
+# ============================================
+# KOTLIN
+# ============================================
+[*.kt]
+indent_size = 4
+indent_style = space
+
+# ============================================
+# RUST
+# ============================================
+[*.rs]
+indent_size = 4
+indent_style = space
+max_line_length = 100
+
+# ============================================
+# GO
+# ============================================
+[*.go]
+indent_size = 4
+indent_style = tab
+
+# ============================================
+# VUE
+# ============================================
+[*.vue]
+indent_size = 2
+indent_style = space
+
+# ============================================
+# TYPESCRIPT SPECIFIC
+# ============================================
+[*.{ts,tsx}]
+indent_size = 2
+indent_style = space
+quote_type = single
+jsx_single_quote = true
+max_line_length = 100
+
+# ============================================
+# MARKDOWN SPECIFIC
+# ============================================
+[*.{md,markdown}]
+indent_size = 2
+indent_style = space
+max_line_length = 80
+
+# ============================================
+# SWIFT
+# ============================================
+[*.swift]
+indent_size = 4
+indent_style = space
+max_line_length = 100
+
+# ============================================
+# PACKAGE.JSON
+# ============================================
+[package.json]
+indent_size = 2
+indent_style = space
+insert_final_newline = false
+trim_trailing_whitespace = false
+
+# ============================================
+# PACKAGE-LOCK.JSON
+# ============================================
+[package-lock.json]
+indent_size = 2
+indent_style = space
+insert_final_newline = false
+trim_trailing_whitespace = false
+max_line_length = 9999
+
+# ============================================
+# PYTORCH / JUPYTER
+# ============================================
+[*.ipynb]
+indent_size = 2
+indent_style = space
+max_line_length = 120
+
+# ============================================
+# SQL ALEMBIC
+# ============================================
+[alembic.ini]
+indent_size = 2
+indent_style = space
+
+# ============================================
+# DOCKER IGNORE
+# ============================================
+[.dockerignore]
+indent_size = 2
+indent_style = space
+
+# ============================================
+# GITIGNORE
+# ============================================
+[.gitignore]
+indent_size = 2
+indent_style = space
+
+# ============================================
+# PRETTIERRC
+# ============================================
+[.prettierrc]
+indent_size = 2
+indent_style = space
+
+# ============================================
+# ESLINTRC
+# ============================================
+[.eslintrc.{json,js}]
+indent_size = 2
+indent_style = space
+
+# ============================================
+# TAILWIND
+# ============================================
+[tailwind.config.{js,ts}]
+indent_size = 2
+indent_style = space
+
+# ============================================
+# POSTCSS
+# ============================================
+[postcss.config.js]
+indent_size = 2
+indent_style = space
+
+# ============================================
+# NEXT.JS
+# ============================================
+[next.config.js]
+indent_size = 2
+indent_style = space
+
+# ============================================
+# VITE
+# ============================================
+[vite.config.ts]
+indent_size = 2
+indent_style = space
+
+# ============================================
+# WEBPACK
+# ============================================
+[webpack.config.js]
+indent_size = 2
+indent_style = space
+
+# ============================================
+# ELECTRON
+# ============================================
+[electron-builder.json]
+indent_size = 2
+indent_style = space
+
+# ============================================
+# JEST
+# ============================================
+[jest.config.{js,ts}]
+indent_size = 2
+indent_style = space
+
+# ============================================
+# CYPRESS
+# ============================================
+[cypress.config.{js,ts}]
+indent_size = 2
+indent_style = space
+
+# ============================================
+# PLAYWRIGHT
+# ============================================
+[playwright.config.{js,ts}]
+indent_size = 2
+indent_style = space
+
+# ============================================
+# VERCEL
+# ============================================
+[vercel.json]
+indent_size = 2
+indent_style = space
+
+# ============================================
+# NETLIFY
+# ============================================
+[netlify.toml]
+indent_size = 2
+indent_style = space
+
+# ============================================
+# TERRAFORM
+# ============================================
+[*.tf]
+indent_size = 2
+indent_style = space
+
+[*.tfvars]
+indent_size = 2
+indent_style = space
+
+# ============================================
+# KUBERNETES
+# ============================================
+[*.yaml]
+indent_size = 2
+indent_style = space
+
+[*.yml]
+indent_size = 2
+indent_style = space
+
+# ============================================
+# HELM
+# ============================================
+[*.tpl]
+indent_size = 2
+indent_style = space
+
+# ============================================
+# ANSIBLE
+# ============================================
+[*.yml]
+indent_size = 2
+indent_style = space
+
+# ============================================
+# GRAPHQL
+# ============================================
+[*.graphql]
+indent_size = 2
+indent_style = space
+
+[*.gql]
+indent_size = 2
+indent_style = space
+
+# ============================================
+# PROTOBUF
+# ============================================
+[*.proto]
+indent_size = 2
+indent_style = space
+
+# ============================================
+# OPENAPI
+# ============================================
+[openapi.yaml]
+indent_size = 2
+indent_style = space
+
+# ============================================
+# SWAGGER
+# ============================================
+[swagger.json]
+indent_size = 2
+indent_style = space
+
+# ============================================
+# COVERAGE
+# ============================================
+[*.coverage]
+indent_size = 2
+indent_style = space
+
+# ============================================
+# LICENCE
+# ============================================
+[LICENSE]
+indent_size = 2
+indent_style = space
+max_line_length = 120
+
+# ============================================
+# CHANGELOG
+# ============================================
+[CHANGELOG.md]
+indent_size = 2
+indent_style = space
+max_line_length = 120
+
+# ============================================
+# CONTRIBUTING
+# ============================================
+[CONTRIBUTING.md]
+indent_size = 2
+indent_style = space
+max_line_length = 120
+
+# ============================================
+# CODE OF CONDUCT
+# ============================================
+[CODE_OF_CONDUCT.md]
+indent_size = 2
+indent_style = space
+max_line_length = 120
+
+# ============================================
+# SECURITY
+# ============================================
+[SECURITY.md]
+indent_size = 2
+indent_style = space
+max_line_length = 120
+
+# ============================================
+# ROADMAP
+# ============================================
+[ROADMAP.md]
+indent_size = 2
+indent_style = space
+max_line_length = 120
+
+# ============================================
+# README
+# ============================================
+[README.md]
+indent_size = 2
+indent_style = space
+max_line_length = 120
+
+# ============================================
+# DOCKER COMPOSE
+# ============================================
+[docker-compose*.yml]
+indent_size = 2
+indent_style = space
+
+# ============================================
+# GITHUB ACTIONS
+# ============================================
+[.github/workflows/*.yml]
+indent_size = 2
+indent_style = space
+
+# ============================================
+# VSCODE
+# ============================================
+[.vscode/*.json]
+indent_size = 2
+indent_style = space
+
+# ============================================
+# PRE-COMMIT
+# ============================================
+[.pre-commit-config.yaml]
+indent_size = 2
+indent_style = space
+
+# ============================================
+# RUFF
+# ============================================
+[ruff.toml]
+indent_size = 2
+indent_style = space
+
+# ============================================
+# BLACK
+# ============================================
+[pyproject.toml]
+indent_size = 2
+indent_style = space
+
+# ============================================
+# MYPY
+# ============================================
+[mypy.ini]
+indent_size = 2
+indent_style = space
+
+# ============================================
+# FLAKE8
+# ============================================
+[.flake8]
+indent_size = 2
+indent_style = space
+
+# ============================================
+# ISORT
+# ============================================
+[.isort.cfg]
+indent_size = 2
+indent_style = space
+
+# ============================================
+# PYTEST
+# ============================================
+[pytest.ini]
+indent_size = 2
+indent_style = space
+
+# ============================================
+# BANDIT
+# ============================================
+[.bandit]
+indent_size = 2
+indent_style = space
+
+# ============================================
+# PYRIGHT
+# ============================================
+[pyrightconfig.json]
+indent_size = 2
+indent_style = space
+
+# ============================================
+# POETRY
+# ============================================
+[poetry.lock]
+indent_size = 2
+indent_style = space
+insert_final_newline = false
+trim_trailing_whitespace = false
+
+# ============================================
+# UV
+# ============================================
+[uv.lock]
+indent_size = 2
+indent_style = space
+insert_final_newline = false
+trim_trailing_whitespace = false
+
+# ============================================
+# SNAP
+# ============================================
+[snapcraft.yaml]
+indent_size = 2
+indent_style = space
+
+# ============================================
+# RUST - CARGO
+# ============================================
+[Cargo.toml]
+indent_size = 2
+indent_style = space
+
+[Cargo.lock]
+indent_size = 2
+indent_style = space
+insert_final_newline = false
+trim_trailing_whitespace = false
