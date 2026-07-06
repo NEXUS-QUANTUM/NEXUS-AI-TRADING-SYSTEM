@@ -1,7 +1,415 @@
 {
-  "name": "nexus-ai-trading",
-  "version": "1.0.0",
-  "description": "NEXUS AI TRADING SYSTEM",
-  "copyright": "Copyright © 2026 NEXUS QUANTUM LTD",
-  "ceo": "Dr X..."
+  "$schema": "https://turbo.build/schema.json",
+  "globalDependencies": [
+    ".env",
+    ".env.production",
+    ".env.local",
+    "tsconfig.json",
+    "package.json"
+  ],
+  "globalEnv": [
+    "NODE_ENV",
+    "APP_ENV",
+    "APP_DEBUG",
+    "APP_SECRET_KEY",
+    "DATABASE_URL",
+    "REDIS_URL",
+    "JWT_SECRET_KEY",
+    "ENCRYPTION_KEY",
+    "NEXT_PUBLIC_APP_URL",
+    "NEXT_PUBLIC_API_URL",
+    "NEXT_PUBLIC_WEBSOCKET_URL",
+    "NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY",
+    "NEXT_PUBLIC_GA_TRACKING_ID",
+    "NEXT_PUBLIC_SENTRY_DSN"
+  ],
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": [
+        ".next/**",
+        "dist/**",
+        "build/**",
+        "out/**",
+        "!.next/cache/**",
+        "!dist/cache/**"
+      ],
+      "env": [
+        "NODE_ENV",
+        "APP_ENV",
+        "APP_URL",
+        "API_URL",
+        "WS_URL",
+        "NEXT_PUBLIC_APP_URL",
+        "NEXT_PUBLIC_API_URL",
+        "NEXT_PUBLIC_WEBSOCKET_URL",
+        "NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY",
+        "NEXT_PUBLIC_GA_TRACKING_ID",
+        "NEXT_PUBLIC_SENTRY_DSN",
+        "NEXT_PUBLIC_ENABLE_CHAT",
+        "NEXT_PUBLIC_ENABLE_SOCIAL_AUTH"
+      ],
+      "cache": true,
+      "inputs": [
+        "src/**",
+        "public/**",
+        "*.config.js",
+        "*.config.ts",
+        "package.json",
+        "tsconfig.json"
+      ]
+    },
+    "dev": {
+      "dependsOn": [],
+      "cache": false,
+      "persistent": true,
+      "env": [
+        "NODE_ENV",
+        "APP_ENV",
+        "APP_URL",
+        "API_URL",
+        "WS_URL",
+        "NEXT_PUBLIC_APP_URL",
+        "NEXT_PUBLIC_API_URL",
+        "NEXT_PUBLIC_WEBSOCKET_URL"
+      ]
+    },
+    "test": {
+      "dependsOn": ["build"],
+      "cache": true,
+      "inputs": [
+        "src/**",
+        "test/**",
+        "*.test.ts",
+        "*.spec.ts",
+        "*.test.tsx",
+        "*.spec.tsx",
+        "jest.config.js",
+        "vitest.config.ts"
+      ],
+      "outputs": ["coverage/**"]
+    },
+    "test:watch": {
+      "cache": false,
+      "persistent": true
+    },
+    "test:e2e": {
+      "dependsOn": ["build"],
+      "cache": false,
+      "persistent": true,
+      "inputs": [
+        "src/**",
+        "e2e/**",
+        "playwright.config.ts"
+      ],
+      "outputs": ["playwright-report/**", "test-results/**"]
+    },
+    "lint": {
+      "dependsOn": [],
+      "cache": true,
+      "inputs": [
+        "src/**",
+        ".eslintrc.json",
+        ".eslintrc.js",
+        ".eslintrc.cjs"
+      ],
+      "outputs": []
+    },
+    "lint:fix": {
+      "dependsOn": [],
+      "cache": false
+    },
+    "format": {
+      "dependsOn": [],
+      "cache": true,
+      "inputs": [
+        "src/**",
+        ".prettierrc",
+        ".prettierrc.json",
+        ".prettierrc.js",
+        ".prettierrc.cjs"
+      ],
+      "outputs": []
+    },
+    "format:fix": {
+      "dependsOn": [],
+      "cache": false
+    },
+    "type-check": {
+      "dependsOn": ["^build"],
+      "cache": true,
+      "inputs": [
+        "src/**",
+        "*.ts",
+        "*.tsx",
+        "tsconfig.json"
+      ],
+      "outputs": []
+    },
+    "clean": {
+      "dependsOn": [],
+      "cache": false
+    },
+    "start": {
+      "dependsOn": ["build"],
+      "cache": false,
+      "persistent": true,
+      "env": [
+        "NODE_ENV",
+        "APP_ENV",
+        "PORT",
+        "HOST"
+      ]
+    },
+    "build:packages": {
+      "dependsOn": ["^build"],
+      "cache": true,
+      "inputs": [
+        "src/**",
+        "*.config.js",
+        "*.config.ts",
+        "package.json",
+        "tsconfig.json"
+      ],
+      "outputs": ["dist/**", "build/**"]
+    },
+    "dev:packages": {
+      "dependsOn": [],
+      "cache": false,
+      "persistent": true
+    },
+    "test:packages": {
+      "dependsOn": ["build:packages"],
+      "cache": true,
+      "inputs": [
+        "src/**",
+        "test/**",
+        "*.test.ts",
+        "*.spec.ts",
+        "jest.config.js",
+        "vitest.config.ts"
+      ],
+      "outputs": ["coverage/**"]
+    },
+    "lint:packages": {
+      "dependsOn": [],
+      "cache": true,
+      "inputs": [
+        "src/**",
+        ".eslintrc.json"
+      ],
+      "outputs": []
+    },
+    "format:packages": {
+      "dependsOn": [],
+      "cache": true,
+      "inputs": [
+        "src/**",
+        ".prettierrc"
+      ],
+      "outputs": []
+    },
+    "type-check:packages": {
+      "dependsOn": ["^build"],
+      "cache": true,
+      "inputs": [
+        "src/**",
+        "*.ts",
+        "*.tsx",
+        "tsconfig.json"
+      ],
+      "outputs": []
+    },
+    "clean:packages": {
+      "dependsOn": [],
+      "cache": false
+    },
+    "db:migrate": {
+      "dependsOn": ["build"],
+      "cache": false,
+      "env": [
+        "DATABASE_URL"
+      ]
+    },
+    "db:seed": {
+      "dependsOn": ["db:migrate"],
+      "cache": false,
+      "env": [
+        "DATABASE_URL"
+      ]
+    },
+    "ai:train": {
+      "dependsOn": ["build"],
+      "cache": false,
+      "env": [
+        "APP_ENV",
+        "AI_MODEL_PATH",
+        "AI_USE_GPU",
+        "CUDA_VISIBLE_DEVICES"
+      ],
+      "outputs": ["data/models/**"]
+    },
+    "ai:predict": {
+      "dependsOn": ["build"],
+      "cache": false,
+      "env": [
+        "APP_ENV",
+        "AI_MODEL_PATH"
+      ]
+    },
+    "trading:backtest": {
+      "dependsOn": ["build"],
+      "cache": false,
+      "env": [
+        "APP_ENV",
+        "BACKTESTING_DATA_PATH"
+      ],
+      "outputs": ["data/backtesting/**"]
+    },
+    "docker:build": {
+      "dependsOn": [],
+      "cache": false,
+      "env": [
+        "DOCKER_REGISTRY",
+        "DOCKER_IMAGE",
+        "DOCKER_TAG"
+      ]
+    },
+    "docker:push": {
+      "dependsOn": ["docker:build"],
+      "cache": false,
+      "env": [
+        "DOCKER_REGISTRY",
+        "DOCKER_IMAGE",
+        "DOCKER_TAG",
+        "DOCKER_USER",
+        "DOCKER_PASSWORD"
+      ]
+    },
+    "k8s:deploy": {
+      "dependsOn": ["docker:push"],
+      "cache": false,
+      "env": [
+        "KUBECONFIG",
+        "KUBERNETES_NAMESPACE"
+      ]
+    },
+    "docs:build": {
+      "dependsOn": [],
+      "cache": true,
+      "inputs": [
+        "docs/**",
+        "mkdocs.yml",
+        "mkdocs.yaml"
+      ],
+      "outputs": ["site/**"]
+    },
+    "docs:serve": {
+      "dependsOn": [],
+      "cache": false,
+      "persistent": true
+    },
+    "storybook": {
+      "dependsOn": [],
+      "cache": false,
+      "persistent": true,
+      "inputs": [
+        "src/**",
+        "stories/**",
+        "*.stories.ts",
+        "*.stories.tsx"
+      ]
+    },
+    "storybook:build": {
+      "dependsOn": [],
+      "cache": true,
+      "inputs": [
+        "src/**",
+        "stories/**",
+        "*.stories.ts",
+        "*.stories.tsx"
+      ],
+      "outputs": ["storybook-static/**"]
+    },
+    "release": {
+      "dependsOn": ["build", "test", "lint", "type-check"],
+      "cache": false,
+      "env": [
+        "NPM_TOKEN",
+        "GITHUB_TOKEN"
+      ]
+    },
+    "deploy": {
+      "dependsOn": ["build", "test", "lint", "type-check"],
+      "cache": false,
+      "env": [
+        "VERCEL_TOKEN",
+        "VERCEL_ORG_ID",
+        "VERCEL_PROJECT_ID",
+        "NETLIFY_TOKEN",
+        "NETLIFY_SITE_ID"
+      ]
+    }
+  },
+  "pipeline": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": [
+        ".next/**",
+        "dist/**",
+        "build/**",
+        "out/**",
+        "!.next/cache/**",
+        "!dist/cache/**"
+      ]
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true
+    },
+    "test": {
+      "dependsOn": ["build"],
+      "outputs": ["coverage/**"]
+    },
+    "lint": {
+      "outputs": []
+    },
+    "format": {
+      "outputs": []
+    },
+    "type-check": {
+      "dependsOn": ["^build"],
+      "outputs": []
+    },
+    "clean": {
+      "cache": false
+    }
+  },
+  "experimental": {
+    "useGlobalCache": true,
+    "force": false,
+    "cache": {
+      "remote": {
+        "enabled": true,
+        "cache": {
+          "enabled": true,
+          "timeout": 60000
+        }
+      },
+      "local": {
+        "enabled": true,
+        "timeout": 60000
+      }
+    }
+  },
+  "ui": {
+    "stream": true,
+    "interactive": true
+  },
+  "remoteCache": {
+    "enabled": true,
+    "signature": true,
+    "teamId": "nexus-ai-trading",
+    "baseUrl": "https://api.turbo.build"
+  }
 }
