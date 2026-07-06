@@ -1,4 +1,745 @@
+# ============================================
 # NEXUS AI TRADING SYSTEM
 # Copyright © 2026 NEXUS QUANTUM LTD
 # CEO: Dr X... - Majority Shareholder
+# ============================================
+# Docker Compose - Environnement de Production
+# ============================================
 
+version: '3.8'
+
+# ============================================
+# SERVICES
+# ============================================
+services:
+  # ============================================
+  # POSTGRESQL - Base de données principale
+  # ============================================
+  postgres:
+    image: postgres:16-alpine
+    container_name: nexus_postgres_prod
+    restart: always
+    environment:
+      POSTGRES_USER: ${DATABASE_USER:-nexus}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD:-change_this_strong_password_production}
+      POSTGRES_DB: ${DATABASE_NAME:-nexus_ai}
+      POSTGRES_INITDB_ARGS: "--encoding=UTF8 --locale=en_US.UTF-8"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./docker/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5432:5432"
+    networks:
+      - nexus_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DATABASE_USER:-nexus}"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 4G
+        reservations:
+          cpus: '1'
+          memory: 2G
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "5"
+
+  # ============================================
+  # TIMESCALEDB - Base de données time-series
+  # ============================================
+  timescaledb:
+    image: timescale/timescaledb:2.17.2-pg16
+    container_name: nexus_timescaledb_prod
+    restart: always
+    environment:
+      POSTGRES_USER: ${DATABASE_USER:-nexus}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD:-change_this_strong_password_production}
+      POSTGRES_DB: nexus_ts
+    volumes:
+      - timescaledb_data:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+    networks:
+      - nexus_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DATABASE_USER:-nexus}"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 4G
+        reservations:
+          cpus: '1'
+          memory: 2G
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "5"
+
+  # ============================================
+  # MONGODB - Base de données NoSQL
+  # ============================================
+  mongodb:
+    image: mongo:7
+    container_name: nexus_mongodb_prod
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${DATABASE_USER:-nexus}
+      MONGO_INITDB_ROOT_PASSWORD: ${DATABASE_PASSWORD:-change_this_strong_password_production}
+      MONGO_INITDB_DATABASE: nexus_ai
+    volumes:
+      - mongodb_data:/data/db
+      - ./docker/mongodb/init.js:/docker-entrypoint-initdb.d/init.js
+    ports:
+      - "27017:27017"
+    networks:
+      - nexus_network
+    healthcheck:
+      test: ["CMD-SHELL", "mongosh --eval 'db.runCommand({ping: 1})'"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 4G
+        reservations:
+          cpus: '1'
+          memory: 2G
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "5"
+
+  # ============================================
+  # REDIS - Cache & Message Broker
+  # ============================================
+  redis:
+    image: redis:7-alpine
+    container_name: nexus_redis_prod
+    restart: always
+    command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD:-change_this_strong_password_production} --maxmemory 2gb --maxmemory-policy allkeys-lru
+    volumes:
+      - redis_data:/data
+      - ./docker/redis/redis.conf:/usr/local/etc/redis/redis.conf
+    ports:
+      - "6379:6379"
+    networks:
+      - nexus_network
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD:-change_this_strong_password_production}", "--raw", "incr", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 2G
+        reservations:
+          cpus: '0.5'
+          memory: 1G
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "5"
+
+  # ============================================
+  # BACKEND - FastAPI
+  # ============================================
+  backend:
+    build:
+      context: .
+      dockerfile: infrastructure/docker/backend/Dockerfile.prod
+    image: nexus-backend:${NEXUS_VERSION:-latest}
+    container_name: nexus_backend_prod
+    restart: always
+    environment:
+      - APP_ENV=production
+      - APP_DEBUG=false
+      - APP_SECRET_KEY=${APP_SECRET_KEY}
+      - DATABASE_URL=postgresql://${DATABASE_USER:-nexus}:${DATABASE_PASSWORD}@postgres:5432/${DATABASE_NAME:-nexus_ai}
+      - TIMESCALEDB_URL=postgresql://${DATABASE_USER:-nexus}:${DATABASE_PASSWORD}@timescaledb:5432/nexus_ts
+      - MONGODB_URL=mongodb://${DATABASE_USER:-nexus}:${DATABASE_PASSWORD}@mongodb:27017
+      - REDIS_URL=redis://:${REDIS_PASSWORD}@redis:6379/0
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY}
+      - ENCRYPTION_KEY=${ENCRYPTION_KEY}
+      - BINANCE_API_KEY=${BINANCE_API_KEY}
+      - BINANCE_API_SECRET=${BINANCE_API_SECRET}
+      - ALPACA_API_KEY=${ALPACA_API_KEY}
+      - ALPACA_API_SECRET=${ALPACA_API_SECRET}
+      - STRIPE_API_KEY=${STRIPE_API_KEY}
+      - STRIPE_WEBHOOK_SECRET=${STRIPE_WEBHOOK_SECRET}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - SENTRY_DSN=${SENTRY_DSN}
+      - PYTHONPATH=/app
+      - PYTHONUNBUFFERED=1
+      - LOG_LEVEL=WARNING
+    volumes:
+      - ./data:/app/data
+      - ./backend/logs:/app/logs
+      - ./backend/uploads:/app/uploads
+    ports:
+      - "8000:8000"
+    networks:
+      - nexus_network
+    depends_on:
+      postgres:
+        condition: service_healthy
+      timescaledb:
+        condition: service_healthy
+      mongodb:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    command: gunicorn backend.main:app --workers 8 --worker-class uvicorn.workers.UvicornWorker --bind 0.0.0.0:8000 --timeout 60 --max-requests 1000 --max-requests-jitter 100
+    deploy:
+      resources:
+        limits:
+          cpus: '4'
+          memory: 8G
+        reservations:
+          cpus: '2'
+          memory: 4G
+      replicas: 3
+      update_config:
+        parallelism: 1
+        delay: 10s
+      rollback_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: any
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "5"
+
+  # ============================================
+  # FRONTEND - Next.js
+  # ============================================
+  frontend:
+    build:
+      context: .
+      dockerfile: infrastructure/docker/frontend/Dockerfile.prod
+    image: nexus-frontend:${NEXUS_VERSION:-latest}
+    container_name: nexus_frontend_prod
+    restart: always
+    environment:
+      - NODE_ENV=production
+      - NEXT_PUBLIC_APP_NAME=${APP_NAME}
+      - NEXT_PUBLIC_APP_URL=${APP_URL}
+      - NEXT_PUBLIC_API_URL=${API_URL}/api/v1
+      - NEXT_PUBLIC_WEBSOCKET_URL=${WS_URL}
+      - NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=${STRIPE_PUBLISHABLE_KEY}
+      - NEXT_PUBLIC_GA_TRACKING_ID=${GA_TRACKING_ID}
+      - NEXT_PUBLIC_SENTRY_DSN=${SENTRY_DSN}
+      - NEXT_PUBLIC_ENABLE_CHAT=true
+      - NEXT_PUBLIC_ENABLE_SOCIAL_AUTH=true
+    ports:
+      - "3000:3000"
+    networks:
+      - nexus_network
+    depends_on:
+      - backend
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 4G
+        reservations:
+          cpus: '1'
+          memory: 2G
+      replicas: 2
+      update_config:
+        parallelism: 1
+        delay: 10s
+      rollback_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: any
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "5"
+
+  # ============================================
+  # NGINX - Reverse Proxy & Load Balancer
+  # ============================================
+  nginx:
+    build:
+      context: .
+      dockerfile: infrastructure/docker/nginx/Dockerfile.prod
+    image: nexus-nginx:${NEXUS_VERSION:-latest}
+    container_name: nexus_nginx_prod
+    restart: always
+    volumes:
+      - ./infrastructure/docker/nginx/nginx.prod.conf:/etc/nginx/nginx.conf:ro
+      - ./infrastructure/docker/nginx/conf.d:/etc/nginx/conf.d:ro
+      - ./infrastructure/docker/nginx/sites-available:/etc/nginx/sites-available:ro
+      - ./infrastructure/docker/nginx/sites-enabled:/etc/nginx/sites-enabled:ro
+      - ./infrastructure/docker/nginx/ssl:/etc/nginx/ssl:ro
+      - ./infrastructure/docker/nginx/logs:/var/log/nginx
+      - nginx_cache:/var/cache/nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      - nexus_network
+    depends_on:
+      - backend
+      - frontend
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 1G
+        reservations:
+          cpus: '0.5'
+          memory: 512M
+      replicas: 1
+      update_config:
+        parallelism: 1
+        delay: 10s
+      rollback_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: any
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+    healthcheck:
+      test: ["CMD", "nginx", "-t"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "5"
+
+  # ============================================
+  # AI WORKER - Traitement IA
+  # ============================================
+  ai-worker:
+    build:
+      context: .
+      dockerfile: infrastructure/docker/ai/Dockerfile.prod
+    image: nexus-ai-worker:${NEXUS_VERSION:-latest}
+    container_name: nexus_ai_worker_prod
+    restart: always
+    environment:
+      - APP_ENV=production
+      - DATABASE_URL=postgresql://${DATABASE_USER:-nexus}:${DATABASE_PASSWORD}@postgres:5432/${DATABASE_NAME:-nexus_ai}
+      - REDIS_URL=redis://:${REDIS_PASSWORD}@redis:6379/0
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - HUGGINGFACE_API_KEY=${HUGGINGFACE_API_KEY}
+      - AI_MODEL_PATH=/app/data/models
+      - AI_USE_GPU=${AI_USE_GPU:-true}
+      - CUDA_VISIBLE_DEVICES=${CUDA_VISIBLE_DEVICES:-0}
+      - PYTHONPATH=/app
+      - PYTHONUNBUFFERED=1
+      - LOG_LEVEL=WARNING
+    volumes:
+      - ./data:/app/data
+      - ./backend/logs:/app/logs
+    networks:
+      - nexus_network
+    depends_on:
+      - postgres
+      - redis
+      - backend
+    command: celery -A ai.tasks worker --loglevel=WARNING --concurrency=4 --max-tasks-per-child=100
+    deploy:
+      resources:
+        limits:
+          cpus: '4'
+          memory: 8G
+        reservations:
+          cpus: '2'
+          memory: 4G
+      replicas: 2
+      update_config:
+        parallelism: 1
+        delay: 10s
+      rollback_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: any
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+    healthcheck:
+      test: ["CMD", "celery", "-A", "ai.tasks", "status"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "5"
+
+  # ============================================
+  # CELERY BEAT - Scheduler
+  # ============================================
+  celery-beat:
+    build:
+      context: .
+      dockerfile: infrastructure/docker/ai/Dockerfile.prod
+    image: nexus-celery-beat:${NEXUS_VERSION:-latest}
+    container_name: nexus_celery_beat_prod
+    restart: always
+    environment:
+      - APP_ENV=production
+      - DATABASE_URL=postgresql://${DATABASE_USER:-nexus}:${DATABASE_PASSWORD}@postgres:5432/${DATABASE_NAME:-nexus_ai}
+      - REDIS_URL=redis://:${REDIS_PASSWORD}@redis:6379/0
+      - PYTHONPATH=/app
+      - PYTHONUNBUFFERED=1
+      - LOG_LEVEL=WARNING
+    volumes:
+      - ./data:/app/data
+      - ./backend/logs:/app/logs
+    networks:
+      - nexus_network
+    depends_on:
+      - postgres
+      - redis
+      - backend
+    command: celery -A ai.tasks beat --loglevel=WARNING
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 256M
+      replicas: 1
+      update_config:
+        parallelism: 1
+        delay: 10s
+      rollback_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: any
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "5"
+
+  # ============================================
+  # PROMETHEUS - Monitoring
+  # ============================================
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: nexus_prometheus_prod
+    restart: always
+    volumes:
+      - ./configs/monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./configs/monitoring/prometheus/alerts:/etc/prometheus/alerts:ro
+      - prometheus_data:/prometheus
+    ports:
+      - "9090:9090"
+    networks:
+      - nexus_network
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--storage.tsdb.retention.time=30d'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles'
+      - '--web.enable-lifecycle'
+      - '--web.enable-admin-api'
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 2G
+        reservations:
+          cpus: '0.5'
+          memory: 1G
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:9090/-/healthy"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "5"
+
+  # ============================================
+  # GRAFANA - Dashboards
+  # ============================================
+  grafana:
+    image: grafana/grafana:latest
+    container_name: nexus_grafana_prod
+    restart: always
+    environment:
+      - GF_SECURITY_ADMIN_USER=${GRAFANA_ADMIN_USER:-admin}
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD:-change_this_strong_password_production}
+      - GF_INSTALL_PLUGINS=grafana-piechart-panel,grafana-clock-panel,grafana-simple-json-datasource
+      - GF_AUTH_ANONYMOUS_ENABLED=false
+      - GF_AUTH_BASIC_ENABLED=true
+      - GF_SERVER_ROOT_URL=${GRAFANA_URL:-https://monitoring.nexustradingia.com}
+      - GF_SERVER_DOMAIN=monitoring.nexustradingia.com
+      - GF_SERVER_ENFORCE_DOMAIN=true
+      - GF_SERVER_ENABLE_GZIP=true
+    volumes:
+      - ./configs/monitoring/grafana/datasources:/etc/grafana/provisioning/datasources:ro
+      - ./configs/monitoring/grafana/dashboards:/etc/grafana/provisioning/dashboards:ro
+      - grafana_data:/var/lib/grafana
+    ports:
+      - "3001:3000"
+    networks:
+      - nexus_network
+    depends_on:
+      - prometheus
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 2G
+        reservations:
+          cpus: '0.5'
+          memory: 1G
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "5"
+
+  # ============================================
+  # LOKI - Log Aggregation
+  # ============================================
+  loki:
+    image: grafana/loki:latest
+    container_name: nexus_loki_prod
+    restart: always
+    volumes:
+      - ./configs/monitoring/loki/loki-config.yaml:/etc/loki/loki-config.yaml:ro
+      - loki_data:/loki
+    ports:
+      - "3100:3100"
+    networks:
+      - nexus_network
+    command: -config.file=/etc/loki/loki-config.yaml -target=all
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 2G
+        reservations:
+          cpus: '0.5'
+          memory: 1G
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:3100/ready"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "5"
+
+  # ============================================
+  # PROMTAIL - Log Collector
+  # ============================================
+  promtail:
+    image: grafana/promtail:latest
+    container_name: nexus_promtail_prod
+    restart: always
+    volumes:
+      - ./configs/monitoring/promtail/promtail-config.yaml:/etc/promtail/promtail-config.yaml:ro
+      - /var/log:/var/log:ro
+      - ./backend/logs:/app/logs:ro
+    ports:
+      - "9080:9080"
+    networks:
+      - nexus_network
+    command: -config.file=/etc/promtail/promtail-config.yaml
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 256M
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:9080/ready"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "5"
+
+  # ============================================
+  # TEMPO - Distributed Tracing
+  # ============================================
+  tempo:
+    image: grafana/tempo:latest
+    container_name: nexus_tempo_prod
+    restart: always
+    volumes:
+      - ./configs/monitoring/tempo/tempo-config.yaml:/etc/tempo/tempo-config.yaml:ro
+      - tempo_data:/tempo
+    ports:
+      - "3200:3200"
+      - "4317:4317"
+      - "4318:4318"
+    networks:
+      - nexus_network
+    command: -config.file=/etc/tempo/tempo-config.yaml -target=all
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 2G
+        reservations:
+          cpus: '0.5'
+          memory: 1G
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:3200/ready"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "5"
+
+  # ============================================
+  # ALERTMANAGER - Alerting
+  # ============================================
+  alertmanager:
+    image: prom/alertmanager:latest
+    container_name: nexus_alertmanager_prod
+    restart: always
+    volumes:
+      - ./configs/monitoring/alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.yml:ro
+      - alertmanager_data:/alertmanager
+    ports:
+      - "9093:9093"
+    networks:
+      - nexus_network
+    command:
+      - '--config.file=/etc/alertmanager/alertmanager.yml'
+      - '--storage.path=/alertmanager'
+      - '--web.listen-address=:9093'
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 256M
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:9093/-/healthy"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "5"
+
+# ============================================
+# VOLUMES
+# ============================================
+volumes:
+  postgres_data:
+    driver: local
+  timescaledb_data:
+    driver: local
+  mongodb_data:
+    driver: local
+  redis_data:
+    driver: local
+  prometheus_data:
+    driver: local
+  grafana_data:
+    driver: local
+  loki_data:
+    driver: local
+  tempo_data:
+    driver: local
+  alertmanager_data:
+    driver: local
+  nginx_cache:
+    driver: local
+
+# ============================================
+# NETWORKS
+# ============================================
+networks:
+  nexus_network:
+    driver: bridge
+    name: nexus_network_prod
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
