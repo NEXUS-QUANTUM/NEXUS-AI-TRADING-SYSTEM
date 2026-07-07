@@ -4,7 +4,7 @@
  * 
  * This page handles Know Your Customer (KYC) verification including:
  * - Personal information verification
- - Identity document upload and verification
+ * - Identity document upload and verification
  * - Address proof verification
  * - Face verification / Liveness detection
  * - KYC status tracking
@@ -852,6 +852,81 @@ export default function KYCPage() {
                         </Select>
                       </div>
                     </div>
+                    <div>
+                      <label className="block text-xs text-gray-500">Address</label>
+                      <Textarea
+                        value={userInfo.address}
+                        onChange={(e) => handleUserInfoChange('address', e.target.value)}
+                        className="w-full bg-gray-700 border-gray-600 text-white resize-none"
+                        rows={2}
+                        disabled={kycStatus?.status === 'pending' || kycStatus?.status === 'verified'}
+                      />
+                    </div>
+                    <div className="grid grid-cols-3 gap-4">
+                      <div>
+                        <label className="block text-xs text-gray-500">City</label>
+                        <Input
+                          value={userInfo.city}
+                          onChange={(e) => handleUserInfoChange('city', e.target.value)}
+                          className="w-full bg-gray-700 border-gray-600 text-white"
+                          disabled={kycStatus?.status === 'pending' || kycStatus?.status === 'verified'}
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs text-gray-500">State</label>
+                        <Input
+                          value={userInfo.state}
+                          onChange={(e) => handleUserInfoChange('state', e.target.value)}
+                          className="w-full bg-gray-700 border-gray-600 text-white"
+                          disabled={kycStatus?.status === 'pending' || kycStatus?.status === 'verified'}
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs text-gray-500">Postal Code</label>
+                        <Input
+                          value={userInfo.postalCode}
+                          onChange={(e) => handleUserInfoChange('postalCode', e.target.value)}
+                          className="w-full bg-gray-700 border-gray-600 text-white"
+                          disabled={kycStatus?.status === 'pending' || kycStatus?.status === 'verified'}
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <label className="block text-xs text-gray-500">Occupation</label>
+                      <Input
+                        value={userInfo.occupation}
+                        onChange={(e) => handleUserInfoChange('occupation', e.target.value)}
+                        className="w-full bg-gray-700 border-gray-600 text-white"
+                        disabled={kycStatus?.status === 'pending' || kycStatus?.status === 'verified'}
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs text-gray-500">Source of Funds</label>
+                      <Select
+                        value={userInfo.sourceOfFunds}
+                        onValueChange={(value) => handleUserInfoChange('sourceOfFunds', value)}
+                        className="w-full bg-gray-700 border-gray-600"
+                        disabled={kycStatus?.status === 'pending' || kycStatus?.status === 'verified'}
+                      >
+                        <option value="">Select source...</option>
+                        <option value="employment">Employment</option>
+                        <option value="business">Business</option>
+                        <option value="investments">Investments</option>
+                        <option value="inheritance">Inheritance</option>
+                        <option value="savings">Savings</option>
+                        <option value="other">Other</option>
+                      </Select>
+                    </div>
+                    <div>
+                      <label className="block text-xs text-gray-500">Tax ID (optional)</label>
+                      <Input
+                        value={userInfo.taxId}
+                        onChange={(e) => handleUserInfoChange('taxId', e.target.value)}
+                        className="w-full bg-gray-700 border-gray-600 text-white"
+                        disabled={kycStatus?.status === 'pending' || kycStatus?.status === 'verified'}
+                      />
+                    </div>
+
                     {(kycStatus?.status !== 'pending' && kycStatus?.status !== 'verified') && (
                       <Button
                         onClick={handleSubmitUserInfo}
@@ -921,6 +996,34 @@ export default function KYCPage() {
                       </div>
                     </div>
                   )}
+
+                  {/* Next Level Info */}
+                  {kycLevel?.nextLevel && (
+                    <div className="p-3 bg-cyan-500/10 border border-cyan-500/30 rounded-lg">
+                      <h4 className="text-sm font-medium text-cyan-400 mb-2">Next Level: {kycLevel.nextLevel.name}</h4>
+                      <div className="space-y-1 text-sm">
+                        <div className="flex justify-between">
+                          <span className="text-gray-400">Daily Trading Limit</span>
+                          <span className="text-white">{formatCurrency(kycLevel.nextLevel.limits.dailyTrading || 0)}</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-gray-400">Monthly Trading Limit</span>
+                          <span className="text-white">{formatCurrency(kycLevel.nextLevel.limits.monthlyTrading || 0)}</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-gray-400">Withdrawal Limit</span>
+                          <span className="text-white">{formatCurrency(kycLevel.nextLevel.limits.withdrawal || 0)}</span>
+                        </div>
+                      </div>
+                      <div className="mt-3">
+                        <div className="flex justify-between text-xs mb-1">
+                          <span className="text-gray-400">Progress to {kycLevel.nextLevel.name}</span>
+                          <span className="text-cyan-400">{Math.round(kycProgress)}%</span>
+                        </div>
+                        <Progress value={kycProgress} className="h-1.5" />
+                      </div>
+                    </div>
+                  )}
                 </div>
               </Card>
             </div>
@@ -929,10 +1032,439 @@ export default function KYCPage() {
 
         {/* ========================================== */}
         {/* DOCUMENTS TAB */}
-        // ... (continued)
-        // This is getting very long. The complete file continues with the Documents tab, History tab, Requirements tab, and modals.
-        // Let me know if you want me to continue with the full implementation.
+        {/* ========================================== */}
+        <TabsContent value="documents" className="mt-4">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-sm font-semibold text-gray-300">Uploaded Documents</h3>
+            <Button
+              onClick={() => setShowDocumentModal(true)}
+              className="bg-gradient-to-r from-cyan-500 to-blue-500"
+              disabled={kycStatus?.status === 'pending' || kycStatus?.status === 'verified'}
+            >
+              <Upload className="w-4 h-4 mr-2" />
+              Upload Document
+            </Button>
+          </div>
+
+          {documentsLoading ? (
+            <div className="text-center py-8">
+              <Spinner size="lg" className="mx-auto text-cyan-500" />
+              <p className="text-gray-400 mt-4">Loading documents...</p>
+            </div>
+          ) : documents.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {documents.map((doc) => {
+                const statusBadge = getDocumentStatusBadge(doc.status);
+                return (
+                  <Card key={doc.id} className="p-4 bg-gray-800 border-gray-700">
+                    <div className="flex items-start justify-between">
+                      <div className="flex items-center gap-3">
+                        {doc.type === 'id' && <IdCard className="w-8 h-8 text-cyan-500" />}
+                        {doc.type === 'passport' && <Passport className="w-8 h-8 text-blue-500" />}
+                        {doc.type === 'address' && <Home className="w-8 h-8 text-green-500" />}
+                        {doc.type === 'selfie' && <Camera className="w-8 h-8 text-purple-500" />}
+                        <div>
+                          <div className="text-sm font-medium text-white">
+                            {KYC_DOCUMENT_TYPES.find(d => d.id === doc.type)?.label || doc.type}
+                          </div>
+                          <div className="text-xs text-gray-500">{doc.fileName}</div>
+                        </div>
+                      </div>
+                      <Badge className={cn("text-xs", statusBadge.color)}>
+                        {statusBadge.label}
+                      </Badge>
+                    </div>
+                    <div className="flex items-center gap-4 mt-3 text-xs text-gray-500">
+                      <span>Uploaded: {formatDate(doc.uploadedAt)}</span>
+                      {doc.expiryDate && (
+                        <span className={cn(
+                          doc.isExpired ? 'text-red-500' : 'text-gray-400'
+                        )}>
+                          Expires: {formatDate(doc.expiryDate)}
+                          {doc.isExpired && ' (Expired)'}
+                        </span>
+                      )}
+                    </div>
+                    <div className="flex items-center gap-2 mt-3">
+                      {doc.previewUrl && (
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => window.open(doc.previewUrl, '_blank')}
+                          className="text-cyan-400 hover:text-cyan-300"
+                        >
+                          <Eye className="w-4 h-4 mr-1" />
+                          Preview
+                        </Button>
+                      )}
+                      {doc.status === 'rejected' && doc.rejectionReason && (
+                        <span className="text-xs text-red-500 ml-auto">
+                          Rejected: {doc.rejectionReason}
+                        </span>
+                      )}
+                      {(kycStatus?.status !== 'pending' && kycStatus?.status !== 'verified') && (
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleDeleteDocument(doc.id)}
+                          className="text-red-400 hover:text-red-300 ml-auto"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
+                      )}
+                    </div>
+                  </Card>
+                );
+              })}
+            </div>
+          ) : (
+            <div className="text-center py-12 text-gray-500">
+              <FileText className="w-16 h-16 mx-auto mb-4 text-gray-600" />
+              <p className="text-lg font-medium">No documents uploaded</p>
+              <p className="text-sm">Upload your identity documents to start verification</p>
+              <Button
+                onClick={() => setShowDocumentModal(true)}
+                className="mt-4 bg-gradient-to-r from-cyan-500 to-blue-500"
+              >
+                <Upload className="w-4 h-4 mr-2" />
+                Upload First Document
+              </Button>
+            </div>
+          )}
+        </TabsContent>
+
+        {/* ========================================== */}
+        {/* HISTORY TAB */}
+        {/* ========================================== */}
+        <TabsContent value="history" className="mt-4">
+          {verificationLoading ? (
+            <div className="text-center py-8">
+              <Spinner size="lg" className="mx-auto text-cyan-500" />
+              <p className="text-gray-400 mt-4">Loading history...</p>
+            </div>
+          ) : verificationHistory.length > 0 ? (
+            <div className="space-y-4">
+              {verificationHistory.map((verification) => (
+                <Card key={verification.id} className="p-4 bg-gray-800 border-gray-700">
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <div className="flex items-center gap-2">
+                        {verification.status === 'approved' && <CheckCircle className="w-5 h-5 text-green-500" />}
+                        {verification.status === 'rejected' && <XCircle className="w-5 h-5 text-red-500" />}
+                        {verification.status === 'pending' && <Clock className="w-5 h-5 text-yellow-500" />}
+                        <span className="font-medium text-white">Verification #{verification.id.slice(0, 8)}</span>
+                      </div>
+                      <div className="text-sm text-gray-400 mt-1">
+                        Submitted: {formatDate(verification.submittedAt)}
+                      </div>
+                      {verification.completedAt && (
+                        <div className="text-sm text-gray-400">
+                          Completed: {formatDate(verification.completedAt)}
+                        </div>
+                      )}
+                    </div>
+                    <Badge className={cn(
+                      "text-xs",
+                      verification.status === 'approved' ? 'bg-green-500/20 text-green-500' :
+                      verification.status === 'rejected' ? 'bg-red-500/20 text-red-500' :
+                      'bg-yellow-500/20 text-yellow-500'
+                    )}>
+                      {verification.status.toUpperCase()}
+                    </Badge>
+                  </div>
+                  {verification.reviewerComments && (
+                    <div className="mt-2 p-2 bg-gray-700/30 rounded text-sm text-gray-300">
+                      {verification.reviewerComments}
+                    </div>
+                  )}
+                  {verification.documents && verification.documents.length > 0 && (
+                    <div className="mt-2 flex flex-wrap gap-2">
+                      {verification.documents.map((docId) => (
+                        <Badge key={docId} className="bg-gray-600 text-xs">
+                          Document #{docId.slice(0, 6)}
+                        </Badge>
+                      ))}
+                    </div>
+                  )}
+                </Card>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-12 text-gray-500">
+              <Clock className="w-16 h-16 mx-auto mb-4 text-gray-600" />
+              <p className="text-lg font-medium">No verification history</p>
+              <p className="text-sm">Your verification attempts will appear here</p>
+            </div>
+          )}
+        </TabsContent>
+
+        {/* ========================================== */}
+        {/* REQUIREMENTS TAB */}
+        {/* ========================================== */}
+        <TabsContent value="requirements" className="mt-4">
+          <Card className="p-4 bg-gray-800 border-gray-700">
+            <h3 className="text-sm font-semibold text-gray-300 mb-4">KYC Requirements</h3>
+            <div className="space-y-4">
+              {documentTypes.map((req) => (
+                <div key={req.id} className="flex items-center justify-between p-3 bg-gray-700/30 rounded-lg">
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-white font-medium">{req.label}</span>
+                      {req.required && (
+                        <Badge className="bg-red-500/20 text-red-500 text-xs">Required</Badge>
+                      )}
+                      {documents.some(d => d.type === req.id && d.status === 'approved') && (
+                        <CheckCircle className="w-4 h-4 text-green-500" />
+                      )}
+                    </div>
+                    <div className="text-sm text-gray-400 mt-1">{req.description}</div>
+                  </div>
+                  <div className="text-right">
+                    {documents.some(d => d.type === req.id && d.status === 'approved') ? (
+                      <span className="text-green-500 text-sm">✓ Verified</span>
+                    ) : documents.some(d => d.type === req.id && d.status === 'pending') ? (
+                      <span className="text-yellow-500 text-sm">⏳ Pending</span>
+                    ) : documents.some(d => d.type === req.id && d.status === 'rejected') ? (
+                      <span className="text-red-500 text-sm">✗ Rejected</span>
+                    ) : (
+                      <span className="text-gray-500 text-sm">Not uploaded</span>
+                    )}
+                  </div>
+                </div>
+              ))}
+              {documentTypes.length === 0 && (
+                <div className="text-center py-8 text-gray-500">
+                  <p>No requirements defined</p>
+                  <p className="text-sm">Check back later for KYC requirements</p>
+                </div>
+              )}
+            </div>
+          </Card>
+        </TabsContent>
       </Tabs>
+
+      {/* ============================================ */}
+      {/* UPLOAD DOCUMENT MODAL */}
+      {/* ============================================ */}
+      <Modal
+        open={showDocumentModal}
+        onOpenChange={setShowDocumentModal}
+        title="Upload Document"
+        className="max-w-md"
+      >
+        <div className="space-y-4">
+          <div>
+            <label className="block text-sm text-gray-400 mb-1">Document Type *</label>
+            <Select
+              value={selectedDocumentType?.id || ''}
+              onValueChange={(value) => {
+                const type = KYC_DOCUMENT_TYPES.find(d => d.id === value);
+                setSelectedDocumentType(type || null);
+              }}
+              className="w-full bg-gray-700 border-gray-600"
+            >
+              <option value="">Select type...</option>
+              {KYC_DOCUMENT_TYPES.map((type) => (
+                <option key={type.id} value={type.id}>
+                  {type.label}
+                </option>
+              ))}
+            </Select>
+          </div>
+
+          <div>
+            <label className="block text-sm text-gray-400 mb-1">Upload File *</label>
+            <div className="border-2 border-dashed border-gray-600 rounded-lg p-6 text-center hover:border-cyan-500 transition-colors cursor-pointer" onClick={() => fileInputRef.current?.click()}>
+              {documentPreview ? (
+                <div className="space-y-2">
+                  <img src={documentPreview} alt="Preview" className="max-h-48 mx-auto rounded" />
+                  <p className="text-sm text-gray-400">{selectedFile?.name}</p>
+                  <p className="text-xs text-gray-500">Click to change file</p>
+                </div>
+              ) : (
+                <div className="space-y-2">
+                  <Upload className="w-12 h-12 mx-auto text-gray-500" />
+                  <p className="text-sm text-gray-400">Click to upload or drag and drop</p>
+                  <p className="text-xs text-gray-500">
+                    Allowed: {ALLOWED_FILE_TYPES.join(', ')} • Max: {MAX_FILE_SIZE / 1024 / 1024}MB
+                  </p>
+                </div>
+              )}
+              <input
+                ref={fileInputRef}
+                type="file"
+                className="hidden"
+                onChange={handleFileSelect}
+                accept={ALLOWED_FILE_TYPES.join(',')}
+              />
+            </div>
+          </div>
+
+          {uploadingDocument && (
+            <div>
+              <div className="flex justify-between text-sm mb-1">
+                <span className="text-gray-400">Uploading...</span>
+                <span className="text-cyan-400">{uploadProgress}%</span>
+              </div>
+              <Progress value={uploadProgress} className="h-2" />
+            </div>
+          )}
+
+          <div className="flex items-center gap-2 text-xs text-gray-500">
+            <Info className="w-4 h-4" />
+            <span>Your document will be encrypted and securely stored.</span>
+          </div>
+
+          <div className="flex justify-end gap-3">
+            <Button
+              variant="outline"
+              onClick={() => {
+                setShowDocumentModal(false);
+                setSelectedFile(null);
+                setDocumentPreview(null);
+                setSelectedDocumentType(null);
+              }}
+              className="border-gray-600 hover:border-gray-500"
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={handleUploadDocument}
+              isLoading={uploadingDocument}
+              disabled={!selectedFile || !selectedDocumentType}
+              className="bg-gradient-to-r from-cyan-500 to-blue-500"
+            >
+              {uploadingDocument ? 'Uploading...' : 'Upload Document'}
+            </Button>
+          </div>
+        </div>
+      </Modal>
+
+      {/* ============================================ */}
+      {/* CONFIRM VERIFICATION MODAL */}
+      {/* ============================================ */}
+      <Modal
+        open={showConfirmModal}
+        onOpenChange={setShowConfirmModal}
+        title="Submit for Verification"
+        className="max-w-md"
+      >
+        <div className="space-y-4">
+          <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-4">
+            <div className="flex items-start gap-3">
+              <AlertCircle className="w-5 h-5 text-yellow-500 mt-0.5 flex-shrink-0" />
+              <div>
+                <p className="text-sm text-yellow-500 font-medium">Please review your documents</p>
+                <p className="text-xs text-gray-400 mt-1">
+                  Make sure all documents are clear, legible, and meet the requirements before submitting.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="space-y-2 text-sm">
+            <div className="flex justify-between">
+              <span className="text-gray-400">Documents Uploaded</span>
+              <span className="text-white">{documents.length}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-gray-400">Required Documents</span>
+              <span className="text-white">{documentTypes.filter(d => d.required).length}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-gray-400">Documents Pending</span>
+              <span className="text-yellow-500">{documents.filter(d => d.status === 'pending').length}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-gray-400">Documents Approved</span>
+              <span className="text-green-500">{documents.filter(d => d.status === 'approved').length}</span>
+            </div>
+          </div>
+
+          {!hasAllRequiredDocuments() && (
+            <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-3">
+              <p className="text-sm text-red-500 flex items-center gap-2">
+                <AlertCircle className="w-4 h-4" />
+                You haven't uploaded all required documents
+              </p>
+            </div>
+          )}
+
+          <div className="flex justify-end gap-3">
+            <Button
+              variant="outline"
+              onClick={() => setShowConfirmModal(false)}
+              className="border-gray-600 hover:border-gray-500"
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={handleConfirmVerification}
+              isLoading={isResubmitting}
+              disabled={!hasAllRequiredDocuments()}
+              className="bg-gradient-to-r from-cyan-500 to-blue-500"
+            >
+              {isResubmitting ? 'Submitting...' : 'Submit for Verification'}
+            </Button>
+          </div>
+        </div>
+      </Modal>
+
+      {/* ============================================ */}
+      {/* REJECT REASON MODAL */}
+      {/* ============================================ */}
+      <Modal
+        open={showRejectReasonModal}
+        onOpenChange={setShowRejectReasonModal}
+        title="Reject Verification"
+        className="max-w-md"
+      >
+        <div className="space-y-4">
+          <div>
+            <label className="block text-sm text-gray-400 mb-1">Reason for Rejection *</label>
+            <Textarea
+              value={rejectReason}
+              onChange={(e) => setRejectReason(e.target.value)}
+              placeholder="Provide a detailed reason for rejection..."
+              className="w-full bg-gray-700 border-gray-600 text-white resize-none"
+              rows={4}
+            />
+          </div>
+          <div className="flex justify-end gap-3">
+            <Button
+              variant="outline"
+              onClick={() => {
+                setShowRejectReasonModal(false);
+                setRejectReason('');
+              }}
+              className="border-gray-600 hover:border-gray-500"
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={handleRejectReasonSubmit}
+              className="bg-red-600 hover:bg-red-700"
+            >
+              Reject Verification
+            </Button>
+          </div>
+        </div>
+      </Modal>
+
+      {/* ============================================ */}
+      {/* TOAST NOTIFICATIONS */}
+      {/* ============================================ */}
+      <AnimatePresence>
+        {showToast && (
+          <Toast
+            message={showToast.message}
+            type={showToast.type}
+            onClose={() => setShowToast(null)}
+            className="fixed bottom-4 right-4 z-50 max-w-md"
+            duration={5000}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 }
