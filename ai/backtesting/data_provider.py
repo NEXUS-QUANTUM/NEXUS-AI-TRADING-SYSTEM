@@ -1,7 +1,7 @@
 """
 NEXUS AI TRADING SYSTEM - Data Provider
 Copyright © 2026 NEXUS QUANTUM LTD
-CEO: Dr X... - Majority Shareholder
+CEO: Dr X... - Majority Shareholder 
 
 Version: 3.0.0
 Status: Production Ready
