@@ -2,7 +2,7 @@
 NEXUS AI TRADING SYSTEM - Walk-Forward Analysis
 Copyright © 2026 NEXUS QUANTUM LTD
 CEO: Dr X... - Majority Shareholder
-
+ 
 Version: 3.0.0
 Status: Production Ready
 
