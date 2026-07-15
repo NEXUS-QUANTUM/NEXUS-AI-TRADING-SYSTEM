@@ -1,4 +1,3 @@
-
 # ai/reinforcement/rewards/base_reward.py
 """
 NEXUS AI TRADING SYSTEM - Base Reward Functions
