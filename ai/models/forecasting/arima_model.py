@@ -1,4 +1,3 @@
-```python
 # ai/models/forecasting/arima_model.py
 """
 NEXUS AI TRADING SYSTEM - ARIMA Model for Time Series Forecasting
