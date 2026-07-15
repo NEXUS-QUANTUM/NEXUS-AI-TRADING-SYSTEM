@@ -1,4 +1,4 @@
-```python
+
 # ai/neural/optimizers/lookahead.py
 """
 NEXUS AI TRADING SYSTEM - Lookahead Optimizer
