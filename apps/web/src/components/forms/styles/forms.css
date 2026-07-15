@@ -1,0 +1,1043 @@
+/* apps/web/src/components/forms/styles/forms.css */
+
+/* ============================================================================
+ * VARIABLES CSS - FORMULAIRES
+ * ============================================================================ */
+
+:root {
+  /* --- Espacements --- */
+  --form-spacing-xs: 0.25rem;
+  --form-spacing-sm: 0.5rem;
+  --form-spacing-md: 1rem;
+  --form-spacing-lg: 1.5rem;
+  --form-spacing-xl: 2rem;
+
+  /* --- Tailles --- */
+  --form-input-height-xs: 1.75rem;
+  --form-input-height-sm: 2rem;
+  --form-input-height-md: 2.5rem;
+  --form-input-height-lg: 3rem;
+  --form-input-height-xl: 3.5rem;
+
+  /* --- Bordures --- */
+  --form-border-radius-sm: 0.25rem;
+  --form-border-radius-md: 0.375rem;
+  --form-border-radius-lg: 0.5rem;
+  --form-border-radius-xl: 0.75rem;
+  --form-border-radius-2xl: 1rem;
+
+  /* --- Transitions --- */
+  --form-transition-duration: 0.2s;
+  --form-transition-timing: ease-in-out;
+
+  /* --- Ombres --- */
+  --form-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --form-shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
+  --form-shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+  --form-shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.15);
+
+  /* --- Couleurs (mode clair) --- */
+  --form-bg: #ffffff;
+  --form-bg-hover: #f9fafb;
+  --form-bg-focus: #ffffff;
+  --form-bg-disabled: #f3f4f6;
+  --form-text: #111827;
+  --form-text-secondary: #6b7280;
+  --form-text-placeholder: #9ca3af;
+  --form-text-disabled: #9ca3af;
+  --form-border: #d1d5db;
+  --form-border-hover: #9ca3af;
+  --form-border-focus: #6366f1;
+  --form-border-error: #ef4444;
+  --form-border-success: #22c55e;
+  --form-border-warning: #eab308;
+  --form-ring-focus: rgba(99, 102, 241, 0.3);
+  --form-ring-error: rgba(239, 68, 68, 0.3);
+  --form-ring-success: rgba(34, 197, 94, 0.3);
+  --form-ring-warning: rgba(234, 179, 8, 0.3);
+}
+
+/* Mode sombre */
+.dark {
+  --form-bg: #111827;
+  --form-bg-hover: #1f2937;
+  --form-bg-focus: #111827;
+  --form-bg-disabled: #374151;
+  --form-text: #f9fafb;
+  --form-text-secondary: #9ca3af;
+  --form-text-placeholder: #6b7280;
+  --form-text-disabled: #6b7280;
+  --form-border: #4b5563;
+  --form-border-hover: #6b7280;
+  --form-border-focus: #818cf8;
+  --form-ring-focus: rgba(99, 102, 241, 0.4);
+}
+
+/* ============================================================================
+ * RESET - FORMULAIRES
+ * ============================================================================ */
+
+/* Réinitialisation des styles par défaut */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="tel"],
+input[type="url"],
+input[type="search"],
+input[type="date"],
+input[type="time"],
+input[type="datetime-local"],
+input[type="month"],
+input[type="week"],
+input[type="color"],
+textarea,
+select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+/* Suppression des flèches des inputs number */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+/* Suppression de la croix de recherche */
+input[type="search"]::-webkit-search-decoration,
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-results-button,
+input[type="search"]::-webkit-search-results-decoration {
+  -webkit-appearance: none;
+}
+
+/* ============================================================================
+ * CONTAINERS
+ * ============================================================================ */
+
+/* Container principal de formulaire */
+.form-container {
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.form-container-sm {
+  max-width: 32rem;
+}
+
+.form-container-md {
+  max-width: 48rem;
+}
+
+.form-container-lg {
+  max-width: 64rem;
+}
+
+.form-container-xl {
+  max-width: 80rem;
+}
+
+.form-container-full {
+  max-width: 100%;
+}
+
+/* ============================================================================
+ * FORMULAIRES DE BASE
+ * ============================================================================ */
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--form-spacing-md);
+  width: 100%;
+}
+
+.form-horizontal {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: var(--form-spacing-md);
+}
+
+.form-inline {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--form-spacing-sm);
+}
+
+.form-grid {
+  display: grid;
+  gap: var(--form-spacing-md);
+}
+
+.form-grid-cols-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.form-grid-cols-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.form-grid-cols-4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+/* ============================================================================
+ * CHAMPS DE FORMULAIRE
+ * ============================================================================ */
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--form-spacing-xs);
+  width: 100%;
+}
+
+.form-group-horizontal {
+  display: flex;
+  align-items: center;
+  gap: var(--form-spacing-md);
+}
+
+.form-group-horizontal .form-label {
+  flex-shrink: 0;
+  min-width: 8rem;
+  padding-top: var(--form-spacing-xs);
+}
+
+.form-group-inline {
+  display: flex;
+  align-items: center;
+  gap: var(--form-spacing-sm);
+}
+
+/* ============================================================================
+ * LABELS
+ * ============================================================================ */
+
+.form-label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--form-text);
+  transition: color var(--form-transition-duration) var(--form-transition-timing);
+}
+
+.form-label-required::after {
+  content: '*';
+  margin-left: var(--form-spacing-xs);
+  color: #ef4444;
+}
+
+.form-label-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ============================================================================
+ * INPUTS
+ * ============================================================================ */
+
+.form-input {
+  display: block;
+  width: 100%;
+  height: var(--form-input-height-md);
+  padding: 0 var(--form-spacing-md);
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: var(--form-text);
+  background-color: var(--form-bg);
+  border: 1px solid var(--form-border);
+  border-radius: var(--form-border-radius-md);
+  transition: all var(--form-transition-duration) var(--form-transition-timing);
+  outline: none;
+}
+
+.form-input::placeholder {
+  color: var(--form-text-placeholder);
+}
+
+.form-input:hover:not(:disabled):not(.form-input-disabled) {
+  border-color: var(--form-border-hover);
+}
+
+.form-input:focus {
+  border-color: var(--form-border-focus);
+  box-shadow: 0 0 0 3px var(--form-ring-focus);
+}
+
+.form-input:disabled,
+.form-input-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background-color: var(--form-bg-disabled);
+}
+
+/* Tailles */
+.form-input-xs {
+  height: var(--form-input-height-xs);
+  padding: 0 var(--form-spacing-sm);
+  font-size: 0.75rem;
+  border-radius: var(--form-border-radius-sm);
+}
+
+.form-input-sm {
+  height: var(--form-input-height-sm);
+  padding: 0 var(--form-spacing-sm);
+  font-size: 0.8125rem;
+}
+
+.form-input-md {
+  height: var(--form-input-height-md);
+  padding: 0 var(--form-spacing-md);
+  font-size: 0.875rem;
+}
+
+.form-input-lg {
+  height: var(--form-input-height-lg);
+  padding: 0 var(--form-spacing-lg);
+  font-size: 1rem;
+}
+
+.form-input-xl {
+  height: var(--form-input-height-xl);
+  padding: 0 var(--form-spacing-xl);
+  font-size: 1.125rem;
+}
+
+/* Statuts */
+.form-input-success {
+  border-color: var(--form-border-success);
+}
+.form-input-success:focus {
+  border-color: var(--form-border-success);
+  box-shadow: 0 0 0 3px var(--form-ring-success);
+}
+
+.form-input-error {
+  border-color: var(--form-border-error);
+}
+.form-input-error:focus {
+  border-color: var(--form-border-error);
+  box-shadow: 0 0 0 3px var(--form-ring-error);
+}
+
+.form-input-warning {
+  border-color: var(--form-border-warning);
+}
+.form-input-warning:focus {
+  border-color: var(--form-border-warning);
+  box-shadow: 0 0 0 3px var(--form-ring-warning);
+}
+
+/* Variantes */
+.form-input-outlined {
+  background-color: transparent;
+  border-width: 2px;
+}
+
+.form-input-solid {
+  background-color: var(--form-bg-hover);
+  border-color: transparent;
+}
+
+.form-input-solid:focus {
+  background-color: var(--form-bg-focus);
+  border-color: var(--form-border-focus);
+}
+
+.form-input-ghost {
+  background-color: transparent;
+  border-color: transparent;
+}
+
+.form-input-ghost:hover:not(:disabled):not(.form-input-disabled) {
+  background-color: var(--form-bg-hover);
+}
+
+.form-input-minimal {
+  border-radius: 0;
+  border-width: 0 0 2px 0;
+}
+
+.form-input-pill {
+  border-radius: 9999px;
+}
+
+/* ============================================================================
+ * TEXTAREA
+ * ============================================================================ */
+
+.form-textarea {
+  display: block;
+  width: 100%;
+  min-height: 6rem;
+  padding: var(--form-spacing-md);
+  font-size: 0.875rem;
+  line-height: 1.5rem;
+  color: var(--form-text);
+  background-color: var(--form-bg);
+  border: 1px solid var(--form-border);
+  border-radius: var(--form-border-radius-md);
+  transition: all var(--form-transition-duration) var(--form-transition-timing);
+  outline: none;
+  resize: vertical;
+}
+
+.form-textarea::placeholder {
+  color: var(--form-text-placeholder);
+}
+
+.form-textarea:hover:not(:disabled):not(.form-textarea-disabled) {
+  border-color: var(--form-border-hover);
+}
+
+.form-textarea:focus {
+  border-color: var(--form-border-focus);
+  box-shadow: 0 0 0 3px var(--form-ring-focus);
+}
+
+.form-textarea:disabled,
+.form-textarea-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background-color: var(--form-bg-disabled);
+}
+
+.form-textarea-resize-none {
+  resize: none;
+}
+.form-textarea-resize-horizontal {
+  resize: horizontal;
+}
+.form-textarea-resize-vertical {
+  resize: vertical;
+}
+.form-textarea-resize-both {
+  resize: both;
+}
+.form-textarea-resize-auto {
+  resize: vertical;
+  overflow: hidden;
+}
+
+/* ============================================================================
+ * SELECT
+ * ============================================================================ */
+
+.form-select {
+  display: block;
+  width: 100%;
+  height: var(--form-input-height-md);
+  padding: 0 var(--form-spacing-xl) 0 var(--form-spacing-md);
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: var(--form-text);
+  background-color: var(--form-bg);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E");
+  background-position: right 0.5rem center;
+  background-repeat: no-repeat;
+  background-size: 1.5em 1.5em;
+  border: 1px solid var(--form-border);
+  border-radius: var(--form-border-radius-md);
+  transition: all var(--form-transition-duration) var(--form-transition-timing);
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+.form-select:hover:not(:disabled):not(.form-select-disabled) {
+  border-color: var(--form-border-hover);
+}
+
+.form-select:focus {
+  border-color: var(--form-border-focus);
+  box-shadow: 0 0 0 3px var(--form-ring-focus);
+}
+
+.form-select:disabled,
+.form-select-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background-color: var(--form-bg-disabled);
+}
+
+/* ============================================================================
+ * CHECKBOX & RADIO
+ * ============================================================================ */
+
+.form-check {
+  display: flex;
+  align-items: center;
+  gap: var(--form-spacing-sm);
+  cursor: pointer;
+}
+
+.form-check-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.form-check-input {
+  flex-shrink: 0;
+  width: 1rem;
+  height: 1rem;
+  color: var(--form-border-focus);
+  background-color: var(--form-bg);
+  border: 1px solid var(--form-border);
+  border-radius: var(--form-border-radius-sm);
+  transition: all var(--form-transition-duration) var(--form-transition-timing);
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+.form-check-input:checked {
+  background-color: var(--form-border-focus);
+  border-color: var(--form-border-focus);
+}
+
+.form-check-input:checked[type="checkbox"] {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='white'%3E%3Cpath fill-rule='evenodd' d='M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z' clip-rule='evenodd'/%3E%3C/svg%3E");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 0.75rem 0.75rem;
+}
+
+.form-check-input:checked[type="radio"] {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='white'%3E%3Ccircle cx='10' cy='10' r='5'/%3E%3C/svg%3E");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 0.5rem 0.5rem;
+  border-radius: 9999px;
+}
+
+.form-check-input:focus {
+  border-color: var(--form-border-focus);
+  box-shadow: 0 0 0 3px var(--form-ring-focus);
+}
+
+.form-check-input:disabled {
+  cursor: not-allowed;
+}
+
+/* Tailles */
+.form-check-input-sm {
+  width: 0.875rem;
+  height: 0.875rem;
+}
+
+.form-check-input-lg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+.form-check-input-lg:checked[type="checkbox"] {
+  background-size: 1rem 1rem;
+}
+.form-check-input-lg:checked[type="radio"] {
+  background-size: 0.75rem 0.75rem;
+}
+
+.form-check-input-xl {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+.form-check-input-xl:checked[type="checkbox"] {
+  background-size: 1.25rem 1.25rem;
+}
+.form-check-input-xl:checked[type="radio"] {
+  background-size: 1rem 1rem;
+}
+
+/* ============================================================================
+ * SWITCH / TOGGLE
+ * ============================================================================ */
+
+.form-switch {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.form-switch-input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.form-switch-track {
+  display: block;
+  width: 2.75rem;
+  height: 1.5rem;
+  background-color: var(--form-border);
+  border-radius: 9999px;
+  transition: all var(--form-transition-duration) var(--form-transition-timing);
+}
+
+.form-switch-thumb {
+  position: absolute;
+  top: 0.125rem;
+  left: 0.125rem;
+  width: 1.25rem;
+  height: 1.25rem;
+  background-color: white;
+  border-radius: 9999px;
+  transition: all var(--form-transition-duration) var(--form-transition-timing);
+  box-shadow: var(--form-shadow-sm);
+}
+
+.form-switch-input:checked + .form-switch-track {
+  background-color: var(--form-border-focus);
+}
+
+.form-switch-input:checked + .form-switch-track .form-switch-thumb {
+  left: 1.375rem;
+}
+
+.form-switch-input:focus + .form-switch-track {
+  box-shadow: 0 0 0 3px var(--form-ring-focus);
+}
+
+.form-switch-input:disabled + .form-switch-track {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Tailles */
+.form-switch-sm .form-switch-track {
+  width: 2.25rem;
+  height: 1.25rem;
+}
+.form-switch-sm .form-switch-thumb {
+  width: 1rem;
+  height: 1rem;
+}
+.form-switch-sm .form-switch-input:checked + .form-switch-track .form-switch-thumb {
+  left: 1.125rem;
+}
+
+.form-switch-lg .form-switch-track {
+  width: 3.5rem;
+  height: 2rem;
+}
+.form-switch-lg .form-switch-thumb {
+  width: 1.75rem;
+  height: 1.75rem;
+}
+.form-switch-lg .form-switch-input:checked + .form-switch-track .form-switch-thumb {
+  left: 1.625rem;
+}
+
+.form-switch-xl .form-switch-track {
+  width: 4.25rem;
+  height: 2.5rem;
+}
+.form-switch-xl .form-switch-thumb {
+  width: 2.125rem;
+  height: 2.125rem;
+}
+.form-switch-xl .form-switch-input:checked + .form-switch-track .form-switch-thumb {
+  left: 2rem;
+}
+
+/* ============================================================================
+ * MESSAGES D'ERREUR ET DE SUCCÈS
+ * ============================================================================ */
+
+.form-message {
+  display: flex;
+  align-items: center;
+  gap: var(--form-spacing-xs);
+  font-size: 0.8125rem;
+  margin-top: var(--form-spacing-xs);
+}
+
+.form-message-error {
+  color: #ef4444;
+}
+
+.form-message-success {
+  color: #22c55e;
+}
+
+.form-message-warning {
+  color: #eab308;
+}
+
+.form-message-info {
+  color: #3b82f6;
+}
+
+.form-message-icon {
+  flex-shrink: 0;
+  width: 1rem;
+  height: 1rem;
+}
+
+/* ============================================================================
+ * HELPERS
+ * ============================================================================ */
+
+/* Champs en lecture seule */
+.form-readonly {
+  cursor: default;
+  background-color: var(--form-bg-hover);
+}
+
+/* Champs avec icône */
+.form-input-with-icon {
+  position: relative;
+}
+
+.form-input-with-icon .form-input {
+  padding-left: 2.5rem;
+}
+
+.form-input-with-icon .form-input-icon {
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--form-text-secondary);
+  pointer-events: none;
+}
+
+.form-input-with-icon-right .form-input {
+  padding-right: 2.5rem;
+}
+
+.form-input-with-icon-right .form-input-icon {
+  left: auto;
+  right: 0.75rem;
+}
+
+/* Champs avec bouton */
+.form-input-with-button {
+  position: relative;
+  display: flex;
+}
+
+.form-input-with-button .form-input {
+  border-radius: var(--form-border-radius-md) 0 0 var(--form-border-radius-md);
+}
+
+.form-input-with-button .form-button {
+  flex-shrink: 0;
+  border-radius: 0 var(--form-border-radius-md) var(--form-border-radius-md) 0;
+}
+
+/* ============================================================================
+ * FORMULAIRES D'ÉTAPES (WIZARD)
+ * ============================================================================ */
+
+.form-wizard {
+  display: flex;
+  flex-direction: column;
+  gap: var(--form-spacing-lg);
+}
+
+.form-wizard-steps {
+  display: flex;
+  align-items: center;
+  gap: var(--form-spacing-md);
+  padding: var(--form-spacing-md) 0;
+}
+
+.form-wizard-step {
+  display: flex;
+  align-items: center;
+  gap: var(--form-spacing-sm);
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--form-text-secondary);
+}
+
+.form-wizard-step-active {
+  color: var(--form-border-focus);
+}
+
+.form-wizard-step-completed {
+  color: var(--form-border-success);
+}
+
+.form-wizard-step-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  background-color: var(--form-border);
+  color: white;
+}
+
+.form-wizard-step-active .form-wizard-step-number {
+  background-color: var(--form-border-focus);
+}
+
+.form-wizard-step-completed .form-wizard-step-number {
+  background-color: var(--form-border-success);
+}
+
+.form-wizard-step-line {
+  flex: 1;
+  height: 2px;
+  background-color: var(--form-border);
+}
+
+.form-wizard-step-completed .form-wizard-step-line {
+  background-color: var(--form-border-success);
+}
+
+/* ============================================================================
+ * FORMULAIRES DE CARTE (CARD LAYOUT)
+ * ============================================================================ */
+
+.form-card {
+  background-color: var(--form-bg);
+  border: 1px solid var(--form-border);
+  border-radius: var(--form-border-radius-xl);
+  overflow: hidden;
+  transition: all var(--form-transition-duration) var(--form-transition-timing);
+}
+
+.form-card-header {
+  padding: var(--form-spacing-lg);
+  border-bottom: 1px solid var(--form-border);
+  background-color: var(--form-bg-hover);
+}
+
+.form-card-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--form-text);
+}
+
+.form-card-subtitle {
+  font-size: 0.875rem;
+  color: var(--form-text-secondary);
+  margin-top: var(--form-spacing-xs);
+}
+
+.form-card-body {
+  padding: var(--form-spacing-lg);
+}
+
+.form-card-footer {
+  padding: var(--form-spacing-lg);
+  border-top: 1px solid var(--form-border);
+  background-color: var(--form-bg-hover);
+}
+
+/* ============================================================================
+ * ANIMATIONS
+ * ============================================================================ */
+
+@keyframes form-slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(-0.5rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes form-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes form-scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes form-shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-0.5rem);
+  }
+  75% {
+    transform: translateX(0.5rem);
+  }
+}
+
+.form-animate-in {
+  animation: form-slide-in 0.3s ease-out forwards;
+}
+
+.form-animate-fade {
+  animation: form-fade-in 0.3s ease-out forwards;
+}
+
+.form-animate-scale {
+  animation: form-scale-in 0.3s ease-out forwards;
+}
+
+.form-animate-shake {
+  animation: form-shake 0.4s ease-in-out;
+}
+
+/* ============================================================================
+ * RESPONSIVE
+ * ============================================================================ */
+
+/* Tablettes et plus petits écrans */
+@media (max-width: 768px) {
+  .form-grid-cols-2,
+  .form-grid-cols-3,
+  .form-grid-cols-4 {
+    grid-template-columns: 1fr;
+  }
+
+  .form-group-horizontal {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .form-group-horizontal .form-label {
+    min-width: unset;
+  }
+
+  .form-horizontal {
+    flex-direction: column;
+  }
+
+  .form-wizard-steps {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .form-wizard-step-line {
+    display: none;
+  }
+
+  .form-card-header,
+  .form-card-body,
+  .form-card-footer {
+    padding: var(--form-spacing-md);
+  }
+}
+
+/* Petits écrans mobiles */
+@media (max-width: 480px) {
+  .form-inline {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .form-wizard-step {
+    font-size: 0.75rem;
+  }
+
+  .form-wizard-step-number {
+    width: 1.5rem;
+    height: 1.5rem;
+    font-size: 0.625rem;
+  }
+
+  .form-card-title {
+    font-size: 1rem;
+  }
+}
+
+/* ============================================================================
+ * UTILITAIRES DE PRINT
+ * ============================================================================ */
+
+@media print {
+  .form-no-print {
+    display: none !important;
+  }
+
+  .form-print-only {
+    display: block !important;
+  }
+
+  .form-card {
+    border: 1px solid #ddd;
+    box-shadow: none !important;
+  }
+
+  .form-input,
+  .form-textarea,
+  .form-select {
+    border: 1px solid #ddd !important;
+    background: white !important;
+    color: black !important;
+    box-shadow: none !important;
+  }
+}
+
+/* ============================================================================
+ * SCROLLBAR PERSONNALISÉE POUR LES CHAMPS
+ * ============================================================================ */
+
+.form-textarea::-webkit-scrollbar,
+.form-select::-webkit-scrollbar {
+  width: 0.375rem;
+  height: 0.375rem;
+}
+
+.form-textarea::-webkit-scrollbar-track,
+.form-select::-webkit-scrollbar-track {
+  background: var(--form-bg-hover);
+  border-radius: 9999px;
+}
+
+.form-textarea::-webkit-scrollbar-thumb,
+.form-select::-webkit-scrollbar-thumb {
+  background: var(--form-border);
+  border-radius: 9999px;
+}
+
+.form-textarea::-webkit-scrollbar-thumb:hover,
+.form-select::-webkit-scrollbar-thumb:hover {
+  background: var(--form-border-hover);
+}
+
+/* ============================================================================
+ * DARK MODE SUPPORT
+ * ============================================================================ */
+
+.dark .form-input,
+.dark .form-textarea,
+.dark .form-select {
+  color-scheme: dark;
+}
+
+.dark .form-input::placeholder,
+.dark .form-textarea::placeholder {
+  color: #6b7280;
+}
+
+.dark .form-select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%239ca3af' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E");
+}
