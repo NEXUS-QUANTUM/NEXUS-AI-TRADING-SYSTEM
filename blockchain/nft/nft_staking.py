@@ -1,7 +1,7 @@
 # blockchain/nft/nft_staking.py
 # NEXUS AI TRADING SYSTEM - Version Avancée
 # Copyright © 2026 NEXUS QUANTUM LTD
-# Tous droits réservés
+# Tous droits réservés 
 
 """
 Module NFT Staking - Gestion du Staking NFT
