@@ -1,0 +1,881 @@
+"""
+NEXUS AI TRADING SYSTEM - Performance Log File
+Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+CEO: Dr X... - Majority Shareholder
+
+Module: trading/bots/ai_bot/logs/performance.log
+Description: Fichier de log des performances du bot AI.
+             Contient les métriques de performance en temps réel,
+             les statistiques de trading, les indicateurs de santé
+             du système et les rapports de performance.
+             Format: JSON Lines (jsonl) pour une parsing facile.
+"""
+
+import json
+import logging
+from datetime import datetime, timedelta
+from typing import Dict, List, Any, Optional, Tuple
+
+# ============================================================
+# LOGS DE PERFORMANCE D'EXEMPLE POUR LE BOT AI
+# ============================================================
+
+# Ce fichier contient des exemples de performances pour le bot AI.
+# Dans un environnement de production, ce fichier serait
+# mis à jour dynamiquement par le système de performance.
+
+EXAMPLE_PERFORMANCE_LOGS = [
+    # === PERFORMANCE HORAIRE ===
+    {
+        "timestamp": "2026-07-17T01:00:00.000000",
+        "type": "hourly_performance",
+        "period": "hour",
+        "start_time": "2026-07-17T00:00:00",
+        "end_time": "2026-07-17T01:00:00",
+        "metrics": {
+            "total_trades": 2,
+            "winning_trades": 1,
+            "losing_trades": 1,
+            "win_rate": 0.5,
+            "total_pnl": 123.45,
+            "avg_win": 234.56,
+            "avg_loss": -111.11,
+            "profit_factor": 2.11,
+            "max_drawdown": 0.5,
+            "volume_traded": 1.2,
+            "avg_position_size": 0.6
+        },
+        "health": {
+            "status": "healthy",
+            "cpu_usage": 45.2,
+            "memory_usage": 65.3,
+            "latency_ms": 23.4
+        }
+    },
+    {
+        "timestamp": "2026-07-17T02:00:00.000000",
+        "type": "hourly_performance",
+        "period": "hour",
+        "start_time": "2026-07-17T01:00:00",
+        "end_time": "2026-07-17T02:00:00",
+        "metrics": {
+            "total_trades": 1,
+            "winning_trades": 1,
+            "losing_trades": 0,
+            "win_rate": 1.0,
+            "total_pnl": 234.56,
+            "avg_win": 234.56,
+            "avg_loss": 0.0,
+            "profit_factor": float('inf'),
+            "max_drawdown": 0.0,
+            "volume_traded": 0.8,
+            "avg_position_size": 0.8
+        },
+        "health": {
+            "status": "healthy",
+            "cpu_usage": 42.1,
+            "memory_usage": 64.8,
+            "latency_ms": 18.7
+        }
+    },
+    {
+        "timestamp": "2026-07-17T03:00:00.000000",
+        "type": "hourly_performance",
+        "period": "hour",
+        "start_time": "2026-07-17T02:00:00",
+        "end_time": "2026-07-17T03:00:00",
+        "metrics": {
+            "total_trades": 3,
+            "winning_trades": 2,
+            "losing_trades": 1,
+            "win_rate": 0.667,
+            "total_pnl": 345.67,
+            "avg_win": 234.56,
+            "avg_loss": -123.45,
+            "profit_factor": 3.8,
+            "max_drawdown": 1.2,
+            "volume_traded": 2.0,
+            "avg_position_size": 0.667
+        },
+        "health": {
+            "status": "degraded",
+            "cpu_usage": 68.7,
+            "memory_usage": 72.1,
+            "latency_ms": 45.6
+        }
+    },
+    {
+        "timestamp": "2026-07-17T04:00:00.000000",
+        "type": "hourly_performance",
+        "period": "hour",
+        "start_time": "2026-07-17T03:00:00",
+        "end_time": "2026-07-17T04:00:00",
+        "metrics": {
+            "total_trades": 0,
+            "winning_trades": 0,
+            "losing_trades": 0,
+            "win_rate": 0.0,
+            "total_pnl": 0.0,
+            "avg_win": 0.0,
+            "avg_loss": 0.0,
+            "profit_factor": 0.0,
+            "max_drawdown": 0.0,
+            "volume_traded": 0.0,
+            "avg_position_size": 0.0
+        },
+        "health": {
+            "status": "critical",
+            "cpu_usage": 89.3,
+            "memory_usage": 85.7,
+            "latency_ms": 156.8
+        }
+    },
+
+    # === PERFORMANCE QUOTIDIENNE ===
+    {
+        "timestamp": "2026-07-17T23:59:59.000000",
+        "type": "daily_performance",
+        "period": "day",
+        "date": "2026-07-17",
+        "metrics": {
+            "total_trades": 15,
+            "winning_trades": 11,
+            "losing_trades": 4,
+            "win_rate": 0.733,
+            "total_pnl": 543.21,
+            "avg_win": 234.56,
+            "avg_loss": -111.11,
+            "profit_factor": 1.8,
+            "max_drawdown": 4.5,
+            "volume_traded": 7.5,
+            "avg_position_size": 0.5,
+            "max_position_size": 0.8,
+            "avg_hold_time": 1800.0,
+            "best_trade": 234.56,
+            "worst_trade": -123.45,
+            "recovery_factor": 2.5,
+            "daily_return": 0.543,
+            "sharpe_ratio": 2.1,
+            "sortino_ratio": 2.8,
+            "calmar_ratio": 1.5
+        },
+        "health": {
+            "status": "healthy",
+            "avg_cpu_usage": 52.3,
+            "avg_memory_usage": 68.4,
+            "avg_latency_ms": 34.5,
+            "uptime_seconds": 86340,
+            "uptime_percentage": 99.9
+        }
+    },
+    {
+        "timestamp": "2026-07-18T23:59:59.000000",
+        "type": "daily_performance",
+        "period": "day",
+        "date": "2026-07-18",
+        "metrics": {
+            "total_trades": 18,
+            "winning_trades": 13,
+            "losing_trades": 5,
+            "win_rate": 0.722,
+            "total_pnl": 678.90,
+            "avg_win": 234.56,
+            "avg_loss": -111.11,
+            "profit_factor": 1.9,
+            "max_drawdown": 3.8,
+            "volume_traded": 8.2,
+            "avg_position_size": 0.456,
+            "max_position_size": 0.9,
+            "avg_hold_time": 1650.0,
+            "best_trade": 345.67,
+            "worst_trade": -156.78,
+            "recovery_factor": 2.8,
+            "daily_return": 0.678,
+            "sharpe_ratio": 2.3,
+            "sortino_ratio": 3.1,
+            "calmar_ratio": 1.8
+        },
+        "health": {
+            "status": "healthy",
+            "avg_cpu_usage": 48.7,
+            "avg_memory_usage": 66.2,
+            "avg_latency_ms": 28.9,
+            "uptime_seconds": 86280,
+            "uptime_percentage": 99.9
+        }
+    },
+    {
+        "timestamp": "2026-07-19T23:59:59.000000",
+        "type": "daily_performance",
+        "period": "day",
+        "date": "2026-07-19",
+        "metrics": {
+            "total_trades": 12,
+            "winning_trades": 7,
+            "losing_trades": 5,
+            "win_rate": 0.583,
+            "total_pnl": 234.56,
+            "avg_win": 234.56,
+            "avg_loss": -111.11,
+            "profit_factor": 1.5,
+            "max_drawdown": 6.2,
+            "volume_traded": 6.1,
+            "avg_position_size": 0.508,
+            "max_position_size": 0.7,
+            "avg_hold_time": 2100.0,
+            "best_trade": 234.56,
+            "worst_trade": -222.22,
+            "recovery_factor": 1.2,
+            "daily_return": 0.234,
+            "sharpe_ratio": 1.2,
+            "sortino_ratio": 1.5,
+            "calmar_ratio": 0.8
+        },
+        "health": {
+            "status": "degraded",
+            "avg_cpu_usage": 65.4,
+            "avg_memory_usage": 74.1,
+            "avg_latency_ms": 67.8,
+            "uptime_seconds": 85980,
+            "uptime_percentage": 99.5
+        }
+    },
+
+    # === PERFORMANCE MENSUELLE ===
+    {
+        "timestamp": "2026-07-31T23:59:59.000000",
+        "type": "monthly_performance",
+        "period": "month",
+        "month": "2026-07",
+        "metrics": {
+            "total_trades": 450,
+            "winning_trades": 330,
+            "losing_trades": 120,
+            "win_rate": 0.733,
+            "total_pnl": 15234.56,
+            "avg_win": 234.56,
+            "avg_loss": -111.11,
+            "profit_factor": 1.8,
+            "max_drawdown": 5.2,
+            "volume_traded": 225.0,
+            "avg_position_size": 0.5,
+            "best_trade": 1234.56,
+            "worst_trade": -456.78,
+            "recovery_factor": 3.2,
+            "monthly_return": 15.23,
+            "sharpe_ratio": 2.4,
+            "sortino_ratio": 3.2,
+            "calmar_ratio": 2.9
+        },
+        "health": {
+            "status": "healthy",
+            "avg_cpu_usage": 45.6,
+            "avg_memory_usage": 62.3,
+            "avg_latency_ms": 32.1,
+            "uptime_seconds": 2592000,
+            "uptime_percentage": 99.95
+        }
+    },
+
+    # === PERFORMANCE DES MODÈLES ===
+    {
+        "timestamp": "2026-07-17T00:00:00.000000",
+        "type": "model_performance",
+        "model": "lstm_v2",
+        "version": "2.1.0",
+        "metrics": {
+            "accuracy": 0.78,
+            "precision": 0.82,
+            "recall": 0.75,
+            "f1_score": 0.78,
+            "loss": 0.023,
+            "inference_time_ms": 12.3,
+            "training_time_s": 45.67,
+            "prediction_count": 500,
+            "correct_predictions": 390,
+            "false_positives": 50,
+            "false_negatives": 60
+        }
+    },
+    {
+        "timestamp": "2026-07-17T00:00:00.000000",
+        "type": "model_performance",
+        "model": "transformer_v1",
+        "version": "1.0.0",
+        "metrics": {
+            "accuracy": 0.82,
+            "precision": 0.85,
+            "recall": 0.79,
+            "f1_score": 0.82,
+            "loss": 0.018,
+            "inference_time_ms": 18.7,
+            "training_time_s": 89.12,
+            "prediction_count": 500,
+            "correct_predictions": 410,
+            "false_positives": 45,
+            "false_negatives": 45
+        }
+    },
+    {
+        "timestamp": "2026-07-17T00:00:00.000000",
+        "type": "model_performance",
+        "model": "xgboost_v3",
+        "version": "3.0.0",
+        "metrics": {
+            "accuracy": 0.76,
+            "precision": 0.79,
+            "recall": 0.73,
+            "f1_score": 0.76,
+            "loss": 0.031,
+            "inference_time_ms": 8.9,
+            "training_time_s": 23.45,
+            "prediction_count": 500,
+            "correct_predictions": 380,
+            "false_positives": 60,
+            "false_negatives": 60
+        }
+    },
+    {
+        "timestamp": "2026-07-17T00:00:00.000000",
+        "type": "model_performance",
+        "model": "ensemble_v2",
+        "version": "2.0.0",
+        "metrics": {
+            "accuracy": 0.85,
+            "precision": 0.87,
+            "recall": 0.83,
+            "f1_score": 0.85,
+            "loss": 0.015,
+            "inference_time_ms": 28.4,
+            "training_time_s": 145.67,
+            "prediction_count": 500,
+            "correct_predictions": 425,
+            "false_positives": 40,
+            "false_negatives": 35
+        }
+    },
+
+    # === PERFORMANCE DU SYSTÈME ===
+    {
+        "timestamp": "2026-07-17T00:00:00.000000",
+        "type": "system_performance",
+        "metrics": {
+            "cpu": {
+                "usage_percent": 45.2,
+                "cores": 8,
+                "load_avg_1m": 2.3,
+                "load_avg_5m": 2.1,
+                "load_avg_15m": 1.9
+            },
+            "memory": {
+                "total_gb": 16.0,
+                "used_gb": 10.4,
+                "free_gb": 5.6,
+                "usage_percent": 65.0
+            },
+            "disk": {
+                "total_gb": 512,
+                "used_gb": 256,
+                "free_gb": 256,
+                "usage_percent": 50.0,
+                "iops": 1250
+            },
+            "network": {
+                "bytes_sent_mb": 125.6,
+                "bytes_recv_mb": 456.7,
+                "packets_sent": 125000,
+                "packets_recv": 234000,
+                "latency_ms": 12.3
+            },
+            "process": {
+                "pid": 12345,
+                "threads": 12,
+                "open_files": 24,
+                "cpu_percent": 45.2,
+                "memory_mb": 1024,
+                "memory_percent": 6.4
+            }
+        }
+    },
+    {
+        "timestamp": "2026-07-17T06:00:00.000000",
+        "type": "system_performance",
+        "metrics": {
+            "cpu": {
+                "usage_percent": 68.7,
+                "cores": 8,
+                "load_avg_1m": 4.5,
+                "load_avg_5m": 4.2,
+                "load_avg_15m": 3.8
+            },
+            "memory": {
+                "total_gb": 16.0,
+                "used_gb": 12.8,
+                "free_gb": 3.2,
+                "usage_percent": 80.0
+            },
+            "disk": {
+                "total_gb": 512,
+                "used_gb": 280,
+                "free_gb": 232,
+                "usage_percent": 54.7,
+                "iops": 2100
+            },
+            "network": {
+                "bytes_sent_mb": 234.5,
+                "bytes_recv_mb": 678.9,
+                "packets_sent": 234000,
+                "packets_recv": 456000,
+                "latency_ms": 45.6
+            },
+            "process": {
+                "pid": 12345,
+                "threads": 14,
+                "open_files": 28,
+                "cpu_percent": 68.7,
+                "memory_mb": 1536,
+                "memory_percent": 9.6
+            }
+        }
+    },
+
+    # === PERFORMANCE DES INDICATEURS ===
+    {
+        "timestamp": "2026-07-17T00:00:00.000000",
+        "type": "indicator_performance",
+        "indicator": "rsi",
+        "params": {"period": 14},
+        "metrics": {
+            "calculation_time_ms": 2.3,
+            "cache_hit": True,
+            "value": 62.34,
+            "signal": "neutral",
+            "confidence": 0.7
+        }
+    },
+    {
+        "timestamp": "2026-07-17T00:00:00.000000",
+        "type": "indicator_performance",
+        "indicator": "macd",
+        "params": {"fast": 12, "slow": 26, "signal": 9},
+        "metrics": {
+            "calculation_time_ms": 3.4,
+            "cache_hit": True,
+            "macd": 125.67,
+            "signal": 118.90,
+            "histogram": 6.77,
+            "signal_type": "bullish"
+        }
+    },
+
+    # === PERFORMANCE DES STRATÉGIES ===
+    {
+        "timestamp": "2026-07-17T00:00:00.000000",
+        "type": "strategy_performance",
+        "strategy": "hybrid_ensemble",
+        "metrics": {
+            "total_trades": 45,
+            "winning_trades": 33,
+            "win_rate": 0.733,
+            "total_pnl": 1234.56,
+            "avg_win": 234.56,
+            "avg_loss": -111.11,
+            "profit_factor": 1.8,
+            "max_drawdown": 3.2,
+            "sharpe_ratio": 2.1,
+            "confidence": 0.87
+        }
+    },
+    {
+        "timestamp": "2026-07-17T00:00:00.000000",
+        "type": "strategy_performance",
+        "strategy": "momentum_breakout",
+        "metrics": {
+            "total_trades": 30,
+            "winning_trades": 21,
+            "win_rate": 0.7,
+            "total_pnl": 789.01,
+            "avg_win": 234.56,
+            "avg_loss": -111.11,
+            "profit_factor": 1.6,
+            "max_drawdown": 4.5,
+            "sharpe_ratio": 1.8,
+            "confidence": 0.92
+        }
+    },
+
+    # === PERFORMANCE DU BROKER ===
+    {
+        "timestamp": "2026-07-17T00:00:00.000000",
+        "type": "broker_performance",
+        "broker": "binance",
+        "metrics": {
+            "total_orders": 150,
+            "successful_orders": 142,
+            "failed_orders": 8,
+            "success_rate": 0.947,
+            "avg_latency_ms": 45.6,
+            "p95_latency_ms": 89.2,
+            "p99_latency_ms": 156.7,
+            "avg_slippage": 0.01,
+            "total_fees": 123.45
+        }
+    },
+    {
+        "timestamp": "2026-07-17T00:00:00.000000",
+        "type": "broker_performance",
+        "broker": "coinbase",
+        "metrics": {
+            "total_orders": 100,
+            "successful_orders": 92,
+            "failed_orders": 8,
+            "success_rate": 0.92,
+            "avg_latency_ms": 67.8,
+            "p95_latency_ms": 123.4,
+            "p99_latency_ms": 234.5,
+            "avg_slippage": 0.015,
+            "total_fees": 89.12
+        }
+    },
+
+    # === PERFORMANCE DU PORTEFEUILLE ===
+    {
+        "timestamp": "2026-07-17T00:00:00.000000",
+        "type": "portfolio_performance",
+        "metrics": {
+            "total_value": 101234.56,
+            "cash": 82345.67,
+            "positions_value": 18888.89,
+            "total_pnl": 1234.56,
+            "daily_pnl": 123.45,
+            "weekly_pnl": 567.89,
+            "monthly_pnl": 1234.56,
+            "open_pnl": 456.78,
+            "closed_pnl": 777.78,
+            "exposure": 18.7,
+            "leverage": 1.2,
+            "positions": [
+                {"symbol": "BTC-USD", "value": 10000.00, "weight": 9.9},
+                {"symbol": "ETH-USD", "value": 5000.00, "weight": 4.9},
+                {"symbol": "SOL-USD", "value": 3888.89, "weight": 3.8}
+            ]
+        }
+    },
+
+    # === RAPPORTS DE PERFORMANCE ===
+    {
+        "timestamp": "2026-07-17T00:00:00.000000",
+        "type": "performance_report",
+        "report_type": "weekly",
+        "period": "2026-07-10_to_2026-07-17",
+        "summary": {
+            "total_trades": 78,
+            "winning_trades": 57,
+            "win_rate": 0.731,
+            "total_pnl": 2345.67,
+            "avg_daily_pnl": 335.10,
+            "best_day": "2026-07-15",
+            "worst_day": "2026-07-12",
+            "avg_win": 234.56,
+            "avg_loss": -111.11,
+            "profit_factor": 1.9,
+            "max_drawdown": 4.5,
+            "sharpe_ratio": 2.2,
+            "recovery_factor": 2.8,
+            "weekly_return": 2.35
+        },
+        "daily_breakdown": [
+            {"date": "2026-07-10", "pnl": 234.56, "trades": 8},
+            {"date": "2026-07-11", "pnl": 345.67, "trades": 10},
+            {"date": "2026-07-12", "pnl": -123.45, "trades": 7},
+            {"date": "2026-07-13", "pnl": 456.78, "trades": 12},
+            {"date": "2026-07-14", "pnl": 234.56, "trades": 9},
+            {"date": "2026-07-15", "pnl": 567.89, "trades": 14},
+            {"date": "2026-07-16", "pnl": 345.67, "trades": 11},
+            {"date": "2026-07-17", "pnl": 234.56, "trades": 7}
+        ]
+    }
+]
+
+# ============================================================
+# STATISTIQUES DE PERFORMANCE
+# ============================================================
+
+PERFORMANCE_STATS = {
+    "total_entries": len(EXAMPLE_PERFORMANCE_LOGS),
+    "by_type": {
+        "hourly_performance": 4,
+        "daily_performance": 3,
+        "monthly_performance": 1,
+        "model_performance": 4,
+        "system_performance": 2,
+        "indicator_performance": 2,
+        "strategy_performance": 2,
+        "broker_performance": 2,
+        "portfolio_performance": 1,
+        "performance_report": 1
+    },
+    "time_range": {
+        "start": "2026-07-17T00:00:00",
+        "end": "2026-07-19T23:59:59"
+    }
+}
+
+# ============================================================
+# FONCTIONS DE GESTION DES PERFORMANCES
+# ============================================================
+
+def write_example_performance(filepath: str = "trading/bots/ai_bot/logs/performance.log") -> None:
+    """
+    Écrit les performances d'exemple dans un fichier.
+    
+    Args:
+        filepath: Chemin du fichier de performances.
+    """
+    import os
+    
+    try:
+        # Création du répertoire si nécessaire
+        os.makedirs(os.path.dirname(filepath), exist_ok=True)
+        
+        with open(filepath, 'w', encoding='utf-8') as f:
+            for perf in EXAMPLE_PERFORMANCE_LOGS:
+                f.write(json.dumps(perf) + '\n')
+        
+        print(f"✅ Performances écrites dans {filepath}")
+        
+    except Exception as e:
+        print(f"❌ Erreur d'écriture: {e}")
+
+
+def read_performance(
+    filepath: str = "trading/bots/ai_bot/logs/performance.log",
+    perf_type: Optional[str] = None,
+    start_time: Optional[datetime] = None,
+    end_time: Optional[datetime] = None,
+    limit: int = 100
+) -> List[Dict[str, Any]]:
+    """
+    Lit les performances depuis un fichier.
+    
+    Args:
+        filepath: Chemin du fichier de performances.
+        perf_type: Type de performance.
+        start_time: Heure de début.
+        end_time: Heure de fin.
+        limit: Nombre maximum d'entrées.
+        
+    Returns:
+        Liste des performances.
+    """
+    performances = []
+    
+    try:
+        with open(filepath, 'r', encoding='utf-8') as f:
+            for line in f:
+                try:
+                    perf = json.loads(line.strip())
+                    performances.append(perf)
+                except json.JSONDecodeError:
+                    continue
+        
+        # Filtrage
+        if perf_type:
+            performances = [p for p in performances if p.get('type') == perf_type]
+        
+        if start_time:
+            performances = [p for p in performances if datetime.fromisoformat(p.get('timestamp', '')) >= start_time]
+        
+        if end_time:
+            performances = [p for p in performances if datetime.fromisoformat(p.get('timestamp', '')) <= end_time]
+        
+        # Tri par timestamp (plus récent en premier)
+        performances.sort(key=lambda x: x.get('timestamp', ''), reverse=True)
+        
+        return performances[:limit]
+        
+    except FileNotFoundError:
+        print(f"⚠️ Fichier de performances non trouvé: {filepath}")
+        return []
+    except Exception as e:
+        print(f"❌ Erreur de lecture: {e}")
+        return []
+
+
+def get_performance_stats(
+    filepath: str = "trading/bots/ai_bot/logs/performance.log"
+) -> Dict[str, Any]:
+    """
+    Retourne les statistiques des performances.
+    
+    Args:
+        filepath: Chemin du fichier de performances.
+        
+    Returns:
+        Statistiques des performances.
+    """
+    performances = read_performance(filepath, limit=10000)
+    
+    if not performances:
+        return {'total': 0}
+    
+    stats = {
+        'total': len(performances),
+        'by_type': {},
+        'time_range': {
+            'first': performances[-1].get('timestamp') if performances else None,
+            'last': performances[0].get('timestamp') if performances else None
+        }
+    }
+    
+    for perf in performances:
+        perf_type = perf.get('type', 'UNKNOWN')
+        stats['by_type'][perf_type] = stats['by_type'].get(perf_type, 0) + 1
+    
+    return stats
+
+
+def get_performance_trend(
+    filepath: str = "trading/bots/ai_bot/logs/performance.log",
+    metric: str = "total_pnl",
+    period: str = "daily"
+) -> List[Dict[str, Any]]:
+    """
+    Retourne la tendance d'une métrique de performance.
+    
+    Args:
+        filepath: Chemin du fichier de performances.
+        metric: Métrique à analyser.
+        period: Période ('daily', 'hourly').
+        
+    Returns:
+        Liste des tendances.
+    """
+    if period == "daily":
+        perf_type = "daily_performance"
+    else:
+        perf_type = "hourly_performance"
+    
+    performances = read_performance(
+        filepath,
+        perf_type=perf_type,
+        limit=1000
+    )
+    
+    trend = []
+    for perf in performances:
+        metrics = perf.get('metrics', {})
+        if metric in metrics:
+            trend.append({
+                'timestamp': perf.get('timestamp'),
+                'value': metrics[metric],
+                'date': perf.get('date') or perf.get('timestamp')[:10]
+            })
+    
+    return sorted(trend, key=lambda x: x['timestamp'])
+
+
+def get_best_performance(
+    filepath: str = "trading/bots/ai_bot/logs/performance.log",
+    metric: str = "total_pnl",
+    period: str = "daily"
+) -> Optional[Dict[str, Any]]:
+    """
+    Retourne la meilleure performance.
+    
+    Args:
+        filepath: Chemin du fichier de performances.
+        metric: Métrique à analyser.
+        period: Période ('daily', 'hourly').
+        
+    Returns:
+        Meilleure performance.
+    """
+    trend = get_performance_trend(filepath, metric, period)
+    
+    if not trend:
+        return None
+    
+    return max(trend, key=lambda x: x['value'])
+
+
+def get_worst_performance(
+    filepath: str = "trading/bots/ai_bot/logs/performance.log",
+    metric: str = "total_pnl",
+    period: str = "daily"
+) -> Optional[Dict[str, Any]]:
+    """
+    Retourne la pire performance.
+    
+    Args:
+        filepath: Chemin du fichier de performances.
+        metric: Métrique à analyser.
+        period: Période ('daily', 'hourly').
+        
+    Returns:
+        Pire performance.
+    """
+    trend = get_performance_trend(filepath, metric, period)
+    
+    if not trend:
+        return None
+    
+    return min(trend, key=lambda x: x['value'])
+
+
+# ============================================================
+# EXPORTATION
+# ============================================================
+
+__all__ = [
+    'EXAMPLE_PERFORMANCE_LOGS',
+    'PERFORMANCE_STATS',
+    'write_example_performance',
+    'read_performance',
+    'get_performance_stats',
+    'get_performance_trend',
+    'get_best_performance',
+    'get_worst_performance'
+]
+
+# ============================================================
+# EXÉCUTION (si fichier exécuté directement)
+# ============================================================
+
+if __name__ == "__main__":
+    # Écriture des performances d'exemple
+    write_example_performance()
+    
+    # Lecture et affichage des 5 dernières performances
+    print("\n📊 Dernières performances:")
+    performances = read_performance(limit=5)
+    for perf in performances:
+        print(f"[{perf.get('timestamp')}] {perf.get('type')} - {perf.get('metrics', {}).get('total_pnl', 'N/A')}")
+    
+    # Statistiques
+    print("\n📊 Statistiques des performances:")
+    stats = get_performance_stats()
+    print(f"Total entrées: {stats.get('total', 0)}")
+    print(f"Par type: {stats.get('by_type', {})}")
+    
+    # Tendances
+    print("\n📈 Tendance quotidienne des performances:")
+    daily_trend = get_performance_trend(metric="total_pnl", period="daily")
+    for entry in daily_trend[:5]:
+        print(f"  {entry['date']}: {entry['value']:.2f}")
+    
+    # Meilleure performance
+    print("\n🏆 Meilleure performance:")
+    best = get_best_performance()
+    if best:
+        print(f"  Date: {best['date']}, PNL: {best['value']:.2f}")
+    
+    # Pire performance
+    print("\n📉 Pire performance:")
+    worst = get_worst_performance()
+    if worst:
+        print(f"  Date: {worst['date']}, PNL: {worst['value']:.2f}")
+
+# ============================================================
+# FIN DU FICHIER
+# ============================================================
