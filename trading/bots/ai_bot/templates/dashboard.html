@@ -1,0 +1,1217 @@
+<!-- trading/bots/ai_bot/templates/dashboard.html -->
+<!-- NEXUS AI TRADING SYSTEM - Main Dashboard -->
+<!-- Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved -->
+
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEXUS AI Trading - Dashboard</title>
+
+    <!-- ============================================================ -->
+    <!-- CSS -->
+    <!-- ============================================================ -->
+    <link rel="stylesheet" href="/static/css/dashboard.css">
+    <link rel="stylesheet" href="/static/css/dark_theme.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        /* ============================================================ */
+        /* Dashboard Specific Styles */
+        /* ============================================================ */
+
+        .dashboard-page {
+            padding: 24px 32px;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .dashboard-header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #6C5CE7, #A29BFE);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .dashboard-header h1 i {
+            -webkit-text-fill-color: initial;
+            color: #6C5CE7;
+        }
+
+        .dashboard-status {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .status-indicator .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .status-indicator.online .dot { background: #2ED573; }
+        .status-indicator.offline .dot { background: #FF4757; }
+        .status-indicator.partial .dot { background: #FFA502; }
+        .status-indicator.trading .dot { background: #6C5CE7; animation: pulse-dot 1.5s infinite; }
+
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(0.8); }
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .quick-actions button {
+            padding: 8px 16px;
+            border-radius: 8px;
+            border: none;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .quick-actions .btn-start {
+            background: linear-gradient(135deg, #6C5CE7, #A29BFE);
+            color: #fff;
+        }
+
+        .quick-actions .btn-start:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(108, 92, 231, 0.4);
+        }
+
+        .quick-actions .btn-stop {
+            background: rgba(255, 71, 87, 0.15);
+            color: #FF4757;
+            border: 1px solid rgba(255, 71, 87, 0.2);
+        }
+
+        .quick-actions .btn-stop:hover {
+            background: rgba(255, 71, 87, 0.25);
+        }
+
+        .quick-actions .btn-pause {
+            background: rgba(255, 165, 2, 0.15);
+            color: #FFA502;
+            border: 1px solid rgba(255, 165, 2, 0.2);
+        }
+
+        .quick-actions .btn-pause:hover {
+            background: rgba(255, 165, 2, 0.25);
+        }
+
+        /* ============================================================ */
+        /* KPI Grid */
+        /* ============================================================ */
+
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .kpi-card {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            padding: 16px 20px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .kpi-card:hover {
+            border-color: rgba(108, 92, 231, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .kpi-card .kpi-label {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.5);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+
+        .kpi-card .kpi-value {
+            font-size: 26px;
+            font-weight: 700;
+            color: #fff;
+            margin: 4px 0;
+        }
+
+        .kpi-card .kpi-change {
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .kpi-card .kpi-change.positive { color: #2ED573; }
+        .kpi-card .kpi-change.negative { color: #FF4757; }
+        .kpi-card .kpi-change.neutral { color: rgba(255, 255, 255, 0.4); }
+
+        .kpi-card .kpi-sub {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.3);
+            margin-top: 4px;
+        }
+
+        /* ============================================================ */
+        /* Chart Grid */
+        /* ============================================================ */
+
+        .chart-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .chart-grid .chart-card {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            min-height: 300px;
+            position: relative;
+        }
+
+        .chart-card .chart-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .chart-card .chart-title i {
+            color: #6C5CE7;
+        }
+
+        .chart-card canvas {
+            width: 100% !important;
+            height: calc(100% - 40px) !important;
+        }
+
+        .chart-grid .chart-card .chart-empty {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: calc(100% - 40px);
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .chart-grid .chart-card .chart-empty i {
+            font-size: 36px;
+            margin-bottom: 12px;
+            opacity: 0.3;
+        }
+
+        /* ============================================================ */
+        /* Activity Feed */
+        /* ============================================================ */
+
+        .activity-feed {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 16px 20px;
+            margin-bottom: 24px;
+        }
+
+        .activity-feed .feed-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .activity-feed .feed-header h3 {
+            font-size: 15px;
+            font-weight: 600;
+            color: #fff;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .activity-feed .feed-header h3 i {
+            color: #6C5CE7;
+        }
+
+        .activity-feed .feed-header .feed-controls {
+            display: flex;
+            gap: 8px;
+        }
+
+        .activity-feed .feed-header .feed-controls button {
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            font-size: 12px;
+        }
+
+        .activity-feed .feed-header .feed-controls button:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .feed-items {
+            max-height: 250px;
+            overflow-y: auto;
+        }
+
+        .feed-items::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .feed-items::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .feed-items::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+        }
+
+        .feed-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            font-size: 13px;
+        }
+
+        .feed-item:last-child {
+            border-bottom: none;
+        }
+
+        .feed-item .feed-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            flex-shrink: 0;
+        }
+
+        .feed-item .feed-icon.trade { background: rgba(108, 92, 231, 0.15); color: #6C5CE7; }
+        .feed-item .feed-icon.order { background: rgba(46, 213, 115, 0.15); color: #2ED573; }
+        .feed-item .feed-icon.alert { background: rgba(255, 165, 2, 0.15); color: #FFA502; }
+        .feed-item .feed-icon.error { background: rgba(255, 71, 87, 0.15); color: #FF4757; }
+        .feed-item .feed-icon.info { background: rgba(78, 205, 196, 0.15); color: #4ECDC4; }
+        .feed-item .feed-icon.system { background: rgba(255, 255, 255, 0.05); color: rgba(255, 255, 255, 0.4); }
+
+        .feed-item .feed-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .feed-item .feed-content .feed-text {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .feed-item .feed-content .feed-text .highlight {
+            color: #6C5CE7;
+            font-weight: 500;
+        }
+
+        .feed-item .feed-time {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.3);
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        /* ============================================================ */
+        /* Responsive */
+        /* ============================================================ */
+
+        @media (max-width: 1200px) {
+            .chart-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-page {
+                padding: 16px;
+            }
+
+            .dashboard-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .dashboard-status {
+                width: 100%;
+                justify-content: flex-start;
+                flex-wrap: wrap;
+            }
+
+            .quick-actions {
+                width: 100%;
+                flex-wrap: wrap;
+            }
+
+            .quick-actions button {
+                flex: 1;
+                justify-content: center;
+                min-width: 80px;
+            }
+
+            .kpi-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .chart-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .chart-grid .chart-card {
+                min-height: 200px;
+                padding: 12px;
+            }
+
+            .activity-feed {
+                padding: 12px 16px;
+            }
+
+            .feed-item {
+                font-size: 12px;
+                gap: 8px;
+            }
+
+            .feed-item .feed-icon {
+                width: 24px;
+                height: 24px;
+                font-size: 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .kpi-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .dashboard-header h1 {
+                font-size: 22px;
+            }
+
+            .quick-actions button {
+                font-size: 12px;
+                padding: 6px 12px;
+            }
+        }
+
+        /* ============================================================ */
+        /* Loading State */
+        /* ============================================================ */
+
+        .loading-shimmer {
+            background: linear-gradient(90deg, rgba(255,255,255,0.02) 25%, rgba(255,255,255,0.05) 50%, rgba(255,255,255,0.02) 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+            border-radius: 4px;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        /* ============================================================ */
+        /* Toast Notifications */
+        /* ============================================================ */
+
+        .toast-container {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            z-index: 9999;
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .toast {
+            padding: 14px 20px;
+            border-radius: 12px;
+            background: rgba(26, 26, 46, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            color: #fff;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            animation: slideUp 0.3s ease;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        }
+
+        .toast.success { border-left: 4px solid #2ED573; }
+        .toast.error { border-left: 4px solid #FF4757; }
+        .toast.warning { border-left: 4px solid #FFA502; }
+        .toast.info { border-left: 4px solid #4ECDC4; }
+
+        .toast .toast-icon { font-size: 20px; flex-shrink: 0; }
+        .toast.success .toast-icon { color: #2ED573; }
+        .toast.error .toast-icon { color: #FF4757; }
+        .toast.warning .toast-icon { color: #FFA502; }
+        .toast.info .toast-icon { color: #4ECDC4; }
+
+        .toast .toast-close {
+            margin-left: auto;
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.4);
+            cursor: pointer;
+            font-size: 16px;
+            padding: 4px;
+        }
+
+        .toast .toast-close:hover { color: #fff; }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- ============================================================ -->
+    <!-- Dashboard -->
+    <!-- ============================================================ -->
+
+    <div class="dashboard-page">
+        <!-- Header -->
+        <div class="dashboard-header">
+            <h1>
+                <i class="fas fa-rocket"></i>
+                Dashboard
+            </h1>
+            <div class="dashboard-status">
+                <div class="status-indicator online" id="connectionStatus">
+                    <span class="dot"></span>
+                    <span id="connectionText">Connected</span>
+                </div>
+                <div class="status-indicator trading" id="botStatus">
+                    <span class="dot"></span>
+                    <span id="botStatusText">Trading</span>
+                </div>
+                <div class="quick-actions">
+                    <button class="btn-start" id="startBotBtn"><i class="fas fa-play"></i> Start</button>
+                    <button class="btn-pause" id="pauseBotBtn"><i class="fas fa-pause"></i> Pause</button>
+                    <button class="btn-stop" id="stopBotBtn"><i class="fas fa-stop"></i> Stop</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- KPI Grid -->
+        <div class="kpi-grid" id="kpiGrid">
+            <!-- Rendered by JS -->
+        </div>
+
+        <!-- Charts -->
+        <div class="chart-grid" id="chartGrid">
+            <div class="chart-card">
+                <div class="chart-title"><i class="fas fa-chart-area"></i> Performance</div>
+                <canvas id="performanceChart"></canvas>
+            </div>
+            <div class="chart-card">
+                <div class="chart-title"><i class="fas fa-chart-pie"></i> Portfolio Allocation</div>
+                <canvas id="allocationChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Activity Feed -->
+        <div class="activity-feed">
+            <div class="feed-header">
+                <h3><i class="fas fa-bolt"></i> Live Activity</h3>
+                <div class="feed-controls">
+                    <button id="clearFeedBtn"><i class="fas fa-eraser"></i> Clear</button>
+                    <button id="pauseFeedBtn"><i class="fas fa-pause"></i> Pause</button>
+                </div>
+            </div>
+            <div class="feed-items" id="feedItems">
+                <!-- Rendered by JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- Toast Container -->
+    <!-- ============================================================ -->
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- ============================================================ -->
+    <!-- JavaScript -->
+    <!-- ============================================================ -->
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="/static/js/api_client.js"></script>
+    <script src="/static/js/websocket.js"></script>
+
+    <script>
+        // ================================================================
+        // Dashboard Controller
+        // ================================================================
+
+        class DashboardController {
+            constructor() {
+                this.feedPaused = false;
+                this.feedItems = [];
+                this.charts = {};
+                this.updateInterval = null;
+
+                // DOM Elements
+                this.elements = {
+                    kpiGrid: document.getElementById('kpiGrid'),
+                    performanceChart: document.getElementById('performanceChart'),
+                    allocationChart: document.getElementById('allocationChart'),
+                    feedItems: document.getElementById('feedItems'),
+                    clearFeedBtn: document.getElementById('clearFeedBtn'),
+                    pauseFeedBtn: document.getElementById('pauseFeedBtn'),
+                    startBtn: document.getElementById('startBotBtn'),
+                    pauseBtn: document.getElementById('pauseBotBtn'),
+                    stopBtn: document.getElementById('stopBotBtn'),
+                    connectionStatus: document.getElementById('connectionStatus'),
+                    connectionText: document.getElementById('connectionText'),
+                    botStatus: document.getElementById('botStatus'),
+                    botStatusText: document.getElementById('botStatusText'),
+                    toastContainer: document.getElementById('toastContainer'),
+                };
+
+                // Initialize
+                this.init();
+            }
+
+            // ================================================================
+            // Initialization
+            // ================================================================
+
+            init() {
+                this.loadDashboardData();
+                this.setupEventListeners();
+                this.setupWebSocket();
+                this.startAutoRefresh();
+
+                console.log('DashboardController initialized');
+            }
+
+            // ================================================================
+            // WebSocket Setup
+            // ================================================================
+
+            setupWebSocket() {
+                NexusAPI.connectWebSocket(['dashboard', 'trades', 'positions', 'alerts']);
+
+                // Handle trade updates
+                NexusAPI.onWebSocketMessage('trade', (data) => {
+                    this.addFeedItem('trade', data.symbol || 'Unknown', `${data.side} ${data.quantity} @ ${data.price}`, data);
+                    this.updateKPIs();
+                });
+
+                // Handle position updates
+                NexusAPI.onWebSocketMessage('position', (data) => {
+                    this.addFeedItem('order', data.symbol || 'Unknown', `Position ${data.status}: ${data.quantity} @ ${data.entry_price}`, data);
+                    this.updateKPIs();
+                });
+
+                // Handle alert updates
+                NexusAPI.onWebSocketMessage('alert', (data) => {
+                    this.addFeedItem('alert', data.source || 'System', data.message || 'Alert triggered', data);
+                    this.showToast(data.message || 'Alert triggered', data.severity || 'info');
+                });
+
+                // Handle system status
+                NexusAPI.onWebSocketMessage('status', (data) => {
+                    this.updateBotStatus(data);
+                });
+
+                // Handle connection status
+                NexusAPI.onWebSocketMessage('connection', (data) => {
+                    this.updateConnectionStatus(data);
+                });
+            }
+
+            // ================================================================
+            // Load Dashboard Data
+            // ================================================================
+
+            async loadDashboardData() {
+                try {
+                    const response = await NexusAPI.request('/dashboard/data');
+
+                    if (response && response.success) {
+                        this.dashboardData = response.data;
+                        this.renderKPIs();
+                        this.renderCharts();
+                        this.renderFeed();
+                    } else {
+                        this.showToast(response.message || 'Failed to load dashboard', 'error');
+                    }
+                } catch (error) {
+                    console.error('Error loading dashboard:', error);
+                    this.showToast('Error loading dashboard data', 'error');
+                }
+            }
+
+            // ================================================================
+            // Render KPIs
+            // ================================================================
+
+            renderKPIs() {
+                const data = this.dashboardData || {};
+                const portfolio = data.portfolio || {};
+                const performance = data.performance || {};
+
+                const kpis = [
+                    {
+                        label: 'Total Value',
+                        value: this.formatCurrency(portfolio.total_value || 0),
+                        change: `${((portfolio.day_change || 0) / (portfolio.total_value || 1) * 100).toFixed(2)}%`,
+                        changeClass: portfolio.day_change >= 0 ? 'positive' : 'negative',
+                        sub: `${portfolio.assets || 0} assets`,
+                    },
+                    {
+                        label: '24h P&L',
+                        value: this.formatCurrency(portfolio.day_change || 0),
+                        change: `${((portfolio.day_change || 0) / (portfolio.total_value || 1) * 100).toFixed(2)}%`,
+                        changeClass: portfolio.day_change >= 0 ? 'positive' : 'negative',
+                        sub: 'Today\'s performance',
+                    },
+                    {
+                        label: 'Total Trades',
+                        value: performance.total_trades || 0,
+                        change: `${((performance.win_rate || 0) * 100).toFixed(1)}% win rate`,
+                        changeClass: (performance.win_rate || 0) >= 0.5 ? 'positive' : 'negative',
+                        sub: `${performance.total_trades || 0} total`,
+                    },
+                    {
+                        label: 'Sharpe Ratio',
+                        value: (performance.sharpe_ratio || 0).toFixed(2),
+                        change: performance.sharpe_ratio >= 1 ? 'Good' : 'Needs improvement',
+                        changeClass: performance.sharpe_ratio >= 1 ? 'positive' : 'neutral',
+                        sub: 'Risk-adjusted return',
+                    },
+                    {
+                        label: 'Active Positions',
+                        value: portfolio.active_positions || 0,
+                        change: `${portfolio.total_positions || 0} total positions`,
+                        changeClass: 'neutral',
+                        sub: `${portfolio.active_positions || 0} open`,
+                    },
+                    {
+                        label: 'Bot Uptime',
+                        value: this.formatUptime(performance.uptime || 0),
+                        change: 'Running',
+                        changeClass: 'positive',
+                        sub: 'Since last start',
+                    },
+                ];
+
+                this.elements.kpiGrid.innerHTML = kpis.map(kpi => `
+                    <div class="kpi-card">
+                        <div class="kpi-label">${kpi.label}</div>
+                        <div class="kpi-value">${kpi.value}</div>
+                        <div class="kpi-change ${kpi.changeClass}">${kpi.change}</div>
+                        <div class="kpi-sub">${kpi.sub}</div>
+                    </div>
+                `).join('');
+            }
+
+            // ================================================================
+            // Render Charts
+            // ================================================================
+
+            renderCharts() {
+                this.renderPerformanceChart();
+                this.renderAllocationChart();
+            }
+
+            renderPerformanceChart() {
+                const ctx = this.elements.performanceChart.getContext('2d');
+                const data = this.dashboardData || {};
+                const history = data.performance_history || [];
+
+                const labels = history.map(d => this.formatTime(d.timestamp));
+                const values = history.map(d => d.value);
+
+                if (this.charts.performance) {
+                    this.charts.performance.destroy();
+                }
+
+                this.charts.performance = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Portfolio Value',
+                            data: values,
+                            borderColor: '#6C5CE7',
+                            backgroundColor: 'rgba(108, 92, 231, 0.1)',
+                            fill: true,
+                            tension: 0.4,
+                            pointRadius: 2,
+                            pointHoverRadius: 6,
+                            pointBackgroundColor: '#6C5CE7',
+                            pointBorderColor: '#fff',
+                            pointBorderWidth: 2,
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                backgroundColor: 'rgba(26, 26, 46, 0.95)',
+                                titleColor: '#fff',
+                                bodyColor: 'rgba(255,255,255,0.8)',
+                                borderColor: 'rgba(255,255,255,0.06)',
+                                borderWidth: 1,
+                                cornerRadius: 8,
+                                padding: 12,
+                                callbacks: {
+                                    label: (context) => `Value: ${this.formatCurrency(context.parsed.y)}`
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                grid: { color: 'rgba(255,255,255,0.04)' },
+                                ticks: { color: 'rgba(255,255,255,0.3)', font: { size: 10 }, maxTicksLimit: 12 }
+                            },
+                            y: {
+                                grid: { color: 'rgba(255,255,255,0.04)' },
+                                ticks: { color: 'rgba(255,255,255,0.3)', font: { size: 10 }, callback: (v) => this.formatCurrency(v) }
+                            }
+                        },
+                        interaction: { intersect: false, mode: 'index' }
+                    }
+                });
+            }
+
+            renderAllocationChart() {
+                const ctx = this.elements.allocationChart.getContext('2d');
+                const data = this.dashboardData || {};
+                const allocation = data.allocation || {};
+
+                const labels = Object.keys(allocation);
+                const values = Object.values(allocation);
+                const colors = ['#6C5CE7', '#2ED573', '#FFA502', '#4ECDC4', '#FF4757', '#A29BFE', '#FFD93D', '#FF6B6B'];
+
+                if (this.charts.allocation) {
+                    this.charts.allocation.destroy();
+                }
+
+                this.charts.allocation = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            data: values,
+                            backgroundColor: colors.slice(0, labels.length),
+                            borderColor: '#1a1a2e',
+                            borderWidth: 2,
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: {
+                                    color: 'rgba(255,255,255,0.7)',
+                                    font: { size: 11 },
+                                    padding: 12,
+                                    usePointStyle: true,
+                                }
+                            },
+                            tooltip: {
+                                backgroundColor: 'rgba(26, 26, 46, 0.95)',
+                                titleColor: '#fff',
+                                bodyColor: 'rgba(255,255,255,0.8)',
+                                borderColor: 'rgba(255,255,255,0.06)',
+                                borderWidth: 1,
+                                cornerRadius: 8,
+                                padding: 12,
+                                callbacks: {
+                                    label: (context) => {
+                                        const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                        const pct = total > 0 ? ((context.parsed / total) * 100).toFixed(1) : 0;
+                                        return `${context.label}: ${context.parsed.toFixed(2)}% (${pct}%)`;
+                                    }
+                                }
+                            }
+                        },
+                        cutout: '65%',
+                    }
+                });
+            }
+
+            // ================================================================
+            // Activity Feed
+            // ================================================================
+
+            renderFeed() {
+                const items = this.feedItems;
+                if (items.length === 0) {
+                    this.elements.feedItems.innerHTML = `
+                        <div style="padding: 20px; text-align: center; color: rgba(255,255,255,0.3);">
+                            <i class="fas fa-inbox" style="font-size: 24px; display: block; margin-bottom: 8px; opacity: 0.3;"></i>
+                            No activity yet
+                        </div>
+                    `;
+                    return;
+                }
+
+                let html = '';
+                for (const item of items.slice(0, 50)) {
+                    const icon = this.getFeedIcon(item.type);
+                    const time = this.formatTime(item.timestamp);
+                    html += `
+                        <div class="feed-item">
+                            <div class="feed-icon ${item.type}">${icon}</div>
+                            <div class="feed-content">
+                                <div class="feed-text">${item.message}</div>
+                            </div>
+                            <div class="feed-time">${time}</div>
+                        </div>
+                    `;
+                }
+
+                this.elements.feedItems.innerHTML = html;
+            }
+
+            addFeedItem(type, source, message, data = {}) {
+                if (this.feedPaused) return;
+
+                this.feedItems.unshift({
+                    type: type,
+                    source: source,
+                    message: message,
+                    data: data,
+                    timestamp: new Date().toISOString(),
+                });
+
+                // Limit feed items
+                if (this.feedItems.length > 500) {
+                    this.feedItems = this.feedItems.slice(0, 500);
+                }
+
+                this.renderFeed();
+            }
+
+            getFeedIcon(type) {
+                const icons = {
+                    'trade': '<i class="fas fa-exchange-alt"></i>',
+                    'order': '<i class="fas fa-receipt"></i>',
+                    'alert': '<i class="fas fa-bell"></i>',
+                    'error': '<i class="fas fa-exclamation-circle"></i>',
+                    'info': '<i class="fas fa-info-circle"></i>',
+                    'system': '<i class="fas fa-cog"></i>',
+                };
+                return icons[type] || icons.info;
+            }
+
+            // ================================================================
+            // Update Functions
+            // ================================================================
+
+            updateKPIs() {
+                // Re-fetch latest data
+                this.loadDashboardData();
+            }
+
+            updateBotStatus(data) {
+                const status = data.status || 'offline';
+                const text = data.text || 'Unknown';
+
+                this.elements.botStatus.className = `status-indicator ${status}`;
+                this.elements.botStatusText.textContent = text;
+
+                // Update buttons
+                if (status === 'trading' || status === 'online') {
+                    this.elements.startBtn.style.display = 'none';
+                    this.elements.pauseBtn.style.display = 'inline-flex';
+                    this.elements.stopBtn.style.display = 'inline-flex';
+                } else if (status === 'paused') {
+                    this.elements.startBtn.style.display = 'inline-flex';
+                    this.elements.startBtn.innerHTML = '<i class="fas fa-play"></i> Resume';
+                    this.elements.pauseBtn.style.display = 'none';
+                    this.elements.stopBtn.style.display = 'inline-flex';
+                } else {
+                    this.elements.startBtn.style.display = 'inline-flex';
+                    this.elements.startBtn.innerHTML = '<i class="fas fa-play"></i> Start';
+                    this.elements.pauseBtn.style.display = 'none';
+                    this.elements.stopBtn.style.display = 'none';
+                }
+            }
+
+            updateConnectionStatus(data) {
+                const status = data.status || 'offline';
+                const text = data.text || 'Disconnected';
+
+                this.elements.connectionStatus.className = `status-indicator ${status}`;
+                this.elements.connectionText.textContent = text;
+            }
+
+            // ================================================================
+            // Auto Refresh
+            // ================================================================
+
+            startAutoRefresh() {
+                this.updateInterval = setInterval(() => {
+                    this.loadDashboardData();
+                }, 30000);
+            }
+
+            stopAutoRefresh() {
+                if (this.updateInterval) {
+                    clearInterval(this.updateInterval);
+                    this.updateInterval = null;
+                }
+            }
+
+            // ================================================================
+            // Event Listeners
+            // ================================================================
+
+            setupEventListeners() {
+                // Bot controls
+                this.elements.startBtn.addEventListener('click', () => this.startBot());
+                this.elements.pauseBtn.addEventListener('click', () => this.pauseBot());
+                this.elements.stopBtn.addEventListener('click', () => this.stopBot());
+
+                // Feed controls
+                this.elements.clearFeedBtn.addEventListener('click', () => {
+                    this.feedItems = [];
+                    this.renderFeed();
+                    this.showToast('Feed cleared', 'info');
+                });
+
+                this.elements.pauseFeedBtn.addEventListener('click', () => {
+                    this.feedPaused = !this.feedPaused;
+                    this.elements.pauseFeedBtn.innerHTML = this.feedPaused ?
+                        '<i class="fas fa-play"></i> Resume' :
+                        '<i class="fas fa-pause"></i> Pause';
+                    this.showToast(this.feedPaused ? 'Feed paused' : 'Feed resumed', 'info');
+                });
+
+                // Keyboard shortcuts
+                document.addEventListener('keydown', (e) => {
+                    if (e.ctrlKey && e.key === 'b') {
+                        e.preventDefault();
+                        this.toggleBot();
+                    }
+                    if (e.ctrlKey && e.key === 'r') {
+                        e.preventDefault();
+                        this.loadDashboardData();
+                    }
+                });
+            }
+
+            // ================================================================
+            // Bot Controls
+            // ================================================================
+
+            async startBot() {
+                try {
+                    const response = await NexusAPI.request('/bot/start', { method: 'POST' });
+
+                    if (response && response.success) {
+                        this.showToast('Bot started successfully', 'success');
+                        this.updateBotStatus({ status: 'trading', text: 'Trading' });
+                    } else {
+                        this.showToast(response.message || 'Failed to start bot', 'error');
+                    }
+                } catch (error) {
+                    console.error('Error starting bot:', error);
+                    this.showToast('Error starting bot', 'error');
+                }
+            }
+
+            async pauseBot() {
+                try {
+                    const response = await NexusAPI.request('/bot/pause', { method: 'POST' });
+
+                    if (response && response.success) {
+                        this.showToast('Bot paused', 'warning');
+                        this.updateBotStatus({ status: 'paused', text: 'Paused' });
+                    } else {
+                        this.showToast(response.message || 'Failed to pause bot', 'error');
+                    }
+                } catch (error) {
+                    console.error('Error pausing bot:', error);
+                    this.showToast('Error pausing bot', 'error');
+                }
+            }
+
+            async stopBot() {
+                if (!confirm('Stop the trading bot?')) return;
+
+                try {
+                    const response = await NexusAPI.request('/bot/stop', { method: 'POST' });
+
+                    if (response && response.success) {
+                        this.showToast('Bot stopped', 'success');
+                        this.updateBotStatus({ status: 'offline', text: 'Stopped' });
+                    } else {
+                        this.showToast(response.message || 'Failed to stop bot', 'error');
+                    }
+                } catch (error) {
+                    console.error('Error stopping bot:', error);
+                    this.showToast('Error stopping bot', 'error');
+                }
+            }
+
+            async toggleBot() {
+                const status = this.elements.botStatusText.textContent;
+                if (status === 'Trading' || status === 'Online') {
+                    await this.stopBot();
+                } else if (status === 'Paused') {
+                    await this.startBot();
+                } else {
+                    await this.startBot();
+                }
+            }
+
+            // ================================================================
+            // Utility Methods
+            // ================================================================
+
+            formatCurrency(value) {
+                if (value === null || value === undefined) return '$0.00';
+                const abs = Math.abs(value);
+                if (abs >= 1e9) return `$${(value / 1e9).toFixed(2)}B`;
+                if (abs >= 1e6) return `$${(value / 1e6).toFixed(2)}M`;
+                if (abs >= 1e3) return `$${(value / 1e3).toFixed(2)}K`;
+                return `$${value.toFixed(2)}`;
+            }
+
+            formatTime(timestamp) {
+                if (!timestamp) return '-';
+                const date = new Date(timestamp);
+                const now = new Date();
+                const diff = now - date;
+
+                if (diff < 60000) return 'Just now';
+                if (diff < 3600000) return `${Math.floor(diff / 60000)}m ago`;
+                if (diff < 86400000) return `${Math.floor(diff / 3600000)}h ago`;
+                if (diff < 604800000) return `${Math.floor(diff / 86400000)}d ago`;
+
+                return date.toLocaleString('en-US', {
+                    month: 'short',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                });
+            }
+
+            formatUptime(seconds) {
+                if (!seconds) return '0s';
+                const days = Math.floor(seconds / 86400);
+                const hours = Math.floor((seconds % 86400) / 3600);
+                const minutes = Math.floor((seconds % 3600) / 60);
+
+                if (days > 0) return `${days}d ${hours}h`;
+                if (hours > 0) return `${hours}h ${minutes}m`;
+                return `${minutes}m`;
+            }
+
+            showToast(message, type = 'info') {
+                const container = this.elements.toastContainer;
+                const icons = {
+                    success: 'fas fa-check-circle',
+                    error: 'fas fa-exclamation-circle',
+                    warning: 'fas fa-exclamation-triangle',
+                    info: 'fas fa-info-circle',
+                };
+
+                const toast = document.createElement('div');
+                toast.className = `toast ${type}`;
+                toast.innerHTML = `
+                    <span class="toast-icon"><i class="${icons[type] || icons.info}"></i></span>
+                    <span>${message}</span>
+                    <button class="toast-close" onclick="this.parentElement.remove()">&times;</button>
+                `;
+
+                container.appendChild(toast);
+
+                setTimeout(() => {
+                    if (toast.parentElement) {
+                        toast.remove();
+                    }
+                }, 5000);
+            }
+        }
+
+        // ================================================================
+        // Initialize
+        // ================================================================
+
+        let dashboardController;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            dashboardController = new DashboardController();
+            window.dashboardController = dashboardController;
+        });
+    </script>
+</body>
+</html>
