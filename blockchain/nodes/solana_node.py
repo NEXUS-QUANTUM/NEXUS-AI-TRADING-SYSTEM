@@ -1,6 +1,6 @@
 # blockchain/nodes/solana_node.py
 # NEXUS AI TRADING SYSTEM - Version Avancée
-# Copyright © 2026 NEXUS QUANTUM LTD
+# Copyright © 2026 NEXUS QUANTUM LTD.
 # Tous droits réservés
 
 """
