@@ -1,0 +1,781 @@
+"""
+NEXUS AI TRADING SYSTEM - AI Bot Log File (Rotated)
+Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+CEO: Dr X... - Majority Shareholder
+
+Module: trading/bots/ai_bot/logs/ai_bot.log.1
+Description: Fichier de log rotaté du bot AI (première rotation).
+             Contient les logs historiques après rotation du fichier principal.
+             Format: JSON Lines (jsonl) pour une parsing facile.
+"""
+
+import json
+import logging
+from datetime import datetime
+from typing import Dict, List, Any, Optional
+
+# ============================================================
+# LOGS D'EXEMPLE POUR LE BOT AI (ROTATION 1)
+# ============================================================
+
+# Ce fichier contient des exemples de logs pour le bot AI après rotation.
+# Dans un environnement de production, ce fichier serait généré
+# automatiquement par le système de rotation des logs.
+
+EXAMPLE_LOGS = [
+    {
+        "timestamp": "2026-07-16T00:00:00.000000",
+        "level": "INFO",
+        "module": "ai_bot",
+        "message": "🚀 NEXUS AI Trading Bot démarré (jour 2)",
+        "data": {
+            "version": "3.0.0",
+            "bot_id": "AI_BOT_001",
+            "symbol": "BTC-USD",
+            "timeframe": "1h",
+            "initial_capital": 100000.0,
+            "startup_time": 0.456
+        }
+    },
+    {
+        "timestamp": "2026-07-16T00:00:01.123456",
+        "level": "INFO",
+        "module": "data_feeder",
+        "message": "📊 Flux de données initialisé (rotation)",
+        "data": {
+            "source": "websocket",
+            "symbol": "BTC-USD",
+            "timeframe": "1h",
+            "buffer_size": 1000,
+            "status": "connected",
+            "reconnection": False
+        }
+    },
+    {
+        "timestamp": "2026-07-16T00:00:02.234567",
+        "level": "INFO",
+        "module": "model_manager",
+        "message": "🧠 Modèles AI chargés (cache)",
+        "data": {
+            "models": [
+                {"name": "lstm_v2", "version": "2.1.0", "status": "loaded", "from_cache": True},
+                {"name": "transformer_v1", "version": "1.0.0", "status": "loaded", "from_cache": True},
+                {"name": "xgboost_v3", "version": "3.0.0", "status": "loaded", "from_cache": True}
+            ],
+            "total_models": 3,
+            "load_time": 0.456,
+            "cache_hit": True
+        }
+    },
+    {
+        "timestamp": "2026-07-16T00:00:03.345678",
+        "level": "INFO",
+        "module": "strategy_selector",
+        "message": "📈 Stratégie sélectionnée (adaptative)",
+        "data": {
+            "strategy": "momentum_breakout",
+            "confidence": 0.92,
+            "regime": "trending_strong",
+            "reason": "market_regime_detected",
+            "previous_strategy": "hybrid_ensemble"
+        }
+    },
+    {
+        "timestamp": "2026-07-16T00:00:04.456789",
+        "level": "DEBUG",
+        "module": "indicator_calculator",
+        "message": "📉 Indicateurs calculés (cache)",
+        "data": {
+            "indicators": [
+                {"name": "rsi", "value": 72.34},
+                {"name": "macd", "value": 145.67},
+                {"name": "bollinger_upper", "value": 103456.78},
+                {"name": "bollinger_lower", "value": 98543.22}
+            ],
+            "calculation_time": 0.023,
+            "from_cache": True
+        }
+    },
+    {
+        "timestamp": "2026-07-16T00:00:05.567890",
+        "level": "INFO",
+        "module": "signal_processor",
+        "message": "🔔 Signal de trading généré (forte confiance)",
+        "data": {
+            "signal_id": "SIG_101",
+            "action": "BUY",
+            "price": 101234.56,
+            "confidence": 0.91,
+            "stop_loss": 99234.56,
+            "take_profit": 103234.56,
+            "reason": "momentum_breakout",
+            "strength": "high"
+        }
+    },
+    {
+        "timestamp": "2026-07-16T00:00:06.678901",
+        "level": "INFO",
+        "module": "risk_manager",
+        "message": "⚖️ Position sizing calculé (agressif)",
+        "data": {
+            "signal_id": "SIG_101",
+            "position_size": 0.8,
+            "risk_per_trade": 1.5,
+            "max_risk": 1500.0,
+            "account_balance": 100000.0,
+            "risk_ratio": 0.015,
+            "aggressiveness": "high"
+        }
+    },
+    {
+        "timestamp": "2026-07-16T00:00:07.789012",
+        "level": "INFO",
+        "module": "order_executor",
+        "message": "💼 Ordre exécuté (rapide)",
+        "data": {
+            "order_id": "ORD_101",
+            "symbol": "BTC-USD",
+            "side": "BUY",
+            "quantity": 0.8,
+            "price": 101234.56,
+            "status": "FILLED",
+            "commission": 8.10,
+            "execution_time": 0.089,
+            "slippage": 0.01
+        }
+    },
+    {
+        "timestamp": "2026-07-16T00:00:08.890123",
+        "level": "INFO",
+        "module": "position_manager",
+        "message": "📊 Position ouverte (taille importante)",
+        "data": {
+            "position_id": "POS_101",
+            "symbol": "BTC-USD",
+            "side": "LONG",
+            "quantity": 0.8,
+            "entry_price": 101234.56,
+            "stop_loss": 99234.56,
+            "take_profit": 103234.56,
+            "timestamp": "2026-07-16T00:00:08.890123",
+            "size_score": 0.8
+        }
+    },
+    {
+        "timestamp": "2026-07-16T00:05:00.901234",
+        "level": "INFO",
+        "module": "performance_tracker",
+        "message": "📈 Performance mise à jour (forte hausse)",
+        "data": {
+            "total_pnl": 345.67,
+            "open_pnl": 345.67,
+            "closed_pnl": 0.0,
+            "win_rate": 1.0,
+            "total_trades": 3,
+            "winning_trades": 3,
+            "current_drawdown": 0.0,
+            "daily_return": 0.35
+        }
+    },
+    {
+        "timestamp": "2026-07-16T00:10:00.012345",
+        "level": "INFO",
+        "module": "model_predictor",
+        "message": "🔮 Prédiction effectuée (confiance élevée)",
+        "data": {
+            "model": "ensemble_v2",
+            "direction": "UP",
+            "confidence": 0.89,
+            "target_price": 102345.67,
+            "horizon": "1h",
+            "features_used": 32,
+            "model_consensus": 0.85
+        }
+    },
+    {
+        "timestamp": "2026-07-16T00:15:00.123456",
+        "level": "WARNING",
+        "module": "data_feeder",
+        "message": "⚠️ Latence élevée détectée (réseau)",
+        "data": {
+            "latency_ms": 189.3,
+            "threshold": 100.0,
+            "source": "websocket",
+            "symbol": "BTC-USD",
+            "network_issue": True
+        }
+    },
+    {
+        "timestamp": "2026-07-16T00:20:00.234567",
+        "level": "INFO",
+        "module": "order_executor",
+        "message": "💰 Ordre partiellement rempli (faible liquidité)",
+        "data": {
+            "order_id": "ORD_102",
+            "symbol": "BTC-USD",
+            "side": "SELL",
+            "filled": 0.4,
+            "remaining": 0.4,
+            "status": "PARTIALLY_FILLED",
+            "avg_price": 101456.78,
+            "liquidity": "low"
+        }
+    },
+    {
+        "timestamp": "2026-07-16T00:25:00.345678",
+        "level": "INFO",
+        "module": "position_manager",
+        "message": "📊 Position fermée avec profit (partielle)",
+        "data": {
+            "position_id": "POS_101",
+            "symbol": "BTC-USD",
+            "side": "LONG",
+            "entry_price": 101234.56,
+            "exit_price": 101456.78,
+            "quantity": 0.4,
+            "pnl": 88.89,
+            "return": 0.22,
+            "hold_time": 1500.0,
+            "partial": True
+        }
+    },
+    {
+        "timestamp": "2026-07-16T00:30:00.456789",
+        "level": "INFO",
+        "module": "performance_tracker",
+        "message": "📈 Performance mise à jour (stable)",
+        "data": {
+            "total_pnl": 434.56,
+            "open_pnl": 345.67,
+            "closed_pnl": 88.89,
+            "win_rate": 0.75,
+            "total_trades": 4,
+            "winning_trades": 3,
+            "sharpe_ratio": 2.8,
+            "current_drawdown": 0.5
+        }
+    },
+    {
+        "timestamp": "2026-07-16T00:35:00.567890",
+        "level": "ERROR",
+        "module": "order_executor",
+        "message": "❌ Échec de l'exécution de l'ordre (limite)",
+        "data": {
+            "order_id": "ORD_103",
+            "symbol": "BTC-USD",
+            "side": "BUY",
+            "error": "Price_limit_exceeded",
+            "limit_price": 102000.00,
+            "market_price": 102345.67,
+            "retry": 1
+        }
+    },
+    {
+        "timestamp": "2026-07-16T00:36:00.678901",
+        "level": "INFO",
+        "module": "order_executor",
+        "message": "💼 Ordre exécuté (limite ajustée)",
+        "data": {
+            "order_id": "ORD_104",
+            "symbol": "BTC-USD",
+            "side": "BUY",
+            "quantity": 0.3,
+            "price": 102000.00,
+            "status": "FILLED",
+            "commission": 3.06,
+            "execution_time": 0.123,
+            "limit_adjusted": True
+        }
+    },
+    {
+        "timestamp": "2026-07-16T00:40:00.789012",
+        "level": "CRITICAL",
+        "module": "risk_manager",
+        "message": "🚨 Risque modéré détecté",
+        "data": {
+            "risk_type": "concentration_risk",
+            "current_concentration": 45.0,
+            "max_concentration": 40.0,
+            "action": "reduce_position",
+            "positions_adjusted": 1
+        }
+    },
+    {
+        "timestamp": "2026-07-16T01:00:00.890123",
+        "level": "INFO",
+        "module": "ai_bot",
+        "message": "🔄 Checkpoint sauvegardé",
+        "data": {
+            "checkpoint_type": "hourly",
+            "state_saved": True,
+            "positions_count": 2,
+            "orders_count": 3,
+            "save_time": 0.234
+        }
+    },
+    {
+        "timestamp": "2026-07-16T02:00:00.901234",
+        "level": "INFO",
+        "module": "market_analysis",
+        "message": "📊 Analyse de marché (approfondie)",
+        "data": {
+            "regime": "bullish_strong",
+            "volatility": 1.8,
+            "trend": "up",
+            "support": 100000.00,
+            "resistance": 103000.00,
+            "prediction": "bullish",
+            "strength": 0.85
+        }
+    },
+    {
+        "timestamp": "2026-07-16T03:00:00.012345",
+        "level": "DEBUG",
+        "module": "model_manager",
+        "message": "🧠 Entraînement du modèle en ligne (batch)",
+        "data": {
+            "model": "lstm_v2",
+            "batch_size": 64,
+            "epochs": 2,
+            "loss": 0.018,
+            "accuracy": 0.82,
+            "training_time": 67.89,
+            "batch_processed": 150
+        }
+    },
+    {
+        "timestamp": "2026-07-16T04:00:00.123456",
+        "level": "INFO",
+        "module": "execution_monitor",
+        "message": "📊 Rapport d'exécution horaire (rotation)",
+        "data": {
+            "orders": 8,
+            "filled": 6,
+            "partially_filled": 1,
+            "rejected": 1,
+            "cancelled": 0,
+            "avg_latency_ms": 67.8,
+            "fill_rate": 0.75,
+            "total_volume": 4.2,
+            "avg_slippage": 0.02
+        }
+    },
+    {
+        "timestamp": "2026-07-16T06:00:00.234567",
+        "level": "WARNING",
+        "module": "data_validator",
+        "message": "⚠️ Données manquantes détectées (rotation)",
+        "data": {
+            "missing_bars": 3,
+            "timeframe": "1m",
+            "symbol": "BTC-USD",
+            "gap_start": "2026-07-16T05:57:00",
+            "gap_end": "2026-07-16T06:00:00",
+            "severity": "low"
+        }
+    },
+    {
+        "timestamp": "2026-07-16T08:00:00.345678",
+        "level": "INFO",
+        "module": "signal_processor",
+        "message": "🔔 Signal de trading généré (neutral)",
+        "data": {
+            "signal_id": "SIG_102",
+            "action": "HOLD",
+            "price": 102345.67,
+            "confidence": 0.55,
+            "stop_loss": None,
+            "take_profit": None,
+            "reason": "neutral_market",
+            "strength": "low"
+        }
+    },
+    {
+        "timestamp": "2026-07-16T10:00:00.456789",
+        "level": "INFO",
+        "module": "position_manager",
+        "message": "📊 Position fermée avec profit (complet)",
+        "data": {
+            "position_id": "POS_101",
+            "symbol": "BTC-USD",
+            "side": "LONG",
+            "entry_price": 101234.56,
+            "exit_price": 102456.78,
+            "quantity": 0.4,
+            "pnl": 488.89,
+            "return": 1.21,
+            "hold_time": 10800.0,
+            "complete": True
+        }
+    },
+    {
+        "timestamp": "2026-07-16T12:00:00.567890",
+        "level": "INFO",
+        "module": "ai_bot",
+        "message": "📊 Rapport mi-journée (rotation)",
+        "data": {
+            "period": "morning",
+            "total_trades": 10,
+            "winning_trades": 7,
+            "total_pnl": 923.45,
+            "win_rate": 0.7,
+            "max_drawdown": 2.1,
+            "sharpe_ratio": 2.5,
+            "total_volume": 5.8,
+            "avg_position_size": 0.58
+        }
+    },
+    {
+        "timestamp": "2026-07-16T14:00:00.678901",
+        "level": "ERROR",
+        "module": "websocket",
+        "message": "❌ Déconnexion du WebSocket (rotation)",
+        "data": {
+            "reason": "connection_timeout",
+            "reconnect_attempts": 2,
+            "last_heartbeat": "2026-07-16T13:59:55",
+            "backoff": 3
+        }
+    },
+    {
+        "timestamp": "2026-07-16T14:00:02.789012",
+        "level": "CRITICAL",
+        "module": "ai_bot",
+        "message": "🚨 Reconnexion automatique (rotation)",
+        "data": {
+            "status": "reconnecting",
+            "backoff": 3,
+            "attempt": 2,
+            "max_attempts": 5,
+            "prev_attempt": "failed"
+        }
+    },
+    {
+        "timestamp": "2026-07-16T14:00:05.890123",
+        "level": "INFO",
+        "module": "data_feeder",
+        "message": "🔄 Reconnexion réussie (rotation)",
+        "data": {
+            "source": "websocket",
+            "symbol": "BTC-USD",
+            "latency": 12.3,
+            "connection_id": "WS_102",
+            "reconnection_success": True
+        }
+    },
+    {
+        "timestamp": "2026-07-16T16:00:00.901234",
+        "level": "INFO",
+        "module": "performance_tracker",
+        "message": "📈 Performance mise à jour (après-midi)",
+        "data": {
+            "total_pnl": 1234.56,
+            "open_pnl": 311.11,
+            "closed_pnl": 923.45,
+            "win_rate": 0.72,
+            "total_trades": 11,
+            "winning_trades": 8,
+            "sharpe_ratio": 2.3,
+            "current_drawdown": 0.8,
+            "daily_return": 1.23
+        }
+    },
+    {
+        "timestamp": "2026-07-16T18:00:00.012345",
+        "level": "INFO",
+        "module": "market_analysis",
+        "message": "📊 Analyse de marché (après-midi)",
+        "data": {
+            "regime": "bullish_moderate",
+            "volatility": 2.2,
+            "trend": "up_weak",
+            "support": 101000.00,
+            "resistance": 103500.00,
+            "prediction": "neutral_bullish",
+            "strength": 0.65
+        }
+    },
+    {
+        "timestamp": "2026-07-16T20:00:00.123456",
+        "level": "WARNING",
+        "module": "risk_manager",
+        "message": "⚠️ Drawdown en progression",
+        "data": {
+            "current_drawdown": 6.5,
+            "max_drawdown": 10.0,
+            "drawdown_ratio": 0.65,
+            "positions_at_risk": 1,
+            "warning_level": "moderate"
+        }
+    },
+    {
+        "timestamp": "2026-07-16T22:00:00.234567",
+        "level": "INFO",
+        "module": "order_executor",
+        "message": "💼 Ordre exécuté (fin de journée)",
+        "data": {
+            "order_id": "ORD_105",
+            "symbol": "BTC-USD",
+            "side": "SELL",
+            "quantity": 0.5,
+            "price": 102567.89,
+            "status": "FILLED",
+            "commission": 5.13,
+            "execution_time": 0.045,
+            "end_of_day": True
+        }
+    },
+    {
+        "timestamp": "2026-07-16T23:00:00.345678",
+        "level": "INFO",
+        "module": "position_manager",
+        "message": "📊 Position fermée avec profit (fin de journée)",
+        "data": {
+            "position_id": "POS_102",
+            "symbol": "BTC-USD",
+            "side": "LONG",
+            "entry_price": 101800.00,
+            "exit_price": 102567.89,
+            "quantity": 0.5,
+            "pnl": 383.95,
+            "return": 0.75,
+            "hold_time": 21600.0,
+            "end_of_day": True
+        }
+    },
+    {
+        "timestamp": "2026-07-16T23:59:59.456789",
+        "level": "INFO",
+        "module": "ai_bot",
+        "message": "📊 Bilan de la journée (rotation)",
+        "data": {
+            "date": "2026-07-16",
+            "total_trades": 12,
+            "winning_trades": 9,
+            "total_pnl": 1618.51,
+            "win_rate": 0.75,
+            "sharpe_ratio": 2.4,
+            "max_drawdown": 2.1,
+            "total_volume": 6.3,
+            "avg_position_size": 0.53,
+            "max_position_size": 0.8,
+            "avg_hold_time": 5400.0,
+            "best_trade": 488.89,
+            "worst_trade": -123.45,
+            "profit_factor": 2.1,
+            "recovery_factor": 3.2,
+            "uptime": "23h59m",
+            "status": "success",
+            "daily_return": 1.62,
+            "rotation": 1
+        }
+    },
+    {
+        "timestamp": "2026-07-16T23:59:59.567890",
+        "level": "INFO",
+        "module": "ai_bot",
+        "message": "🛑 Arrêt du bot (rotation)",
+        "data": {
+            "reason": "end_of_day",
+            "positions": 0,
+            "orders": 0,
+            "final_balance": 101618.51,
+            "daily_return": 1.62,
+            "shutdown_time": "2026-07-16T23:59:59",
+            "rotation_complete": True
+        }
+    }
+]
+
+# ============================================================
+# FONCTIONS DE GESTION DES LOGS
+# ============================================================
+
+def write_example_logs(filepath: str = "trading/bots/ai_bot/logs/ai_bot.log.1") -> None:
+    """
+    Écrit les logs d'exemple dans un fichier.
+    
+    Args:
+        filepath: Chemin du fichier de logs.
+    """
+    import os
+    
+    try:
+        # Création du répertoire si nécessaire
+        os.makedirs(os.path.dirname(filepath), exist_ok=True)
+        
+        with open(filepath, 'w', encoding='utf-8') as f:
+            for log in EXAMPLE_LOGS:
+                f.write(json.dumps(log) + '\n')
+        
+        print(f"✅ Logs écrits dans {filepath}")
+        
+    except Exception as e:
+        print(f"❌ Erreur d'écriture des logs: {e}")
+
+
+def read_logs(
+    filepath: str = "trading/bots/ai_bot/logs/ai_bot.log.1",
+    level: Optional[str] = None,
+    module: Optional[str] = None,
+    limit: int = 100
+) -> List[Dict[str, Any]]:
+    """
+    Lit les logs depuis un fichier.
+    
+    Args:
+        filepath: Chemin du fichier de logs.
+        level: Niveau de log.
+        module: Module.
+        limit: Nombre maximum de logs.
+        
+    Returns:
+        Liste des logs.
+    """
+    logs = []
+    
+    try:
+        with open(filepath, 'r', encoding='utf-8') as f:
+            for line in f:
+                try:
+                    log = json.loads(line.strip())
+                    logs.append(log)
+                except json.JSONDecodeError:
+                    continue
+        
+        # Filtrage
+        if level:
+            logs = [l for l in logs if l.get('level') == level]
+        
+        if module:
+            logs = [l for l in logs if l.get('module') == module]
+        
+        # Tri par timestamp (plus récent en premier)
+        logs.sort(key=lambda x: x.get('timestamp', ''), reverse=True)
+        
+        return logs[:limit]
+        
+    except FileNotFoundError:
+        print(f"⚠️ Fichier de logs non trouvé: {filepath}")
+        return []
+    except Exception as e:
+        print(f"❌ Erreur de lecture des logs: {e}")
+        return []
+
+
+def get_log_stats(
+    filepath: str = "trading/bots/ai_bot/logs/ai_bot.log.1"
+) -> Dict[str, Any]:
+    """
+    Retourne les statistiques des logs.
+    
+    Args:
+        filepath: Chemin du fichier de logs.
+        
+    Returns:
+        Statistiques des logs.
+    """
+    logs = read_logs(filepath, limit=10000)
+    
+    if not logs:
+        return {'total': 0}
+    
+    levels = {}
+    modules = {}
+    
+    for log in logs:
+        level = log.get('level', 'UNKNOWN')
+        module = log.get('module', 'UNKNOWN')
+        levels[level] = levels.get(level, 0) + 1
+        modules[module] = modules.get(module, 0) + 1
+    
+    return {
+        'total': len(logs),
+        'levels': levels,
+        'modules': modules,
+        'first_log': logs[-1].get('timestamp') if logs else None,
+        'last_log': logs[0].get('timestamp') if logs else None
+    }
+
+
+def compare_logs(
+    filepath1: str = "trading/bots/ai_bot/logs/ai_bot.log",
+    filepath2: str = "trading/bots/ai_bot/logs/ai_bot.log.1"
+) -> Dict[str, Any]:
+    """
+    Compare deux fichiers de logs.
+    
+    Args:
+        filepath1: Premier fichier de logs.
+        filepath2: Deuxième fichier de logs.
+        
+    Returns:
+        Résultats de la comparaison.
+    """
+    stats1 = get_log_stats(filepath1)
+    stats2 = get_log_stats(filepath2)
+    
+    return {
+        'file1': {
+            'path': filepath1,
+            'stats': stats1
+        },
+        'file2': {
+            'path': filepath2,
+            'stats': stats2
+        },
+        'comparison': {
+            'total_diff': stats2.get('total', 0) - stats1.get('total', 0),
+            'levels_diff': {
+                k: stats2.get('levels', {}).get(k, 0) - stats1.get('levels', {}).get(k, 0)
+                for k in set(stats1.get('levels', {}).keys()) | set(stats2.get('levels', {}).keys())
+            }
+        }
+    }
+
+
+# ============================================================
+# EXPORTATION
+# ============================================================
+
+__all__ = [
+    'EXAMPLE_LOGS',
+    'write_example_logs',
+    'read_logs',
+    'get_log_stats',
+    'compare_logs'
+]
+
+# ============================================================
+# EXÉCUTION (si fichier exécuté directement)
+# ============================================================
+
+if __name__ == "__main__":
+    # Écriture des logs d'exemple
+    write_example_logs()
+    
+    # Lecture et affichage des 5 derniers logs
+    print("\n📋 Derniers logs (rotation 1):")
+    logs = read_logs(limit=5)
+    for log in logs:
+        print(f"[{log.get('timestamp')}] {log.get('level')} - {log.get('message')}")
+    
+    # Statistiques
+    print("\n📊 Statistiques (rotation 1):")
+    stats = get_log_stats()
+    print(f"Total logs: {stats.get('total', 0)}")
+    print(f"Niveaux: {stats.get('levels', {})}")
+    print(f"Modules: {stats.get('modules', {})}")
+    
+    # Comparaison avec le fichier principal
+    print("\n📊 Comparaison avec ai_bot.log:")
+    try:
+        comparison = compare_logs()
+        print(f"Différence de logs: {comparison['comparison']['total_diff']}")
+        print(f"Différence de niveaux: {comparison['comparison']['levels_diff']}")
+    except Exception as e:
+        print(f"Erreur de comparaison: {e}")
+
+# ============================================================
+# FIN DU FICHIER
+# ============================================================
