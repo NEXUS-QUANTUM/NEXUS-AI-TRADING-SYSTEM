@@ -1,0 +1,447 @@
+# trading/bots/ai_bot/tests/fixtures/config_test.yaml
+# NEXUS AI TRADING SYSTEM - Test Configuration Fixtures
+# Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+
+# ============================================================================
+# Test Environment Configuration
+# ============================================================================
+
+environment: test
+debug: true
+log_level: DEBUG
+
+# ============================================================================
+# API Configuration
+# ============================================================================
+
+api:
+  base_url: "http://localhost:8000"
+  api_version: "v1"
+  timeout: 30
+  max_retries: 3
+  retry_delay: 1.0
+
+# ============================================================================
+# Database Configuration
+# ============================================================================
+
+database:
+  host: "localhost"
+  port: 5432
+  name: "nexus_test"
+  user: "nexus_test"
+  password: "nexus_test_pass"
+  pool_size: 5
+  max_overflow: 10
+  pool_timeout: 30
+
+# ============================================================================
+# Redis Configuration
+# ============================================================================
+
+redis:
+  host: "localhost"
+  port: 6379
+  db: 1
+  password: null
+  decode_responses: true
+  max_connections: 10
+
+# ============================================================================
+# WebSocket Configuration
+# ============================================================================
+
+websocket:
+  url: "ws://localhost:8000/ws"
+  reconnect_attempts: 3
+  reconnect_delay: 1.0
+  heartbeat_interval: 30
+  heartbeat_timeout: 10
+
+# ============================================================================
+# Market Data Configuration
+# ============================================================================
+
+market_data:
+  provider: "mock"  # mock, binance, coinbase, kraken
+  symbols:
+    - "BTC-USD"
+    - "ETH-USD"
+    - "SOL-USD"
+    - "AVAX-USD"
+  timeframes:
+    - "1m"
+    - "5m"
+    - "15m"
+    - "1h"
+    - "4h"
+    - "1d"
+  update_interval: 5
+  max_history: 1000
+  mock_data:
+    start_price: 45000
+    volatility: 0.02
+    volume: 1000
+    seed: 42
+
+# ============================================================================
+# Strategy Configuration
+# ============================================================================
+
+strategies:
+  trend_following:
+    enabled: true
+    name: "trend_following_test"
+    type: "trending"
+    timeframe: "1h"
+    initial_capital: 100000
+    max_position_size: 50000
+    max_positions: 3
+    min_confidence: 0.6
+    risk_per_trade: 0.02
+    max_drawdown: 0.1
+    use_stop_loss: true
+    use_take_profit: true
+    stop_loss_percent: 0.02
+    take_profit_percent: 0.04
+    trailing_stop: true
+    trailing_stop_percent: 0.015
+    # Trend specific
+    ma_fast_period: 20
+    ma_slow_period: 50
+    ma_signal_period: 9
+    adx_period: 14
+    adx_threshold: 25
+    trend_strength_threshold: 0.3
+
+  momentum:
+    enabled: true
+    name: "momentum_test"
+    type: "momentum"
+    timeframe: "1h"
+    initial_capital: 100000
+    max_position_size: 50000
+    max_positions: 3
+    min_confidence: 0.6
+    risk_per_trade: 0.02
+    max_drawdown: 0.1
+    use_stop_loss: true
+    use_take_profit: true
+    stop_loss_percent: 0.02
+    take_profit_percent: 0.04
+    # Momentum specific
+    roc_period: 14
+    rsi_period: 14
+    macd_fast: 12
+    macd_slow: 26
+    macd_signal: 9
+    momentum_threshold: 0.5
+    strong_momentum_threshold: 1.0
+    use_volume_momentum: true
+    use_divergence_detection: true
+
+  mean_reversion:
+    enabled: true
+    name: "mean_reversion_test"
+    type: "mean_reversion"
+    timeframe: "1h"
+    initial_capital: 100000
+    max_position_size: 50000
+    max_positions: 3
+    min_confidence: 0.6
+    risk_per_trade: 0.02
+    max_drawdown: 0.1
+    use_stop_loss: true
+    use_take_profit: true
+    stop_loss_percent: 0.02
+    take_profit_percent: 0.04
+    # Mean reversion specific
+    bb_period: 20
+    bb_std_dev: 2.0
+    bb_entry_threshold: 1.5
+    bb_exit_threshold: 0.5
+    rsi_period: 14
+    rsi_oversold: 30
+    rsi_overbought: 70
+    z_score_entry: 2.0
+    z_score_exit: 0.5
+    use_kalman_filter: true
+    use_multi_timeframe: true
+
+  breakout:
+    enabled: true
+    name: "breakout_test"
+    type: "scalping"
+    timeframe: "1h"
+    initial_capital: 100000
+    max_position_size: 50000
+    max_positions: 3
+    min_confidence: 0.6
+    risk_per_trade: 0.02
+    max_drawdown: 0.1
+    use_stop_loss: true
+    use_take_profit: true
+    stop_loss_percent: 0.02
+    take_profit_percent: 0.04
+    # Breakout specific
+    lookback_periods: 200
+    consolidation_periods: 20
+    volume_threshold: 1.5
+    breakout_threshold: 0.015
+    retest_threshold: 0.005
+    min_touches: 2
+    use_trendlines: true
+    use_moving_averages: true
+    use_bollinger_bands: true
+    use_volume_analysis: true
+
+  scalping:
+    enabled: false
+    name: "scalping_test"
+    type: "scalping"
+    timeframe: "1m"
+    initial_capital: 100000
+    max_position_size: 10000
+    max_positions: 5
+    min_confidence: 0.7
+    risk_per_trade: 0.01
+    max_drawdown: 0.05
+    use_stop_loss: true
+    use_take_profit: true
+    stop_loss_percent: 0.005
+    take_profit_percent: 0.01
+
+  grid_trading:
+    enabled: false
+    name: "grid_test"
+    type: "grid"
+    timeframe: "5m"
+    initial_capital: 100000
+    max_position_size: 20000
+    max_positions: 10
+    min_confidence: 0.5
+    risk_per_trade: 0.01
+    max_drawdown: 0.1
+    use_stop_loss: true
+    use_take_profit: true
+    stop_loss_percent: 0.01
+    take_profit_percent: 0.02
+
+  arbitrage:
+    enabled: false
+    name: "arbitrage_test"
+    type: "arbitrage"
+    timeframe: "1m"
+    initial_capital: 100000
+    max_position_size: 50000
+    max_positions: 1
+    min_confidence: 0.7
+    risk_per_trade: 0.01
+    max_drawdown: 0.05
+    # Arbitrage specific
+    min_profit_percent: 0.5
+    max_profit_percent: 10.0
+    min_volume: 1000
+    max_slippage: 0.01
+    exchanges:
+      - "binance"
+      - "coinbase"
+      - "kraken"
+
+  hybrid:
+    enabled: false
+    name: "hybrid_test"
+    type: "hybrid"
+    timeframe: "1h"
+    initial_capital: 100000
+    max_position_size: 50000
+    max_positions: 5
+    min_confidence: 0.6
+    risk_per_trade: 0.02
+    max_drawdown: 0.1
+    # Hybrid specific
+    enable_trend_following: true
+    enable_momentum: true
+    enable_mean_reversion: true
+    enable_breakout: true
+    weighting_method: "performance"
+    consensus_threshold: 0.6
+    enable_regime_detection: true
+    enable_adaptive_weights: true
+
+# ============================================================================
+# AI Models Configuration
+# ============================================================================
+
+ai_models:
+  enabled: true
+  models:
+    lstm:
+      enabled: true
+      model_path: "models/lstm.pt"
+      input_size: 50
+      hidden_size: 128
+      num_layers: 2
+      output_size: 1
+      dropout: 0.2
+    transformer:
+      enabled: true
+      model_path: "models/transformer.pt"
+      d_model: 64
+      nhead: 4
+      num_layers: 2
+      dim_feedforward: 128
+      dropout: 0.1
+    xgboost:
+      enabled: true
+      model_path: "models/xgboost.json"
+      max_depth: 6
+      learning_rate: 0.1
+      n_estimators: 100
+      subsample: 0.8
+      colsample_bytree: 0.8
+
+# ============================================================================
+# Risk Management Configuration
+# ============================================================================
+
+risk_management:
+  enabled: true
+  max_position_size: 50000
+  max_leverage: 3.0
+  max_drawdown: 0.1
+  max_loss_per_day: 0.05
+  max_loss_per_week: 0.1
+  max_loss_per_month: 0.15
+  risk_per_trade: 0.02
+  stop_loss_default: 0.02
+  take_profit_default: 0.04
+  trailing_stop_default: 0.015
+  volatility_adjustment: true
+  correlation_penalty: 0.3
+
+# ============================================================================
+# Order Management Configuration
+# ============================================================================
+
+order_management:
+  enabled: true
+  max_open_orders: 10
+  max_orders_per_minute: 5
+  order_timeout: 30
+  order_retry_attempts: 3
+  order_retry_delay: 1.0
+  order_cancel_timeout: 5
+  order_sync_interval: 10
+
+# ============================================================================
+# Market Data Provider Configuration
+# ============================================================================
+
+market_data_provider:
+  name: "MockMarketData"
+  enabled: true
+  update_interval: 5
+  cache_size: 1000
+  cache_ttl: 60
+  batch_size: 100
+  retry_attempts: 3
+  retry_delay: 1.0
+  timeout: 30
+
+# ============================================================================
+# Performance Tracking Configuration
+# ============================================================================
+
+performance:
+  enabled: true
+  metrics_interval: 60
+  history_size: 1000
+  export_enabled: true
+  export_format: "json"
+  export_path: "data/performance"
+  metrics:
+    - "profit"
+    - "win_rate"
+    - "sharpe_ratio"
+    - "max_drawdown"
+    - "total_trades"
+    - "avg_win"
+    - "avg_loss"
+    - "profit_factor"
+
+# ============================================================================
+# Logging Configuration
+# ============================================================================
+
+logging:
+  level: "DEBUG"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file: "logs/test.log"
+  console: true
+  rotation: "10 MB"
+  retention: 10
+
+# ============================================================================
+# Monitoring Configuration
+# ============================================================================
+
+monitoring:
+  enabled: true
+  health_check_interval: 30
+  alert_channels:
+    - type: "console"
+      enabled: true
+    - type: "telegram"
+      enabled: false
+      bot_token: "test_bot_token"
+      chat_id: "test_chat_id"
+    - type: "email"
+      enabled: false
+      smtp_host: "smtp.gmail.com"
+      smtp_port: 587
+      from_email: "test@example.com"
+      to_email: "admin@example.com"
+
+# ============================================================================
+# Notification Configuration
+# ============================================================================
+
+notifications:
+  enabled: false
+  min_severity: "warning"
+  channels:
+    - "console"
+    - "file"
+  templates:
+    trading: "templates/trading_notification.html"
+    risk: "templates/risk_notification.html"
+    system: "templates/system_notification.html"
+
+# ============================================================================
+# Security Configuration
+# ============================================================================
+
+security:
+  jwt_secret: "test_jwt_secret_key"
+  jwt_algorithm: "HS256"
+  jwt_expiration: 3600
+  bcrypt_rounds: 10
+  rate_limit_requests: 100
+  rate_limit_window: 60
+
+# ============================================================================
+# Test Specific Configuration
+# ============================================================================
+
+test:
+  mock_enabled: true
+  verbose: true
+  coverage_enabled: true
+  coverage_report: "html"
+  random_seed: 42
+  test_data_path: "tests/data"
+  fixture_path: "tests/fixtures"
+  output_path: "tests/output"
+  timeout: 60
+  parallel_workers: 4
