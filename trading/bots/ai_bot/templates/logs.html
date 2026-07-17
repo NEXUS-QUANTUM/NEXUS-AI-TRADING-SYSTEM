@@ -1,0 +1,1169 @@
+<!-- trading/bots/ai_bot/templates/logs.html -->
+<!-- NEXUS AI TRADING SYSTEM - Logs Dashboard -->
+<!-- Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved -->
+
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEXUS AI Trading - Logs</title>
+
+    <!-- ============================================================ -->
+    <!-- CSS -->
+    <!-- ============================================================ -->
+    <link rel="stylesheet" href="/static/css/dashboard.css">
+    <link rel="stylesheet" href="/static/css/dark_theme.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        /* ============================================================ */
+        /* Logs Page Styles */
+        /* ============================================================ */
+
+        .logs-page {
+            padding: 24px 32px;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        .logs-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .logs-header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #6C5CE7, #A29BFE);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logs-header h1 i {
+            -webkit-text-fill-color: initial;
+            color: #6C5CE7;
+        }
+
+        .logs-header-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn-action {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            padding: 10px 20px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .btn-action:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+
+        .btn-action.primary {
+            background: linear-gradient(135deg, #6C5CE7, #A29BFE);
+            border: none;
+            color: #fff;
+        }
+
+        .btn-action.primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(108, 92, 231, 0.4);
+        }
+
+        .btn-action.danger {
+            border-color: rgba(255, 71, 87, 0.3);
+            color: #FF4757;
+        }
+
+        .btn-action.danger:hover {
+            background: rgba(255, 71, 87, 0.15);
+        }
+
+        /* ============================================================ */
+        /* Log Filters */
+        /* ============================================================ */
+
+        .logs-filters {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 24px;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            padding: 16px 20px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .logs-filters select,
+        .logs-filters input {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 8px 14px;
+            color: #fff;
+            font-size: 13px;
+            outline: none;
+            transition: border-color 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .logs-filters select:focus,
+        .logs-filters input:focus {
+            border-color: #6C5CE7;
+        }
+
+        .logs-filters select option {
+            background: #1a1a2e;
+        }
+
+        .filter-label {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.5);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+
+        .filter-actions {
+            display: flex;
+            gap: 8px;
+            margin-left: auto;
+        }
+
+        .filter-actions button {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            padding: 8px 14px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .filter-actions button:hover {
+            background: rgba(108, 92, 231, 0.2);
+            border-color: #6C5CE7;
+            color: #fff;
+        }
+
+        /* ============================================================ */
+        /* Log Statistics */
+        /* ============================================================ */
+
+        .log-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .log-stat {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 10px;
+            padding: 12px 16px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            text-align: center;
+        }
+
+        .log-stat .stat-number {
+            font-size: 22px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .log-stat .stat-label {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.4);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 2px;
+        }
+
+        .log-stat .stat-number.error { color: #FF4757; }
+        .log-stat .stat-number.warning { color: #FFA502; }
+        .log-stat .stat-number.info { color: #4ECDC4; }
+        .log-stat .stat-number.success { color: #2ED573; }
+
+        /* ============================================================ */
+        /* Log Container */
+        /* ============================================================ */
+
+        .log-container {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            overflow: hidden;
+            min-height: 500px;
+            max-height: 70vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .log-container .log-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            flex-shrink: 0;
+        }
+
+        .log-container .log-header .log-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .log-container .log-header .log-info .log-count {
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .log-container .log-header .log-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .log-container .log-header .log-actions button {
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.4);
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+
+        .log-container .log-header .log-actions button:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .log-container .log-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 0;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .log-container .log-body::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .log-container .log-body::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .log-container .log-body::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+        }
+
+        .log-container .log-body::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* ============================================================ */
+        /* Log Entry */
+        /* ============================================================ */
+
+        .log-entry {
+            display: flex;
+            padding: 4px 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+            transition: background 0.2s ease;
+            gap: 12px;
+            align-items: baseline;
+        }
+
+        .log-entry:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .log-entry .log-time {
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 12px;
+            white-space: nowrap;
+            min-width: 85px;
+            flex-shrink: 0;
+        }
+
+        .log-entry .log-level {
+            font-weight: 600;
+            font-size: 11px;
+            text-transform: uppercase;
+            min-width: 70px;
+            flex-shrink: 0;
+            padding: 0 8px;
+            border-radius: 4px;
+            text-align: center;
+        }
+
+        .log-entry .log-level.DEBUG { color: rgba(255, 255, 255, 0.3); }
+        .log-entry .log-level.INFO { color: #4ECDC4; }
+        .log-entry .log-level.WARNING { color: #FFA502; }
+        .log-entry .log-level.ERROR { color: #FF4757; }
+        .log-entry .log-level.CRITICAL { color: #FF4757; background: rgba(255, 71, 87, 0.15); }
+        .log-entry .log-level.SUCCESS { color: #2ED573; }
+
+        .log-entry .log-source {
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 12px;
+            min-width: 120px;
+            flex-shrink: 0;
+        }
+
+        .log-entry .log-message {
+            color: rgba(255, 255, 255, 0.85);
+            word-break: break-word;
+            flex: 1;
+        }
+
+        .log-entry .log-message .highlight {
+            color: #6C5CE7;
+        }
+
+        .log-entry .log-message .number {
+            color: #FFD93D;
+        }
+
+        .log-entry .log-message .string {
+            color: #2ED573;
+        }
+
+        .log-entry .log-message .keyword {
+            color: #6C5CE7;
+        }
+
+        .log-entry .log-message .error-text {
+            color: #FF4757;
+        }
+
+        .log-entry .log-meta {
+            color: rgba(255, 255, 255, 0.25);
+            font-size: 11px;
+            white-space: nowrap;
+            flex-shrink: 0;
+            margin-left: 8px;
+        }
+
+        /* ============================================================ */
+        /* Live Indicator */
+        /* ============================================================ */
+
+        .live-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            color: #2ED573;
+        }
+
+        .live-indicator .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #2ED573;
+            animation: pulse-dot 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(0.8); }
+        }
+
+        .live-indicator.paused .dot {
+            background: #FFA502;
+            animation: none;
+        }
+
+        /* ============================================================ */
+        /* Toast */
+        /* ============================================================ */
+
+        .toast-container {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            z-index: 9999;
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .toast {
+            padding: 14px 20px;
+            border-radius: 12px;
+            background: rgba(26, 26, 46, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            color: #fff;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            animation: slideUp 0.3s ease;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        }
+
+        .toast.success { border-left: 4px solid #2ED573; }
+        .toast.error { border-left: 4px solid #FF4757; }
+        .toast.warning { border-left: 4px solid #FFA502; }
+        .toast.info { border-left: 4px solid #4ECDC4; }
+
+        .toast .toast-icon { font-size: 20px; flex-shrink: 0; }
+        .toast.success .toast-icon { color: #2ED573; }
+        .toast.error .toast-icon { color: #FF4757; }
+        .toast.warning .toast-icon { color: #FFA502; }
+        .toast.info .toast-icon { color: #4ECDC4; }
+
+        .toast .toast-close {
+            margin-left: auto;
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.4);
+            cursor: pointer;
+            font-size: 16px;
+            padding: 4px;
+        }
+
+        .toast .toast-close:hover { color: #fff; }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ============================================================ */
+        /* Loading */
+        /* ============================================================ */
+
+        .logs-loading {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 20px;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .logs-loading .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(255, 255, 255, 0.05);
+            border-top-color: #6C5CE7;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-bottom: 16px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* ============================================================ */
+        /* Responsive */
+        /* ============================================================ */
+
+        @media (max-width: 992px) {
+            .log-entry {
+                flex-wrap: wrap;
+                gap: 4px;
+            }
+
+            .log-entry .log-time { min-width: 70px; font-size: 11px; }
+            .log-entry .log-level { min-width: 60px; font-size: 10px; }
+            .log-entry .log-source { min-width: 80px; font-size: 11px; }
+            .log-entry .log-meta { display: none; }
+        }
+
+        @media (max-width: 768px) {
+            .logs-page {
+                padding: 16px;
+            }
+
+            .logs-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .logs-header-actions {
+                width: 100%;
+            }
+
+            .logs-header-actions .btn-action {
+                flex: 1;
+                justify-content: center;
+                font-size: 13px;
+                padding: 8px 12px;
+            }
+
+            .logs-filters {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .filter-actions {
+                margin-left: 0;
+            }
+
+            .log-stats {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .log-container {
+                max-height: 60vh;
+                min-height: 300px;
+            }
+
+            .log-entry {
+                padding: 3px 12px;
+                font-size: 12px;
+                gap: 6px;
+            }
+
+            .log-entry .log-time { min-width: 60px; font-size: 10px; }
+            .log-entry .log-level { min-width: 50px; font-size: 9px; padding: 0 4px; }
+            .log-entry .log-source { min-width: 60px; font-size: 10px; }
+        }
+
+        @media (max-width: 480px) {
+            .log-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .log-entry .log-source { display: none; }
+            .log-entry .log-time { min-width: 50px; }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- ============================================================ -->
+    <!-- Logs Page -->
+    <!-- ============================================================ -->
+
+    <div class="logs-page">
+        <!-- Header -->
+        <div class="logs-header">
+            <h1>
+                <i class="fas fa-terminal"></i>
+                Logs
+            </h1>
+            <div class="logs-header-actions">
+                <button class="btn-action" id="refreshLogs">
+                    <i class="fas fa-sync-alt"></i> Refresh
+                </button>
+                <button class="btn-action" id="clearLogs">
+                    <i class="fas fa-eraser"></i> Clear
+                </button>
+                <button class="btn-action" id="exportLogs">
+                    <i class="fas fa-file-export"></i> Export
+                </button>
+                <button class="btn-action primary" id="liveLogs">
+                    <i class="fas fa-circle"></i> Live
+                </button>
+            </div>
+        </div>
+
+        <!-- Filters -->
+        <div class="logs-filters">
+            <span class="filter-label">Level:</span>
+            <select id="logLevel">
+                <option value="all">All Levels</option>
+                <option value="DEBUG">Debug</option>
+                <option value="INFO" selected>Info</option>
+                <option value="WARNING">Warning</option>
+                <option value="ERROR">Error</option>
+                <option value="CRITICAL">Critical</option>
+                <option value="SUCCESS">Success</option>
+            </select>
+
+            <span class="filter-label">Source:</span>
+            <select id="logSource">
+                <option value="all">All Sources</option>
+                <option value="api">API</option>
+                <option value="trading">Trading</option>
+                <option value="ai">AI</option>
+                <option value="risk">Risk</option>
+                <option value="system">System</option>
+                <option value="database">Database</option>
+                <option value="websocket">WebSocket</option>
+            </select>
+
+            <span class="filter-label">Search:</span>
+            <input type="text" id="logSearch" placeholder="Search logs..." style="min-width: 200px;">
+
+            <div class="filter-actions">
+                <button id="applyLogFilters"><i class="fas fa-check"></i> Apply</button>
+                <button id="resetLogFilters"><i class="fas fa-times"></i> Reset</button>
+            </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="log-stats" id="logStats">
+            <!-- Rendered by JS -->
+        </div>
+
+        <!-- Log Container -->
+        <div class="log-container" id="logContainer">
+            <div class="log-header">
+                <div class="log-info">
+                    <span class="live-indicator" id="liveIndicator">
+                        <span class="dot"></span>
+                        Live
+                    </span>
+                    <span class="log-count" id="logCount">0 entries</span>
+                </div>
+                <div class="log-actions">
+                    <button id="scrollToTop" title="Scroll to top"><i class="fas fa-arrow-up"></i></button>
+                    <button id="scrollToBottom" title="Scroll to bottom"><i class="fas fa-arrow-down"></i></button>
+                    <button id="autoScrollToggle" title="Toggle auto-scroll"><i class="fas fa-arrow-down"></i></button>
+                </div>
+            </div>
+            <div class="log-body" id="logBody">
+                <!-- Log entries rendered by JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- Toast Container -->
+    <!-- ============================================================ -->
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- ============================================================ -->
+    <!-- JavaScript -->
+    <!-- ============================================================ -->
+
+    <script src="/static/js/api_client.js"></script>
+    <script src="/static/js/websocket.js"></script>
+
+    <script>
+        // ================================================================
+        // Logs Controller
+        // ================================================================
+
+        class LogsController {
+            constructor() {
+                this.logs = [];
+                this.filteredLogs = [];
+                this.isLive = true;
+                this.autoScroll = true;
+                this.isLoading = false;
+                this.bufferSize = 1000;
+
+                // DOM Elements
+                this.elements = {
+                    body: document.getElementById('logBody'),
+                    count: document.getElementById('logCount'),
+                    stats: document.getElementById('logStats'),
+                    liveIndicator: document.getElementById('liveIndicator'),
+                    level: document.getElementById('logLevel'),
+                    source: document.getElementById('logSource'),
+                    search: document.getElementById('logSearch'),
+                    applyBtn: document.getElementById('applyLogFilters'),
+                    resetBtn: document.getElementById('resetLogFilters'),
+                    refreshBtn: document.getElementById('refreshLogs'),
+                    clearBtn: document.getElementById('clearLogs'),
+                    exportBtn: document.getElementById('exportLogs'),
+                    liveBtn: document.getElementById('liveLogs'),
+                    scrollTop: document.getElementById('scrollToTop'),
+                    scrollBottom: document.getElementById('scrollToBottom'),
+                    autoScrollToggle: document.getElementById('autoScrollToggle'),
+                    toastContainer: document.getElementById('toastContainer'),
+                };
+
+                // Initialize
+                this.init();
+            }
+
+            // ================================================================
+            // Initialization
+            // ================================================================
+
+            init() {
+                this.loadLogs();
+                this.setupEventListeners();
+                this.setupWebSocket();
+
+                // Auto-refresh every 5 seconds if live
+                setInterval(() => {
+                    if (this.isLive) {
+                        this.loadLogs();
+                    }
+                }, 5000);
+
+                console.log('LogsController initialized');
+            }
+
+            // ================================================================
+            // WebSocket Setup
+            // ================================================================
+
+            setupWebSocket() {
+                NexusAPI.connectWebSocket(['logs']);
+
+                NexusAPI.onWebSocketMessage('log', (data) => {
+                    if (this.isLive) {
+                        this.addLogEntry(data);
+                    }
+                });
+
+                NexusAPI.onWebSocketMessage('log_batch', (data) => {
+                    if (this.isLive && data.entries) {
+                        data.entries.forEach(entry => this.addLogEntry(entry));
+                    }
+                });
+            }
+
+            // ================================================================
+            // Load Logs
+            // ================================================================
+
+            async loadLogs() {
+                if (this.isLoading) return;
+
+                this.isLoading = true;
+
+                try {
+                    const params = {
+                        level: this.elements.level.value,
+                        source: this.elements.source.value,
+                        search: this.elements.search.value,
+                        limit: 500,
+                    };
+
+                    const response = await NexusAPI.request('/logs', { params });
+
+                    if (response && response.success) {
+                        this.logs = response.data || [];
+                        this.applyFilters();
+                        this.updateStats();
+                    } else {
+                        this.showToast(response.message || 'Failed to load logs', 'error');
+                    }
+                } catch (error) {
+                    console.error('Error loading logs:', error);
+                    this.showToast('Error loading logs', 'error');
+                } finally {
+                    this.isLoading = false;
+                }
+            }
+
+            // ================================================================
+            // Apply Filters
+            // ================================================================
+
+            applyFilters() {
+                const level = this.elements.level.value;
+                const source = this.elements.source.value;
+                const search = this.elements.search.value.toLowerCase();
+
+                this.filteredLogs = this.logs.filter(log => {
+                    if (level !== 'all' && log.level !== level) return false;
+                    if (source !== 'all' && log.source !== source) return false;
+                    if (search) {
+                        const searchable = [log.message, log.source, log.level, log.metadata?.join(' ')].join(' ').toLowerCase();
+                        if (!searchable.includes(search)) return false;
+                    }
+                    return true;
+                });
+
+                this.renderLogs();
+                this.updateCount();
+            }
+
+            // ================================================================
+            // Render Logs
+            // ================================================================
+
+            renderLogs() {
+                const container = this.elements.body;
+                const logs = this.filteredLogs;
+
+                if (logs.length === 0) {
+                    container.innerHTML = `
+                        <div style="padding: 60px 20px; text-align: center; color: rgba(255,255,255,0.3);">
+                            <i class="fas fa-inbox" style="font-size: 36px; display: block; margin-bottom: 12px; opacity: 0.3;"></i>
+                            <h3 style="color: rgba(255,255,255,0.5); font-weight: 500; margin: 0;">No logs found</h3>
+                            <p style="margin: 4px 0 0; font-size: 14px;">Try adjusting your filters or wait for new logs.</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                let html = '';
+                for (const log of logs) {
+                    html += this.formatLogEntry(log);
+                }
+
+                container.innerHTML = html;
+
+                // Auto-scroll
+                if (this.autoScroll) {
+                    container.scrollTop = container.scrollHeight;
+                }
+            }
+
+            // ================================================================
+            // Format Log Entry
+            // ================================================================
+
+            formatLogEntry(log) {
+                const time = this.formatTime(log.timestamp);
+                const level = log.level || 'INFO';
+                const source = log.source || 'system';
+                const message = this.highlightMessage(log.message || '');
+
+                // Build metadata
+                let meta = '';
+                if (log.metadata) {
+                    const metaItems = [];
+                    if (log.metadata.symbol) metaItems.push(`symbol=${log.metadata.symbol}`);
+                    if (log.metadata.trade_id) metaItems.push(`trade=${log.metadata.trade_id}`);
+                    if (log.metadata.order_id) metaItems.push(`order=${log.metadata.order_id}`);
+                    if (log.metadata.duration) metaItems.push(`duration=${log.metadata.duration}ms`);
+                    if (metaItems.length > 0) meta = metaItems.join(' ');
+                }
+
+                const levelClass = level.toUpperCase();
+
+                return `
+                    <div class="log-entry">
+                        <span class="log-time">${time}</span>
+                        <span class="log-level ${levelClass}">${levelClass}</span>
+                        <span class="log-source">${source}</span>
+                        <span class="log-message">${message}</span>
+                        ${meta ? `<span class="log-meta">${meta}</span>` : ''}
+                    </div>
+                `;
+            }
+
+            // ================================================================
+            // Highlight Message
+            // ================================================================
+
+            highlightMessage(message) {
+                // Escape HTML
+                let html = message.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+                // Highlight numbers
+                html = html.replace(/\b(\d+\.?\d*)\b/g, '<span class="number">$1</span>');
+
+                // Highlight quoted strings
+                html = html.replace(/"([^"]*)"/g, '<span class="string">"$1"</span>');
+                html = html.replace(/'([^']*)'/g, '<span class="string">\'$1\'</span>');
+
+                // Highlight keywords
+                const keywords = ['error', 'warning', 'success', 'failed', 'completed', 'started', 'stopped', 'paused', 'resumed'];
+                for (const kw of keywords) {
+                    const regex = new RegExp(`\\b(${kw})\\b`, 'gi');
+                    html = html.replace(regex, (match) => {
+                        const cls = kw === 'error' || kw === 'failed' ? 'error-text' :
+                                   kw === 'warning' ? 'highlight' :
+                                   kw === 'success' || kw === 'completed' ? 'string' :
+                                   'keyword';
+                        return `<span class="${cls}">${match}</span>`;
+                    });
+                }
+
+                return html;
+            }
+
+            // ================================================================
+            // Add Log Entry (Live)
+            // ================================================================
+
+            addLogEntry(log) {
+                // Add to beginning of array
+                this.logs.unshift(log);
+
+                // Keep buffer size
+                if (this.logs.length > this.bufferSize) {
+                    this.logs = this.logs.slice(0, this.bufferSize);
+                }
+
+                // Check if should display
+                this.applyFilters();
+
+                // Update stats
+                this.updateStats();
+
+                // Trigger scroll if auto-scroll enabled
+                if (this.autoScroll) {
+                    this.elements.body.scrollTop = this.elements.body.scrollHeight;
+                }
+            }
+
+            // ================================================================
+            // Update Stats
+            // ================================================================
+
+            updateStats() {
+                const total = this.logs.length;
+                const errors = this.logs.filter(l => l.level === 'ERROR' || l.level === 'CRITICAL').length;
+                const warnings = this.logs.filter(l => l.level === 'WARNING').length;
+                const infos = this.logs.filter(l => l.level === 'INFO').length;
+                const successes = this.logs.filter(l => l.level === 'SUCCESS').length;
+
+                this.elements.stats.innerHTML = `
+                    <div class="log-stat">
+                        <div class="stat-number">${total}</div>
+                        <div class="stat-label">Total</div>
+                    </div>
+                    <div class="log-stat">
+                        <div class="stat-number error">${errors}</div>
+                        <div class="stat-label">Errors</div>
+                    </div>
+                    <div class="log-stat">
+                        <div class="stat-number warning">${warnings}</div>
+                        <div class="stat-label">Warnings</div>
+                    </div>
+                    <div class="log-stat">
+                        <div class="stat-number info">${infos}</div>
+                        <div class="stat-label">Info</div>
+                    </div>
+                    <div class="log-stat">
+                        <div class="stat-number success">${successes}</div>
+                        <div class="stat-label">Success</div>
+                    </div>
+                `;
+            }
+
+            // ================================================================
+            // Update Count
+            // ================================================================
+
+            updateCount() {
+                const displayed = this.filteredLogs.length;
+                const total = this.logs.length;
+                this.elements.count.textContent = `${displayed}${displayed !== total ? `/${total}` : ''} entries`;
+            }
+
+            // ================================================================
+            // Clear Logs
+            // ================================================================
+
+            clearLogs() {
+                if (!confirm('Clear all logs?')) return;
+
+                this.logs = [];
+                this.filteredLogs = [];
+                this.renderLogs();
+                this.updateCount();
+                this.updateStats();
+                this.showToast('Logs cleared', 'info');
+            }
+
+            // ================================================================
+            // Export Logs
+            // ================================================================
+
+            exportLogs() {
+                const logs = this.filteredLogs;
+                if (logs.length === 0) {
+                    this.showToast('No logs to export', 'warning');
+                    return;
+                }
+
+                // Format as text
+                let text = '';
+                for (const log of logs) {
+                    const time = this.formatTime(log.timestamp);
+                    const level = log.level || 'INFO';
+                    const source = log.source || 'system';
+                    const message = log.message || '';
+                    text += `[${time}] ${level} [${source}] ${message}\n`;
+                }
+
+                // Download
+                const blob = new Blob([text], { type: 'text/plain' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `logs_${new Date().toISOString().split('T')[0]}.txt`;
+                a.click();
+                URL.revokeObjectURL(url);
+
+                this.showToast('Logs exported', 'success');
+            }
+
+            // ================================================================
+            // Toggle Live
+            // ================================================================
+
+            toggleLive() {
+                this.isLive = !this.isLive;
+                const indicator = this.elements.liveIndicator;
+                const btn = this.elements.liveBtn;
+
+                if (this.isLive) {
+                    indicator.className = 'live-indicator';
+                    indicator.innerHTML = '<span class="dot"></span> Live';
+                    btn.innerHTML = '<i class="fas fa-circle"></i> Live';
+                    btn.className = 'btn-action primary';
+                    this.loadLogs();
+                } else {
+                    indicator.className = 'live-indicator paused';
+                    indicator.innerHTML = '<span class="dot"></span> Paused';
+                    btn.innerHTML = '<i class="fas fa-play"></i> Resume';
+                    btn.className = 'btn-action';
+                }
+            }
+
+            // ================================================================
+            // Toggle Auto-Scroll
+            // ================================================================
+
+            toggleAutoScroll() {
+                this.autoScroll = !this.autoScroll;
+                const btn = this.elements.autoScrollToggle;
+                btn.style.color = this.autoScroll ? '#6C5CE7' : 'rgba(255,255,255,0.4)';
+
+                if (this.autoScroll) {
+                    this.elements.body.scrollTop = this.elements.body.scrollHeight;
+                    this.showToast('Auto-scroll enabled', 'info');
+                } else {
+                    this.showToast('Auto-scroll disabled', 'info');
+                }
+            }
+
+            // ================================================================
+            // Event Listeners
+            // ================================================================
+
+            setupEventListeners() {
+                this.elements.applyBtn.addEventListener('click', () => this.applyFilters());
+                this.elements.resetBtn.addEventListener('click', () => {
+                    this.elements.level.value = 'all';
+                    this.elements.source.value = 'all';
+                    this.elements.search.value = '';
+                    this.applyFilters();
+                });
+                this.elements.refreshBtn.addEventListener('click', () => this.loadLogs());
+                this.elements.clearBtn.addEventListener('click', () => this.clearLogs());
+                this.elements.exportBtn.addEventListener('click', () => this.exportLogs());
+                this.elements.liveBtn.addEventListener('click', () => this.toggleLive());
+                this.elements.scrollTop.addEventListener('click', () => {
+                    this.elements.body.scrollTop = 0;
+                });
+                this.elements.scrollBottom.addEventListener('click', () => {
+                    this.elements.body.scrollTop = this.elements.body.scrollHeight;
+                });
+                this.elements.autoScrollToggle.addEventListener('click', () => this.toggleAutoScroll());
+
+                // Debounced search
+                const debounce = (fn, delay) => {
+                    let timer;
+                    return (...args) => {
+                        clearTimeout(timer);
+                        timer = setTimeout(() => fn.apply(this, args), delay);
+                    };
+                };
+                this.elements.search.addEventListener('input', debounce(() => this.applyFilters(), 300));
+
+                // Enter key on search
+                this.elements.search.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
+                        this.applyFilters();
+                    }
+                });
+
+                // Auto-scroll on scroll
+                this.elements.body.addEventListener('scroll', () => {
+                    const atBottom = this.elements.body.scrollTop + this.elements.body.clientHeight >=
+                        this.elements.body.scrollHeight - 10;
+                    if (atBottom && !this.autoScroll) {
+                        this.autoScroll = true;
+                        this.elements.autoScrollToggle.style.color = '#6C5CE7';
+                    }
+                });
+            }
+
+            // ================================================================
+            // Utility Methods
+            // ================================================================
+
+            formatTime(timestamp) {
+                if (!timestamp) return '-';
+                const date = new Date(timestamp);
+                return date.toLocaleString('en-US', {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit',
+                    hour12: false,
+                });
+            }
+
+            showToast(message, type = 'info') {
+                const container = this.elements.toastContainer;
+                const icons = {
+                    success: 'fas fa-check-circle',
+                    error: 'fas fa-exclamation-circle',
+                    warning: 'fas fa-exclamation-triangle',
+                    info: 'fas fa-info-circle',
+                };
+
+                const toast = document.createElement('div');
+                toast.className = `toast ${type}`;
+                toast.innerHTML = `
+                    <span class="toast-icon"><i class="${icons[type] || icons.info}"></i></span>
+                    <span>${message}</span>
+                    <button class="toast-close" onclick="this.parentElement.remove()">&times;</button>
+                `;
+
+                container.appendChild(toast);
+
+                setTimeout(() => {
+                    if (toast.parentElement) {
+                        toast.remove();
+                    }
+                }, 5000);
+            }
+        }
+
+        // ================================================================
+        // Initialize
+        // ================================================================
+
+        let logsController;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            logsController = new LogsController();
+            window.logsController = logsController;
+        });
+    </script>
+</body>
+</html>
