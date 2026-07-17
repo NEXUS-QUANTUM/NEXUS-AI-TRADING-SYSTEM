@@ -1,0 +1,369 @@
+# trading/bots/ai_bot/tests/fixtures/generate_model_weights.py
+# NEXUS AI TRADING SYSTEM - Generate Test Model Weights
+# Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+
+"""
+Generate test model weights for NEXUS AI Trading System testing.
+This script creates mock PyTorch model weights for various AI models
+used in the trading system including LSTM, Transformer, and Ensemble models.
+"""
+
+import os
+import torch
+import torch.nn as nn
+import numpy as np
+from pathlib import Path
+from typing import Dict, Any, Optional
+import json
+from datetime import datetime
+
+# ============================================================================
+# Model Definitions
+# ============================================================================
+
+class LSTMModel(nn.Module):
+    """LSTM model for testing."""
+    def __init__(self, input_size=10, hidden_size=128, num_layers=2, output_size=1):
+        super().__init__()
+        self.lstm = nn.LSTM(input_size, hidden_size, num_layers, batch_first=True, bidirectional=True)
+        self.attention = nn.MultiheadAttention(hidden_size * 2, 8, batch_first=True)
+        self.fc = nn.Linear(hidden_size * 2, output_size)
+        self.dropout = nn.Dropout(0.2)
+
+    def forward(self, x):
+        lstm_out, _ = self.lstm(x)
+        attn_out, _ = self.attention(lstm_out, lstm_out, lstm_out)
+        return self.fc(self.dropout(attn_out[:, -1, :]))
+
+
+class TransformerModel(nn.Module):
+    """Transformer model for testing."""
+    def __init__(self, input_size=10, d_model=128, nhead=8, num_layers=3, output_size=1):
+        super().__init__()
+        self.embedding = nn.Linear(input_size, d_model)
+        self.pos_encoder = nn.TransformerEncoder(
+            nn.TransformerEncoderLayer(d_model, nhead, dim_feedforward=256, dropout=0.1),
+            num_layers=num_layers
+        )
+        self.fc = nn.Linear(d_model, output_size)
+
+    def forward(self, x):
+        x = self.embedding(x)
+        x = self.pos_encoder(x)
+        return self.fc(x[:, -1, :])
+
+
+class EnsembleModel(nn.Module):
+    """Ensemble model for testing."""
+    def __init__(self, input_size=10, output_size=1):
+        super().__init__()
+        self.model1 = LSTMModel(input_size, 64, 1, output_size)
+        self.model2 = TransformerModel(input_size, 64, 4, 2, output_size)
+        self.model3 = nn.Sequential(
+            nn.Linear(input_size, 128),
+            nn.ReLU(),
+            nn.Dropout(0.2),
+            nn.Linear(128, 64),
+            nn.ReLU(),
+            nn.Linear(64, output_size)
+        )
+        self.weights = nn.Parameter(torch.ones(3) / 3)
+
+    def forward(self, x):
+        out1 = self.model1(x)
+        out2 = self.model2(x)
+        out3 = self.model3(x[:, -1, :])
+        weights = torch.softmax(self.weights, dim=0)
+        return weights[0] * out1 + weights[1] * out2 + weights[2] * out3
+
+
+class DQNModel(nn.Module):
+    """DQN model for reinforcement learning testing."""
+    def __init__(self, state_dim=50, action_dim=5, hidden_layers=[256, 128]):
+        super().__init__()
+        layers = []
+        prev_dim = state_dim
+        for hidden_dim in hidden_layers:
+            layers.append(nn.Linear(prev_dim, hidden_dim))
+            layers.append(nn.ReLU())
+            prev_dim = hidden_dim
+        layers.append(nn.Linear(prev_dim, action_dim))
+        self.network = nn.Sequential(*layers)
+
+    def forward(self, x):
+        return self.network(x)
+
+
+class PPOModel(nn.Module):
+    """PPO model for reinforcement learning testing."""
+    def __init__(self, state_dim=50, action_dim=5, hidden_layers=[256, 128]):
+        super().__init__()
+        # Shared features
+        layers = []
+        prev_dim = state_dim
+        for hidden_dim in hidden_layers:
+            layers.append(nn.Linear(prev_dim, hidden_dim))
+            layers.append(nn.ReLU())
+            prev_dim = hidden_dim
+        self.features = nn.Sequential(*layers)
+        
+        # Actor
+        self.actor = nn.Linear(prev_dim, action_dim)
+        
+        # Critic
+        self.critic = nn.Linear(prev_dim, 1)
+
+    def forward(self, x):
+        features = self.features(x)
+        return self.actor(features), self.critic(features)
+
+
+# ============================================================================
+# Generator Functions
+# ============================================================================
+
+def generate_model_weights(
+    model_type: str,
+    output_path: str,
+    model_config: Optional[Dict[str, Any]] = None,
+) -> Dict[str, Any]:
+    """
+    Generate test model weights for a specific model type.
+
+    Args:
+        model_type: Type of model ('lstm', 'transformer', 'ensemble', 'dqn', 'ppo')
+        output_path: Path to save the weights
+        model_config: Model configuration parameters
+
+    Returns:
+        Dict with model metadata
+    """
+    config = model_config or {}
+    
+    if model_type == 'lstm':
+        model = LSTMModel(
+            input_size=config.get('input_size', 10),
+            hidden_size=config.get('hidden_size', 128),
+            num_layers=config.get('num_layers', 2),
+            output_size=config.get('output_size', 1)
+        )
+        model_name = 'lstm'
+        version = '1.0.0'
+        
+    elif model_type == 'transformer':
+        model = TransformerModel(
+            input_size=config.get('input_size', 10),
+            d_model=config.get('d_model', 128),
+            nhead=config.get('nhead', 8),
+            num_layers=config.get('num_layers', 3),
+            output_size=config.get('output_size', 1)
+        )
+        model_name = 'transformer'
+        version = '1.0.0'
+        
+    elif model_type == 'ensemble':
+        model = EnsembleModel(
+            input_size=config.get('input_size', 10),
+            output_size=config.get('output_size', 1)
+        )
+        model_name = 'ensemble'
+        version = '1.0.0'
+        
+    elif model_type == 'dqn':
+        model = DQNModel(
+            state_dim=config.get('state_dim', 50),
+            action_dim=config.get('action_dim', 5),
+            hidden_layers=config.get('hidden_layers', [256, 128])
+        )
+        model_name = 'dqn'
+        version = '1.0.0'
+        
+    elif model_type == 'ppo':
+        model = PPOModel(
+            state_dim=config.get('state_dim', 50),
+            action_dim=config.get('action_dim', 5),
+            hidden_layers=config.get('hidden_layers', [256, 128])
+        )
+        model_name = 'ppo'
+        version = '1.0.0'
+        
+    else:
+        raise ValueError(f"Unknown model type: {model_type}")
+
+    # Initialize with random weights
+    for param in model.parameters():
+        param.data = torch.randn_like(param) * 0.1
+
+    # Save the model weights
+    os.makedirs(os.path.dirname(output_path), exist_ok=True)
+    torch.save(model.state_dict(), output_path)
+
+    # Create metadata
+    metadata = {
+        'model_type': model_type,
+        'model_name': model_name,
+        'version': version,
+        'config': config,
+        'generated_at': datetime.utcnow().isoformat(),
+        'parameters': sum(p.numel() for p in model.parameters()),
+        'file_size': os.path.getsize(output_path) if os.path.exists(output_path) else 0,
+        'file_path': output_path,
+    }
+
+    return metadata
+
+
+def generate_all_test_weights(output_dir: str = './data/models/test/') -> Dict[str, Dict[str, Any]]:
+    """
+    Generate all test model weights.
+
+    Args:
+        output_dir: Directory to save the weights
+
+    Returns:
+        Dict with metadata for all generated models
+    """
+    results = {}
+    output_dir = Path(output_dir)
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    # Generate LSTM weights
+    results['lstm'] = generate_model_weights(
+        'lstm',
+        str(output_dir / 'lstm_model.pth'),
+        {
+            'input_size': 10,
+            'hidden_size': 128,
+            'num_layers': 2,
+            'output_size': 1
+        }
+    )
+
+    # Generate Transformer weights
+    results['transformer'] = generate_model_weights(
+        'transformer',
+        str(output_dir / 'transformer_model.pth'),
+        {
+            'input_size': 10,
+            'd_model': 128,
+            'nhead': 8,
+            'num_layers': 3,
+            'output_size': 1
+        }
+    )
+
+    # Generate Ensemble weights
+    results['ensemble'] = generate_model_weights(
+        'ensemble',
+        str(output_dir / 'ensemble_model.pth'),
+        {
+            'input_size': 10,
+            'output_size': 1
+        }
+    )
+
+    # Generate DQN weights
+    results['dqn'] = generate_model_weights(
+        'dqn',
+        str(output_dir / 'dqn_model.pth'),
+        {
+            'state_dim': 50,
+            'action_dim': 5,
+            'hidden_layers': [256, 128]
+        }
+    )
+
+    # Generate PPO weights
+    results['ppo'] = generate_model_weights(
+        'ppo',
+        str(output_dir / 'ppo_model.pth'),
+        {
+            'state_dim': 50,
+            'action_dim': 5,
+            'hidden_layers': [256, 128]
+        }
+    )
+
+    # Save metadata
+    metadata_path = output_dir / 'model_metadata.json'
+    with open(metadata_path, 'w') as f:
+        json.dump(results, f, indent=2)
+
+    return results
+
+
+def generate_specific_weight_file(output_path: str = './model_weights.pth') -> None:
+    """
+    Generate a single model_weights.pth file for testing.
+    
+    Args:
+        output_path: Path to save the weights file
+    """
+    # Create a dictionary of model weights
+    weights_dict = {
+        'lstm_state_dict': LSTMModel().state_dict(),
+        'transformer_state_dict': TransformerModel().state_dict(),
+        'ensemble_state_dict': EnsembleModel().state_dict(),
+        'dqn_state_dict': DQNModel().state_dict(),
+        'ppo_state_dict': PPOModel().state_dict(),
+        'config': {
+            'input_size': 10,
+            'hidden_size': 128,
+            'output_size': 1,
+            'version': '3.0.0',
+            'timestamp': datetime.utcnow().isoformat(),
+        },
+        'training_info': {
+            'epochs': 100,
+            'best_loss': 0.001,
+            'best_accuracy': 0.95,
+            'training_date': datetime.utcnow().isoformat(),
+        },
+        'metrics': {
+            'train_loss': [0.5, 0.3, 0.2, 0.1, 0.05],
+            'val_loss': [0.6, 0.35, 0.25, 0.15, 0.08],
+            'train_accuracy': [0.7, 0.8, 0.85, 0.9, 0.95],
+            'val_accuracy': [0.65, 0.75, 0.82, 0.88, 0.93],
+        },
+        'optimizer_state': {
+            'learning_rate': 0.001,
+            'weight_decay': 0.0001,
+        }
+    }
+
+    # Add random noise to weights
+    for key in ['lstm_state_dict', 'transformer_state_dict', 'ensemble_state_dict', 'dqn_state_dict', 'ppo_state_dict']:
+        if key in weights_dict:
+            for param_name, param in weights_dict[key].items():
+                if isinstance(param, torch.Tensor):
+                    weights_dict[key][param_name] = param + torch.randn_like(param) * 0.01
+
+    os.makedirs(os.path.dirname(os.path.abspath(output_path)), exist_ok=True)
+    torch.save(weights_dict, output_path)
+
+
+# ============================================================================
+# Main Execution
+# ============================================================================
+
+if __name__ == "__main__":
+    print("=" * 60)
+    print("NEXUS AI TRADING SYSTEM - Test Model Weights Generator")
+    print("Copyright © 2026 NEXUS QUANTUM LTD")
+    print("=" * 60)
+    
+    # Generate all test weights
+    print("\nGenerating all test model weights...")
+    results = generate_all_test_weights()
+    
+    print("\nGenerated models:")
+    for model_name, metadata in results.items():
+        print(f"  - {model_name}: {metadata['file_path']} ({metadata['parameters']} parameters, {metadata['file_size']} bytes)")
+    
+    # Generate single weight file
+    print("\nGenerating single model_weights.pth file...")
+    generate_specific_weight_file('./model_weights.pth')
+    print(f"  - Generated: model_weights.pth")
+    
+    print("\n✅ All test model weights generated successfully!")
+    print("=" * 60)
