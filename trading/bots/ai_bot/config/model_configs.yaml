@@ -1,0 +1,760 @@
+# trading/bots/ai_bot/config/model_configs.yaml
+# NEXUS AI TRADING SYSTEM - Model Configurations
+# Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+
+# ============================================================================
+# MODEL CONFIGURATIONS
+# This file contains all AI/ML model configurations for the trading bot.
+# ============================================================================
+
+# ============================================================================
+# GENERAL MODEL SETTINGS
+# ============================================================================
+
+general:
+  model_dir: "./data/models"
+  checkpoint_dir: "./data/checkpoints"
+  log_dir: "./logs/models"
+  tensorboard_dir: "./logs/tensorboard"
+  cache_enabled: true
+  cache_ttl: 300
+  max_models: 50
+  default_device: "cuda"  # cuda, cpu, mps
+  fallback_device: "cpu"
+  mixed_precision: true
+  compile_models: false
+  use_onnx: false
+  quantization: false
+  pruning: false
+
+# ============================================================================
+# LSTM MODEL CONFIGURATION
+# ============================================================================
+
+lstm:
+  enabled: true
+  name: "lstm"
+  version: "2.0.0"
+  
+  # Architecture
+  architecture:
+    hidden_size: 128
+    num_layers: 2
+    dropout: 0.2
+    bidirectional: true
+    attention: true
+    peephole: false
+    layer_norm: false
+    
+  # Training
+  training:
+    learning_rate: 0.001
+    optimizer: "adam"  # adam, adamw, sgd, rmsprop
+    weight_decay: 0.0001
+    batch_size: 32
+    epochs: 100
+    early_stopping_patience: 10
+    early_stopping_min_delta: 0.0001
+    validation_split: 0.2
+    shuffle: true
+    gradient_clip: 1.0
+    scheduler: "reduce_on_plateau"  # none, reduce_on_plateau, cosine, step
+    scheduler_patience: 5
+    scheduler_factor: 0.5
+    
+  # Data
+  data:
+    sequence_length: 60
+    input_size: 10
+    output_size: 1
+    features:
+      - "open"
+      - "high"
+      - "low"
+      - "close"
+      - "volume"
+      - "rsi"
+      - "macd"
+      - "bb_upper"
+      - "bb_lower"
+      - "bb_middle"
+    normalize: true
+    scaling: "standard"  # standard, minmax, robust
+    target: "close"
+    horizon: 1
+    
+  # Regularization
+  regularization:
+    l1: 0.0
+    l2: 0.0001
+    dropout_rate: 0.2
+    batch_norm: true
+    
+  # Inference
+  inference:
+    batch_size: 64
+    use_cache: true
+    cache_ttl: 60
+    ensemble_count: 5
+    confidence_threshold: 0.6
+    
+  # Optimization
+  optimization:
+    quantization: false
+    pruning: false
+    onnx: false
+    tensorrt: false
+  
+  # Performance
+  performance:
+    target_accuracy: 0.85
+    max_training_time: 3600  # seconds
+    max_inference_time: 0.01  # seconds
+    memory_limit_mb: 1024
+
+# ============================================================================
+# TRANSFORMER MODEL CONFIGURATION
+# ============================================================================
+
+transformer:
+  enabled: true
+  name: "transformer"
+  version: "2.0.0"
+  
+  # Architecture
+  architecture:
+    d_model: 128
+    nhead: 8
+    num_layers: 3
+    dim_feedforward: 256
+    dropout: 0.1
+    activation: "gelu"  # relu, gelu, swish
+    layer_norm: true
+    batch_first: true
+    
+  # Training
+  training:
+    learning_rate: 0.001
+    optimizer: "adamw"
+    weight_decay: 0.0001
+    batch_size: 32
+    epochs: 100
+    early_stopping_patience: 10
+    early_stopping_min_delta: 0.0001
+    validation_split: 0.2
+    shuffle: true
+    gradient_clip: 1.0
+    scheduler: "cosine"
+    scheduler_warmup_epochs: 5
+    scheduler_t_0: 50
+    
+  # Data
+  data:
+    sequence_length: 60
+    input_size: 10
+    output_size: 1
+    features:
+      - "open"
+      - "high"
+      - "low"
+      - "close"
+      - "volume"
+      - "rsi"
+      - "macd"
+      - "bb_upper"
+      - "bb_lower"
+      - "bb_middle"
+    normalize: true
+    scaling: "standard"
+    target: "close"
+    horizon: 1
+    
+  # Regularization
+  regularization:
+    l1: 0.0
+    l2: 0.0001
+    dropout_rate: 0.1
+    
+  # Inference
+  inference:
+    batch_size: 64
+    use_cache: true
+    cache_ttl: 60
+    ensemble_count: 5
+    confidence_threshold: 0.6
+    
+  # Optimization
+  optimization:
+    quantization: false
+    pruning: false
+    onnx: false
+    tensorrt: false
+    
+  # Performance
+  performance:
+    target_accuracy: 0.85
+    max_training_time: 3600
+    max_inference_time: 0.01
+    memory_limit_mb: 1024
+
+# ============================================================================
+# XGBOOST MODEL CONFIGURATION
+# ============================================================================
+
+xgboost:
+  enabled: true
+  name: "xgboost"
+  version: "2.0.0"
+  
+  # Architecture
+  architecture:
+    booster: "gbtree"  # gbtree, gblinear, dart
+    objective: "reg:squarederror"
+    eval_metric: "rmse"
+    tree_method: "hist"  # auto, exact, approx, hist, gpu_hist
+    max_depth: 6
+    learning_rate: 0.1
+    n_estimators: 100
+    subsample: 0.8
+    colsample_bytree: 0.8
+    colsample_bylevel: 0.8
+    colsample_bynode: 0.8
+    gamma: 0.1
+    reg_alpha: 0.1
+    reg_lambda: 1.0
+    min_child_weight: 1
+    max_delta_step: 0
+    grow_policy: "depthwise"
+    max_leaves: 0
+    max_bin: 256
+    
+  # Training
+  training:
+    early_stopping_rounds: 50
+    early_stopping_min_delta: 0.0001
+    validation_split: 0.2
+    shuffle: true
+    random_state: 42
+    n_jobs: -1
+    verbose: 1
+    
+  # Data
+  data:
+    features:
+      - "open"
+      - "high"
+      - "low"
+      - "close"
+      - "volume"
+      - "rsi"
+      - "macd"
+      - "bb_upper"
+      - "bb_lower"
+      - "bb_middle"
+      - "adx"
+      - "obv"
+      - "return_1"
+      - "return_5"
+      - "return_10"
+    normalize: true
+    scaling: "standard"
+    target: "close"
+    horizon: 1
+    
+  # Inference
+  inference:
+    batch_size: 1000
+    use_cache: true
+    cache_ttl: 60
+    confidence_threshold: 0.6
+    
+  # Optimization
+  optimization:
+    quantization: false
+    pruning: false
+    onnx: false
+    
+  # Performance
+  performance:
+    target_accuracy: 0.85
+    max_training_time: 1800
+    max_inference_time: 0.001
+    memory_limit_mb: 512
+
+# ============================================================================
+# RANDOM FOREST MODEL CONFIGURATION
+# ============================================================================
+
+random_forest:
+  enabled: false
+  name: "random_forest"
+  version: "1.0.0"
+  
+  # Architecture
+  architecture:
+    n_estimators: 100
+    max_depth: 10
+    min_samples_split: 2
+    min_samples_leaf: 1
+    min_weight_fraction_leaf: 0.0
+    max_features: "sqrt"
+    max_leaf_nodes: None
+    min_impurity_decrease: 0.0
+    bootstrap: true
+    oob_score: true
+    
+  # Training
+  training:
+    random_state: 42
+    n_jobs: -1
+    verbose: 0
+    
+  # Data
+  data:
+    features:
+      - "open"
+      - "high"
+      - "low"
+      - "close"
+      - "volume"
+      - "rsi"
+      - "macd"
+      - "bb_upper"
+      - "bb_lower"
+      - "bb_middle"
+    normalize: true
+    scaling: "standard"
+    target: "close"
+    horizon: 1
+    
+  # Inference
+  inference:
+    batch_size: 1000
+    use_cache: true
+    cache_ttl: 60
+    
+  # Performance
+  performance:
+    target_accuracy: 0.80
+    max_training_time: 1800
+    max_inference_time: 0.001
+    memory_limit_mb: 512
+
+# ============================================================================
+# GRADIENT BOOSTING MODEL CONFIGURATION
+# ============================================================================
+
+gradient_boosting:
+  enabled: false
+  name: "gradient_boosting"
+  version: "1.0.0"
+  
+  # Architecture
+  architecture:
+    loss: "squared_error"
+    learning_rate: 0.1
+    n_estimators: 100
+    subsample: 1.0
+    criterion: "friedman_mse"
+    min_samples_split: 2
+    min_samples_leaf: 1
+    min_weight_fraction_leaf: 0.0
+    max_depth: 3
+    min_impurity_decrease: 0.0
+    init: None
+    max_features: None
+    tol: 0.0001
+    n_iter_no_change: 10
+    validation_fraction: 0.1
+    
+  # Training
+  training:
+    random_state: 42
+    
+  # Data
+  data:
+    features:
+      - "open"
+      - "high"
+      - "low"
+      - "close"
+      - "volume"
+      - "rsi"
+      - "macd"
+    normalize: true
+    scaling: "standard"
+    target: "close"
+    horizon: 1
+    
+  # Inference
+  inference:
+    batch_size: 1000
+    use_cache: true
+    cache_ttl: 60
+
+# ============================================================================
+# DQN MODEL CONFIGURATION (Reinforcement Learning)
+# ============================================================================
+
+dqn:
+  enabled: true
+  name: "dqn"
+  version: "1.0.0"
+  
+  # Architecture
+  architecture:
+    hidden_layers: [256, 128]
+    activation: "relu"
+    dueling: true
+    double_dqn: true
+    
+  # Training
+  training:
+    learning_rate: 0.001
+    optimizer: "adam"
+    discount_factor: 0.99
+    exploration_rate: 0.1
+    exploration_decay: 0.995
+    min_exploration_rate: 0.01
+    batch_size: 64
+    replay_buffer_size: 10000
+    target_update_frequency: 100
+    training_frequency: 10
+    min_replay_size: 1000
+    
+  # Environment
+  environment:
+    state_dim: 50
+    action_dim: 5
+    max_steps: 1000
+    render: false
+    
+  # Reward
+  reward:
+    scale: 1.0
+    risk_penalty: 0.1
+    position_penalty: 0.05
+    trade_penalty: 0.001
+    
+  # Inference
+  inference:
+    use_cache: true
+    cache_ttl: 60
+    confidence_threshold: 0.6
+
+# ============================================================================
+# PPO MODEL CONFIGURATION (Reinforcement Learning)
+# ============================================================================
+
+ppo:
+  enabled: true
+  name: "ppo"
+  version: "1.0.0"
+  
+  # Architecture
+  architecture:
+    hidden_layers: [256, 128]
+    activation: "relu"
+    value_network: true
+    shared_features: true
+    
+  # Training
+  training:
+    learning_rate: 0.0003
+    optimizer: "adam"
+    discount_factor: 0.99
+    gae_lambda: 0.95
+    clip_epsilon: 0.2
+    ppo_epochs: 10
+    batch_size: 64
+    update_frequency: 2048
+    target_kl: 0.01
+    
+  # Environment
+  environment:
+    state_dim: 50
+    action_dim: 5
+    max_steps: 1000
+    render: false
+    
+  # Reward
+  reward:
+    scale: 1.0
+    risk_penalty: 0.1
+    position_penalty: 0.05
+    trade_penalty: 0.001
+    
+  # Inference
+  inference:
+    use_cache: true
+    cache_ttl: 60
+    confidence_threshold: 0.6
+
+# ============================================================================
+# ENSEMBLE MODEL CONFIGURATION
+# ============================================================================
+
+ensemble:
+  enabled: true
+  name: "ensemble"
+  version: "2.0.0"
+  
+  # Architecture
+  architecture:
+    voting: "soft"  # soft, hard, weighted
+    aggregation: "mean"  # mean, median, max, min
+    
+  # Models
+  models:
+    - "lstm"
+    - "transformer"
+    - "xgboost"
+  
+  # Weights
+  weights:
+    lstm: 0.30
+    transformer: 0.30
+    xgboost: 0.40
+  
+  # Training
+  training:
+    train_individual: true
+    ensemble_training: true
+    epochs: 50
+    learning_rate: 0.001
+    batch_size: 32
+    
+  # Data
+  data:
+    features:
+      - "open"
+      - "high"
+      - "low"
+      - "close"
+      - "volume"
+      - "rsi"
+      - "macd"
+      - "bb_upper"
+      - "bb_lower"
+      - "bb_middle"
+      - "adx"
+      - "obv"
+    normalize: true
+    scaling: "standard"
+    target: "close"
+    horizon: 1
+    
+  # Inference
+  inference:
+    batch_size: 64
+    use_cache: true
+    cache_ttl: 60
+    confidence_threshold: 0.6
+    
+  # Performance
+  performance:
+    target_accuracy: 0.90
+    max_training_time: 7200
+    max_inference_time: 0.05
+    memory_limit_mb: 2048
+
+# ============================================================================
+# HYBRID MODEL CONFIGURATION
+# ============================================================================
+
+hybrid:
+  enabled: false
+  name: "hybrid"
+  version: "1.0.0"
+  
+  # Architecture
+  architecture:
+    type: "stacked"  # stacked, parallel, sequential
+    
+  # Models
+  models:
+    - "lstm"
+    - "xgboost"
+  
+  # Stacking
+  stacking:
+    meta_model: "linear_regression"
+    cv_folds: 5
+    
+  # Training
+  training:
+    epochs: 50
+    learning_rate: 0.001
+    batch_size: 32
+    
+  # Data
+  data:
+    features:
+      - "open"
+      - "high"
+      - "low"
+      - "close"
+      - "volume"
+      - "rsi"
+      - "macd"
+    normalize: true
+    scaling: "standard"
+    target: "close"
+    horizon: 1
+    
+  # Inference
+  inference:
+    use_cache: true
+    cache_ttl: 60
+    confidence_threshold: 0.6
+
+# ============================================================================
+# ONNX CONFIGURATION (Model Optimization)
+# ============================================================================
+
+onnx:
+  enabled: false
+  opset_version: 14
+  input_names: ["input"]
+  output_names: ["output"]
+  dynamic_axes:
+    input: {0: "batch_size", 1: "sequence_length"}
+    output: {0: "batch_size"}
+  
+  # Export settings
+  export:
+    do_constant_folding: true
+    verbose: false
+  
+  # Optimization
+  optimization:
+    optimization_level: 2
+    target_platform: "cpu"
+
+# ============================================================================
+# TENSORRT CONFIGURATION
+# ============================================================================
+
+tensorrt:
+  enabled: false
+  precision: "fp16"  # fp32, fp16, int8
+  max_batch_size: 64
+  max_workspace_size: 2  # GB
+  min_timing_iterations: 2
+  avg_timing_iterations: 5
+  
+  # Calibration
+  calibration:
+    enabled: false
+    batch_size: 8
+    iterations: 500
+    calibration_table: "calibration_table"
+
+# ============================================================================
+# MODEL EVALUATION CONFIGURATION
+# ============================================================================
+
+evaluation:
+  metrics:
+    - "mse"
+    - "rmse"
+    - "mae"
+    - "mape"
+    - "r2"
+    - "directional_accuracy"
+    - "accuracy"
+    - "precision"
+    - "recall"
+    - "f1_score"
+    - "confusion_matrix"
+  
+  thresholds:
+    mse: 0.01
+    rmse: 0.1
+    mae: 0.05
+    r2: 0.7
+    directional_accuracy: 0.6
+    accuracy: 0.7
+  
+  validation:
+    methods:
+      - "cross_validation"
+      - "train_test_split"
+      - "walk_forward"
+    folds: 5
+    test_size: 0.2
+    walk_forward_steps: 10
+
+# ============================================================================
+# MODEL PERSISTENCE CONFIGURATION
+# ============================================================================
+
+persistence:
+  save_format: "pytorch"  # pytorch, onnx, joblib, pickle
+  save_optimizer_state: true
+  save_training_history: true
+  save_metadata: true
+  versions_to_keep: 10
+  max_storage_gb: 10
+  
+  # Checkpointing
+  checkpointing:
+    enabled: true
+    frequency: 10  # epochs
+    keep_best: true
+    keep_last: true
+  
+  # Backup
+  backup:
+    enabled: true
+    frequency: "daily"  # daily, weekly, monthly
+    max_backups: 30
+    backup_dir: "./data/backups/models"
+
+# ============================================================================
+# MODEL MONITORING CONFIGURATION
+# ============================================================================
+
+monitoring:
+  metrics:
+    - "training_loss"
+    - "validation_loss"
+    - "learning_rate"
+    - "gradient_norm"
+    - "parameter_norm"
+    - "activation_stats"
+  
+  logging:
+    frequency: 10  # steps
+    tensorboard: true
+    wandb: false
+    mlflow: false
+  
+  alerts:
+    enabled: true
+    threshold:
+      training_loss: 1.0
+      validation_loss: 1.0
+      gradient_norm: 10.0
+      parameter_norm: 100.0
+
+# ============================================================================
+# MODEL SHARING CONFIGURATION
+# ============================================================================
+
+sharing:
+  enabled: false
+  platform: "huggingface"  # huggingface, s3, custom
+  repo_id: "nexus-ai/trading-models"
+  private: true
+  license: "proprietary"
+  tags:
+    - "trading"
+    - "ai"
+    - "finance"
+    - "quant"
+  
+  upload:
+    frequency: "on_training_complete"
+    include_metadata: true
+    include_evaluation: true
