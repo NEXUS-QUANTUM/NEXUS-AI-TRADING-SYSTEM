@@ -1,0 +1,495 @@
+# trading/bots/ai_bot/config/development_config.yaml
+# NEXUS AI TRADING SYSTEM - Development Configuration
+# Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+
+# ============================================================================
+# DEVELOPMENT CONFIGURATION
+# This file contains development-specific configuration overrides.
+# All values here override the default configuration.
+# ============================================================================
+
+# ============================================================================
+# ENVIRONMENT SETTINGS
+# ============================================================================
+
+environment: "development"
+debug: true
+test_mode: true
+log_level: "DEBUG"
+
+# ============================================================================
+# BOT SETTINGS
+# ============================================================================
+
+bot:
+  name: "NEXUS AI Trading Bot (DEV)"
+  enabled: true
+  mode: "paper"  # Always paper in development
+  symbols:
+    - "BTC-USD"
+    - "ETH-USD"
+    - "SOL-USD"
+  initial_capital: 10000.0
+
+# ============================================================================
+# GENERAL SETTINGS
+# ============================================================================
+
+general:
+  debug: true
+  test_mode: true
+  log_level: "DEBUG"
+  cache_enabled: true
+  cache_ttl: 60  # Shorter cache for development
+  max_workers: 2
+  thread_pool_size: 2
+  async_enabled: true
+
+# ============================================================================
+# TRADING SETTINGS
+# ============================================================================
+
+trading:
+  max_positions: 3
+  max_position_size: 500.0
+  min_position_size: 10.0
+  max_leverage: 1.0
+  max_slippage: 0.01
+  execution_timeout: 60
+  
+  symbols:
+    crypto:
+      - "BTC-USD"
+      - "ETH-USD"
+      - "SOL-USD"
+    forex: []
+    stocks: []
+  
+  schedule:
+    enabled: false  # Disable schedule for development
+
+# ============================================================================
+# STRATEGY SETTINGS
+# ============================================================================
+
+strategy:
+  active: "hybrid"
+  min_confidence: 0.5  # Lower threshold for testing
+  position_sizing: "percentage"
+  rebalance_threshold: 0.2
+  enable_auto_compounding: false  # Disable for development
+  
+  parameters:
+    trend_following:
+      sma_fast: 10
+      sma_slow: 30
+      rsi_period: 10
+      
+    momentum:
+      roc_period: 10
+      rsi_period: 10
+      volume_threshold: 1.0
+      
+    mean_reversion:
+      bb_period: 14
+      bb_std: 1.5
+      rsi_oversold: 35
+      rsi_overbought: 65
+      
+    breakout:
+      lookback_periods: 100
+      consolidation_periods: 10
+      volume_threshold: 1.2
+      breakout_threshold: 0.01
+      
+    scalping:
+      spread_threshold: 0.002
+      max_hold_time: 30
+      
+    grid_trading:
+      grid_levels: 5
+      grid_spacing: 0.03
+      
+    arbitrage:
+      min_profit_percent: 0.3
+      max_position_size: 10000.0
+      
+    hybrid:
+      weighting_method: "uniform"
+      consensus_threshold: 0.5
+      max_strategies: 3
+      enable_regime_detection: true
+
+# ============================================================================
+# RISK MANAGEMENT
+# ============================================================================
+
+risk:
+  max_drawdown: 0.05
+  risk_per_trade: 0.01
+  stop_loss: 0.01
+  take_profit: 0.02
+  trailing_stop: 0.01
+  use_trailing_stop: false
+  max_risk_percent: 5.0
+  max_risk_amount: 500.0
+  
+  circuit_breakers:
+    enabled: false  # Disable for development
+    max_loss_per_day: 0.05
+    max_loss_per_hour: 0.02
+    cooldown_period: 60
+  
+  position_sizing:
+    method: "fixed"
+    fixed_size: 50.0
+    percentage_of_capital: 0.01
+    volatility_adjustment: false
+
+# ============================================================================
+# AI MODELS
+# ============================================================================
+
+models:
+  active:
+    - "lstm"
+    - "xgboost"
+  min_confidence: 0.5
+  retraining_frequency: "daily"
+  ensemble_weights:
+    lstm: 0.5
+    xgboost: 0.5
+  
+  parameters:
+    lstm:
+      hidden_size: 64
+      num_layers: 1
+      dropout: 0.1
+      bidirectional: false
+      attention: false
+      learning_rate: 0.01
+      batch_size: 16
+      epochs: 50
+      early_stopping_patience: 5
+      
+    transformer:
+      d_model: 64
+      nhead: 4
+      num_layers: 1
+      dim_feedforward: 128
+      dropout: 0.1
+      learning_rate: 0.01
+      batch_size: 16
+      epochs: 50
+      
+    xgboost:
+      max_depth: 4
+      learning_rate: 0.1
+      n_estimators: 50
+      subsample: 0.8
+      colsample_bytree: 0.8
+      gamma: 0.1
+
+# ============================================================================
+# DATA COLLECTION
+# ============================================================================
+
+data:
+  lookback_days: 30  # Shorter for development
+  update_interval: 30
+  cache_size: 500
+  max_history: 1000
+  store_raw_data: true
+  store_processed_data: true
+  
+  sources:
+    price:
+      - "yahoo_finance"  # Use free source for development
+    onchain: []
+    sentiment: []
+    fundamentals: []
+
+# ============================================================================
+# PERFORMANCE TRACKING
+# ============================================================================
+
+performance:
+  track_pnl: true
+  track_trades: true
+  track_positions: true
+  history_days: 30
+  metrics_interval: 30
+
+# ============================================================================
+# MONITORING
+# ============================================================================
+
+monitoring:
+  enabled: true
+  interval: 30
+  health_check_interval: 15
+  
+  alert_thresholds:
+    cpu: 90.0
+    memory: 90.0
+    disk: 90.0
+    latency: 1000.0
+    error_rate: 0.05
+    trade_failure_rate: 0.1
+    drawdown: 0.1
+
+# ============================================================================
+# NOTIFICATIONS
+# ============================================================================
+
+notifications:
+  enabled: true
+  channels:
+    - "websocket"
+    # Disable external notifications for development
+  
+  events:
+    trade:
+      enabled: true
+      channels: ["websocket"]
+    order:
+      enabled: true
+      channels: ["websocket"]
+    alert:
+      enabled: true
+      channels: ["websocket"]
+    error:
+      enabled: true
+      channels: ["websocket"]
+    position:
+      enabled: true
+      channels: ["websocket"]
+    system:
+      enabled: true
+      channels: ["websocket"]
+
+# ============================================================================
+# API SETTINGS
+# ============================================================================
+
+api:
+  enabled: true
+  host: "0.0.0.0"
+  port: 8000
+  workers: 1  # Single worker for development
+  cors_enabled: true
+  
+  rate_limit:
+    enabled: false  # Disable rate limiting for development
+  
+  auth:
+    access_token_expiry: 86400  # Longer expiry for testing
+    refresh_token_expiry: 604800
+
+# ============================================================================
+# DATABASE SETTINGS
+# ============================================================================
+
+database:
+  host: "localhost"
+  port: 5432
+  name: "nexus_trading_dev"
+  user: "nexus_dev"
+  password: "nexus_dev_password"
+  pool_size: 5
+  max_overflow: 10
+  echo: true  # Log SQL queries
+  ssl_mode: "disable"
+  
+  migrations:
+    enabled: true
+    directory: "./alembic/versions_dev"
+
+# ============================================================================
+# REDIS SETTINGS
+# ============================================================================
+
+redis:
+  host: "localhost"
+  port: 6379
+  db: 1  # Use different DB for development
+  password: ""
+  decode_responses: true
+  max_connections: 10
+  socket_timeout: 5
+
+# ============================================================================
+# STORAGE SETTINGS
+# ============================================================================
+
+storage:
+  local:
+    enabled: true
+    path: "./data_dev"
+    max_size: "1GB"
+  
+  cloud:
+    enabled: false
+
+# ============================================================================
+# NETWORK SETTINGS
+# ============================================================================
+
+network:
+  http:
+    timeout: 60
+    max_retries: 5
+    retry_backoff: 0.5
+  
+  websocket:
+    ping_interval: 60
+    ping_timeout: 20
+    reconnect_delay: 3
+    max_reconnect_attempts: 5
+
+# ============================================================================
+# COMPLIANCE SETTINGS
+# ============================================================================
+
+compliance:
+  enabled: false  # Disable compliance for development
+  kyc_required: false
+  aml_enabled: false
+  max_trade_value: 1000000
+  reporting_enabled: false
+
+# ============================================================================
+# SECURITY SETTINGS
+# ============================================================================
+
+security:
+  encryption_enabled: false  # Disable encryption for development
+  encryption_key: "dev_encryption_key"
+  
+  ssl:
+    enabled: false
+  
+  cors:
+    enabled: true
+    allowed_origins:
+      - "*"  # Allow all origins for development
+
+# ============================================================================
+# SUBSCRIPTION SETTINGS
+# ============================================================================
+
+subscriptions:
+  enabled: false  # Disable subscriptions for development
+  default_plan: "pro"  # Give pro access for development
+
+# ============================================================================
+# TELEMETRY SETTINGS
+# ============================================================================
+
+telemetry:
+  enabled: false  # Disable telemetry for development
+  opt_out: true
+
+# ============================================================================
+# FEATURE FLAGS
+# ============================================================================
+
+features:
+  ai_trading: true
+  paper_trading: true
+  live_trading: false  # Disable live trading in development
+  backtesting: true
+  arbitrage: true
+  grid_trading: true
+  scalping: true
+  sentiment_analysis: false
+  onchain_analysis: false
+  social_trading: false
+  copy_trading: false
+  auto_compounding: false
+  risk_management: true
+  multi_strategy: true
+  ensemble_models: true
+  reinforcement_learning: true
+  webhook_notifications: false
+  telegram_notifications: false
+  email_notifications: false
+
+# ============================================================================
+# DEBUG SETTINGS
+# ============================================================================
+
+debug:
+  enabled: true
+  verbose: true
+  profile: false
+  trace: false
+  dump_data: true
+  mock_external: true
+  disable_async: false
+  skip_validation: true  # Skip validation for faster development
+
+# ============================================================================
+# MOCK DATA SETTINGS
+# ============================================================================
+
+mock_data:
+  enabled: true
+  price_data: true
+  volume_data: true
+  order_book: true
+  trades: true
+  positions: true
+  portfolio: true
+
+# ============================================================================
+# TESTING SETTINGS
+# ============================================================================
+
+testing:
+  enabled: true
+  mock_external_apis: true
+  mock_database: false
+  mock_redis: false
+  mock_exchanges: true
+  simulate_latency: true
+  latency_ms: 100
+  error_rate: 0.01  # Simulate occasional errors
+  timeout_rate: 0.005  # Simulate occasional timeouts
+
+# ============================================================================
+# LOGGING OVERRIDES
+# ============================================================================
+
+logging:
+  version: 1
+  disable_existing_loggers: false
+  
+  handlers:
+    console:
+      level: DEBUG
+    file:
+      level: DEBUG
+      filename: "./logs_dev/ai_bot_dev.log"
+    error_file:
+      level: ERROR
+      filename: "./logs_dev/errors_dev.log"
+    json_file:
+      level: DEBUG
+      filename: "./logs_dev/ai_bot_dev_json.log"
+  
+  loggers:
+    nexus:
+      level: DEBUG
+    nexus.trading:
+      level: DEBUG
+    nexus.ai:
+      level: DEBUG
+    nexus.risk:
+      level: DEBUG
+    nexus.api:
+      level: DEBUG
+    nexus.blockchain:
+      level: DEBUG
+    root:
+      level: DEBUG
