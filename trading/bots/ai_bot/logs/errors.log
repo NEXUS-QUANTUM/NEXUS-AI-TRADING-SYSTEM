@@ -1,0 +1,785 @@
+"""
+NEXUS AI TRADING SYSTEM - Errors Log File
+Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+CEO: Dr X... - Majority Shareholder
+
+Module: trading/bots/ai_bot/logs/errors.log
+Description: Fichier de log des erreurs du bot AI.
+             Contient toutes les erreurs, exceptions et événements
+             critiques survenus lors de l'exécution du bot.
+             Format: JSON Lines (jsonl) avec données détaillées.
+"""
+
+import json
+import logging
+from datetime import datetime
+from typing import Dict, List, Any, Optional
+
+# ============================================================
+# LOGS D'ERREURS D'EXEMPLE POUR LE BOT AI
+# ============================================================
+
+# Ce fichier contient des exemples d'erreurs pour le bot AI.
+# Dans un environnement de production, ce fichier serait
+# mis à jour dynamiquement par le système de logging.
+
+EXAMPLE_ERRORS = [
+    # === ERREURS DE DONNÉES ===
+    {
+        "timestamp": "2026-07-17T00:00:05.123456",
+        "level": "ERROR",
+        "module": "data_feeder",
+        "message": "❌ Échec de connexion au flux de données",
+        "error": {
+            "type": "ConnectionError",
+            "message": "Failed to establish WebSocket connection",
+            "details": {
+                "source": "websocket",
+                "symbol": "BTC-USD",
+                "attempt": 1,
+                "timeout": 30.0,
+                "url": "wss://stream.binance.com:9443/ws/btcusdt@trade"
+            }
+        },
+        "stack_trace": [
+            "File 'data_feeder.py', line 245, in connect",
+            "File 'websocket.py', line 89, in connect",
+            "ConnectionError: Connection refused"
+        ],
+        "resolution": "retry_connection"
+    },
+    {
+        "timestamp": "2026-07-17T00:01:10.234567",
+        "level": "ERROR",
+        "module": "data_validator",
+        "message": "❌ Données invalides reçues",
+        "error": {
+            "type": "ValidationError",
+            "message": "Missing required columns in data frame",
+            "details": {
+                "expected": ["open", "high", "low", "close", "volume"],
+                "received": ["open", "high", "low", "close"],
+                "missing": ["volume"],
+                "data_shape": [100, 4],
+                "source": "websocket"
+            }
+        },
+        "stack_trace": [
+            "File 'data_validator.py', line 89, in validate",
+            "File 'data_pipeline.py', line 156, in process_batch",
+            "ValidationError: Missing required columns"
+        ],
+        "resolution": "skip_batch"
+    },
+    {
+        "timestamp": "2026-07-17T00:02:15.345678",
+        "level": "ERROR",
+        "module": "data_feeder",
+        "message": "❌ Timeout de récupération des données",
+        "error": {
+            "type": "TimeoutError",
+            "message": "Data fetch timeout exceeded",
+            "details": {
+                "symbol": "BTC-USD",
+                "timeframe": "1h",
+                "timeout": 60.0,
+                "elapsed": 62.3,
+                "retries": 3
+            }
+        },
+        "stack_trace": [
+            "File 'data_feeder.py', line 312, in fetch_data",
+            "File 'asyncio/tasks.py', line 456, in wait_for",
+            "TimeoutError"
+        ],
+        "resolution": "increase_timeout"
+    },
+
+    # === ERREURS DE MODÈLE ===
+    {
+        "timestamp": "2026-07-17T00:05:00.456789",
+        "level": "ERROR",
+        "module": "model_manager",
+        "message": "❌ Échec de chargement du modèle",
+        "error": {
+            "type": "ModelLoadError",
+            "message": "Failed to load model from checkpoint",
+            "details": {
+                "model": "lstm_v2",
+                "checkpoint_path": "models/checkpoints/lstm_v2_epoch_100.pth",
+                "error_code": 2,
+                "file_exists": False
+            }
+        },
+        "stack_trace": [
+            "File 'model_manager.py', line 178, in load_model",
+            "File 'pytorch/serialization.py', line 456, in load",
+            "FileNotFoundError: No such file or directory"
+        ],
+        "resolution": "fallback_to_base_model"
+    },
+    {
+        "timestamp": "2026-07-17T00:10:00.567890",
+        "level": "ERROR",
+        "module": "model_predictor",
+        "message": "❌ Prédiction du modèle échouée",
+        "error": {
+            "type": "PredictionError",
+            "message": "Model prediction failed due to input shape mismatch",
+            "details": {
+                "model": "transformer_v1",
+                "expected_shape": [32, 50, 32],
+                "received_shape": [32, 45, 32],
+                "feature_count": 32,
+                "sequence_length": 50
+            }
+        },
+        "stack_trace": [
+            "File 'model_predictor.py', line 234, in predict",
+            "File 'transformer_model.py', line 456, in forward",
+            "RuntimeError: size mismatch"
+        ],
+        "resolution": "reshape_input"
+    },
+    {
+        "timestamp": "2026-07-17T00:15:00.678901",
+        "level": "ERROR",
+        "module": "model_manager",
+        "message": "❌ GPU Out of Memory",
+        "error": {
+            "type": "CUDAError",
+            "message": "CUDA out of memory while loading model",
+            "details": {
+                "model": "ensemble_v2",
+                "gpu_memory_used": 7.8,
+                "gpu_memory_available": 8.0,
+                "gpu_memory_required": 2.5,
+                "device": "cuda:0"
+            }
+        },
+        "stack_trace": [
+            "File 'model_manager.py', line 245, in load_ensemble",
+            "File 'torch/cuda.py', line 123, in memory_allocated",
+            "RuntimeError: CUDA out of memory"
+        ],
+        "resolution": "use_cpu_fallback"
+    },
+
+    # === ERREURS D'ORDRE ===
+    {
+        "timestamp": "2026-07-17T00:20:00.789012",
+        "level": "ERROR",
+        "module": "order_executor",
+        "message": "❌ Échec d'exécution de l'ordre",
+        "error": {
+            "type": "OrderExecutionError",
+            "message": "Order execution failed: Insufficient balance",
+            "details": {
+                "order_id": "ORD_003",
+                "symbol": "BTC-USD",
+                "side": "BUY",
+                "quantity": 0.5,
+                "price": 101234.56,
+                "required_balance": 50617.28,
+                "available_balance": 45000.00,
+                "broker": "binance"
+            }
+        },
+        "stack_trace": [
+            "File 'order_executor.py', line 345, in execute_order",
+            "File 'broker/binance.py', line 678, in place_order",
+            "InsufficientBalanceError: Account balance insufficient"
+        ],
+        "resolution": "reduce_position_size"
+    },
+    {
+        "timestamp": "2026-07-17T00:25:00.890123",
+        "level": "ERROR",
+        "module": "order_validator",
+        "message": "❌ Ordre invalide",
+        "error": {
+            "type": "ValidationError",
+            "message": "Order validation failed",
+            "details": {
+                "order_id": "ORD_005",
+                "symbol": "BTC-USD",
+                "side": "BUY",
+                "quantity": -0.5,
+                "price": 0.0,
+                "validation_rules": ["quantity_positive", "price_positive"],
+                "violations": ["quantity_negative", "price_zero"]
+            }
+        },
+        "stack_trace": [
+            "File 'order_validator.py', line 123, in validate_order",
+            "File 'order_validator.py', line 89, in _validate_quantity",
+            "ValidationError: Quantity must be positive"
+        ],
+        "resolution": "fix_order_parameters"
+    },
+    {
+        "timestamp": "2026-07-17T00:30:00.901234",
+        "level": "ERROR",
+        "module": "order_router",
+        "message": "❌ Routage d'ordre échoué",
+        "error": {
+            "type": "RoutingError",
+            "message": "Failed to route order to any broker",
+            "details": {
+                "order_id": "ORD_006",
+                "symbol": "BTC-USD",
+                "side": "SELL",
+                "quantity": 0.3,
+                "brokers_available": ["binance", "coinbase", "kraken"],
+                "brokers_status": ["offline", "rate_limited", "unknown"]
+            }
+        },
+        "stack_trace": [
+            "File 'order_router.py', line 234, in route_order",
+            "File 'order_router.py', line 456, in _evaluate_brokers",
+            "RoutingError: No broker available"
+        ],
+        "resolution": "wait_and_retry"
+    },
+
+    # === ERREURS DE POSITION ===
+    {
+        "timestamp": "2026-07-17T00:35:00.012345",
+        "level": "ERROR",
+        "module": "position_manager",
+        "message": "❌ Échec de mise à jour de position",
+        "error": {
+            "type": "PositionError",
+            "message": "Failed to update position",
+            "details": {
+                "position_id": "POS_002",
+                "symbol": "BTC-USD",
+                "side": "LONG",
+                "quantity": 0.8,
+                "current_price": None,
+                "price_source": "websocket"
+            }
+        },
+        "stack_trace": [
+            "File 'position_manager.py', line 345, in update_positions",
+            "File 'position_manager.py', line 456, in _calculate_pnl",
+            "TypeError: unsupported operand type(s) for -: 'NoneType' and 'float'"
+        ],
+        "resolution": "skip_update"
+    },
+    {
+        "timestamp": "2026-07-17T00:40:00.123456",
+        "level": "ERROR",
+        "module": "risk_manager",
+        "message": "❌ Dépassement de risque",
+        "error": {
+            "type": "RiskLimitError",
+            "message": "Risk limit exceeded",
+            "details": {
+                "risk_type": "max_drawdown",
+                "current_drawdown": 15.5,
+                "max_drawdown": 10.0,
+                "exceeded_by": 55.0,
+                "action": "pause_trading"
+            }
+        },
+        "stack_trace": [
+            "File 'risk_manager.py', line 234, in check_drawdown",
+            "File 'risk_manager.py', line 456, in _execute_pause",
+            "RiskLimitError: Drawdown limit exceeded"
+        ],
+        "resolution": "pause_trading"
+    },
+
+    # === ERREURS SYSTÈME ===
+    {
+        "timestamp": "2026-07-17T00:45:00.234567",
+        "level": "ERROR",
+        "module": "websocket",
+        "message": "❌ Déconnexion WebSocket",
+        "error": {
+            "type": "WebSocketError",
+            "message": "WebSocket connection lost",
+            "details": {
+                "connection_id": "WS_001",
+                "symbol": "BTC-USD",
+                "last_heartbeat": "2026-07-17T00:44:55",
+                "reconnect_attempts": 3,
+                "backoff": 5.0
+            }
+        },
+        "stack_trace": [
+            "File 'websocket.py', line 123, in _heartbeat",
+            "File 'websocket.py', line 456, in _reconnect",
+            "WebSocketError: Connection timeout"
+        ],
+        "resolution": "reconnect"
+    },
+    {
+        "timestamp": "2026-07-17T00:50:00.345678",
+        "level": "ERROR",
+        "module": "database",
+        "message": "❌ Erreur de base de données",
+        "error": {
+            "type": "DatabaseError",
+            "message": "Failed to write to database",
+            "details": {
+                "query": "INSERT INTO trades VALUES (?, ?, ?, ?)",
+                "params": ["ORD_001", "BTC-USD", 100234.56, 0.5],
+                "error_code": 1205,
+                "error_message": "Lock wait timeout exceeded"
+            }
+        },
+        "stack_trace": [
+            "File 'database.py', line 234, in execute",
+            "File 'sqlalchemy/engine.py', line 456, in _execute",
+            "OperationalError: (MySQLdb.OperationalError) Lock wait timeout"
+        ],
+        "resolution": "retry_with_timeout"
+    },
+    {
+        "timestamp": "2026-07-17T00:55:00.456789",
+        "level": "ERROR",
+        "module": "cache",
+        "message": "❌ Erreur de cache",
+        "error": {
+            "type": "CacheError",
+            "message": "Failed to access Redis cache",
+            "details": {
+                "operation": "set",
+                "key": "indicator_btc_1h_20260717",
+                "redis_host": "localhost",
+                "redis_port": 6379,
+                "error": "Connection refused"
+            }
+        },
+        "stack_trace": [
+            "File 'cache.py', line 456, in set",
+            "File 'redis/client.py', line 123, in execute",
+            "ConnectionRefusedError: [Errno 111] Connection refused"
+        ],
+        "resolution": "fallback_to_memory_cache"
+    },
+
+    # === ERREURS DE STRATÉGIE ===
+    {
+        "timestamp": "2026-07-17T01:00:00.567890",
+        "level": "ERROR",
+        "module": "strategy_executor",
+        "message": "❌ Exécution de stratégie échouée",
+        "error": {
+            "type": "StrategyError",
+            "message": "Strategy execution failed",
+            "details": {
+                "strategy": "hybrid_ensemble",
+                "signal_id": "SIG_004",
+                "action": "BUY",
+                "price": 101234.56,
+                "error": "Division by zero in position sizing"
+            }
+        },
+        "stack_trace": [
+            "File 'strategy_executor.py', line 234, in execute",
+            "File 'hybrid_ensemble.py', line 456, in calculate_position",
+            "ZeroDivisionError: division by zero"
+        ],
+        "resolution": "fix_strategy_logic"
+    },
+    {
+        "timestamp": "2026-07-17T01:05:00.678901",
+        "level": "ERROR",
+        "module": "indicator_calculator",
+        "message": "❌ Calcul d'indicateur échoué",
+        "error": {
+            "type": "IndicatorError",
+            "message": "Failed to calculate indicator",
+            "details": {
+                "indicator": "custom_indicator",
+                "symbol": "BTC-USD",
+                "timeframe": "1h",
+                "error": "Invalid parameter combination"
+            }
+        },
+        "stack_trace": [
+            "File 'indicator_calculator.py', line 456, in calculate",
+            "File 'custom_indicators.py', line 234, in calculate",
+            "ValueError: period must be greater than 0"
+        ],
+        "resolution": "use_default_params"
+    },
+
+    # === ERREURS CRITIQUES ===
+    {
+        "timestamp": "2026-07-17T02:00:00.789012",
+        "level": "CRITICAL",
+        "module": "ai_bot",
+        "message": "🚨 ERREUR CRITIQUE: Bot en arrêt d'urgence",
+        "error": {
+            "type": "CriticalError",
+            "message": "Unrecoverable error detected, emergency stop",
+            "details": {
+                "error_chain": [
+                    "WebSocket connection lost",
+                    "Database connection failed",
+                    "Position sync error",
+                    "Risk limit exceeded"
+                ],
+                "severity": "critical",
+                "action": "emergency_stop"
+            }
+        },
+        "stack_trace": [
+            "File 'ai_bot.py', line 789, in _emergency_stop",
+            "File 'ai_bot.py', line 456, in _handle_critical_error",
+            "CriticalError: Bot stopped"
+        ],
+        "resolution": "manual_restart"
+    },
+    {
+        "timestamp": "2026-07-17T03:00:00.890123",
+        "level": "CRITICAL",
+        "module": "risk_manager",
+        "message": "🚨 RISQUE CRITIQUE: Perte maximale atteinte",
+        "error": {
+            "type": "CriticalRiskError",
+            "message": "Maximum loss limit reached",
+            "details": {
+                "daily_loss": 5000.00,
+                "max_daily_loss": 5000.00,
+                "total_loss": 5234.56,
+                "exceeded_by": 234.56,
+                "action": "shutdown"
+            }
+        },
+        "stack_trace": [
+            "File 'risk_manager.py', line 567, in check_loss_limit",
+            "File 'risk_manager.py', line 234, in _execute_shutdown",
+            "CriticalRiskError: Loss limit exceeded"
+        ],
+        "resolution": "manual_review"
+    },
+    {
+        "timestamp": "2026-07-17T04:00:00.901234",
+        "level": "CRITICAL",
+        "module": "system_monitor",
+        "message": "🚨 ERREUR SYSTÈME: Mémoire insuffisante",
+        "error": {
+            "type": "SystemError",
+            "message": "System memory critically low",
+            "details": {
+                "memory_used": 15.6,
+                "memory_available": 0.4,
+                "memory_total": 16.0,
+                "memory_percent": 97.5,
+                "process": "python",
+                "pid": 12345
+            }
+        },
+        "stack_trace": [
+            "File 'system_monitor.py', line 234, in check_memory",
+            "File 'system_monitor.py', line 456, in _alert",
+            "SystemError: Memory critically low"
+        ],
+        "resolution": "restart_system"
+    }
+]
+
+# ============================================================
+# STATISTIQUES DES ERREURS
+# ============================================================
+
+ERROR_STATS = {
+    "total_errors": len(EXAMPLE_ERRORS),
+    "by_level": {
+        "ERROR": 26,
+        "CRITICAL": 3
+    },
+    "by_module": {
+        "data_feeder": 3,
+        "data_validator": 1,
+        "model_manager": 2,
+        "model_predictor": 1,
+        "order_executor": 1,
+        "order_validator": 1,
+        "order_router": 1,
+        "position_manager": 1,
+        "risk_manager": 2,
+        "websocket": 1,
+        "database": 1,
+        "cache": 1,
+        "strategy_executor": 1,
+        "indicator_calculator": 1,
+        "ai_bot": 1,
+        "system_monitor": 1
+    },
+    "by_type": {
+        "ConnectionError": 2,
+        "ValidationError": 2,
+        "TimeoutError": 1,
+        "ModelLoadError": 1,
+        "PredictionError": 1,
+        "CUDAError": 1,
+        "OrderExecutionError": 1,
+        "RoutingError": 1,
+        "PositionError": 1,
+        "RiskLimitError": 1,
+        "WebSocketError": 1,
+        "DatabaseError": 1,
+        "CacheError": 1,
+        "StrategyError": 1,
+        "IndicatorError": 1,
+        "CriticalError": 2,
+        "CriticalRiskError": 1,
+        "SystemError": 1
+    },
+    "by_resolution": {
+        "retry_connection": 1,
+        "skip_batch": 1,
+        "increase_timeout": 1,
+        "fallback_to_base_model": 1,
+        "reshape_input": 1,
+        "use_cpu_fallback": 1,
+        "reduce_position_size": 1,
+        "fix_order_parameters": 1,
+        "wait_and_retry": 1,
+        "skip_update": 1,
+        "pause_trading": 1,
+        "reconnect": 1,
+        "retry_with_timeout": 1,
+        "fallback_to_memory_cache": 1,
+        "fix_strategy_logic": 1,
+        "use_default_params": 1,
+        "manual_restart": 1,
+        "manual_review": 1,
+        "restart_system": 1
+    }
+}
+
+# ============================================================
+# FONCTIONS DE GESTION DES ERREURS
+# ============================================================
+
+def write_example_errors(filepath: str = "trading/bots/ai_bot/logs/errors.log") -> None:
+    """
+    Écrit les erreurs d'exemple dans un fichier.
+    
+    Args:
+        filepath: Chemin du fichier d'erreurs.
+    """
+    import os
+    
+    try:
+        # Création du répertoire si nécessaire
+        os.makedirs(os.path.dirname(filepath), exist_ok=True)
+        
+        with open(filepath, 'w', encoding='utf-8') as f:
+            for error in EXAMPLE_ERRORS:
+                f.write(json.dumps(error) + '\n')
+        
+        print(f"✅ Erreurs écrites dans {filepath}")
+        
+    except Exception as e:
+        print(f"❌ Erreur d'écriture: {e}")
+
+
+def read_errors(
+    filepath: str = "trading/bots/ai_bot/logs/errors.log",
+    level: Optional[str] = None,
+    module: Optional[str] = None,
+    error_type: Optional[str] = None,
+    limit: int = 100
+) -> List[Dict[str, Any]]:
+    """
+    Lit les erreurs depuis un fichier.
+    
+    Args:
+        filepath: Chemin du fichier d'erreurs.
+        level: Niveau d'erreur.
+        module: Module.
+        error_type: Type d'erreur.
+        limit: Nombre maximum d'erreurs.
+        
+    Returns:
+        Liste des erreurs.
+    """
+    errors = []
+    
+    try:
+        with open(filepath, 'r', encoding='utf-8') as f:
+            for line in f:
+                try:
+                    error = json.loads(line.strip())
+                    errors.append(error)
+                except json.JSONDecodeError:
+                    continue
+        
+        # Filtrage
+        if level:
+            errors = [e for e in errors if e.get('level') == level]
+        
+        if module:
+            errors = [e for e in errors if e.get('module') == module]
+        
+        if error_type:
+            errors = [e for e in errors if e.get('error', {}).get('type') == error_type]
+        
+        # Tri par timestamp (plus récent en premier)
+        errors.sort(key=lambda x: x.get('timestamp', ''), reverse=True)
+        
+        return errors[:limit]
+        
+    except FileNotFoundError:
+        print(f"⚠️ Fichier d'erreurs non trouvé: {filepath}")
+        return []
+    except Exception as e:
+        print(f"❌ Erreur de lecture: {e}")
+        return []
+
+
+def get_error_stats(
+    filepath: str = "trading/bots/ai_bot/logs/errors.log"
+) -> Dict[str, Any]:
+    """
+    Retourne les statistiques des erreurs.
+    
+    Args:
+        filepath: Chemin du fichier d'erreurs.
+        
+    Returns:
+        Statistiques des erreurs.
+    """
+    errors = read_errors(filepath, limit=10000)
+    
+    if not errors:
+        return {'total': 0}
+    
+    stats = {
+        'total': len(errors),
+        'by_level': {},
+        'by_module': {},
+        'by_type': {},
+        'by_resolution': {},
+        'first_error': errors[-1].get('timestamp') if errors else None,
+        'last_error': errors[0].get('timestamp') if errors else None
+    }
+    
+    for error in errors:
+        level = error.get('level', 'UNKNOWN')
+        module = error.get('module', 'UNKNOWN')
+        error_type = error.get('error', {}).get('type', 'UNKNOWN')
+        resolution = error.get('resolution', 'UNKNOWN')
+        
+        stats['by_level'][level] = stats['by_level'].get(level, 0) + 1
+        stats['by_module'][module] = stats['by_module'].get(module, 0) + 1
+        stats['by_type'][error_type] = stats['by_type'].get(error_type, 0) + 1
+        stats['by_resolution'][resolution] = stats['by_resolution'].get(resolution, 0) + 1
+    
+    return stats
+
+
+def get_error_by_resolution(
+    filepath: str = "trading/bots/ai_bot/logs/errors.log"
+) -> Dict[str, List[Dict[str, Any]]]:
+    """
+    Groupe les erreurs par résolution.
+    
+    Args:
+        filepath: Chemin du fichier d'erreurs.
+        
+    Returns:
+        Dictionnaire des erreurs groupées par résolution.
+    """
+    errors = read_errors(filepath, limit=10000)
+    
+    grouped = {}
+    
+    for error in errors:
+        resolution = error.get('resolution', 'UNKNOWN')
+        if resolution not in grouped:
+            grouped[resolution] = []
+        grouped[resolution].append(error)
+    
+    return grouped
+
+
+def get_most_common_errors(
+    filepath: str = "trading/bots/ai_bot/logs/errors.log",
+    n: int = 5
+) -> List[Dict[str, Any]]:
+    """
+    Retourne les erreurs les plus fréquentes.
+    
+    Args:
+        filepath: Chemin du fichier d'erreurs.
+        n: Nombre d'erreurs.
+        
+    Returns:
+        Liste des erreurs les plus fréquentes.
+    """
+    errors = read_errors(filepath, limit=10000)
+    
+    if not errors:
+        return []
+    
+    # Compter les occurrences
+    error_counts = {}
+    for error in errors:
+        key = error.get('error', {}).get('type', 'UNKNOWN')
+        if key not in error_counts:
+            error_counts[key] = {'count': 0, 'example': error}
+        error_counts[key]['count'] += 1
+    
+    # Trier par fréquence
+    sorted_errors = sorted(error_counts.items(), key=lambda x: x[1]['count'], reverse=True)
+    
+    return [{'type': k, 'count': v['count'], 'example': v['example']} for k, v in sorted_errors[:n]]
+
+
+# ============================================================
+# EXPORTATION
+# ============================================================
+
+__all__ = [
+    'EXAMPLE_ERRORS',
+    'ERROR_STATS',
+    'write_example_errors',
+    'read_errors',
+    'get_error_stats',
+    'get_error_by_resolution',
+    'get_most_common_errors'
+]
+
+# ============================================================
+# EXÉCUTION (si fichier exécuté directement)
+# ============================================================
+
+if __name__ == "__main__":
+    # Écriture des erreurs d'exemple
+    write_example_errors()
+    
+    # Lecture et affichage des 5 dernières erreurs
+    print("\n❌ Dernières erreurs:")
+    errors = read_errors(limit=5)
+    for error in errors:
+        print(f"[{error.get('timestamp')}] {error.get('level')} - {error.get('message')}")
+        print(f"  Type: {error.get('error', {}).get('type', 'UNKNOWN')}")
+        print(f"  Module: {error.get('module', 'UNKNOWN')}")
+        print(f"  Résolution: {error.get('resolution', 'UNKNOWN')}")
+    
+    # Statistiques
+    print("\n📊 Statistiques des erreurs:")
+    stats = get_error_stats()
+    print(f"Total erreurs: {stats.get('total', 0)}")
+    print(f"Par niveau: {stats.get('by_level', {})}")
+    print(f"Par module: {stats.get('by_module', {})}")
+    print(f"Par type: {stats.get('by_type', {})}")
+    
+    # Erreurs les plus fréquentes
+    print("\n🔝 Erreurs les plus fréquentes:")
+    common = get_most_common_errors(n=3)
+    for item in common:
+        print(f"  {item['type']}: {item['count']} occurrences")
+
+# ============================================================
+# FIN DU FICHIER
+# ============================================================
