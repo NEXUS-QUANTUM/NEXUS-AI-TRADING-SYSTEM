@@ -1,0 +1,1500 @@
+<!-- trading/bots/ai_bot/templates/performance.html -->
+<!-- NEXUS AI TRADING SYSTEM - Performance Dashboard -->
+<!-- Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved -->
+
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEXUS AI Trading - Performance</title>
+
+    <!-- ============================================================ -->
+    <!-- CSS -->
+    <!-- ============================================================ -->
+    <link rel="stylesheet" href="/static/css/dashboard.css">
+    <link rel="stylesheet" href="/static/css/dark_theme.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        /* ============================================================ */
+        /* Performance Page Styles */
+        /* ============================================================ */
+
+        .performance-page {
+            padding: 24px 32px;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        .performance-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .performance-header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #6C5CE7, #A29BFE);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .performance-header h1 i {
+            -webkit-text-fill-color: initial;
+            color: #6C5CE7;
+        }
+
+        .performance-header-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn-action {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            padding: 10px 20px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-action:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+
+        .btn-action.primary {
+            background: linear-gradient(135deg, #6C5CE7, #A29BFE);
+            border: none;
+            color: #fff;
+        }
+
+        .btn-action.primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(108, 92, 231, 0.4);
+        }
+
+        /* ============================================================ */
+        /* Performance Filters */
+        /* ============================================================ */
+
+        .performance-filters {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 24px;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            padding: 16px 20px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .performance-filters select,
+        .performance-filters input {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 8px 14px;
+            color: #fff;
+            font-size: 13px;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        .performance-filters select:focus,
+        .performance-filters input:focus {
+            border-color: #6C5CE7;
+        }
+
+        .performance-filters select option {
+            background: #1a1a2e;
+        }
+
+        .filter-label {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.5);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+
+        .filter-actions {
+            display: flex;
+            gap: 8px;
+            margin-left: auto;
+        }
+
+        .filter-actions button {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            padding: 8px 14px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-actions button:hover {
+            background: rgba(108, 92, 231, 0.2);
+            border-color: #6C5CE7;
+            color: #fff;
+        }
+
+        /* ============================================================ */
+        /* KPI Cards */
+        /* ============================================================ */
+
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .kpi-card {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            padding: 16px 20px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            transition: all 0.3s ease;
+        }
+
+        .kpi-card:hover {
+            border-color: rgba(108, 92, 231, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .kpi-card .kpi-label {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.5);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+
+        .kpi-card .kpi-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: #fff;
+            margin: 4px 0;
+        }
+
+        .kpi-card .kpi-change {
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .kpi-card .kpi-change.positive { color: #2ED573; }
+        .kpi-card .kpi-change.negative { color: #FF4757; }
+        .kpi-card .kpi-change.neutral { color: rgba(255, 255, 255, 0.4); }
+
+        .kpi-card .kpi-sub {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.3);
+            margin-top: 4px;
+        }
+
+        /* ============================================================ */
+        /* Chart Grid */
+        /* ============================================================ */
+
+        .chart-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .chart-card {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            min-height: 300px;
+            position: relative;
+        }
+
+        .chart-card .chart-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .chart-card .chart-title i {
+            color: #6C5CE7;
+        }
+
+        .chart-card canvas {
+            width: 100% !important;
+            height: calc(100% - 40px) !important;
+        }
+
+        /* ============================================================ */
+        /* Performance Table */
+        /* ============================================================ */
+
+        .performance-table-section {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            margin-bottom: 24px;
+            overflow: hidden;
+        }
+
+        .performance-table-section .section-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .performance-table-section .section-header h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #fff;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .performance-table-section .section-header h3 i {
+            color: #6C5CE7;
+        }
+
+        .performance-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        .performance-table thead {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .performance-table th {
+            padding: 12px 16px;
+            text-align: left;
+            color: rgba(255, 255, 255, 0.5);
+            font-weight: 600;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .performance-table td {
+            padding: 12px 16px;
+            color: rgba(255, 255, 255, 0.8);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .performance-table tr:hover td {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .performance-table .positive { color: #2ED573; }
+        .performance-table .negative { color: #FF4757; }
+        .performance-table .neutral { color: rgba(255, 255, 255, 0.4); }
+
+        .performance-table .progress-bar {
+            width: 100px;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .performance-table .progress-bar .progress-fill {
+            height: 100%;
+            border-radius: 3px;
+            transition: width 0.3s ease;
+        }
+
+        .performance-table .progress-bar .progress-fill.positive { background: #2ED573; }
+        .performance-table .progress-bar .progress-fill.negative { background: #FF4757; }
+        .performance-table .progress-bar .progress-fill.neutral { background: #6C5CE7; }
+
+        /* ============================================================ */
+        /* Toast */
+        /* ============================================================ */
+
+        .toast-container {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            z-index: 9999;
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .toast {
+            padding: 14px 20px;
+            border-radius: 12px;
+            background: rgba(26, 26, 46, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            color: #fff;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            animation: slideUp 0.3s ease;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        }
+
+        .toast.success { border-left: 4px solid #2ED573; }
+        .toast.error { border-left: 4px solid #FF4757; }
+        .toast.warning { border-left: 4px solid #FFA502; }
+        .toast.info { border-left: 4px solid #4ECDC4; }
+
+        .toast .toast-icon { font-size: 20px; flex-shrink: 0; }
+        .toast.success .toast-icon { color: #2ED573; }
+        .toast.error .toast-icon { color: #FF4757; }
+        .toast.warning .toast-icon { color: #FFA502; }
+        .toast.info .toast-icon { color: #4ECDC4; }
+
+        .toast .toast-close {
+            margin-left: auto;
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.4);
+            cursor: pointer;
+            font-size: 16px;
+            padding: 4px;
+        }
+
+        .toast .toast-close:hover { color: #fff; }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ============================================================ */
+        /* Loading & Empty States */
+        /* ============================================================ */
+
+        .performance-loading {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 20px;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .performance-loading .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(255, 255, 255, 0.05);
+            border-top-color: #6C5CE7;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-bottom: 16px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .performance-empty {
+            text-align: center;
+            padding: 60px 20px;
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .performance-empty i {
+            font-size: 48px;
+            margin-bottom: 16px;
+            opacity: 0.3;
+        }
+
+        .performance-empty h3 {
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 8px;
+        }
+
+        /* ============================================================ */
+        /* Responsive */
+        /* ============================================================ */
+
+        @media (max-width: 1200px) {
+            .chart-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .performance-page {
+                padding: 16px;
+            }
+
+            .performance-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .performance-header-actions {
+                width: 100%;
+            }
+
+            .performance-header-actions .btn-action {
+                flex: 1;
+                justify-content: center;
+            }
+
+            .performance-filters {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .filter-actions {
+                margin-left: 0;
+            }
+
+            .kpi-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .performance-table {
+                font-size: 13px;
+            }
+
+            .performance-table th,
+            .performance-table td {
+                padding: 8px 12px;
+            }
+
+            .chart-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .chart-card {
+                min-height: 200px;
+                padding: 12px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .kpi-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .performance-table {
+                font-size: 12px;
+            }
+
+            .performance-table th,
+            .performance-table td {
+                padding: 6px 8px;
+            }
+
+            .performance-table .hide-mobile {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- ============================================================ -->
+    <!-- Performance Page -->
+    <!-- ============================================================ -->
+
+    <div class="performance-page">
+        <!-- Header -->
+        <div class="performance-header">
+            <h1>
+                <i class="fas fa-chart-line"></i>
+                Performance
+            </h1>
+            <div class="performance-header-actions">
+                <button class="btn-action" id="refreshPerformance">
+                    <i class="fas fa-sync-alt"></i> Refresh
+                </button>
+                <button class="btn-action" id="exportReport">
+                    <i class="fas fa-file-export"></i> Export
+                </button>
+                <button class="btn-action primary" id="generateReport">
+                    <i class="fas fa-file-pdf"></i> Generate Report
+                </button>
+            </div>
+        </div>
+
+        <!-- Filters -->
+        <div class="performance-filters">
+            <span class="filter-label">Metric:</span>
+            <select id="metricSelect">
+                <option value="all">All Metrics</option>
+                <option value="pnl">P&L</option>
+                <option value="win_rate">Win Rate</option>
+                <option value="sharpe">Sharpe Ratio</option>
+                <option value="drawdown">Drawdown</option>
+                <option value="volume">Volume</option>
+                <option value="trades">Trades</option>
+            </select>
+
+            <span class="filter-label">Timeframe:</span>
+            <select id="timeframeSelect">
+                <option value="24h">24 Hours</option>
+                <option value="7d" selected>7 Days</option>
+                <option value="30d">30 Days</option>
+                <option value="90d">90 Days</option>
+                <option value="1y">1 Year</option>
+                <option value="all">All Time</option>
+            </select>
+
+            <span class="filter-label">Symbol:</span>
+            <select id="symbolSelect">
+                <option value="all">All Symbols</option>
+                <option value="BTC-USD">BTC-USD</option>
+                <option value="ETH-USD">ETH-USD</option>
+                <option value="SOL-USD">SOL-USD</option>
+                <option value="ADA-USD">ADA-USD</option>
+                <option value="DOT-USD">DOT-USD</option>
+            </select>
+
+            <div class="filter-actions">
+                <button id="applyFilters"><i class="fas fa-check"></i> Apply</button>
+                <button id="resetFilters"><i class="fas fa-times"></i> Reset</button>
+            </div>
+        </div>
+
+        <!-- KPI Grid -->
+        <div class="kpi-grid" id="kpiGrid">
+            <!-- Rendered by JS -->
+        </div>
+
+        <!-- Charts -->
+        <div class="chart-grid" id="chartGrid">
+            <div class="chart-card">
+                <div class="chart-title"><i class="fas fa-chart-area"></i> Performance Over Time</div>
+                <canvas id="performanceChart"></canvas>
+            </div>
+            <div class="chart-card">
+                <div class="chart-title"><i class="fas fa-chart-pie"></i> Distribution</div>
+                <canvas id="distributionChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Second Row of Charts -->
+        <div class="chart-grid" style="grid-template-columns: 1fr 1fr 1fr;">
+            <div class="chart-card">
+                <div class="chart-title"><i class="fas fa-arrow-up"></i> Cumulative Returns</div>
+                <canvas id="cumulativeChart"></canvas>
+            </div>
+            <div class="chart-card">
+                <div class="chart-title"><i class="fas fa-tachometer-alt"></i> Risk Metrics</div>
+                <canvas id="riskChart"></canvas>
+            </div>
+            <div class="chart-card">
+                <div class="chart-title"><i class="fas fa-exchange-alt"></i> Trade Distribution</div>
+                <canvas id="tradeDistributionChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Performance Table -->
+        <div class="performance-table-section">
+            <div class="section-header">
+                <h3><i class="fas fa-table"></i> Detailed Performance</h3>
+                <div class="section-actions">
+                    <button class="btn-action" style="padding: 4px 12px; font-size: 12px;" onclick="performanceController.exportTable()">
+                        <i class="fas fa-download"></i> Export
+                    </button>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="performance-table" id="performanceTable">
+                    <thead>
+                        <tr>
+                            <th>Symbol</th>
+                            <th>Trades</th>
+                            <th>Win Rate</th>
+                            <th>Total P&L</th>
+                            <th>Avg Win</th>
+                            <th>Avg Loss</th>
+                            <th>Profit Factor</th>
+                            <th>Sharpe</th>
+                            <th>Max DD</th>
+                            <th>Performance</th>
+                        </tr>
+                    </thead>
+                    <tbody id="performanceTableBody">
+                        <!-- Rendered by JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- Toast Container -->
+    <!-- ============================================================ -->
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- ============================================================ -->
+    <!-- JavaScript -->
+    <!-- ============================================================ -->
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="/static/js/api_client.js"></script>
+    <script src="/static/js/websocket.js"></script>
+
+    <script>
+        // ================================================================
+        // Performance Controller
+        // ================================================================
+
+        class PerformanceController {
+            constructor() {
+                this.performanceData = null;
+                this.filteredData = null;
+                this.charts = {};
+
+                // DOM Elements
+                this.elements = {
+                    kpiGrid: document.getElementById('kpiGrid'),
+                    performanceChart: document.getElementById('performanceChart'),
+                    distributionChart: document.getElementById('distributionChart'),
+                    cumulativeChart: document.getElementById('cumulativeChart'),
+                    riskChart: document.getElementById('riskChart'),
+                    tradeDistributionChart: document.getElementById('tradeDistributionChart'),
+                    tableBody: document.getElementById('performanceTableBody'),
+                    metricSelect: document.getElementById('metricSelect'),
+                    timeframeSelect: document.getElementById('timeframeSelect'),
+                    symbolSelect: document.getElementById('symbolSelect'),
+                    applyBtn: document.getElementById('applyFilters'),
+                    resetBtn: document.getElementById('resetFilters'),
+                    refreshBtn: document.getElementById('refreshPerformance'),
+                    exportBtn: document.getElementById('exportReport'),
+                    generateBtn: document.getElementById('generateReport'),
+                    toastContainer: document.getElementById('toastContainer'),
+                };
+
+                // Initialize
+                this.init();
+            }
+
+            // ================================================================
+            // Initialization
+            // ================================================================
+
+            init() {
+                this.loadPerformanceData();
+                this.setupEventListeners();
+                this.setupWebSocket();
+
+                // Auto-refresh every 30 seconds
+                setInterval(() => this.loadPerformanceData(), 30000);
+
+                console.log('PerformanceController initialized');
+            }
+
+            // ================================================================
+            // WebSocket Setup
+            // ================================================================
+
+            setupWebSocket() {
+                NexusAPI.connectWebSocket(['performance', 'trades']);
+
+                NexusAPI.onWebSocketMessage('trade', (data) => {
+                    if (this.performanceData) {
+                        this.performanceData.trades = this.performanceData.trades || [];
+                        this.performanceData.trades.unshift(data);
+                        this.applyFilters();
+                    }
+                });
+
+                NexusAPI.onWebSocketMessage('performance', (data) => {
+                    if (this.performanceData) {
+                        this.performanceData.metrics = data;
+                        this.renderKPI();
+                        this.renderCharts();
+                    }
+                });
+            }
+
+            // ================================================================
+            // Load Performance Data
+            // ================================================================
+
+            async loadPerformanceData() {
+                try {
+                    this.showLoading();
+
+                    const params = {
+                        timeframe: this.elements.timeframeSelect.value,
+                        symbol: this.elements.symbolSelect.value,
+                        metric: this.elements.metricSelect.value,
+                    };
+
+                    const response = await NexusAPI.request('/performance/data', { params });
+
+                    if (response && response.success) {
+                        this.performanceData = response.data;
+                        this.applyFilters();
+                    } else {
+                        this.showToast(response.message || 'Failed to load performance data', 'error');
+                    }
+                } catch (error) {
+                    console.error('Error loading performance:', error);
+                    this.showToast('Error loading performance data', 'error');
+                } finally {
+                    this.hideLoading();
+                }
+            }
+
+            // ================================================================
+            // Apply Filters
+            // ================================================================
+
+            applyFilters() {
+                if (!this.performanceData) return;
+
+                const metric = this.elements.metricSelect.value;
+                const timeframe = this.elements.timeframeSelect.value;
+                const symbol = this.elements.symbolSelect.value;
+
+                this.filteredData = { ...this.performanceData };
+
+                // Filter trades
+                if (this.filteredData.trades) {
+                    let trades = this.filteredData.trades;
+
+                    if (symbol !== 'all') {
+                        trades = trades.filter(t => t.symbol === symbol);
+                    }
+
+                    if (timeframe !== 'all') {
+                        const cutoff = this.getTimeframeCutoff(timeframe);
+                        trades = trades.filter(t => new Date(t.timestamp) >= cutoff);
+                    }
+
+                    this.filteredData.trades = trades;
+                }
+
+                // Filter by metric
+                if (metric !== 'all' && this.filteredData.metrics) {
+                    // Filter metrics display
+                }
+
+                this.renderKPI();
+                this.renderCharts();
+                this.renderTable();
+            }
+
+            // ================================================================
+            // Get Timeframe Cutoff
+            // ================================================================
+
+            getTimeframeCutoff(timeframe) {
+                const now = new Date();
+                const cutoffs = {
+                    '24h': new Date(now.getTime() - 24 * 3600 * 1000),
+                    '7d': new Date(now.getTime() - 7 * 24 * 3600 * 1000),
+                    '30d': new Date(now.getTime() - 30 * 24 * 3600 * 1000),
+                    '90d': new Date(now.getTime() - 90 * 24 * 3600 * 1000),
+                    '1y': new Date(now.getTime() - 365 * 24 * 3600 * 1000),
+                };
+                return cutoffs[timeframe] || new Date(0);
+            }
+
+            // ================================================================
+            // Render KPI Cards
+            // ================================================================
+
+            renderKPI() {
+                const data = this.filteredData;
+                if (!data) return;
+
+                const metrics = data.metrics || {};
+                const trades = data.trades || [];
+
+                const totalPnL = trades.reduce((sum, t) => sum + (t.pnl || 0), 0);
+                const winCount = trades.filter(t => (t.pnl || 0) > 0).length;
+                const lossCount = trades.filter(t => (t.pnl || 0) < 0).length;
+                const winRate = trades.length > 0 ? winCount / trades.length : 0;
+                const avgWin = winCount > 0 ? trades.filter(t => (t.pnl || 0) > 0).reduce((s, t) => s + (t.pnl || 0), 0) / winCount : 0;
+                const avgLoss = lossCount > 0 ? Math.abs(trades.filter(t => (t.pnl || 0) < 0).reduce((s, t) => s + (t.pnl || 0), 0) / lossCount) : 0;
+
+                const totalValue = metrics.total_value || 10000;
+                const roi = totalValue > 0 ? (totalPnL / totalValue) * 100 : 0;
+
+                const kpis = [
+                    {
+                        label: 'Total P&L',
+                        value: this.formatCurrency(totalPnL),
+                        change: `${roi.toFixed(1)}% ROI`,
+                        changeClass: totalPnL >= 0 ? 'positive' : 'negative',
+                        sub: `${trades.length} trades`,
+                    },
+                    {
+                        label: 'Win Rate',
+                        value: `${(winRate * 100).toFixed(1)}%`,
+                        change: `${winCount} wins / ${lossCount} losses`,
+                        changeClass: winRate >= 0.5 ? 'positive' : 'negative',
+                        sub: `${(winRate * 100).toFixed(1)}% success rate`,
+                    },
+                    {
+                        label: 'Avg Win / Loss',
+                        value: `${this.formatCurrency(avgWin)} / ${this.formatCurrency(avgLoss)}`,
+                        change: `Ratio: ${avgLoss > 0 ? (avgWin / avgLoss).toFixed(2) : '∞'}`,
+                        changeClass: avgWin > avgLoss ? 'positive' : 'negative',
+                        sub: 'Average trade outcomes',
+                    },
+                    {
+                        label: 'Sharpe Ratio',
+                        value: `${(metrics.sharpe_ratio || 0).toFixed(2)}`,
+                        change: metrics.sharpe_ratio >= 1 ? 'Good' : 'Needs improvement',
+                        changeClass: metrics.sharpe_ratio >= 1 ? 'positive' : 'neutral',
+                        sub: 'Risk-adjusted return',
+                    },
+                    {
+                        label: 'Max Drawdown',
+                        value: `${((metrics.max_drawdown || 0) * 100).toFixed(1)}%`,
+                        change: this.formatCurrency(metrics.max_drawdown_amount || 0),
+                        changeClass: (metrics.max_drawdown || 0) < 0.1 ? 'positive' : 'negative',
+                        sub: 'Maximum loss from peak',
+                    },
+                    {
+                        label: 'Profit Factor',
+                        value: `${(metrics.profit_factor || 0).toFixed(2)}`,
+                        change: metrics.profit_factor >= 1.5 ? 'Excellent' : 'Average',
+                        changeClass: metrics.profit_factor >= 1.5 ? 'positive' : 'neutral',
+                        sub: 'Gross profit / gross loss',
+                    },
+                ];
+
+                this.elements.kpiGrid.innerHTML = kpis.map(kpi => `
+                    <div class="kpi-card">
+                        <div class="kpi-label">${kpi.label}</div>
+                        <div class="kpi-value">${kpi.value}</div>
+                        <div class="kpi-change ${kpi.changeClass}">${kpi.change}</div>
+                        <div class="kpi-sub">${kpi.sub}</div>
+                    </div>
+                `).join('');
+            }
+
+            // ================================================================
+            // Render Charts
+            // ================================================================
+
+            renderCharts() {
+                const data = this.filteredData;
+                if (!data) return;
+
+                const trades = data.trades || [];
+                const history = data.history || [];
+
+                // Performance Chart
+                this.renderPerformanceChart(history);
+                this.renderDistributionChart(trades);
+                this.renderCumulativeChart(trades);
+                this.renderRiskChart(data.risk_metrics || {});
+                this.renderTradeDistributionChart(trades);
+            }
+
+            renderPerformanceChart(history) {
+                const ctx = this.elements.performanceChart.getContext('2d');
+
+                const labels = history.map(d => this.formatTime(d.timestamp));
+                const values = history.map(d => d.value);
+
+                if (this.charts.performance) {
+                    this.charts.performance.destroy();
+                }
+
+                this.charts.performance = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Portfolio Value',
+                            data: values,
+                            borderColor: '#6C5CE7',
+                            backgroundColor: 'rgba(108, 92, 231, 0.1)',
+                            fill: true,
+                            tension: 0.4,
+                            pointRadius: 2,
+                            pointHoverRadius: 6,
+                            pointBackgroundColor: '#6C5CE7',
+                            pointBorderColor: '#fff',
+                            pointBorderWidth: 2,
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                backgroundColor: 'rgba(26, 26, 46, 0.95)',
+                                titleColor: '#fff',
+                                bodyColor: 'rgba(255,255,255,0.8)',
+                                borderColor: 'rgba(255,255,255,0.06)',
+                                borderWidth: 1,
+                                cornerRadius: 8,
+                                padding: 12,
+                                callbacks: {
+                                    label: (context) => `Value: ${this.formatCurrency(context.parsed.y)}`
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                grid: { color: 'rgba(255,255,255,0.04)' },
+                                ticks: { color: 'rgba(255,255,255,0.3)', font: { size: 10 }, maxTicksLimit: 12 }
+                            },
+                            y: {
+                                grid: { color: 'rgba(255,255,255,0.04)' },
+                                ticks: { color: 'rgba(255,255,255,0.3)', font: { size: 10 }, callback: (v) => this.formatCurrency(v) }
+                            }
+                        },
+                        interaction: { intersect: false, mode: 'index' }
+                    }
+                });
+            }
+
+            renderDistributionChart(trades) {
+                const ctx = this.elements.distributionChart.getContext('2d');
+
+                const buyCount = trades.filter(t => t.side === 'buy').length;
+                const sellCount = trades.filter(t => t.side === 'sell').length;
+                const winCount = trades.filter(t => (t.pnl || 0) > 0).length;
+                const lossCount = trades.filter(t => (t.pnl || 0) < 0).length;
+
+                if (this.charts.distribution) {
+                    this.charts.distribution.destroy();
+                }
+
+                this.charts.distribution = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Buys', 'Sells', 'Wins', 'Losses'],
+                        datasets: [{
+                            data: [buyCount, sellCount, winCount, lossCount],
+                            backgroundColor: [
+                                'rgba(46, 213, 115, 0.8)',
+                                'rgba(255, 71, 87, 0.8)',
+                                'rgba(108, 92, 231, 0.8)',
+                                'rgba(255, 165, 2, 0.8)',
+                            ],
+                            borderColor: '#1a1a2e',
+                            borderWidth: 2,
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: {
+                                    color: 'rgba(255,255,255,0.7)',
+                                    font: { size: 11 },
+                                    padding: 12,
+                                    usePointStyle: true,
+                                }
+                            },
+                            tooltip: {
+                                backgroundColor: 'rgba(26, 26, 46, 0.95)',
+                                titleColor: '#fff',
+                                bodyColor: 'rgba(255,255,255,0.8)',
+                                borderColor: 'rgba(255,255,255,0.06)',
+                                borderWidth: 1,
+                                cornerRadius: 8,
+                                padding: 12,
+                                callbacks: {
+                                    label: (context) => {
+                                        const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                        const pct = ((context.parsed / total) * 100).toFixed(1);
+                                        return `${context.label}: ${context.parsed} (${pct}%)`;
+                                    }
+                                }
+                            }
+                        },
+                        cutout: '65%',
+                    }
+                });
+            }
+
+            renderCumulativeChart(trades) {
+                const ctx = this.elements.cumulativeChart.getContext('2d');
+
+                let cumulative = 0;
+                const cumData = trades.map(t => {
+                    cumulative += (t.pnl || 0);
+                    return cumulative;
+                });
+
+                const labels = trades.map(t => this.formatTime(t.timestamp));
+
+                if (this.charts.cumulative) {
+                    this.charts.cumulative.destroy();
+                }
+
+                this.charts.cumulative = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Cumulative P&L',
+                            data: cumData,
+                            borderColor: '#2ED573',
+                            backgroundColor: 'rgba(46, 213, 115, 0.1)',
+                            fill: true,
+                            tension: 0.4,
+                            pointRadius: 1,
+                            pointHoverRadius: 5,
+                            pointBackgroundColor: '#2ED573',
+                            pointBorderColor: '#fff',
+                            pointBorderWidth: 1,
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                backgroundColor: 'rgba(26, 26, 46, 0.95)',
+                                titleColor: '#fff',
+                                bodyColor: 'rgba(255,255,255,0.8)',
+                                borderColor: 'rgba(255,255,255,0.06)',
+                                borderWidth: 1,
+                                cornerRadius: 8,
+                                padding: 12,
+                                callbacks: {
+                                    label: (context) => `Cumulative: ${this.formatCurrency(context.parsed.y)}`
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                grid: { color: 'rgba(255,255,255,0.04)' },
+                                ticks: { color: 'rgba(255,255,255,0.3)', font: { size: 9 }, maxTicksLimit: 8 }
+                            },
+                            y: {
+                                grid: { color: 'rgba(255,255,255,0.04)' },
+                                ticks: { color: 'rgba(255,255,255,0.3)', font: { size: 10 }, callback: (v) => this.formatCurrency(v) }
+                            }
+                        },
+                        interaction: { intersect: false, mode: 'index' }
+                    }
+                });
+            }
+
+            renderRiskChart(riskMetrics) {
+                const ctx = this.elements.riskChart.getContext('2d');
+
+                const labels = ['VaR 95%', 'VaR 99%', 'Expected Shortfall', 'Max Drawdown', 'Volatility'];
+                const values = [
+                    (riskMetrics.var_95 || 0) * 100,
+                    (riskMetrics.var_99 || 0) * 100,
+                    (riskMetrics.expected_shortfall || 0) * 100,
+                    (riskMetrics.max_drawdown || 0) * 100,
+                    (riskMetrics.volatility || 0) * 100,
+                ];
+
+                if (this.charts.risk) {
+                    this.charts.risk.destroy();
+                }
+
+                this.charts.risk = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Risk Metrics (%)',
+                            data: values,
+                            backgroundColor: [
+                                'rgba(255, 71, 87, 0.7)',
+                                'rgba(255, 71, 87, 0.5)',
+                                'rgba(255, 165, 2, 0.7)',
+                                'rgba(255, 165, 2, 0.5)',
+                                'rgba(108, 92, 231, 0.7)',
+                            ],
+                            borderColor: [
+                                '#FF4757',
+                                '#FF4757',
+                                '#FFA502',
+                                '#FFA502',
+                                '#6C5CE7',
+                            ],
+                            borderWidth: 1,
+                            borderRadius: 6,
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                backgroundColor: 'rgba(26, 26, 46, 0.95)',
+                                titleColor: '#fff',
+                                bodyColor: 'rgba(255,255,255,0.8)',
+                                borderColor: 'rgba(255,255,255,0.06)',
+                                borderWidth: 1,
+                                cornerRadius: 8,
+                                padding: 12,
+                                callbacks: {
+                                    label: (context) => `${context.parsed.y.toFixed(1)}%`
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                grid: { display: false },
+                                ticks: { color: 'rgba(255,255,255,0.5)', font: { size: 10 } }
+                            },
+                            y: {
+                                grid: { color: 'rgba(255,255,255,0.04)' },
+                                ticks: { color: 'rgba(255,255,255,0.3)', font: { size: 10 }, callback: (v) => `${v.toFixed(0)}%` }
+                            }
+                        }
+                    }
+                });
+            }
+
+            renderTradeDistributionChart(trades) {
+                const ctx = this.elements.tradeDistributionChart.getContext('2d');
+
+                // Group by symbol
+                const symbolMap = {};
+                trades.forEach(t => {
+                    const symbol = t.symbol || 'Unknown';
+                    if (!symbolMap[symbol]) symbolMap[symbol] = 0;
+                    symbolMap[symbol] += (t.pnl || 0);
+                });
+
+                const labels = Object.keys(symbolMap);
+                const values = Object.values(symbolMap);
+
+                if (this.charts.tradeDistribution) {
+                    this.charts.tradeDistribution.destroy();
+                }
+
+                this.charts.tradeDistribution = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'P&L by Symbol',
+                            data: values,
+                            backgroundColor: values.map(v => v >= 0 ? 'rgba(46, 213, 115, 0.7)' : 'rgba(255, 71, 87, 0.7)'),
+                            borderColor: values.map(v => v >= 0 ? '#2ED573' : '#FF4757'),
+                            borderWidth: 1,
+                            borderRadius: 4,
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                backgroundColor: 'rgba(26, 26, 46, 0.95)',
+                                titleColor: '#fff',
+                                bodyColor: 'rgba(255,255,255,0.8)',
+                                borderColor: 'rgba(255,255,255,0.06)',
+                                borderWidth: 1,
+                                cornerRadius: 8,
+                                padding: 12,
+                                callbacks: {
+                                    label: (context) => `P&L: ${this.formatCurrency(context.parsed.y)}`
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                grid: { display: false },
+                                ticks: { color: 'rgba(255,255,255,0.5)', font: { size: 10 } }
+                            },
+                            y: {
+                                grid: { color: 'rgba(255,255,255,0.04)' },
+                                ticks: { color: 'rgba(255,255,255,0.3)', font: { size: 10 }, callback: (v) => this.formatCurrency(v) }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // ================================================================
+            // Render Table
+            // ================================================================
+
+            renderTable() {
+                const data = this.filteredData;
+                if (!data || !data.performance_by_symbol) {
+                    this.elements.tableBody.innerHTML = `
+                        <tr>
+                            <td colspan="10" style="text-align: center; color: rgba(255,255,255,0.4); padding: 20px;">
+                                No performance data available
+                            </td>
+                        </tr>
+                    `;
+                    return;
+                }
+
+                const symbols = Object.keys(data.performance_by_symbol);
+                if (symbols.length === 0) {
+                    this.elements.tableBody.innerHTML = `
+                        <tr>
+                            <td colspan="10" style="text-align: center; color: rgba(255,255,255,0.4); padding: 20px;">
+                                No performance data available
+                            </td>
+                        </tr>
+                    `;
+                    return;
+                }
+
+                let html = '';
+                for (const symbol of symbols) {
+                    const p = data.performance_by_symbol[symbol];
+                    const winRate = (p.win_rate || 0) * 100;
+                    const profitFactor = p.profit_factor || 0;
+                    const sharpe = p.sharpe_ratio || 0;
+                    const maxDD = (p.max_drawdown || 0) * 100;
+                    const performance = p.performance_score || 0;
+
+                    html += `
+                        <tr>
+                            <td><strong>${symbol}</strong></td>
+                            <td>${p.total_trades || 0}</td>
+                            <td class="${winRate >= 50 ? 'positive' : 'negative'}">${winRate.toFixed(1)}%</td>
+                            <td class="${(p.total_pnl || 0) >= 0 ? 'positive' : 'negative'}">${this.formatCurrency(p.total_pnl || 0)}</td>
+                            <td class="positive">${this.formatCurrency(p.avg_win || 0)}</td>
+                            <td class="negative">${this.formatCurrency(p.avg_loss || 0)}</td>
+                            <td>${profitFactor.toFixed(2)}</td>
+                            <td>${sharpe.toFixed(2)}</td>
+                            <td class="${maxDD < 10 ? 'positive' : 'negative'}">${maxDD.toFixed(1)}%</td>
+                            <td>
+                                <div class="progress-bar">
+                                    <div class="progress-fill ${performance >= 70 ? 'positive' : performance >= 40 ? 'neutral' : 'negative'}" 
+                                         style="width: ${Math.min(performance, 100)}%;">
+                                    </div>
+                                </div>
+                                <span style="font-size: 11px; color: rgba(255,255,255,0.4);">${performance.toFixed(0)}%</span>
+                            </td>
+                        </tr>
+                    `;
+                }
+
+                this.elements.tableBody.innerHTML = html;
+            }
+
+            // ================================================================
+            // Export Table
+            // ================================================================
+
+            exportTable() {
+                const data = this.filteredData;
+                if (!data || !data.performance_by_symbol) {
+                    this.showToast('No data to export', 'warning');
+                    return;
+                }
+
+                // Build CSV
+                const headers = ['Symbol', 'Trades', 'Win Rate', 'Total P&L', 'Avg Win', 'Avg Loss', 'Profit Factor', 'Sharpe', 'Max DD', 'Performance'];
+                const rows = Object.entries(data.performance_by_symbol).map(([symbol, p]) => [
+                    symbol,
+                    p.total_trades || 0,
+                    ((p.win_rate || 0) * 100).toFixed(1),
+                    p.total_pnl || 0,
+                    p.avg_win || 0,
+                    p.avg_loss || 0,
+                    (p.profit_factor || 0).toFixed(2),
+                    (p.sharpe_ratio || 0).toFixed(2),
+                    ((p.max_drawdown || 0) * 100).toFixed(1),
+                    (p.performance_score || 0).toFixed(0),
+                ]);
+
+                const csvContent = [
+                    headers.join(','),
+                    ...rows.map(row => row.join(','))
+                ].join('\n');
+
+                const blob = new Blob([csvContent], { type: 'text/csv' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `performance_${new Date().toISOString().split('T')[0]}.csv`;
+                a.click();
+                URL.revokeObjectURL(url);
+
+                this.showToast('Performance data exported', 'success');
+            }
+
+            // ================================================================
+            // Event Listeners
+            // ================================================================
+
+            setupEventListeners() {
+                this.elements.applyBtn.addEventListener('click', () => this.applyFilters());
+                this.elements.resetBtn.addEventListener('click', () => {
+                    this.elements.metricSelect.value = 'all';
+                    this.elements.timeframeSelect.value = '7d';
+                    this.elements.symbolSelect.value = 'all';
+                    this.applyFilters();
+                });
+                this.elements.refreshBtn.addEventListener('click', () => this.loadPerformanceData());
+                this.elements.exportBtn.addEventListener('click', () => this.exportTable());
+                this.elements.generateBtn.addEventListener('click', () => this.generateReport());
+
+                // Auto-apply on change with debounce
+                const debounce = (fn, delay) => {
+                    let timer;
+                    return (...args) => {
+                        clearTimeout(timer);
+                        timer = setTimeout(() => fn.apply(this, args), delay);
+                    };
+                };
+
+                const autoApply = debounce(() => this.applyFilters(), 500);
+                this.elements.metricSelect.addEventListener('change', autoApply);
+                this.elements.timeframeSelect.addEventListener('change', autoApply);
+                this.elements.symbolSelect.addEventListener('change', autoApply);
+            }
+
+            // ================================================================
+            // Generate Report
+            // ================================================================
+
+            async generateReport() {
+                try {
+                    this.showToast('Generating report...', 'info');
+
+                    const params = {
+                        timeframe: this.elements.timeframeSelect.value,
+                        symbol: this.elements.symbolSelect.value,
+                    };
+
+                    const response = await NexusAPI.request('/performance/report', {
+                        method: 'POST',
+                        body: JSON.stringify(params),
+                    });
+
+                    if (response && response.success) {
+                        this.showToast('Report generated successfully', 'success');
+                        // Download the report
+                        if (response.data && response.data.url) {
+                            window.open(response.data.url, '_blank');
+                        }
+                    } else {
+                        this.showToast(response.message || 'Failed to generate report', 'error');
+                    }
+                } catch (error) {
+                    console.error('Error generating report:', error);
+                    this.showToast('Error generating report', 'error');
+                }
+            }
+
+            // ================================================================
+            // Utility Methods
+            // ================================================================
+
+            formatCurrency(value) {
+                if (value === null || value === undefined) return '$0.00';
+                const abs = Math.abs(value);
+                if (abs >= 1e9) return `$${(value / 1e9).toFixed(2)}B`;
+                if (abs >= 1e6) return `$${(value / 1e6).toFixed(2)}M`;
+                if (abs >= 1e3) return `$${(value / 1e3).toFixed(2)}K`;
+                return `$${value.toFixed(2)}`;
+            }
+
+            formatTime(timestamp) {
+                if (!timestamp) return '-';
+                const date = new Date(timestamp);
+                const now = new Date();
+                const diff = now - date;
+
+                if (diff < 60000) return 'Just now';
+                if (diff < 3600000) return `${Math.floor(diff / 60000)}m ago`;
+                if (diff < 86400000) return `${Math.floor(diff / 3600000)}h ago`;
+                if (diff < 604800000) return `${Math.floor(diff / 86400000)}d ago`;
+
+                return date.toLocaleString('en-US', {
+                    month: 'short',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                });
+            }
+
+            showLoading() {
+                // Show loading state
+            }
+
+            hideLoading() {
+                // Hide loading state
+            }
+
+            showToast(message, type = 'info') {
+                const container = this.elements.toastContainer;
+                const icons = {
+                    success: 'fas fa-check-circle',
+                    error: 'fas fa-exclamation-circle',
+                    warning: 'fas fa-exclamation-triangle',
+                    info: 'fas fa-info-circle',
+                };
+
+                const toast = document.createElement('div');
+                toast.className = `toast ${type}`;
+                toast.innerHTML = `
+                    <span class="toast-icon"><i class="${icons[type] || icons.info}"></i></span>
+                    <span>${message}</span>
+                    <button class="toast-close" onclick="this.parentElement.remove()">&times;</button>
+                `;
+
+                container.appendChild(toast);
+
+                setTimeout(() => {
+                    if (toast.parentElement) {
+                        toast.remove();
+                    }
+                }, 5000);
+            }
+        }
+
+        // ================================================================
+        // Initialize
+        // ================================================================
+
+        let performanceController;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            performanceController = new PerformanceController();
+            window.performanceController = performanceController;
+        });
+    </script>
+</body>
+</html>
