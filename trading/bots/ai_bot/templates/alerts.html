@@ -1,0 +1,1459 @@
+<!-- trading/bots/ai_bot/templates/alerts.html -->
+<!-- NEXUS AI TRADING SYSTEM - Alerts Dashboard -->
+<!-- Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved -->
+
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEXUS AI Trading - Alerts</title>
+
+    <!-- ============================================================ -->
+    <!-- CSS -->
+    <!-- ============================================================ -->
+    <link rel="stylesheet" href="/static/css/dashboard.css">
+    <link rel="stylesheet" href="/static/css/dark_theme.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        /* ============================================================ */
+        /* Alerts Page Specific Styles */
+        /* ============================================================ */
+
+        .alerts-page {
+            padding: 24px 32px;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        .alerts-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .alerts-header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #6C5CE7, #A29BFE);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .alerts-header h1 i {
+            font-size: 28px;
+            -webkit-text-fill-color: initial;
+            color: #6C5CE7;
+        }
+
+        .alerts-stats {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .alert-stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 12px 20px;
+            text-align: center;
+            min-width: 80px;
+            transition: all 0.3s ease;
+        }
+
+        .alert-stat-card:hover {
+            border-color: rgba(108, 92, 231, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .alert-stat-card .stat-number {
+            font-size: 24px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .alert-stat-card .stat-label {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.5);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 4px;
+        }
+
+        .alert-stat-card.critical .stat-number { color: #FF4757; }
+        .alert-stat-card.warning .stat-number { color: #FFA502; }
+        .alert-stat-card.info .stat-number { color: #4ECDC4; }
+        .alert-stat-card.total .stat-number { color: #6C5CE7; }
+
+        /* ============================================================ */
+        /* Alert Filters */
+        /* ============================================================ */
+
+        .alerts-filters {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 24px;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            padding: 16px 20px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .alerts-filters select,
+        .alerts-filters input {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 8px 14px;
+            color: #fff;
+            font-size: 13px;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        .alerts-filters select:focus,
+        .alerts-filters input:focus {
+            border-color: #6C5CE7;
+        }
+
+        .alerts-filters select option {
+            background: #1a1a2e;
+        }
+
+        .filter-label {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.5);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+
+        .filter-actions {
+            display: flex;
+            gap: 8px;
+            margin-left: auto;
+        }
+
+        .filter-actions button {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            padding: 8px 14px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-actions button:hover {
+            background: rgba(108, 92, 231, 0.2);
+            border-color: #6C5CE7;
+            color: #fff;
+        }
+
+        /* ============================================================ */
+        /* Alert List */
+        /* ============================================================ */
+
+        .alerts-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 24px;
+        }
+
+        .alert-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            border-left: 4px solid transparent;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .alert-item:hover {
+            background: rgba(255, 255, 255, 0.06);
+            transform: translateX(4px);
+        }
+
+        .alert-item.critical { border-left-color: #FF4757; }
+        .alert-item.warning { border-left-color: #FFA502; }
+        .alert-item.info { border-left-color: #4ECDC4; }
+        .alert-item.success { border-left-color: #2ED573; }
+        .alert-item.resolved { opacity: 0.5; }
+
+        .alert-item .alert-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .alert-item.critical .alert-icon { background: rgba(255, 71, 87, 0.15); color: #FF4757; }
+        .alert-item.warning .alert-icon { background: rgba(255, 165, 2, 0.15); color: #FFA502; }
+        .alert-item.info .alert-icon { background: rgba(78, 205, 196, 0.15); color: #4ECDC4; }
+        .alert-item.success .alert-icon { background: rgba(46, 213, 115, 0.15); color: #2ED573; }
+        .alert-item.resolved .alert-icon { background: rgba(255, 255, 255, 0.05); color: rgba(255, 255, 255, 0.3); }
+
+        .alert-item .alert-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .alert-item .alert-title {
+            font-weight: 600;
+            font-size: 15px;
+            color: #fff;
+            margin-bottom: 4px;
+        }
+
+        .alert-item .alert-message {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.5;
+        }
+
+        .alert-item .alert-meta {
+            display: flex;
+            gap: 16px;
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.4);
+            margin-top: 4px;
+            flex-wrap: wrap;
+        }
+
+        .alert-item .alert-meta span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .alert-item .alert-actions {
+            display: flex;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+
+        .alert-item .alert-actions button {
+            background: rgba(255, 255, 255, 0.06);
+            border: none;
+            border-radius: 6px;
+            padding: 6px 12px;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .alert-item .alert-actions button:hover {
+            background: rgba(108, 92, 231, 0.2);
+            color: #fff;
+        }
+
+        .alert-item .alert-actions button.resolve-btn:hover {
+            background: rgba(46, 213, 115, 0.2);
+            color: #2ED573;
+        }
+
+        .alert-item .alert-actions button.dismiss-btn:hover {
+            background: rgba(255, 71, 87, 0.2);
+            color: #FF4757;
+        }
+
+        .alert-time {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.4);
+            flex-shrink: 0;
+            white-space: nowrap;
+        }
+
+        /* ============================================================ */
+        /* Alert Detail Modal */
+        /* ============================================================ */
+
+        .alert-detail-modal .modal-content {
+            max-width: 700px;
+            padding: 32px;
+        }
+
+        .alert-detail-modal .alert-detail-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .alert-detail-modal .alert-detail-header .alert-icon-large {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+
+        .alert-detail-modal .alert-detail-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .alert-detail-modal .alert-detail-meta {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin: 16px 0;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            padding: 16px;
+        }
+
+        .alert-detail-modal .alert-detail-meta .meta-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .alert-detail-modal .alert-detail-meta .meta-item .meta-label {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.4);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .alert-detail-modal .alert-detail-meta .meta-item .meta-value {
+            font-size: 14px;
+            color: #fff;
+            font-weight: 500;
+            margin-top: 2px;
+        }
+
+        .alert-detail-modal .alert-detail-body {
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.6;
+            margin: 12px 0;
+        }
+
+        .alert-detail-modal .alert-detail-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+            padding-top: 16px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        /* ============================================================ */
+        /* Create Alert */
+        /* ============================================================ */
+
+        .create-alert-section {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin-bottom: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .create-alert-section .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .create-alert-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr auto;
+            gap: 12px;
+            align-items: end;
+        }
+
+        .create-alert-form .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .create-alert-form .form-group label {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.5);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+
+        .create-alert-form .form-group input,
+        .create-alert-form .form-group select {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            padding: 8px 12px;
+            color: #fff;
+            font-size: 13px;
+            outline: none;
+            transition: border-color 0.3s ease;
+            width: 100%;
+        }
+
+        .create-alert-form .form-group input:focus,
+        .create-alert-form .form-group select:focus {
+            border-color: #6C5CE7;
+        }
+
+        .create-alert-form .form-group input::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-create-alert {
+            background: linear-gradient(135deg, #6C5CE7, #A29BFE);
+            border: none;
+            border-radius: 8px;
+            padding: 10px 24px;
+            color: #fff;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            height: 38px;
+            white-space: nowrap;
+        }
+
+        .btn-create-alert:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(108, 92, 231, 0.4);
+        }
+
+        /* ============================================================ */
+        /* Toast Notifications */
+        /* ============================================================ */
+
+        .toast-container {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            z-index: 9999;
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .toast {
+            padding: 14px 20px;
+            border-radius: 12px;
+            background: rgba(26, 26, 46, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            color: #fff;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            animation: slideUp 0.3s ease;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        }
+
+        .toast.success { border-left: 4px solid #2ED573; }
+        .toast.error { border-left: 4px solid #FF4757; }
+        .toast.warning { border-left: 4px solid #FFA502; }
+        .toast.info { border-left: 4px solid #4ECDC4; }
+
+        .toast .toast-icon {
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .toast.success .toast-icon { color: #2ED573; }
+        .toast.error .toast-icon { color: #FF4757; }
+        .toast.warning .toast-icon { color: #FFA502; }
+        .toast.info .toast-icon { color: #4ECDC4; }
+
+        .toast .toast-close {
+            margin-left: auto;
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.4);
+            cursor: pointer;
+            font-size: 16px;
+            padding: 4px;
+        }
+
+        .toast .toast-close:hover {
+            color: #fff;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ============================================================ */
+        /* Responsive */
+        /* ============================================================ */
+
+        @media (max-width: 1200px) {
+            .create-alert-form {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .alerts-page {
+                padding: 16px;
+            }
+
+            .alerts-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .alerts-filters {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .filter-actions {
+                margin-left: 0;
+            }
+
+            .create-alert-form {
+                grid-template-columns: 1fr;
+            }
+
+            .alert-item {
+                flex-wrap: wrap;
+                padding: 12px 16px;
+            }
+
+            .alert-item .alert-actions {
+                width: 100%;
+                justify-content: flex-end;
+                margin-top: 8px;
+            }
+
+            .alert-detail-modal .modal-content {
+                padding: 20px;
+                margin: 16px;
+            }
+
+            .alert-detail-modal .alert-detail-meta {
+                grid-template-columns: 1fr;
+            }
+
+            .alerts-stats {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .alert-stat-card {
+                min-width: 60px;
+                padding: 8px 12px;
+            }
+
+            .alert-stat-card .stat-number {
+                font-size: 18px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .alerts-stats {
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+
+            .alert-stat-card {
+                flex: 1;
+                min-width: 50px;
+            }
+
+            .alert-item .alert-meta {
+                flex-direction: column;
+                gap: 4px;
+            }
+        }
+
+        /* ============================================================ */
+        /* Loading & Empty States */
+        /* ============================================================ */
+
+        .alerts-loading {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 20px;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .alerts-loading .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(255, 255, 255, 0.05);
+            border-top-color: #6C5CE7;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-bottom: 16px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .alerts-empty {
+            text-align: center;
+            padding: 60px 20px;
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .alerts-empty i {
+            font-size: 48px;
+            margin-bottom: 16px;
+            opacity: 0.3;
+        }
+
+        .alerts-empty h3 {
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- ============================================================ -->
+    <!-- Page Container -->
+    <!-- ============================================================ -->
+
+    <div class="alerts-page">
+        <!-- Header -->
+        <div class="alerts-header">
+            <h1>
+                <i class="fas fa-bell"></i>
+                Alerts
+            </h1>
+            <div class="alerts-stats" id="alertStats">
+                <div class="alert-stat-card total">
+                    <div class="stat-number" id="totalAlerts">0</div>
+                    <div class="stat-label">Total</div>
+                </div>
+                <div class="alert-stat-card critical">
+                    <div class="stat-number" id="criticalAlerts">0</div>
+                    <div class="stat-label">Critical</div>
+                </div>
+                <div class="alert-stat-card warning">
+                    <div class="stat-number" id="warningAlerts">0</div>
+                    <div class="stat-label">Warning</div>
+                </div>
+                <div class="alert-stat-card info">
+                    <div class="stat-number" id="infoAlerts">0</div>
+                    <div class="stat-label">Info</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Create Alert -->
+        <div class="create-alert-section">
+            <div class="section-title">
+                <i class="fas fa-plus-circle" style="color: #6C5CE7;"></i>
+                Create Alert
+            </div>
+            <form class="create-alert-form" id="createAlertForm">
+                <div class="form-group">
+                    <label for="alertSymbol">Symbol</label>
+                    <input type="text" id="alertSymbol" placeholder="BTC-USD" value="BTC-USD">
+                </div>
+                <div class="form-group">
+                    <label for="alertCondition">Condition</label>
+                    <select id="alertCondition">
+                        <option value="above">Above</option>
+                        <option value="below">Below</option>
+                        <option value="crosses_above">Crosses Above</option>
+                        <option value="crosses_below">Crosses Below</option>
+                        <option value="between">Between</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="alertPrice">Price</label>
+                    <input type="number" id="alertPrice" placeholder="45000" step="0.01">
+                </div>
+                <button type="submit" class="btn-create-alert">
+                    <i class="fas fa-bell"></i> Create
+                </button>
+            </form>
+        </div>
+
+        <!-- Filters -->
+        <div class="alerts-filters">
+            <span class="filter-label">Filter:</span>
+            <select id="filterSeverity">
+                <option value="all">All Severity</option>
+                <option value="critical">Critical</option>
+                <option value="warning">Warning</option>
+                <option value="info">Info</option>
+                <option value="success">Success</option>
+            </select>
+            <select id="filterStatus">
+                <option value="all">All Status</option>
+                <option value="active">Active</option>
+                <option value="resolved">Resolved</option>
+                <option value="acknowledged">Acknowledged</option>
+            </select>
+            <input type="text" id="filterSearch" placeholder="Search alerts...">
+            <div class="filter-actions">
+                <button id="refreshAlerts"><i class="fas fa-sync-alt"></i> Refresh</button>
+                <button id="clearFilters"><i class="fas fa-times"></i> Clear</button>
+                <button id="resolveAllBtn"><i class="fas fa-check-double"></i> Resolve All</button>
+            </div>
+        </div>
+
+        <!-- Alert List -->
+        <div class="alerts-list" id="alertsList">
+            <!-- Alerts rendered by JS -->
+        </div>
+
+        <!-- Load More -->
+        <div style="text-align: center; padding: 16px;">
+            <button id="loadMoreBtn" class="btn-create-alert" style="background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.6); border: 1px solid rgba(255,255,255,0.08); padding: 10px 24px; border-radius: 8px; cursor: pointer;">
+                Load More
+            </button>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- Alert Detail Modal -->
+    <!-- ============================================================ -->
+
+    <div class="modal-overlay alert-detail-modal" id="alertDetailModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Alert Details</h2>
+                <button class="modal-close" onclick="closeAlertDetail()">&times;</button>
+            </div>
+            <div id="alertDetailContent">
+                <!-- Rendered by JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- Toast Container -->
+    <!-- ============================================================ -->
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- ============================================================ -->
+    <!-- JavaScript -->
+    <!-- ============================================================ -->
+
+    <script src="/static/js/api_client.js"></script>
+    <script src="/static/js/websocket.js"></script>
+
+    <script>
+        // ================================================================
+        // Alerts Dashboard Controller
+        // ================================================================
+
+        class AlertsController {
+            constructor() {
+                this.alerts = [];
+                this.filteredAlerts = [];
+                this.currentPage = 0;
+                this.pageSize = 20;
+                this.isLoading = false;
+                this.hasMore = true;
+                this.detailAlertId = null;
+
+                // DOM Elements
+                this.elements = {
+                    list: document.getElementById('alertsList'),
+                    stats: document.getElementById('alertStats'),
+                    totalAlerts: document.getElementById('totalAlerts'),
+                    criticalAlerts: document.getElementById('criticalAlerts'),
+                    warningAlerts: document.getElementById('warningAlerts'),
+                    infoAlerts: document.getElementById('infoAlerts'),
+                    filterSeverity: document.getElementById('filterSeverity'),
+                    filterStatus: document.getElementById('filterStatus'),
+                    filterSearch: document.getElementById('filterSearch'),
+                    refreshBtn: document.getElementById('refreshAlerts'),
+                    clearFiltersBtn: document.getElementById('clearFilters'),
+                    resolveAllBtn: document.getElementById('resolveAllBtn'),
+                    loadMoreBtn: document.getElementById('loadMoreBtn'),
+                    createForm: document.getElementById('createAlertForm'),
+                    alertSymbol: document.getElementById('alertSymbol'),
+                    alertCondition: document.getElementById('alertCondition'),
+                    alertPrice: document.getElementById('alertPrice'),
+                    detailModal: document.getElementById('alertDetailModal'),
+                    detailContent: document.getElementById('alertDetailContent'),
+                    toastContainer: document.getElementById('toastContainer'),
+                };
+
+                // Initialize
+                this.init();
+
+                // Bind methods
+                this.loadAlerts = this.loadAlerts.bind(this);
+                this.renderAlerts = this.renderAlerts.bind(this);
+                this.updateStats = this.updateStats.bind(this);
+                this.applyFilters = this.applyFilters.bind(this);
+                this.createAlert = this.createAlert.bind(this);
+                this.resolveAlert = this.resolveAlert.bind(this);
+                this.dismissAlert = this.dismissAlert.bind(this);
+                this.showAlertDetail = this.showAlertDetail.bind(this);
+                this.closeAlertDetail = this.closeAlertDetail.bind(this);
+                this.showToast = this.showToast.bind(this);
+                this.loadMore = this.loadMore.bind(this);
+                this.resolveAll = this.resolveAll.bind(this);
+                this.handleWebSocketMessage = this.handleWebSocketMessage.bind(this);
+            }
+
+            // ================================================================
+            // Initialization
+            // ================================================================
+
+            init() {
+                // Load alerts
+                this.loadAlerts();
+
+                // Setup WebSocket
+                this.setupWebSocket();
+
+                // Setup event listeners
+                this.setupEventListeners();
+
+                // Auto-refresh every 30 seconds
+                setInterval(this.loadAlerts, 30000);
+
+                console.log('AlertsController initialized');
+            }
+
+            // ================================================================
+            // WebSocket Setup
+            // ================================================================
+
+            setupWebSocket() {
+                // Connect to WebSocket
+                NexusAPI.connectWebSocket(['alerts']);
+
+                // Handle WebSocket messages
+                NexusAPI.onWebSocketMessage('alert', this.handleWebSocketMessage);
+                NexusAPI.onWebSocketMessage('alert_update', this.handleWebSocketMessage);
+            }
+
+            handleWebSocketMessage(data) {
+                // Handle new alert
+                if (data && data.alert_id) {
+                    // Check if alert already exists
+                    const existing = this.alerts.find(a => a.alert_id === data.alert_id);
+                    if (!existing) {
+                        this.alerts.unshift(data);
+                        this.applyFilters();
+                        this.updateStats();
+                        this.showToast(`New alert: ${data.title}`, data.severity || 'info');
+                    } else {
+                        // Update existing alert
+                        const index = this.alerts.findIndex(a => a.alert_id === data.alert_id);
+                        if (index !== -1) {
+                            this.alerts[index] = { ...this.alerts[index], ...data };
+                            this.applyFilters();
+                            this.updateStats();
+                        }
+                    }
+                }
+            }
+
+            // ================================================================
+            // Event Listeners
+            // ================================================================
+
+            setupEventListeners() {
+                // Refresh button
+                this.elements.refreshBtn.addEventListener('click', this.loadAlerts);
+
+                // Clear filters
+                this.elements.clearFiltersBtn.addEventListener('click', () => {
+                    this.elements.filterSeverity.value = 'all';
+                    this.elements.filterStatus.value = 'all';
+                    this.elements.filterSearch.value = '';
+                    this.applyFilters();
+                });
+
+                // Resolve all
+                this.elements.resolveAllBtn.addEventListener('click', this.resolveAll);
+
+                // Load more
+                this.elements.loadMoreBtn.addEventListener('click', this.loadMore);
+
+                // Filter changes
+                this.elements.filterSeverity.addEventListener('change', this.applyFilters);
+                this.elements.filterStatus.addEventListener('change', this.applyFilters);
+                this.elements.filterSearch.addEventListener('input', this.applyFilters);
+
+                // Create alert form
+                this.elements.createForm.addEventListener('submit', this.createAlert);
+
+                // Close modal on overlay click
+                this.elements.detailModal.addEventListener('click', (e) => {
+                    if (e.target === this.elements.detailModal) {
+                        this.closeAlertDetail();
+                    }
+                });
+
+                // Keyboard shortcuts
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape') {
+                        this.closeAlertDetail();
+                    }
+                    if (e.key === 'r' && e.ctrlKey) {
+                        e.preventDefault();
+                        this.loadAlerts();
+                    }
+                });
+            }
+
+            // ================================================================
+            // Load Alerts
+            // ================================================================
+
+            async loadAlerts() {
+                try {
+                    this.isLoading = true;
+                    this.elements.list.innerHTML = `
+                        <div class="alerts-loading">
+                            <div class="spinner"></div>
+                            <span>Loading alerts...</span>
+                        </div>
+                    `;
+
+                    const response = await NexusAPI.request('/alerts', {
+                        params: {
+                            limit: this.pageSize,
+                            offset: 0,
+                        }
+                    });
+
+                    if (response && response.success) {
+                        this.alerts = response.data || [];
+                        this.currentPage = 0;
+                        this.hasMore = this.alerts.length >= this.pageSize;
+                        this.applyFilters();
+                        this.updateStats();
+                        this.updateLoadMoreButton();
+                    } else {
+                        this.alerts = [];
+                        this.applyFilters();
+                        this.showToast('Failed to load alerts', 'error');
+                    }
+                } catch (error) {
+                    console.error('Error loading alerts:', error);
+                    this.elements.list.innerHTML = `
+                        <div class="alerts-empty">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <h3>Error Loading Alerts</h3>
+                            <p>${error.message || 'Please try again later.'}</p>
+                        </div>
+                    `;
+                    this.showToast('Error loading alerts', 'error');
+                } finally {
+                    this.isLoading = false;
+                }
+            }
+
+            // ================================================================
+            // Apply Filters
+            // ================================================================
+
+            applyFilters() {
+                const severity = this.elements.filterSeverity.value;
+                const status = this.elements.filterStatus.value;
+                const search = this.elements.filterSearch.value.toLowerCase();
+
+                this.filteredAlerts = this.alerts.filter(alert => {
+                    // Severity filter
+                    if (severity !== 'all' && alert.severity !== severity) {
+                        return false;
+                    }
+
+                    // Status filter
+                    if (status !== 'all') {
+                        if (status === 'resolved' && !alert.resolved) return false;
+                        if (status === 'acknowledged' && !alert.acknowledged) return false;
+                        if (status === 'active' && (alert.resolved || alert.acknowledged)) return false;
+                    }
+
+                    // Search filter
+                    if (search) {
+                        const searchable = [
+                            alert.title,
+                            alert.message,
+                            alert.source,
+                            alert.category,
+                            alert.symbol,
+                        ].join(' ').toLowerCase();
+                        if (!searchable.includes(search)) {
+                            return false;
+                        }
+                    }
+
+                    return true;
+                });
+
+                this.renderAlerts();
+                this.updateStats();
+            }
+
+            // ================================================================
+            // Render Alerts
+            // ================================================================
+
+            renderAlerts() {
+                if (this.filteredAlerts.length === 0) {
+                    this.elements.list.innerHTML = `
+                        <div class="alerts-empty">
+                            <i class="fas fa-bell-slash"></i>
+                            <h3>No Alerts</h3>
+                            <p>No alerts match your current filters.</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                let html = '';
+                const start = this.currentPage * this.pageSize;
+                const end = Math.min(start + this.pageSize, this.filteredAlerts.length);
+                const pageAlerts = this.filteredAlerts.slice(start, end);
+
+                for (const alert of pageAlerts) {
+                    const severityClass = alert.resolved ? 'resolved' : alert.severity || 'info';
+                    const icon = this.getAlertIcon(alert.severity);
+                    const time = this.formatTime(alert.timestamp);
+
+                    html += `
+                        <div class="alert-item ${severityClass}" data-alert-id="${alert.alert_id}" onclick="alertsController.showAlertDetail('${alert.alert_id}')">
+                            <div class="alert-icon">${icon}</div>
+                            <div class="alert-content">
+                                <div class="alert-title">${this.escapeHtml(alert.title)}</div>
+                                <div class="alert-message">${this.escapeHtml(alert.message)}</div>
+                                <div class="alert-meta">
+                                    <span><i class="fas fa-tag"></i> ${alert.category || 'General'}</span>
+                                    <span><i class="fas fa-exchange-alt"></i> ${alert.symbol || 'N/A'}</span>
+                                    <span><i class="fas fa-code-branch"></i> ${alert.source || 'System'}</span>
+                                    <span><i class="fas fa-clock"></i> ${time}</span>
+                                    ${alert.resolved ? '<span><i class="fas fa-check-circle" style="color:#2ED573;"></i> Resolved</span>' : ''}
+                                    ${alert.acknowledged ? '<span><i class="fas fa-eye" style="color:#4ECDC4;"></i> Acknowledged</span>' : ''}
+                                </div>
+                            </div>
+                            <div class="alert-time">${time}</div>
+                            <div class="alert-actions">
+                                ${!alert.resolved ? `
+                                    <button class="resolve-btn" onclick="event.stopPropagation(); alertsController.resolveAlert('${alert.alert_id}')">
+                                        <i class="fas fa-check"></i> Resolve
+                                    </button>
+                                ` : ''}
+                                <button class="dismiss-btn" onclick="event.stopPropagation(); alertsController.dismissAlert('${alert.alert_id}')">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                this.elements.list.innerHTML = html;
+                this.updateLoadMoreButton();
+            }
+
+            // ================================================================
+            // Update Stats
+            // ================================================================
+
+            updateStats() {
+                const total = this.alerts.length;
+                const critical = this.alerts.filter(a => a.severity === 'critical' && !a.resolved).length;
+                const warning = this.alerts.filter(a => a.severity === 'warning' && !a.resolved).length;
+                const info = this.alerts.filter(a => a.severity === 'info' && !a.resolved).length;
+
+                this.elements.totalAlerts.textContent = total;
+                this.elements.criticalAlerts.textContent = critical;
+                this.elements.warningAlerts.textContent = warning;
+                this.elements.infoAlerts.textContent = info;
+            }
+
+            // ================================================================
+            // Update Load More Button
+            // ================================================================
+
+            updateLoadMoreButton() {
+                const start = this.currentPage * this.pageSize;
+                const end = Math.min(start + this.pageSize, this.filteredAlerts.length);
+                const hasMore = end < this.filteredAlerts.length;
+
+                this.elements.loadMoreBtn.style.display = hasMore ? 'inline-block' : 'none';
+                this.elements.loadMoreBtn.textContent = hasMore ?
+                    `Load More (${this.filteredAlerts.length - end} remaining)` :
+                    'No more alerts';
+            }
+
+            // ================================================================
+            // Load More
+            // ================================================================
+
+            loadMore() {
+                if (this.isLoading) return;
+                this.currentPage++;
+                this.renderAlerts();
+            }
+
+            // ================================================================
+            // Create Alert
+            // ================================================================
+
+            async createAlert(e) {
+                e.preventDefault();
+
+                const symbol = this.elements.alertSymbol.value.trim();
+                const condition = this.elements.alertCondition.value;
+                const price = parseFloat(this.elements.alertPrice.value);
+
+                if (!symbol || !price) {
+                    this.showToast('Please fill in all fields', 'warning');
+                    return;
+                }
+
+                try {
+                    const response = await NexusAPI.request('/alerts', {
+                        method: 'POST',
+                        body: JSON.stringify({
+                            symbol: symbol,
+                            condition: condition,
+                            price: price,
+                            type: 'price_alert',
+                            enabled: true,
+                        }),
+                    });
+
+                    if (response && response.success) {
+                        this.showToast(`Alert created for ${symbol} at ${price}`, 'success');
+                        this.elements.alertPrice.value = '';
+                        this.loadAlerts();
+                    } else {
+                        this.showToast(response.message || 'Failed to create alert', 'error');
+                    }
+                } catch (error) {
+                    console.error('Error creating alert:', error);
+                    this.showToast('Error creating alert', 'error');
+                }
+            }
+
+            // ================================================================
+            // Resolve Alert
+            // ================================================================
+
+            async resolveAlert(alertId) {
+                try {
+                    const response = await NexusAPI.request(`/alerts/${alertId}/resolve`, {
+                        method: 'POST',
+                    });
+
+                    if (response && response.success) {
+                        const alert = this.alerts.find(a => a.alert_id === alertId);
+                        if (alert) {
+                            alert.resolved = true;
+                            alert.resolved_at = new Date().toISOString();
+                            this.applyFilters();
+                            this.updateStats();
+                            this.showToast('Alert resolved', 'success');
+                        }
+                    } else {
+                        this.showToast(response.message || 'Failed to resolve alert', 'error');
+                    }
+                } catch (error) {
+                    console.error('Error resolving alert:', error);
+                    this.showToast('Error resolving alert', 'error');
+                }
+            }
+
+            // ================================================================
+            // Resolve All
+            // ================================================================
+
+            async resolveAll() {
+                const activeAlerts = this.alerts.filter(a => !a.resolved && !a.acknowledged);
+                if (activeAlerts.length === 0) {
+                    this.showToast('No active alerts to resolve', 'info');
+                    return;
+                }
+
+                if (!confirm(`Resolve all ${activeAlerts.length} active alerts?`)) {
+                    return;
+                }
+
+                try {
+                    const response = await NexusAPI.request('/alerts/resolve-all', {
+                        method: 'POST',
+                    });
+
+                    if (response && response.success) {
+                        for (const alert of this.alerts) {
+                            if (!alert.resolved) {
+                                alert.resolved = true;
+                                alert.resolved_at = new Date().toISOString();
+                            }
+                        }
+                        this.applyFilters();
+                        this.updateStats();
+                        this.showToast(`Resolved ${activeAlerts.length} alerts`, 'success');
+                    } else {
+                        this.showToast(response.message || 'Failed to resolve alerts', 'error');
+                    }
+                } catch (error) {
+                    console.error('Error resolving all alerts:', error);
+                    this.showToast('Error resolving alerts', 'error');
+                }
+            }
+
+            // ================================================================
+            // Dismiss Alert
+            // ================================================================
+
+            dismissAlert(alertId) {
+                const index = this.alerts.findIndex(a => a.alert_id === alertId);
+                if (index !== -1) {
+                    this.alerts.splice(index, 1);
+                    this.applyFilters();
+                    this.updateStats();
+                    this.showToast('Alert dismissed', 'info');
+                }
+            }
+
+            // ================================================================
+            // Show Alert Detail
+            // ================================================================
+
+            showAlertDetail(alertId) {
+                const alert = this.alerts.find(a => a.alert_id === alertId);
+                if (!alert) return;
+
+                this.detailAlertId = alertId;
+
+                const icon = this.getAlertIcon(alert.severity);
+                const time = this.formatTime(alert.timestamp);
+                const severityClass = alert.resolved ? 'resolved' : alert.severity || 'info';
+
+                this.elements.detailContent.innerHTML = `
+                    <div class="alert-detail-header">
+                        <div class="alert-icon-large ${severityClass}" style="background: ${this.getSeverityColor(alert.severity)}20; color: ${this.getSeverityColor(alert.severity)};">
+                            ${icon}
+                        </div>
+                        <div>
+                            <div class="alert-detail-title">${this.escapeHtml(alert.title)}</div>
+                            <div style="font-size: 13px; color: rgba(255,255,255,0.5);">
+                                ${alert.resolved ? '<i class="fas fa-check-circle" style="color:#2ED573;"></i> Resolved' : 'Active'}
+                                ${alert.acknowledged ? ' · <i class="fas fa-eye" style="color:#4ECDC4;"></i> Acknowledged' : ''}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="alert-detail-meta">
+                        <div class="meta-item">
+                            <span class="meta-label">Severity</span>
+                            <span class="meta-value" style="color: ${this.getSeverityColor(alert.severity)};">
+                                ${(alert.severity || 'info').toUpperCase()}
+                            </span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Category</span>
+                            <span class="meta-value">${alert.category || 'General'}</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Symbol</span>
+                            <span class="meta-value">${alert.symbol || 'N/A'}</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Source</span>
+                            <span class="meta-value">${alert.source || 'System'}</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Time</span>
+                            <span class="meta-value">${time}</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Alert ID</span>
+                            <span class="meta-value" style="font-size: 12px; color: rgba(255,255,255,0.4);">${alert.alert_id}</span>
+                        </div>
+                    </div>
+
+                    <div class="alert-detail-body">
+                        <strong>Message:</strong>
+                        <p style="margin-top: 4px;">${this.escapeHtml(alert.message)}</p>
+                        ${alert.metadata ? `
+                            <details style="margin-top: 12px;">
+                                <summary style="color: rgba(255,255,255,0.4); cursor: pointer; font-size: 13px;">
+                                    <i class="fas fa-code"></i> Metadata
+                                </summary>
+                                <pre style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin-top: 8px; font-size: 12px; color: rgba(255,255,255,0.7); overflow-x: auto;">
+${JSON.stringify(alert.metadata, null, 2)}
+                                </pre>
+                            </details>
+                        ` : ''}
+                    </div>
+
+                    <div class="alert-detail-actions">
+                        ${!alert.resolved ? `
+                            <button class="btn btn-success" onclick="alertsController.resolveAlert('${alert.alert_id}'); alertsController.closeAlertDetail();">
+                                <i class="fas fa-check"></i> Resolve
+                            </button>
+                        ` : ''}
+                        <button class="btn btn-secondary" onclick="alertsController.closeAlertDetail();">
+                            <i class="fas fa-times"></i> Close
+                        </button>
+                        <button class="btn btn-danger" onclick="alertsController.dismissAlert('${alert.alert_id}'); alertsController.closeAlertDetail();">
+                            <i class="fas fa-trash"></i> Dismiss
+                        </button>
+                    </div>
+                `;
+
+                this.elements.detailModal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+
+            // ================================================================
+            // Close Alert Detail
+            // ================================================================
+
+            closeAlertDetail() {
+                this.elements.detailModal.classList.remove('active');
+                document.body.style.overflow = '';
+                this.detailAlertId = null;
+            }
+
+            // ================================================================
+            // Toast Notifications
+            // ================================================================
+
+            showToast(message, type = 'info') {
+                const container = this.elements.toastContainer;
+                const icons = {
+                    success: 'fas fa-check-circle',
+                    error: 'fas fa-exclamation-circle',
+                    warning: 'fas fa-exclamation-triangle',
+                    info: 'fas fa-info-circle',
+                };
+
+                const toast = document.createElement('div');
+                toast.className = `toast ${type}`;
+                toast.innerHTML = `
+                    <span class="toast-icon"><i class="${icons[type] || icons.info}"></i></span>
+                    <span>${message}</span>
+                    <button class="toast-close" onclick="this.parentElement.remove()">&times;</button>
+                `;
+
+                container.appendChild(toast);
+
+                // Auto-remove after 5 seconds
+                setTimeout(() => {
+                    if (toast.parentElement) {
+                        toast.remove();
+                    }
+                }, 5000);
+            }
+
+            // ================================================================
+            // Utility Methods
+            // ================================================================
+
+            getAlertIcon(severity) {
+                const icons = {
+                    critical: '<i class="fas fa-exclamation-circle" style="color:#FF4757;"></i>',
+                    warning: '<i class="fas fa-exclamation-triangle" style="color:#FFA502;"></i>',
+                    info: '<i class="fas fa-info-circle" style="color:#4ECDC4;"></i>',
+                    success: '<i class="fas fa-check-circle" style="color:#2ED573;"></i>',
+                };
+                return icons[severity] || icons.info;
+            }
+
+            getSeverityColor(severity) {
+                const colors = {
+                    critical: '#FF4757',
+                    warning: '#FFA502',
+                    info: '#4ECDC4',
+                    success: '#2ED573',
+                };
+                return colors[severity] || '#ffffff';
+            }
+
+            formatTime(timestamp) {
+                const date = new Date(timestamp);
+                const now = new Date();
+                const diff = now - date;
+
+                if (diff < 60000) return 'Just now';
+                if (diff < 3600000) return `${Math.floor(diff / 60000)}m ago`;
+                if (diff < 86400000) return `${Math.floor(diff / 3600000)}h ago`;
+                if (diff < 604800000) return `${Math.floor(diff / 86400000)}d ago`;
+
+                return date.toLocaleString('en-US', {
+                    month: 'short',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                });
+            }
+
+            escapeHtml(text) {
+                const div = document.createElement('div');
+                div.textContent = text;
+                return div.innerHTML;
+            }
+        }
+
+        // ================================================================
+        // Initialize
+        // ================================================================
+
+        let alertsController;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            alertsController = new AlertsController();
+            window.alertsController = alertsController;
+        });
+
+        // ================================================================
+        // Modal Close Function (global for onclick)
+        // ================================================================
+
+        function closeAlertDetail() {
+            if (alertsController) {
+                alertsController.closeAlertDetail();
+            }
+        }
+    </script>
+</body>
+</html>
