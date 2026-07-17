@@ -1,0 +1,798 @@
+"""
+NEXUS AI TRADING SYSTEM - Trades Log File
+Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+CEO: Dr X... - Majority Shareholder
+
+Module: trading/bots/ai_bot/logs/trades.log
+Description: Fichier de log des trades du bot AI.
+             Contient l'historique complet de tous les trades exécutés,
+             avec les détails d'entrée, de sortie, les PnL, les commissions
+             et les métriques de performance par trade.
+             Format: JSON Lines (jsonl) pour une parsing facile.
+"""
+
+import json
+import logging
+from datetime import datetime, timedelta
+from typing import Dict, List, Any, Optional, Tuple
+from enum import Enum
+
+# ============================================================
+# LOGS DE TRADES D'EXEMPLE POUR LE BOT AI
+# ============================================================
+
+# Ce fichier contient des exemples de trades pour le bot AI.
+# Dans un environnement de production, ce fichier serait
+# mis à jour dynamiquement par le système de trading.
+
+
+class TradeStatus(Enum):
+    """Statuts des trades."""
+    OPEN = "open"
+    CLOSED = "closed"
+    PARTIALLY_CLOSED = "partially_closed"
+    CANCELLED = "cancelled"
+    EXPIRED = "expired"
+
+
+class TradeSide(Enum):
+    """Côté des trades."""
+    BUY = "buy"
+    SELL = "sell"
+
+
+class TradeType(Enum):
+    """Types de trades."""
+    MARKET = "market"
+    LIMIT = "limit"
+    STOP = "stop"
+    STOP_LIMIT = "stop_limit"
+
+
+EXAMPLE_TRADES = [
+    # === TRADES RÉUSSIS ===
+    {
+        "trade_id": "TRD_001",
+        "timestamp": "2026-07-17T00:01:03.890123",
+        "symbol": "BTC-USD",
+        "side": "BUY",
+        "type": "MARKET",
+        "entry_price": 100234.56,
+        "quantity": 0.5,
+        "exit_price": 100456.78,
+        "exit_timestamp": "2026-07-17T00:30:00.456789",
+        "pnl": 111.11,
+        "pnl_percent": 0.22,
+        "commission": 5.01,
+        "status": "CLOSED",
+        "strategy": "hybrid_ensemble",
+        "signal_id": "SIG_001",
+        "position_id": "POS_001",
+        "hold_duration_seconds": 1736,
+        "max_favorable_excursion": 234.56,
+        "max_adverse_excursion": -45.67,
+        "slippage": 0.01,
+        "tags": ["momentum", "bullish"]
+    },
+    {
+        "trade_id": "TRD_002",
+        "timestamp": "2026-07-17T00:01:03.890123",
+        "symbol": "BTC-USD",
+        "side": "BUY",
+        "type": "LIMIT",
+        "entry_price": 101234.56,
+        "quantity": 0.8,
+        "exit_price": 101456.78,
+        "exit_timestamp": "2026-07-17T00:25:00.345678",
+        "pnl": 177.78,
+        "pnl_percent": 0.22,
+        "commission": 8.10,
+        "status": "CLOSED",
+        "strategy": "momentum_breakout",
+        "signal_id": "SIG_101",
+        "position_id": "POS_101",
+        "hold_duration_seconds": 1440,
+        "max_favorable_excursion": 345.67,
+        "max_adverse_excursion": -78.90,
+        "slippage": 0.0,
+        "tags": ["breakout", "strong_confidence"]
+    },
+    {
+        "trade_id": "TRD_003",
+        "timestamp": "2026-07-17T00:05:00.456789",
+        "symbol": "ETH-USD",
+        "side": "BUY",
+        "type": "MARKET",
+        "entry_price": 3456.78,
+        "quantity": 5.0,
+        "exit_price": 3512.34,
+        "exit_timestamp": "2026-07-17T01:15:00.567890",
+        "pnl": 277.80,
+        "pnl_percent": 1.61,
+        "commission": 17.28,
+        "status": "CLOSED",
+        "strategy": "mean_reversion",
+        "signal_id": "SIG_003",
+        "position_id": "POS_003",
+        "hold_duration_seconds": 4200,
+        "max_favorable_excursion": 456.78,
+        "max_adverse_excursion": -123.45,
+        "slippage": 0.02,
+        "tags": ["reversion", "oversold"]
+    },
+    {
+        "trade_id": "TRD_004",
+        "timestamp": "2026-07-17T00:10:00.567890",
+        "symbol": "SOL-USD",
+        "side": "SELL",
+        "type": "MARKET",
+        "entry_price": 145.67,
+        "quantity": 100.0,
+        "exit_price": 142.34,
+        "exit_timestamp": "2026-07-17T02:00:00.678901",
+        "pnl": 333.00,
+        "pnl_percent": 2.29,
+        "commission": 14.56,
+        "status": "CLOSED",
+        "strategy": "breakout",
+        "signal_id": "SIG_004",
+        "position_id": "POS_004",
+        "hold_duration_seconds": 6600,
+        "max_favorable_excursion": 567.89,
+        "max_adverse_excursion": -234.56,
+        "slippage": 0.015,
+        "tags": ["breakout", "bearish"]
+    },
+
+    # === TRADES AVEC PERTE ===
+    {
+        "trade_id": "TRD_005",
+        "timestamp": "2026-07-17T00:15:00.678901",
+        "symbol": "BTC-USD",
+        "side": "BUY",
+        "type": "MARKET",
+        "entry_price": 101500.00,
+        "quantity": 0.3,
+        "exit_price": 101234.56,
+        "exit_timestamp": "2026-07-17T00:45:00.789012",
+        "pnl": -79.63,
+        "pnl_percent": -0.26,
+        "commission": 3.04,
+        "status": "CLOSED",
+        "strategy": "hybrid_ensemble",
+        "signal_id": "SIG_005",
+        "position_id": "POS_005",
+        "hold_duration_seconds": 1800,
+        "max_favorable_excursion": 123.45,
+        "max_adverse_excursion": -234.56,
+        "slippage": 0.01,
+        "tags": ["momentum", "stop_loss"]
+    },
+    {
+        "trade_id": "TRD_006",
+        "timestamp": "2026-07-17T00:20:00.789012",
+        "symbol": "ETH-USD",
+        "side": "SELL",
+        "type": "LIMIT",
+        "entry_price": 3500.00,
+        "quantity": 3.0,
+        "exit_price": 3523.45,
+        "exit_timestamp": "2026-07-17T01:30:00.890123",
+        "pnl": -70.35,
+        "pnl_percent": -0.67,
+        "commission": 10.57,
+        "status": "CLOSED",
+        "strategy": "momentum_breakout",
+        "signal_id": "SIG_006",
+        "position_id": "POS_006",
+        "hold_duration_seconds": 4200,
+        "max_favorable_excursion": 234.56,
+        "max_adverse_excursion": -345.67,
+        "slippage": 0.0,
+        "tags": ["breakout", "stop_loss"]
+    },
+
+    # === TRADES PARTIELLEMENT FERMÉS ===
+    {
+        "trade_id": "TRD_007",
+        "timestamp": "2026-07-17T00:25:00.890123",
+        "symbol": "BTC-USD",
+        "side": "BUY",
+        "type": "MARKET",
+        "entry_price": 101000.00,
+        "quantity": 0.8,
+        "exit_price": 101200.00,
+        "exit_timestamp": "2026-07-17T01:00:00.901234",
+        "pnl": 160.00,
+        "pnl_percent": 0.20,
+        "commission": 8.10,
+        "status": "PARTIALLY_CLOSED",
+        "strategy": "grid_trading",
+        "signal_id": "SIG_007",
+        "position_id": "POS_007",
+        "hold_duration_seconds": 2100,
+        "max_favorable_excursion": 345.67,
+        "max_adverse_excursion": -123.45,
+        "slippage": 0.01,
+        "tags": ["grid", "partial_close"],
+        "remaining_quantity": 0.5,
+        "partial_close_percentage": 37.5
+    },
+
+    # === TRADES EN COURS ===
+    {
+        "trade_id": "TRD_008",
+        "timestamp": "2026-07-17T00:30:00.901234",
+        "symbol": "BTC-USD",
+        "side": "BUY",
+        "type": "MARKET",
+        "entry_price": 101200.00,
+        "quantity": 0.5,
+        "exit_price": None,
+        "exit_timestamp": None,
+        "pnl": 0.0,
+        "pnl_percent": 0.0,
+        "commission": 5.06,
+        "status": "OPEN",
+        "strategy": "hybrid_ensemble",
+        "signal_id": "SIG_008",
+        "position_id": "POS_008",
+        "hold_duration_seconds": 0,
+        "max_favorable_excursion": 0.0,
+        "max_adverse_excursion": 0.0,
+        "slippage": 0.01,
+        "tags": ["momentum", "pending"],
+        "current_price": 101400.00,
+        "unrealized_pnl": 100.00,
+        "unrealized_pnl_percent": 0.20
+    },
+    {
+        "trade_id": "TRD_009",
+        "timestamp": "2026-07-17T00:35:00.012345",
+        "symbol": "ETH-USD",
+        "side": "SELL",
+        "type": "STOP_LIMIT",
+        "entry_price": 3490.00,
+        "quantity": 4.0,
+        "exit_price": None,
+        "exit_timestamp": None,
+        "pnl": 0.0,
+        "pnl_percent": 0.0,
+        "commission": 0.0,
+        "status": "OPEN",
+        "strategy": "mean_reversion",
+        "signal_id": "SIG_009",
+        "position_id": "POS_009",
+        "hold_duration_seconds": 0,
+        "max_favorable_excursion": 0.0,
+        "max_adverse_excursion": 0.0,
+        "slippage": 0.0,
+        "tags": ["reversion", "pending"],
+        "current_price": 3485.00,
+        "unrealized_pnl": 20.00,
+        "unrealized_pnl_percent": 0.14
+    },
+
+    # === TRADES ANNULE ===
+    {
+        "trade_id": "TRD_010",
+        "timestamp": "2026-07-17T00:40:00.123456",
+        "symbol": "SOL-USD",
+        "side": "BUY",
+        "type": "LIMIT",
+        "entry_price": 140.00,
+        "quantity": 50.0,
+        "exit_price": None,
+        "exit_timestamp": "2026-07-17T01:00:00.234567",
+        "pnl": 0.0,
+        "pnl_percent": 0.0,
+        "commission": 0.0,
+        "status": "CANCELLED",
+        "strategy": "grid_trading",
+        "signal_id": "SIG_010",
+        "position_id": "POS_010",
+        "hold_duration_seconds": 1200,
+        "max_favorable_excursion": 0.0,
+        "max_adverse_excursion": 0.0,
+        "slippage": 0.0,
+        "tags": ["grid", "cancelled"],
+        "cancellation_reason": "price_moved"
+    },
+
+    # === TRADES EXPIRES ===
+    {
+        "trade_id": "TRD_011",
+        "timestamp": "2026-07-17T00:45:00.234567",
+        "symbol": "BTC-USD",
+        "side": "BUY",
+        "type": "LIMIT",
+        "entry_price": 100800.00,
+        "quantity": 0.6,
+        "exit_price": None,
+        "exit_timestamp": "2026-07-17T02:00:00.345678",
+        "pnl": 0.0,
+        "pnl_percent": 0.0,
+        "commission": 0.0,
+        "status": "EXPIRED",
+        "strategy": "mean_reversion",
+        "signal_id": "SIG_011",
+        "position_id": "POS_011",
+        "hold_duration_seconds": 4500,
+        "max_favorable_excursion": 0.0,
+        "max_adverse_excursion": 0.0,
+        "slippage": 0.0,
+        "tags": ["reversion", "expired"],
+        "expiration_reason": "timeout"
+    },
+
+    # === TRADES AVEC GRAND PROFIT ===
+    {
+        "trade_id": "TRD_012",
+        "timestamp": "2026-07-17T01:00:00.345678",
+        "symbol": "BTC-USD",
+        "side": "BUY",
+        "type": "MARKET",
+        "entry_price": 101000.00,
+        "quantity": 1.0,
+        "exit_price": 102500.00,
+        "exit_timestamp": "2026-07-17T03:00:00.456789",
+        "pnl": 1500.00,
+        "pnl_percent": 1.49,
+        "commission": 10.10,
+        "status": "CLOSED",
+        "strategy": "momentum_breakout",
+        "signal_id": "SIG_012",
+        "position_id": "POS_012",
+        "hold_duration_seconds": 7200,
+        "max_favorable_excursion": 2000.00,
+        "max_adverse_excursion": -500.00,
+        "slippage": 0.01,
+        "tags": ["breakout", "big_win"]
+    },
+
+    # === TRADES AVEC SLIPPAGE IMPORTANT ===
+    {
+        "trade_id": "TRD_013",
+        "timestamp": "2026-07-17T01:30:00.456789",
+        "symbol": "BTC-USD",
+        "side": "SELL",
+        "type": "MARKET",
+        "entry_price": 102000.00,
+        "quantity": 0.4,
+        "exit_price": 101750.00,
+        "exit_timestamp": "2026-07-17T02:30:00.567890",
+        "pnl": 100.00,
+        "pnl_percent": 0.25,
+        "commission": 4.07,
+        "status": "CLOSED",
+        "strategy": "hybrid_ensemble",
+        "signal_id": "SIG_013",
+        "position_id": "POS_013",
+        "hold_duration_seconds": 3600,
+        "max_favorable_excursion": 300.00,
+        "max_adverse_excursion": -150.00,
+        "slippage": 0.05,
+        "tags": ["momentum", "high_slippage"]
+    },
+
+    # === TRADES SUR PLUSIEURS JOURS ===
+    {
+        "trade_id": "TRD_014",
+        "timestamp": "2026-07-16T00:00:00.000000",
+        "symbol": "BTC-USD",
+        "side": "BUY",
+        "type": "MARKET",
+        "entry_price": 100000.00,
+        "quantity": 0.5,
+        "exit_price": 101234.56,
+        "exit_timestamp": "2026-07-17T01:00:00.678901",
+        "pnl": 617.28,
+        "pnl_percent": 1.23,
+        "commission": 5.06,
+        "status": "CLOSED",
+        "strategy": "swing_trading",
+        "signal_id": "SIG_014",
+        "position_id": "POS_014",
+        "hold_duration_seconds": 90000,
+        "max_favorable_excursion": 1500.00,
+        "max_adverse_excursion": -800.00,
+        "slippage": 0.01,
+        "tags": ["swing", "multi_day"]
+    },
+    {
+        "trade_id": "TRD_015",
+        "timestamp": "2026-07-15T00:00:00.000000",
+        "symbol": "ETH-USD",
+        "side": "BUY",
+        "type": "LIMIT",
+        "entry_price": 3300.00,
+        "quantity": 10.0,
+        "exit_price": 3500.00,
+        "exit_timestamp": "2026-07-17T00:00:00.789012",
+        "pnl": 2000.00,
+        "pnl_percent": 6.06,
+        "commission": 33.00,
+        "status": "CLOSED",
+        "strategy": "swing_trading",
+        "signal_id": "SIG_015",
+        "position_id": "POS_015",
+        "hold_duration_seconds": 172800,
+        "max_favorable_excursion": 2500.00,
+        "max_adverse_excursion": -500.00,
+        "slippage": 0.0,
+        "tags": ["swing", "multi_day", "big_win"]
+    }
+]
+
+# ============================================================
+# STATISTIQUES DES TRADES
+# ============================================================
+
+TRADE_STATS = {
+    "total_trades": len(EXAMPLE_TRADES),
+    "by_status": {
+        "CLOSED": 8,
+        "PARTIALLY_CLOSED": 1,
+        "OPEN": 2,
+        "CANCELLED": 1,
+        "EXPIRED": 1
+    },
+    "by_side": {
+        "BUY": 11,
+        "SELL": 4
+    },
+    "by_type": {
+        "MARKET": 10,
+        "LIMIT": 4,
+        "STOP_LIMIT": 1
+    },
+    "by_strategy": {
+        "hybrid_ensemble": 4,
+        "momentum_breakout": 3,
+        "mean_reversion": 3,
+        "breakout": 1,
+        "grid_trading": 2,
+        "swing_trading": 2
+    },
+    "by_symbol": {
+        "BTC-USD": 9,
+        "ETH-USD": 4,
+        "SOL-USD": 2
+    },
+    "performance": {
+        "total_pnl": sum(t.get("pnl", 0) for t in EXAMPLE_TRADES),
+        "total_commission": sum(t.get("commission", 0) for t in EXAMPLE_TRADES),
+        "winning_trades": sum(1 for t in EXAMPLE_TRADES if t.get("pnl", 0) > 0 and t.get("status") == "CLOSED"),
+        "losing_trades": sum(1 for t in EXAMPLE_TRADES if t.get("pnl", 0) < 0 and t.get("status") == "CLOSED"),
+        "win_rate": 0.75,
+        "avg_win": sum(t.get("pnl", 0) for t in EXAMPLE_TRADES if t.get("pnl", 0) > 0) / 6 if 6 > 0 else 0,
+        "avg_loss": sum(t.get("pnl", 0) for t in EXAMPLE_TRADES if t.get("pnl", 0) < 0) / 2 if 2 > 0 else 0,
+        "profit_factor": 1.8,
+        "best_trade": max(t.get("pnl", 0) for t in EXAMPLE_TRADES),
+        "worst_trade": min(t.get("pnl", 0) for t in EXAMPLE_TRADES)
+    }
+}
+
+# ============================================================
+# FONCTIONS DE GESTION DES TRADES
+# ============================================================
+
+def write_example_trades(filepath: str = "trading/bots/ai_bot/logs/trades.log") -> None:
+    """
+    Écrit les trades d'exemple dans un fichier.
+    
+    Args:
+        filepath: Chemin du fichier de trades.
+    """
+    import os
+    
+    try:
+        # Création du répertoire si nécessaire
+        os.makedirs(os.path.dirname(filepath), exist_ok=True)
+        
+        with open(filepath, 'w', encoding='utf-8') as f:
+            for trade in EXAMPLE_TRADES:
+                f.write(json.dumps(trade) + '\n')
+        
+        print(f"✅ Trades écrits dans {filepath}")
+        
+    except Exception as e:
+        print(f"❌ Erreur d'écriture: {e}")
+
+
+def read_trades(
+    filepath: str = "trading/bots/ai_bot/logs/trades.log",
+    status: Optional[str] = None,
+    symbol: Optional[str] = None,
+    strategy: Optional[str] = None,
+    start_time: Optional[datetime] = None,
+    end_time: Optional[datetime] = None,
+    min_pnl: Optional[float] = None,
+    max_pnl: Optional[float] = None,
+    limit: int = 100
+) -> List[Dict[str, Any]]:
+    """
+    Lit les trades depuis un fichier.
+    
+    Args:
+        filepath: Chemin du fichier de trades.
+        status: Statut du trade.
+        symbol: Symbole.
+        strategy: Stratégie.
+        start_time: Heure de début.
+        end_time: Heure de fin.
+        min_pnl: PNL minimum.
+        max_pnl: PNL maximum.
+        limit: Nombre maximum de trades.
+        
+    Returns:
+        Liste des trades.
+    """
+    trades = []
+    
+    try:
+        with open(filepath, 'r', encoding='utf-8') as f:
+            for line in f:
+                try:
+                    trade = json.loads(line.strip())
+                    trades.append(trade)
+                except json.JSONDecodeError:
+                    continue
+        
+        # Filtrage
+        if status:
+            trades = [t for t in trades if t.get('status') == status]
+        
+        if symbol:
+            trades = [t for t in trades if t.get('symbol') == symbol]
+        
+        if strategy:
+            trades = [t for t in trades if t.get('strategy') == strategy]
+        
+        if start_time:
+            trades = [t for t in trades if datetime.fromisoformat(t.get('timestamp', '')) >= start_time]
+        
+        if end_time:
+            trades = [t for t in trades if datetime.fromisoformat(t.get('timestamp', '')) <= end_time]
+        
+        if min_pnl is not None:
+            trades = [t for t in trades if t.get('pnl', 0) >= min_pnl]
+        
+        if max_pnl is not None:
+            trades = [t for t in trades if t.get('pnl', 0) <= max_pnl]
+        
+        # Tri par timestamp (plus récent en premier)
+        trades.sort(key=lambda x: x.get('timestamp', ''), reverse=True)
+        
+        return trades[:limit]
+        
+    except FileNotFoundError:
+        print(f"⚠️ Fichier de trades non trouvé: {filepath}")
+        return []
+    except Exception as e:
+        print(f"❌ Erreur de lecture: {e}")
+        return []
+
+
+def get_trade_stats(
+    filepath: str = "trading/bots/ai_bot/logs/trades.log"
+) -> Dict[str, Any]:
+    """
+    Retourne les statistiques des trades.
+    
+    Args:
+        filepath: Chemin du fichier de trades.
+        
+    Returns:
+        Statistiques des trades.
+    """
+    trades = read_trades(filepath, limit=10000)
+    
+    if not trades:
+        return {'total': 0}
+    
+    stats = {
+        'total': len(trades),
+        'by_status': {},
+        'by_side': {},
+        'by_type': {},
+        'by_strategy': {},
+        'by_symbol': {},
+        'performance': {
+            'total_pnl': 0,
+            'total_commission': 0,
+            'winning_trades': 0,
+            'losing_trades': 0,
+            'win_rate': 0.0,
+            'avg_win': 0.0,
+            'avg_loss': 0.0,
+            'profit_factor': 0.0,
+            'best_trade': 0,
+            'worst_trade': 0
+        },
+        'first_trade': trades[-1].get('timestamp') if trades else None,
+        'last_trade': trades[0].get('timestamp') if trades else None
+    }
+    
+    winning_pnls = []
+    losing_pnls = []
+    
+    for trade in trades:
+        status = trade.get('status', 'UNKNOWN')
+        side = trade.get('side', 'UNKNOWN')
+        trade_type = trade.get('type', 'UNKNOWN')
+        strategy = trade.get('strategy', 'UNKNOWN')
+        symbol = trade.get('symbol', 'UNKNOWN')
+        pnl = trade.get('pnl', 0)
+        commission = trade.get('commission', 0)
+        
+        stats['by_status'][status] = stats['by_status'].get(status, 0) + 1
+        stats['by_side'][side] = stats['by_side'].get(side, 0) + 1
+        stats['by_type'][trade_type] = stats['by_type'].get(trade_type, 0) + 1
+        stats['by_strategy'][strategy] = stats['by_strategy'].get(strategy, 0) + 1
+        stats['by_symbol'][symbol] = stats['by_symbol'].get(symbol, 0) + 1
+        
+        stats['performance']['total_pnl'] += pnl
+        stats['performance']['total_commission'] += commission
+        
+        if status == 'CLOSED' or status == 'PARTIALLY_CLOSED':
+            if pnl > 0:
+                stats['performance']['winning_trades'] += 1
+                winning_pnls.append(pnl)
+                if pnl > stats['performance']['best_trade']:
+                    stats['performance']['best_trade'] = pnl
+            elif pnl < 0:
+                stats['performance']['losing_trades'] += 1
+                losing_pnls.append(pnl)
+                if pnl < stats['performance']['worst_trade']:
+                    stats['performance']['worst_trade'] = pnl
+    
+    total_closed = stats['performance']['winning_trades'] + stats['performance']['losing_trades']
+    if total_closed > 0:
+        stats['performance']['win_rate'] = stats['performance']['winning_trades'] / total_closed
+        
+        if winning_pnls:
+            stats['performance']['avg_win'] = sum(winning_pnls) / len(winning_pnls)
+        if losing_pnls:
+            stats['performance']['avg_loss'] = sum(losing_pnls) / len(losing_pnls)
+        
+        total_win = sum(winning_pnls) if winning_pnls else 0
+        total_loss = abs(sum(losing_pnls)) if losing_pnls else 0
+        stats['performance']['profit_factor'] = total_win / total_loss if total_loss > 0 else float('inf')
+    
+    return stats
+
+
+def get_trades_by_period(
+    filepath: str = "trading/bots/ai_bot/logs/trades.log",
+    period: str = "day"
+) -> Dict[str, List[Dict[str, Any]]]:
+    """
+    Groupe les trades par période.
+    
+    Args:
+        filepath: Chemin du fichier de trades.
+        period: Période ('day', 'hour').
+        
+    Returns:
+        Dictionnaire des trades groupés par période.
+    """
+    trades = read_trades(filepath, limit=10000)
+    
+    grouped = {}
+    
+    for trade in trades:
+        timestamp = trade.get('timestamp', '')
+        if period == 'day':
+            key = timestamp[:10]  # YYYY-MM-DD
+        else:
+            key = timestamp[:13]  # YYYY-MM-DDTHH
+        
+        if key not in grouped:
+            grouped[key] = []
+        grouped[key].append(trade)
+    
+    return grouped
+
+
+def get_trade_performance_by_strategy(
+    filepath: str = "trading/bots/ai_bot/logs/trades.log"
+) -> Dict[str, Dict[str, Any]]:
+    """
+    Retourne la performance par stratégie.
+    
+    Args:
+        filepath: Chemin du fichier de trades.
+        
+    Returns:
+        Performance par stratégie.
+    """
+    trades = read_trades(filepath, limit=10000)
+    
+    performance = {}
+    
+    for trade in trades:
+        strategy = trade.get('strategy', 'UNKNOWN')
+        pnl = trade.get('pnl', 0)
+        status = trade.get('status', 'UNKNOWN')
+        
+        if strategy not in performance:
+            performance[strategy] = {
+                'total_trades': 0,
+                'winning_trades': 0,
+                'losing_trades': 0,
+                'total_pnl': 0,
+                'win_rate': 0.0,
+                'avg_pnl': 0.0
+            }
+        
+        performance[strategy]['total_trades'] += 1
+        performance[strategy]['total_pnl'] += pnl
+        
+        if status == 'CLOSED' or status == 'PARTIALLY_CLOSED':
+            if pnl > 0:
+                performance[strategy]['winning_trades'] += 1
+            elif pnl < 0:
+                performance[strategy]['losing_trades'] += 1
+    
+    # Calcul des métriques
+    for strategy, data in performance.items():
+        total = data['total_trades']
+        if total > 0:
+            data['avg_pnl'] = data['total_pnl'] / total
+        
+        closed = data['winning_trades'] + data['losing_trades']
+        if closed > 0:
+            data['win_rate'] = data['winning_trades'] / closed
+    
+    return performance
+
+
+# ============================================================
+# EXPORTATION
+# ============================================================
+
+__all__ = [
+    'EXAMPLE_TRADES',
+    'TRADE_STATS',
+    'write_example_trades',
+    'read_trades',
+    'get_trade_stats',
+    'get_trades_by_period',
+    'get_trade_performance_by_strategy',
+    'TradeStatus',
+    'TradeSide',
+    'TradeType'
+]
+
+# ============================================================
+# EXÉCUTION (si fichier exécuté directement)
+# ============================================================
+
+if __name__ == "__main__":
+    # Écriture des trades d'exemple
+    write_example_trades()
+    
+    # Lecture et affichage des 5 derniers trades
+    print("\n📊 Derniers trades:")
+    trades = read_trades(limit=5)
+    for trade in trades:
+        print(f"[{trade.get('timestamp')}] {trade.get('side')} {trade.get('symbol')} - PNL: {trade.get('pnl', 0):.2f}")
+    
+    # Statistiques
+    print("\n📊 Statistiques des trades:")
+    stats = get_trade_stats()
+    print(f"Total trades: {stats.get('total', 0)}")
+    print(f"Par statut: {stats.get('by_status', {})}")
+    print(f"Par stratégie: {stats.get('by_strategy', {})}")
+    print(f"Performance: {stats.get('performance', {})}")
+    
+    # Performance par stratégie
+    print("\n📈 Performance par stratégie:")
+    perf = get_trade_performance_by_strategy()
+    for strategy, data in perf.items():
+        print(f"  {strategy}: {data['total_trades']} trades, {data['total_pnl']:.2f} PNL, {data['win_rate']:.2%} win rate")
+
+# ============================================================
+# FIN DU FICHIER
+# ============================================================
