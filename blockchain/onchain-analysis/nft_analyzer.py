@@ -1,7 +1,7 @@
 # blockchain/onchain-analysis/nft_analyzer.py
 # NEXUS AI TRADING SYSTEM - Version Avancée
 # Copyright © 2026 NEXUS QUANTUM LTD
-# Tous droits réservés
+# Tous droits réservés..
 
 """
 Module NFT Analyzer - Analyse des NFTs On-Chain
