@@ -1,0 +1,2132 @@
+<!-- trading/bots/ai_bot/templates/settings.html -->
+<!-- NEXUS AI TRADING SYSTEM - Settings Dashboard -->
+<!-- Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved -->
+
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEXUS AI Trading - Settings</title>
+
+    <!-- ============================================================ -->
+    <!-- CSS -->
+    <!-- ============================================================ -->
+    <link rel="stylesheet" href="/static/css/dashboard.css">
+    <link rel="stylesheet" href="/static/css/dark_theme.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        /* ============================================================ */
+        /* Settings Page Styles */
+        /* ============================================================ */
+
+        .settings-page {
+            padding: 24px 32px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .settings-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .settings-header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #6C5CE7, #A29BFE);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .settings-header h1 i {
+            -webkit-text-fill-color: initial;
+            color: #6C5CE7;
+        }
+
+        .settings-save-status {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.5);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .settings-save-status.saved {
+            color: #2ED573;
+        }
+
+        .settings-save-status.saving {
+            color: #FFA502;
+        }
+
+        .settings-save-status.error {
+            color: #FF4757;
+        }
+
+        /* ============================================================ */
+        /* Settings Navigation */
+        /* ============================================================ */
+
+        .settings-nav {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 24px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            padding: 4px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            overflow-x: auto;
+            flex-wrap: nowrap;
+        }
+
+        .settings-nav button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            background: transparent;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .settings-nav button:hover {
+            color: rgba(255, 255, 255, 0.8);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .settings-nav button.active {
+            color: #fff;
+            background: rgba(108, 92, 231, 0.2);
+        }
+
+        .settings-nav button i {
+            font-size: 14px;
+        }
+
+        /* ============================================================ */
+        /* Settings Sections */
+        /* ============================================================ */
+
+        .settings-section {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .settings-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .settings-section .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 4px;
+        }
+
+        .settings-section .section-description {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.5);
+            margin-bottom: 20px;
+        }
+
+        /* ============================================================ */
+        /* Settings Cards */
+        /* ============================================================ */
+
+        .settings-card {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            padding: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            margin-bottom: 16px;
+        }
+
+        .settings-card .card-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .settings-card .card-title i {
+            color: #6C5CE7;
+        }
+
+        .settings-card .card-description {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.4);
+            margin-bottom: 16px;
+        }
+
+        /* ============================================================ */
+        /* Form Elements */
+        /* ============================================================ */
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 4px;
+        }
+
+        .form-group .field-description {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.3);
+            margin-top: 4px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px 14px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            color: #fff;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: #6C5CE7;
+            box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.1);
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .form-group select option {
+            background: #1a1a2e;
+            color: #fff;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .form-group .toggle-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 0;
+        }
+
+        .form-group .toggle-group label {
+            margin-bottom: 0;
+            cursor: pointer;
+        }
+
+        /* ============================================================ */
+        /* Toggle Switch */
+        /* ============================================================ */
+
+        .toggle-switch {
+            position: relative;
+            width: 44px;
+            height: 24px;
+            flex-shrink: 0;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-switch .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 24px;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-switch .slider::before {
+            content: "";
+            position: absolute;
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background: #fff;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-switch input:checked + .slider {
+            background: #6C5CE7;
+        }
+
+        .toggle-switch input:checked + .slider::before {
+            transform: translateX(20px);
+        }
+
+        /* ============================================================ */
+        /* Buttons */
+        /* ============================================================ */
+
+        .btn-primary {
+            background: linear-gradient(135deg, #6C5CE7, #A29BFE);
+            border: none;
+            border-radius: 8px;
+            padding: 10px 24px;
+            color: #fff;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(108, 92, 231, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            padding: 10px 24px;
+            color: rgba(255, 255, 255, 0.7);
+            font-weight: 500;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+
+        .btn-danger {
+            background: rgba(255, 71, 87, 0.15);
+            border: 1px solid rgba(255, 71, 87, 0.2);
+            border-radius: 8px;
+            padding: 10px 24px;
+            color: #FF4757;
+            font-weight: 500;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-danger:hover {
+            background: rgba(255, 71, 87, 0.25);
+        }
+
+        .btn-success {
+            background: rgba(46, 213, 115, 0.15);
+            border: 1px solid rgba(46, 213, 115, 0.2);
+            border-radius: 8px;
+            padding: 10px 24px;
+            color: #2ED573;
+            font-weight: 500;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-success:hover {
+            background: rgba(46, 213, 115, 0.25);
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+            padding-top: 16px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        /* ============================================================ */
+        /* API Key Display */
+        /* ============================================================ */
+
+        .api-key-display {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            padding: 8px 12px;
+            font-family: monospace;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.7);
+            overflow: hidden;
+        }
+
+        .api-key-display .key-value {
+            flex: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .api-key-display .key-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .api-key-display .key-actions button {
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.4);
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .api-key-display .key-actions button:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        /* ============================================================ */
+        /* Danger Zone */
+        /* ============================================================ */
+
+        .danger-zone {
+            border-color: rgba(255, 71, 87, 0.2);
+            background: rgba(255, 71, 87, 0.05);
+        }
+
+        .danger-zone .card-title {
+            color: #FF4757;
+        }
+
+        .danger-zone .card-title i {
+            color: #FF4757;
+        }
+
+        .danger-zone .form-actions {
+            border-top-color: rgba(255, 71, 87, 0.1);
+        }
+
+        /* ============================================================ */
+        /* Toast Notifications */
+        /* ============================================================ */
+
+        .toast-container {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            z-index: 9999;
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .toast {
+            padding: 14px 20px;
+            border-radius: 12px;
+            background: rgba(26, 26, 46, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            color: #fff;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            animation: slideUp 0.3s ease;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        }
+
+        .toast.success { border-left: 4px solid #2ED573; }
+        .toast.error { border-left: 4px solid #FF4757; }
+        .toast.warning { border-left: 4px solid #FFA502; }
+        .toast.info { border-left: 4px solid #4ECDC4; }
+
+        .toast .toast-icon {
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .toast.success .toast-icon { color: #2ED573; }
+        .toast.error .toast-icon { color: #FF4757; }
+        .toast.warning .toast-icon { color: #FFA502; }
+        .toast.info .toast-icon { color: #4ECDC4; }
+
+        .toast .toast-close {
+            margin-left: auto;
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.4);
+            cursor: pointer;
+            font-size: 16px;
+            padding: 4px;
+        }
+
+        .toast .toast-close:hover {
+            color: #fff;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ============================================================ */
+        /* Responsive */
+        /* ============================================================ */
+
+        @media (max-width: 768px) {
+            .settings-page {
+                padding: 16px;
+            }
+
+            .settings-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+
+            .settings-nav {
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                padding: 4px;
+                gap: 2px;
+            }
+
+            .settings-nav button {
+                padding: 8px 14px;
+                font-size: 13px;
+            }
+
+            .settings-nav button span {
+                display: none;
+            }
+
+            .settings-nav button i {
+                font-size: 16px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .settings-card {
+                padding: 16px;
+            }
+
+            .form-actions {
+                flex-wrap: wrap;
+            }
+
+            .form-actions button {
+                flex: 1;
+                min-width: 120px;
+            }
+
+            .api-key-display {
+                flex-wrap: wrap;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .settings-page {
+                padding: 12px;
+            }
+
+            .settings-header h1 {
+                font-size: 22px;
+            }
+
+            .settings-card .card-title {
+                font-size: 14px;
+            }
+
+            .form-group input,
+            .form-group select,
+            .form-group textarea {
+                font-size: 13px;
+                padding: 8px 12px;
+            }
+        }
+
+        /* ============================================================ */
+        /* Loading State */
+        /* ============================================================ */
+
+        .settings-loading {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 20px;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .settings-loading .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(255, 255, 255, 0.05);
+            border-top-color: #6C5CE7;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-bottom: 16px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- ============================================================ -->
+    <!-- Settings Page -->
+    <!-- ============================================================ -->
+
+    <div class="settings-page">
+        <!-- Header -->
+        <div class="settings-header">
+            <h1>
+                <i class="fas fa-cog"></i>
+                Settings
+            </h1>
+            <div class="settings-save-status" id="saveStatus">
+                <i class="fas fa-check-circle"></i>
+                <span>All settings saved</span>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="settings-nav" id="settingsNav">
+            <button class="active" data-section="general">
+                <i class="fas fa-sliders-h"></i>
+                <span>General</span>
+            </button>
+            <button data-section="trading">
+                <i class="fas fa-chart-line"></i>
+                <span>Trading</span>
+            </button>
+            <button data-section="risk">
+                <i class="fas fa-shield-alt"></i>
+                <span>Risk</span>
+            </button>
+            <button data-section="models">
+                <i class="fas fa-brain"></i>
+                <span>AI Models</span>
+            </button>
+            <button data-section="exchanges">
+                <i class="fas fa-exchange-alt"></i>
+                <span>Exchanges</span>
+            </button>
+            <button data-section="notifications">
+                <i class="fas fa-bell"></i>
+                <span>Notifications</span>
+            </button>
+            <button data-section="api">
+                <i class="fas fa-key"></i>
+                <span>API</span>
+            </button>
+            <button data-section="advanced">
+                <i class="fas fa-code"></i>
+                <span>Advanced</span>
+            </button>
+        </nav>
+
+        <!-- ============================================================ -->
+        <!-- General Settings -->
+        <!-- ============================================================ -->
+
+        <section class="settings-section active" id="section-general">
+            <h2 class="section-title">General Settings</h2>
+            <p class="section-description">Configure the basic behavior of your trading bot.</p>
+
+            <div class="settings-card">
+                <div class="card-title">
+                    <i class="fas fa-robot"></i>
+                    Bot Configuration
+                </div>
+                <div class="card-description">Basic bot settings and behavior.</div>
+
+                <div class="form-group">
+                    <label for="botName">Bot Name</label>
+                    <input type="text" id="botName" placeholder="My AI Trading Bot" value="NEXUS AI Bot">
+                    <div class="field-description">A name to identify your bot instance.</div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="botMode">Bot Mode</label>
+                        <select id="botMode">
+                            <option value="paper">Paper Trading</option>
+                            <option value="live" selected>Live Trading</option>
+                            <option value="backtest">Backtest</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="botTimeframe">Default Timeframe</label>
+                        <select id="botTimeframe">
+                            <option value="1m">1 Minute</option>
+                            <option value="5m">5 Minutes</option>
+                            <option value="15m">15 Minutes</option>
+                            <option value="30m">30 Minutes</option>
+                            <option value="1h" selected>1 Hour</option>
+                            <option value="4h">4 Hours</option>
+                            <option value="1d">1 Day</option>
+                            <option value="1w">1 Week</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="toggle-group">
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="autoStart" checked>
+                            <span class="slider"></span>
+                        </label>
+                        <label for="autoStart">Auto-start bot on launch</label>
+                    </div>
+                    <div class="field-description">Automatically start the bot when the application launches.</div>
+                </div>
+
+                <div class="form-group">
+                    <div class="toggle-group">
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="enableLogging" checked>
+                            <span class="slider"></span>
+                        </label>
+                        <label for="enableLogging">Enable detailed logging</label>
+                    </div>
+                    <div class="field-description">Log all bot activities for debugging and monitoring.</div>
+                </div>
+            </div>
+
+            <div class="settings-card">
+                <div class="card-title">
+                    <i class="fas fa-palette"></i>
+                    Appearance
+                </div>
+                <div class="card-description">Customize the dashboard appearance.</div>
+
+                <div class="form-group">
+                    <label for="themeSelect">Theme</label>
+                    <select id="themeSelect">
+                        <option value="dark" selected>Dark</option>
+                        <option value="light">Light</option>
+                        <option value="system">System Default</option>
+                    </select>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================================ -->
+        <!-- Trading Settings -->
+        <!-- ============================================================ -->
+
+        <section class="settings-section" id="section-trading">
+            <h2 class="section-title">Trading Settings</h2>
+            <p class="section-description">Configure your trading parameters and strategies.</p>
+
+            <div class="settings-card">
+                <div class="card-title">
+                    <i class="fas fa-strategy"></i>
+                    Strategy Configuration
+                </div>
+                <div class="card-description">Select and configure your trading strategy.</div>
+
+                <div class="form-group">
+                    <label for="strategySelect">Active Strategy</label>
+                    <select id="strategySelect">
+                        <option value="hybrid" selected>Hybrid (Recommended)</option>
+                        <option value="trend_following">Trend Following</option>
+                        <option value="momentum">Momentum</option>
+                        <option value="mean_reversion">Mean Reversion</option>
+                        <option value="breakout">Breakout</option>
+                        <option value="arbitrage">Arbitrage</option>
+                        <option value="grid">Grid Trading</option>
+                        <option value="scalping">Scalping</option>
+                    </select>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="symbols">Trading Symbols</label>
+                        <input type="text" id="symbols" placeholder="BTC-USD, ETH-USD, SOL-USD" value="BTC-USD, ETH-USD, SOL-USD">
+                        <div class="field-description">Comma-separated list of trading pairs.</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="maxPositions">Max Positions</label>
+                        <input type="number" id="maxPositions" value="5" min="1" max="20">
+                        <div class="field-description">Maximum number of concurrent positions.</div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="minConfidence">Min Confidence</label>
+                        <input type="number" id="minConfidence" value="0.6" min="0" max="1" step="0.05">
+                        <div class="field-description">Minimum confidence threshold for signals (0-1).</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="maxSlippage">Max Slippage (%)</label>
+                        <input type="number" id="maxSlippage" value="0.5" min="0" max="5" step="0.1">
+                        <div class="field-description">Maximum allowed slippage percentage.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="settings-card">
+                <div class="card-title">
+                    <i class="fas fa-clock"></i>
+                    Schedule
+                </div>
+                <div class="card-description">Set trading hours and schedule.</div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="tradingStart">Start Time (UTC)</label>
+                        <input type="time" id="tradingStart" value="00:00">
+                    </div>
+                    <div class="form-group">
+                        <label for="tradingEnd">End Time (UTC)</label>
+                        <input type="time" id="tradingEnd" value="23:59">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Trading Days</label>
+                    <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 4px;">
+                        <label style="display: flex; align-items: center; gap: 4px; font-size: 13px; color: rgba(255,255,255,0.7);">
+                            <input type="checkbox" class="trading-day" value="monday" checked> Mon
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 4px; font-size: 13px; color: rgba(255,255,255,0.7);">
+                            <input type="checkbox" class="trading-day" value="tuesday" checked> Tue
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 4px; font-size: 13px; color: rgba(255,255,255,0.7);">
+                            <input type="checkbox" class="trading-day" value="wednesday" checked> Wed
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 4px; font-size: 13px; color: rgba(255,255,255,0.7);">
+                            <input type="checkbox" class="trading-day" value="thursday" checked> Thu
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 4px; font-size: 13px; color: rgba(255,255,255,0.7);">
+                            <input type="checkbox" class="trading-day" value="friday" checked> Fri
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 4px; font-size: 13px; color: rgba(255,255,255,0.7);">
+                            <input type="checkbox" class="trading-day" value="saturday"> Sat
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 4px; font-size: 13px; color: rgba(255,255,255,0.7);">
+                            <input type="checkbox" class="trading-day" value="sunday"> Sun
+                        </label>
+                    </div>
+                    <div class="field-description">Days of the week when trading is active.</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================================ -->
+        <!-- Risk Settings -->
+        <!-- ============================================================ -->
+
+        <section class="settings-section" id="section-risk">
+            <h2 class="section-title">Risk Management</h2>
+            <p class="section-description">Configure risk parameters to protect your capital.</p>
+
+            <div class="settings-card">
+                <div class="card-title">
+                    <i class="fas fa-shield-alt"></i>
+                    Risk Parameters
+                </div>
+                <div class="card-description">Set your risk tolerance and limits.</div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="riskPerTrade">Risk per Trade (%)</label>
+                        <input type="number" id="riskPerTrade" value="2" min="0.1" max="10" step="0.5">
+                        <div class="field-description">Percentage of capital to risk per trade.</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="maxDrawdown">Max Drawdown (%)</label>
+                        <input type="number" id="maxDrawdown" value="10" min="0" max="100" step="1">
+                        <div class="field-description">Maximum allowed drawdown before stopping.</div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="stopLoss">Stop Loss (%)</label>
+                        <input type="number" id="stopLoss" value="2" min="0.1" max="20" step="0.5">
+                        <div class="field-description">Default stop loss percentage.</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="takeProfit">Take Profit (%)</label>
+                        <input type="number" id="takeProfit" value="4" min="0.1" max="50" step="0.5">
+                        <div class="field-description">Default take profit percentage.</div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="toggle-group">
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="useTrailingStop" checked>
+                            <span class="slider"></span>
+                        </label>
+                        <label for="useTrailingStop">Use Trailing Stop Loss</label>
+                    </div>
+                    <div class="field-description">Automatically adjust stop loss as price moves in your favor.</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="trailingStopPercent">Trailing Stop (%)</label>
+                    <input type="number" id="trailingStopPercent" value="1.5" min="0.1" max="10" step="0.1">
+                    <div class="field-description">Percentage distance for trailing stop.</div>
+                </div>
+            </div>
+
+            <div class="settings-card">
+                <div class="card-title">
+                    <i class="fas fa-balance-scale"></i>
+                    Position Sizing
+                </div>
+                <div class="card-description">Configure how positions are sized.</div>
+
+                <div class="form-group">
+                    <label for="positionSizing">Position Sizing Method</label>
+                    <select id="positionSizing">
+                        <option value="fixed">Fixed Size</option>
+                        <option value="percentage" selected>Percentage of Capital</option>
+                        <option value="risk_based">Risk Based (Kelly)</option>
+                        <option value="volatility">Volatility Adjusted</option>
+                    </select>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="maxPositionSize">Max Position Size</label>
+                        <input type="number" id="maxPositionSize" value="100000" min="0" step="1000">
+                        <div class="field-description">Maximum USD value per position.</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="minPositionSize">Min Position Size</label>
+                        <input type="number" id="minPositionSize" value="100" min="0" step="10">
+                        <div class="field-description">Minimum USD value per position.</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================================ -->
+        <!-- AI Models Settings -->
+        <!-- ============================================================ -->
+
+        <section class="settings-section" id="section-models">
+            <h2 class="section-title">AI Models</h2>
+            <p class="section-description">Configure AI prediction models.</p>
+
+            <div class="settings-card">
+                <div class="card-title">
+                    <i class="fas fa-brain"></i>
+                    Model Selection
+                </div>
+                <div class="card-description">Choose which AI models to use for predictions.</div>
+
+                <div class="form-group">
+                    <label>Active Models</label>
+                    <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-top: 4px;">
+                        <label style="display: flex; align-items: center; gap: 6px; font-size: 13px; color: rgba(255,255,255,0.7);">
+                            <input type="checkbox" class="model-checkbox" value="lstm" checked> LSTM
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 6px; font-size: 13px; color: rgba(255,255,255,0.7);">
+                            <input type="checkbox" class="model-checkbox" value="transformer" checked> Transformer
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 6px; font-size: 13px; color: rgba(255,255,255,0.7);">
+                            <input type="checkbox" class="model-checkbox" value="xgboost" checked> XGBoost
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 6px; font-size: 13px; color: rgba(255,255,255,0.7);">
+                            <input type="checkbox" class="model-checkbox" value="ensemble" checked> Ensemble
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 6px; font-size: 13px; color: rgba(255,255,255,0.7);">
+                            <input type="checkbox" class="model-checkbox" value="reinforcement"> Reinforcement
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="modelConfidence">Min Model Confidence</label>
+                    <input type="number" id="modelConfidence" value="0.6" min="0" max="1" step="0.05">
+                    <div class="field-description">Minimum confidence required from AI models.</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="modelRetraining">Retraining Frequency</label>
+                    <select id="modelRetraining">
+                        <option value="daily">Daily</option>
+                        <option value="weekly" selected>Weekly</option>
+                        <option value="monthly">Monthly</option>
+                        <option value="manual">Manual Only</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="settings-card">
+                <div class="card-title">
+                    <i class="fas fa-chart-simple"></i>
+                    Model Performance
+                </div>
+                <div class="card-description">View and manage model performance.</div>
+                <div id="modelPerformanceDisplay" style="margin-top: 12px;">
+                    <!-- Rendered by JS -->
+                </div>
+                <div class="form-actions">
+                    <button class="btn-primary" id="retrainModels">
+                        <i class="fas fa-sync-alt"></i> Retrain Models
+                    </button>
+                    <button class="btn-secondary" id="refreshModelMetrics">
+                        <i class="fas fa-chart-bar"></i> Refresh Metrics
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================================ -->
+        <!-- Exchanges Settings -->
+        <!-- ============================================================ -->
+
+        <section class="settings-section" id="section-exchanges">
+            <h2 class="section-title">Exchange Configuration</h2>
+            <p class="section-description">Configure your exchange connections.</p>
+
+            <div class="settings-card">
+                <div class="card-title">
+                    <i class="fas fa-exchange-alt"></i>
+                    Exchange Connections
+                </div>
+                <div class="card-description">Add and manage exchange API keys.</div>
+
+                <div class="form-group">
+                    <label for="exchangeSelect">Exchange</label>
+                    <select id="exchangeSelect">
+                        <option value="binance">Binance</option>
+                        <option value="coinbase">Coinbase</option>
+                        <option value="kraken">Kraken</option>
+                        <option value="bybit">Bybit</option>
+                        <option value="alpaca">Alpaca</option>
+                        <option value="oanda">Oanda</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="exchangeApiKey">API Key</label>
+                    <input type="text" id="exchangeApiKey" placeholder="Enter your API key">
+                </div>
+
+                <div class="form-group">
+                    <label for="exchangeApiSecret">API Secret</label>
+                    <input type="password" id="exchangeApiSecret" placeholder="Enter your API secret">
+                </div>
+
+                <div class="form-group">
+                    <label for="exchangePassphrase">Passphrase (if required)</label>
+                    <input type="password" id="exchangePassphrase" placeholder="Enter your passphrase">
+                </div>
+
+                <div class="form-group">
+                    <div class="toggle-group">
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="exchangeEnabled">
+                            <span class="slider"></span>
+                        </label>
+                        <label for="exchangeEnabled">Enable this exchange</label>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button class="btn-primary" id="addExchange">
+                        <i class="fas fa-plus"></i> Add Exchange
+                    </button>
+                    <button class="btn-secondary" id="testExchange">
+                        <i class="fas fa-plug"></i> Test Connection
+                    </button>
+                </div>
+            </div>
+
+            <div class="settings-card">
+                <div class="card-title">
+                    <i class="fas fa-list"></i>
+                    Connected Exchanges
+                </div>
+                <div id="connectedExchanges" style="margin-top: 8px;">
+                    <!-- Rendered by JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================================ -->
+        <!-- Notifications Settings -->
+        <!-- ============================================================ -->
+
+        <section class="settings-section" id="section-notifications">
+            <h2 class="section-title">Notification Settings</h2>
+            <p class="section-description">Configure how you receive alerts and updates.</p>
+
+            <div class="settings-card">
+                <div class="card-title">
+                    <i class="fas fa-bell"></i>
+                    Notification Channels
+                </div>
+                <div class="card-description">Enable and configure notification channels.</div>
+
+                <div class="form-group">
+                    <div class="toggle-group">
+                        <label class="toggle-switch">
+                            <input type="checkbox" class="notification-channel" value="webhook" checked>
+                            <span class="slider"></span>
+                        </label>
+                        <label for="webhook">Webhook</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="toggle-group">
+                        <label class="toggle-switch">
+                            <input type="checkbox" class="notification-channel" value="telegram">
+                            <span class="slider"></span>
+                        </label>
+                        <label for="telegram">Telegram</label>
+                    </div>
+                    <div style="margin-left: 56px; display: none;" class="channel-config" data-channel="telegram">
+                        <input type="text" placeholder="Bot Token" style="margin-bottom: 8px;">
+                        <input type="text" placeholder="Chat ID">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="toggle-group">
+                        <label class="toggle-switch">
+                            <input type="checkbox" class="notification-channel" value="discord">
+                            <span class="slider"></span>
+                        </label>
+                        <label for="discord">Discord</label>
+                    </div>
+                    <div style="margin-left: 56px; display: none;" class="channel-config" data-channel="discord">
+                        <input type="text" placeholder="Webhook URL">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="toggle-group">
+                        <label class="toggle-switch">
+                            <input type="checkbox" class="notification-channel" value="email">
+                            <span class="slider"></span>
+                        </label>
+                        <label for="email">Email</label>
+                    </div>
+                    <div style="margin-left: 56px; display: none;" class="channel-config" data-channel="email">
+                        <input type="email" placeholder="Email Address">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="toggle-group">
+                        <label class="toggle-switch">
+                            <input type="checkbox" class="notification-channel" value="sms">
+                            <span class="slider"></span>
+                        </label>
+                        <label for="sms">SMS</label>
+                    </div>
+                    <div style="margin-left: 56px; display: none;" class="channel-config" data-channel="sms">
+                        <input type="text" placeholder="Phone Number">
+                    </div>
+                </div>
+            </div>
+
+            <div class="settings-card">
+                <div class="card-title">
+                    <i class="fas fa-filter"></i>
+                    Notification Events
+                </div>
+                <div class="card-description">Choose which events trigger notifications.</div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                    <label style="display: flex; align-items: center; gap: 6px; font-size: 13px; color: rgba(255,255,255,0.7);">
+                        <input type="checkbox" class="event-checkbox" value="trade" checked> Trade Executed
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 6px; font-size: 13px; color: rgba(255,255,255,0.7);">
+                        <input type="checkbox" class="event-checkbox" value="order" checked> Order Placed
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 6px; font-size: 13px; color: rgba(255,255,255,0.7);">
+                        <input type="checkbox" class="event-checkbox" value="alert" checked> Alert Triggered
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 6px; font-size: 13px; color: rgba(255,255,255,0.7);">
+                        <input type="checkbox" class="event-checkbox" value="error" checked> Error Occurred
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 6px; font-size: 13px; color: rgba(255,255,255,0.7);">
+                        <input type="checkbox" class="event-checkbox" value="position" checked> Position Change
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 6px; font-size: 13px; color: rgba(255,255,255,0.7);">
+                        <input type="checkbox" class="event-checkbox" value="system"> System Event
+                    </label>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================================ -->
+        <!-- API Settings -->
+        <!-- ============================================================ -->
+
+        <section class="settings-section" id="section-api">
+            <h2 class="section-title">API Settings</h2>
+            <p class="section-description">Manage API access and tokens.</p>
+
+            <div class="settings-card">
+                <div class="card-title">
+                    <i class="fas fa-key"></i>
+                    API Keys
+                </div>
+                <div class="card-description">Generate and manage API keys for programmatic access.</div>
+
+                <div class="form-group">
+                    <label for="apiKeyName">API Key Name</label>
+                    <input type="text" id="apiKeyName" placeholder="My API Key">
+                </div>
+
+                <div class="form-group">
+                    <div style="display: flex; gap: 12px;">
+                        <label style="display: flex; align-items: center; gap: 6px; font-size: 13px; color: rgba(255,255,255,0.7);">
+                            <input type="checkbox" id="apiTrading" checked> Trading
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 6px; font-size: 13px; color: rgba(255,255,255,0.7);">
+                            <input type="checkbox" id="apiRead" checked> Read
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 6px; font-size: 13px; color: rgba(255,255,255,0.7);">
+                            <input type="checkbox" id="apiAdmin"> Admin
+                        </label>
+                    </div>
+                    <div class="field-description">Permissions for this API key.</div>
+                </div>
+
+                <div class="form-actions">
+                    <button class="btn-primary" id="generateApiKey">
+                        <i class="fas fa-key"></i> Generate API Key
+                    </button>
+                </div>
+            </div>
+
+            <div class="settings-card">
+                <div class="card-title">
+                    <i class="fas fa-list"></i>
+                    Active API Keys
+                </div>
+                <div id="apiKeysList" style="margin-top: 8px;">
+                    <!-- Rendered by JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================================ -->
+        <!-- Advanced Settings -->
+        <!-- ============================================================ -->
+
+        <section class="settings-section" id="section-advanced">
+            <h2 class="section-title">Advanced Settings</h2>
+            <p class="section-description">Advanced configuration options for expert users.</p>
+
+            <div class="settings-card">
+                <div class="card-title">
+                    <i class="fas fa-cogs"></i>
+                    Performance Tuning
+                </div>
+                <div class="card-description">Optimize bot performance.</div>
+
+                <div class="form-group">
+                    <label for="threadPoolSize">Thread Pool Size</label>
+                    <input type="number" id="threadPoolSize" value="4" min="1" max="16">
+                    <div class="field-description">Number of worker threads for parallel processing.</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="cacheSize">Cache Size (MB)</label>
+                    <input type="number" id="cacheSize" value="256" min="64" max="4096" step="64">
+                    <div class="field-description">Memory cache size for market data.</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="logLevel">Log Level</label>
+                    <select id="logLevel">
+                        <option value="DEBUG">Debug</option>
+                        <option value="INFO" selected>Info</option>
+                        <option value="WARNING">Warning</option>
+                        <option value="ERROR">Error</option>
+                        <option value="CRITICAL">Critical</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="settings-card danger-zone">
+                <div class="card-title">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    Danger Zone
+                </div>
+                <div class="card-description">Destructive actions. Proceed with caution.</div>
+
+                <div class="form-actions">
+                    <button class="btn-danger" id="clearAllData">
+                        <i class="fas fa-trash"></i> Clear All Data
+                    </button>
+                    <button class="btn-danger" id="resetConfig">
+                        <i class="fas fa-undo"></i> Reset Configuration
+                    </button>
+                    <button class="btn-danger" id="stopAllTrades">
+                        <i class="fas fa-stop-circle"></i> Stop All Trades
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================================ -->
+        <!-- Global Save Button -->
+        <!-- ============================================================ -->
+
+        <div style="display: flex; justify-content: flex-end; gap: 12px; padding: 20px 0; border-top: 1px solid rgba(255,255,255,0.06); margin-top: 24px;">
+            <button class="btn-secondary" id="resetSettings">
+                <i class="fas fa-undo"></i> Reset
+            </button>
+            <button class="btn-primary" id="saveSettings">
+                <i class="fas fa-save"></i> Save All Settings
+            </button>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- Toast Container -->
+    <!-- ============================================================ -->
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- ============================================================ -->
+    <!-- JavaScript -->
+    <!-- ============================================================ -->
+
+    <script src="/static/js/api_client.js"></script>
+    <script src="/static/js/websocket.js"></script>
+
+    <script>
+        // ================================================================
+        // Settings Controller
+        // ================================================================
+
+        class SettingsController {
+            constructor() {
+                this.settings = {};
+                this.originalSettings = {};
+                this.isSaving = false;
+
+                // DOM Elements
+                this.elements = {
+                    nav: document.getElementById('settingsNav'),
+                    sections: document.querySelectorAll('.settings-section'),
+                    saveStatus: document.getElementById('saveStatus'),
+                    saveBtn: document.getElementById('saveSettings'),
+                    resetBtn: document.getElementById('resetSettings'),
+                    toastContainer: document.getElementById('toastContainer'),
+                };
+
+                // Initialize
+                this.init();
+            }
+
+            // ================================================================
+            // Initialization
+            // ================================================================
+
+            init() {
+                this.loadSettings();
+                this.setupNavigation();
+                this.setupEventListeners();
+                this.setupChannelToggles();
+                this.loadConnectedExchanges();
+                this.loadApiKeys();
+                this.loadModelPerformance();
+
+                console.log('SettingsController initialized');
+            }
+
+            // ================================================================
+            // Navigation
+            // ================================================================
+
+            setupNavigation() {
+                const buttons = this.elements.nav.querySelectorAll('button');
+
+                buttons.forEach(button => {
+                    button.addEventListener('click', () => {
+                        // Update active button
+                        buttons.forEach(b => b.classList.remove('active'));
+                        button.classList.add('active');
+
+                        // Show corresponding section
+                        const sectionId = button.dataset.section;
+                        this.elements.sections.forEach(section => {
+                            section.classList.remove('active');
+                            if (section.id === `section-${sectionId}`) {
+                                section.classList.add('active');
+                            }
+                        });
+                    });
+                });
+            }
+
+            // ================================================================
+            // Load Settings
+            // ================================================================
+
+            async loadSettings() {
+                try {
+                    const response = await NexusAPI.request('/settings');
+
+                    if (response && response.success) {
+                        this.settings = response.data || {};
+                        this.originalSettings = JSON.parse(JSON.stringify(this.settings));
+                        this.populateForm(this.settings);
+                        this.updateSaveStatus('saved');
+                    } else {
+                        this.showToast('Failed to load settings', 'error');
+                    }
+                } catch (error) {
+                    console.error('Error loading settings:', error);
+                    this.showToast('Error loading settings', 'error');
+                }
+            }
+
+            // ================================================================
+            // Populate Form
+            // ================================================================
+
+            populateForm(settings) {
+                // General
+                this.setValue('botName', settings.bot_name || 'NEXUS AI Bot');
+                this.setValue('botMode', settings.bot_mode || 'live');
+                this.setValue('botTimeframe', settings.timeframe || '1h');
+                this.setChecked('autoStart', settings.auto_start !== false);
+                this.setChecked('enableLogging', settings.enable_logging !== false);
+                this.setValue('themeSelect', settings.theme || 'dark');
+
+                // Trading
+                this.setValue('strategySelect', settings.strategy || 'hybrid');
+                this.setValue('symbols', (settings.symbols || ['BTC-USD', 'ETH-USD', 'SOL-USD']).join(', '));
+                this.setValue('maxPositions', settings.max_positions || 5);
+                this.setValue('minConfidence', settings.min_confidence || 0.6);
+                this.setValue('maxSlippage', settings.max_slippage || 0.5);
+                this.setValue('tradingStart', settings.trading_start || '00:00');
+                this.setValue('tradingEnd', settings.trading_end || '23:59');
+
+                // Trading days
+                const days = settings.trading_days || ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'];
+                document.querySelectorAll('.trading-day').forEach(cb => {
+                    cb.checked = days.includes(cb.value);
+                });
+
+                // Risk
+                this.setValue('riskPerTrade', settings.risk_per_trade || 2);
+                this.setValue('maxDrawdown', settings.max_drawdown || 10);
+                this.setValue('stopLoss', settings.stop_loss || 2);
+                this.setValue('takeProfit', settings.take_profit || 4);
+                this.setChecked('useTrailingStop', settings.use_trailing_stop !== false);
+                this.setValue('trailingStopPercent', settings.trailing_stop_percent || 1.5);
+                this.setValue('positionSizing', settings.position_sizing || 'percentage');
+                this.setValue('maxPositionSize', settings.max_position_size || 100000);
+                this.setValue('minPositionSize', settings.min_position_size || 100);
+
+                // AI Models
+                document.querySelectorAll('.model-checkbox').forEach(cb => {
+                    const models = settings.ai_models || ['lstm', 'transformer', 'xgboost', 'ensemble'];
+                    cb.checked = models.includes(cb.value);
+                });
+                this.setValue('modelConfidence', settings.model_confidence || 0.6);
+                this.setValue('modelRetraining', settings.model_retraining || 'weekly');
+
+                // Notifications
+                document.querySelectorAll('.notification-channel').forEach(cb => {
+                    const channels = settings.notification_channels || ['webhook'];
+                    cb.checked = channels.includes(cb.value);
+                    this.toggleChannelConfig(cb.value, cb.checked);
+                });
+
+                document.querySelectorAll('.event-checkbox').forEach(cb => {
+                    const events = settings.notification_events || ['trade', 'order', 'alert', 'error', 'position'];
+                    cb.checked = events.includes(cb.value);
+                });
+
+                // Advanced
+                this.setValue('threadPoolSize', settings.thread_pool_size || 4);
+                this.setValue('cacheSize', settings.cache_size || 256);
+                this.setValue('logLevel', settings.log_level || 'INFO');
+            }
+
+            // ================================================================
+            // Form Helpers
+            // ================================================================
+
+            setValue(id, value) {
+                const el = document.getElementById(id);
+                if (el) el.value = value;
+            }
+
+            setChecked(id, checked) {
+                const el = document.getElementById(id);
+                if (el) el.checked = checked;
+            }
+
+            getValue(id) {
+                const el = document.getElementById(id);
+                return el ? el.value : null;
+            }
+
+            getChecked(id) {
+                const el = document.getElementById(id);
+                return el ? el.checked : false;
+            }
+
+            // ================================================================
+            // Channel Config Toggles
+            // ================================================================
+
+            setupChannelToggles() {
+                document.querySelectorAll('.notification-channel').forEach(cb => {
+                    cb.addEventListener('change', () => {
+                        this.toggleChannelConfig(cb.value, cb.checked);
+                    });
+                });
+            }
+
+            toggleChannelConfig(channel, show) {
+                const configs = document.querySelectorAll(`.channel-config[data-channel="${channel}"]`);
+                configs.forEach(el => {
+                    el.style.display = show ? 'block' : 'none';
+                });
+            }
+
+            // ================================================================
+            // Event Listeners
+            // ================================================================
+
+            setupEventListeners() {
+                // Save button
+                this.elements.saveBtn.addEventListener('click', () => this.saveSettings());
+
+                // Reset button
+                this.elements.resetBtn.addEventListener('click', () => this.resetSettings());
+
+                // Add exchange
+                document.getElementById('addExchange').addEventListener('click', () => this.addExchange());
+
+                // Test exchange
+                document.getElementById('testExchange').addEventListener('click', () => this.testExchange());
+
+                // Generate API key
+                document.getElementById('generateApiKey').addEventListener('click', () => this.generateApiKey());
+
+                // Retrain models
+                document.getElementById('retrainModels').addEventListener('click', () => this.retrainModels());
+
+                // Refresh model metrics
+                document.getElementById('refreshModelMetrics').addEventListener('click', () => this.loadModelPerformance());
+
+                // Danger zone buttons
+                document.getElementById('clearAllData').addEventListener('click', () => this.clearAllData());
+                document.getElementById('resetConfig').addEventListener('click', () => this.resetConfig());
+                document.getElementById('stopAllTrades').addEventListener('click', () => this.stopAllTrades());
+
+                // Auto-save on change with debounce
+                const debounce = (fn, delay) => {
+                    let timer;
+                    return (...args) => {
+                        clearTimeout(timer);
+                        timer = setTimeout(() => fn.apply(this, args), delay);
+                    };
+                };
+
+                const autoSave = debounce(() => this.saveSettings(true), 1000);
+
+                document.querySelectorAll('input, select, textarea').forEach(el => {
+                    el.addEventListener('change', autoSave);
+                    el.addEventListener('input', autoSave);
+                });
+            }
+
+            // ================================================================
+            // Save Settings
+            // ================================================================
+
+            async saveSettings(silent = false) {
+                if (this.isSaving) return;
+
+                this.isSaving = true;
+                this.updateSaveStatus('saving');
+
+                try {
+                    const settings = this.collectSettings();
+
+                    const response = await NexusAPI.request('/settings', {
+                        method: 'PUT',
+                        body: JSON.stringify(settings),
+                    });
+
+                    if (response && response.success) {
+                        this.settings = settings;
+                        this.originalSettings = JSON.parse(JSON.stringify(settings));
+                        this.updateSaveStatus('saved');
+                        if (!silent) {
+                            this.showToast('Settings saved successfully', 'success');
+                        }
+                    } else {
+                        this.updateSaveStatus('error');
+                        if (!silent) {
+                            this.showToast(response.message || 'Failed to save settings', 'error');
+                        }
+                    }
+                } catch (error) {
+                    console.error('Error saving settings:', error);
+                    this.updateSaveStatus('error');
+                    if (!silent) {
+                        this.showToast('Error saving settings', 'error');
+                    }
+                } finally {
+                    this.isSaving = false;
+                }
+            }
+
+            // ================================================================
+            // Collect Settings
+            // ================================================================
+
+            collectSettings() {
+                // Trading days
+                const days = [];
+                document.querySelectorAll('.trading-day:checked').forEach(cb => {
+                    days.push(cb.value);
+                });
+
+                // AI Models
+                const models = [];
+                document.querySelectorAll('.model-checkbox:checked').forEach(cb => {
+                    models.push(cb.value);
+                });
+
+                // Notification channels
+                const channels = [];
+                document.querySelectorAll('.notification-channel:checked').forEach(cb => {
+                    channels.push(cb.value);
+                });
+
+                // Notification events
+                const events = [];
+                document.querySelectorAll('.event-checkbox:checked').forEach(cb => {
+                    events.push(cb.value);
+                });
+
+                return {
+                    bot_name: this.getValue('botName'),
+                    bot_mode: this.getValue('botMode'),
+                    timeframe: this.getValue('botTimeframe'),
+                    auto_start: this.getChecked('autoStart'),
+                    enable_logging: this.getChecked('enableLogging'),
+                    theme: this.getValue('themeSelect'),
+
+                    strategy: this.getValue('strategySelect'),
+                    symbols: this.getValue('symbols').split(',').map(s => s.trim()).filter(Boolean),
+                    max_positions: parseInt(this.getValue('maxPositions')) || 5,
+                    min_confidence: parseFloat(this.getValue('minConfidence')) || 0.6,
+                    max_slippage: parseFloat(this.getValue('maxSlippage')) || 0.5,
+                    trading_start: this.getValue('tradingStart'),
+                    trading_end: this.getValue('tradingEnd'),
+                    trading_days: days,
+
+                    risk_per_trade: parseFloat(this.getValue('riskPerTrade')) || 2,
+                    max_drawdown: parseFloat(this.getValue('maxDrawdown')) || 10,
+                    stop_loss: parseFloat(this.getValue('stopLoss')) || 2,
+                    take_profit: parseFloat(this.getValue('takeProfit')) || 4,
+                    use_trailing_stop: this.getChecked('useTrailingStop'),
+                    trailing_stop_percent: parseFloat(this.getValue('trailingStopPercent')) || 1.5,
+                    position_sizing: this.getValue('positionSizing'),
+                    max_position_size: parseFloat(this.getValue('maxPositionSize')) || 100000,
+                    min_position_size: parseFloat(this.getValue('minPositionSize')) || 100,
+
+                    ai_models: models,
+                    model_confidence: parseFloat(this.getValue('modelConfidence')) || 0.6,
+                    model_retraining: this.getValue('modelRetraining'),
+
+                    notification_channels: channels,
+                    notification_events: events,
+
+                    thread_pool_size: parseInt(this.getValue('threadPoolSize')) || 4,
+                    cache_size: parseInt(this.getValue('cacheSize')) || 256,
+                    log_level: this.getValue('logLevel'),
+                };
+            }
+
+            // ================================================================
+            // Update Save Status
+            // ================================================================
+
+            updateSaveStatus(status) {
+                const el = this.elements.saveStatus;
+                el.className = 'settings-save-status';
+
+                if (status === 'saved') {
+                    el.classList.add('saved');
+                    el.innerHTML = '<i class="fas fa-check-circle"></i><span>All settings saved</span>';
+                } else if (status === 'saving') {
+                    el.classList.add('saving');
+                    el.innerHTML = '<i class="fas fa-spinner fa-spin"></i><span>Saving...</span>';
+                } else if (status === 'error') {
+                    el.classList.add('error');
+                    el.innerHTML = '<i class="fas fa-exclamation-circle"></i><span>Save failed</span>';
+                }
+            }
+
+            // ================================================================
+            // Reset Settings
+            // ================================================================
+
+            resetSettings() {
+                if (!confirm('Reset all settings to defaults?')) return;
+                this.populateForm({});
+                this.showToast('Settings reset to defaults', 'info');
+            }
+
+            // ================================================================
+            // Exchange Management
+            // ================================================================
+
+            async addExchange() {
+                const exchange = document.getElementById('exchangeSelect').value;
+                const apiKey = document.getElementById('exchangeApiKey').value;
+                const apiSecret = document.getElementById('exchangeApiSecret').value;
+                const passphrase = document.getElementById('exchangePassphrase').value;
+                const enabled = document.getElementById('exchangeEnabled').checked;
+
+                if (!apiKey || !apiSecret) {
+                    this.showToast('API Key and Secret are required', 'warning');
+                    return;
+                }
+
+                try {
+                    const response = await NexusAPI.request('/settings/exchanges', {
+                        method: 'POST',
+                        body: JSON.stringify({
+                            exchange,
+                            api_key: apiKey,
+                            api_secret: apiSecret,
+                            passphrase: passphrase,
+                            enabled: enabled,
+                        }),
+                    });
+
+                    if (response && response.success) {
+                        this.showToast(`Exchange ${exchange} added successfully`, 'success');
+                        this.loadConnectedExchanges();
+                        // Clear form
+                        document.getElementById('exchangeApiKey').value = '';
+                        document.getElementById('exchangeApiSecret').value = '';
+                        document.getElementById('exchangePassphrase').value = '';
+                    } else {
+                        this.showToast(response.message || 'Failed to add exchange', 'error');
+                    }
+                } catch (error) {
+                    console.error('Error adding exchange:', error);
+                    this.showToast('Error adding exchange', 'error');
+                }
+            }
+
+            async testExchange() {
+                const exchange = document.getElementById('exchangeSelect').value;
+                const apiKey = document.getElementById('exchangeApiKey').value;
+                const apiSecret = document.getElementById('exchangeApiSecret').value;
+
+                if (!apiKey || !apiSecret) {
+                    this.showToast('API Key and Secret are required', 'warning');
+                    return;
+                }
+
+                try {
+                    const response = await NexusAPI.request('/settings/exchanges/test', {
+                        method: 'POST',
+                        body: JSON.stringify({
+                            exchange,
+                            api_key: apiKey,
+                            api_secret: apiSecret,
+                        }),
+                    });
+
+                    if (response && response.success) {
+                        this.showToast(`Connection to ${exchange} successful`, 'success');
+                    } else {
+                        this.showToast(response.message || 'Connection failed', 'error');
+                    }
+                } catch (error) {
+                    console.error('Error testing exchange:', error);
+                    this.showToast('Error testing exchange', 'error');
+                }
+            }
+
+            async loadConnectedExchanges() {
+                try {
+                    const response = await NexusAPI.request('/settings/exchanges');
+
+                    if (response && response.success) {
+                        const exchanges = response.data || [];
+                        const container = document.getElementById('connectedExchanges');
+
+                        if (exchanges.length === 0) {
+                            container.innerHTML = `
+                                <div style="color: rgba(255,255,255,0.4); font-size: 14px; padding: 12px 0;">
+                                    <i class="fas fa-info-circle"></i> No exchanges connected
+                                </div>
+                            `;
+                            return;
+                        }
+
+                        let html = '';
+                        for (const ex of exchanges) {
+                            html += `
+                                <div style="display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.04);">
+                                    <div>
+                                        <span style="font-weight: 500; color: #fff;">${ex.exchange}</span>
+                                        <span style="margin-left: 8px; font-size: 12px; color: ${ex.enabled ? '#2ED573' : '#FF4757'};">
+                                            <i class="fas fa-circle"></i> ${ex.enabled ? 'Active' : 'Disabled'}
+                                        </span>
+                                    </div>
+                                    <button onclick="settingsController.removeExchange('${ex.exchange}')" style="background: none; border: none; color: rgba(255,255,255,0.3); cursor: pointer; padding: 4px 8px;">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            `;
+                        }
+
+                        container.innerHTML = html;
+                    }
+                } catch (error) {
+                    console.error('Error loading exchanges:', error);
+                }
+            }
+
+            async removeExchange(exchange) {
+                if (!confirm(`Remove ${exchange} configuration?`)) return;
+
+                try {
+                    const response = await NexusAPI.request(`/settings/exchanges/${exchange}`, {
+                        method: 'DELETE',
+                    });
+
+                    if (response && response.success) {
+                        this.showToast(`Exchange ${exchange} removed`, 'info');
+                        this.loadConnectedExchanges();
+                    } else {
+                        this.showToast(response.message || 'Failed to remove exchange', 'error');
+                    }
+                } catch (error) {
+                    console.error('Error removing exchange:', error);
+                    this.showToast('Error removing exchange', 'error');
+                }
+            }
+
+            // ================================================================
+            // API Key Management
+            // ================================================================
+
+            async generateApiKey() {
+                const name = document.getElementById('apiKeyName').value || 'My API Key';
+                const trading = document.getElementById('apiTrading').checked;
+                const read = document.getElementById('apiRead').checked;
+                const admin = document.getElementById('apiAdmin').checked;
+
+                try {
+                    const response = await NexusAPI.request('/settings/api-keys', {
+                        method: 'POST',
+                        body: JSON.stringify({
+                            name,
+                            permissions: { trading, read, admin },
+                        }),
+                    });
+
+                    if (response && response.success) {
+                        this.showToast('API Key generated successfully', 'success');
+                        this.loadApiKeys();
+                        document.getElementById('apiKeyName').value = '';
+                    } else {
+                        this.showToast(response.message || 'Failed to generate API key', 'error');
+                    }
+                } catch (error) {
+                    console.error('Error generating API key:', error);
+                    this.showToast('Error generating API key', 'error');
+                }
+            }
+
+            async loadApiKeys() {
+                try {
+                    const response = await NexusAPI.request('/settings/api-keys');
+
+                    if (response && response.success) {
+                        const keys = response.data || [];
+                        const container = document.getElementById('apiKeysList');
+
+                        if (keys.length === 0) {
+                            container.innerHTML = `
+                                <div style="color: rgba(255,255,255,0.4); font-size: 14px; padding: 12px 0;">
+                                    <i class="fas fa-info-circle"></i> No API keys generated
+                                </div>
+                            `;
+                            return;
+                        }
+
+                        let html = '';
+                        for (const key of keys) {
+                            html += `
+                                <div style="display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.04);">
+                                    <div>
+                                        <span style="font-weight: 500; color: #fff;">${key.name}</span>
+                                        <span style="margin-left: 8px; font-size: 12px; color: rgba(255,255,255,0.4);">${key.key}</span>
+                                        <div style="font-size: 12px; color: rgba(255,255,255,0.3); margin-top: 2px;">
+                                            ${key.permissions.trading ? 'Trading ' : ''}
+                                            ${key.permissions.read ? 'Read ' : ''}
+                                            ${key.permissions.admin ? 'Admin' : ''}
+                                        </div>
+                                    </div>
+                                    <button onclick="settingsController.revokeApiKey('${key.key}')" style="background: none; border: none; color: rgba(255,255,255,0.3); cursor: pointer; padding: 4px 8px;">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            `;
+                        }
+
+                        container.innerHTML = html;
+                    }
+                } catch (error) {
+                    console.error('Error loading API keys:', error);
+                }
+            }
+
+            async revokeApiKey(key) {
+                if (!confirm(`Revoke API key?`)) return;
+
+                try {
+                    const response = await NexusAPI.request(`/settings/api-keys/${key}`, {
+                        method: 'DELETE',
+                    });
+
+                    if (response && response.success) {
+                        this.showToast('API key revoked', 'info');
+                        this.loadApiKeys();
+                    } else {
+                        this.showToast(response.message || 'Failed to revoke API key', 'error');
+                    }
+                } catch (error) {
+                    console.error('Error revoking API key:', error);
+                    this.showToast('Error revoking API key', 'error');
+                }
+            }
+
+            // ================================================================
+            // Model Performance
+            // ================================================================
+
+            async loadModelPerformance() {
+                try {
+                    const response = await NexusAPI.request('/settings/models/performance');
+
+                    if (response && response.success) {
+                        const data = response.data || {};
+                        const container = document.getElementById('modelPerformanceDisplay');
+
+                        if (Object.keys(data).length === 0) {
+                            container.innerHTML = `
+                                <div style="color: rgba(255,255,255,0.4); font-size: 14px; padding: 12px 0;">
+                                    <i class="fas fa-info-circle"></i> No model performance data available
+                                </div>
+                            `;
+                            return;
+                        }
+
+                        let html = '<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px;">';
+                        for (const [model, metrics] of Object.entries(data)) {
+                            html += `
+                                <div style="background: rgba(255,255,255,0.03); border-radius: 8px; padding: 12px; text-align: center;">
+                                    <div style="font-size: 12px; color: rgba(255,255,255,0.4); text-transform: uppercase;">${model}</div>
+                                    <div style="font-size: 20px; font-weight: 700; color: #fff; margin: 4px 0;">${(metrics.accuracy || 0).toFixed(1)}%</div>
+                                    <div style="font-size: 11px; color: rgba(255,255,255,0.3);">
+                                        ${(metrics.trades || 0)} trades
+                                    </div>
+                                </div>
+                            `;
+                        }
+                        html += '</div>';
+
+                        container.innerHTML = html;
+                    }
+                } catch (error) {
+                    console.error('Error loading model performance:', error);
+                }
+            }
+
+            // ================================================================
+            // Retrain Models
+            // ================================================================
+
+            async retrainModels() {
+                if (!confirm('Retrain all AI models? This may take some time.')) return;
+
+                try {
+                    this.showToast('Starting model retraining...', 'info');
+
+                    const response = await NexusAPI.request('/settings/models/retrain', {
+                        method: 'POST',
+                    });
+
+                    if (response && response.success) {
+                        this.showToast('Models retraining started', 'success');
+                        this.loadModelPerformance();
+                    } else {
+                        this.showToast(response.message || 'Failed to retrain models', 'error');
+                    }
+                } catch (error) {
+                    console.error('Error retraining models:', error);
+                    this.showToast('Error retraining models', 'error');
+                }
+            }
+
+            // ================================================================
+            // Danger Zone Actions
+            // ================================================================
+
+            async clearAllData() {
+                if (!confirm('WARNING: This will delete ALL data. Are you sure?')) return;
+                if (!confirm('This action cannot be undone. Are you absolutely sure?')) return;
+
+                try {
+                    const response = await NexusAPI.request('/settings/clear-data', {
+                        method: 'POST',
+                    });
+
+                    if (response && response.success) {
+                        this.showToast('All data cleared', 'success');
+                    } else {
+                        this.showToast(response.message || 'Failed to clear data', 'error');
+                    }
+                } catch (error) {
+                    console.error('Error clearing data:', error);
+                    this.showToast('Error clearing data', 'error');
+                }
+            }
+
+            resetConfig() {
+                if (!confirm('Reset all configuration to defaults?')) return;
+
+                // Reload page to reset
+                window.location.reload();
+            }
+
+            async stopAllTrades() {
+                if (!confirm('Stop all active trades?')) return;
+
+                try {
+                    const response = await NexusAPI.request('/trading/stop-all', {
+                        method: 'POST',
+                    });
+
+                    if (response && response.success) {
+                        this.showToast('All trades stopped', 'success');
+                    } else {
+                        this.showToast(response.message || 'Failed to stop trades', 'error');
+                    }
+                } catch (error) {
+                    console.error('Error stopping trades:', error);
+                    this.showToast('Error stopping trades', 'error');
+                }
+            }
+
+            // ================================================================
+            // Toast Notifications
+            // ================================================================
+
+            showToast(message, type = 'info') {
+                const container = this.elements.toastContainer;
+                const icons = {
+                    success: 'fas fa-check-circle',
+                    error: 'fas fa-exclamation-circle',
+                    warning: 'fas fa-exclamation-triangle',
+                    info: 'fas fa-info-circle',
+                };
+
+                const toast = document.createElement('div');
+                toast.className = `toast ${type}`;
+                toast.innerHTML = `
+                    <span class="toast-icon"><i class="${icons[type] || icons.info}"></i></span>
+                    <span>${message}</span>
+                    <button class="toast-close" onclick="this.parentElement.remove()">&times;</button>
+                `;
+
+                container.appendChild(toast);
+
+                setTimeout(() => {
+                    if (toast.parentElement) {
+                        toast.remove();
+                    }
+                }, 5000);
+            }
+        }
+
+        // ================================================================
+        // Initialize
+        // ================================================================
+
+        let settingsController;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            settingsController = new SettingsController();
+            window.settingsController = settingsController;
+        });
+    </script>
+</body>
+</html>
