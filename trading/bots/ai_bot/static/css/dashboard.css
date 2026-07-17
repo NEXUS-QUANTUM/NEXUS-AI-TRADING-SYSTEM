@@ -1,0 +1,1107 @@
+/*
+NEXUS AI TRADING SYSTEM - Dashboard Styles
+Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+CEO: Dr X... - Majority Shareholder
+
+Comprehensive dashboard stylesheet for the Nexus AI Trading System.
+Provides specialized styling for trading dashboards, widgets, charts,
+and real-time data visualization components.
+*/
+
+/* ============================================
+   DASHBOARD LAYOUT
+   ============================================ */
+
+.nexus-dashboard {
+    padding: var(--nexus-spacing-lg);
+    min-height: 100vh;
+    background: var(--nexus-bg-primary);
+}
+
+.nexus-dashboard-grid {
+    display: grid;
+    gap: var(--nexus-spacing-lg);
+    grid-template-columns: 1fr;
+}
+
+/* Dashboard Sections */
+.nexus-dashboard-section {
+    margin-bottom: var(--nexus-spacing-xl);
+}
+
+.nexus-dashboard-section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--nexus-spacing-md);
+    padding: var(--nexus-spacing-sm) 0;
+}
+
+.nexus-dashboard-section-title {
+    font-size: var(--nexus-font-size-lg);
+    font-weight: 600;
+    color: var(--nexus-text-primary);
+}
+
+.nexus-dashboard-section-actions {
+    display: flex;
+    gap: var(--nexus-spacing-sm);
+}
+
+/* Dashboard Widgets */
+.nexus-widget {
+    background: var(--nexus-bg-card);
+    border-radius: var(--nexus-card-radius);
+    border: 1px solid var(--nexus-border);
+    overflow: hidden;
+    transition: all var(--nexus-transition-normal);
+}
+
+.nexus-widget:hover {
+    border-color: var(--nexus-border-light);
+    box-shadow: 0 8px 32px var(--nexus-shadow);
+}
+
+.nexus-widget-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--nexus-spacing-md) var(--nexus-spacing-lg);
+    border-bottom: 1px solid var(--nexus-border);
+}
+
+.nexus-widget-title {
+    font-size: var(--nexus-font-size-md);
+    font-weight: 600;
+    color: var(--nexus-text-primary);
+}
+
+.nexus-widget-title .badge {
+    font-size: var(--nexus-font-size-xs);
+    font-weight: 500;
+    padding: 2px 8px;
+    border-radius: 10px;
+    margin-left: var(--nexus-spacing-sm);
+}
+
+.nexus-widget-title .badge.success {
+    background: rgba(0, 184, 148, 0.2);
+    color: var(--nexus-success);
+}
+
+.nexus-widget-title .badge.warning {
+    background: rgba(253, 203, 110, 0.2);
+    color: var(--nexus-warning);
+}
+
+.nexus-widget-title .badge.danger {
+    background: rgba(225, 112, 85, 0.2);
+    color: var(--nexus-danger);
+}
+
+.nexus-widget-body {
+    padding: var(--nexus-spacing-lg);
+}
+
+.nexus-widget-footer {
+    padding: var(--nexus-spacing-md) var(--nexus-spacing-lg);
+    border-top: 1px solid var(--nexus-border);
+    background: var(--nexus-bg-secondary);
+}
+
+
+/* ============================================
+   KPI METRICS
+   ============================================ */
+
+.nexus-kpi-grid {
+    display: grid;
+    gap: var(--nexus-spacing-md);
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+
+.nexus-kpi-card {
+    background: var(--nexus-bg-card);
+    border-radius: var(--nexus-card-radius);
+    border: 1px solid var(--nexus-border);
+    padding: var(--nexus-spacing-md) var(--nexus-spacing-lg);
+    transition: all var(--nexus-transition-normal);
+}
+
+.nexus-kpi-card:hover {
+    border-color: var(--nexus-border-light);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px var(--nexus-shadow);
+}
+
+.nexus-kpi-label {
+    font-size: var(--nexus-font-size-sm);
+    font-weight: 500;
+    color: var(--nexus-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.nexus-kpi-value {
+    font-size: var(--nexus-font-size-xxl);
+    font-weight: 700;
+    color: var(--nexus-text-primary);
+    margin: var(--nexus-spacing-xs) 0;
+}
+
+.nexus-kpi-change {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--nexus-spacing-xs);
+    font-size: var(--nexus-font-size-sm);
+    font-weight: 500;
+}
+
+.nexus-kpi-change.positive {
+    color: var(--nexus-success);
+}
+
+.nexus-kpi-change.negative {
+    color: var(--nexus-danger);
+}
+
+.nexus-kpi-change.neutral {
+    color: var(--nexus-text-muted);
+}
+
+.nexus-kpi-sub {
+    font-size: var(--nexus-font-size-sm);
+    color: var(--nexus-text-muted);
+    margin-top: var(--nexus-spacing-xs);
+}
+
+.nexus-kpi-icon {
+    font-size: var(--nexus-font-size-xl);
+    color: var(--nexus-primary);
+    opacity: 0.8;
+}
+
+/* KPI Sizes */
+.nexus-kpi-sm .nexus-kpi-value {
+    font-size: var(--nexus-font-size-lg);
+}
+
+.nexus-kpi-lg .nexus-kpi-value {
+    font-size: var(--nexus-font-size-xxxl);
+}
+
+
+/* ============================================
+   TRADING WIDGETS
+   ============================================ */
+
+/* Order Book */
+.nexus-order-book {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--nexus-spacing-md);
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.nexus-order-book-side {
+    padding: var(--nexus-spacing-sm);
+}
+
+.nexus-order-book-header {
+    display: flex;
+    justify-content: space-between;
+    padding: var(--nexus-spacing-xs) 0;
+    font-size: var(--nexus-font-size-xs);
+    font-weight: 600;
+    color: var(--nexus-text-muted);
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--nexus-border);
+}
+
+.nexus-order-book-row {
+    display: flex;
+    justify-content: space-between;
+    padding: var(--nexus-spacing-xs) 0;
+    font-size: var(--nexus-font-size-sm);
+    font-family: var(--nexus-font-family-mono);
+    cursor: pointer;
+    transition: background var(--nexus-transition-fast);
+}
+
+.nexus-order-book-row:hover {
+    background: var(--nexus-bg-hover);
+}
+
+.nexus-order-book-row .price {
+    color: var(--nexus-text-primary);
+}
+
+.nexus-order-book-row .price.bid {
+    color: var(--nexus-success);
+}
+
+.nexus-order-book-row .price.ask {
+    color: var(--nexus-danger);
+}
+
+.nexus-order-book-row .size {
+    color: var(--nexus-text-secondary);
+}
+
+.nexus-order-book-row .total {
+    color: var(--nexus-text-muted);
+}
+
+.nexus-order-book-spread {
+    text-align: center;
+    padding: var(--nexus-spacing-sm);
+    background: var(--nexus-bg-tertiary);
+    border-radius: var(--nexus-border-radius);
+    margin: var(--nexus-spacing-sm) 0;
+    font-size: var(--nexus-font-size-sm);
+    font-weight: 500;
+    color: var(--nexus-text-secondary);
+}
+
+.nexus-order-book-spread .spread-value {
+    color: var(--nexus-text-primary);
+}
+
+/* Trade History */
+.nexus-trade-history {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.nexus-trade-row {
+    display: flex;
+    justify-content: space-between;
+    padding: var(--nexus-spacing-xs) var(--nexus-spacing-sm);
+    font-size: var(--nexus-font-size-sm);
+    font-family: var(--nexus-font-family-mono);
+    border-bottom: 1px solid var(--nexus-border-dark);
+}
+
+.nexus-trade-row .time {
+    color: var(--nexus-text-muted);
+    font-size: var(--nexus-font-size-xs);
+}
+
+.nexus-trade-row .price {
+    color: var(--nexus-text-primary);
+}
+
+.nexus-trade-row .price.buy {
+    color: var(--nexus-success);
+}
+
+.nexus-trade-row .price.sell {
+    color: var(--nexus-danger);
+}
+
+.nexus-trade-row .size {
+    color: var(--nexus-text-secondary);
+}
+
+/* Depth Chart */
+.nexus-depth-chart {
+    position: relative;
+    height: 200px;
+    background: var(--nexus-bg-tertiary);
+    border-radius: var(--nexus-border-radius);
+    overflow: hidden;
+}
+
+.nexus-depth-chart .depth-bid {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 100%;
+    background: rgba(0, 184, 148, 0.2);
+    border-right: 2px solid var(--nexus-success);
+}
+
+.nexus-depth-chart .depth-ask {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    height: 100%;
+    background: rgba(225, 112, 85, 0.2);
+    border-left: 2px solid var(--nexus-danger);
+}
+
+.nexus-depth-chart .depth-mid {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    height: 100%;
+    width: 2px;
+    background: var(--nexus-primary);
+    transform: translateX(-50%);
+}
+
+/* Trading Form */
+.nexus-trading-form {
+    display: grid;
+    gap: var(--nexus-spacing-md);
+}
+
+.nexus-trading-form .order-type-selector {
+    display: flex;
+    gap: var(--nexus-spacing-xs);
+    background: var(--nexus-bg-tertiary);
+    border-radius: var(--nexus-border-radius);
+    padding: var(--nexus-spacing-xs);
+}
+
+.nexus-trading-form .order-type-selector button {
+    flex: 1;
+    padding: var(--nexus-spacing-sm) var(--nexus-spacing-md);
+    border: none;
+    border-radius: var(--nexus-border-radius);
+    background: transparent;
+    color: var(--nexus-text-secondary);
+    font-family: var(--nexus-font-family);
+    font-size: var(--nexus-font-size-sm);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all var(--nexus-transition-fast);
+}
+
+.nexus-trading-form .order-type-selector button.active {
+    background: var(--nexus-primary);
+    color: var(--nexus-text-inverse);
+}
+
+.nexus-trading-form .order-type-selector button:hover:not(.active) {
+    background: var(--nexus-bg-hover);
+}
+
+.nexus-trading-form .price-input {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--nexus-spacing-sm);
+}
+
+.nexus-trading-form .price-input .label {
+    font-size: var(--nexus-font-size-xs);
+    color: var(--nexus-text-muted);
+}
+
+.nexus-trading-form .price-input .value {
+    font-size: var(--nexus-font-size-md);
+    font-weight: 600;
+    color: var(--nexus-text-primary);
+    font-family: var(--nexus-font-family-mono);
+}
+
+.nexus-trading-form .action-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--nexus-spacing-sm);
+}
+
+.nexus-trading-form .action-buttons .buy-btn {
+    background: var(--nexus-success);
+    color: white;
+    padding: var(--nexus-spacing-md);
+    border: none;
+    border-radius: var(--nexus-border-radius);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--nexus-transition-fast);
+}
+
+.nexus-trading-form .action-buttons .buy-btn:hover {
+    background: var(--nexus-success-dark);
+    transform: translateY(-1px);
+}
+
+.nexus-trading-form .action-buttons .sell-btn {
+    background: var(--nexus-danger);
+    color: white;
+    padding: var(--nexus-spacing-md);
+    border: none;
+    border-radius: var(--nexus-border-radius);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--nexus-transition-fast);
+}
+
+.nexus-trading-form .action-buttons .sell-btn:hover {
+    background: var(--nexus-danger-dark);
+    transform: translateY(-1px);
+}
+
+
+/* ============================================
+   PORTFOLIO WIDGETS
+   ============================================ */
+
+/* Portfolio Summary */
+.nexus-portfolio-summary {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--nexus-spacing-md);
+}
+
+.nexus-portfolio-summary .total-value {
+    font-size: var(--nexus-font-size-xxl);
+    font-weight: 700;
+    color: var(--nexus-text-primary);
+}
+
+.nexus-portfolio-summary .total-change {
+    font-size: var(--nexus-font-size-md);
+    font-weight: 500;
+}
+
+.nexus-portfolio-summary .total-change.positive {
+    color: var(--nexus-success);
+}
+
+.nexus-portfolio-summary .total-change.negative {
+    color: var(--nexus-danger);
+}
+
+.nexus-portfolio-summary .detail-item {
+    padding: var(--nexus-spacing-xs) 0;
+    display: flex;
+    justify-content: space-between;
+    font-size: var(--nexus-font-size-sm);
+    border-bottom: 1px solid var(--nexus-border-dark);
+}
+
+.nexus-portfolio-summary .detail-item .label {
+    color: var(--nexus-text-secondary);
+}
+
+.nexus-portfolio-summary .detail-item .value {
+    color: var(--nexus-text-primary);
+    font-weight: 500;
+}
+
+/* Portfolio Allocation */
+.nexus-allocation-chart {
+    height: 200px;
+    position: relative;
+}
+
+.nexus-allocation-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--nexus-spacing-sm);
+    margin-top: var(--nexus-spacing-md);
+}
+
+.nexus-allocation-legend .item {
+    display: flex;
+    align-items: center;
+    gap: var(--nexus-spacing-xs);
+    font-size: var(--nexus-font-size-sm);
+    color: var(--nexus-text-secondary);
+}
+
+.nexus-allocation-legend .item .color {
+    width: 12px;
+    height: 12px;
+    border-radius: 4px;
+}
+
+/* Positions Table */
+.nexus-positions-table {
+    width: 100%;
+    font-size: var(--nexus-font-size-sm);
+}
+
+.nexus-positions-table th {
+    text-align: left;
+    padding: var(--nexus-spacing-sm) var(--nexus-spacing-md);
+    color: var(--nexus-text-secondary);
+    font-weight: 500;
+    border-bottom: 2px solid var(--nexus-border);
+}
+
+.nexus-positions-table td {
+    padding: var(--nexus-spacing-sm) var(--nexus-spacing-md);
+    border-bottom: 1px solid var(--nexus-border);
+    color: var(--nexus-text-secondary);
+}
+
+.nexus-positions-table .symbol {
+    color: var(--nexus-text-primary);
+    font-weight: 500;
+}
+
+.nexus-positions-table .pnl.positive {
+    color: var(--nexus-success);
+}
+
+.nexus-positions-table .pnl.negative {
+    color: var(--nexus-danger);
+}
+
+.nexus-positions-table .pnl .percent {
+    font-size: var(--nexus-font-size-xs);
+    opacity: 0.7;
+}
+
+.nexus-positions-table .actions {
+    display: flex;
+    gap: var(--nexus-spacing-xs);
+}
+
+.nexus-positions-table .actions button {
+    padding: var(--nexus-spacing-xs) var(--nexus-spacing-sm);
+    border: none;
+    border-radius: var(--nexus-border-radius);
+    font-size: var(--nexus-font-size-xs);
+    cursor: pointer;
+    transition: all var(--nexus-transition-fast);
+}
+
+.nexus-positions-table .actions .close-btn {
+    background: rgba(225, 112, 85, 0.2);
+    color: var(--nexus-danger);
+}
+
+.nexus-positions-table .actions .close-btn:hover {
+    background: rgba(225, 112, 85, 0.3);
+}
+
+.nexus-positions-table .actions .edit-btn {
+    background: rgba(0, 212, 255, 0.2);
+    color: var(--nexus-primary);
+}
+
+.nexus-positions-table .actions .edit-btn:hover {
+    background: rgba(0, 212, 255, 0.3);
+}
+
+
+/* ============================================
+   WATCHLIST
+   ============================================ */
+
+.nexus-watchlist {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.nexus-watchlist-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--nexus-spacing-sm) var(--nexus-spacing-md);
+    border-bottom: 1px solid var(--nexus-border-dark);
+    cursor: pointer;
+    transition: background var(--nexus-transition-fast);
+}
+
+.nexus-watchlist-item:hover {
+    background: var(--nexus-bg-hover);
+}
+
+.nexus-watchlist-item .symbol {
+    font-weight: 600;
+    color: var(--nexus-text-primary);
+}
+
+.nexus-watchlist-item .price {
+    font-family: var(--nexus-font-family-mono);
+    color: var(--nexus-text-secondary);
+}
+
+.nexus-watchlist-item .change {
+    font-weight: 500;
+    font-size: var(--nexus-font-size-sm);
+}
+
+.nexus-watchlist-item .change.positive {
+    color: var(--nexus-success);
+}
+
+.nexus-watchlist-item .change.negative {
+    color: var(--nexus-danger);
+}
+
+.nexus-watchlist-item .remove {
+    background: none;
+    border: none;
+    color: var(--nexus-text-muted);
+    cursor: pointer;
+    padding: var(--nexus-spacing-xs);
+    border-radius: var(--nexus-border-radius);
+    transition: all var(--nexus-transition-fast);
+}
+
+.nexus-watchlist-item .remove:hover {
+    background: var(--nexus-bg-hover);
+    color: var(--nexus-danger);
+}
+
+
+/* ============================================
+   RISK METRICS
+   ============================================ */
+
+.nexus-risk-metrics {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: var(--nexus-spacing-md);
+}
+
+.nexus-risk-metric {
+    text-align: center;
+    padding: var(--nexus-spacing-sm);
+    background: var(--nexus-bg-tertiary);
+    border-radius: var(--nexus-border-radius);
+}
+
+.nexus-risk-metric .label {
+    font-size: var(--nexus-font-size-xs);
+    color: var(--nexus-text-muted);
+    text-transform: uppercase;
+}
+
+.nexus-risk-metric .value {
+    font-size: var(--nexus-font-size-lg);
+    font-weight: 600;
+    color: var(--nexus-text-primary);
+    margin-top: var(--nexus-spacing-xs);
+}
+
+.nexus-risk-metric .value.high {
+    color: var(--nexus-danger);
+}
+
+.nexus-risk-metric .value.medium {
+    color: var(--nexus-warning);
+}
+
+.nexus-risk-metric .value.low {
+    color: var(--nexus-success);
+}
+
+/* Risk Gauge */
+.nexus-risk-gauge {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    margin: 0 auto;
+}
+
+.nexus-risk-gauge svg {
+    transform: rotate(-90deg);
+}
+
+.nexus-risk-gauge .bg {
+    fill: none;
+    stroke: var(--nexus-bg-tertiary);
+    stroke-width: 8;
+}
+
+.nexus-risk-gauge .progress {
+    fill: none;
+    stroke-width: 8;
+    stroke-linecap: round;
+    transition: stroke-dashoffset 0.5s ease;
+}
+
+.nexus-risk-gauge .progress.low {
+    stroke: var(--nexus-success);
+}
+
+.nexus-risk-gauge .progress.medium {
+    stroke: var(--nexus-warning);
+}
+
+.nexus-risk-gauge .progress.high {
+    stroke: var(--nexus-danger);
+}
+
+.nexus-risk-gauge .center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+.nexus-risk-gauge .center .value {
+    font-size: var(--nexus-font-size-xl);
+    font-weight: 700;
+    color: var(--nexus-text-primary);
+}
+
+.nexus-risk-gauge .center .label {
+    font-size: var(--nexus-font-size-xs);
+    color: var(--nexus-text-muted);
+}
+
+
+/* ============================================
+   ALERTS & NOTIFICATIONS
+   ============================================ */
+
+.nexus-alerts-list {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.nexus-alert-item {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--nexus-spacing-sm);
+    padding: var(--nexus-spacing-sm) var(--nexus-spacing-md);
+    border-bottom: 1px solid var(--nexus-border-dark);
+    transition: background var(--nexus-transition-fast);
+}
+
+.nexus-alert-item:hover {
+    background: var(--nexus-bg-hover);
+}
+
+.nexus-alert-item .icon {
+    font-size: var(--nexus-font-size-lg);
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.nexus-alert-item .content {
+    flex: 1;
+}
+
+.nexus-alert-item .title {
+    font-size: var(--nexus-font-size-sm);
+    font-weight: 500;
+    color: var(--nexus-text-primary);
+}
+
+.nexus-alert-item .message {
+    font-size: var(--nexus-font-size-sm);
+    color: var(--nexus-text-secondary);
+}
+
+.nexus-alert-item .time {
+    font-size: var(--nexus-font-size-xs);
+    color: var(--nexus-text-muted);
+}
+
+.nexus-alert-item .severity {
+    font-size: var(--nexus-font-size-xs);
+    font-weight: 500;
+    padding: 2px 8px;
+    border-radius: 10px;
+}
+
+.nexus-alert-item .severity.critical {
+    background: rgba(225, 112, 85, 0.2);
+    color: var(--nexus-danger);
+}
+
+.nexus-alert-item .severity.high {
+    background: rgba(253, 203, 110, 0.2);
+    color: var(--nexus-warning);
+}
+
+.nexus-alert-item .severity.medium {
+    background: rgba(9, 132, 227, 0.2);
+    color: var(--nexus-info);
+}
+
+.nexus-alert-item .severity.low {
+    background: rgba(0, 184, 148, 0.2);
+    color: var(--nexus-success);
+}
+
+
+/* ============================================
+   SYSTEM STATUS
+   ============================================ */
+
+.nexus-system-status {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: var(--nexus-spacing-sm);
+}
+
+.nexus-system-status .component {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: var(--nexus-spacing-sm);
+    background: var(--nexus-bg-tertiary);
+    border-radius: var(--nexus-border-radius);
+}
+
+.nexus-system-status .component .status-indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-bottom: var(--nexus-spacing-xs);
+}
+
+.nexus-system-status .component .status-indicator.online {
+    background: var(--nexus-success);
+    box-shadow: 0 0 10px rgba(0, 184, 148, 0.5);
+}
+
+.nexus-system-status .component .status-indicator.warning {
+    background: var(--nexus-warning);
+    box-shadow: 0 0 10px rgba(253, 203, 110, 0.5);
+}
+
+.nexus-system-status .component .status-indicator.offline {
+    background: var(--nexus-danger);
+    box-shadow: 0 0 10px rgba(225, 112, 85, 0.5);
+}
+
+.nexus-system-status .component .name {
+    font-size: var(--nexus-font-size-xs);
+    color: var(--nexus-text-secondary);
+}
+
+.nexus-system-status .component .status-text {
+    font-size: var(--nexus-font-size-xs);
+    font-weight: 500;
+}
+
+.nexus-system-status .component .status-text.online {
+    color: var(--nexus-success);
+}
+
+.nexus-system-status .component .status-text.warning {
+    color: var(--nexus-warning);
+}
+
+.nexus-system-status .component .status-text.offline {
+    color: var(--nexus-danger);
+}
+
+
+/* ============================================
+   CHART OVERLAYS & CONTROLS
+   ============================================ */
+
+.nexus-chart-controls {
+    display: flex;
+    gap: var(--nexus-spacing-xs);
+    margin-bottom: var(--nexus-spacing-md);
+}
+
+.nexus-chart-controls button {
+    padding: var(--nexus-spacing-xs) var(--nexus-spacing-sm);
+    border: 1px solid var(--nexus-border);
+    border-radius: var(--nexus-border-radius);
+    background: var(--nexus-bg-tertiary);
+    color: var(--nexus-text-secondary);
+    font-size: var(--nexus-font-size-xs);
+    cursor: pointer;
+    transition: all var(--nexus-transition-fast);
+}
+
+.nexus-chart-controls button.active {
+    background: var(--nexus-primary);
+    border-color: var(--nexus-primary);
+    color: var(--nexus-text-inverse);
+}
+
+.nexus-chart-controls button:hover:not(.active) {
+    background: var(--nexus-bg-hover);
+}
+
+.nexus-chart-legend {
+    display: flex;
+    gap: var(--nexus-spacing-md);
+    margin-top: var(--nexus-spacing-sm);
+}
+
+.nexus-chart-legend .item {
+    display: flex;
+    align-items: center;
+    gap: var(--nexus-spacing-xs);
+    font-size: var(--nexus-font-size-xs);
+    color: var(--nexus-text-secondary);
+}
+
+.nexus-chart-legend .item .line {
+    width: 20px;
+    height: 2px;
+    border-radius: 1px;
+}
+
+.nexus-chart-legend .item .line.positive {
+    background: var(--nexus-success);
+}
+
+.nexus-chart-legend .item .line.negative {
+    background: var(--nexus-danger);
+}
+
+.nexus-chart-legend .item .line.neutral {
+    background: var(--nexus-text-muted);
+}
+
+
+/* ============================================
+   RESPONSIVE DASHBOARD
+   ============================================ */
+
+@media (max-width: 1200px) {
+    .nexus-kpi-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 992px) {
+    .nexus-portfolio-summary {
+        grid-template-columns: 1fr;
+    }
+
+    .nexus-risk-metrics {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .nexus-dashboard {
+        padding: var(--nexus-spacing-sm);
+    }
+
+    .nexus-dashboard-grid {
+        gap: var(--nexus-spacing-md);
+    }
+
+    .nexus-kpi-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .nexus-order-book {
+        grid-template-columns: 1fr;
+        max-height: 300px;
+    }
+
+    .nexus-system-status {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .nexus-trading-form .price-input {
+        grid-template-columns: 1fr;
+    }
+
+    .nexus-trading-form .action-buttons {
+        grid-template-columns: 1fr;
+    }
+
+    .nexus-widget-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--nexus-spacing-sm);
+    }
+
+    .nexus-dashboard-section-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--nexus-spacing-sm);
+    }
+
+    .nexus-risk-metrics {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .nexus-risk-metrics {
+        grid-template-columns: 1fr;
+    }
+
+    .nexus-system-status {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .nexus-kpi-value {
+        font-size: var(--nexus-font-size-xl);
+    }
+}
+
+
+/* ============================================
+   ANIMATION UTILITIES FOR DASHBOARD
+   ============================================ */
+
+.nexus-dashboard .animate-in {
+    animation: dashboardFadeIn 0.5s ease forwards;
+}
+
+.nexus-dashboard .animate-in-delay-1 {
+    animation-delay: 0.1s;
+}
+
+.nexus-dashboard .animate-in-delay-2 {
+    animation-delay: 0.2s;
+}
+
+.nexus-dashboard .animate-in-delay-3 {
+    animation-delay: 0.3s;
+}
+
+.nexus-dashboard .animate-in-delay-4 {
+    animation-delay: 0.4s;
+}
+
+@keyframes dashboardFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* KPI Value Updates */
+.nexus-kpi-value.flash-update {
+    animation: flashUpdate 0.3s ease;
+}
+
+@keyframes flashUpdate {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+        color: var(--nexus-primary);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* Pulsing indicator for live data */
+.nexus-live-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--nexus-spacing-xs);
+    font-size: var(--nexus-font-size-xs);
+    color: var(--nexus-success);
+}
+
+.nexus-live-indicator .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--nexus-success);
+    animation: livePulse 1.5s ease-in-out infinite;
+}
+
+@keyframes livePulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.3;
+    }
+}
