@@ -1,6 +1,6 @@
 # trading/bots/ai_bot/strategies/hybrid_strategy.py
 # NEXUS AI TRADING SYSTEM - Hybrid Trading Strategy
-# Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+# Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved.
 
 """
 Hybrid Trading Strategy for NEXUS AI Trading Bot.
