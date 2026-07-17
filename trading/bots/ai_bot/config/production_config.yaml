@@ -1,0 +1,644 @@
+# trading/bots/ai_bot/config/production_config.yaml
+# NEXUS AI TRADING SYSTEM - Production Configuration
+# Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+
+# ============================================================================
+# PRODUCTION CONFIGURATION
+# This file contains production-specific configuration overrides.
+# All values here override the default configuration.
+# ============================================================================
+
+# ============================================================================
+# ENVIRONMENT SETTINGS
+# ============================================================================
+
+environment: "production"
+debug: false
+test_mode: false
+log_level: "INFO"
+
+# ============================================================================
+# BOT SETTINGS
+# ============================================================================
+
+bot:
+  name: "NEXUS AI Trading Bot"
+  enabled: true
+  mode: "live"
+  symbols:
+    - "BTC-USD"
+    - "ETH-USD"
+    - "SOL-USD"
+    - "ADA-USD"
+    - "DOT-USD"
+    - "MATIC-USD"
+    - "AVAX-USD"
+    - "DOGE-USD"
+    - "LINK-USD"
+    - "UNI-USD"
+  initial_capital: 50000.0
+
+# ============================================================================
+# GENERAL SETTINGS
+# ============================================================================
+
+general:
+  debug: false
+  test_mode: false
+  log_level: "INFO"
+  cache_enabled: true
+  cache_ttl: 300
+  max_workers: 8
+  thread_pool_size: 8
+  process_pool_size: 4
+  async_enabled: true
+
+# ============================================================================
+# TRADING SETTINGS
+# ============================================================================
+
+trading:
+  max_positions: 10
+  max_position_size: 5000.0
+  min_position_size: 50.0
+  max_leverage: 2.0
+  max_slippage: 0.005
+  execution_timeout: 30
+  
+  symbols:
+    crypto:
+      - "BTC-USD"
+      - "ETH-USD"
+      - "SOL-USD"
+      - "ADA-USD"
+      - "DOT-USD"
+      - "MATIC-USD"
+      - "AVAX-USD"
+      - "DOGE-USD"
+      - "LINK-USD"
+      - "UNI-USD"
+    forex: []
+    stocks: []
+  
+  schedule:
+    enabled: true
+    start_time: "00:00"
+    end_time: "23:59"
+    trading_days:
+      - "monday"
+      - "tuesday"
+      - "wednesday"
+      - "thursday"
+      - "friday"
+      - "saturday"
+      - "sunday"
+
+# ============================================================================
+# STRATEGY SETTINGS
+# ============================================================================
+
+strategy:
+  active: "hybrid"
+  min_confidence: 0.7
+  position_sizing: "risk_based"
+  rebalance_threshold: 0.1
+  enable_auto_compounding: true
+  auto_compound_frequency: 3600
+  
+  parameters:
+    trend_following:
+      sma_fast: 20
+      sma_slow: 50
+      rsi_period: 14
+      adx_period: 14
+      adx_threshold: 25
+      min_trend_strength: 0.3
+      
+    momentum:
+      roc_period: 14
+      rsi_period: 14
+      macd_fast: 12
+      macd_slow: 26
+      macd_signal: 9
+      volume_threshold: 1.5
+      momentum_threshold: 0.6
+      
+    mean_reversion:
+      bb_period: 20
+      bb_std: 2.0
+      rsi_period: 14
+      rsi_oversold: 30
+      rsi_overbought: 70
+      z_score_entry: 2.0
+      z_score_exit: 0.5
+      
+    breakout:
+      lookback_periods: 200
+      consolidation_periods: 20
+      volume_threshold: 2.0
+      breakout_threshold: 0.015
+      retest_threshold: 0.005
+      min_touches: 3
+      
+    scalping:
+      order_book_depth: 10
+      spread_threshold: 0.001
+      volume_threshold: 2.0
+      max_hold_time: 60
+      min_profit: 0.001
+      max_slippage: 0.001
+      
+    grid_trading:
+      grid_levels: 10
+      grid_spacing: 0.02
+      take_profit: 0.01
+      stop_loss: 0.03
+      grid_range_percent: 0.1
+      
+    arbitrage:
+      min_profit_percent: 0.5
+      max_position_size: 50000.0
+      max_slippage: 0.01
+      exchanges:
+        - "binance"
+        - "coinbase"
+        - "kraken"
+        
+    hybrid:
+      weighting_method: "performance"
+      consensus_threshold: 0.6
+      max_strategies: 3
+      enable_regime_detection: true
+      strategy_weights:
+        trend_following: 0.25
+        momentum: 0.25
+        mean_reversion: 0.20
+        breakout: 0.30
+
+# ============================================================================
+# RISK MANAGEMENT
+# ============================================================================
+
+risk:
+  max_drawdown: 0.08
+  risk_per_trade: 0.015
+  stop_loss: 0.02
+  take_profit: 0.04
+  trailing_stop: 0.015
+  use_trailing_stop: true
+  max_risk_percent: 8.0
+  max_risk_amount: 1000.0
+  
+  circuit_breakers:
+    enabled: true
+    max_loss_per_day: 0.05
+    max_loss_per_hour: 0.02
+    max_loss_per_trade: 0.01
+    cooldown_period: 300
+  
+  position_sizing:
+    method: "risk_based"
+    fixed_size: 1000.0
+    percentage_of_capital: 0.02
+    kelly_fraction: 0.25
+    volatility_adjustment: true
+
+# ============================================================================
+# AI MODELS
+# ============================================================================
+
+models:
+  active:
+    - "lstm"
+    - "transformer"
+    - "xgboost"
+    - "ensemble"
+  min_confidence: 0.7
+  retraining_frequency: "weekly"
+  ensemble_weights:
+    lstm: 0.30
+    transformer: 0.30
+    xgboost: 0.40
+  
+  parameters:
+    lstm:
+      hidden_size: 128
+      num_layers: 2
+      dropout: 0.2
+      bidirectional: true
+      attention: true
+      learning_rate: 0.001
+      batch_size: 32
+      epochs: 100
+      early_stopping_patience: 10
+      
+    transformer:
+      d_model: 128
+      nhead: 8
+      num_layers: 3
+      dim_feedforward: 256
+      dropout: 0.1
+      learning_rate: 0.001
+      batch_size: 32
+      epochs: 100
+      
+    xgboost:
+      max_depth: 6
+      learning_rate: 0.1
+      n_estimators: 100
+      subsample: 0.8
+      colsample_bytree: 0.8
+      gamma: 0.1
+      reg_alpha: 0.1
+      reg_lambda: 1.0
+      random_state: 42
+
+# ============================================================================
+# DATA COLLECTION
+# ============================================================================
+
+data:
+  lookback_days: 365
+  update_interval: 60
+  cache_size: 5000
+  max_history: 10000
+  store_raw_data: true
+  store_processed_data: true
+  
+  sources:
+    price:
+      - "binance"
+      - "coinbase"
+      - "kraken"
+    onchain:
+      - "etherscan"
+      - "blockchair"
+    sentiment:
+      - "twitter"
+      - "reddit"
+    fundamentals:
+      - "coingecko"
+      - "coinmarketcap"
+
+# ============================================================================
+# PERFORMANCE TRACKING
+# ============================================================================
+
+performance:
+  track_pnl: true
+  track_trades: true
+  track_positions: true
+  history_days: 365
+  metrics_interval: 60
+  
+  metrics:
+    - "total_pnl"
+    - "daily_pnl"
+    - "win_rate"
+    - "sharpe_ratio"
+    - "sortino_ratio"
+    - "calmar_ratio"
+    - "max_drawdown"
+    - "volatility"
+    - "var_95"
+    - "var_99"
+    - "expected_shortfall"
+    - "profit_factor"
+    - "average_win"
+    - "average_loss"
+    - "total_trades"
+    - "winning_trades"
+    - "losing_trades"
+
+# ============================================================================
+# MONITORING
+# ============================================================================
+
+monitoring:
+  enabled: true
+  interval: 60
+  health_check_interval: 30
+  
+  alert_thresholds:
+    cpu: 80.0
+    memory: 85.0
+    disk: 85.0
+    latency: 300.0
+    error_rate: 0.005
+    trade_failure_rate: 0.02
+    drawdown: 0.10
+  
+  health_checks:
+    - "system"
+    - "database"
+    - "redis"
+    - "api"
+    - "market_data"
+    - "model"
+    - "trading"
+    - "risk"
+
+# ============================================================================
+# NOTIFICATIONS
+# ============================================================================
+
+notifications:
+  enabled: true
+  channels:
+    - "websocket"
+    - "telegram"
+    - "email"
+  
+  events:
+    trade:
+      enabled: true
+      channels: ["websocket", "telegram"]
+    order:
+      enabled: true
+      channels: ["websocket", "telegram"]
+    alert:
+      enabled: true
+      channels: ["websocket", "telegram", "email"]
+    error:
+      enabled: true
+      channels: ["websocket", "telegram", "email"]
+    position:
+      enabled: true
+      channels: ["websocket", "telegram"]
+    system:
+      enabled: true
+      channels: ["websocket", "email"]
+
+# ============================================================================
+# API SETTINGS
+# ============================================================================
+
+api:
+  enabled: true
+  host: "0.0.0.0"
+  port: 8000
+  workers: 4
+  cors_enabled: true
+  
+  rate_limit:
+    enabled: true
+    default: "100/minute"
+    endpoints:
+      /api/v1/auth/login: "10/minute"
+      /api/v1/auth/register: "5/minute"
+      /api/v1/trading/orders: "50/minute"
+      /api/v1/market/data: "200/minute"
+      /api/v1/ai/predictions: "100/minute"
+  
+  auth:
+    access_token_expiry: 3600
+    refresh_token_expiry: 604800
+
+# ============================================================================
+# DATABASE SETTINGS
+# ============================================================================
+
+database:
+  host: "${DB_HOST}"
+  port: 5432
+  name: "${DB_NAME}"
+  user: "${DB_USER}"
+  password: "${DB_PASSWORD}"
+  pool_size: 20
+  max_overflow: 40
+  echo: false
+  ssl_mode: "require"
+  
+  migrations:
+    enabled: true
+    directory: "./alembic/versions"
+    table_name: "alembic_version"
+
+# ============================================================================
+# REDIS SETTINGS
+# ============================================================================
+
+redis:
+  host: "${REDIS_HOST}"
+  port: 6379
+  db: 0
+  password: "${REDIS_PASSWORD}"
+  decode_responses: true
+  max_connections: 30
+  socket_timeout: 5
+  retry_on_timeout: true
+
+# ============================================================================
+# STORAGE SETTINGS
+# ============================================================================
+
+storage:
+  local:
+    enabled: true
+    path: "./data"
+    max_size: "100GB"
+  
+  cloud:
+    enabled: true
+    provider: "aws"
+    bucket: "nexus-trading-prod"
+    region: "us-east-1"
+    access_key: "${CLOUD_ACCESS_KEY}"
+    secret_key: "${CLOUD_SECRET_KEY}"
+
+# ============================================================================
+# NETWORK SETTINGS
+# ============================================================================
+
+network:
+  http:
+    timeout: 30
+    max_retries: 3
+    retry_backoff: 1.0
+    user_agent: "NEXUS AI Trading Bot/3.0.0"
+  
+  websocket:
+    ping_interval: 30
+    ping_timeout: 10
+    reconnect_delay: 5
+    max_reconnect_attempts: 10
+  
+  proxy:
+    enabled: false
+
+# ============================================================================
+# COMPLIANCE SETTINGS
+# ============================================================================
+
+compliance:
+  enabled: true
+  kyc_required: true
+  aml_enabled: true
+  max_trade_value: 1000000
+  reporting_enabled: true
+  jurisdiction: "GB"
+  
+  limits:
+    daily_trade_limit: 100000
+    weekly_trade_limit: 500000
+    monthly_trade_limit: 2000000
+    
+  position_limits:
+    max_positions_per_symbol: 3
+    max_volume_per_symbol: 100000
+    max_concentration: 0.2
+
+# ============================================================================
+# SECURITY SETTINGS
+# ============================================================================
+
+security:
+  encryption_enabled: true
+  encryption_key: "${ENCRYPTION_KEY}"
+  
+  jwt:
+    secret: "${JWT_SECRET}"
+    algorithm: "HS256"
+    expiry: 3600
+  
+  ssl:
+    enabled: true
+    cert_path: "./certs/cert.pem"
+    key_path: "./certs/key.pem"
+  
+  cors:
+    enabled: true
+    allowed_origins:
+      - "https://nexustradingia.com"
+      - "https://app.nexustradingia.com"
+    allowed_methods:
+      - "GET"
+      - "POST"
+      - "PUT"
+      - "DELETE"
+      - "OPTIONS"
+    allowed_headers:
+      - "Authorization"
+      - "Content-Type"
+      - "X-Request-ID"
+
+# ============================================================================
+# SUBSCRIPTION SETTINGS
+# ============================================================================
+
+subscriptions:
+  enabled: true
+  default_plan: "free"
+  
+  plans:
+    free:
+      name: "Free"
+      price: 0
+      currency: "USD"
+      features:
+        - "paper_trading"
+        - "basic_indicators"
+        - "5_symbols"
+      limits:
+        trades_per_day: 10
+        positions: 3
+        
+    basic:
+      name: "Basic"
+      price: 29.99
+      currency: "USD"
+      features:
+        - "paper_trading"
+        - "live_trading"
+        - "advanced_indicators"
+        - "20_symbols"
+        - "basic_ai_predictions"
+      limits:
+        trades_per_day: 100
+        positions: 10
+        
+    pro:
+      name: "Pro"
+      price: 99.99
+      currency: "USD"
+      features:
+        - "paper_trading"
+        - "live_trading"
+        - "advanced_indicators"
+        - "unlimited_symbols"
+        - "advanced_ai_predictions"
+        - "multi_strategy"
+        - "backtesting"
+        - "risk_management"
+      limits:
+        trades_per_day: 1000
+        positions: 50
+        
+    enterprise:
+      name: "Enterprise"
+      price: 499.99
+      currency: "USD"
+      features:
+        - "all_pro_features"
+        - "dedicated_support"
+        - "custom_strategies"
+        - "white_label"
+        - "sla_guarantee"
+        - "multi_user"
+      limits:
+        trades_per_day: 10000
+        positions: 200
+
+# ============================================================================
+# TELEMETRY SETTINGS
+# ============================================================================
+
+telemetry:
+  enabled: true
+  anonymize: true
+  opt_out: false
+  endpoint: "https://telemetry.nexustradingia.com/api/v1/telemetry"
+  sample_rate: 0.1
+  batch_size: 100
+  flush_interval: 60
+
+# ============================================================================
+# FEATURE FLAGS
+# ============================================================================
+
+features:
+  ai_trading: true
+  paper_trading: true
+  live_trading: true
+  backtesting: true
+  arbitrage: true
+  grid_trading: true
+  scalping: true
+  sentiment_analysis: true
+  onchain_analysis: true
+  social_trading: true
+  copy_trading: true
+  auto_compounding: true
+  risk_management: true
+  multi_strategy: true
+  ensemble_models: true
+  reinforcement_learning: true
+  webhook_notifications: true
+  telegram_notifications: true
+  email_notifications: true
+  mobile_app: false
+  desktop_app: false
+
+# ============================================================================
+# DEBUG SETTINGS
+# ============================================================================
+
+debug:
+  enabled: false
+  verbose: false
+  profile: false
+  trace: false
+  dump_data: false
+  mock_external: false
+  disable_async: false
+  skip_validation: false
