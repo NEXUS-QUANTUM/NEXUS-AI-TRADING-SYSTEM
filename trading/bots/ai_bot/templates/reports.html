@@ -1,0 +1,1403 @@
+<!-- trading/bots/ai_bot/templates/reports.html -->
+<!-- NEXUS AI TRADING SYSTEM - Reports Dashboard -->
+<!-- Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved -->
+
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEXUS AI Trading - Reports</title>
+
+    <!-- ============================================================ -->
+    <!-- CSS -->
+    <!-- ============================================================ -->
+    <link rel="stylesheet" href="/static/css/dashboard.css">
+    <link rel="stylesheet" href="/static/css/dark_theme.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        /* ============================================================ */
+        /* Reports Page Styles */
+        /* ============================================================ */
+
+        .reports-page {
+            padding: 24px 32px;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        .reports-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .reports-header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #6C5CE7, #A29BFE);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .reports-header h1 i {
+            -webkit-text-fill-color: initial;
+            color: #6C5CE7;
+        }
+
+        .reports-header-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn-export {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            padding: 10px 20px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-export:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+
+        .btn-export.primary {
+            background: linear-gradient(135deg, #6C5CE7, #A29BFE);
+            border: none;
+            color: #fff;
+        }
+
+        .btn-export.primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(108, 92, 231, 0.4);
+        }
+
+        /* ============================================================ */
+        /* Report Filters */
+        /* ============================================================ */
+
+        .reports-filters {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 24px;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            padding: 16px 20px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .reports-filters select,
+        .reports-filters input {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 8px 14px;
+            color: #fff;
+            font-size: 13px;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        .reports-filters select:focus,
+        .reports-filters input:focus {
+            border-color: #6C5CE7;
+        }
+
+        .reports-filters select option {
+            background: #1a1a2e;
+        }
+
+        .filter-label {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.5);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+
+        .filter-actions {
+            display: flex;
+            gap: 8px;
+            margin-left: auto;
+        }
+
+        .filter-actions button {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            padding: 8px 14px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-actions button:hover {
+            background: rgba(108, 92, 231, 0.2);
+            border-color: #6C5CE7;
+            color: #fff;
+        }
+
+        /* ============================================================ */
+        /* Report Cards */
+        /* ============================================================ */
+
+        .report-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .report-card {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            padding: 20px 24px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            transition: all 0.3s ease;
+        }
+
+        .report-card:hover {
+            border-color: rgba(108, 92, 231, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .report-card .card-label {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.5);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .report-card .card-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: #fff;
+            margin: 4px 0;
+        }
+
+        .report-card .card-change {
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .report-card .card-change.positive { color: #2ED573; }
+        .report-card .card-change.negative { color: #FF4757; }
+        .report-card .card-change.neutral { color: rgba(255, 255, 255, 0.4); }
+
+        .report-card .card-sub {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.3);
+            margin-top: 4px;
+        }
+
+        /* ============================================================ */
+        /* Report Tables */
+        /* ============================================================ */
+
+        .report-section {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            margin-bottom: 24px;
+            overflow: hidden;
+        }
+
+        .report-section .section-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .report-section .section-header h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #fff;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .report-section .section-header h3 i {
+            color: #6C5CE7;
+        }
+
+        .report-section .section-header .section-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .report-section .section-header .section-actions button {
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.4);
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .report-section .section-header .section-actions button:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .report-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        .report-table thead {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .report-table th {
+            padding: 12px 16px;
+            text-align: left;
+            color: rgba(255, 255, 255, 0.5);
+            font-weight: 600;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .report-table td {
+            padding: 12px 16px;
+            color: rgba(255, 255, 255, 0.8);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .report-table tr:hover td {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .report-table .positive { color: #2ED573; }
+        .report-table .negative { color: #FF4757; }
+        .report-table .neutral { color: rgba(255, 255, 255, 0.4); }
+
+        .report-table .status-badge {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+        .report-table .status-badge.completed { background: rgba(46, 213, 115, 0.15); color: #2ED573; }
+        .report-table .status-badge.pending { background: rgba(255, 165, 2, 0.15); color: #FFA502; }
+        .report-table .status-badge.failed { background: rgba(255, 71, 87, 0.15); color: #FF4757; }
+        .report-table .status-badge.open { background: rgba(108, 92, 231, 0.15); color: #6C5CE7; }
+
+        /* ============================================================ */
+        /* Charts */
+        /* ============================================================ */
+
+        .report-charts {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .chart-container {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            min-height: 300px;
+            position: relative;
+        }
+
+        .chart-container .chart-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 16px;
+        }
+
+        .chart-container canvas {
+            width: 100% !important;
+            height: calc(100% - 40px) !important;
+        }
+
+        /* ============================================================ */
+        /* Toast */
+        /* ============================================================ */
+
+        .toast-container {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            z-index: 9999;
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .toast {
+            padding: 14px 20px;
+            border-radius: 12px;
+            background: rgba(26, 26, 46, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            color: #fff;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            animation: slideUp 0.3s ease;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        }
+
+        .toast.success { border-left: 4px solid #2ED573; }
+        .toast.error { border-left: 4px solid #FF4757; }
+        .toast.warning { border-left: 4px solid #FFA502; }
+        .toast.info { border-left: 4px solid #4ECDC4; }
+
+        .toast .toast-icon { font-size: 20px; flex-shrink: 0; }
+        .toast.success .toast-icon { color: #2ED573; }
+        .toast.error .toast-icon { color: #FF4757; }
+        .toast.warning .toast-icon { color: #FFA502; }
+        .toast.info .toast-icon { color: #4ECDC4; }
+
+        .toast .toast-close {
+            margin-left: auto;
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.4);
+            cursor: pointer;
+            font-size: 16px;
+            padding: 4px;
+        }
+
+        .toast .toast-close:hover { color: #fff; }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ============================================================ */
+        /* Responsive */
+        /* ============================================================ */
+
+        @media (max-width: 1200px) {
+            .report-charts {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .reports-page {
+                padding: 16px;
+            }
+
+            .reports-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .reports-header-actions {
+                width: 100%;
+            }
+
+            .reports-header-actions .btn-export {
+                flex: 1;
+                justify-content: center;
+            }
+
+            .reports-filters {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .filter-actions {
+                margin-left: 0;
+            }
+
+            .report-cards {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .report-table {
+                font-size: 13px;
+            }
+
+            .report-table th,
+            .report-table td {
+                padding: 8px 12px;
+            }
+
+            .report-charts {
+                grid-template-columns: 1fr;
+            }
+
+            .chart-container {
+                min-height: 200px;
+                padding: 12px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .report-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .report-table {
+                font-size: 12px;
+            }
+
+            .report-table th,
+            .report-table td {
+                padding: 6px 8px;
+            }
+
+            .report-table .hide-mobile {
+                display: none;
+            }
+        }
+
+        /* ============================================================ */
+        /* Loading */
+        /* ============================================================ */
+
+        .reports-loading {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 20px;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .reports-loading .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(255, 255, 255, 0.05);
+            border-top-color: #6C5CE7;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-bottom: 16px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .reports-empty {
+            text-align: center;
+            padding: 60px 20px;
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .reports-empty i {
+            font-size: 48px;
+            margin-bottom: 16px;
+            opacity: 0.3;
+        }
+
+        .reports-empty h3 {
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- ============================================================ -->
+    <!-- Reports Page -->
+    <!-- ============================================================ -->
+
+    <div class="reports-page">
+        <!-- Header -->
+        <div class="reports-header">
+            <h1>
+                <i class="fas fa-file-alt"></i>
+                Reports
+            </h1>
+            <div class="reports-header-actions">
+                <button class="btn-export" id="refreshReports">
+                    <i class="fas fa-sync-alt"></i> Refresh
+                </button>
+                <button class="btn-export" id="exportPDF">
+                    <i class="fas fa-file-pdf"></i> Export PDF
+                </button>
+                <button class="btn-export primary" id="exportCSV">
+                    <i class="fas fa-file-csv"></i> Export CSV
+                </button>
+            </div>
+        </div>
+
+        <!-- Filters -->
+        <div class="reports-filters">
+            <span class="filter-label">Report Type:</span>
+            <select id="reportType">
+                <option value="performance">Performance</option>
+                <option value="trades">Trades</option>
+                <option value="positions">Positions</option>
+                <option value="risk">Risk</option>
+                <option value="ai">AI Performance</option>
+            </select>
+
+            <span class="filter-label">Timeframe:</span>
+            <select id="reportTimeframe">
+                <option value="24h">24 Hours</option>
+                <option value="7d" selected>7 Days</option>
+                <option value="30d">30 Days</option>
+                <option value="90d">90 Days</option>
+                <option value="1y">1 Year</option>
+                <option value="all">All Time</option>
+            </select>
+
+            <span class="filter-label">Symbol:</span>
+            <select id="reportSymbol">
+                <option value="all">All Symbols</option>
+                <option value="BTC-USD">BTC-USD</option>
+                <option value="ETH-USD">ETH-USD</option>
+                <option value="SOL-USD">SOL-USD</option>
+                <option value="ADA-USD">ADA-USD</option>
+                <option value="DOT-USD">DOT-USD</option>
+            </select>
+
+            <div class="filter-actions">
+                <button id="applyFilters"><i class="fas fa-check"></i> Apply</button>
+                <button id="resetFilters"><i class="fas fa-times"></i> Reset</button>
+            </div>
+        </div>
+
+        <!-- Report Cards -->
+        <div class="report-cards" id="reportCards">
+            <!-- Rendered by JS -->
+        </div>
+
+        <!-- Charts -->
+        <div class="report-charts" id="reportCharts">
+            <div class="chart-container">
+                <div class="chart-title">Performance Over Time</div>
+                <canvas id="performanceChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <div class="chart-title">Trade Distribution</div>
+                <canvas id="distributionChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Report Sections -->
+        <div id="reportSections">
+            <!-- Rendered by JS -->
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- Toast Container -->
+    <!-- ============================================================ -->
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- ============================================================ -->
+    <!-- JavaScript -->
+    <!-- ============================================================ -->
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="/static/js/api_client.js"></script>
+    <script src="/static/js/websocket.js"></script>
+
+    <script>
+        // ================================================================
+        // Reports Controller
+        // ================================================================
+
+        class ReportsController {
+            constructor() {
+                this.reportData = null;
+                this.filteredData = null;
+                this.charts = {};
+
+                // DOM Elements
+                this.elements = {
+                    cards: document.getElementById('reportCards'),
+                    sections: document.getElementById('reportSections'),
+                    performanceChart: document.getElementById('performanceChart'),
+                    distributionChart: document.getElementById('distributionChart'),
+                    reportType: document.getElementById('reportType'),
+                    reportTimeframe: document.getElementById('reportTimeframe'),
+                    reportSymbol: document.getElementById('reportSymbol'),
+                    applyBtn: document.getElementById('applyFilters'),
+                    resetBtn: document.getElementById('resetFilters'),
+                    refreshBtn: document.getElementById('refreshReports'),
+                    exportPDF: document.getElementById('exportPDF'),
+                    exportCSV: document.getElementById('exportCSV'),
+                    toastContainer: document.getElementById('toastContainer'),
+                };
+
+                // Initialize
+                this.init();
+            }
+
+            // ================================================================
+            // Initialization
+            // ================================================================
+
+            init() {
+                this.loadReportData();
+                this.setupEventListeners();
+                this.setupWebSocket();
+
+                // Auto-refresh every 60 seconds
+                setInterval(() => this.loadReportData(), 60000);
+
+                console.log('ReportsController initialized');
+            }
+
+            // ================================================================
+            // WebSocket Setup
+            // ================================================================
+
+            setupWebSocket() {
+                NexusAPI.connectWebSocket(['reports', 'trades', 'positions']);
+
+                NexusAPI.onWebSocketMessage('trade', (data) => {
+                    // Update report data on new trade
+                    if (this.reportData) {
+                        this.reportData.trades = this.reportData.trades || [];
+                        this.reportData.trades.unshift(data);
+                        this.applyFilters();
+                    }
+                });
+
+                NexusAPI.onWebSocketMessage('position', (data) => {
+                    if (this.reportData) {
+                        this.reportData.positions = this.reportData.positions || [];
+                        const index = this.reportData.positions.findIndex(p => p.position_id === data.position_id);
+                        if (index !== -1) {
+                            this.reportData.positions[index] = data;
+                        } else {
+                            this.reportData.positions.unshift(data);
+                        }
+                        this.applyFilters();
+                    }
+                });
+            }
+
+            // ================================================================
+            // Load Report Data
+            // ================================================================
+
+            async loadReportData() {
+                try {
+                    this.showLoading();
+
+                    const params = {
+                        timeframe: this.elements.reportTimeframe.value,
+                        symbol: this.elements.reportSymbol.value,
+                        type: this.elements.reportType.value,
+                    };
+
+                    const response = await NexusAPI.request('/reports/data', { params });
+
+                    if (response && response.success) {
+                        this.reportData = response.data;
+                        this.applyFilters();
+                        this.renderCharts();
+                    } else {
+                        this.showToast(response.message || 'Failed to load reports', 'error');
+                    }
+                } catch (error) {
+                    console.error('Error loading reports:', error);
+                    this.showToast('Error loading reports', 'error');
+                } finally {
+                    this.hideLoading();
+                }
+            }
+
+            // ================================================================
+            // Apply Filters
+            // ================================================================
+
+            applyFilters() {
+                if (!this.reportData) return;
+
+                const type = this.elements.reportType.value;
+                const timeframe = this.elements.reportTimeframe.value;
+                const symbol = this.elements.reportSymbol.value;
+
+                // Filter data based on selections
+                this.filteredData = { ...this.reportData };
+
+                // Filter trades
+                if (this.filteredData.trades) {
+                    let trades = this.filteredData.trades;
+
+                    if (symbol !== 'all') {
+                        trades = trades.filter(t => t.symbol === symbol);
+                    }
+
+                    if (timeframe !== 'all') {
+                        const cutoff = this.getTimeframeCutoff(timeframe);
+                        trades = trades.filter(t => new Date(t.timestamp) >= cutoff);
+                    }
+
+                    this.filteredData.trades = trades;
+                }
+
+                // Filter positions
+                if (this.filteredData.positions) {
+                    let positions = this.filteredData.positions;
+
+                    if (symbol !== 'all') {
+                        positions = positions.filter(p => p.symbol === symbol);
+                    }
+
+                    if (timeframe !== 'all') {
+                        const cutoff = this.getTimeframeCutoff(timeframe);
+                        positions = positions.filter(p => new Date(p.open_time) >= cutoff);
+                    }
+
+                    this.filteredData.positions = positions;
+                }
+
+                // Render based on type
+                this.renderCards();
+                this.renderSections();
+            }
+
+            // ================================================================
+            // Get Timeframe Cutoff
+            // ================================================================
+
+            getTimeframeCutoff(timeframe) {
+                const now = new Date();
+                const cutoffs = {
+                    '24h': new Date(now.getTime() - 24 * 3600 * 1000),
+                    '7d': new Date(now.getTime() - 7 * 24 * 3600 * 1000),
+                    '30d': new Date(now.getTime() - 30 * 24 * 3600 * 1000),
+                    '90d': new Date(now.getTime() - 90 * 24 * 3600 * 1000),
+                    '1y': new Date(now.getTime() - 365 * 24 * 3600 * 1000),
+                };
+                return cutoffs[timeframe] || new Date(0);
+            }
+
+            // ================================================================
+            // Render Cards
+            // ================================================================
+
+            renderCards() {
+                const data = this.filteredData;
+                if (!data) return;
+
+                const type = this.elements.reportType.value;
+                let html = '';
+
+                if (type === 'performance') {
+                    const metrics = data.performance_metrics || {};
+                    html = `
+                        <div class="report-card">
+                            <div class="card-label">Total P&L</div>
+                            <div class="card-value ${metrics.total_pnl >= 0 ? 'positive' : 'negative'}">
+                                ${this.formatCurrency(metrics.total_pnl || 0)}
+                            </div>
+                            <div class="card-sub">${metrics.total_trades || 0} trades</div>
+                        </div>
+                        <div class="report-card">
+                            <div class="card-label">Win Rate</div>
+                            <div class="card-value">${((metrics.win_rate || 0) * 100).toFixed(1)}%</div>
+                            <div class="card-sub">${metrics.winning_trades || 0} wins / ${metrics.losing_trades || 0} losses</div>
+                        </div>
+                        <div class="report-card">
+                            <div class="card-label">Sharpe Ratio</div>
+                            <div class="card-value">${(metrics.sharpe_ratio || 0).toFixed(2)}</div>
+                            <div class="card-sub">Risk-adjusted return</div>
+                        </div>
+                        <div class="report-card">
+                            <div class="card-label">Max Drawdown</div>
+                            <div class="card-value negative">${((metrics.max_drawdown || 0) * 100).toFixed(1)}%</div>
+                            <div class="card-sub">${this.formatCurrency(metrics.max_drawdown_amount || 0)}</div>
+                        </div>
+                    `;
+                } else if (type === 'trades') {
+                    const trades = data.trades || [];
+                    const totalPnl = trades.reduce((sum, t) => sum + (t.pnl || 0), 0);
+                    const avgPnl = trades.length > 0 ? totalPnl / trades.length : 0;
+                    const maxPnl = trades.length > 0 ? Math.max(...trades.map(t => t.pnl || 0)) : 0;
+                    const minPnl = trades.length > 0 ? Math.min(...trades.map(t => t.pnl || 0)) : 0;
+
+                    html = `
+                        <div class="report-card">
+                            <div class="card-label">Total Trades</div>
+                            <div class="card-value">${trades.length}</div>
+                            <div class="card-sub">${trades.filter(t => t.status === 'completed').length} completed</div>
+                        </div>
+                        <div class="report-card">
+                            <div class="card-label">Total P&L</div>
+                            <div class="card-value ${totalPnl >= 0 ? 'positive' : 'negative'}">${this.formatCurrency(totalPnl)}</div>
+                            <div class="card-sub">Avg: ${this.formatCurrency(avgPnl)}</div>
+                        </div>
+                        <div class="report-card">
+                            <div class="card-label">Best / Worst Trade</div>
+                            <div class="card-value" style="font-size: 20px;">
+                                <span class="positive">${this.formatCurrency(maxPnl)}</span>
+                                <span style="color: rgba(255,255,255,0.2); margin: 0 4px;">/</span>
+                                <span class="negative">${this.formatCurrency(minPnl)}</span>
+                            </div>
+                        </div>
+                        <div class="report-card">
+                            <div class="card-label">Win / Loss Ratio</div>
+                            <div class="card-value">
+                                ${trades.filter(t => (t.pnl || 0) > 0).length} / ${trades.filter(t => (t.pnl || 0) < 0).length}
+                            </div>
+                            <div class="card-sub">${((trades.filter(t => (t.pnl || 0) > 0).length / Math.max(trades.length, 1)) * 100).toFixed(1)}% win rate</div>
+                        </div>
+                    `;
+                } else if (type === 'risk') {
+                    const risk = data.risk_metrics || {};
+                    html = `
+                        <div class="report-card">
+                            <div class="card-label">VaR (95%)</div>
+                            <div class="card-value negative">${((risk.var_95 || 0) * 100).toFixed(1)}%</div>
+                            <div class="card-sub">${this.formatCurrency(risk.var_95_amount || 0)}</div>
+                        </div>
+                        <div class="report-card">
+                            <div class="card-label">VaR (99%)</div>
+                            <div class="card-value negative">${((risk.var_99 || 0) * 100).toFixed(1)}%</div>
+                            <div class="card-sub">${this.formatCurrency(risk.var_99_amount || 0)}</div>
+                        </div>
+                        <div class="report-card">
+                            <div class="card-label">Expected Shortfall</div>
+                            <div class="card-value negative">${((risk.expected_shortfall || 0) * 100).toFixed(1)}%</div>
+                            <div class="card-sub">Average loss beyond VaR</div>
+                        </div>
+                        <div class="report-card">
+                            <div class="card-label">Risk Score</div>
+                            <div class="card-value">${((risk.risk_score || 0) * 100).toFixed(0)}%</div>
+                            <div class="card-sub">${risk.risk_level || 'Moderate'}</div>
+                        </div>
+                    `;
+                } else if (type === 'ai') {
+                    const ai = data.ai_metrics || {};
+                    html = `
+                        <div class="report-card">
+                            <div class="card-label">Model Accuracy</div>
+                            <div class="card-value">${((ai.accuracy || 0) * 100).toFixed(1)}%</div>
+                            <div class="card-sub">${ai.predictions || 0} predictions</div>
+                        </div>
+                        <div class="report-card">
+                            <div class="card-label">Average Confidence</div>
+                            <div class="card-value">${((ai.avg_confidence || 0) * 100).toFixed(1)}%</div>
+                            <div class="card-sub">${ai.models || 0} models active</div>
+                        </div>
+                        <div class="report-card">
+                            <div class="card-label">Directional Accuracy</div>
+                            <div class="card-value">${((ai.directional_accuracy || 0) * 100).toFixed(1)}%</div>
+                            <div class="card-sub">Buy/Sell direction accuracy</div>
+                        </div>
+                        <div class="report-card">
+                            <div class="card-label">MSE</div>
+                            <div class="card-value">${(ai.mse || 0).toFixed(4)}</div>
+                            <div class="card-sub">Mean Squared Error</div>
+                        </div>
+                    `;
+                }
+
+                this.elements.cards.innerHTML = html;
+            }
+
+            // ================================================================
+            // Render Sections
+            // ================================================================
+
+            renderSections() {
+                const data = this.filteredData;
+                if (!data) return;
+
+                const type = this.elements.reportType.value;
+                let html = '';
+
+                if (type === 'trades' && data.trades && data.trades.length > 0) {
+                    html += `
+                        <div class="report-section">
+                            <div class="section-header">
+                                <h3><i class="fas fa-list"></i> Trade History</h3>
+                                <div class="section-actions">
+                                    <button onclick="reportsController.exportTable('trades')"><i class="fas fa-download"></i></button>
+                                </div>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="report-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Time</th>
+                                            <th>Symbol</th>
+                                            <th>Side</th>
+                                            <th>Quantity</th>
+                                            <th>Price</th>
+                                            <th>P&L</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        ${data.trades.slice(0, 50).map(t => `
+                                            <tr>
+                                                <td>${this.formatTime(t.timestamp)}</td>
+                                                <td><strong>${t.symbol}</strong></td>
+                                                <td class="${t.side === 'buy' ? 'positive' : 'negative'}">${t.side.toUpperCase()}</td>
+                                                <td>${t.quantity || 0}</td>
+                                                <td>${this.formatCurrency(t.price || 0)}</td>
+                                                <td class="${(t.pnl || 0) >= 0 ? 'positive' : 'negative'}">${this.formatCurrency(t.pnl || 0)}</td>
+                                                <td><span class="status-badge ${t.status || 'pending'}">${t.status || 'Pending'}</span></td>
+                                            </tr>
+                                        `).join('')}
+                                    </tbody>
+                                </table>
+                            </div>
+                            ${data.trades.length > 50 ? `<div style="padding: 12px 20px; text-align: center; color: rgba(255,255,255,0.4); font-size: 13px;">Showing 50 of ${data.trades.length} trades</div>` : ''}
+                        </div>
+                    `;
+                }
+
+                if (type === 'positions' && data.positions && data.positions.length > 0) {
+                    html += `
+                        <div class="report-section">
+                            <div class="section-header">
+                                <h3><i class="fas fa-layer-group"></i> Position History</h3>
+                                <div class="section-actions">
+                                    <button onclick="reportsController.exportTable('positions')"><i class="fas fa-download"></i></button>
+                                </div>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="report-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Opened</th>
+                                            <th>Symbol</th>
+                                            <th>Side</th>
+                                            <th>Quantity</th>
+                                            <th>Entry</th>
+                                            <th>Exit</th>
+                                            <th>P&L</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        ${data.positions.slice(0, 50).map(p => `
+                                            <tr>
+                                                <td>${this.formatTime(p.open_time)}</td>
+                                                <td><strong>${p.symbol}</strong></td>
+                                                <td class="${p.side === 'long' ? 'positive' : 'negative'}">${p.side.toUpperCase()}</td>
+                                                <td>${p.quantity || 0}</td>
+                                                <td>${this.formatCurrency(p.entry_price || 0)}</td>
+                                                <td>${this.formatCurrency(p.exit_price || p.current_price || 0)}</td>
+                                                <td class="${(p.total_pnl || 0) >= 0 ? 'positive' : 'negative'}">${this.formatCurrency(p.total_pnl || 0)}</td>
+                                                <td><span class="status-badge ${p.status || 'open'}">${p.status || 'Open'}</span></td>
+                                            </tr>
+                                        `).join('')}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                if (type === 'risk' && data.risk_report) {
+                    html += `
+                        <div class="report-section">
+                            <div class="section-header">
+                                <h3><i class="fas fa-shield-alt"></i> Detailed Risk Analysis</h3>
+                            </div>
+                            <div style="padding: 16px 20px;">
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                                    <div style="background: rgba(255,255,255,0.02); border-radius: 8px; padding: 12px;">
+                                        <div style="font-size: 12px; color: rgba(255,255,255,0.4);">Maximum Drawdown</div>
+                                        <div style="font-size: 18px; font-weight: 600; color: #FF4757;">${((data.risk_report.max_drawdown || 0) * 100).toFixed(1)}%</div>
+                                    </div>
+                                    <div style="background: rgba(255,255,255,0.02); border-radius: 8px; padding: 12px;">
+                                        <div style="font-size: 12px; color: rgba(255,255,255,0.4);">Current Risk Exposure</div>
+                                        <div style="font-size: 18px; font-weight: 600; color: #fff;">${((data.risk_report.current_exposure || 0) * 100).toFixed(1)}%</div>
+                                    </div>
+                                    <div style="background: rgba(255,255,255,0.02); border-radius: 8px; padding: 12px;">
+                                        <div style="font-size: 12px; color: rgba(255,255,255,0.4);">Portfolio Beta</div>
+                                        <div style="font-size: 18px; font-weight: 600; color: #fff;">${(data.risk_report.beta || 1).toFixed(2)}</div>
+                                    </div>
+                                    <div style="background: rgba(255,255,255,0.02); border-radius: 8px; padding: 12px;">
+                                        <div style="font-size: 12px; color: rgba(255,255,255,0.4);">Correlation</div>
+                                        <div style="font-size: 18px; font-weight: 600; color: #fff;">${(data.risk_report.avg_correlation || 0).toFixed(2)}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                if (type === 'ai' && data.ai_detailed) {
+                    html += `
+                        <div class="report-section">
+                            <div class="section-header">
+                                <h3><i class="fas fa-brain"></i> Detailed AI Performance</h3>
+                            </div>
+                            <div style="padding: 16px 20px;">
+                                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px;">
+                                    ${Object.entries(data.ai_detailed.models || {}).map(([name, metrics]) => `
+                                        <div style="background: rgba(255,255,255,0.02); border-radius: 8px; padding: 12px; text-align: center;">
+                                            <div style="font-size: 12px; color: rgba(255,255,255,0.4);">${name}</div>
+                                            <div style="font-size: 16px; font-weight: 600; color: #fff;">${(metrics.accuracy || 0).toFixed(1)}%</div>
+                                            <div style="font-size: 11px; color: rgba(255,255,255,0.3);">${metrics.trades || 0} predictions</div>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                this.elements.sections.innerHTML = html || `
+                    <div class="reports-empty">
+                        <i class="fas fa-file-alt"></i>
+                        <h3>No Data Available</h3>
+                        <p>No reports found for the selected filters.</p>
+                    </div>
+                `;
+            }
+
+            // ================================================================
+            // Render Charts
+            // ================================================================
+
+            renderCharts() {
+                const data = this.filteredData;
+                if (!data) return;
+
+                // Performance Chart
+                const ctx1 = this.elements.performanceChart.getContext('2d');
+
+                // Prepare data
+                const labels = data.performance_history?.map(d => this.formatTime(d.timestamp)) || [];
+                const values = data.performance_history?.map(d => d.value) || [];
+
+                if (this.charts.performance) {
+                    this.charts.performance.destroy();
+                }
+
+                this.charts.performance = new Chart(ctx1, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Portfolio Value',
+                            data: values,
+                            borderColor: '#6C5CE7',
+                            backgroundColor: 'rgba(108, 92, 231, 0.1)',
+                            fill: true,
+                            tension: 0.4,
+                            pointRadius: 2,
+                            pointHoverRadius: 6,
+                            pointBackgroundColor: '#6C5CE7',
+                            pointBorderColor: '#fff',
+                            pointBorderWidth: 2,
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false,
+                            },
+                            tooltip: {
+                                backgroundColor: 'rgba(26, 26, 46, 0.95)',
+                                titleColor: '#fff',
+                                bodyColor: 'rgba(255,255,255,0.8)',
+                                borderColor: 'rgba(255,255,255,0.06)',
+                                borderWidth: 1,
+                                cornerRadius: 8,
+                                padding: 12,
+                                callbacks: {
+                                    label: (context) => {
+                                        return `Value: ${this.formatCurrency(context.parsed.y)}`;
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                grid: {
+                                    color: 'rgba(255,255,255,0.04)',
+                                },
+                                ticks: {
+                                    color: 'rgba(255,255,255,0.3)',
+                                    font: { size: 10 },
+                                    maxTicksLimit: 12,
+                                }
+                            },
+                            y: {
+                                grid: {
+                                    color: 'rgba(255,255,255,0.04)',
+                                },
+                                ticks: {
+                                    color: 'rgba(255,255,255,0.3)',
+                                    font: { size: 10 },
+                                    callback: (value) => this.formatCurrency(value),
+                                }
+                            }
+                        },
+                        interaction: {
+                            intersect: false,
+                            mode: 'index',
+                        },
+                    }
+                });
+
+                // Distribution Chart
+                const ctx2 = this.elements.distributionChart.getContext('2d');
+
+                const trades = data.trades || [];
+                const buyCount = trades.filter(t => t.side === 'buy').length;
+                const sellCount = trades.filter(t => t.side === 'sell').length;
+                const winCount = trades.filter(t => (t.pnl || 0) > 0).length;
+                const lossCount = trades.filter(t => (t.pnl || 0) < 0).length;
+
+                if (this.charts.distribution) {
+                    this.charts.distribution.destroy();
+                }
+
+                this.charts.distribution = new Chart(ctx2, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Buys', 'Sells', 'Wins', 'Losses'],
+                        datasets: [{
+                            data: [buyCount, sellCount, winCount, lossCount],
+                            backgroundColor: [
+                                'rgba(46, 213, 115, 0.8)',
+                                'rgba(255, 71, 87, 0.8)',
+                                'rgba(108, 92, 231, 0.8)',
+                                'rgba(255, 165, 2, 0.8)',
+                            ],
+                            borderColor: '#1a1a2e',
+                            borderWidth: 2,
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: {
+                                    color: 'rgba(255,255,255,0.7)',
+                                    font: { size: 11 },
+                                    padding: 12,
+                                    usePointStyle: true,
+                                }
+                            },
+                            tooltip: {
+                                backgroundColor: 'rgba(26, 26, 46, 0.95)',
+                                titleColor: '#fff',
+                                bodyColor: 'rgba(255,255,255,0.8)',
+                                borderColor: 'rgba(255,255,255,0.06)',
+                                borderWidth: 1,
+                                cornerRadius: 8,
+                                padding: 12,
+                                callbacks: {
+                                    label: (context) => {
+                                        const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                        const percentage = ((context.parsed / total) * 100).toFixed(1);
+                                        return `${context.label}: ${context.parsed} (${percentage}%)`;
+                                    }
+                                }
+                            }
+                        },
+                        cutout: '65%',
+                    }
+                });
+            }
+
+            // ================================================================
+            // Export Functions
+            // ================================================================
+
+            async exportCSV() {
+                try {
+                    const data = this.filteredData;
+                    if (!data || !data.trades || data.trades.length === 0) {
+                        this.showToast('No data to export', 'warning');
+                        return;
+                    }
+
+                    // Build CSV
+                    const headers = ['Time', 'Symbol', 'Side', 'Quantity', 'Price', 'P&L', 'Status'];
+                    const rows = data.trades.map(t => [
+                        t.timestamp,
+                        t.symbol,
+                        t.side,
+                        t.quantity || 0,
+                        t.price || 0,
+                        t.pnl || 0,
+                        t.status || 'pending',
+                    ]);
+
+                    const csvContent = [
+                        headers.join(','),
+                        ...rows.map(row => row.join(','))
+                    ].join('\n');
+
+                    // Download
+                    const blob = new Blob([csvContent], { type: 'text/csv' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `trades_report_${new Date().toISOString().split('T')[0]}.csv`;
+                    a.click();
+                    URL.revokeObjectURL(url);
+
+                    this.showToast('CSV exported successfully', 'success');
+                } catch (error) {
+                    console.error('Error exporting CSV:', error);
+                    this.showToast('Error exporting CSV', 'error');
+                }
+            }
+
+            async exportPDF() {
+                this.showToast('PDF export coming soon', 'info');
+            }
+
+            exportTable(type) {
+                const data = type === 'trades' ? this.filteredData?.trades : this.filteredData?.positions;
+                if (!data || data.length === 0) {
+                    this.showToast('No data to export', 'warning');
+                    return;
+                }
+
+                // Download as JSON
+                const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `${type}_${new Date().toISOString().split('T')[0]}.json`;
+                a.click();
+                URL.revokeObjectURL(url);
+
+                this.showToast(`${type} exported successfully`, 'success');
+            }
+
+            // ================================================================
+            // Event Listeners
+            // ================================================================
+
+            setupEventListeners() {
+                this.elements.applyBtn.addEventListener('click', () => this.applyFilters());
+                this.elements.resetBtn.addEventListener('click', () => {
+                    this.elements.reportType.value = 'performance';
+                    this.elements.reportTimeframe.value = '7d';
+                    this.elements.reportSymbol.value = 'all';
+                    this.applyFilters();
+                });
+                this.elements.refreshBtn.addEventListener('click', () => this.loadReportData());
+                this.elements.exportCSV.addEventListener('click', () => this.exportCSV());
+                this.elements.exportPDF.addEventListener('click', () => this.exportPDF());
+            }
+
+            // ================================================================
+            // Utility Methods
+            // ================================================================
+
+            formatCurrency(value) {
+                if (value === null || value === undefined) return '$0.00';
+                const abs = Math.abs(value);
+                if (abs >= 1e9) return `$${(value / 1e9).toFixed(2)}B`;
+                if (abs >= 1e6) return `$${(value / 1e6).toFixed(2)}M`;
+                if (abs >= 1e3) return `$${(value / 1e3).toFixed(2)}K`;
+                return `$${value.toFixed(2)}`;
+            }
+
+            formatTime(timestamp) {
+                if (!timestamp) return '-';
+                const date = new Date(timestamp);
+                const now = new Date();
+                const diff = now - date;
+
+                if (diff < 60000) return 'Just now';
+                if (diff < 3600000) return `${Math.floor(diff / 60000)}m ago`;
+                if (diff < 86400000) return `${Math.floor(diff / 3600000)}h ago`;
+                if (diff < 604800000) return `${Math.floor(diff / 86400000)}d ago`;
+
+                return date.toLocaleString('en-US', {
+                    month: 'short',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                });
+            }
+
+            showLoading() {
+                // Show loading state
+            }
+
+            hideLoading() {
+                // Hide loading state
+            }
+
+            showToast(message, type = 'info') {
+                const container = this.elements.toastContainer;
+                const icons = {
+                    success: 'fas fa-check-circle',
+                    error: 'fas fa-exclamation-circle',
+                    warning: 'fas fa-exclamation-triangle',
+                    info: 'fas fa-info-circle',
+                };
+
+                const toast = document.createElement('div');
+                toast.className = `toast ${type}`;
+                toast.innerHTML = `
+                    <span class="toast-icon"><i class="${icons[type] || icons.info}"></i></span>
+                    <span>${message}</span>
+                    <button class="toast-close" onclick="this.parentElement.remove()">&times;</button>
+                `;
+
+                container.appendChild(toast);
+
+                setTimeout(() => {
+                    if (toast.parentElement) {
+                        toast.remove();
+                    }
+                }, 5000);
+            }
+        }
+
+        // ================================================================
+        // Initialize
+        // ================================================================
+
+        let reportsController;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            reportsController = new ReportsController();
+            window.reportsController = reportsController;
+        });
+    </script>
+</body>
+</html>
