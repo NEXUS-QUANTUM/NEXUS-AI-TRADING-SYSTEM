@@ -1,7 +1,7 @@
 # blockchain/nodes/node_recovery.py
 # NEXUS AI TRADING SYSTEM - Version Avancée
 # Copyright © 2026 NEXUS QUANTUM LTD
-# Tous droits réservés
+# Tous droits réservés.
 
 """
 Module Node Recovery - Récupération Automatique des Nœuds
