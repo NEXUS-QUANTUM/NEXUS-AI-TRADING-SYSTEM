@@ -1,0 +1,668 @@
+# trading/bots/ai_bot/config/strategy_configs.yaml
+# NEXUS AI TRADING SYSTEM - Strategy Configurations
+# Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+
+# ============================================================================
+# STRATEGY CONFIGURATIONS
+# This file contains comprehensive strategy configurations for all trading
+# strategies supported by the AI trading bot.
+# ============================================================================
+
+# ============================================================================
+# GLOBAL STRATEGY SETTINGS
+# ============================================================================
+
+global:
+  enabled: true
+  default_strategy: "hybrid"
+  strategy_switching: true
+  switching_threshold: 0.1
+  switching_cooldown: 3600
+  performance_lookback: 100
+  min_performance_period: 20
+
+# ============================================================================
+# TREND FOLLOWING STRATEGY
+# ============================================================================
+
+trend_following:
+  enabled: true
+  name: "Trend Following"
+  description: "Follows market trends using moving averages and trend indicators"
+  
+  # Parameters
+  parameters:
+    # Moving averages
+    sma_fast: 20
+    sma_slow: 50
+    sma_very_slow: 200
+    ema_fast: 12
+    ema_slow: 26
+    
+    # Trend indicators
+    rsi_period: 14
+    adx_period: 14
+    adx_threshold: 25
+    min_trend_strength: 0.3
+    
+    # Volume
+    volume_threshold: 1.2
+    volume_sma: 20
+    
+    # Entry/Exit
+    entry_threshold: 0.01
+    exit_threshold: 0.005
+    confirmation_bars: 2
+    
+  # Signals
+  signals:
+    buy:
+      - "price_above_sma_fast"
+      - "price_above_sma_slow"
+      - "rsi_above_50"
+      - "adx_above_threshold"
+      - "volume_above_average"
+    sell:
+      - "price_below_sma_fast"
+      - "price_below_sma_slow"
+      - "rsi_below_50"
+      - "adx_below_threshold"
+      
+  # Risk parameters
+  risk:
+    stop_loss: 0.02
+    take_profit: 0.04
+    trailing_stop: 0.015
+    max_positions: 3
+    
+  # Filters
+  filters:
+    min_volume: 1000
+    max_spread: 0.001
+    min_price: 0.01
+
+# ============================================================================
+# MOMENTUM STRATEGY
+# ============================================================================
+
+momentum:
+  enabled: true
+  name: "Momentum"
+  description: "Trades based on price momentum and oscillator indicators"
+  
+  # Parameters
+  parameters:
+    # Momentum indicators
+    roc_period: 14
+    rsi_period: 14
+    momentum_period: 10
+    
+    # MACD
+    macd_fast: 12
+    macd_slow: 26
+    macd_signal: 9
+    
+    # Volume
+    volume_threshold: 1.5
+    volume_ma: 20
+    
+    # Entry/Exit
+    momentum_threshold: 0.5
+    strong_momentum_threshold: 1.0
+    reversal_threshold: 0.2
+    
+  # Signals
+  signals:
+    buy:
+      - "roc_above_0"
+      - "rsi_above_50"
+      - "macd_above_signal"
+      - "histogram_positive"
+      - "volume_above_average"
+    sell:
+      - "roc_below_0"
+      - "rsi_below_50"
+      - "macd_below_signal"
+      - "histogram_negative"
+      
+  # Risk parameters
+  risk:
+    stop_loss: 0.025
+    take_profit: 0.05
+    trailing_stop: 0.02
+    max_positions: 3
+    
+  # Filters
+  filters:
+    min_volume: 1000
+    max_spread: 0.001
+    min_momentum: 0.1
+
+# ============================================================================
+# MEAN REVERSION STRATEGY
+# ============================================================================
+
+mean_reversion:
+  enabled: true
+  name: "Mean Reversion"
+  description: "Trades based on price mean reversion using Bollinger Bands and RSI"
+  
+  # Parameters
+  parameters:
+    # Bollinger Bands
+    bb_period: 20
+    bb_std: 2.0
+    bb_entry_threshold: 1.5
+    bb_exit_threshold: 0.5
+    
+    # RSI
+    rsi_period: 14
+    rsi_oversold: 30
+    rsi_overbought: 70
+    rsi_entry_threshold: 5
+    
+    # Z-score
+    z_score_entry: 2.0
+    z_score_exit: 0.5
+    z_score_lookback: 50
+    
+    # Entry/Exit
+    entry_trigger: "bb_oversold"
+    exit_trigger: "bb_middle"
+    confirmation_bars: 1
+    
+  # Signals
+  signals:
+    buy:
+      - "price_below_bb_lower"
+      - "rsi_below_30"
+      - "z_score_below_2"
+    sell:
+      - "price_above_bb_upper"
+      - "rsi_above_70"
+      - "z_score_above_2"
+      
+  # Risk parameters
+  risk:
+    stop_loss: 0.02
+    take_profit: 0.04
+    trailing_stop: 0.015
+    max_positions: 3
+    
+  # Filters
+  filters:
+    min_volume: 500
+    max_spread: 0.002
+    min_range: 0.001
+
+# ============================================================================
+# BREAKOUT STRATEGY
+# ============================================================================
+
+breakout:
+  enabled: true
+  name: "Breakout"
+  description: "Trades price breakouts with volume confirmation"
+  
+  # Parameters
+  parameters:
+    # Breakout detection
+    lookback_periods: 200
+    consolidation_periods: 20
+    breakout_threshold: 0.015
+    retest_threshold: 0.005
+    min_touches: 2
+    
+    # Volume
+    volume_threshold: 1.5
+    volume_sma: 20
+    volume_breakout_threshold: 2.0
+    
+    # Levels
+    level_strength: 0.6
+    level_age_max: 50
+    
+    # Filters
+    use_trendlines: true
+    use_moving_averages: true
+    use_bollinger_bands: true
+    
+  # Signals
+  signals:
+    buy:
+      - "price_above_resistance"
+      - "volume_above_threshold"
+      - "level_strength_above_threshold"
+    sell:
+      - "price_below_support"
+      - "volume_above_threshold"
+      - "level_strength_above_threshold"
+      
+  # Risk parameters
+  risk:
+    stop_loss: 0.025
+    take_profit: 0.05
+    trailing_stop: 0.02
+    max_positions: 3
+    
+  # Filters
+  filters:
+    min_volume: 1000
+    max_spread: 0.001
+    min_level_strength: 0.5
+
+# ============================================================================
+# SCALPING STRATEGY
+# ============================================================================
+
+scalping:
+  enabled: true
+  name: "Scalping"
+  description: "High-frequency trading for small price movements"
+  
+  # Parameters
+  parameters:
+    # Order book
+    order_book_depth: 10
+    spread_threshold: 0.001
+    min_depth: 1000
+    
+    # Volume
+    volume_threshold: 1.5
+    volume_sma: 10
+    
+    # Time
+    max_hold_time: 60
+    min_profit: 0.001
+    
+    # Entry/Exit
+    entry_trigger: "order_book_imbalance"
+    exit_trigger: "target_profit"
+    confirmation_bars: 1
+    
+  # Signals
+  signals:
+    buy:
+      - "ask_volume_high"
+      - "bid_volume_low"
+      - "spread_low"
+      - "volume_above_threshold"
+    sell:
+      - "bid_volume_high"
+      - "ask_volume_low"
+      - "spread_low"
+      - "volume_above_threshold"
+      
+  # Risk parameters
+  risk:
+    stop_loss: 0.005
+    take_profit: 0.01
+    trailing_stop: 0.003
+    max_positions: 5
+    
+  # Filters
+  filters:
+    min_volume: 10000
+    max_spread: 0.002
+    min_depth: 500
+
+# ============================================================================
+# GRID TRADING STRATEGY
+# ============================================================================
+
+grid_trading:
+  enabled: true
+  name: "Grid Trading"
+  description: "Trades within a price range using grid levels"
+  
+  # Parameters
+  parameters:
+    # Grid configuration
+    grid_levels: 10
+    grid_spacing: 0.02
+    grid_range_percent: 0.1
+    
+    # Order types
+    buy_order_type: "limit"
+    sell_order_type: "limit"
+    
+    # Entry/Exit
+    take_profit: 0.01
+    stop_loss: 0.03
+    rebalance_threshold: 0.1
+    
+  # Signals
+  signals:
+    buy:
+      - "price_at_grid_level"
+      - "grid_level_available"
+    sell:
+      - "price_at_grid_level"
+      - "grid_level_available"
+      
+  # Risk parameters
+  risk:
+    stop_loss: 0.03
+    take_profit: 0.01
+    max_positions: 10
+    
+  # Filters
+  filters:
+    min_volume: 1000
+    max_spread: 0.001
+    min_grid_range: 0.01
+
+# ============================================================================
+# ARBITRAGE STRATEGY
+# ============================================================================
+
+arbitrage:
+  enabled: true
+  name: "Arbitrage"
+  description: "Trades price differences across exchanges"
+  
+  # Parameters
+  parameters:
+    # Arbitrage detection
+    min_profit_percent: 0.5
+    max_position_size: 50000.0
+    max_slippage: 0.01
+    max_execution_time: 5000
+    
+    # Exchanges
+    exchanges:
+      - "binance"
+      - "coinbase"
+      - "kraken"
+    
+    # Types
+    arbitrage_types:
+      - "cross_exchange"
+      - "triangular"
+      - "statistical"
+    
+    # Flash loans
+    use_flash_loans: false
+    flash_loan_fee: 0.0009
+    min_flash_loan_profit: 0.1
+    max_flash_loan_size: 1000000
+    
+  # Risk parameters
+  risk:
+    stop_loss: 0.005
+    take_profit: 0.01
+    max_positions: 5
+    
+  # Filters
+  filters:
+    min_volume: 1000
+    max_spread: 0.002
+    min_confidence: 0.7
+
+# ============================================================================
+# HYBRID STRATEGY
+# ============================================================================
+
+hybrid:
+  enabled: true
+  name: "Hybrid"
+  description: "Combines multiple strategies with dynamic weighting"
+  
+  # Parameters
+  parameters:
+    # Strategy weighting
+    weighting_method: "performance"  # uniform, performance, dynamic, regime
+    consensus_threshold: 0.6
+    max_strategies: 3
+    
+    # Market regime detection
+    enable_regime_detection: true
+    regime_lookback_periods: 100
+    regime_update_frequency: 10
+    
+    # Strategy weights
+    strategy_weights:
+      trend_following: 0.25
+      momentum: 0.25
+      mean_reversion: 0.20
+      breakout: 0.30
+    
+    # AI integration
+    enable_ai_models: true
+    ai_weight: 0.3
+    ai_models:
+      - "lstm"
+      - "transformer"
+      - "xgboost"
+    
+  # Risk parameters
+  risk:
+    max_strategy_risk: 0.02
+    correlation_penalty: 0.3
+    volatility_adjustment: true
+    max_positions: 5
+    
+  # Filters
+  filters:
+    min_confidence: 0.6
+    min_consensus: 0.5
+    max_correlation: 0.7
+
+# ============================================================================
+# REINFORCEMENT LEARNING STRATEGY
+# ============================================================================
+
+reinforcement:
+  enabled: true
+  name: "Reinforcement Learning"
+  description: "Uses RL algorithms for adaptive trading decisions"
+  
+  # Parameters
+  parameters:
+    # Algorithm
+    algorithm: "dqn"  # dqn, double_dqn, dueling_dqn, ppo, a2c, sac
+    learning_rate: 0.001
+    discount_factor: 0.99
+    exploration_rate: 0.1
+    exploration_decay: 0.995
+    min_exploration_rate: 0.01
+    
+    # Network
+    hidden_layers: [256, 128, 64]
+    activation: "relu"
+    dropout_rate: 0.1
+    
+    # Training
+    batch_size: 64
+    replay_buffer_size: 10000
+    target_update_frequency: 100
+    training_frequency: 10
+    min_replay_size: 1000
+    
+    # PPO specific
+    ppo_epochs: 10
+    ppo_clip: 0.2
+    ppo_gae_lambda: 0.95
+    
+  # Risk parameters
+  risk:
+    max_positions: 3
+    stop_loss: 0.02
+    take_profit: 0.04
+    trailing_stop: 0.015
+    
+  # Filters
+  filters:
+    min_confidence: 0.6
+    min_exploration: 0.05
+
+# ============================================================================
+# CUSTOM STRATEGY TEMPLATE
+# ============================================================================
+
+custom:
+  enabled: false
+  name: "Custom Strategy"
+  description: "Custom trading strategy template"
+  
+  # Parameters
+  parameters:
+    # Custom parameters
+    param1: value1
+    param2: value2
+    
+  # Signals
+  signals:
+    buy:
+      - "condition1"
+      - "condition2"
+    sell:
+      - "condition1"
+      - "condition2"
+      
+  # Risk parameters
+  risk:
+    stop_loss: 0.02
+    take_profit: 0.04
+    trailing_stop: 0.015
+    max_positions: 3
+    
+  # Filters
+  filters:
+    min_volume: 1000
+    max_spread: 0.001
+
+# ============================================================================
+# STRATEGY COMBINATIONS
+# ============================================================================
+
+combinations:
+  # Conservative combination
+  conservative:
+    strategies:
+      - "trend_following"
+      - "mean_reversion"
+    weights:
+      trend_following: 0.6
+      mean_reversion: 0.4
+    risk_profile: "conservative"
+    
+  # Balanced combination
+  balanced:
+    strategies:
+      - "trend_following"
+      - "momentum"
+      - "mean_reversion"
+    weights:
+      trend_following: 0.35
+      momentum: 0.35
+      mean_reversion: 0.30
+    risk_profile: "moderate"
+    
+  # Aggressive combination
+  aggressive:
+    strategies:
+      - "momentum"
+      - "breakout"
+      - "scalping"
+    weights:
+      momentum: 0.35
+      breakout: 0.35
+      scalping: 0.30
+    risk_profile: "aggressive"
+    
+  # AI-powered combination
+  ai_powered:
+    strategies:
+      - "hybrid"
+      - "reinforcement"
+    weights:
+      hybrid: 0.6
+      reinforcement: 0.4
+    risk_profile: "moderate"
+
+# ============================================================================
+# STRATEGY PERFORMANCE CONFIGURATIONS
+# ============================================================================
+
+performance:
+  # Tracking
+  track_trades: true
+  track_positions: true
+  track_pnl: true
+  history_days: 365
+  
+  # Metrics
+  metrics:
+    - "win_rate"
+    - "profit_factor"
+    - "sharpe_ratio"
+    - "max_drawdown"
+    - "average_win"
+    - "average_loss"
+    
+  # Evaluation
+  evaluation:
+    method: "walk_forward"
+    train_period: 180
+    test_period: 30
+    step_size: 30
+    min_trades: 20
+
+# ============================================================================
+# STRATEGY SWITCHING CONFIGURATIONS
+# ============================================================================
+
+switching:
+  enabled: true
+  method: "performance_based"  # performance_based, regime_based, hybrid
+  threshold: 0.1
+  cooldown: 3600
+  min_performance_period: 20
+  
+  # Switching criteria
+  criteria:
+    - "win_rate"
+    - "profit_factor"
+    - "sharpe_ratio"
+    - "max_drawdown"
+    
+  # Weights for criteria
+  weights:
+    win_rate: 0.30
+    profit_factor: 0.25
+    sharpe_ratio: 0.25
+    max_drawdown: 0.20
+
+# ============================================================================
+# STRATEGY BACKTESTING CONFIGURATIONS
+# ============================================================================
+
+backtesting:
+  enabled: true
+  default: "hybrid"
+  
+  # Backtest parameters
+  parameters:
+    start_date: "2024-01-01"
+    end_date: "2025-01-01"
+    initial_capital: 10000.0
+    commission: 0.001
+    slippage: 0.001
+    
+  # Reports
+  reports:
+    - "summary"
+    - "detailed"
+    - "visual"
+    
+  # Metrics
+  metrics:
+    - "total_pnl"
+    - "win_rate"
+    - "sharpe_ratio"
+    - "max_drawdown"
+    - "profit_factor"
+    - "average_win"
+    - "average_loss"
+    - "total_trades"
