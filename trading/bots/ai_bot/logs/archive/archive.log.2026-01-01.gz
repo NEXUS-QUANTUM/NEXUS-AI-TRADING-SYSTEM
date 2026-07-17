@@ -1,0 +1,424 @@
+"""
+NEXUS AI TRADING SYSTEM - Archive Logs Module
+Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+CEO: Dr X... - Majority Shareholder
+
+Module: trading/bots/ai_bot/logs/archive/archive.log.2026-01-01.gz
+Description: Fichier d'archive des logs compressé pour le bot AI.
+             Contient les logs historiques du 1er janvier 2026.
+             Format: gzip compressé.
+
+NOTE: Ce fichier est un exemple de log archivé. Dans un environnement
+      de production, ce fichier serait généré automatiquement par le
+      système de rotation des logs.
+"""
+
+import gzip
+import json
+import logging
+from datetime import datetime, timedelta
+from typing import Dict, List, Any, Optional
+import io
+
+# Configuration du logging
+logger = logging.getLogger(__name__)
+
+
+class ArchiveLogEntry:
+    """
+    Structure d'une entrée de log archivée.
+    """
+    
+    def __init__(
+        self,
+        timestamp: datetime,
+        level: str,
+        module: str,
+        message: str,
+        data: Optional[Dict[str, Any]] = None
+    ):
+        self.timestamp = timestamp
+        self.level = level
+        self.module = module
+        self.message = message
+        self.data = data or {}
+    
+    def to_dict(self) -> Dict[str, Any]:
+        """Convertit en dictionnaire."""
+        return {
+            'timestamp': self.timestamp.isoformat(),
+            'level': self.level,
+            'module': self.module,
+            'message': self.message,
+            'data': self.data
+        }
+    
+    @classmethod
+    def from_dict(cls, data: Dict[str, Any]) -> 'ArchiveLogEntry':
+        """Crée une entrée à partir d'un dictionnaire."""
+        return cls(
+            timestamp=datetime.fromisoformat(data['timestamp']),
+            level=data['level'],
+            module=data['module'],
+            message=data['message'],
+            data=data.get('data', {})
+        )
+
+
+class ArchiveLogReader:
+    """
+    Lecteur de logs archivés.
+    """
+    
+    def __init__(self, archive_path: str = "trading/bots/ai_bot/logs/archive/archive.log.2026-01-01.gz"):
+        """
+        Initialise le lecteur de logs archivés.
+        
+        Args:
+            archive_path: Chemin du fichier d'archive.
+        """
+        self.archive_path = archive_path
+        self._entries: List[ArchiveLogEntry] = []
+        self._loaded = False
+    
+    def load(self) -> None:
+        """
+        Charge les logs depuis l'archive.
+        """
+        if self._loaded:
+            return
+        
+        try:
+            with gzip.open(self.archive_path, 'rt', encoding='utf-8') as f:
+                for line in f:
+                    try:
+                        data = json.loads(line.strip())
+                        entry = ArchiveLogEntry.from_dict(data)
+                        self._entries.append(entry)
+                    except json.JSONDecodeError:
+                        # Ignorer les lignes non-JSON
+                        continue
+            
+            self._loaded = True
+            logger.info(f"Logs archivés chargés: {len(self._entries)} entrées")
+            
+        except FileNotFoundError:
+            logger.warning(f"Fichier d'archive non trouvé: {self.archive_path}")
+            self._entries = []
+            self._loaded = True
+        except Exception as e:
+            logger.error(f"Erreur de chargement de l'archive: {e}")
+            self._entries = []
+            self._loaded = True
+    
+    def get_entries(
+        self,
+        level: Optional[str] = None,
+        module: Optional[str] = None,
+        start_date: Optional[datetime] = None,
+        end_date: Optional[datetime] = None,
+        limit: int = 100
+    ) -> List[ArchiveLogEntry]:
+        """
+        Récupère les entrées de log.
+        
+        Args:
+            level: Niveau de log.
+            module: Module.
+            start_date: Date de début.
+            end_date: Date de fin.
+            limit: Nombre maximum d'entrées.
+            
+        Returns:
+            Liste des entrées.
+        """
+        if not self._loaded:
+            self.load()
+        
+        entries = self._entries.copy()
+        
+        # Filtrage
+        if level:
+            entries = [e for e in entries if e.level == level]
+        
+        if module:
+            entries = [e for e in entries if e.module == module]
+        
+        if start_date:
+            entries = [e for e in entries if e.timestamp >= start_date]
+        
+        if end_date:
+            entries = [e for e in entries if e.timestamp <= end_date]
+        
+        # Tri par timestamp (plus récent en premier)
+        entries.sort(key=lambda x: x.timestamp, reverse=True)
+        
+        return entries[:limit]
+    
+    def get_stats(self) -> Dict[str, Any]:
+        """
+        Retourne les statistiques des logs.
+        
+        Returns:
+            Statistiques.
+        """
+        if not self._loaded:
+            self.load()
+        
+        if not self._entries:
+            return {'total': 0}
+        
+        levels = {}
+        modules = {}
+        
+        for entry in self._entries:
+            levels[entry.level] = levels.get(entry.level, 0) + 1
+            modules[entry.module] = modules.get(entry.module, 0) + 1
+        
+        return {
+            'total': len(self._entries),
+            'levels': levels,
+            'modules': modules,
+            'first_entry': self._entries[-1].timestamp.isoformat() if self._entries else None,
+            'last_entry': self._entries[0].timestamp.isoformat() if self._entries else None
+        }
+
+
+# ============================================================
+# EXEMPLE DE DONNÉES D'ARCHIVE
+# ============================================================
+
+# Ce dictionnaire contient des exemples de logs pour le 1er janvier 2026
+EXAMPLE_LOGS = [
+    {
+        'timestamp': '2026-01-01T00:00:00.123456',
+        'level': 'INFO',
+        'module': 'ai_bot',
+        'message': 'Bot AI démarré - Version 1.0.0',
+        'data': {'bot_id': 'AI_BOT_001', 'symbol': 'BTC-USD'}
+    },
+    {
+        'timestamp': '2026-01-01T00:00:01.456789',
+        'level': 'INFO',
+        'module': 'data_feeder',
+        'message': 'Connexion au flux de données établie',
+        'data': {'source': 'websocket', 'symbol': 'BTC-USD'}
+    },
+    {
+        'timestamp': '2026-01-01T00:01:00.234567',
+        'level': 'DEBUG',
+        'module': 'model_manager',
+        'message': 'Prédiction du modèle LSTM',
+        'data': {'model': 'lstm_v2', 'confidence': 0.87}
+    },
+    {
+        'timestamp': '2026-01-01T00:05:00.345678',
+        'level': 'INFO',
+        'module': 'signal_processor',
+        'message': 'Signal de trading généré',
+        'data': {'action': 'BUY', 'price': 98765.43, 'confidence': 0.82}
+    },
+    {
+        'timestamp': '2026-01-01T00:05:00.456789',
+        'level': 'INFO',
+        'module': 'order_executor',
+        'message': 'Ordre exécuté',
+        'data': {'order_id': 'ORD_001', 'side': 'BUY', 'quantity': 0.5, 'price': 98765.43}
+    },
+    {
+        'timestamp': '2026-01-01T00:10:00.567890',
+        'level': 'INFO',
+        'module': 'position_manager',
+        'message': 'Position ouverte',
+        'data': {'position_id': 'POS_001', 'symbol': 'BTC-USD', 'quantity': 0.5, 'entry_price': 98765.43}
+    },
+    {
+        'timestamp': '2026-01-01T00:15:00.678901',
+        'level': 'INFO',
+        'module': 'risk_manager',
+        'message': 'Stop-loss ajusté',
+        'data': {'position_id': 'POS_001', 'stop_loss': 97800.00, 'take_profit': 101000.00}
+    },
+    {
+        'timestamp': '2026-01-01T00:30:00.789012',
+        'level': 'DEBUG',
+        'module': 'indicator_calculator',
+        'message': 'Calcul des indicateurs',
+        'data': {'indicators': ['rsi', 'macd', 'bollinger'], 'time': 0.045}
+    },
+    {
+        'timestamp': '2026-01-01T01:00:00.890123',
+        'level': 'WARNING',
+        'module': 'data_feeder',
+        'message': 'Latence élevée détectée',
+        'data': {'latency_ms': 125.5, 'threshold': 100.0}
+    },
+    {
+        'timestamp': '2026-01-01T01:05:00.901234',
+        'level': 'INFO',
+        'module': 'order_executor',
+        'message': 'Ordre partiellement rempli',
+        'data': {'order_id': 'ORD_002', 'filled': 0.3, 'remaining': 0.7}
+    },
+    {
+        'timestamp': '2026-01-01T01:10:00.012345',
+        'level': 'INFO',
+        'module': 'position_manager',
+        'message': 'Position fermée avec profit',
+        'data': {'position_id': 'POS_001', 'pnl': 2345.67, 'return': 4.7}
+    },
+    {
+        'timestamp': '2026-01-01T01:15:00.123456',
+        'level': 'INFO',
+        'module': 'performance_tracker',
+        'message': 'Performance mise à jour',
+        'data': {'total_pnl': 2345.67, 'win_rate': 0.75, 'sharpe_ratio': 1.8}
+    },
+    {
+        'timestamp': '2026-01-01T02:00:00.234567',
+        'level': 'WARNING',
+        'module': 'risk_manager',
+        'message': 'Drawdown approchant la limite',
+        'data': {'current_drawdown': 8.5, 'max_drawdown': 10.0}
+    },
+    {
+        'timestamp': '2026-01-01T02:30:00.345678',
+        'level': 'ERROR',
+        'module': 'order_executor',
+        'message': 'Échec de l\'exécution de l\'ordre',
+        'data': {'order_id': 'ORD_003', 'error': 'Insufficient funds', 'retry': 2}
+    },
+    {
+        'timestamp': '2026-01-01T03:00:00.456789',
+        'level': 'INFO',
+        'module': 'market_analysis',
+        'message': 'Changement de régime de marché détecté',
+        'data': {'previous_regime': 'trend', 'new_regime': 'volatile', 'confidence': 0.78}
+    },
+    {
+        'timestamp': '2026-01-01T04:00:00.567890',
+        'level': 'INFO',
+        'module': 'strategy_selector',
+        'message': 'Stratégie adaptative activée',
+        'data': {'strategy': 'volatility_breakout', 'reason': 'high_volatility'}
+    },
+    {
+        'timestamp': '2026-01-01T05:00:00.678901',
+        'level': 'DEBUG',
+        'module': 'feature_engine',
+        'message': 'Caractéristiques calculées',
+        'data': {'feature_count': 45, 'time': 0.123}
+    },
+    {
+        'timestamp': '2026-01-01T06:00:00.789012',
+        'level': 'INFO',
+        'module': 'model_predictor',
+        'message': 'Prédiction à 1h',
+        'data': {'direction': 'UP', 'probability': 0.72, 'target_price': 100234.56}
+    },
+    {
+        'timestamp': '2026-01-01T07:00:00.890123',
+        'level': 'WARNING',
+        'module': 'data_validator',
+        'message': 'Données manquantes détectées',
+        'data': {'missing_bars': 3, 'timeframe': '1m', 'symbol': 'BTC-USD'}
+    },
+    {
+        'timestamp': '2026-01-01T08:00:00.901234',
+        'level': 'INFO',
+        'module': 'execution_monitor',
+        'message': 'Performance d\'exécution',
+        'data': {'orders': 12, 'filled': 10, 'avg_latency': 45.3, 'fill_rate': 0.83}
+    },
+    {
+        'timestamp': '2026-01-01T12:00:00.012345',
+        'level': 'INFO',
+        'module': 'ai_bot',
+        'message': 'Rapport mi-journée',
+        'data': {
+            'total_trades': 8,
+            'winning_trades': 6,
+            'total_pnl': 3456.78,
+            'win_rate': 0.75,
+            'max_drawdown': 3.2
+        }
+    },
+    {
+        'timestamp': '2026-01-01T18:00:00.123456',
+        'level': 'ERROR',
+        'module': 'websocket',
+        'message': 'Déconnexion du WebSocket',
+        'data': {'reason': 'timeout', 'reconnect_attempts': 3}
+    },
+    {
+        'timestamp': '2026-01-01T18:00:00.234567',
+        'level': 'CRITICAL',
+        'module': 'ai_bot',
+        'message': 'Reconnexion automatique',
+        'data': {'status': 'reconnecting', 'backoff': 5}
+    },
+    {
+        'timestamp': '2026-01-01T18:00:05.345678',
+        'level': 'INFO',
+        'module': 'data_feeder',
+        'message': 'Reconnexion réussie',
+        'data': {'source': 'websocket', 'latency': 23.4}
+    },
+    {
+        'timestamp': '2026-01-01T23:59:59.456789',
+        'level': 'INFO',
+        'module': 'ai_bot',
+        'message': 'Bilan de la journée',
+        'data': {
+            'total_trades': 15,
+            'winning_trades': 11,
+            'total_pnl': 5432.10,
+            'win_rate': 0.733,
+            'sharpe_ratio': 2.1,
+            'max_drawdown': 4.5,
+            'total_volume': 7.5,
+            'avg_position_size': 0.5
+        }
+    }
+]
+
+# ============================================================
+# FONCTION DE CRÉATION D'ARCHIVE
+# ============================================================
+
+def create_archive_file(filepath: str) -> None:
+    """
+    Crée un fichier d'archive avec les logs d'exemple.
+    
+    Args:
+        filepath: Chemin du fichier d'archive.
+    """
+    try:
+        # Création du répertoire si nécessaire
+        import os
+        os.makedirs(os.path.dirname(filepath), exist_ok=True)
+        
+        with gzip.open(filepath, 'wt', encoding='utf-8') as f:
+            for log in EXAMPLE_LOGS:
+                f.write(json.dumps(log) + '\n')
+        
+        logger.info(f"Fichier d'archive créé: {filepath}")
+        
+    except Exception as e:
+        logger.error(f"Erreur de création de l'archive: {e}")
+
+
+# ============================================================
+# EXPORTATION
+# ============================================================
+
+__all__ = [
+    'ArchiveLogEntry',
+    'ArchiveLogReader',
+    'EXAMPLE_LOGS',
+    'create_archive_file'
+]
+
+# ============================================================
+# FIN DU FICHIER
+# ============================================================
