@@ -1,6 +1,6 @@
 """
 NEXUS AI TRADING SYSTEM - Risk Monitor Module
-Copyright © 2026 NEXUS QUANTUM LTD
+Copyright © 2026 NEXUS QUANTUM LTD..
 CEO: Dr X... - Majority Shareholder
 
 Module: trading/risk-management/risk_monitor.py
