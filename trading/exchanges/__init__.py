@@ -41,6 +41,9 @@ from .base import (
     OrderBookLevel,
     DataFrequency,
     WebSocketEvent,
+    Environment,
+    APIErrorCode,
+    WebSocketState,
     
     # Data Classes
     Price,
@@ -53,6 +56,9 @@ from .base import (
     OrderBook,
     Candle,
     ExchangeInfo,
+    WebSocketMessage,
+    APIRequest,
+    APIResponse,
     
     # Exceptions
     ExchangeError,
@@ -68,15 +74,23 @@ from .base import (
     AccountError,
     TimeoutError,
     WebSocketError,
+    InvalidSymbolError,
+    MaintenanceError,
+    BadRequestError,
+    NotFoundError,
+    ConflictError,
     
     # Base Classes
     ExchangeBase,
     ExchangeFactory,
+    RateLimiter,
+    CircuitBreaker,
     
     # Decorators
     retry_on_error,
     rate_limited,
     log_request,
+    cache_result,
 )
 
 # ============================================================================
@@ -84,18 +98,15 @@ from .base import (
 # ============================================================================
 
 from .stocks import (
-    AlpacaBroker,
-    InteractiveBrokersBroker,
-    TradierBroker,
-    TradeStationBroker,
-    SchwabBroker,
-    FidelityBroker,
-    ETRADEBroker,
-    StockExchangeBase,
+    # Enums
     StockOrderType,
     StockOrderSide,
     StockTimeInForce,
     StockOrderStatus,
+    StockPositionSide,
+    StockOrderClass,
+    
+    # Data Classes
     StockOrder,
     StockPosition,
     StockAccountInfo,
@@ -105,14 +116,24 @@ from .stocks import (
     StockQuote,
     StockBar,
     StockWatchlist,
-    StockExchangeError,
-    AuthenticationError as StockAuthError,
-    OrderError as StockOrderError,
-    MarketDataError as StockMarketDataError,
-    PositionError as StockPositionError,
-    AccountError as StockAccountError,
-    WatchlistError,
-    RateLimitError as StockRateLimitError,
+    StockAccountActivity,
+    StockDividend,
+    StockSplit,
+    StockEarnings,
+    
+    # Base Class
+    StockExchangeBase,
+    
+    # Brokers
+    AlpacaBroker,
+    InteractiveBrokersBroker,
+    TradierBroker,
+    TradeStationBroker,
+    SchwabBroker,
+    FidelityBroker,
+    ETRADEBroker,
+    
+    # Converters
     StockDataConverter,
     OrderConverter,
     MarketDataConverter,
@@ -120,6 +141,12 @@ from .stocks import (
     QuoteConverter,
     BarConverter,
     TradeConverter,
+    AccountConverter,
+    WatchlistConverter,
+    OHLCVConverter,
+    OrderBookConverter,
+    
+    # Utilities
     StockUtils,
     SymbolValidator,
     MarketHours,
@@ -128,6 +155,16 @@ from .stocks import (
     PositionCalculator,
     RiskMetrics,
     PerformanceMetrics,
+    TechnicalIndicators,
+    FundamentalAnalyzer,
+    OptionPricer,
+    StockFilter,
+    MarketTiming,
+    SectorAnalyzer,
+    VolatilityCalculator,
+    CorrelationAnalyzer,
+    
+    # Webhook
     WebhookHandler,
     WebhookConfig,
     WebhookPayload,
@@ -135,10 +172,52 @@ from .stocks import (
     WebhookProvider,
     WebhookEventType,
     WebhookStatus,
+    WebhookFormat,
+    WebhookAuthType,
+    WebhookCompression,
+    SignatureAlgorithm,
     StockTradeData,
     StockQuoteData,
     StockAggregateData,
+    StockBarData,
+    StockOrderData,
+    StockPositionData,
+    StockAccountData,
     create_webhook_handler,
+    
+    # Exceptions
+    StockExchangeError,
+    AuthenticationError as StockAuthError,
+    AuthorizationError as StockAuthzError,
+    ConnectionError as StockConnError,
+    RateLimitError as StockRateLimitError,
+    OrderError as StockOrderError,
+    InvalidOrderError as StockInvalidOrderError,
+    InsufficientBalanceError as StockInsufficientBalanceError,
+    MarketDataError as StockMarketDataError,
+    PositionError as StockPositionError,
+    AccountError as StockAccountError,
+    WatchlistError,
+    StreamError,
+    WebhookError,
+    ValidationError as StockValidationError,
+    SymbolError,
+    BrokerError,
+    
+    # Registry
+    BROKER_REGISTRY,
+    SUPPORTED_BROKERS,
+    BROKER_CONFIGS,
+    BROKER_ENDPOINTS,
+    
+    # Factory Functions
+    create_broker,
+    get_broker_info,
+    get_broker_class,
+    is_broker_supported,
+    get_broker_features,
+    get_broker_endpoints,
+    create_broker_context,
 )
 
 # ============================================================================
@@ -286,12 +365,53 @@ SUPPORTED_EXCHANGES = list(EXCHANGE_REGISTRY.keys())
 
 EXCHANGE_CATEGORIES = {
     "stocks": ["alpaca", "ibkr", "tradier", "tradestation", "schwab", "fidelity", "etrade"],
-    "crypto": ["binance", "binance_spot", "binance_futures", "binance_margin", 
-               "bybit", "bybit_spot", "bybit_futures", "bybit_inverse", "bybit_option",
-               "coinbase", "coinbase_spot", "coinbase_prime",
-               "kraken", "kraken_spot",
-               "okx", "okx_spot", "okx_futures", "okx_swap", "okx_option"],
+    "crypto": [
+        "binance", "binance_spot", "binance_futures", "binance_margin",
+        "bybit", "bybit_spot", "bybit_futures", "bybit_inverse", "bybit_option",
+        "coinbase", "coinbase_spot", "coinbase_prime",
+        "kraken", "kraken_spot",
+        "okx", "okx_spot", "okx_futures", "okx_swap", "okx_option"
+    ],
     "forex": ["oanda", "fxcm", "ig", "pepperstone", "dukascopy", "forexcom"],
+}
+
+# ============================================================================
+# EXCHANGE ASSET CLASSES
+# ============================================================================
+
+EXCHANGE_ASSET_CLASSES = {
+    "alpaca": ["stock", "etf", "crypto"],
+    "ibkr": ["stock", "etf", "option", "future", "forex", "crypto", "bond", "commodity"],
+    "tradier": ["stock", "etf", "option"],
+    "tradestation": ["stock", "etf", "option", "future", "forex"],
+    "schwab": ["stock", "etf", "option", "future"],
+    "fidelity": ["stock", "etf", "option", "mutual_fund"],
+    "etrade": ["stock", "etf", "option", "mutual_fund"],
+    "binance": ["crypto", "future", "margin"],
+    "binance_spot": ["crypto"],
+    "binance_futures": ["future"],
+    "binance_margin": ["crypto", "margin"],
+    "bybit": ["crypto", "future", "option"],
+    "bybit_spot": ["crypto"],
+    "bybit_futures": ["future"],
+    "bybit_inverse": ["future"],
+    "bybit_option": ["option"],
+    "coinbase": ["crypto"],
+    "coinbase_spot": ["crypto"],
+    "coinbase_prime": ["crypto"],
+    "kraken": ["crypto", "future"],
+    "kraken_spot": ["crypto"],
+    "okx": ["crypto", "future", "option", "swap"],
+    "okx_spot": ["crypto"],
+    "okx_futures": ["future"],
+    "okx_swap": ["swap"],
+    "okx_option": ["option"],
+    "oanda": ["forex", "commodity", "index"],
+    "fxcm": ["forex", "commodity", "index"],
+    "ig": ["forex", "commodity", "index", "stock", "etf"],
+    "pepperstone": ["forex", "commodity", "index"],
+    "dukascopy": ["forex", "commodity", "index"],
+    "forexcom": ["forex", "commodity", "index"],
 }
 
 # ============================================================================
@@ -299,15 +419,18 @@ EXCHANGE_CATEGORIES = {
 # ============================================================================
 
 EXCHANGE_API_ENDPOINTS = {
+    # Stock Brokers
     "alpaca": {
         "rest": "https://api.alpaca.markets/v2",
         "rest_paper": "https://paper-api.alpaca.markets/v2",
         "websocket": "wss://stream.data.alpaca.markets/v2/iex",
         "websocket_paper": "wss://stream.data.alpaca.markets/v2/iex",
+        "data": "https://data.alpaca.markets/v2",
         "docs": "https://docs.alpaca.markets/",
     },
     "ibkr": {
         "rest": "https://api.ibkr.com/v1",
+        "rest_paper": "https://api.ibkr.com/v1",
         "websocket": "wss://api.ibkr.com/ws",
         "docs": "https://interactivebrokers.github.io/tws-api/",
     },
@@ -319,15 +442,18 @@ EXCHANGE_API_ENDPOINTS = {
     },
     "tradestation": {
         "rest": "https://api.tradestation.com/v3",
+        "rest_paper": "https://api.tradestation.com/v3",
         "websocket": "wss://api.tradestation.com/stream",
         "docs": "https://docs.tradestation.com/",
     },
     "schwab": {
         "rest": "https://api.schwab.com/v1",
+        "rest_paper": "https://api.schwab.com/v1",
         "docs": "https://developer.schwab.com/",
     },
     "fidelity": {
         "rest": "https://api.fidelity.com/v1",
+        "rest_paper": "https://api.fidelity.com/v1",
         "docs": "https://developer.fidelity.com/",
     },
     "etrade": {
@@ -335,6 +461,8 @@ EXCHANGE_API_ENDPOINTS = {
         "rest_paper": "https://api.etrade.com/v1",
         "docs": "https://developer.etrade.com/",
     },
+    
+    # Crypto Exchanges
     "binance": {
         "rest": "https://api.binance.com/api/v3",
         "rest_spot": "https://api.binance.com/api/v3",
@@ -387,6 +515,8 @@ EXCHANGE_API_ENDPOINTS = {
         "testnet_rest": "https://www.okx.com/api/v5",
         "testnet_websocket": "wss://ws.okx.com:8443/ws/v5/public",
     },
+    
+    # Forex Brokers
     "oanda": {
         "rest": "https://api-fxtrade.oanda.com/v3",
         "rest_paper": "https://api-fxpractice.oanda.com/v3",
@@ -425,6 +555,7 @@ EXCHANGE_API_ENDPOINTS = {
 # ============================================================================
 
 EXCHANGE_RATE_LIMITS = {
+    # Stock Brokers
     "alpaca": {"requests": 200, "period": 60, "order_requests": 100, "order_period": 60},
     "ibkr": {"requests": 50, "period": 60, "order_requests": 25, "order_period": 60},
     "tradier": {"requests": 60, "period": 60, "order_requests": 30, "order_period": 60},
@@ -432,6 +563,8 @@ EXCHANGE_RATE_LIMITS = {
     "schwab": {"requests": 50, "period": 60, "order_requests": 25, "order_period": 60},
     "fidelity": {"requests": 50, "period": 60, "order_requests": 25, "order_period": 60},
     "etrade": {"requests": 100, "period": 60, "order_requests": 50, "order_period": 60},
+    
+    # Crypto Exchanges
     "binance": {"requests": 1200, "period": 60, "order_requests": 600, "order_period": 60},
     "binance_spot": {"requests": 1200, "period": 60, "order_requests": 600, "order_period": 60},
     "binance_futures": {"requests": 2400, "period": 60, "order_requests": 1200, "order_period": 60},
@@ -451,12 +584,236 @@ EXCHANGE_RATE_LIMITS = {
     "okx_futures": {"requests": 1200, "period": 60, "order_requests": 600, "order_period": 60},
     "okx_swap": {"requests": 1200, "period": 60, "order_requests": 600, "order_period": 60},
     "okx_option": {"requests": 600, "period": 60, "order_requests": 300, "order_period": 60},
+    
+    # Forex Brokers
     "oanda": {"requests": 60, "period": 60, "order_requests": 30, "order_period": 60},
     "fxcm": {"requests": 60, "period": 60, "order_requests": 30, "order_period": 60},
     "ig": {"requests": 60, "period": 60, "order_requests": 30, "order_period": 60},
     "pepperstone": {"requests": 60, "period": 60, "order_requests": 30, "order_period": 60},
     "dukascopy": {"requests": 60, "period": 60, "order_requests": 30, "order_period": 60},
     "forexcom": {"requests": 60, "period": 60, "order_requests": 30, "order_period": 60},
+}
+
+# ============================================================================
+# EXCHANGE FEATURES
+# ============================================================================
+
+EXCHANGE_FEATURES = {
+    # Stock Brokers
+    "alpaca": {
+        "paper_trading": True,
+        "real_time_data": True,
+        "historical_data": True,
+        "fractional_shares": True,
+        "crypto": True,
+        "options": False,
+        "margin": True,
+        "webhooks": True,
+        "websocket": True,
+        "streaming": True,
+        "order_types": ["market", "limit", "stop", "stop_limit", "trailing_stop"],
+        "time_in_force": ["day", "gtc", "ioc", "fok"],
+    },
+    "ibkr": {
+        "paper_trading": True,
+        "real_time_data": True,
+        "historical_data": True,
+        "fractional_shares": True,
+        "crypto": True,
+        "options": True,
+        "margin": True,
+        "webhooks": False,
+        "websocket": True,
+        "streaming": True,
+        "order_types": ["market", "limit", "stop", "stop_limit", "trailing_stop", "peg", "rel", "mid", "lmt"],
+        "time_in_force": ["day", "gtc", "ioc", "fok", "gtd", "opg"],
+    },
+    "tradier": {
+        "paper_trading": True,
+        "real_time_data": True,
+        "historical_data": True,
+        "fractional_shares": False,
+        "crypto": False,
+        "options": True,
+        "margin": True,
+        "webhooks": True,
+        "websocket": True,
+        "streaming": True,
+        "order_types": ["market", "limit", "stop", "stop_limit"],
+        "time_in_force": ["day", "gtc"],
+    },
+    "tradestation": {
+        "paper_trading": True,
+        "real_time_data": True,
+        "historical_data": True,
+        "fractional_shares": True,
+        "crypto": False,
+        "options": True,
+        "margin": True,
+        "webhooks": False,
+        "websocket": True,
+        "streaming": True,
+        "order_types": ["market", "limit", "stop", "stop_limit"],
+        "time_in_force": ["day", "gtc", "ioc", "fok"],
+    },
+    "schwab": {
+        "paper_trading": True,
+        "real_time_data": True,
+        "historical_data": True,
+        "fractional_shares": True,
+        "crypto": False,
+        "options": True,
+        "margin": True,
+        "webhooks": False,
+        "websocket": False,
+        "streaming": False,
+        "order_types": ["market", "limit", "stop", "stop_limit"],
+        "time_in_force": ["day", "gtc"],
+    },
+    "fidelity": {
+        "paper_trading": False,
+        "real_time_data": True,
+        "historical_data": True,
+        "fractional_shares": True,
+        "crypto": False,
+        "options": True,
+        "margin": True,
+        "webhooks": False,
+        "websocket": False,
+        "streaming": False,
+        "order_types": ["market", "limit", "stop", "stop_limit"],
+        "time_in_force": ["day", "gtc"],
+    },
+    "etrade": {
+        "paper_trading": True,
+        "real_time_data": True,
+        "historical_data": True,
+        "fractional_shares": False,
+        "crypto": False,
+        "options": True,
+        "margin": True,
+        "webhooks": True,
+        "websocket": False,
+        "streaming": False,
+        "order_types": ["market", "limit", "stop", "stop_limit"],
+        "time_in_force": ["day", "gtc", "ioc"],
+    },
+    
+    # Crypto Exchanges
+    "binance": {
+        "paper_trading": True,
+        "real_time_data": True,
+        "historical_data": True,
+        "fractional_shares": False,
+        "crypto": True,
+        "options": False,
+        "margin": True,
+        "webhooks": True,
+        "websocket": True,
+        "streaming": True,
+        "order_types": ["market", "limit", "stop", "stop_limit", "take_profit", "take_profit_limit"],
+        "time_in_force": ["gtc", "ioc", "fok"],
+    },
+    "bybit": {
+        "paper_trading": True,
+        "real_time_data": True,
+        "historical_data": True,
+        "fractional_shares": False,
+        "crypto": True,
+        "options": True,
+        "margin": True,
+        "webhooks": True,
+        "websocket": True,
+        "streaming": True,
+        "order_types": ["market", "limit", "stop", "stop_limit", "take_profit"],
+        "time_in_force": ["gtc", "ioc", "fok"],
+    },
+    "coinbase": {
+        "paper_trading": True,
+        "real_time_data": True,
+        "historical_data": True,
+        "fractional_shares": False,
+        "crypto": True,
+        "options": False,
+        "margin": False,
+        "webhooks": True,
+        "websocket": True,
+        "streaming": True,
+        "order_types": ["market", "limit", "stop", "stop_limit"],
+        "time_in_force": ["gtc", "ioc", "fok"],
+    },
+    "kraken": {
+        "paper_trading": True,
+        "real_time_data": True,
+        "historical_data": True,
+        "fractional_shares": False,
+        "crypto": True,
+        "options": False,
+        "margin": True,
+        "webhooks": True,
+        "websocket": True,
+        "streaming": True,
+        "order_types": ["market", "limit", "stop", "stop_limit"],
+        "time_in_force": ["gtc", "ioc", "fok"],
+    },
+    "okx": {
+        "paper_trading": True,
+        "real_time_data": True,
+        "historical_data": True,
+        "fractional_shares": False,
+        "crypto": True,
+        "options": True,
+        "margin": True,
+        "webhooks": True,
+        "websocket": True,
+        "streaming": True,
+        "order_types": ["market", "limit", "stop", "stop_limit", "take_profit", "take_profit_limit"],
+        "time_in_force": ["gtc", "ioc", "fok"],
+    },
+    
+    # Forex Brokers
+    "oanda": {
+        "paper_trading": True,
+        "real_time_data": True,
+        "historical_data": True,
+        "fractional_shares": False,
+        "crypto": False,
+        "options": False,
+        "margin": True,
+        "webhooks": True,
+        "websocket": True,
+        "streaming": True,
+        "order_types": ["market", "limit", "stop", "stop_limit"],
+        "time_in_force": ["gtc", "ioc", "fok"],
+    },
+    "fxcm": {
+        "paper_trading": True,
+        "real_time_data": True,
+        "historical_data": True,
+        "fractional_shares": False,
+        "crypto": False,
+        "options": False,
+        "margin": True,
+        "webhooks": True,
+        "websocket": True,
+        "streaming": True,
+        "order_types": ["market", "limit", "stop", "stop_limit"],
+        "time_in_force": ["gtc", "ioc", "fok"],
+    },
+    "ig": {
+        "paper_trading": True,
+        "real_time_data": True,
+        "historical_data": True,
+        "fractional_shares": False,
+        "crypto": False,
+        "options": False,
+        "margin": True,
+        "webhooks": True,
+        "websocket": True,
+        "streaming": True,
+        "order_types": ["market", "limit", "stop", "stop_limit"],
+        "time_in_force": ["gtc", "ioc", "fok"],
+    },
 }
 
 # ============================================================================
@@ -506,9 +863,11 @@ def create_exchange(
     
     exchange_class = EXCHANGE_REGISTRY[exchange_name]
     
-    # Get API endpoints for the exchange
+    # Get configuration
     endpoints = EXCHANGE_API_ENDPOINTS.get(exchange_name, {})
     rate_limits = EXCHANGE_RATE_LIMITS.get(exchange_name, {"requests": 100, "period": 60})
+    features = EXCHANGE_FEATURES.get(exchange_name, {})
+    asset_classes = EXCHANGE_ASSET_CLASSES.get(exchange_name, [])
     
     # Prepare configuration
     config = {
@@ -522,6 +881,8 @@ def create_exchange(
         "max_retries": max_retries,
         "endpoints": endpoints,
         "rate_limits": rate_limits,
+        "features": features,
+        "asset_classes": asset_classes,
         **kwargs,
     }
     
@@ -550,6 +911,8 @@ def get_exchange_info(exchange_name: Optional[str] = None) -> Dict[str, Any]:
             for exchange in SUPPORTED_EXCHANGES
         },
         "rate_limits": EXCHANGE_RATE_LIMITS,
+        "features": EXCHANGE_FEATURES,
+        "asset_classes": EXCHANGE_ASSET_CLASSES,
     }
     
     if exchange_name:
@@ -562,11 +925,11 @@ def get_exchange_info(exchange_name: Optional[str] = None) -> Dict[str, Any]:
                 "module": exchange_class.__module__,
                 "version": getattr(exchange_class, "__version__", "unknown"),
                 "description": getattr(exchange_class, "__doc__", "").strip(),
-                "features": _get_exchange_features(exchange_name),
+                "features": EXCHANGE_FEATURES.get(exchange_name, {}),
                 "category": _get_exchange_category(exchange_name),
                 "endpoints": EXCHANGE_API_ENDPOINTS.get(exchange_name, {}),
                 "rate_limits": EXCHANGE_RATE_LIMITS.get(exchange_name, {}),
-                "asset_classes": get_exchange_asset_classes(exchange_name),
+                "asset_classes": EXCHANGE_ASSET_CLASSES.get(exchange_name, []),
             }
         else:
             info["exchange_details"] = {"error": f"Exchange {exchange_name} not found"}
@@ -582,531 +945,7 @@ def _get_exchange_category(exchange_name: str) -> str:
     return "unknown"
 
 
-def _get_exchange_features(exchange_name: str) -> Dict[str, Any]:
-    """Get features for a specific exchange."""
-    features = {
-        # Stock Brokers
-        "alpaca": {
-            "paper_trading": True,
-            "real_time_data": True,
-            "historical_data": True,
-            "fractional_shares": True,
-            "crypto": True,
-            "options": False,
-            "margin": True,
-            "webhooks": True,
-            "websocket": True,
-            "streaming": True,
-            "order_types": ["market", "limit", "stop", "stop_limit", "trailing_stop"],
-            "time_in_force": ["day", "gtc", "ioc", "fok"],
-            "rate_limit": {"requests": 200, "period": 60},
-            "fee_structure": {"maker": 0.0, "taker": 0.0},
-        },
-        "ibkr": {
-            "paper_trading": True,
-            "real_time_data": True,
-            "historical_data": True,
-            "fractional_shares": True,
-            "crypto": True,
-            "options": True,
-            "margin": True,
-            "webhooks": False,
-            "websocket": True,
-            "streaming": True,
-            "order_types": ["market", "limit", "stop", "stop_limit", "trailing_stop", "peg", "rel", "mid", "lmt"],
-            "time_in_force": ["day", "gtc", "ioc", "fok", "gtd", "opg"],
-            "rate_limit": {"requests": 50, "period": 60},
-            "fee_structure": {"maker": 0.0, "taker": 0.0},
-        },
-        "tradier": {
-            "paper_trading": True,
-            "real_time_data": True,
-            "historical_data": True,
-            "fractional_shares": False,
-            "crypto": False,
-            "options": True,
-            "margin": True,
-            "webhooks": True,
-            "websocket": True,
-            "streaming": True,
-            "order_types": ["market", "limit", "stop", "stop_limit"],
-            "time_in_force": ["day", "gtc"],
-            "rate_limit": {"requests": 60, "period": 60},
-            "fee_structure": {"maker": 0.0, "taker": 0.0},
-        },
-        "tradestation": {
-            "paper_trading": True,
-            "real_time_data": True,
-            "historical_data": True,
-            "fractional_shares": True,
-            "crypto": False,
-            "options": True,
-            "margin": True,
-            "webhooks": False,
-            "websocket": True,
-            "streaming": True,
-            "order_types": ["market", "limit", "stop", "stop_limit"],
-            "time_in_force": ["day", "gtc", "ioc", "fok"],
-            "rate_limit": {"requests": 100, "period": 60},
-            "fee_structure": {"maker": 0.0, "taker": 0.0},
-        },
-        "schwab": {
-            "paper_trading": True,
-            "real_time_data": True,
-            "historical_data": True,
-            "fractional_shares": True,
-            "crypto": False,
-            "options": True,
-            "margin": True,
-            "webhooks": False,
-            "websocket": False,
-            "streaming": False,
-            "order_types": ["market", "limit", "stop", "stop_limit"],
-            "time_in_force": ["day", "gtc"],
-            "rate_limit": {"requests": 50, "period": 60},
-            "fee_structure": {"maker": 0.0, "taker": 0.0},
-        },
-        "fidelity": {
-            "paper_trading": False,
-            "real_time_data": True,
-            "historical_data": True,
-            "fractional_shares": True,
-            "crypto": False,
-            "options": True,
-            "margin": True,
-            "webhooks": False,
-            "websocket": False,
-            "streaming": False,
-            "order_types": ["market", "limit", "stop", "stop_limit"],
-            "time_in_force": ["day", "gtc"],
-            "rate_limit": {"requests": 50, "period": 60},
-            "fee_structure": {"maker": 0.0, "taker": 0.0},
-        },
-        "etrade": {
-            "paper_trading": True,
-            "real_time_data": True,
-            "historical_data": True,
-            "fractional_shares": False,
-            "crypto": False,
-            "options": True,
-            "margin": True,
-            "webhooks": True,
-            "websocket": False,
-            "streaming": False,
-            "order_types": ["market", "limit", "stop", "stop_limit"],
-            "time_in_force": ["day", "gtc", "ioc"],
-            "rate_limit": {"requests": 100, "period": 60},
-            "fee_structure": {"maker": 0.0, "taker": 0.0},
-        },
-        
-        # Crypto Exchanges
-        "binance": {
-            "paper_trading": True,
-            "real_time_data": True,
-            "historical_data": True,
-            "fractional_shares": False,
-            "crypto": True,
-            "options": False,
-            "margin": True,
-            "webhooks": True,
-            "websocket": True,
-            "streaming": True,
-            "order_types": ["market", "limit", "stop", "stop_limit", "take_profit", "take_profit_limit"],
-            "time_in_force": ["gtc", "ioc", "fok"],
-            "rate_limit": {"requests": 1200, "period": 60},
-            "fee_structure": {"maker": 0.001, "taker": 0.001},
-        },
-        "binance_spot": {
-            "paper_trading": True,
-            "real_time_data": True,
-            "historical_data": True,
-            "fractional_shares": False,
-            "crypto": True,
-            "options": False,
-            "margin": False,
-            "webhooks": True,
-            "websocket": True,
-            "streaming": True,
-            "order_types": ["market", "limit", "stop", "stop_limit"],
-            "time_in_force": ["gtc", "ioc", "fok"],
-            "rate_limit": {"requests": 1200, "period": 60},
-            "fee_structure": {"maker": 0.001, "taker": 0.001},
-        },
-        "binance_futures": {
-            "paper_trading": True,
-            "real_time_data": True,
-            "historical_data": True,
-            "fractional_shares": False,
-            "crypto": True,
-            "options": False,
-            "margin": True,
-            "webhooks": True,
-            "websocket": True,
-            "streaming": True,
-            "order_types": ["market", "limit", "stop", "stop_limit", "take_profit", "take_profit_limit"],
-            "time_in_force": ["gtc", "ioc", "fok"],
-            "rate_limit": {"requests": 2400, "period": 60},
-            "fee_structure": {"maker": 0.0002, "taker": 0.0004},
-        },
-        "binance_margin": {
-            "paper_trading": True,
-            "real_time_data": True,
-            "historical_data": True,
-            "fractional_shares": False,
-            "crypto": True,
-            "options": False,
-            "margin": True,
-            "webhooks": True,
-            "websocket": True,
-            "streaming": True,
-            "order_types": ["market", "limit", "stop", "stop_limit"],
-            "time_in_force": ["gtc", "ioc", "fok"],
-            "rate_limit": {"requests": 1200, "period": 60},
-            "fee_structure": {"maker": 0.001, "taker": 0.001},
-        },
-        "bybit": {
-            "paper_trading": True,
-            "real_time_data": True,
-            "historical_data": True,
-            "fractional_shares": False,
-            "crypto": True,
-            "options": True,
-            "margin": True,
-            "webhooks": True,
-            "websocket": True,
-            "streaming": True,
-            "order_types": ["market", "limit", "stop", "stop_limit", "take_profit"],
-            "time_in_force": ["gtc", "ioc", "fok"],
-            "rate_limit": {"requests": 600, "period": 60},
-            "fee_structure": {"maker": 0.0001, "taker": 0.0006},
-        },
-        "bybit_spot": {
-            "paper_trading": True,
-            "real_time_data": True,
-            "historical_data": True,
-            "fractional_shares": False,
-            "crypto": True,
-            "options": False,
-            "margin": False,
-            "webhooks": True,
-            "websocket": True,
-            "streaming": True,
-            "order_types": ["market", "limit", "stop", "stop_limit"],
-            "time_in_force": ["gtc", "ioc", "fok"],
-            "rate_limit": {"requests": 600, "period": 60},
-            "fee_structure": {"maker": 0.001, "taker": 0.001},
-        },
-        "bybit_futures": {
-            "paper_trading": True,
-            "real_time_data": True,
-            "historical_data": True,
-            "fractional_shares": False,
-            "crypto": True,
-            "options": False,
-            "margin": True,
-            "webhooks": True,
-            "websocket": True,
-            "streaming": True,
-            "order_types": ["market", "limit", "stop", "stop_limit", "take_profit"],
-            "time_in_force": ["gtc", "ioc", "fok"],
-            "rate_limit": {"requests": 1200, "period": 60},
-            "fee_structure": {"maker": 0.0001, "taker": 0.0006},
-        },
-        "bybit_inverse": {
-            "paper_trading": True,
-            "real_time_data": True,
-            "historical_data": True,
-            "fractional_shares": False,
-            "crypto": True,
-            "options": False,
-            "margin": True,
-            "webhooks": True,
-            "websocket": True,
-            "streaming": True,
-            "order_types": ["market", "limit", "stop", "stop_limit"],
-            "time_in_force": ["gtc", "ioc", "fok"],
-            "rate_limit": {"requests": 1200, "period": 60},
-            "fee_structure": {"maker": 0.0001, "taker": 0.0006},
-        },
-        "bybit_option": {
-            "paper_trading": True,
-            "real_time_data": True,
-            "historical_data": True,
-            "fractional_shares": False,
-            "crypto": True,
-            "options": True,
-            "margin": True,
-            "webhooks": True,
-            "websocket": True,
-            "streaming": True,
-            "order_types": ["market", "limit", "stop", "stop_limit"],
-            "time_in_force": ["gtc", "ioc", "fok"],
-            "rate_limit": {"requests": 600, "period": 60},
-            "fee_structure": {"maker": 0.0001, "taker": 0.0006},
-        },
-        "coinbase": {
-            "paper_trading": True,
-            "real_time_data": True,
-            "historical_data": True,
-            "fractional_shares": False,
-            "crypto": True,
-            "options": False,
-            "margin": False,
-            "webhooks": True,
-            "websocket": True,
-            "streaming": True,
-            "order_types": ["market", "limit", "stop", "stop_limit"],
-            "time_in_force": ["gtc", "ioc", "fok"],
-            "rate_limit": {"requests": 100, "period": 60},
-            "fee_structure": {"maker": 0.005, "taker": 0.005},
-        },
-        "coinbase_spot": {
-            "paper_trading": True,
-            "real_time_data": True,
-            "historical_data": True,
-            "fractional_shares": False,
-            "crypto": True,
-            "options": False,
-            "margin": False,
-            "webhooks": True,
-            "websocket": True,
-            "streaming": True,
-            "order_types": ["market", "limit", "stop", "stop_limit"],
-            "time_in_force": ["gtc", "ioc", "fok"],
-            "rate_limit": {"requests": 100, "period": 60},
-            "fee_structure": {"maker": 0.005, "taker": 0.005},
-        },
-        "coinbase_prime": {
-            "paper_trading": False,
-            "real_time_data": True,
-            "historical_data": True,
-            "fractional_shares": False,
-            "crypto": True,
-            "options": False,
-            "margin": True,
-            "webhooks": True,
-            "websocket": True,
-            "streaming": True,
-            "order_types": ["market", "limit", "stop", "stop_limit"],
-            "time_in_force": ["gtc", "ioc", "fok"],
-            "rate_limit": {"requests": 500, "period": 60},
-            "fee_structure": {"maker": 0.001, "taker": 0.001},
-        },
-        "kraken": {
-            "paper_trading": True,
-            "real_time_data": True,
-            "historical_data": True,
-            "fractional_shares": False,
-            "crypto": True,
-            "options": False,
-            "margin": True,
-            "webhooks": True,
-            "websocket": True,
-            "streaming": True,
-            "order_types": ["market", "limit", "stop", "stop_limit"],
-            "time_in_force": ["gtc", "ioc", "fok"],
-            "rate_limit": {"requests": 100, "period": 60},
-            "fee_structure": {"maker": 0.002, "taker": 0.002},
-        },
-        "kraken_spot": {
-            "paper_trading": True,
-            "real_time_data": True,
-            "historical_data": True,
-            "fractional_shares": False,
-            "crypto": True,
-            "options": False,
-            "margin": False,
-            "webhooks": True,
-            "websocket": True,
-            "streaming": True,
-            "order_types": ["market", "limit", "stop", "stop_limit"],
-            "time_in_force": ["gtc", "ioc", "fok"],
-            "rate_limit": {"requests": 100, "period": 60},
-            "fee_structure": {"maker": 0.002, "taker": 0.002},
-        },
-        "okx": {
-            "paper_trading": True,
-            "real_time_data": True,
-            "historical_data": True,
-            "fractional_shares": False,
-            "crypto": True,
-            "options": True,
-            "margin": True,
-            "webhooks": True,
-            "websocket": True,
-            "streaming": True,
-            "order_types": ["market", "limit", "stop", "stop_limit", "take_profit", "take_profit_limit"],
-            "time_in_force": ["gtc", "ioc", "fok"],
-            "rate_limit": {"requests": 600, "period": 60},
-            "fee_structure": {"maker": 0.0008, "taker": 0.001},
-        },
-        "okx_spot": {
-            "paper_trading": True,
-            "real_time_data": True,
-            "historical_data": True,
-            "fractional_shares": False,
-            "crypto": True,
-            "options": False,
-            "margin": False,
-            "webhooks": True,
-            "websocket": True,
-            "streaming": True,
-            "order_types": ["market", "limit", "stop", "stop_limit"],
-            "time_in_force": ["gtc", "ioc", "fok"],
-            "rate_limit": {"requests": 600, "period": 60},
-            "fee_structure": {"maker": 0.0008, "taker": 0.001},
-        },
-        "okx_futures": {
-            "paper_trading": True,
-            "real_time_data": True,
-            "historical_data": True,
-            "fractional_shares": False,
-            "crypto": True,
-            "options": False,
-            "margin": True,
-            "webhooks": True,
-            "websocket": True,
-            "streaming": True,
-            "order_types": ["market", "limit", "stop", "stop_limit", "take_profit"],
-            "time_in_force": ["gtc", "ioc", "fok"],
-            "rate_limit": {"requests": 1200, "period": 60},
-            "fee_structure": {"maker": 0.0002, "taker": 0.0005},
-        },
-        "okx_swap": {
-            "paper_trading": True,
-            "real_time_data": True,
-            "historical_data": True,
-            "fractional_shares": False,
-            "crypto": True,
-            "options": False,
-            "margin": True,
-            "webhooks": True,
-            "websocket": True,
-            "streaming": True,
-            "order_types": ["market", "limit", "stop", "stop_limit"],
-            "time_in_force": ["gtc", "ioc", "fok"],
-            "rate_limit": {"requests": 1200, "period": 60},
-            "fee_structure": {"maker": 0.0002, "taker": 0.0005},
-        },
-        "okx_option": {
-            "paper_trading": True,
-            "real_time_data": True,
-            "historical_data": True,
-            "fractional_shares": False,
-            "crypto": True,
-            "options": True,
-            "margin": True,
-            "webhooks": True,
-            "websocket": True,
-            "streaming": True,
-            "order_types": ["market", "limit", "stop", "stop_limit"],
-            "time_in_force": ["gtc", "ioc", "fok"],
-            "rate_limit": {"requests": 600, "period": 60},
-            "fee_structure": {"maker": 0.0002, "taker": 0.0005},
-        },
-        
-        # Forex Brokers
-        "oanda": {
-            "paper_trading": True,
-            "real_time_data": True,
-            "historical_data": True,
-            "fractional_shares": False,
-            "crypto": False,
-            "options": False,
-            "margin": True,
-            "webhooks": True,
-            "websocket": True,
-            "streaming": True,
-            "order_types": ["market", "limit", "stop", "stop_limit"],
-            "time_in_force": ["gtc", "ioc", "fok"],
-            "rate_limit": {"requests": 60, "period": 60},
-            "fee_structure": {"maker": 0.00005, "taker": 0.00005},
-        },
-        "fxcm": {
-            "paper_trading": True,
-            "real_time_data": True,
-            "historical_data": True,
-            "fractional_shares": False,
-            "crypto": False,
-            "options": False,
-            "margin": True,
-            "webhooks": True,
-            "websocket": True,
-            "streaming": True,
-            "order_types": ["market", "limit", "stop", "stop_limit"],
-            "time_in_force": ["gtc", "ioc", "fok"],
-            "rate_limit": {"requests": 60, "period": 60},
-            "fee_structure": {"maker": 0.00005, "taker": 0.00005},
-        },
-        "ig": {
-            "paper_trading": True,
-            "real_time_data": True,
-            "historical_data": True,
-            "fractional_shares": False,
-            "crypto": False,
-            "options": False,
-            "margin": True,
-            "webhooks": True,
-            "websocket": True,
-            "streaming": True,
-            "order_types": ["market", "limit", "stop", "stop_limit"],
-            "time_in_force": ["gtc", "ioc", "fok"],
-            "rate_limit": {"requests": 60, "period": 60},
-            "fee_structure": {"maker": 0.00005, "taker": 0.00005},
-        },
-        "pepperstone": {
-            "paper_trading": True,
-            "real_time_data": True,
-            "historical_data": True,
-            "fractional_shares": False,
-            "crypto": False,
-            "options": False,
-            "margin": True,
-            "webhooks": True,
-            "websocket": True,
-            "streaming": True,
-            "order_types": ["market", "limit", "stop", "stop_limit"],
-            "time_in_force": ["gtc", "ioc", "fok"],
-            "rate_limit": {"requests": 60, "period": 60},
-            "fee_structure": {"maker": 0.00005, "taker": 0.00005},
-        },
-        "dukascopy": {
-            "paper_trading": True,
-            "real_time_data": True,
-            "historical_data": True,
-            "fractional_shares": False,
-            "crypto": False,
-            "options": False,
-            "margin": True,
-            "webhooks": True,
-            "websocket": True,
-            "streaming": True,
-            "order_types": ["market", "limit", "stop", "stop_limit"],
-            "time_in_force": ["gtc", "ioc", "fok"],
-            "rate_limit": {"requests": 60, "period": 60},
-            "fee_structure": {"maker": 0.00005, "taker": 0.00005},
-        },
-        "forexcom": {
-            "paper_trading": True,
-            "real_time_data": True,
-            "historical_data": True,
-            "fractional_shares": False,
-            "crypto": False,
-            "options": False,
-            "margin": True,
-            "webhooks": True,
-            "websocket": True,
-            "streaming": True,
-            "order_types": ["market", "limit", "stop", "stop_limit"],
-            "time_in_force": ["gtc", "ioc", "fok"],
-            "rate_limit": {"requests": 60, "period": 60},
-            "fee_structure": {"maker": 0.00005, "taker": 0.00005},
-        },
-    }
-    return features.get(exchange_name, {})
-
-
-def get_exchange_class(exchange_name: str) -> Optional[Type[ExchangeBase]]:
+def get_exchange_class(exchange_name: str) -> Optional[type]:
     """
     Get the exchange class for a given name.
     
@@ -1114,7 +953,7 @@ def get_exchange_class(exchange_name: str) -> Optional[Type[ExchangeBase]]:
         exchange_name: Exchange name
     
     Returns:
-        Optional[Type[ExchangeBase]]: Exchange class or None
+        Optional[type]: Exchange class or None
     """
     exchange_name = exchange_name.lower()
     return EXCHANGE_REGISTRY.get(exchange_name)
@@ -1157,43 +996,49 @@ def get_exchange_asset_classes(exchange_name: str) -> List[str]:
         List[str]: List of asset classes
     """
     exchange_name = exchange_name.lower()
+    return EXCHANGE_ASSET_CLASSES.get(exchange_name, [])
+
+
+def get_exchange_features(exchange_name: str) -> Dict[str, Any]:
+    """
+    Get features for a specific exchange.
     
-    asset_classes = {
-        "alpaca": ["stock", "etf", "crypto"],
-        "ibkr": ["stock", "etf", "option", "future", "forex", "crypto", "bond", "commodity"],
-        "tradier": ["stock", "etf", "option"],
-        "tradestation": ["stock", "etf", "option", "future", "forex"],
-        "schwab": ["stock", "etf", "option", "future"],
-        "fidelity": ["stock", "etf", "option", "mutual_fund"],
-        "etrade": ["stock", "etf", "option", "mutual_fund"],
-        "binance": ["crypto", "future", "margin"],
-        "binance_spot": ["crypto"],
-        "binance_futures": ["future"],
-        "binance_margin": ["crypto", "margin"],
-        "bybit": ["crypto", "future", "option"],
-        "bybit_spot": ["crypto"],
-        "bybit_futures": ["future"],
-        "bybit_inverse": ["future"],
-        "bybit_option": ["option"],
-        "coinbase": ["crypto"],
-        "coinbase_spot": ["crypto"],
-        "coinbase_prime": ["crypto"],
-        "kraken": ["crypto", "future"],
-        "kraken_spot": ["crypto"],
-        "okx": ["crypto", "future", "option", "swap"],
-        "okx_spot": ["crypto"],
-        "okx_futures": ["future"],
-        "okx_swap": ["swap"],
-        "okx_option": ["option"],
-        "oanda": ["forex", "commodity", "index"],
-        "fxcm": ["forex", "commodity", "index"],
-        "ig": ["forex", "commodity", "index", "stock", "etf"],
-        "pepperstone": ["forex", "commodity", "index"],
-        "dukascopy": ["forex", "commodity", "index"],
-        "forexcom": ["forex", "commodity", "index"],
-    }
+    Args:
+        exchange_name: Exchange name
     
-    return asset_classes.get(exchange_name, [])
+    Returns:
+        Dict[str, Any]: Exchange features
+    """
+    exchange_name = exchange_name.lower()
+    return EXCHANGE_FEATURES.get(exchange_name, {})
+
+
+def get_exchange_endpoints(exchange_name: str) -> Dict[str, str]:
+    """
+    Get API endpoints for an exchange.
+    
+    Args:
+        exchange_name: Exchange name
+    
+    Returns:
+        Dict[str, str]: API endpoints
+    """
+    exchange_name = exchange_name.lower()
+    return EXCHANGE_API_ENDPOINTS.get(exchange_name, {})
+
+
+def get_exchange_rate_limits(exchange_name: str) -> Dict[str, int]:
+    """
+    Get rate limits for an exchange.
+    
+    Args:
+        exchange_name: Exchange name
+    
+    Returns:
+        Dict[str, int]: Rate limits
+    """
+    exchange_name = exchange_name.lower()
+    return EXCHANGE_RATE_LIMITS.get(exchange_name, {})
 
 
 def get_exchange_status(exchange_name: str) -> Dict[str, Any]:
@@ -1207,48 +1052,17 @@ def get_exchange_status(exchange_name: str) -> Dict[str, Any]:
         dict: Exchange status
     """
     exchange_name = exchange_name.lower()
-    features = _get_exchange_features(exchange_name)
-    category = _get_exchange_category(exchange_name)
-    asset_classes = get_exchange_asset_classes(exchange_name)
-    endpoints = EXCHANGE_API_ENDPOINTS.get(exchange_name, {})
-    rate_limits = EXCHANGE_RATE_LIMITS.get(exchange_name, {})
     
     return {
         "name": exchange_name,
         "supported": exchange_name in EXCHANGE_REGISTRY,
-        "category": category,
-        "asset_classes": asset_classes,
-        "features": features,
-        "endpoints": endpoints,
-        "rate_limits": rate_limits,
+        "category": _get_exchange_category(exchange_name),
+        "asset_classes": EXCHANGE_ASSET_CLASSES.get(exchange_name, []),
+        "features": EXCHANGE_FEATURES.get(exchange_name, {}),
+        "endpoints": EXCHANGE_API_ENDPOINTS.get(exchange_name, {}),
+        "rate_limits": EXCHANGE_RATE_LIMITS.get(exchange_name, {}),
         "status": "active" if exchange_name in EXCHANGE_REGISTRY else "unknown",
     }
-
-
-def get_exchange_endpoints(exchange_name: str) -> Dict[str, str]:
-    """
-    Get API endpoints for an exchange.
-    
-    Args:
-        exchange_name: Exchange name
-    
-    Returns:
-        Dict[str, str]: API endpoints
-    """
-    return EXCHANGE_API_ENDPOINTS.get(exchange_name.lower(), {})
-
-
-def get_exchange_rate_limits(exchange_name: str) -> Dict[str, int]:
-    """
-    Get rate limits for an exchange.
-    
-    Args:
-        exchange_name: Exchange name
-    
-    Returns:
-        Dict[str, int]: Rate limits
-    """
-    return EXCHANGE_RATE_LIMITS.get(exchange_name.lower(), {})
 
 
 # ============================================================================
@@ -1283,6 +1097,7 @@ async def create_exchange_context(
 # ============================================================================
 
 import logging
+from datetime import datetime
 from typing import Optional, Dict, Any, List, Type
 
 logger = logging.getLogger(__name__)
@@ -1348,6 +1163,9 @@ __all__ = [
     "OrderBookLevel",
     "DataFrequency",
     "WebSocketEvent",
+    "Environment",
+    "APIErrorCode",
+    "WebSocketState",
     
     # Data Classes (Base)
     "Price",
@@ -1360,6 +1178,9 @@ __all__ = [
     "OrderBook",
     "Candle",
     "ExchangeInfo",
+    "WebSocketMessage",
+    "APIRequest",
+    "APIResponse",
     
     # Exceptions (Base)
     "ExchangeError",
@@ -1375,24 +1196,25 @@ __all__ = [
     "AccountError",
     "TimeoutError",
     "WebSocketError",
+    "InvalidSymbolError",
+    "MaintenanceError",
+    "BadRequestError",
+    "NotFoundError",
+    "ConflictError",
     
     # Base Classes
     "ExchangeBase",
     "ExchangeFactory",
+    "RateLimiter",
+    "CircuitBreaker",
     
     # Decorators
     "retry_on_error",
     "rate_limited",
     "log_request",
+    "cache_result",
     
-    # Stock Exchange Classes
-    "AlpacaBroker",
-    "InteractiveBrokersBroker",
-    "TradierBroker",
-    "TradeStationBroker",
-    "SchwabBroker",
-    "FidelityBroker",
-    "ETRADEBroker",
+    # Stock Exchanges
     "StockExchangeBase",
     "StockOrder",
     "StockPosition",
@@ -1403,6 +1225,19 @@ __all__ = [
     "StockQuote",
     "StockBar",
     "StockWatchlist",
+    "StockAccountActivity",
+    "StockDividend",
+    "StockSplit",
+    "StockEarnings",
+    
+    "AlpacaBroker",
+    "InteractiveBrokersBroker",
+    "TradierBroker",
+    "TradeStationBroker",
+    "SchwabBroker",
+    "FidelityBroker",
+    "ETRADEBroker",
+    
     "StockDataConverter",
     "OrderConverter",
     "MarketDataConverter",
@@ -1410,6 +1245,11 @@ __all__ = [
     "QuoteConverter",
     "BarConverter",
     "TradeConverter",
+    "AccountConverter",
+    "WatchlistConverter",
+    "OHLCVConverter",
+    "OrderBookConverter",
+    
     "StockUtils",
     "SymbolValidator",
     "MarketHours",
@@ -1418,16 +1258,33 @@ __all__ = [
     "PositionCalculator",
     "RiskMetrics",
     "PerformanceMetrics",
+    "TechnicalIndicators",
+    "FundamentalAnalyzer",
+    "OptionPricer",
+    "StockFilter",
+    "MarketTiming",
+    "SectorAnalyzer",
+    "VolatilityCalculator",
+    "CorrelationAnalyzer",
     
     # Stock Exceptions
     "StockExchangeError",
     "StockAuthError",
+    "StockAuthzError",
+    "StockConnError",
+    "StockRateLimitError",
     "StockOrderError",
+    "StockInvalidOrderError",
+    "StockInsufficientBalanceError",
     "StockMarketDataError",
     "StockPositionError",
     "StockAccountError",
     "WatchlistError",
-    "StockRateLimitError",
+    "StreamError",
+    "WebhookError",
+    "StockValidationError",
+    "SymbolError",
+    "BrokerError",
     
     # Webhook
     "WebhookHandler",
@@ -1437,9 +1294,17 @@ __all__ = [
     "WebhookProvider",
     "WebhookEventType",
     "WebhookStatus",
+    "WebhookFormat",
+    "WebhookAuthType",
+    "WebhookCompression",
+    "SignatureAlgorithm",
     "StockTradeData",
     "StockQuoteData",
     "StockAggregateData",
+    "StockBarData",
+    "StockOrderData",
+    "StockPositionData",
+    "StockAccountData",
     "create_webhook_handler",
     
     # Crypto Exchanges
@@ -1516,8 +1381,10 @@ __all__ = [
     "EXCHANGE_REGISTRY",
     "SUPPORTED_EXCHANGES",
     "EXCHANGE_CATEGORIES",
+    "EXCHANGE_ASSET_CLASSES",
     "EXCHANGE_API_ENDPOINTS",
     "EXCHANGE_RATE_LIMITS",
+    "EXCHANGE_FEATURES",
     
     # Factory Functions
     "create_exchange",
@@ -1526,10 +1393,26 @@ __all__ = [
     "is_exchange_supported",
     "get_exchanges_by_category",
     "get_exchange_asset_classes",
-    "get_exchange_status",
+    "get_exchange_features",
     "get_exchange_endpoints",
     "get_exchange_rate_limits",
+    "get_exchange_status",
     "create_exchange_context",
+    
+    # Stock Broker Functions
+    "create_broker",
+    "get_broker_info",
+    "get_broker_class",
+    "is_broker_supported",
+    "get_broker_features",
+    "get_broker_endpoints",
+    "create_broker_context",
+    
+    # Stock Broker Registry
+    "BROKER_REGISTRY",
+    "SUPPORTED_BROKERS",
+    "BROKER_CONFIGS",
+    "BROKER_ENDPOINTS",
     
     # Init
     "init_exchanges_module",
@@ -1562,20 +1445,26 @@ if __name__ == "__main__":
         print(f"\n  {category.upper()}:")
         for exchange in exchanges:
             status = "✓" if exchange in EXCHANGE_REGISTRY else "✗"
-            features = _get_exchange_features(exchange)
+            features = EXCHANGE_FEATURES.get(exchange, {})
             print(f"    {status} {exchange:20} - {features.get('real_time_data', False)} data")
     
+    # Test asset classes
+    print("\n[2] Asset Classes by Exchange:")
+    for exchange in ["alpaca", "binance", "oanda", "ibkr"]:
+        asset_classes = get_exchange_asset_classes(exchange)
+        print(f"  {exchange:15} - {', '.join(asset_classes)}")
+    
     # Test API endpoints
-    print("\n[2] Testing API Endpoints:")
+    print("\n[3] Testing API Endpoints:")
     for exchange in ["alpaca", "binance", "oanda"]:
         endpoints = EXCHANGE_API_ENDPOINTS.get(exchange, {})
         print(f"\n  {exchange.upper()}:")
         for key, value in endpoints.items():
-            if key != "docs":
+            if key not in ["docs"]:
                 print(f"    {key:20} - {value}")
     
     # Test rate limits
-    print("\n[3] Testing Rate Limits:")
+    print("\n[4] Testing Rate Limits:")
     for exchange in ["alpaca", "binance", "oanda"]:
         limits = EXCHANGE_RATE_LIMITS.get(exchange, {})
         print(f"\n  {exchange.upper()}:")
@@ -1583,7 +1472,7 @@ if __name__ == "__main__":
             print(f"    {key:20} - {value}")
     
     # Test exchange creation
-    print("\n[4] Testing Exchange Creation:")
+    print("\n[5] Testing Exchange Creation:")
     test_exchanges = ["alpaca", "binance", "oanda", "kraken"]
     for exchange_name in test_exchanges:
         try:
@@ -1594,7 +1483,7 @@ if __name__ == "__main__":
             print(f"  ✗ {exchange_name:20} - Failed: {e}")
     
     # Test exchange info
-    print("\n[5] Exchange Information:")
+    print("\n[6] Exchange Information:")
     info = get_exchange_info()
     print(f"  Total supported: {info['count']}")
     print(f"  Categories:")
@@ -1602,19 +1491,13 @@ if __name__ == "__main__":
         print(f"    {category}: {len(exchanges)} exchanges")
     
     # Test features
-    print("\n[6] Feature Comparison:")
+    print("\n[7] Feature Comparison:")
     features_to_check = ["paper_trading", "real_time_data", "historical_data", "webhooks", "websocket", "streaming"]
     for exchange in ["alpaca", "binance", "oanda", "kraken"]:
-        features = _get_exchange_features(exchange)
+        features = get_exchange_features(exchange)
         print(f"\n  {exchange.upper()}:")
         for feature in features_to_check:
             print(f"    {feature:20} - {features.get(feature, False)}")
-    
-    # Test asset classes
-    print("\n[7] Asset Classes by Exchange:")
-    for exchange in ["alpaca", "binance", "oanda", "ibkr"]:
-        asset_classes = get_exchange_asset_classes(exchange)
-        print(f"  {exchange:15} - {', '.join(asset_classes)}")
     
     # Test category lookup
     print("\n[8] Category Lookup:")
@@ -1631,7 +1514,7 @@ if __name__ == "__main__":
     # Test order types
     print("\n[10] Order Types by Exchange:")
     for exchange in ["alpaca", "binance", "oanda"]:
-        features = _get_exchange_features(exchange)
+        features = get_exchange_features(exchange)
         order_types = features.get("order_types", [])
         print(f"  {exchange:15} - {', '.join(order_types)}")
     
