@@ -1,7 +1,7 @@
 # trading/bots/arbitrage_bot/core/order_router.py
 # Nexus AI Trading System - Arbitrage Bot Order Router Module
 # Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
-# Full version with advanced coding
+# Full version with advanced coding.
 
 """
 Arbitrage Bot - Order Router Module
