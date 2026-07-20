@@ -1,0 +1,294 @@
+# trading/bots/arbitrage_bot/logs/arbitrage.log
+# NEXUS AI TRADING SYSTEM - Arbitrage Execution Log
+# Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+# Log Level: INFO
+# Rotation: Daily, Max 10 files
+# Format: [TIMESTAMP] [LEVEL] [MODULE] [EXCHANGE] Message
+
+"""
+This file represents the main arbitrage execution log for the NEXUS AI Trading System.
+In production, this would be a continuously updated log file containing all
+arbitrage-related activities, executions, and events.
+"""
+
+# Sample arbitrage log entries
+LOG_ENTRIES = """
+[2026-01-01 00:00:01.123] [INFO] [ARBITRAGE_BOT] [ALL] Starting arbitrage bot v4.2.0
+[2026-01-01 00:00:01.456] [INFO] [ARBITRAGE_BOT] [ALL] Connected to 5 exchanges: binance, bybit, okx, uniswap, pancakeswap
+[2026-01-01 00:00:01.789] [INFO] [ARBITRAGE_BOT] [ALL] Loaded 15 detection modules
+[2026-01-01 00:00:02.012] [INFO] [ARBITRAGE_BOT] [ALL] Starting main arbitrage loop
+
+[2026-01-01 00:00:05.123] [INFO] [DEX_DETECTOR] [UNISWAP] Found arbitrage opportunity: ETH -> USDC -> DAI -> ETH
+[2026-01-01 00:00:05.124] [INFO] [DEX_DETECTOR] [UNISWAP] Expected profit: 0.45%, Gas cost: $12.50
+[2026-01-01 00:00:05.125] [INFO] [ARBITRAGE_BOT] [UNISWAP] Submitting dex arbitrage opportunity for execution
+[2026-01-01 00:00:05.126] [INFO] [DEX_EXECUTOR] [UNISWAP] Executing dex arbitrage: ETH -> USDC -> DAI -> ETH
+[2026-01-01 00:00:05.127] [INFO] [DEX_EXECUTOR] [UNISWAP] Route: Uniswap V3, Gas: 145678, Slippage: 0.12%
+[2026-01-01 00:00:05.128] [INFO] [DEX_EXECUTOR] [UNISWAP] Transaction submitted: 0x1234567890abcdef...
+[2026-01-01 00:00:05.129] [INFO] [DEX_EXECUTOR] [UNISWAP] Transaction confirmed: Block 19876543
+[2026-01-01 00:00:05.130] [INFO] [DEX_EXECUTOR] [UNISWAP] Realized profit: $8.50 (0.38%)
+
+[2026-01-01 00:00:10.234] [INFO] [CROSS_EXCHANGE_DETECTOR] [BINANCE/BYBIT] Found cross-exchange arbitrage: BTC/USD
+[2026-01-01 00:00:10.235] [INFO] [CROSS_EXCHANGE_DETECTOR] [BINANCE/BYBIT] Price diff: 0.12%, Expected profit: $12.50
+[2026-01-01 00:00:10.236] [INFO] [ARBITRAGE_BOT] [BINANCE/BYBIT] Submitting cross-exchange arbitrage for execution
+[2026-01-01 00:00:10.237] [INFO] [CROSS_EXCHANGE_EXECUTOR] [BINANCE/BYBIT] Executing cross-exchange arbitrage: BTC/USD
+[2026-01-01 00:00:10.238] [INFO] [CROSS_EXCHANGE_EXECUTOR] [BINANCE] Buy order placed: 0.5 BTC @ $94,231.00
+[2026-01-01 00:00:10.239] [INFO] [CROSS_EXCHANGE_EXECUTOR] [BYBIT] Sell order placed: 0.5 BTC @ $94,245.50
+[2026-01-01 00:00:10.240] [INFO] [CROSS_EXCHANGE_EXECUTOR] [BINANCE/BYBIT] Both orders filled successfully
+[2026-01-01 00:00:10.241] [INFO] [CROSS_EXCHANGE_EXECUTOR] [BINANCE/BYBIT] Realized profit: $7.25
+
+[2026-01-01 00:00:15.345] [INFO] [TRIANGULAR_DETECTOR] [OKX] Found triangular arbitrage: BTC -> ETH -> SOL -> BTC
+[2026-01-01 00:00:15.346] [INFO] [TRIANGULAR_DETECTOR] [OKX] Profit: 0.32%, Execution time: 45ms
+[2026-01-01 00:00:15.347] [INFO] [ARBITRAGE_BOT] [OKX] Submitting triangular arbitrage for execution
+[2026-01-01 00:00:15.348] [INFO] [TRIANGULAR_EXECUTOR] [OKX] Executing triangular arbitrage: BTC -> ETH -> SOL -> BTC
+[2026-01-01 00:00:15.349] [INFO] [TRIANGULAR_EXECUTOR] [OKX] Leg 1: BTC/ETH @ 0.0354 (BUY)
+[2026-01-01 00:00:15.350] [INFO] [TRIANGULAR_EXECUTOR] [OKX] Leg 2: ETH/SOL @ 0.0021 (BUY)
+[2026-01-01 00:00:15.351] [INFO] [TRIANGULAR_EXECUTOR] [OKX] Leg 3: SOL/BTC @ 0.0007 (SELL)
+[2026-01-01 00:00:15.352] [INFO] [TRIANGULAR_EXECUTOR] [OKX] All legs executed successfully
+[2026-01-01 00:00:15.353] [INFO] [TRIANGULAR_EXECUTOR] [OKX] Realized profit: $5.67
+
+[2026-01-01 00:00:20.456] [INFO] [STATISTICAL_DETECTOR] [BINANCE] Found statistical arbitrage pair: BTC/ETH
+[2026-01-01 00:00:20.457] [INFO] [STATISTICAL_DETECTOR] [BINANCE] Correlation: 0.89, Cointegration p-value: 0.023
+[2026-01-01 00:00:20.458] [INFO] [STATISTICAL_DETECTOR] [BINANCE] Current z-score: 2.34, Status: entry_short
+[2026-01-01 00:00:20.459] [INFO] [ARBITRAGE_BOT] [BINANCE] Submitting statistical arbitrage for execution
+[2026-01-01 00:00:20.460] [INFO] [STATISTICAL_EXECUTOR] [BINANCE] Executing statistical arbitrage: BTC/ETH
+[2026-01-01 00:00:20.461] [INFO] [STATISTICAL_EXECUTOR] [BINANCE] Leg 1: SELL 0.5 BTC @ $94,200.00
+[2026-01-01 00:00:20.462] [INFO] [STATISTICAL_EXECUTOR] [BINANCE] Leg 2: BUY 14.0 ETH @ $3,350.00
+[2026-01-01 00:00:20.463] [INFO] [STATISTICAL_EXECUTOR] [BINANCE] Position opened: z-score 2.34
+[2026-01-01 00:00:20.464] [INFO] [STATISTICAL_EXECUTOR] [BINANCE] Expected profit: $45.00
+
+[2026-01-01 00:00:25.567] [WARNING] [RISK_MANAGER] [ALL] Risk warning: Current drawdown 3.2%
+[2026-01-01 00:00:25.568] [WARNING] [RISK_MANAGER] [ALL] Max allowed drawdown: 5.0%
+[2026-01-01 00:00:25.569] [WARNING] [RISK_MANAGER] [ALL] Current positions: 8
+[2026-01-01 00:00:25.570] [INFO] [RISK_MANAGER] [ALL] Recommendation: Monitor positions closely
+
+[2026-01-01 00:00:30.678] [INFO] [FLASH_LOAN_DETECTOR] [AAVE] Found flash loan opportunity: USDC
+[2026-01-01 00:00:30.679] [INFO] [FLASH_LOAN_DETECTOR] [AAVE] Amount: $100,000, Fee: 0.09%
+[2026-01-01 00:00:30.680] [INFO] [ARBITRAGE_BOT] [AAVE] Submitting flash loan arbitrage for execution
+[2026-01-01 00:00:30.681] [INFO] [FLASH_LOAN_EXECUTOR] [AAVE] Executing flash loan arbitrage: USDC
+[2026-01-01 00:00:30.682] [INFO] [FLASH_LOAN_EXECUTOR] [AAVE] Borrowing 100,000 USDC from AAVE V3
+[2026-01-01 00:00:30.683] [INFO] [FLASH_LOAN_EXECUTOR] [UNISWAP] Executing swap: USDC -> ETH
+[2026-01-01 00:00:30.684] [INFO] [FLASH_LOAN_EXECUTOR] [PANCAKESWAP] Executing swap: ETH -> DAI
+[2026-01-01 00:00:30.685] [INFO] [FLASH_LOAN_EXECUTOR] [CURVE] Executing swap: DAI -> USDC
+[2026-01-01 00:00:30.686] [INFO] [FLASH_LOAN_EXECUTOR] [AAVE] Repaying flash loan: 100,090 USDC
+[2026-01-01 00:00:30.687] [INFO] [FLASH_LOAN_EXECUTOR] [AAVE] Flash loan completed successfully
+[2026-01-01 00:00:30.688] [INFO] [FLASH_LOAN_EXECUTOR] [AAVE] Realized profit: $45.00
+
+[2026-01-01 00:00:35.789] [INFO] [FUTURES_SPOT_DETECTOR] [BINANCE] Found basis trade: BTC/USD
+[2026-01-01 00:00:35.790] [INFO] [FUTURES_SPOT_DETECTOR] [BINANCE] Spot: $94,200.00, Futures: $94,350.00
+[2026-01-01 00:00:35.791] [INFO] [FUTURES_SPOT_DETECTOR] [BINANCE] Basis: 0.16%, Annualized: 5.84%
+[2026-01-01 00:00:35.792] [INFO] [ARBITRAGE_BOT] [BINANCE] Submitting futures-spot arbitrage for execution
+[2026-01-01 00:00:35.793] [INFO] [FUTURES_SPOT_EXECUTOR] [BINANCE] Executing basis trade: BTC/USD
+[2026-01-01 00:00:35.794] [INFO] [FUTURES_SPOT_EXECUTOR] [BINANCE] Leg 1: BUY 1 BTC @ $94,200.00 (SPOT)
+[2026-01-01 00:00:35.795] [INFO] [FUTURES_SPOT_EXECUTOR] [BINANCE] Leg 2: SELL 1 BTC @ $94,350.00 (FUTURES)
+[2026-01-01 00:00:35.796] [INFO] [FUTURES_SPOT_EXECUTOR] [BINANCE] Position opened: basis 0.16%
+[2026-01-01 00:00:35.797] [INFO] [FUTURES_SPOT_EXECUTOR] [BINANCE] Expected profit: $150.00
+
+[2026-01-01 00:00:40.890] [ERROR] [ORDER_EXECUTOR] [BINANCE] Order failed: Insufficient balance for BTC/USD
+[2026-01-01 00:00:40.891] [ERROR] [ORDER_EXECUTOR] [BINANCE] Error code: -2010, Message: Insufficient balance
+[2026-01-01 00:00:40.892] [WARNING] [ARBITRAGE_BOT] [BINANCE] Skipping opportunity due to balance issue
+
+[2026-01-01 00:00:45.901] [INFO] [OPPORTUNITY_SCANNER] [ALL] Scan completed: 5 exchanges, 28 opportunities
+[2026-01-01 00:00:45.902] [INFO] [OPPORTUNITY_SCANNER] [ALL] Best opportunity: BTC/USD cross-exchange (0.12%)
+[2026-01-01 00:00:45.903] [INFO] [OPPORTUNITY_SCANNER] [ALL] Scan time: 1.2s, Cache hit rate: 78%
+
+[2026-01-01 00:01:00.012] [INFO] [SMART_EXECUTOR] [ALL] Strategy selection: High volatility (0.8)
+[2026-01-01 00:01:00.013] [INFO] [SMART_EXECUTOR] [ALL] Selected strategy: parallel
+[2026-01-01 00:01:00.014] [INFO] [SMART_EXECUTOR] [ALL] Alternative strategies: batch, sequential
+[2026-01-01 00:01:00.015] [INFO] [SMART_EXECUTOR] [ALL] Confidence: 0.73
+
+[2026-01-01 00:01:05.123] [INFO] [MIXED_EXECUTOR] [ALL] Executing mixed strategy
+[2026-01-01 00:01:05.124] [INFO] [MIXED_EXECUTOR] [ALL] Sub-strategies: dex_arbitrage, cross_exchange, statistical
+[2026-01-01 00:01:05.125] [INFO] [MIXED_EXECUTOR] [ALL] Combined profit: $45.20
+[2026-01-01 00:01:05.126] [INFO] [MIXED_EXECUTOR] [ALL] Combined risk: 0.25, Confidence: 0.82
+
+[2026-01-01 00:02:00.234] [INFO] [PARALLEL_EXECUTOR] [ALL] Parallel execution: 8 tasks
+[2026-01-01 00:02:00.235] [INFO] [PARALLEL_EXECUTOR] [ALL] Successful: 7, Failed: 1
+[2026-01-01 00:02:00.236] [INFO] [PARALLEL_EXECUTOR] [ALL] Total profit: $45.67
+[2026-01-01 00:02:00.237] [INFO] [PARALLEL_EXECUTOR] [ALL] Avg execution time: 56ms, Worker utilization: 87.5%
+
+[2026-01-01 00:03:00.345] [INFO] [SEQUENTIAL_EXECUTOR] [ALL] Sequential execution: 5 steps
+[2026-01-01 00:03:00.346] [INFO] [SEQUENTIAL_EXECUTOR] [ALL] Completed: 5, Failed: 0, Rollbacks: 0
+[2026-01-01 00:03:00.347] [INFO] [SEQUENTIAL_EXECUTOR] [ALL] Total profit: $12.34
+[2026-01-01 00:03:00.348] [INFO] [SEQUENTIAL_EXECUTOR] [ALL] Avg step time: 23ms, Success rate: 100%
+
+[2026-01-01 00:04:00.456] [INFO] [BATCH_EXECUTOR] [ALL] Batch execution: 5 orders
+[2026-01-01 00:04:00.457] [INFO] [BATCH_EXECUTOR] [ALL] Gas optimization: enabled, Estimated gas savings: 15%
+[2026-01-01 00:04:00.458] [INFO] [BATCH_EXECUTOR] [ALL] Estimated execution time: 120ms
+[2026-01-01 00:04:00.459] [INFO] [BATCH_EXECUTOR] [ALL] All orders executed successfully
+
+[2026-01-01 00:05:00.567] [WARNING] [ARBITRAGE_BOT] [ALL] High latency detected: 234ms (threshold: 200ms)
+[2026-01-01 00:05:00.568] [WARNING] [ARBITRAGE_BOT] [ALL] Adjusting execution speed to compensate
+
+[2026-01-01 00:06:00.678] [INFO] [EXECUTION_MONITOR] [ALL] Execution summary (last 5 minutes):
+[2026-01-01 00:06:00.679] [INFO] [EXECUTION_MONITOR] [ALL] Total opportunities: 142
+[2026-01-01 00:06:00.680] [INFO] [EXECUTION_MONITOR] [ALL] Executed: 12, Succeeded: 10, Failed: 2
+[2026-01-01 00:06:00.681] [INFO] [EXECUTION_MONITOR] [ALL] Total profit: $234.50, Success rate: 83.3%
+[2026-01-01 00:06:00.682] [INFO] [EXECUTION_MONITOR] [ALL] Avg execution time: 85ms
+
+[2026-01-01 00:10:00.789] [INFO] [PRICE_DETECTOR] [ALL] Price update: BTC/USD $94,234.50 (Binance)
+[2026-01-01 00:10:00.790] [INFO] [PRICE_DETECTOR] [ALL] Price update: ETH/USD $3,456.78 (Binance)
+[2026-01-01 00:10:00.791] [INFO] [PRICE_DETECTOR] [ALL] Price update: SOL/USD $187.23 (Binance)
+
+[2026-01-01 00:15:00.890] [INFO] [SPREAD_DETECTOR] [ALL] BTC/USD spread: 0.02% (Binance)
+[2026-01-01 00:15:00.891] [INFO] [SPREAD_DETECTOR] [ALL] ETH/USD spread: 0.03% (Binance)
+[2026-01-01 00:15:00.892] [INFO] [SPREAD_DETECTOR] [ALL] SOL/USD spread: 0.04% (Binance)
+
+[2026-01-01 00:20:00.901] [INFO] [VOLUME_DETECTOR] [ALL] Volume anomaly detected: BTC/USD spike on Binance
+[2026-01-01 00:20:00.902] [INFO] [VOLUME_DETECTOR] [ALL] Current volume: $45M, Expected: $15M, Deviation: 300%
+
+[2026-01-01 00:30:00.012] [INFO] [ARBITRAGE_BOT] [ALL] Running health check...
+[2026-01-01 00:30:00.013] [INFO] [ARBITRAGE_BOT] [ALL] Health: OK (CPU: 23.4%, Memory: 45.6%, Disk: 34.5%)
+[2026-01-01 00:30:00.014] [INFO] [ARBITRAGE_BOT] [ALL] Active connections: 67, Queue size: 45
+[2026-01-01 00:30:00.015] [INFO] [ARBITRAGE_BOT] [ALL] Error rate: 0.23%, Status: HEALTHY
+
+[2026-01-01 01:00:00.123] [INFO] [ARBITRAGE_BOT] [ALL] Hourly summary:
+[2026-01-01 01:00:00.124] [INFO] [ARBITRAGE_BOT] [ALL] Hourly profit: $123.45, Trades: 12
+[2026-01-01 01:00:00.125] [INFO] [ARBITRAGE_BOT] [ALL] Best trade: $23.45, Worst trade: -$5.67
+[2026-01-01 01:00:00.126] [INFO] [ARBITRAGE_BOT] [ALL] Win rate: 75.0%
+
+[2026-01-01 02:00:00.234] [INFO] [ARBITRAGE_BOT] [ALL] Hourly summary:
+[2026-01-01 02:00:00.235] [INFO] [ARBITRAGE_BOT] [ALL] Hourly profit: $89.01, Trades: 8
+[2026-01-01 02:00:00.236] [INFO] [ARBITRAGE_BOT] [ALL] Best trade: $12.34, Worst trade: -$3.45
+[2026-01-01 02:00:00.237] [INFO] [ARBITRAGE_BOT] [ALL] Win rate: 62.5%
+
+[2026-01-01 03:00:00.345] [INFO] [ARBITRAGE_BOT] [ALL] Hourly summary:
+[2026-01-01 03:00:00.346] [INFO] [ARBITRAGE_BOT] [ALL] Hourly profit: $67.89, Trades: 6
+[2026-01-01 03:00:00.347] [INFO] [ARBITRAGE_BOT] [ALL] Best trade: $15.67, Worst trade: -$2.34
+[2026-01-01 03:00:00.348] [INFO] [ARBITRAGE_BOT] [ALL] Win rate: 66.7%
+
+[2026-01-01 04:00:00.456] [INFO] [ARBITRAGE_BOT] [ALL] Hourly summary:
+[2026-01-01 04:00:00.457] [INFO] [ARBITRAGE_BOT] [ALL] Hourly profit: $156.78, Trades: 14
+[2026-01-01 04:00:00.458] [INFO] [ARBITRAGE_BOT] [ALL] Best trade: $34.56, Worst trade: -$8.90
+[2026-01-01 04:00:00.459] [INFO] [ARBITRAGE_BOT] [ALL] Win rate: 78.6%
+
+[2026-01-01 05:00:00.567] [INFO] [ARBITRAGE_BOT] [ALL] Hourly summary:
+[2026-01-01 05:00:00.568] [INFO] [ARBITRAGE_BOT] [ALL] Hourly profit: $234.56, Trades: 18
+[2026-01-01 05:00:00.569] [INFO] [ARBITRAGE_BOT] [ALL] Best trade: $45.67, Worst trade: -$12.34
+[2026-01-01 05:00:00.570] [INFO] [ARBITRAGE_BOT] [ALL] Win rate: 83.3%
+
+[2026-01-01 06:00:00.678] [INFO] [ARBITRAGE_BOT] [ALL] Hourly summary:
+[2026-01-01 06:00:00.679] [INFO] [ARBITRAGE_BOT] [ALL] Hourly profit: $89.01, Trades: 10
+[2026-01-01 06:00:00.680] [INFO] [ARBITRAGE_BOT] [ALL] Best trade: $23.45, Worst trade: -$5.67
+[2026-01-01 06:00:00.681] [INFO] [ARBITRAGE_BOT] [ALL] Win rate: 70.0%
+
+[2026-01-01 07:00:00.789] [INFO] [ARBITRAGE_BOT] [ALL] Hourly summary:
+[2026-01-01 07:00:00.790] [INFO] [ARBITRAGE_BOT] [ALL] Hourly profit: $12.34, Trades: 4
+[2026-01-01 07:00:00.791] [INFO] [ARBITRAGE_BOT] [ALL] Best trade: $8.90, Worst trade: -$1.23
+[2026-01-01 07:00:00.792] [INFO] [ARBITRAGE_BOT] [ALL] Win rate: 50.0%
+
+[2026-01-01 08:00:00.890] [ERROR] [ARBITRAGE_BOT] [BINANCE] WebSocket connection error: Connection reset by peer
+[2026-01-01 08:00:00.891] [ERROR] [ARBITRAGE_BOT] [BINANCE] Stream: BTC/USD@depth
+[2026-01-01 08:00:00.892] [WARNING] [ARBITRAGE_BOT] [BINANCE] Reconnecting in 5s... (Attempt 1/5)
+
+[2026-01-01 08:00:05.901] [INFO] [ARBITRAGE_BOT] [BINANCE] WebSocket reconnected successfully
+[2026-01-01 08:00:05.902] [INFO] [ARBITRAGE_BOT] [BINANCE] Stream: BTC/USD@depth, Latency: 12ms
+
+[2026-01-01 09:00:00.012] [INFO] [ARBITRAGE_BOT] [ALL] Hourly summary:
+[2026-01-01 09:00:00.013] [INFO] [ARBITRAGE_BOT] [ALL] Hourly profit: $45.67, Trades: 6
+[2026-01-01 09:00:00.014] [INFO] [ARBITRAGE_BOT] [ALL] Best trade: $15.67, Worst trade: -$3.45
+[2026-01-01 09:00:00.015] [INFO] [ARBITRAGE_BOT] [ALL] Win rate: 66.7%
+
+[2026-01-01 10:00:00.123] [WARNING] [ARBITRAGE_BOT] [ALL] Position limit reached: BTC/USD
+[2026-01-01 10:00:00.124] [WARNING] [ARBITRAGE_BOT] [ALL] Current position: 2.5 BTC (max: 2.0 BTC)
+[2026-01-01 10:00:00.125] [WARNING] [ARBITRAGE_BOT] [ALL] No new positions allowed
+
+[2026-01-01 11:00:00.234] [INFO] [ARBITRAGE_BOT] [ALL] Hourly summary:
+[2026-01-01 11:00:00.235] [INFO] [ARBITRAGE_BOT] [ALL] Hourly profit: $67.89, Trades: 8
+[2026-01-01 11:00:00.236] [INFO] [ARBITRAGE_BOT] [ALL] Best trade: $18.90, Worst trade: -$4.56
+[2026-01-01 11:00:00.237] [INFO] [ARBITRAGE_BOT] [ALL] Win rate: 75.0%
+
+[2026-01-01 12:00:00.345] [INFO] [ARBITRAGE_BOT] [ALL] Half-day summary:
+[2026-01-01 12:00:00.346] [INFO] [ARBITRAGE_BOT] [ALL] Total profit: $789.01
+[2026-01-01 12:00:00.347] [INFO] [ARBITRAGE_BOT] [ALL] Trades: 45, Win rate: 78.2%
+[2026-01-01 12:00:00.348] [INFO] [ARBITRAGE_BOT] [ALL] Best profit: $34.56, Worst loss: -$23.45
+[2026-01-01 12:00:00.349] [INFO] [ARBITRAGE_BOT] [ALL] System uptime: 12h, Health: GOOD
+
+[2026-01-01 13:00:00.456] [INFO] [ARBITRAGE_BOT] [ALL] Strategy adjustment:
+[2026-01-01 13:00:00.457] [INFO] [ARBITRAGE_BOT] [ALL] Market regime: High volatility
+[2026-01-01 13:00:00.458] [INFO] [ARBITRAGE_BOT] [ALL] Risk level: MEDIUM
+[2026-01-01 13:00:00.459] [INFO] [ARBITRAGE_BOT] [ALL] Active strategies: cross_exchange, statistical, dex
+[2026-01-01 13:00:00.460] [INFO] [ARBITRAGE_BOT] [ALL] Inactive strategies: triangular, flash_loan
+
+[2026-01-01 14:00:00.567] [INFO] [ARBITRAGE_BOT] [ALL] Hourly summary:
+[2026-01-01 14:00:00.568] [INFO] [ARBITRAGE_BOT] [ALL] Hourly profit: $234.56, Trades: 22
+[2026-01-01 14:00:00.569] [INFO] [ARBITRAGE_BOT] [ALL] Best trade: $45.67, Worst trade: -$8.90
+[2026-01-01 14:00:00.570] [INFO] [ARBITRAGE_BOT] [ALL] Win rate: 86.4%
+
+[2026-01-01 15:00:00.678] [INFO] [ARBITRAGE_BOT] [ALL] Hourly summary:
+[2026-01-01 15:00:00.679] [INFO] [ARBITRAGE_BOT] [ALL] Hourly profit: $345.67, Trades: 28
+[2026-01-01 15:00:00.680] [INFO] [ARBITRAGE_BOT] [ALL] Best trade: $67.89, Worst trade: -$12.34
+[2026-01-01 15:00:00.681] [INFO] [ARBITRAGE_BOT] [ALL] Win rate: 82.1%
+
+[2026-01-01 16:00:00.789] [INFO] [ARBITRAGE_BOT] [ALL] Hourly summary:
+[2026-01-01 16:00:00.790] [INFO] [ARBITRAGE_BOT] [ALL] Hourly profit: $234.56, Trades: 18
+[2026-01-01 16:00:00.791] [INFO] [ARBITRAGE_BOT] [ALL] Best trade: $45.67, Worst trade: -$6.78
+[2026-01-01 16:00:00.792] [INFO] [ARBITRAGE_BOT] [ALL] Win rate: 77.8%
+
+[2026-01-01 17:00:00.890] [INFO] [ARBITRAGE_BOT] [ALL] Hourly summary:
+[2026-01-01 17:00:00.891] [INFO] [ARBITRAGE_BOT] [ALL] Hourly profit: $89.01, Trades: 10
+[2026-01-01 17:00:00.892] [INFO] [ARBITRAGE_BOT] [ALL] Best trade: $23.45, Worst trade: -$5.67
+[2026-01-01 17:00:00.893] [INFO] [ARBITRAGE_BOT] [ALL] Win rate: 70.0%
+
+[2026-01-01 18:00:00.901] [INFO] [ARBITRAGE_BOT] [ALL] Hourly summary:
+[2026-01-01 18:00:00.902] [INFO] [ARBITRAGE_BOT] [ALL] Hourly profit: $12.34, Trades: 4
+[2026-01-01 18:00:00.903] [INFO] [ARBITRAGE_BOT] [ALL] Best trade: $8.90, Worst trade: -$1.23
+[2026-01-01 18:00:00.904] [INFO] [ARBITRAGE_BOT] [ALL] Win rate: 50.0%
+
+[2026-01-01 19:00:00.012] [INFO] [ARBITRAGE_BOT] [ALL] Hourly summary:
+[2026-01-01 19:00:00.013] [INFO] [ARBITRAGE_BOT] [ALL] Hourly profit: $45.67, Trades: 6
+[2026-01-01 19:00:00.014] [INFO] [ARBITRAGE_BOT] [ALL] Best trade: $12.34, Worst trade: -$3.45
+[2026-01-01 19:00:00.015] [INFO] [ARBITRAGE_BOT] [ALL] Win rate: 66.7%
+
+[2026-01-01 20:00:00.123] [INFO] [ARBITRAGE_BOT] [ALL] Hourly summary:
+[2026-01-01 20:00:00.124] [INFO] [ARBITRAGE_BOT] [ALL] Hourly profit: $156.78, Trades: 16
+[2026-01-01 20:00:00.125] [INFO] [ARBITRAGE_BOT] [ALL] Best trade: $34.56, Worst trade: -$8.90
+[2026-01-01 20:00:00.126] [INFO] [ARBITRAGE_BOT] [ALL] Win rate: 75.0%
+
+[2026-01-01 21:00:00.234] [INFO] [ARBITRAGE_BOT] [ALL] Hourly summary:
+[2026-01-01 21:00:00.235] [INFO] [ARBITRAGE_BOT] [ALL] Hourly profit: $89.01, Trades: 10
+[2026-01-01 21:00:00.236] [INFO] [ARBITRAGE_BOT] [ALL] Best trade: $18.90, Worst trade: -$4.56
+[2026-01-01 21:00:00.237] [INFO] [ARBITRAGE_BOT] [ALL] Win rate: 70.0%
+
+[2026-01-01 22:00:00.345] [INFO] [ARBITRAGE_BOT] [ALL] Hourly summary:
+[2026-01-01 22:00:00.346] [INFO] [ARBITRAGE_BOT] [ALL] Hourly profit: $56.78, Trades: 8
+[2026-01-01 22:00:00.347] [INFO] [ARBITRAGE_BOT] [ALL] Best trade: $15.67, Worst trade: -$3.45
+[2026-01-01 22:00:00.348] [INFO] [ARBITRAGE_BOT] [ALL] Win rate: 62.5%
+
+[2026-01-01 23:00:00.456] [INFO] [ARBITRAGE_BOT] [ALL] Hourly summary:
+[2026-01-01 23:00:00.457] [INFO] [ARBITRAGE_BOT] [ALL] Hourly profit: $34.56, Trades: 6
+[2026-01-01 23:00:00.458] [INFO] [ARBITRAGE_BOT] [ALL] Best trade: $12.34, Worst trade: -$2.34
+[2026-01-01 23:00:00.459] [INFO] [ARBITRAGE_BOT] [ALL] Win rate: 50.0%
+
+[2026-01-01 23:59:59.999] [INFO] [ARBITRAGE_BOT] [ALL] Daily summary:
+[2026-01-01 23:59:59.999] [INFO] [ARBITRAGE_BOT] [ALL] Total profit: $1,567.89
+[2026-01-01 23:59:59.999] [INFO] [ARBITRAGE_BOT] [ALL] Total trades: 167
+[2026-01-01 23:59:59.999] [INFO] [ARBITRAGE_BOT] [ALL] Win rate: 74.8%
+[2026-01-01 23:59:59.999] [INFO] [ARBITRAGE_BOT] [ALL] Best trade: $67.89, Worst trade: -$34.56
+[2026-01-01 23:59:59.999] [INFO] [ARBITRAGE_BOT] [ALL] Avg trade size: $2,890.12
+[2026-01-01 23:59:59.999] [INFO] [ARBITRAGE_BOT] [ALL] Total volume: $483,678.90
+[2026-01-01 23:59:59.999] [INFO] [ARBITRAGE_BOT] [ALL] Net profit: $1,455.43
+[2026-01-01 23:59:59.999] [INFO] [ARBITRAGE_BOT] [ALL] Shutting down...
+[2026-01-01 23:59:59.999] [INFO] [ARBITRAGE_BOT] [ALL] All connections closed
+[2026-01-01 23:59:59.999] [INFO] [ARBITRAGE_BOT] [ALL] Arbitrage bot stopped gracefully
+"""
+
+# Log metadata
+LOG_METADATA = {
+    "filename": "arbitrage.log",
+    "file_size_mb": 12.3,
+    "entries_count": 1234,
+    "error_count": 12,
+    "warning_count": 34,
+    "info_count": 1188,
+    "start_time": "2026-01-01 00:00:00.000",
+    "end_time": "2026-01-01 23:59:59.999",
+    "rotation": "daily",
+    "max_files": 10,
+    "current_file": 1,
+}
+
+# Module exports
+__all__ = [
+    'LOG_ENTRIES',
+    'LOG_METADATA',
+]
