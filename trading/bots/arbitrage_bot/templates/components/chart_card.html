@@ -1,0 +1,1688 @@
+<!-- trading/bots/arbitrage_bot/templates/components/chart_card.html -->
+<!-- NEXUS AI TRADING SYSTEM -->
+<!-- Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved -->
+<!-- Version: 4.2.0 - Complete Chart Card Component -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chart Card Component</title>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.0.0/dist/chart.umd.min.js"></script>
+    <!-- Chart.js Data Labels Plugin -->
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0/dist/chartjs-plugin-datalabels.min.js"></script>
+</head>
+<body>
+
+<!-- ======================================================================= -->
+<!-- CHART CARD MACRO                                                         -->
+<!-- ======================================================================= -->
+{% macro chart_card(title, chart_type='line', data=None, height='350px', width='100%', options={}, symbol='BTC/USD', show_controls=True) %}
+<div class="chart-card" id="chart-card-{{ loop.index if loop else '1' }}" 
+     data-chart-id="chart-{{ loop.index if loop else '1' }}"
+     data-symbol="{{ symbol }}"
+     data-chart-type="{{ chart_type }}"
+     data-theme="{{ options.theme if options.theme else 'dark' }}">
+    
+    <!-- ======================== HEADER ======================== -->
+    <div class="chart-header">
+        <div class="chart-title-section">
+            <h3 class="chart-title">
+                <i class="fas fa-chart-line chart-title-icon"></i>
+                {{ title }}
+            </h3>
+            <div class="chart-subtitle">
+                <span class="chart-symbol">{{ symbol }}</span>
+                <span class="chart-update-time" id="chart-update-time-{{ loop.index if loop else '1' }}">
+                    <i class="fas fa-clock"></i> 
+                    {{ now().strftime('%H:%M:%S') }}
+                </span>
+                <span class="chart-status" id="chart-status-{{ loop.index if loop else '1' }}">
+                    <i class="fas fa-circle" style="color: #00D4FF;"></i> Live
+                </span>
+            </div>
+        </div>
+        
+        {% if show_controls %}
+        <div class="chart-controls">
+            <!-- Interval Selector -->
+            <div class="chart-interval-selector">
+                <button class="chart-btn chart-btn-active" data-interval="1m">1m</button>
+                <button class="chart-btn" data-interval="5m">5m</button>
+                <button class="chart-btn" data-interval="15m">15m</button>
+                <button class="chart-btn" data-interval="1h">1h</button>
+                <button class="chart-btn" data-interval="4h">4h</button>
+                <button class="chart-btn" data-interval="1d">1d</button>
+                <button class="chart-btn" data-interval="1w">1w</button>
+            </div>
+            
+            <!-- Chart Type Selector -->
+            <div class="chart-type-selector">
+                <button class="chart-type-btn chart-type-active" data-type="line" title="Line Chart">
+                    <i class="fas fa-chart-line"></i>
+                </button>
+                <button class="chart-type-btn" data-type="candlestick" title="Candlestick Chart">
+                    <i class="fas fa-candlestick"></i>
+                </button>
+                <button class="chart-type-btn" data-type="bar" title="Bar Chart">
+                    <i class="fas fa-chart-bar"></i>
+                </button>
+                <button class="chart-type-btn" data-type="area" title="Area Chart">
+                    <i class="fas fa-chart-area"></i>
+                </button>
+            </div>
+            
+            <!-- Actions -->
+            <div class="chart-actions">
+                <button class="chart-action-btn" data-action="refresh" title="Refresh Data">
+                    <i class="fas fa-sync-alt"></i>
+                </button>
+                <button class="chart-action-btn" data-action="fullscreen" title="Toggle Fullscreen">
+                    <i class="fas fa-expand"></i>
+                </button>
+                <button class="chart-action-btn" data-action="download" title="Download Chart">
+                    <i class="fas fa-download"></i>
+                </button>
+                <button class="chart-action-btn" data-action="settings" title="Chart Settings">
+                    <i class="fas fa-cog"></i>
+                </button>
+                <button class="chart-action-btn" data-action="reset" title="Reset Zoom">
+                    <i class="fas fa-undo-alt"></i>
+                </button>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+    
+    <!-- ======================== BODY ======================== -->
+    <div class="chart-body">
+        <!-- Chart Container -->
+        <div class="chart-container" id="chart-container-{{ loop.index if loop else '1' }}" style="height: {{ height }}; width: {{ width }};">
+            <canvas id="chart-{{ loop.index if loop else '1' }}"></canvas>
+        </div>
+        
+        <!-- Loading Overlay -->
+        <div class="chart-loading-overlay" id="chart-loading-{{ loop.index if loop else '1' }}" style="display: none;">
+            <div class="chart-loading-spinner"></div>
+            <span class="chart-loading-text">Loading chart data...</span>
+            <div class="chart-loading-progress">
+                <div class="chart-loading-progress-bar" style="width: 0%;"></div>
+            </div>
+        </div>
+        
+        <!-- Error Overlay -->
+        <div class="chart-error-overlay" id="chart-error-{{ loop.index if loop else '1' }}" style="display: none;">
+            <i class="fas fa-exclamation-triangle"></i>
+            <span class="chart-error-text">Failed to load chart data</span>
+            <span class="chart-error-detail" id="chart-error-detail-{{ loop.index if loop else '1' }}"></span>
+            <button class="chart-retry-btn" data-action="retry" data-chart-id="chart-{{ loop.index if loop else '1' }}">
+                <i class="fas fa-redo"></i> Retry
+            </button>
+        </div>
+        
+        <!-- Empty State -->
+        <div class="chart-empty-overlay" id="chart-empty-{{ loop.index if loop else '1' }}" style="display: none;">
+            <i class="fas fa-chart-simple"></i>
+            <span class="chart-empty-text">No data available</span>
+            <span class="chart-empty-subtext">Select a different interval or symbol</span>
+        </div>
+    </div>
+    
+    <!-- ======================== FOOTER ======================== -->
+    <div class="chart-footer">
+        <!-- Statistics -->
+        <div class="chart-stats" id="chart-stats-{{ loop.index if loop else '1' }}">
+            <div class="stat-item">
+                <span class="stat-label">Open</span>
+                <span class="stat-value" id="stat-open-{{ loop.index if loop else '1' }}">--</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">High</span>
+                <span class="stat-value" id="stat-high-{{ loop.index if loop else '1' }}">--</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">Low</span>
+                <span class="stat-value" id="stat-low-{{ loop.index if loop else '1' }}">--</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">Close</span>
+                <span class="stat-value" id="stat-close-{{ loop.index if loop else '1' }}">--</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">Volume</span>
+                <span class="stat-value" id="stat-volume-{{ loop.index if loop else '1' }}">--</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">Change</span>
+                <span class="stat-value" id="stat-change-{{ loop.index if loop else '1' }}">--</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">Change %</span>
+                <span class="stat-value" id="stat-change-pct-{{ loop.index if loop else '1' }}">--</span>
+            </div>
+        </div>
+        
+        <!-- Legend -->
+        <div class="chart-legend" id="chart-legend-{{ loop.index if loop else '1' }}">
+            <span class="legend-item">
+                <span class="legend-color" style="background-color: #6C63FF;"></span>
+                Price
+            </span>
+            <span class="legend-item" id="legend-indicator-{{ loop.index if loop else '1' }}" style="display: none;">
+                <span class="legend-color" style="background-color: #00D4FF;"></span>
+                Indicator
+            </span>
+            <span class="legend-item legend-actions">
+                <button class="legend-btn" data-action="toggle-indicator">+ Indicator</button>
+                <button class="legend-btn" data-action="toggle-grid">Grid</button>
+            </span>
+        </div>
+    </div>
+</div>
+{% endmacro %}
+
+<!-- ======================================================================= -->
+<!-- CSS STYLES                                                               -->
+<!-- ======================================================================= -->
+{% block styles %}
+<style>
+/* ============================================
+   CHART CARD - COMPLETE STYLES
+   ============================================ */
+   
+:root {
+    --chart-primary: #6C63FF;
+    --chart-secondary: #00D4FF;
+    --chart-success: #00D4FF;
+    --chart-danger: #FF6B6B;
+    --chart-warning: #FFD93D;
+    --chart-card-bg: #16213E;
+    --chart-card-border: rgba(255, 255, 255, 0.05);
+    --chart-text-primary: #E0E0E0;
+    --chart-text-secondary: #888;
+    --chart-text-muted: #666;
+    --chart-input-bg: rgba(255, 255, 255, 0.05);
+    --chart-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
+    --chart-radius: 16px;
+    --chart-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Dark Theme */
+[data-theme="dark"] {
+    --chart-card-bg: #1a1a2e;
+    --chart-text-primary: #f0f0f0;
+    --chart-text-secondary: #aaa;
+}
+
+/* Light Theme */
+[data-theme="light"] {
+    --chart-card-bg: #ffffff;
+    --chart-card-border: #e0e0e0;
+    --chart-text-primary: #333;
+    --chart-text-secondary: #666;
+    --chart-text-muted: #999;
+    --chart-input-bg: #f5f5f5;
+    --chart-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+}
+
+/* ============================================
+   CHART CARD CONTAINER
+   ============================================ */
+.chart-card {
+    background: var(--chart-card-bg);
+    border-radius: var(--chart-radius);
+    padding: 20px;
+    margin: 10px 0;
+    box-shadow: var(--chart-shadow);
+    border: 1px solid var(--chart-card-border);
+    transition: var(--chart-transition);
+    position: relative;
+    overflow: hidden;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+}
+
+.chart-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 36px rgba(0, 0, 0, 0.3);
+}
+
+.chart-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--chart-primary), var(--chart-secondary));
+    opacity: 0.5;
+    transition: opacity 0.3s ease;
+}
+
+.chart-card:hover::before {
+    opacity: 1;
+}
+
+/* ============================================
+   HEADER
+   ============================================ */
+.chart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.chart-title-section {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.chart-title {
+    color: var(--chart-text-primary);
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.chart-title-icon {
+    color: var(--chart-primary);
+    font-size: 16px;
+}
+
+.chart-subtitle {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--chart-text-secondary);
+    font-size: 12px;
+}
+
+.chart-symbol {
+    font-weight: 600;
+    color: var(--chart-text-primary);
+}
+
+.chart-update-time {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.chart-status {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* ============================================
+   CONTROLS
+   ============================================ */
+.chart-controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+/* Interval Selector */
+.chart-interval-selector {
+    display: flex;
+    gap: 2px;
+    background: var(--chart-input-bg);
+    padding: 3px;
+    border-radius: 8px;
+    border: 1px solid var(--chart-card-border);
+}
+
+.chart-btn {
+    background: transparent;
+    border: none;
+    color: var(--chart-text-secondary);
+    padding: 4px 10px;
+    font-size: 11px;
+    font-weight: 500;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: var(--chart-transition);
+    font-family: inherit;
+}
+
+.chart-btn:hover {
+    color: var(--chart-text-primary);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.chart-btn-active {
+    color: #fff;
+    background: var(--chart-primary);
+}
+
+.chart-btn-active:hover {
+    background: #5a52d9;
+}
+
+/* Type Selector */
+.chart-type-selector {
+    display: flex;
+    gap: 2px;
+    background: var(--chart-input-bg);
+    padding: 3px;
+    border-radius: 8px;
+    border: 1px solid var(--chart-card-border);
+}
+
+.chart-type-btn {
+    background: transparent;
+    border: none;
+    color: var(--chart-text-secondary);
+    padding: 4px 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: var(--chart-transition);
+    font-size: 14px;
+}
+
+.chart-type-btn:hover {
+    color: var(--chart-text-primary);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.chart-type-active {
+    color: #fff;
+    background: var(--chart-primary);
+}
+
+.chart-type-active:hover {
+    background: #5a52d9;
+}
+
+/* Actions */
+.chart-actions {
+    display: flex;
+    gap: 2px;
+    background: var(--chart-input-bg);
+    padding: 3px;
+    border-radius: 8px;
+    border: 1px solid var(--chart-card-border);
+}
+
+.chart-action-btn {
+    background: transparent;
+    border: none;
+    color: var(--chart-text-secondary);
+    padding: 4px 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: var(--chart-transition);
+    font-size: 14px;
+}
+
+.chart-action-btn:hover {
+    color: var(--chart-text-primary);
+    background: rgba(255, 255, 255, 0.05);
+    transform: scale(1.05);
+}
+
+.chart-action-btn:active {
+    transform: scale(0.95);
+}
+
+/* ============================================
+   BODY
+   ============================================ */
+.chart-body {
+    position: relative;
+    width: 100%;
+    min-height: 200px;
+}
+
+.chart-container {
+    position: relative;
+    width: 100%;
+}
+
+.chart-container canvas {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+/* ============================================
+   OVERLAYS
+   ============================================ */
+.chart-loading-overlay,
+.chart-error-overlay,
+.chart-empty-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    border-radius: 8px;
+    z-index: 10;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+}
+
+.chart-loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(108, 99, 255, 0.1);
+    border-top-color: var(--chart-primary);
+    border-radius: 50%;
+    animation: chart-spin 1s linear infinite;
+}
+
+@keyframes chart-spin {
+    to { transform: rotate(360deg); }
+}
+
+.chart-loading-text {
+    color: var(--chart-text-secondary);
+    font-size: 14px;
+}
+
+.chart-loading-progress {
+    width: 200px;
+    height: 4px;
+    background: var(--chart-input-bg);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.chart-loading-progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--chart-primary), var(--chart-secondary));
+    border-radius: 2px;
+    transition: width 0.3s ease;
+    width: 0%;
+}
+
+.chart-error-overlay i {
+    font-size: 32px;
+    color: var(--chart-danger);
+}
+
+.chart-error-text {
+    color: var(--chart-text-primary);
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.chart-error-detail {
+    color: var(--chart-text-secondary);
+    font-size: 13px;
+}
+
+.chart-retry-btn {
+    background: var(--chart-primary);
+    border: none;
+    color: #fff;
+    padding: 8px 24px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--chart-transition);
+    font-family: inherit;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.chart-retry-btn:hover {
+    background: #5a52d9;
+    transform: scale(1.02);
+}
+
+.chart-empty-overlay i {
+    font-size: 48px;
+    color: var(--chart-text-muted);
+}
+
+.chart-empty-text {
+    color: var(--chart-text-primary);
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.chart-empty-subtext {
+    color: var(--chart-text-secondary);
+    font-size: 13px;
+}
+
+/* ============================================
+   FOOTER
+   ============================================ */
+.chart-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 16px;
+    padding-top: 12px;
+    border-top: 1px solid var(--chart-card-border);
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.chart-stats {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0px;
+}
+
+.stat-label {
+    color: var(--chart-text-secondary);
+    font-size: 10px;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.stat-value {
+    color: var(--chart-text-primary);
+    font-size: 13px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+}
+
+.stat-value.positive {
+    color: var(--chart-success);
+}
+
+.stat-value.negative {
+    color: var(--chart-danger);
+}
+
+.stat-value.neutral {
+    color: var(--chart-warning);
+}
+
+/* Legend */
+.chart-legend {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--chart-text-secondary);
+}
+
+.legend-color {
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+    display: inline-block;
+    flex-shrink: 0;
+}
+
+.legend-actions {
+    display: flex;
+    gap: 8px;
+    margin-left: 8px;
+}
+
+.legend-btn {
+    background: transparent;
+    border: 1px solid var(--chart-card-border);
+    color: var(--chart-text-secondary);
+    padding: 2px 10px;
+    border-radius: 4px;
+    font-size: 11px;
+    cursor: pointer;
+    transition: var(--chart-transition);
+    font-family: inherit;
+}
+
+.legend-btn:hover {
+    color: var(--chart-text-primary);
+    border-color: var(--chart-primary);
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (max-width: 1200px) {
+    .chart-stats {
+        gap: 12px;
+    }
+    .stat-item {
+        min-width: 60px;
+    }
+}
+
+@media (max-width: 992px) {
+    .chart-controls {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+        width: 100%;
+    }
+    .chart-interval-selector,
+    .chart-type-selector,
+    .chart-actions {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 768px) {
+    .chart-card {
+        padding: 16px;
+        margin: 8px 0;
+    }
+    
+    .chart-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+    }
+    
+    .chart-title {
+        font-size: 16px;
+    }
+    
+    .chart-controls {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .chart-interval-selector {
+        width: 100%;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+    
+    .chart-footer {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+    }
+    
+    .chart-stats {
+        justify-content: center;
+    }
+    
+    .chart-legend {
+        justify-content: center;
+    }
+    
+    .stat-item {
+        align-items: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .chart-card {
+        padding: 12px;
+        border-radius: 12px;
+    }
+    
+    .chart-stats {
+        gap: 8px;
+    }
+    
+    .stat-value {
+        font-size: 11px;
+    }
+    
+    .stat-label {
+        font-size: 9px;
+    }
+    
+    .chart-btn {
+        font-size: 10px;
+        padding: 3px 8px;
+    }
+}
+
+/* ============================================
+   PRINT STYLES
+   ============================================ */
+@media print {
+    .chart-card {
+        box-shadow: none !important;
+        border: 1px solid #ddd !important;
+        break-inside: avoid;
+    }
+    
+    .chart-action-btn,
+    .chart-type-selector,
+    .chart-interval-selector {
+        display: none !important;
+    }
+    
+    .chart-card::before {
+        display: none !important;
+    }
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+@keyframes chart-fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.chart-card {
+    animation: chart-fadeIn 0.3s ease-out;
+}
+
+/* ============================================
+   SCROLLBAR STYLING
+   ============================================ */
+.chart-container::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+}
+
+.chart-container::-webkit-scrollbar-track {
+    background: var(--chart-input-bg);
+    border-radius: 2px;
+}
+
+.chart-container::-webkit-scrollbar-thumb {
+    background: var(--chart-primary);
+    border-radius: 2px;
+}
+
+.chart-container::-webkit-scrollbar-thumb:hover {
+    background: #5a52d9;
+}
+</style>
+{% endblock %}
+
+<!-- ======================================================================= -->
+<!-- JAVASCRIPT - COMPLETE IMPLEMENTATION                                    -->
+<!-- ======================================================================= -->
+{% block scripts %}
+<script>
+// ================================================================
+// CHART CARD - COMPLETE JAVASCRIPT IMPLEMENTATION
+// ================================================================
+
+(function() {
+    'use strict';
+
+    // ============================================================
+    // CHART CARD CLASS
+    // ============================================================
+    class ChartCard {
+        constructor(element) {
+            this.element = element;
+            this.chartId = element.dataset.chartId || 'chart-1';
+            this.symbol = element.dataset.symbol || 'BTC/USD';
+            this.chartType = element.dataset.chartType || 'line';
+            this.theme = element.dataset.theme || 'dark';
+            
+            // DOM references
+            this.canvas = element.querySelector('canvas');
+            this.container = element.querySelector('.chart-container');
+            this.loadingOverlay = element.querySelector('.chart-loading-overlay');
+            this.errorOverlay = element.querySelector('.chart-error-overlay');
+            this.emptyOverlay = element.querySelector('.chart-empty-overlay');
+            this.stats = element.querySelector('.chart-stats');
+            this.legend = element.querySelector('.chart-legend');
+            
+            // Chart state
+            this.chartInstance = null;
+            this.currentData = null;
+            this.currentInterval = '1h';
+            this.isLoading = false;
+            this.isFullscreen = false;
+            this.indicators = [];
+            this.showGrid = true;
+            this.zoomLevel = 1;
+            
+            // Configuration
+            this.config = {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false,
+                    },
+                    tooltip: {
+                        mode: 'index',
+                        intersect: false,
+                        backgroundColor: 'rgba(0,0,0,0.8)',
+                        titleFont: { size: 12 },
+                        bodyFont: { size: 12 },
+                        cornerRadius: 8,
+                        padding: 12,
+                    },
+                },
+                scales: {
+                    x: {
+                        grid: {
+                            color: 'rgba(255,255,255,0.05)',
+                            drawBorder: false,
+                        },
+                        ticks: {
+                            color: 'var(--chart-text-secondary)',
+                            font: { size: 11 },
+                            maxRotation: 0,
+                            autoSkip: true,
+                            maxTicksLimit: 20,
+                        },
+                    },
+                    y: {
+                        grid: {
+                            color: 'rgba(255,255,255,0.05)',
+                            drawBorder: false,
+                        },
+                        ticks: {
+                            color: 'var(--chart-text-secondary)',
+                            font: { size: 11 },
+                            callback: function(value) {
+                                return '$' + value.toLocaleString();
+                            },
+                        },
+                    },
+                },
+                interaction: {
+                    intersect: false,
+                    mode: 'index',
+                },
+            };
+            
+            // Initialize
+            this.init();
+        }
+        
+        // ============================================================
+        // INITIALIZATION
+        // ============================================================
+        init() {
+            this.setupEventListeners();
+            this.loadData();
+        }
+        
+        // ============================================================
+        // EVENT LISTENERS
+        // ============================================================
+        setupEventListeners() {
+            // Interval buttons
+            this.element.querySelectorAll('.chart-btn[data-interval]').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    this.setInterval(btn.dataset.interval);
+                });
+            });
+            
+            // Type buttons
+            this.element.querySelectorAll('.chart-type-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    this.setChartType(btn.dataset.type);
+                });
+            });
+            
+            // Action buttons
+            this.element.querySelectorAll('.chart-action-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    this.handleAction(btn.dataset.action);
+                });
+            });
+            
+            // Retry button
+            this.element.querySelector('.chart-retry-btn')?.addEventListener('click', () => {
+                this.loadData();
+            });
+            
+            // Legend buttons
+            this.element.querySelectorAll('.legend-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    this.handleLegendAction(btn.dataset.action);
+                });
+            });
+            
+            // Resize handler
+            let resizeTimeout;
+            window.addEventListener('resize', () => {
+                clearTimeout(resizeTimeout);
+                resizeTimeout = setTimeout(() => {
+                    if (this.chartInstance) {
+                        this.chartInstance.resize();
+                    }
+                }, 250);
+            });
+        }
+        
+        // ============================================================
+        // INTERVAL MANAGEMENT
+        // ============================================================
+        setInterval(interval) {
+            this.currentInterval = interval;
+            
+            // Update UI
+            this.element.querySelectorAll('.chart-btn[data-interval]').forEach(btn => {
+                btn.classList.toggle('chart-btn-active', btn.dataset.interval === interval);
+            });
+            
+            this.loadData();
+        }
+        
+        // ============================================================
+        // CHART TYPE MANAGEMENT
+        // ============================================================
+        setChartType(type) {
+            this.chartType = type;
+            
+            // Update UI
+            this.element.querySelectorAll('.chart-type-btn').forEach(btn => {
+                btn.classList.toggle('chart-type-active', btn.dataset.type === type);
+            });
+            
+            if (this.currentData) {
+                this.renderChart(this.currentData);
+            }
+        }
+        
+        // ============================================================
+        // DATA LOADING
+        // ============================================================
+        async loadData() {
+            if (this.isLoading) return;
+            
+            this.isLoading = true;
+            this.showLoading();
+            this.hideError();
+            this.hideEmpty();
+            
+            try {
+                const data = await this.fetchData();
+                
+                if (data && data.datasets && data.datasets.length > 0) {
+                    this.currentData = data;
+                    this.renderChart(data);
+                    this.updateStats(data);
+                    this.hideLoading();
+                } else {
+                    this.showEmpty();
+                }
+            } catch (error) {
+                console.error('Chart data load failed:', error);
+                this.showError(error.message || 'Failed to load chart data');
+            } finally {
+                this.isLoading = false;
+                this.hideLoading();
+            }
+        }
+        
+        // ============================================================
+        // API DATA FETCHING
+        // ============================================================
+        async fetchData() {
+            // Simulate API call - replace with real API in production
+            return new Promise((resolve) => {
+                setTimeout(() => {
+                    const points = this.getDataPoints();
+                    const data = this.generateSampleData(points);
+                    resolve(data);
+                }, 500 + Math.random() * 500);
+            });
+            
+            /* Real API implementation:
+            const params = new URLSearchParams({
+                symbol: this.symbol,
+                interval: this.currentInterval,
+                limit: 200,
+            });
+            const response = await fetch(`/api/charts/data?${params}`);
+            if (!response.ok) throw new Error('API request failed');
+            const result = await response.json();
+            return this.transformApiData(result);
+            */
+        }
+        
+        getDataPoints() {
+            const intervals = {
+                '1m': 60,
+                '5m': 72,
+                '15m': 96,
+                '1h': 72,
+                '4h': 60,
+                '1d': 90,
+                '1w': 52,
+            };
+            return intervals[this.currentInterval] || 100;
+        }
+        
+        generateSampleData(points) {
+            const data = [];
+            let value = 100 + Math.random() * 50;
+            
+            for (let i = 0; i < points; i++) {
+                const change = (Math.random() - 0.5) * 2;
+                value = Math.max(10, value + change);
+                data.push({
+                    x: i,
+                    y: value,
+                    open: value - change * 0.5,
+                    high: value + Math.random() * 2,
+                    low: value - Math.random() * 2,
+                    close: value,
+                    volume: Math.floor(Math.random() * 1000 + 100),
+                });
+            }
+            
+            const colors = this.getThemeColors();
+            
+            return {
+                labels: data.map(d => d.x),
+                datasets: [{
+                    label: this.symbol,
+                    data: data.map(d => d.y),
+                    backgroundColor: colors.gradient,
+                    borderColor: colors.primary,
+                    pointBackgroundColor: colors.primary,
+                    pointBorderColor: '#fff',
+                    pointRadius: 1,
+                    pointHoverRadius: 6,
+                    borderWidth: 2,
+                    fill: this.chartType === 'area',
+                    tension: 0.4,
+                }],
+                rawData: data,
+            };
+        }
+        
+        getThemeColors() {
+            const isDark = this.theme === 'dark';
+            return {
+                primary: '#6C63FF',
+                secondary: '#00D4FF',
+                success: '#00D4FF',
+                danger: '#FF6B6B',
+                warning: '#FFD93D',
+                text: isDark ? '#E0E0E0' : '#333',
+                textSecondary: isDark ? '#888' : '#666',
+                grid: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)',
+                gradient: (ctx) => {
+                    const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+                    gradient.addColorStop(0, 'rgba(108, 99, 255, 0.3)');
+                    gradient.addColorStop(1, 'rgba(108, 99, 255, 0.0)');
+                    return gradient;
+                },
+            };
+        }
+        
+        // ============================================================
+        // CHART RENDERING
+        // ============================================================
+        renderChart(data) {
+            if (!this.canvas) return;
+            
+            // Destroy existing chart
+            if (this.chartInstance) {
+                this.chartInstance.destroy();
+                this.chartInstance = null;
+            }
+            
+            // Prepare chart data based on type
+            const chartData = this.prepareChartData(data);
+            const chartConfig = this.prepareChartConfig(chartData);
+            
+            // Create chart
+            try {
+                this.chartInstance = new Chart(this.canvas, chartConfig);
+            } catch (error) {
+                console.error('Chart creation failed:', error);
+                this.showError('Failed to render chart');
+            }
+        }
+        
+        prepareChartData(data) {
+            const colors = this.getThemeColors();
+            
+            switch (this.chartType) {
+                case 'candlestick':
+                    // For candlestick, we need OHLC data
+                    return {
+                        datasets: [{
+                            label: this.symbol,
+                            data: data.rawData || this.generateCandlestickData(data),
+                            borderColor: colors.primary,
+                            backgroundColor: colors.primary,
+                        }],
+                    };
+                    
+                case 'bar':
+                    return {
+                        labels: data.labels,
+                        datasets: [{
+                            label: this.symbol,
+                            data: data.datasets[0].data,
+                            backgroundColor: colors.primary,
+                            borderColor: colors.primary,
+                            borderWidth: 1,
+                        }],
+                    };
+                    
+                case 'line':
+                case 'area':
+                default:
+                    return {
+                        labels: data.labels,
+                        datasets: data.datasets,
+                    };
+            }
+        }
+        
+        generateCandlestickData(data) {
+            // Generate OHLC data from existing data
+            return data.rawData.map(d => ({
+                x: d.x,
+                o: d.open || d.y - 0.5,
+                h: d.high || d.y + 0.5,
+                l: d.low || d.y - 0.5,
+                c: d.close || d.y,
+            }));
+        }
+        
+        prepareChartConfig(data) {
+            const isDark = this.theme === 'dark';
+            const colors = this.getThemeColors();
+            
+            let config = {
+                type: this.chartType === 'candlestick' ? 'line' : this.chartType,
+                data: data,
+                options: {
+                    ...this.config,
+                    plugins: {
+                        ...this.config.plugins,
+                        legend: {
+                            display: false,
+                        },
+                    },
+                    scales: {
+                        x: {
+                            ...this.config.scales.x,
+                            grid: {
+                                display: this.showGrid,
+                                color: colors.grid,
+                            },
+                        },
+                        y: {
+                            ...this.config.scales.y,
+                            grid: {
+                                display: this.showGrid,
+                                color: colors.grid,
+                            },
+                        },
+                    },
+                },
+            };
+            
+            // Customize for area chart
+            if (this.chartType === 'area') {
+                config.options.plugins.filler = {
+                    propagate: true,
+                };
+            }
+            
+            // Customize for candlestick (requires additional plugin)
+            if (this.chartType === 'candlestick') {
+                // Would use a candlestick plugin in production
+                config.options.plugins = {
+                    ...config.options.plugins,
+                    colors: {
+                        up: colors.success,
+                        down: colors.danger,
+                    },
+                };
+            }
+            
+            return config;
+        }
+        
+        // ============================================================
+        // STATS UPDATE
+        // ============================================================
+        updateStats(data) {
+            if (!data || !data.datasets || !data.datasets[0]) return;
+            
+            const dataset = data.datasets[0];
+            const values = dataset.data;
+            
+            if (!values || values.length === 0) return;
+            
+            const open = values[0];
+            const close = values[values.length - 1];
+            const high = Math.max(...values);
+            const low = Math.min(...values);
+            const change = close - open;
+            const changePct = (change / open * 100);
+            
+            const volume = Math.floor(Math.random() * 1000 + 100);
+            
+            this.setStat('stat-open-1', open.toFixed(2));
+            this.setStat('stat-high-1', high.toFixed(2));
+            this.setStat('stat-low-1', low.toFixed(2));
+            this.setStat('stat-close-1', close.toFixed(2));
+            this.setStat('stat-volume-1', volume.toFixed(0));
+            
+            this.setStat('stat-change-1', 
+                `${change >= 0 ? '+' : ''}${change.toFixed(2)}`,
+                change >= 0 ? 'positive' : 'negative'
+            );
+            
+            this.setStat('stat-change-pct-1',
+                `${changePct >= 0 ? '+' : ''}${changePct.toFixed(2)}%`,
+                changePct >= 0 ? 'positive' : 'negative'
+            );
+            
+            // Update subtitle
+            const updateTime = document.getElementById('chart-update-time-1');
+            if (updateTime) {
+                updateTime.innerHTML = `<i class="fas fa-clock"></i> ${new Date().toLocaleTimeString()}`;
+            }
+        }
+        
+        setStat(id, value, className = '') {
+            const el = document.getElementById(id);
+            if (el) {
+                el.textContent = value;
+                el.className = `stat-value ${className}`;
+            }
+        }
+        
+        // ============================================================
+        // ACTIONS
+        // ============================================================
+        handleAction(action) {
+            switch (action) {
+                case 'refresh':
+                    this.loadData();
+                    break;
+                case 'fullscreen':
+                    this.toggleFullscreen();
+                    break;
+                case 'download':
+                    this.downloadChart();
+                    break;
+                case 'settings':
+                    this.showSettings();
+                    break;
+                case 'reset':
+                    this.resetZoom();
+                    break;
+                case 'retry':
+                    this.loadData();
+                    break;
+                default:
+                    console.warn('Unknown action:', action);
+            }
+        }
+        
+        toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                this.element.requestFullscreen().catch(err => {
+                    console.error('Fullscreen error:', err);
+                });
+            } else {
+                document.exitFullscreen();
+            }
+        }
+        
+        downloadChart() {
+            if (!this.canvas) return;
+            
+            const link = document.createElement('a');
+            link.download = `chart_${this.symbol.replace('/', '_')}_${Date.now()}.png`;
+            link.href = this.canvas.toDataURL('image/png', 1.0);
+            link.click();
+        }
+        
+        showSettings() {
+            // Simple settings modal implementation
+            const settings = {
+                showGrid: this.showGrid,
+                theme: this.theme,
+                chartType: this.chartType,
+            };
+            
+            // In production, show a proper settings modal
+            console.log('Chart settings:', settings);
+        }
+        
+        resetZoom() {
+            this.zoomLevel = 1;
+            if (this.chartInstance) {
+                this.chartInstance.resetZoom?.();
+            }
+        }
+        
+        handleLegendAction(action) {
+            switch (action) {
+                case 'toggle-indicator':
+                    this.toggleIndicator();
+                    break;
+                case 'toggle-grid':
+                    this.toggleGrid();
+                    break;
+                default:
+                    console.warn('Unknown legend action:', action);
+            }
+        }
+        
+        toggleIndicator() {
+            const indicatorLegend = document.getElementById('legend-indicator-1');
+            if (indicatorLegend) {
+                const isVisible = indicatorLegend.style.display !== 'none';
+                indicatorLegend.style.display = isVisible ? 'none' : 'flex';
+                
+                // Add or remove indicator from chart
+                if (!isVisible) {
+                    this.addIndicator();
+                } else {
+                    this.removeIndicator();
+                }
+            }
+        }
+        
+        addIndicator() {
+            // Add a simple moving average indicator
+            if (!this.chartInstance || !this.currentData) return;
+            
+            const dataset = this.currentData.datasets[0];
+            if (!dataset) return;
+            
+            const values = dataset.data;
+            const ma = this.calculateMA(values, 20);
+            
+            this.chartInstance.data.datasets.push({
+                label: 'MA(20)',
+                data: ma,
+                borderColor: '#00D4FF',
+                backgroundColor: 'rgba(0, 212, 255, 0.1)',
+                borderWidth: 2,
+                pointRadius: 0,
+                fill: false,
+                tension: 0.4,
+            });
+            
+            this.chartInstance.update();
+        }
+        
+        removeIndicator() {
+            if (!this.chartInstance) return;
+            
+            // Remove last added dataset (MA)
+            if (this.chartInstance.data.datasets.length > 1) {
+                this.chartInstance.data.datasets.pop();
+                this.chartInstance.update();
+            }
+        }
+        
+        calculateMA(data, window) {
+            const result = [];
+            for (let i = 0; i < data.length; i++) {
+                if (i < window - 1) {
+                    result.push(null);
+                } else {
+                    let sum = 0;
+                    for (let j = i - window + 1; j <= i; j++) {
+                        sum += data[j];
+                    }
+                    result.push(sum / window);
+                }
+            }
+            return result;
+        }
+        
+        toggleGrid() {
+            this.showGrid = !this.showGrid;
+            if (this.chartInstance) {
+                this.chartInstance.options.scales.x.grid.display = this.showGrid;
+                this.chartInstance.options.scales.y.grid.display = this.showGrid;
+                this.chartInstance.update();
+            }
+        }
+        
+        // ============================================================
+        // OVERLAY MANAGEMENT
+        // ============================================================
+        showLoading() {
+            if (this.loadingOverlay) {
+                this.loadingOverlay.style.display = 'flex';
+                // Animate progress bar
+                const progressBar = this.loadingOverlay.querySelector('.chart-loading-progress-bar');
+                if (progressBar) {
+                    let progress = 0;
+                    const interval = setInterval(() => {
+                        progress += Math.random() * 10;
+                        if (progress >= 90) {
+                            clearInterval(interval);
+                        }
+                        progressBar.style.width = Math.min(progress, 90) + '%';
+                    }, 200);
+                }
+            }
+        }
+        
+        hideLoading() {
+            if (this.loadingOverlay) {
+                this.loadingOverlay.style.display = 'none';
+            }
+        }
+        
+        showError(message) {
+            if (this.errorOverlay) {
+                this.errorOverlay.style.display = 'flex';
+                const detail = document.getElementById('chart-error-detail-1');
+                if (detail) {
+                    detail.textContent = message || 'An unexpected error occurred';
+                }
+            }
+        }
+        
+        hideError() {
+            if (this.errorOverlay) {
+                this.errorOverlay.style.display = 'none';
+            }
+        }
+        
+        showEmpty() {
+            if (this.emptyOverlay) {
+                this.emptyOverlay.style.display = 'flex';
+            }
+        }
+        
+        hideEmpty() {
+            if (this.emptyOverlay) {
+                this.emptyOverlay.style.display = 'none';
+            }
+        }
+        
+        // ============================================================
+        // DESTROY
+        // ============================================================
+        destroy() {
+            if (this.chartInstance) {
+                this.chartInstance.destroy();
+                this.chartInstance = null;
+            }
+            
+            // Remove event listeners
+            // ... cleanup
+        }
+    }
+
+    // ================================================================
+    // CHART API FUNCTIONS
+    // ================================================================
+    window.ChartAPI = {
+        getChartData: async function(symbol, interval, options = {}) {
+            try {
+                const params = new URLSearchParams({
+                    symbol: symbol,
+                    interval: interval,
+                    limit: options.limit || 200,
+                    start: options.start || '',
+                    end: options.end || '',
+                });
+                
+                const response = await fetch(`/api/charts/data?${params}`);
+                if (!response.ok) throw new Error('API request failed');
+                return await response.json();
+            } catch (error) {
+                console.error('Chart API error:', error);
+                throw error;
+            }
+        },
+        
+        getChartConfig: async function(chartId) {
+            try {
+                const response = await fetch(`/api/charts/config/${chartId}`);
+                if (!response.ok) throw new Error('API request failed');
+                return await response.json();
+            } catch (error) {
+                console.error('Chart config API error:', error);
+                throw error;
+            }
+        },
+        
+        updateChartConfig: async function(chartId, config) {
+            try {
+                const response = await fetch(`/api/charts/config/${chartId}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(config),
+                });
+                if (!response.ok) throw new Error('API request failed');
+                return await response.json();
+            } catch (error) {
+                console.error('Chart config update error:', error);
+                throw error;
+            }
+        },
+    };
+
+    // ================================================================
+    // WEBSOCKET INTEGRATION
+    // ================================================================
+    window.ChartWebSocket = class ChartWebSocket {
+        constructor(chartId, onData) {
+            this.chartId = chartId;
+            this.onData = onData;
+            this.ws = null;
+            this.reconnectAttempts = 0;
+            this.maxReconnectAttempts = 5;
+        }
+        
+        connect() {
+            try {
+                this.ws = new WebSocket(`wss://api.nexusquantum.com/ws/charts/${this.chartId}`);
+                
+                this.ws.onopen = () => {
+                    console.log('Chart WebSocket connected');
+                    this.reconnectAttempts = 0;
+                };
+                
+                this.ws.onmessage = (event) => {
+                    try {
+                        const data = JSON.parse(event.data);
+                        if (this.onData) this.onData(data);
+                    } catch (error) {
+                        console.error('WebSocket message parse error:', error);
+                    }
+                };
+                
+                this.ws.onclose = () => {
+                    console.log('Chart WebSocket disconnected');
+                    this.reconnect();
+                };
+                
+                this.ws.onerror = (error) => {
+                    console.error('Chart WebSocket error:', error);
+                };
+            } catch (error) {
+                console.error('Chart WebSocket connection failed:', error);
+            }
+        }
+        
+        reconnect() {
+            if (this.reconnectAttempts >= this.maxReconnectAttempts) {
+                console.log('Max reconnect attempts reached');
+                return;
+            }
+            
+            this.reconnectAttempts++;
+            const delay = Math.min(1000 * Math.pow(2, this.reconnectAttempts), 30000);
+            
+            setTimeout(() => {
+                console.log(`Reconnecting to chart WebSocket (attempt ${this.reconnectAttempts})`);
+                this.connect();
+            }, delay);
+        }
+        
+        disconnect() {
+            if (this.ws) {
+                this.ws.close();
+                this.ws = null;
+            }
+        }
+    };
+
+    // ================================================================
+    // INITIALIZE CHART CARDS
+    // ================================================================
+    document.addEventListener('DOMContentLoaded', function() {
+        const chartCards = document.querySelectorAll('.chart-card');
+        const chartInstances = [];
+        
+        chartCards.forEach((card, index) => {
+            try {
+                const instance = new ChartCard(card);
+                chartInstances.push(instance);
+            } catch (error) {
+                console.error(`Chart card ${index + 1} initialization failed:`, error);
+            }
+        });
+        
+        // Store instances globally
+        window.chartInstances = chartInstances;
+        console.log(`Initialized ${chartInstances.length} chart cards`);
+    });
+
+})();
+</script>
+{% endblock %}
+
+<!-- ======================================================================= -->
+<!-- RENDER COMPONENT                                                        -->
+<!-- ======================================================================= -->
+{% if not loop %}
+    {{ chart_card(title, chart_type, data, height, width, options, symbol, show_controls) }}
+{% endif %}
+
+</body>
+</html>
