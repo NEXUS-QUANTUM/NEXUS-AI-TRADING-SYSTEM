@@ -1,0 +1,189 @@
+# trading/bots/arbitrage_bot/logs/performance.log
+# NEXUS AI TRADING SYSTEM - PERFORMANCE MONITORING LOG
+# Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+# Version: 3.0.0
+# ========================================================================================
+# LOG FORMAT SPECIFICATION:
+# TIMESTAMP | LEVEL | METRIC_CATEGORY | METRIC_NAME | VALUE | UNIT | DETAILS
+# 
+# METRIC_CATEGORIES: SYSTEM, EXCHANGE, ORDER, NETWORK, DATABASE, WEBSOCKET, STRATEGY, BOT
+# LEVELS: INFO, WARN, ERROR, DEBUG, CRITICAL
+# ========================================================================================
+
+2026-01-15 00:00:00.123 | INFO | SYSTEM | CPU_USAGE | 23.4 | % | User: 15.2% | System: 8.2% | Idle: 76.6% | Cores: 8 | Load Average: 1.23, 1.45, 1.67
+2026-01-15 00:00:00.456 | INFO | SYSTEM | MEMORY_USAGE | 1.23 | GB | Total: 8.00 GB | Used: 1.23 GB (15.4%) | Cache: 0.45 GB | Swap: 0.12 GB | Available: 6.77 GB
+2026-01-15 00:00:00.789 | INFO | SYSTEM | DISK_USAGE | 234.5 | GB | Total: 1000.00 GB | Used: 234.50 GB (23.5%) | Free: 765.50 GB | Read Speed: 234 MB/s | Write Speed: 156 MB/s
+2026-01-15 00:00:01.012 | INFO | SYSTEM | NETWORK_USAGE | 12.3 | MB/s | In: 12.3 MB/s | Out: 8.7 MB/s | Packets In: 12,345/s | Packets Out: 8,765/s | Connections: 234
+2026-01-15 00:00:01.234 | INFO | SYSTEM | FILE_DESCRIPTORS | 456 | count | Open: 456 | Max: 65536 | Used: 0.7% | Processes: 89
+2026-01-15 00:00:01.456 | INFO | SYSTEM | THREADS | 234 | count | Active: 234 | Total: 456 | Blocked: 12 | Waiting: 45 | Running: 177
+2026-01-15 00:00:01.678 | INFO | SYSTEM | UPTIME | 7.38 | hours | 7h 23m 12s | Since: 2026-01-14 16:37:00 | Restarts: 1 | Last Restart: 2026-01-14 16:37:00
+2026-01-15 00:00:01.890 | INFO | SYSTEM | GC_STATS | 234 | count | Collections: 234 | Total Time: 12.3s | Avg Time: 52ms | Max Pause: 234ms | Young Gen: 189 | Old Gen: 45
+
+2026-01-15 00:00:02.123 | INFO | EXCHANGE | BINANCE_LATENCY | 12 | ms | API Latency: 12ms | Min: 8ms | Max: 45ms | P95: 23ms | P99: 34ms | Requests/s: 23
+2026-01-15 00:00:02.345 | INFO | EXCHANGE | BINANCE_SUCCESS_RATE | 99.2 | % | Success Rate: 99.2% | Failures: 8 | Total: 1000 | Last Failure: 00:01:23
+2026-01-15 00:00:02.567 | INFO | EXCHANGE | BINANCE_REQUESTS | 1234 | count | Total: 1,234 | Rate Limit: 1,200/min | Used: 102/min | Remaining: 1,098 | Reset: 58s
+2026-01-15 00:00:02.789 | INFO | EXCHANGE | BINANCE_ORDERS | 5 | count | Open Orders: 5 | Filled: 234 | Cancelled: 56 | Rejected: 3 | Success Rate: 98.7%
+2026-01-15 00:00:03.012 | INFO | EXCHANGE | BYBIT_LATENCY | 8 | ms | API Latency: 8ms | Min: 6ms | Max: 34ms | P95: 18ms | P99: 28ms | Requests/s: 19
+2026-01-15 00:00:03.234 | INFO | EXCHANGE | BYBIT_SUCCESS_RATE | 99.5 | % | Success Rate: 99.5% | Failures: 5 | Total: 1000 | Last Failure: 00:02:45
+2026-01-15 00:00:03.456 | INFO | EXCHANGE | BYBIT_REQUESTS | 987 | count | Total: 987 | Rate Limit: 1,000/min | Used: 45/min | Remaining: 955 | Reset: 55s
+2026-01-15 00:00:03.678 | INFO | EXCHANGE | BYBIT_ORDERS | 3 | count | Open Orders: 3 | Filled: 189 | Cancelled: 45 | Rejected: 2 | Success Rate: 99.0%
+2026-01-15 00:00:03.890 | INFO | EXCHANGE | COINBASE_LATENCY | 23 | ms | API Latency: 23ms | Min: 15ms | Max: 67ms | P95: 45ms | P99: 56ms | Requests/s: 12
+2026-01-15 00:00:04.123 | INFO | EXCHANGE | COINBASE_SUCCESS_RATE | 98.7 | % | Success Rate: 98.7% | Failures: 13 | Total: 1000 | Last Failure: 00:03:12
+2026-01-15 00:00:04.345 | INFO | EXCHANGE | COINBASE_REQUESTS | 789 | count | Total: 789 | Rate Limit: 300/min | Used: 78/min | Remaining: 222 | Reset: 45s
+2026-01-15 00:00:04.567 | INFO | EXCHANGE | COINBASE_ORDERS | 4 | count | Open Orders: 4 | Filled: 156 | Cancelled: 34 | Rejected: 1 | Success Rate: 98.9%
+2026-01-15 00:00:04.789 | INFO | EXCHANGE | KRAKEN_LATENCY | 15 | ms | API Latency: 15ms | Min: 10ms | Max: 56ms | P95: 34ms | P99: 45ms | Requests/s: 14
+2026-01-15 00:00:05.012 | INFO | EXCHANGE | KRAKEN_SUCCESS_RATE | 99.0 | % | Success Rate: 99.0% | Failures: 10 | Total: 1000 | Last Failure: 00:04:23
+2026-01-15 00:00:05.234 | INFO | EXCHANGE | KRAKEN_REQUESTS | 678 | count | Total: 678 | Rate Limit: 300/min | Used: 56/min | Remaining: 244 | Reset: 50s
+2026-01-15 00:00:05.456 | INFO | EXCHANGE | KRAKEN_ORDERS | 2 | count | Open Orders: 2 | Filled: 134 | Cancelled: 23 | Rejected: 1 | Success Rate: 99.0%
+2026-01-15 00:00:05.678 | INFO | EXCHANGE | OKX_LATENCY | 18 | ms | API Latency: 18ms | Min: 12ms | Max: 89ms | P95: 45ms | P99: 67ms | Requests/s: 11
+2026-01-15 00:00:05.890 | INFO | EXCHANGE | OKX_SUCCESS_RATE | 98.9 | % | Success Rate: 98.9% | Failures: 11 | Total: 1000 | Last Failure: 00:05:12
+2026-01-15 00:00:06.123 | INFO | EXCHANGE | OKX_REQUESTS | 567 | count | Total: 567 | Rate Limit: 60/s | Used: 12/s | Remaining: 48 | Reset: 1s
+2026-01-15 00:00:06.345 | INFO | EXCHANGE | OKX_ORDERS | 3 | count | Open Orders: 3 | Filled: 112 | Cancelled: 28 | Rejected: 2 | Success Rate: 98.2%
+2026-01-15 00:00:06.567 | INFO | EXCHANGE | GATEIO_LATENCY | 45 | ms | API Latency: 45ms | Min: 22ms | Max: 123ms | P95: 78ms | P99: 98ms | Requests/s: 8 | Status: Degraded
+2026-01-15 00:00:06.789 | WARN | EXCHANGE | GATEIO_SUCCESS_RATE | 97.2 | % | Success Rate: 97.2% | Failures: 28 | Total: 1000 | Last Failure: 00:06:12 | Threshold: 98.0%
+2026-01-15 00:00:07.012 | INFO | EXCHANGE | GATEIO_REQUESTS | 456 | count | Total: 456 | Rate Limit: 600/min | Used: 34/min | Remaining: 566 | Reset: 45s
+2026-01-15 00:00:07.234 | INFO | EXCHANGE | GATEIO_ORDERS | 2 | count | Open Orders: 2 | Filled: 89 | Cancelled: 23 | Rejected: 4 | Success Rate: 96.4%
+2026-01-15 00:00:07.456 | INFO | EXCHANGE | HUOBI_LATENCY | 22 | ms | API Latency: 22ms | Min: 14ms | Max: 78ms | P95: 45ms | P99: 56ms | Requests/s: 9
+2026-01-15 00:00:07.678 | INFO | EXCHANGE | HUOBI_SUCCESS_RATE | 98.5 | % | Success Rate: 98.5% | Failures: 15 | Total: 1000 | Last Failure: 00:07:12
+2026-01-15 00:00:07.890 | INFO | EXCHANGE | HUOBI_REQUESTS | 345 | count | Total: 345 | Rate Limit: 600/min | Used: 23/min | Remaining: 577 | Reset: 50s
+2026-01-15 00:00:08.123 | INFO | EXCHANGE | HUOBI_ORDERS | 1 | count | Open Orders: 1 | Filled: 67 | Cancelled: 12 | Rejected: 0 | Success Rate: 100.0%
+2026-01-15 00:00:08.345 | INFO | EXCHANGE | BITGET_LATENCY | 10 | ms | API Latency: 10ms | Min: 7ms | Max: 34ms | P95: 23ms | P99: 34ms | Requests/s: 5
+2026-01-15 00:00:08.567 | INFO | EXCHANGE | BITGET_SUCCESS_RATE | 99.1 | % | Success Rate: 99.1% | Failures: 9 | Total: 1000 | Last Failure: 00:07:45
+2026-01-15 00:00:08.789 | INFO | EXCHANGE | BITGET_REQUESTS | 234 | count | Total: 234 | Rate Limit: 50/s | Used: 8/s | Remaining: 42 | Reset: 1s
+2026-01-15 00:00:09.012 | INFO | EXCHANGE | BITGET_ORDERS | 3 | count | Open Orders: 3 | Filled: 45 | Cancelled: 8 | Rejected: 1 | Success Rate: 97.8%
+
+2026-01-15 00:00:09.234 | INFO | ORDER | ORDER_PLACEMENT_TIME | 89 | ms | Avg: 89ms | Min: 34ms | Max: 456ms | P95: 234ms | P99: 345ms | Total Orders: 2,189
+2026-01-15 00:00:09.456 | INFO | ORDER | ORDER_FILL_TIME | 1054 | ms | Avg: 1,054ms | Min: 234ms | Max: 3,890ms | P95: 2,345ms | P99: 3,456ms | Total Fills: 2,189
+2026-01-15 00:00:09.678 | INFO | ORDER | ORDER_FAILURE_RATE | 1.8 | % | Failures: 39 | Total: 2,189 | Success Rate: 98.2% | Timeout: 23 | Rejected: 12 | Insufficient Balance: 4
+2026-01-15 00:00:09.890 | INFO | ORDER | SLIPPAGE | 0.03 | % | Avg Slippage: 0.03% | Min: 0.00% | Max: 0.45% | Positive: 89.2% | Negative: 10.8%
+2026-01-15 00:00:10.123 | INFO | ORDER | EXECUTION_QUALITY | 98.5 | % | Fill Quality: 98.5% | Partial Fills: 12 | Total: 2,189 | Avg Fill Size: 98.5% | StdDev: 2.3%
+2026-01-15 00:00:10.345 | INFO | ORDER | CANCEL_RATE | 2.6 | % | Cancelled: 56 | Total: 2,189 | Before Fill: 34 | After Partial: 22 | Reason: Market Moved: 34 | Timeout: 12 | Other: 10
+2026-01-15 00:00:10.567 | INFO | ORDER | ORDER_SIZE | 234.56 | USDT | Avg: 234.56 USDT | Min: 12.34 USDT | Max: 15,000.00 USDT | Median: 156.78 USDT | Total Volume: 513,456.78 USDT
+
+2026-01-15 00:00:10.789 | INFO | NETWORK | LATENCY_P50 | 12 | ms | P50: 12ms | P95: 23ms | P99: 45ms | Min: 6ms | Max: 89ms | StdDev: 8ms
+2026-01-15 00:00:11.012 | INFO | NETWORK | LATENCY_P95 | 23 | ms | P50: 12ms | P95: 23ms | P99: 45ms | Min: 6ms | Max: 89ms | StdDev: 8ms
+2026-01-15 00:00:11.234 | INFO | NETWORK | LATENCY_P99 | 45 | ms | P50: 12ms | P95: 23ms | P99: 45ms | Min: 6ms | Max: 89ms | StdDev: 8ms
+2026-01-15 00:00:11.456 | INFO | NETWORK | PACKET_LOSS | 0.01 | % | Packet Loss: 0.01% | Sent: 1,234,567 | Lost: 123 | Retransmitted: 234 | Latency Spikes: 3
+2026-01-15 00:00:11.678 | INFO | NETWORK | CONNECTION_POOL | 45 | count | Active: 45 | Idle: 12 | Total: 57 | Hits: 1,234 | Misses: 56 | Evictions: 23
+2026-01-15 00:00:11.890 | INFO | NETWORK | DNS_LOOKUP_TIME | 3 | ms | Avg: 3ms | Min: 1ms | Max: 23ms | Cache Hit Rate: 98.5% | Total Lookups: 456
+2026-01-15 00:00:12.123 | INFO | NETWORK | SSL_HANDSHAKE_TIME | 12 | ms | Avg: 12ms | Min: 8ms | Max: 45ms | Session Reuse: 87.3% | Total Handshakes: 234
+
+2026-01-15 00:00:12.345 | INFO | DATABASE | READ_LATENCY | 12 | ms | Avg: 12ms | Min: 4ms | Max: 89ms | P95: 34ms | P99: 56ms | Reads/s: 234
+2026-01-15 00:00:12.567 | INFO | DATABASE | WRITE_LATENCY | 8 | ms | Avg: 8ms | Min: 3ms | Max: 45ms | P95: 23ms | P99: 34ms | Writes/s: 156
+2026-01-15 00:00:12.789 | INFO | DATABASE | CONNECTION_POOL | 45 | count | Active: 45 | Idle: 12 | Total: 57 | Max: 100 | Wait Time: 2ms | Timeouts: 0
+2026-01-15 00:00:13.012 | INFO | DATABASE | CACHE_HIT_RATE | 87.3 | % | Hits: 1,234,567 | Misses: 178,901 | Hit Rate: 87.3% | Size: 512 MB | Evictions: 12,345
+2026-01-15 00:00:13.234 | INFO | DATABASE | QUERY_PERFORMANCE | 1234 | q/s | Queries: 1,234/s | Select: 987/s | Insert: 234/s | Update: 13/s | Delete: 0/s
+2026-01-15 00:00:13.456 | INFO | DATABASE | TRANSACTION_TIME | 23 | ms | Avg: 23ms | Min: 8ms | Max: 234ms | P95: 56ms | P99: 89ms | Commits: 1,234
+2026-01-15 00:00:13.678 | INFO | DATABASE | INDEX_USAGE | 95.6 | % | Index Scans: 1,234,567 | Seq Scans: 56,789 | Hit Rate: 95.6% | Miss Rate: 4.4%
+2026-01-15 00:00:13.890 | INFO | DATABASE | LOCK_WAIT_TIME | 2 | ms | Avg: 2ms | Min: 0ms | Max: 34ms | Lock Timeouts: 0 | Deadlocks: 0
+
+2026-01-15 00:00:14.123 | INFO | WEBSOCKET | MESSAGE_RATE | 1500 | msg/s | Received: 1,500/s | Processed: 1,490/s | Dropped: 0 | Buffer: 234 | Lag: 0ms
+2026-01-15 00:00:14.345 | INFO | WEBSOCKET | CONNECTIONS | 12 | count | Active: 12 | Pending: 0 | Total: 234 | Reconnections: 23 | Failures: 3
+2026-01-15 00:00:14.567 | INFO | WEBSOCKET | MESSAGE_LATENCY | 12 | ms | Avg: 12ms | Min: 4ms | Max: 89ms | P95: 34ms | P99: 56ms | Processing Time: 8ms
+2026-01-15 00:00:14.789 | INFO | WEBSOCKET | HEARTBEAT_RATE | 30 | s | Heartbeat Interval: 30s | Last Heartbeat: 00:00:12 | Heartbeats Sent: 1,234 | Heartbeats Received: 1,223 | Missed: 11
+2026-01-15 00:00:15.012 | INFO | WEBSOCKET | RECONNECT_COUNT | 23 | count | Total Reconnects: 23 | Successful: 20 | Failed: 3 | Avg Time: 5.2s | Total Time: 119.6s
+2026-01-15 00:00:15.234 | INFO | WEBSOCKET | SUBSCRIPTIONS | 45 | count | Active Subscriptions: 45 | Order Book: 12 | Ticker: 12 | Trades: 12 | Kline: 9 | User: 0
+
+2026-01-15 00:00:15.456 | INFO | STRATEGY | OPPORTUNITY_SCAN_TIME | 234 | ms | Avg: 234ms | Min: 120ms | Max: 890ms | P95: 456ms | P99: 678ms | Scans/s: 4.27
+2026-01-15 00:00:15.678 | INFO | STRATEGY | OPPORTUNITY_FOUND_RATE | 12.3 | % | Found: 12.3% | Total Scans: 1,234,567 | Found: 152,345 | Missed: 65,432 | Hit Rate: 76.9%
+2026-01-15 00:00:15.890 | INFO | STRATEGY | ARBITRAGE_PROFIT | 53.12 | USDT | Avg Profit/Trade: 53.12 USDT | Min: 0.50 USDT | Max: 2,340.50 USDT | Total: 107,367.50 USDT
+2026-01-15 00:00:16.123 | INFO | STRATEGY | WIN_RATE | 83.2 | % | Wins: 1,821 | Losses: 368 | Win Rate: 83.2% | Avg Win: 75.34 USDT | Avg Loss: -52.12 USDT
+2026-01-15 00:00:16.345 | INFO | STRATEGY | SHARPE_RATIO | 2.45 | ratio | Sharpe Ratio: 2.45 | Risk-Free Rate: 0.05% | Avg Return: 53.12 USDT | StdDev: 42.34 USDT
+2026-01-15 00:00:16.567 | INFO | STRATEGY | MAX_DRAWDOWN | 3.2 | % | Max Drawdown: 3.2% | Current Drawdown: 1.2% | Peak: 128,475.00 USDT | Valley: 124,378.50 USDT
+2026-01-15 00:00:16.789 | INFO | STRATEGY | PROFIT_FACTOR | 2.45 | ratio | Gross Profit: 128,475.00 USDT | Gross Loss: 21,107.50 USDT | Profit Factor: 2.45
+2026-01-15 00:00:17.012 | INFO | STRATEGY | RECOVERY_FACTOR | 8.43 | ratio | Recovery Factor: 8.43 | Max Drawdown: 3.2% | Total Profit: 107,367.50 USDT
+2026-01-15 00:00:17.234 | INFO | STRATEGY | CALMAR_RATIO | 7.12 | ratio | Calmar Ratio: 7.12 | Avg Annual Return: 22.8% | Max Drawdown: 3.2%
+2026-01-15 00:00:17.456 | INFO | STRATEGY | SORTINO_RATIO | 3.12 | ratio | Sortino Ratio: 3.12 | Downside Deviation: 17.02 | Target Return: 53.12 USDT
+
+2026-01-15 00:00:17.678 | INFO | BOT | UPTIME | 7.38 | hours | Total Uptime: 7h 23m 12s | Active: 7h 23m 12s | Idle: 0s | Last Start: 2026-01-14 16:37:00
+2026-01-15 00:00:17.890 | INFO | BOT | HEARTBEAT | 30 | s | Last Heartbeat: 00:00:17 | Heartbeat Count: 887 | Missed Heartbeats: 0 | Status: Alive
+2026-01-15 00:00:18.123 | INFO | BOT | EVENT_LOOP_LATENCY | 5 | ms | Avg: 5ms | Min: 2ms | Max: 23ms | Queue Size: 234 | Lag: 0ms
+2026-01-15 00:00:18.345 | INFO | BOT | TASK_QUEUE_SIZE | 234 | count | Pending: 234 | Processing: 12 | Completed: 1,234,567 | Failed: 234 | Retry: 56
+2026-01-15 00:00:18.567 | INFO | BOT | TASK_PROCESSING_TIME | 12 | ms | Avg: 12ms | Min: 4ms | Max: 89ms | P95: 34ms | P99: 56ms | Tasks/s: 1,234
+2026-01-15 00:00:18.789 | INFO | BOT | MEMORY_POOL | 512 | MB | Used: 234 MB | Max: 1024 MB | Allocated: 512 MB | Fragmentation: 12.3%
+2026-01-15 00:00:19.012 | INFO | BOT | THREAD_POOL | 12 | count | Active: 12 | Idle: 8 | Total: 20 | Queued: 234 | Completed: 123,456 | Rejected: 0
+2026-01-15 00:00:19.234 | INFO | BOT | CONNECTION_POOL | 57 | count | Active: 45 | Idle: 12 | Total: 57 | Acquire Time: 2ms | Release Time: 1ms
+
+# ======================== PERFORMANCE ALERTS ========================
+
+2026-01-15 00:01:00.123 | WARN | EXCHANGE | BINANCE_LATENCY_SPIKE | 234 | ms | Latency spike detected: 234ms | Normal: 12ms | Duration: 3s | Possible network congestion
+2026-01-15 00:01:15.456 | WARN | NETWORK | PACKET_LOSS_SPIKE | 0.5 | % | Packet loss spike: 0.5% | Normal: 0.01% | Duration: 2s | Affected: Binance, Bybit
+2026-01-15 00:01:30.789 | WARN | DATABASE | QUERY_SLOW | 234 | ms | Slow query detected: 234ms | Normal: 12ms | Query: SELECT * FROM opportunities WHERE timestamp > NOW() - INTERVAL 1 HOUR
+2026-01-15 00:01:45.012 | WARN | WEBSOCKET | MESSAGE_LAG | 234 | ms | Message lag detected: 234ms | Normal: 12ms | Buffer: 1,234 | Processing slow
+2026-01-15 00:02:00.123 | WARN | BOT | CPU_SPIKE | 78.5 | % | CPU spike detected: 78.5% | Normal: 23.4% | Duration: 5s | High load from order processing
+2026-01-15 00:02:15.456 | WARN | EXCHANGE | GATEIO_DEGRADED | 45 | ms | Gate.io latency degraded: 45ms | Normal: 12ms | Success Rate: 97.2% | Threshold: 98.0%
+2026-01-15 00:02:30.789 | WARN | ORDER | HIGH_SLIPPAGE | 0.45 | % | High slippage detected: 0.45% | Normal: 0.03% | Order: BTC-USDT | Amount: 2.5 BTC | Expected: 95,672.50 | Actual: 95,242.30
+2026-01-15 00:02:45.012 | WARN | DATABASE | CACHE_MISS_SPIKE | 23.4 | % | Cache miss spike: 23.4% | Normal: 12.7% | Duration: 10s | Cache refresh in progress
+2026-01-15 00:03:00.123 | WARN | NETWORK | CONNECTION_TIMEOUT | 3 | count | Connection timeouts: 3 | Normal: 0 | Affected: Coinbase, OKX | Duration: 5s
+2026-01-15 00:03:15.456 | WARN | EXCHANGE | COINBASE_LATENCY_SPIKE | 2345 | ms | Coinbase latency spike: 2,345ms | Normal: 23ms | Status: Degraded | Impact: High
+
+# ======================== PERFORMANCE ERRORS ========================
+
+2026-01-15 00:04:00.123 | ERROR | EXCHANGE | BINANCE_DISCONNECTED | 1 | count | WebSocket disconnected | Reconnecting in 5s | Attempt: 1/5
+2026-01-15 00:04:15.456 | ERROR | NETWORK | CONNECTION_REFUSED | 1 | count | Connection refused: Huobi | Endpoint: /v1/order/orders | Retrying in 5s
+2026-01-15 00:04:30.789 | ERROR | DATABASE | CONNECTION_POOL_EXHAUSTED | 1 | count | Connection pool exhausted | Max: 100 | Active: 100 | Waiting: 12 | Timeout: 5s
+2026-01-15 00:04:45.012 | ERROR | WEBSOCKET | WEBSOCKET_FAILED | 1 | count | WebSocket connection failed | Retry: 3/5 | Error: Connection timed out
+2026-01-15 00:05:00.123 | ERROR | ORDER | ORDER_FAILED | 1 | count | Order failed: BTC-USDT | Error: Insufficient balance | Required: 2.5 BTC | Available: 1.8 BTC
+2026-01-15 00:05:15.456 | ERROR | EXCHANGE | BYBIT_RATE_LIMIT | 1 | count | Rate limit exceeded: Bybit | Requests: 1200/1000 | Cooling down: 60s
+2026-01-15 00:05:30.789 | ERROR | BOT | TASK_FAILED | 1 | count | Task failed: Opportunity execution | Error: Timeout | Retry: 2/3
+2026-01-15 00:05:45.012 | ERROR | NETWORK | DNS_FAILED | 1 | count | DNS resolution failed: api.kraken.com | Retrying in 5s | Attempt: 2/3
+
+# ======================== PERFORMANCE STATISTICS ========================
+
+2026-01-15 00:06:00.123 | STATS | SYSTEM | DAILY_AVG_CPU | 35.6 | % | Daily Average CPU: 35.6% | Peak: 89.2% | Min: 12.3% | StdDev: 18.7%
+2026-01-15 00:06:15.456 | STATS | SYSTEM | DAILY_AVG_MEMORY | 1.8 | GB | Daily Average Memory: 1.8 GB | Peak: 3.2 GB | Min: 0.8 GB | StdDev: 0.6 GB
+2026-01-15 00:06:30.789 | STATS | SYSTEM | DAILY_TOTAL_TRAFFIC | 892.3 | GB | In: 567.8 GB | Out: 324.5 GB | Total: 892.3 GB | Avg: 10.3 MB/s
+2026-01-15 00:06:45.012 | STATS | EXCHANGE | DAILY_TOTAL_REQUESTS | 234,567 | count | Total Requests: 234,567 | Success: 231,234 | Failed: 3,333 | Success Rate: 98.6%
+2026-01-15 00:07:00.123 | STATS | ORDER | DAILY_TOTAL_ORDERS | 2,189 | count | Total Orders: 2,189 | Success: 2,150 | Failed: 39 | Success Rate: 98.2%
+2026-01-15 00:07:15.456 | STATS | ORDER | DAILY_TOTAL_VOLUME | 513,456.78 | USDT | Total Volume: 513,456.78 USDT | Avg Order: 234.56 USDT | Max Order: 15,000.00 USDT
+2026-01-15 00:07:30.789 | STATS | ORDER | DAILY_TOTAL_PROFIT | 107,367.50 | USDT | Gross Profit: 128,475.00 | Fees: 12,342.50 | Gas: 8,765.00 | Net: 107,367.50
+2026-01-15 00:07:45.012 | STATS | NETWORK | DAILY_AVG_LATENCY | 15.6 | ms | Daily Average Latency: 15.6ms | Peak: 2,345ms | Min: 6ms | P95: 23ms | P99: 45ms
+
+# ======================== PERFORMANCE TRENDS ========================
+
+2026-01-15 00:08:00.123 | TREND | EXCHANGE | LATENCY_TREND | 12.3 | ms | 7-Day Trend: Stable | 30-Day Trend: Improving | Change: -2.3ms | Direction: Downward
+2026-01-15 00:08:15.456 | TREND | ORDER | EXECUTION_TIME_TREND | 1.2 | s | 7-Day Trend: Stable | 30-Day Trend: Improving | Change: -0.3s | Direction: Downward
+2026-01-15 00:08:30.789 | TREND | STRATEGY | PROFIT_TREND | 53.12 | USDT | 7-Day Trend: Increasing | 30-Day Trend: Stable | Change: +5.23 USDT | Direction: Upward
+2026-01-15 00:08:45.012 | TREND | BOT | CPU_TREND | 35.6 | % | 7-Day Trend: Stable | 30-Day Trend: Decreasing | Change: -2.3% | Direction: Downward
+2026-01-15 00:09:00.123 | TREND | NETWORK | LATENCY_TREND | 15.6 | ms | 7-Day Trend: Stable | 30-Day Trend: Decreasing | Change: -1.2ms | Direction: Downward
+
+# ======================== PERFORMANCE FORECAST ========================
+
+2026-01-15 00:09:15.456 | FORECAST | SYSTEM | CPU_USAGE_1H | 45.6 | % | Forecast: 45.6% | Confidence: 87.3% | Range: 38.2% - 53.0%
+2026-01-15 00:09:30.789 | FORECAST | SYSTEM | MEMORY_USAGE_1H | 2.1 | GB | Forecast: 2.1 GB | Confidence: 83.7% | Range: 1.7 GB - 2.5 GB
+2026-01-15 00:09:45.012 | FORECAST | ORDER | ORDER_VOLUME_1H | 45,678 | USDT | Forecast: 45,678 USDT | Confidence: 82.4% | Range: 38,234 - 53,122 USDT
+2026-01-15 00:10:00.123 | FORECAST | STRATEGY | PROFIT_1H | 4,567.80 | USDT | Forecast: 4,567.80 USDT | Confidence: 78.9% | Range: 3,234.50 - 5,901.10 USDT
+2026-01-15 00:10:15.456 | FORECAST | EXCHANGE | BINANCE_REQUESTS_1H | 45,678 | count | Forecast: 45,678 | Confidence: 92.3% | Range: 42,345 - 49,011
+
+# ======================== PERFORMANCE OPTIMIZATION ========================
+
+2026-01-15 00:10:30.789 | OPTIMIZE | SYSTEM | CPU_OPTIMIZATION | 12.3 | % | Optimization applied: CPU scheduling | Improvement: 12.3% | Impact: Reduced CPU usage
+2026-01-15 00:10:45.012 | OPTIMIZE | DATABASE | INDEX_OPTIMIZATION | 23.4 | % | Optimization applied: Index rebuild | Improvement: 23.4% | Impact: Faster queries
+2026-01-15 00:11:00.123 | OPTIMIZE | NETWORK | CONNECTION_POOL_OPTIMIZATION | 15.6 | % | Optimization applied: Pool sizing | Improvement: 15.6% | Impact: Lower latency
+2026-01-15 00:11:15.456 | OPTIMIZE | WEBSOCKET | BUFFER_OPTIMIZATION | 8.9 | % | Optimization applied: Buffer size | Improvement: 8.9% | Impact: Reduced memory usage
+2026-01-15 00:11:30.789 | OPTIMIZE | ORDER | ORDER_ROUTING_OPTIMIZATION | 18.7 | % | Optimization applied: Smart routing | Improvement: 18.7% | Impact: Faster execution
+2026-01-15 00:11:45.012 | OPTIMIZE | STRATEGY | THRESHOLD_OPTIMIZATION | 14.5 | % | Optimization applied: Dynamic thresholds | Improvement: 14.5% | Impact: Higher win rate
+
+# ======================== PERFORMANCE SUMMARY ========================
+
+2026-01-15 00:12:00.123 | SUMMARY | DAILY | OVERALL_PERFORMANCE | 100.0 | % | Overall Performance: 100.0% | Target: 95.0% | Status: Exceeding target | Rating: Excellent
+2026-01-15 00:12:15.456 | SUMMARY | DAILY | SYSTEM_HEALTH | 98.5 | % | System Health: 98.5% | Target: 95.0% | Status: Healthy | Rating: Excellent
+2026-01-15 00:12:30.789 | SUMMARY | DAILY | EXCHANGE_HEALTH | 97.8 | % | Exchange Health: 97.8% | Target: 95.0% | Status: Healthy | Rating: Good
+2026-01-15 00:12:45.012 | SUMMARY | DAILY | ORDER_SUCCESS | 98.2 | % | Order Success: 98.2% | Target: 95.0% | Status: Exceeding target | Rating: Excellent
+2026-01-15 00:13:00.123 | SUMMARY | DAILY | PROFIT_TARGET | 107.4 | % | Profit Target: 107.4% | Target: 100.0% | Status: Exceeding target | Rating: Excellent
+2026-01-15 00:13:15.456 | SUMMARY | DAILY | RECOMMENDATION | 1 | count | Recommendation: Continue current strategy | Confidence: 92.3% | Priority: High
+
+# ======================== END OF PERFORMANCE LOG ========================
+
+2026-01-15 23:59:59.999 | INFO | LOG_ROTATION | Daily log rotation initiated | File: performance-2026-01-15.log | Size: 23.4 MB | Lines: 123,456 | Archive: S3://nexus-arbitrage/logs/performance-2026-01-15.log.gz
+2026-01-15 23:59:59.999 | INFO | NEW_LOG_FILE | Starting new log file: performance-2026-01-16.log | Retention: 30 days | Max Size: 50 MB | Rotation: Daily at 00:00 UTC
+
+# ========================================================================================
+# LOG ROTATION POLICY:
+# - Frequency: Daily at 00:00 UTC
+# - Retention: 30 days
+# - Max Size: 50 MB per file
+# - Compression: gzip after 7 days
+# - Archive: S3://nexus-arbitrage/logs/performance-YYYY-MM-DD.log.gz
+# - Cleanup: Delete files older than 30 days
+# ========================================================================================
