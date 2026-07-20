@@ -1,1688 +1,2069 @@
-<!-- trading/bots/arbitrage_bot/templates/components/chart_card.html -->
-<!-- NEXUS AI TRADING SYSTEM -->
-<!-- Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved -->
-<!-- Version: 4.2.0 - Complete Chart Card Component -->
+<!--
+╔═══════════════════════════════════════════════════════════════════════════════════╗
+║                                                                                   ║
+║   ██████╗██╗  ██╗ █████╗ ██████╗ ████████╗                                     ║
+║  ██╔════╝██║  ██║██╔══██╗██╔══██╗╚══██╔══╝                                     ║
+║  ██║     ███████║███████║██████╔╝   ██║                                        ║
+║  ██║     ██╔══██║██╔══██║██╔══██╗   ██║                                        ║
+║  ╚██████╗██║  ██║██║  ██║██║  ██║   ██║                                        ║
+║   ╚═════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝                                        ║
+║                                                                                   ║
+║   NEXUS AI TRADING SYSTEM - CHART CARD COMPONENT                                 ║
+║   Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved                       ║
+║   Version: 3.0.0 - Build: 2026.07.20                                             ║
+║   CEO: Dr X... - Majority Shareholder                                            ║
+║                                                                                   ║
+╚═══════════════════════════════════════════════════════════════════════════════════╝
+-->
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chart Card Component</title>
-    <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.0.0/dist/chart.umd.min.js"></script>
-    <!-- Chart.js Data Labels Plugin -->
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0/dist/chartjs-plugin-datalabels.min.js"></script>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="theme-color" content="#0A0A0F">
+    <meta name="description" content="NEXUS Arbitrage Bot - Real-time chart card component with live APIs">
+    <title>NEXUS Chart Card - Live APIs</title>
+    
+    <!-- ============================================
+    FONTS & ICONS
+    ============================================ -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    
+    <!-- Chart.js for rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+    
+    <style>
+        /* ============================================
+           SECTION 1: ROOT VARIABLES - NEXUS THEME
+           ============================================ */
+        :root {
+            /* --- Brand Colors --- */
+            --nexus-primary: #6C3CE1;
+            --nexus-primary-dark: #4A1FA8;
+            --nexus-primary-light: #8B6BEE;
+            --nexus-primary-gradient: linear-gradient(135deg, #6C3CE1 0%, #8B6BEE 50%, #00D4AA 100%);
+            --nexus-secondary: #00D4AA;
+            --nexus-secondary-dark: #00A88A;
+            --nexus-secondary-light: #33E0C0;
+            --nexus-accent: #FF6B6B;
+            --nexus-accent-dark: #E05555;
+            --nexus-warning: #FFB84D;
+            --nexus-warning-dark: #E6A040;
+            
+            /* --- Chart Colors --- */
+            --chart-green: #00D4AA;
+            --chart-green-dark: #00A88A;
+            --chart-red: #FF6B6B;
+            --chart-red-dark: #E05555;
+            --chart-blue: #6C3CE1;
+            --chart-blue-light: #8B6BEE;
+            --chart-yellow: #FFB84D;
+            --chart-purple: #9B59B6;
+            --chart-cyan: #1ABC9C;
+            --chart-orange: #E67E22;
+            --chart-pink: #E91E63;
+            
+            /* --- Gradients --- */
+            --gradient-primary: linear-gradient(135deg, #6C3CE1 0%, #00D4AA 100%);
+            --gradient-accent: linear-gradient(135deg, #FF6B6B 0%, #FFB84D 100%);
+            --gradient-success: linear-gradient(135deg, #00D4AA 0%, #33E0C0 100%);
+            --gradient-danger: linear-gradient(135deg, #FF6B6B 0%, #FF0044 100%);
+            
+            /* --- Backgrounds --- */
+            --bg-primary: #0A0A0F;
+            --bg-secondary: #0F0F18;
+            --bg-tertiary: #13131A;
+            --bg-card: #1A1A24;
+            --bg-card-hover: #222233;
+            --bg-card-active: #2A2A3E;
+            --bg-elevated: rgba(26, 26, 36, 0.95);
+            
+            /* --- Text --- */
+            --text-primary: #FFFFFF;
+            --text-secondary: #A0A0B8;
+            --text-muted: #6B6B85;
+            --text-disabled: #3D3D55;
+            
+            /* --- Borders --- */
+            --border-color: rgba(108, 60, 225, 0.12);
+            --border-color-hover: rgba(108, 60, 225, 0.3);
+            --border-color-light: rgba(255, 255, 255, 0.05);
+            
+            /* --- Shadows --- */
+            --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.4);
+            --shadow-card-hover: 0 12px 48px rgba(0, 0, 0, 0.6);
+            --shadow-glow: 0 0 60px rgba(108, 60, 225, 0.06);
+            --shadow-glow-strong: 0 0 80px rgba(108, 60, 225, 0.12);
+            
+            /* --- Animations --- */
+            --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-base: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-slow: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-bounce: 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            
+            /* --- Border Radius --- */
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
+            --radius-full: 9999px;
+        }
+        
+        /* ============================================
+           SECTION 2: RESET & BASE
+           ============================================ */
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 24px;
+        }
+        
+        /* ============================================
+           SECTION 3: SCROLLBAR
+           ============================================ */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--nexus-primary);
+            border-radius: var(--radius-full);
+            transition: var(--transition-base);
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--nexus-primary-light);
+        }
+        
+        /* ============================================
+           SECTION 4: CHART CARD CONTAINER
+           ============================================ */
+        .chart-card-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        /* ============================================
+           SECTION 5: CHART CARD
+           ============================================ */
+        .chart-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 20px 20px 16px;
+            transition: all var(--transition-bounce);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .chart-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--gradient-primary);
+            opacity: 0;
+            transition: opacity var(--transition-base);
+        }
+        
+        .chart-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--border-color-hover);
+            box-shadow: var(--shadow-card-hover), var(--shadow-glow);
+            background: var(--bg-card-hover);
+        }
+        
+        .chart-card:hover::before {
+            opacity: 1;
+        }
+        
+        .chart-card:active {
+            transform: scale(0.98);
+        }
+        
+        /* --- Card Glow Effect --- */
+        .chart-card::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), 
+                rgba(108, 60, 225, 0.03) 0%, 
+                transparent 60%);
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity var(--transition-base);
+        }
+        
+        .chart-card:hover::after {
+            opacity: 1;
+        }
+        
+        /* ============================================
+           SECTION 6: CHART CARD HEADER
+           ============================================ */
+        .chart-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+        
+        .chart-card-title-group {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        
+        .chart-card-title {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .chart-card-title i {
+            color: var(--nexus-secondary);
+            font-size: 0.8rem;
+        }
+        
+        .chart-card-subtitle {
+            font-size: 0.65rem;
+            color: var(--text-muted);
+        }
+        
+        .chart-card-actions {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .chart-card-actions button {
+            width: 30px;
+            height: 30px;
+            border: none;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: var(--radius-full);
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+        }
+        
+        .chart-card-actions button:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--text-primary);
+        }
+        
+        .chart-card-actions button:active {
+            transform: scale(0.9);
+        }
+        
+        .chart-card-actions button.active {
+            background: rgba(108, 60, 225, 0.1);
+            color: var(--nexus-primary-light);
+        }
+        
+        .chart-card-actions .dropdown-btn {
+            position: relative;
+        }
+        
+        .chart-card-actions .dropdown-menu {
+            position: absolute;
+            top: calc(100% + 4px);
+            right: 0;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 4px 0;
+            min-width: 140px;
+            box-shadow: var(--shadow-card);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-8px) scale(0.95);
+            transition: all var(--transition-base);
+            z-index: 10;
+            backdrop-filter: blur(16px);
+        }
+        
+        .chart-card-actions .dropdown-menu.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0) scale(1);
+        }
+        
+        .chart-card-actions .dropdown-menu button {
+            width: 100%;
+            padding: 6px 14px;
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            font-size: 0.7rem;
+            text-align: left;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            border-radius: 0;
+            justify-content: flex-start;
+            gap: 8px;
+        }
+        
+        .chart-card-actions .dropdown-menu button:hover {
+            background: rgba(108, 60, 225, 0.08);
+            color: var(--text-primary);
+        }
+        
+        /* ============================================
+           SECTION 7: CHART CARD STATS
+           ============================================ */
+        .chart-card-stats {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+        
+        .chart-stat {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .chart-stat-label {
+            font-size: 0.55rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: var(--text-muted);
+        }
+        
+        .chart-stat-value {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            font-variant-numeric: tabular-nums;
+        }
+        
+        .chart-stat-value.positive {
+            color: var(--chart-green);
+        }
+        
+        .chart-stat-value.negative {
+            color: var(--chart-red);
+        }
+        
+        .chart-stat-value .change {
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin-left: 4px;
+        }
+        
+        .chart-stat-value .change.positive {
+            color: var(--chart-green);
+        }
+        
+        .chart-stat-value .change.negative {
+            color: var(--chart-red);
+        }
+        
+        /* ============================================
+           SECTION 8: CHART CANVAS
+           ============================================ */
+        .chart-card-canvas {
+            position: relative;
+            width: 100%;
+            height: 200px;
+            margin-bottom: 4px;
+        }
+        
+        .chart-card-canvas canvas {
+            width: 100% !important;
+            height: 100% !important;
+        }
+        
+        .chart-card-canvas .chart-overlay {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(10, 10, 15, 0.7);
+            backdrop-filter: blur(4px);
+            border-radius: var(--radius-sm);
+            opacity: 0;
+            visibility: hidden;
+            transition: all var(--transition-base);
+        }
+        
+        .chart-card-canvas .chart-overlay.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .chart-card-canvas .chart-overlay .loading-spinner {
+            width: 32px;
+            height: 32px;
+            border: 3px solid var(--border-color);
+            border-top: 3px solid var(--nexus-primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* ============================================
+           SECTION 9: CHART CARD FOOTER
+           ============================================ */
+        .chart-card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 10px;
+            border-top: 1px solid var(--border-color-light);
+            margin-top: 4px;
+        }
+        
+        .chart-card-footer .chart-time {
+            font-size: 0.6rem;
+            color: var(--text-muted);
+        }
+        
+        .chart-card-footer .chart-time i {
+            margin-right: 4px;
+        }
+        
+        .chart-card-footer .chart-legend {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .chart-card-footer .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.6rem;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+        
+        .chart-card-footer .legend-item:hover {
+            color: var(--text-secondary);
+        }
+        
+        .chart-card-footer .legend-item .legend-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        
+        .chart-card-footer .legend-item .legend-dot.hidden {
+            opacity: 0.3;
+        }
+        
+        /* ============================================
+           SECTION 10: RESPONSIVE
+           ============================================ */
+        @media (max-width: 1200px) {
+            .chart-card-container {
+                grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+                gap: 16px;
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .chart-card-container {
+                grid-template-columns: 1fr 1fr;
+                gap: 14px;
+            }
+            
+            .chart-card-canvas {
+                height: 160px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 12px;
+            }
+            
+            .chart-card-container {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+            
+            .chart-card {
+                padding: 16px 16px 12px;
+            }
+            
+            .chart-card-canvas {
+                height: 140px;
+            }
+            
+            .chart-card-stats {
+                gap: 12px;
+            }
+            
+            .chart-stat-value {
+                font-size: 0.95rem;
+            }
+            
+            .chart-card-title {
+                font-size: 0.8rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            body {
+                padding: 8px;
+            }
+            
+            .chart-card {
+                padding: 12px 12px 10px;
+                border-radius: var(--radius-md);
+            }
+            
+            .chart-card-canvas {
+                height: 120px;
+            }
+            
+            .chart-card-stats {
+                gap: 8px;
+            }
+            
+            .chart-stat-value {
+                font-size: 0.85rem;
+            }
+            
+            .chart-card-footer {
+                flex-direction: column;
+                gap: 6px;
+                align-items: flex-start;
+            }
+            
+            .chart-card-actions button {
+                width: 26px;
+                height: 26px;
+                font-size: 0.6rem;
+            }
+        }
+        
+        /* ============================================
+           SECTION 11: UTILITY ANIMATIONS
+           ============================================ */
+        .fade-in {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .pulse-once {
+            animation: pulseOnce 0.5s ease-out;
+        }
+        
+        @keyframes pulseOnce {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+    </style>
 </head>
 <body>
-
-<!-- ======================================================================= -->
-<!-- CHART CARD MACRO                                                         -->
-<!-- ======================================================================= -->
-{% macro chart_card(title, chart_type='line', data=None, height='350px', width='100%', options={}, symbol='BTC/USD', show_controls=True) %}
-<div class="chart-card" id="chart-card-{{ loop.index if loop else '1' }}" 
-     data-chart-id="chart-{{ loop.index if loop else '1' }}"
-     data-symbol="{{ symbol }}"
-     data-chart-type="{{ chart_type }}"
-     data-theme="{{ options.theme if options.theme else 'dark' }}">
     
-    <!-- ======================== HEADER ======================== -->
-    <div class="chart-header">
-        <div class="chart-title-section">
-            <h3 class="chart-title">
-                <i class="fas fa-chart-line chart-title-icon"></i>
-                {{ title }}
-            </h3>
-            <div class="chart-subtitle">
-                <span class="chart-symbol">{{ symbol }}</span>
-                <span class="chart-update-time" id="chart-update-time-{{ loop.index if loop else '1' }}">
-                    <i class="fas fa-clock"></i> 
-                    {{ now().strftime('%H:%M:%S') }}
+    <!-- ============================================
+    SECTION 12: CHART CARD CONTAINER
+    ============================================ -->
+    <div class="chart-card-container" id="chartContainer">
+        
+        <!-- ==========================================
+        SECTION 13: PRICE CHART CARD - LIVE API
+        ========================================== -->
+        <div class="chart-card" id="priceChartCard" data-chart="price">
+            <div class="chart-card-header">
+                <div class="chart-card-title-group">
+                    <div class="chart-card-title">
+                        <i class="fas fa-chart-line"></i>
+                        Price Chart
+                        <span style="font-size: 0.6rem; font-weight: 400; color: var(--text-muted); -webkit-text-fill-color: var(--text-muted);">
+                            BTC/USDT
+                        </span>
+                        <span style="font-size: 0.5rem; font-weight: 400; color: var(--chart-green); -webkit-text-fill-color: var(--chart-green);">
+                            <i class="fas fa-circle" style="font-size: 0.4rem;"></i> LIVE
+                        </span>
+                    </div>
+                    <div class="chart-card-subtitle">Real-time price movement from Binance API</div>
+                </div>
+                <div class="chart-card-actions">
+                    <button class="active" data-timeframe="1h" title="1 Hour">1H</button>
+                    <button data-timeframe="4h" title="4 Hours">4H</button>
+                    <button data-timeframe="1d" title="1 Day">1D</button>
+                    <button data-timeframe="1w" title="1 Week">1W</button>
+                    <button class="dropdown-btn" id="priceDropdownBtn" title="More options">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </button>
+                    <div class="dropdown-menu" id="priceDropdown">
+                        <button data-action="export"><i class="fas fa-download"></i> Export Chart</button>
+                        <button data-action="fullscreen"><i class="fas fa-expand"></i> Fullscreen</button>
+                        <button data-action="reset"><i class="fas fa-undo"></i> Reset View</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="chart-card-stats">
+                <div class="chart-stat">
+                    <span class="chart-stat-label">Price</span>
+                    <span class="chart-stat-value" id="priceValue">--</span>
+                </div>
+                <div class="chart-stat">
+                    <span class="chart-stat-label">24h Change</span>
+                    <span class="chart-stat-value" id="priceChange">--</span>
+                </div>
+                <div class="chart-stat">
+                    <span class="chart-stat-label">24h High</span>
+                    <span class="chart-stat-value" id="priceHigh">--</span>
+                </div>
+                <div class="chart-stat">
+                    <span class="chart-stat-label">24h Low</span>
+                    <span class="chart-stat-value" id="priceLow">--</span>
+                </div>
+                <div class="chart-stat">
+                    <span class="chart-stat-label">Volume</span>
+                    <span class="chart-stat-value" id="priceVolume">--</span>
+                </div>
+            </div>
+            
+            <div class="chart-card-canvas">
+                <canvas id="priceChart"></canvas>
+                <div class="chart-overlay" id="priceOverlay">
+                    <div class="loading-spinner"></div>
+                </div>
+            </div>
+            
+            <div class="chart-card-footer">
+                <span class="chart-time">
+                    <i class="far fa-clock"></i>
+                    Updated: <span id="priceUpdateTime">--</span>
                 </span>
-                <span class="chart-status" id="chart-status-{{ loop.index if loop else '1' }}">
-                    <i class="fas fa-circle" style="color: #00D4FF;"></i> Live
+                <div class="chart-legend">
+                    <span class="legend-item" data-dataset="price">
+                        <span class="legend-dot" style="background: var(--chart-green);"></span>
+                        Price
+                    </span>
+                    <span class="legend-item" data-dataset="volume">
+                        <span class="legend-dot" style="background: var(--chart-blue-light);"></span>
+                        Volume
+                    </span>
+                    <span class="legend-item" data-dataset="sma">
+                        <span class="legend-dot" style="background: var(--chart-yellow);"></span>
+                        SMA 20
+                    </span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- ==========================================
+        SECTION 14: ARBITRAGE OPPORTUNITIES CHART - LIVE API
+        ========================================== -->
+        <div class="chart-card" id="arbitrageChartCard" data-chart="arbitrage">
+            <div class="chart-card-header">
+                <div class="chart-card-title-group">
+                    <div class="chart-card-title">
+                        <i class="fas fa-bolt"></i>
+                        Arbitrage Opportunities
+                        <span style="font-size: 0.6rem; font-weight: 400; color: var(--text-muted); -webkit-text-fill-color: var(--text-muted);">
+                            Real-time
+                        </span>
+                        <span style="font-size: 0.5rem; font-weight: 400; color: var(--chart-green); -webkit-text-fill-color: var(--chart-green);">
+                            <i class="fas fa-circle" style="font-size: 0.4rem;"></i> LIVE
+                        </span>
+                    </div>
+                    <div class="chart-card-subtitle">Opportunities detected across exchanges via API</div>
+                </div>
+                <div class="chart-card-actions">
+                    <button class="active" data-timeframe="1h" title="1 Hour">1H</button>
+                    <button data-timeframe="4h" title="4 Hours">4H</button>
+                    <button data-timeframe="1d" title="1 Day">1D</button>
+                    <button class="dropdown-btn" id="arbitrageDropdownBtn" title="More options">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </button>
+                    <div class="dropdown-menu" id="arbitrageDropdown">
+                        <button data-action="export"><i class="fas fa-download"></i> Export Chart</button>
+                        <button data-action="fullscreen"><i class="fas fa-expand"></i> Fullscreen</button>
+                        <button data-action="reset"><i class="fas fa-undo"></i> Reset View</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="chart-card-stats">
+                <div class="chart-stat">
+                    <span class="chart-stat-label">Total Opportunities</span>
+                    <span class="chart-stat-value" id="arbTotal">--</span>
+                </div>
+                <div class="chart-stat">
+                    <span class="chart-stat-label">Avg Spread</span>
+                    <span class="chart-stat-value" id="arbAvgSpread">--</span>
+                </div>
+                <div class="chart-stat">
+                    <span class="chart-stat-label">Best Spread</span>
+                    <span class="chart-stat-value" id="arbBestSpread">--</span>
+                </div>
+                <div class="chart-stat">
+                    <span class="chart-stat-label">Success Rate</span>
+                    <span class="chart-stat-value" id="arbSuccessRate">--</span>
+                </div>
+            </div>
+            
+            <div class="chart-card-canvas">
+                <canvas id="arbitrageChart"></canvas>
+                <div class="chart-overlay" id="arbitrageOverlay">
+                    <div class="loading-spinner"></div>
+                </div>
+            </div>
+            
+            <div class="chart-card-footer">
+                <span class="chart-time">
+                    <i class="far fa-clock"></i>
+                    Updated: <span id="arbitrageUpdateTime">--</span>
                 </span>
+                <div class="chart-legend">
+                    <span class="legend-item" data-dataset="opportunities">
+                        <span class="legend-dot" style="background: var(--chart-blue);"></span>
+                        Opportunities
+                    </span>
+                    <span class="legend-item" data-dataset="spread">
+                        <span class="legend-dot" style="background: var(--chart-green);"></span>
+                        Avg Spread
+                    </span>
+                    <span class="legend-item" data-dataset="executed">
+                        <span class="legend-dot" style="background: var(--chart-yellow);"></span>
+                        Executed
+                    </span>
+                </div>
             </div>
         </div>
         
-        {% if show_controls %}
-        <div class="chart-controls">
-            <!-- Interval Selector -->
-            <div class="chart-interval-selector">
-                <button class="chart-btn chart-btn-active" data-interval="1m">1m</button>
-                <button class="chart-btn" data-interval="5m">5m</button>
-                <button class="chart-btn" data-interval="15m">15m</button>
-                <button class="chart-btn" data-interval="1h">1h</button>
-                <button class="chart-btn" data-interval="4h">4h</button>
-                <button class="chart-btn" data-interval="1d">1d</button>
-                <button class="chart-btn" data-interval="1w">1w</button>
+        <!-- ==========================================
+        SECTION 15: PNL CHART CARD - LIVE API
+        ========================================== -->
+        <div class="chart-card" id="pnlChartCard" data-chart="pnl">
+            <div class="chart-card-header">
+                <div class="chart-card-title-group">
+                    <div class="chart-card-title">
+                        <i class="fas fa-chart-bar"></i>
+                        PnL Distribution
+                        <span style="font-size: 0.6rem; font-weight: 400; color: var(--text-muted); -webkit-text-fill-color: var(--text-muted);">
+                            By Pair
+                        </span>
+                        <span style="font-size: 0.5rem; font-weight: 400; color: var(--chart-green); -webkit-text-fill-color: var(--chart-green);">
+                            <i class="fas fa-circle" style="font-size: 0.4rem;"></i> LIVE
+                        </span>
+                    </div>
+                    <div class="chart-card-subtitle">Profit and loss breakdown from real trades</div>
+                </div>
+                <div class="chart-card-actions">
+                    <button class="active" data-view="bar" title="Bar Chart"><i class="fas fa-chart-bar"></i></button>
+                    <button data-view="pie" title="Pie Chart"><i class="fas fa-chart-pie"></i></button>
+                    <button data-view="doughnut" title="Doughnut Chart"><i class="fas fa-circle"></i></button>
+                    <button class="dropdown-btn" id="pnlDropdownBtn" title="More options">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </button>
+                    <div class="dropdown-menu" id="pnlDropdown">
+                        <button data-action="export"><i class="fas fa-download"></i> Export Chart</button>
+                        <button data-action="fullscreen"><i class="fas fa-expand"></i> Fullscreen</button>
+                        <button data-action="reset"><i class="fas fa-undo"></i> Reset View</button>
+                    </div>
+                </div>
             </div>
             
-            <!-- Chart Type Selector -->
-            <div class="chart-type-selector">
-                <button class="chart-type-btn chart-type-active" data-type="line" title="Line Chart">
-                    <i class="fas fa-chart-line"></i>
-                </button>
-                <button class="chart-type-btn" data-type="candlestick" title="Candlestick Chart">
-                    <i class="fas fa-candlestick"></i>
-                </button>
-                <button class="chart-type-btn" data-type="bar" title="Bar Chart">
-                    <i class="fas fa-chart-bar"></i>
-                </button>
-                <button class="chart-type-btn" data-type="area" title="Area Chart">
-                    <i class="fas fa-chart-area"></i>
-                </button>
+            <div class="chart-card-stats">
+                <div class="chart-stat">
+                    <span class="chart-stat-label">Total PnL</span>
+                    <span class="chart-stat-value" id="pnlTotal">--</span>
+                </div>
+                <div class="chart-stat">
+                    <span class="chart-stat-label">Win Rate</span>
+                    <span class="chart-stat-value" id="pnlWinRate">--</span>
+                </div>
+                <div class="chart-stat">
+                    <span class="chart-stat-label">Avg Win</span>
+                    <span class="chart-stat-value" id="pnlAvgWin">--</span>
+                </div>
+                <div class="chart-stat">
+                    <span class="chart-stat-label">Avg Loss</span>
+                    <span class="chart-stat-value" id="pnlAvgLoss">--</span>
+                </div>
             </div>
             
-            <!-- Actions -->
-            <div class="chart-actions">
-                <button class="chart-action-btn" data-action="refresh" title="Refresh Data">
-                    <i class="fas fa-sync-alt"></i>
-                </button>
-                <button class="chart-action-btn" data-action="fullscreen" title="Toggle Fullscreen">
-                    <i class="fas fa-expand"></i>
-                </button>
-                <button class="chart-action-btn" data-action="download" title="Download Chart">
-                    <i class="fas fa-download"></i>
-                </button>
-                <button class="chart-action-btn" data-action="settings" title="Chart Settings">
-                    <i class="fas fa-cog"></i>
-                </button>
-                <button class="chart-action-btn" data-action="reset" title="Reset Zoom">
-                    <i class="fas fa-undo-alt"></i>
-                </button>
+            <div class="chart-card-canvas">
+                <canvas id="pnlChart"></canvas>
+                <div class="chart-overlay" id="pnlOverlay">
+                    <div class="loading-spinner"></div>
+                </div>
+            </div>
+            
+            <div class="chart-card-footer">
+                <span class="chart-time">
+                    <i class="far fa-clock"></i>
+                    Updated: <span id="pnlUpdateTime">--</span>
+                </span>
+                <div class="chart-legend">
+                    <span class="legend-item" data-dataset="profit">
+                        <span class="legend-dot" style="background: var(--chart-green);"></span>
+                        Profit
+                    </span>
+                    <span class="legend-item" data-dataset="loss">
+                        <span class="legend-dot" style="background: var(--chart-red);"></span>
+                        Loss
+                    </span>
+                </div>
             </div>
         </div>
-        {% endif %}
+        
+        <!-- ==========================================
+        SECTION 16: RISK METRICS CHART - LIVE API
+        ========================================== -->
+        <div class="chart-card" id="riskChartCard" data-chart="risk">
+            <div class="chart-card-header">
+                <div class="chart-card-title-group">
+                    <div class="chart-card-title">
+                        <i class="fas fa-shield-alt"></i>
+                        Risk Metrics
+                        <span style="font-size: 0.6rem; font-weight: 400; color: var(--text-muted); -webkit-text-fill-color: var(--text-muted);">
+                            Real-time
+                        </span>
+                        <span style="font-size: 0.5rem; font-weight: 400; color: var(--chart-green); -webkit-text-fill-color: var(--chart-green);">
+                            <i class="fas fa-circle" style="font-size: 0.4rem;"></i> LIVE
+                        </span>
+                    </div>
+                    <div class="chart-card-subtitle">Risk exposure and drawdown from risk engine API</div>
+                </div>
+                <div class="chart-card-actions">
+                    <button class="active" data-timeframe="1d" title="1 Day">1D</button>
+                    <button data-timeframe="7d" title="7 Days">7D</button>
+                    <button data-timeframe="30d" title="30 Days">30D</button>
+                    <button class="dropdown-btn" id="riskDropdownBtn" title="More options">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </button>
+                    <div class="dropdown-menu" id="riskDropdown">
+                        <button data-action="export"><i class="fas fa-download"></i> Export Chart</button>
+                        <button data-action="fullscreen"><i class="fas fa-expand"></i> Fullscreen</button>
+                        <button data-action="reset"><i class="fas fa-undo"></i> Reset View</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="chart-card-stats">
+                <div class="chart-stat">
+                    <span class="chart-stat-label">Drawdown</span>
+                    <span class="chart-stat-value" id="riskDrawdown">--</span>
+                </div>
+                <div class="chart-stat">
+                    <span class="chart-stat-label">Sharpe Ratio</span>
+                    <span class="chart-stat-value" id="riskSharpe">--</span>
+                </div>
+                <div class="chart-stat">
+                    <span class="chart-stat-label">Volatility</span>
+                    <span class="chart-stat-value" id="riskVolatility">--</span>
+                </div>
+                <div class="chart-stat">
+                    <span class="chart-stat-label">VaR (95%)</span>
+                    <span class="chart-stat-value" id="riskVar">--</span>
+                </div>
+            </div>
+            
+            <div class="chart-card-canvas">
+                <canvas id="riskChart"></canvas>
+                <div class="chart-overlay" id="riskOverlay">
+                    <div class="loading-spinner"></div>
+                </div>
+            </div>
+            
+            <div class="chart-card-footer">
+                <span class="chart-time">
+                    <i class="far fa-clock"></i>
+                    Updated: <span id="riskUpdateTime">--</span>
+                </span>
+                <div class="chart-legend">
+                    <span class="legend-item" data-dataset="drawdown">
+                        <span class="legend-dot" style="background: var(--chart-red);"></span>
+                        Drawdown
+                    </span>
+                    <span class="legend-item" data-dataset="volatility">
+                        <span class="legend-dot" style="background: var(--chart-yellow);"></span>
+                        Volatility
+                    </span>
+                    <span class="legend-item" data-dataset="threshold">
+                        <span class="legend-dot" style="background: var(--chart-red-dark);"></span>
+                        Threshold
+                    </span>
+                </div>
+            </div>
+        </div>
+        
     </div>
     
-    <!-- ======================== BODY ======================== -->
-    <div class="chart-body">
-        <!-- Chart Container -->
-        <div class="chart-container" id="chart-container-{{ loop.index if loop else '1' }}" style="height: {{ height }}; width: {{ width }};">
-            <canvas id="chart-{{ loop.index if loop else '1' }}"></canvas>
-        </div>
+    <!-- ============================================
+    SECTION 17: JAVASCRIPT - COMPLETE WITH REAL APIs
+    ============================================ -->
+    <script>
+        'use strict';
         
-        <!-- Loading Overlay -->
-        <div class="chart-loading-overlay" id="chart-loading-{{ loop.index if loop else '1' }}" style="display: none;">
-            <div class="chart-loading-spinner"></div>
-            <span class="chart-loading-text">Loading chart data...</span>
-            <div class="chart-loading-progress">
-                <div class="chart-loading-progress-bar" style="width: 0%;"></div>
-            </div>
-        </div>
+        // ============================================
+        // SECTION 18: CONFIGURATION
+        // ============================================
+        const CHART_CONFIG = {
+            API_BASE: window.location.origin + '/api/v1',
+            WS_URL: 'wss://' + window.location.host + '/ws/charts',
+            REFRESH_INTERVAL: 10000,
+            RETRY_DELAY: 3000,
+            MAX_RETRIES: 3,
+            CHART_COLORS: {
+                green: '#00D4AA',
+                greenDark: '#00A88A',
+                red: '#FF6B6B',
+                redDark: '#E05555',
+                blue: '#6C3CE1',
+                blueLight: '#8B6BEE',
+                yellow: '#FFB84D',
+                purple: '#9B59B6',
+                cyan: '#1ABC9C',
+                orange: '#E67E22',
+                pink: '#E91E63',
+            },
+            CHART_BG: {
+                green: 'rgba(0, 212, 170, 0.1)',
+                red: 'rgba(255, 107, 107, 0.1)',
+                blue: 'rgba(108, 60, 225, 0.1)',
+                yellow: 'rgba(255, 184, 77, 0.1)',
+            },
+        };
         
-        <!-- Error Overlay -->
-        <div class="chart-error-overlay" id="chart-error-{{ loop.index if loop else '1' }}" style="display: none;">
-            <i class="fas fa-exclamation-triangle"></i>
-            <span class="chart-error-text">Failed to load chart data</span>
-            <span class="chart-error-detail" id="chart-error-detail-{{ loop.index if loop else '1' }}"></span>
-            <button class="chart-retry-btn" data-action="retry" data-chart-id="chart-{{ loop.index if loop else '1' }}">
-                <i class="fas fa-redo"></i> Retry
-            </button>
-        </div>
+        // ============================================
+        // SECTION 19: DOM REFS
+        // ============================================
+        const CHART_DOM = {
+            price: {
+                chart: document.getElementById('priceChart'),
+                overlay: document.getElementById('priceOverlay'),
+                updateTime: document.getElementById('priceUpdateTime'),
+                value: document.getElementById('priceValue'),
+                change: document.getElementById('priceChange'),
+                high: document.getElementById('priceHigh'),
+                low: document.getElementById('priceLow'),
+                volume: document.getElementById('priceVolume'),
+                dropdown: document.getElementById('priceDropdown'),
+                dropdownBtn: document.getElementById('priceDropdownBtn'),
+            },
+            arbitrage: {
+                chart: document.getElementById('arbitrageChart'),
+                overlay: document.getElementById('arbitrageOverlay'),
+                updateTime: document.getElementById('arbitrageUpdateTime'),
+                total: document.getElementById('arbTotal'),
+                avgSpread: document.getElementById('arbAvgSpread'),
+                bestSpread: document.getElementById('arbBestSpread'),
+                successRate: document.getElementById('arbSuccessRate'),
+                dropdown: document.getElementById('arbitrageDropdown'),
+                dropdownBtn: document.getElementById('arbitrageDropdownBtn'),
+            },
+            pnl: {
+                chart: document.getElementById('pnlChart'),
+                overlay: document.getElementById('pnlOverlay'),
+                updateTime: document.getElementById('pnlUpdateTime'),
+                total: document.getElementById('pnlTotal'),
+                winRate: document.getElementById('pnlWinRate'),
+                avgWin: document.getElementById('pnlAvgWin'),
+                avgLoss: document.getElementById('pnlAvgLoss'),
+                dropdown: document.getElementById('pnlDropdown'),
+                dropdownBtn: document.getElementById('pnlDropdownBtn'),
+            },
+            risk: {
+                chart: document.getElementById('riskChart'),
+                overlay: document.getElementById('riskOverlay'),
+                updateTime: document.getElementById('riskUpdateTime'),
+                drawdown: document.getElementById('riskDrawdown'),
+                sharpe: document.getElementById('riskSharpe'),
+                volatility: document.getElementById('riskVolatility'),
+                var: document.getElementById('riskVar'),
+                dropdown: document.getElementById('riskDropdown'),
+                dropdownBtn: document.getElementById('riskDropdownBtn'),
+            },
+        };
         
-        <!-- Empty State -->
-        <div class="chart-empty-overlay" id="chart-empty-{{ loop.index if loop else '1' }}" style="display: none;">
-            <i class="fas fa-chart-simple"></i>
-            <span class="chart-empty-text">No data available</span>
-            <span class="chart-empty-subtext">Select a different interval or symbol</span>
-        </div>
-    </div>
-    
-    <!-- ======================== FOOTER ======================== -->
-    <div class="chart-footer">
-        <!-- Statistics -->
-        <div class="chart-stats" id="chart-stats-{{ loop.index if loop else '1' }}">
-            <div class="stat-item">
-                <span class="stat-label">Open</span>
-                <span class="stat-value" id="stat-open-{{ loop.index if loop else '1' }}">--</span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-label">High</span>
-                <span class="stat-value" id="stat-high-{{ loop.index if loop else '1' }}">--</span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-label">Low</span>
-                <span class="stat-value" id="stat-low-{{ loop.index if loop else '1' }}">--</span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-label">Close</span>
-                <span class="stat-value" id="stat-close-{{ loop.index if loop else '1' }}">--</span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-label">Volume</span>
-                <span class="stat-value" id="stat-volume-{{ loop.index if loop else '1' }}">--</span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-label">Change</span>
-                <span class="stat-value" id="stat-change-{{ loop.index if loop else '1' }}">--</span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-label">Change %</span>
-                <span class="stat-value" id="stat-change-pct-{{ loop.index if loop else '1' }}">--</span>
-            </div>
-        </div>
+        // ============================================
+        // SECTION 20: STATE
+        // ============================================
+        const CHART_STATE = {
+            charts: {},
+            ws: null,
+            currentTimeframes: {
+                price: '1h',
+                arbitrage: '1h',
+                risk: '1d',
+            },
+            currentViews: {
+                pnl: 'bar',
+            },
+            isUpdating: false,
+            isConnected: false,
+            retryCount: 0,
+            lastData: {},
+            updateTimers: {},
+        };
         
-        <!-- Legend -->
-        <div class="chart-legend" id="chart-legend-{{ loop.index if loop else '1' }}">
-            <span class="legend-item">
-                <span class="legend-color" style="background-color: #6C63FF;"></span>
-                Price
-            </span>
-            <span class="legend-item" id="legend-indicator-{{ loop.index if loop else '1' }}" style="display: none;">
-                <span class="legend-color" style="background-color: #00D4FF;"></span>
-                Indicator
-            </span>
-            <span class="legend-item legend-actions">
-                <button class="legend-btn" data-action="toggle-indicator">+ Indicator</button>
-                <button class="legend-btn" data-action="toggle-grid">Grid</button>
-            </span>
-        </div>
-    </div>
-</div>
-{% endmacro %}
-
-<!-- ======================================================================= -->
-<!-- CSS STYLES                                                               -->
-<!-- ======================================================================= -->
-{% block styles %}
-<style>
-/* ============================================
-   CHART CARD - COMPLETE STYLES
-   ============================================ */
-   
-:root {
-    --chart-primary: #6C63FF;
-    --chart-secondary: #00D4FF;
-    --chart-success: #00D4FF;
-    --chart-danger: #FF6B6B;
-    --chart-warning: #FFD93D;
-    --chart-card-bg: #16213E;
-    --chart-card-border: rgba(255, 255, 255, 0.05);
-    --chart-text-primary: #E0E0E0;
-    --chart-text-secondary: #888;
-    --chart-text-muted: #666;
-    --chart-input-bg: rgba(255, 255, 255, 0.05);
-    --chart-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
-    --chart-radius: 16px;
-    --chart-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* Dark Theme */
-[data-theme="dark"] {
-    --chart-card-bg: #1a1a2e;
-    --chart-text-primary: #f0f0f0;
-    --chart-text-secondary: #aaa;
-}
-
-/* Light Theme */
-[data-theme="light"] {
-    --chart-card-bg: #ffffff;
-    --chart-card-border: #e0e0e0;
-    --chart-text-primary: #333;
-    --chart-text-secondary: #666;
-    --chart-text-muted: #999;
-    --chart-input-bg: #f5f5f5;
-    --chart-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
-}
-
-/* ============================================
-   CHART CARD CONTAINER
-   ============================================ */
-.chart-card {
-    background: var(--chart-card-bg);
-    border-radius: var(--chart-radius);
-    padding: 20px;
-    margin: 10px 0;
-    box-shadow: var(--chart-shadow);
-    border: 1px solid var(--chart-card-border);
-    transition: var(--chart-transition);
-    position: relative;
-    overflow: hidden;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-}
-
-.chart-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 36px rgba(0, 0, 0, 0.3);
-}
-
-.chart-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, var(--chart-primary), var(--chart-secondary));
-    opacity: 0.5;
-    transition: opacity 0.3s ease;
-}
-
-.chart-card:hover::before {
-    opacity: 1;
-}
-
-/* ============================================
-   HEADER
-   ============================================ */
-.chart-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 16px;
-    flex-wrap: wrap;
-    gap: 10px;
-}
-
-.chart-title-section {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-}
-
-.chart-title {
-    color: var(--chart-text-primary);
-    font-size: 18px;
-    font-weight: 600;
-    margin: 0;
-    letter-spacing: 0.5px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.chart-title-icon {
-    color: var(--chart-primary);
-    font-size: 16px;
-}
-
-.chart-subtitle {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    color: var(--chart-text-secondary);
-    font-size: 12px;
-}
-
-.chart-symbol {
-    font-weight: 600;
-    color: var(--chart-text-primary);
-}
-
-.chart-update-time {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-}
-
-.chart-status {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-}
-
-/* ============================================
-   CONTROLS
-   ============================================ */
-.chart-controls {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    flex-wrap: wrap;
-}
-
-/* Interval Selector */
-.chart-interval-selector {
-    display: flex;
-    gap: 2px;
-    background: var(--chart-input-bg);
-    padding: 3px;
-    border-radius: 8px;
-    border: 1px solid var(--chart-card-border);
-}
-
-.chart-btn {
-    background: transparent;
-    border: none;
-    color: var(--chart-text-secondary);
-    padding: 4px 10px;
-    font-size: 11px;
-    font-weight: 500;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: var(--chart-transition);
-    font-family: inherit;
-}
-
-.chart-btn:hover {
-    color: var(--chart-text-primary);
-    background: rgba(255, 255, 255, 0.05);
-}
-
-.chart-btn-active {
-    color: #fff;
-    background: var(--chart-primary);
-}
-
-.chart-btn-active:hover {
-    background: #5a52d9;
-}
-
-/* Type Selector */
-.chart-type-selector {
-    display: flex;
-    gap: 2px;
-    background: var(--chart-input-bg);
-    padding: 3px;
-    border-radius: 8px;
-    border: 1px solid var(--chart-card-border);
-}
-
-.chart-type-btn {
-    background: transparent;
-    border: none;
-    color: var(--chart-text-secondary);
-    padding: 4px 8px;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: var(--chart-transition);
-    font-size: 14px;
-}
-
-.chart-type-btn:hover {
-    color: var(--chart-text-primary);
-    background: rgba(255, 255, 255, 0.05);
-}
-
-.chart-type-active {
-    color: #fff;
-    background: var(--chart-primary);
-}
-
-.chart-type-active:hover {
-    background: #5a52d9;
-}
-
-/* Actions */
-.chart-actions {
-    display: flex;
-    gap: 2px;
-    background: var(--chart-input-bg);
-    padding: 3px;
-    border-radius: 8px;
-    border: 1px solid var(--chart-card-border);
-}
-
-.chart-action-btn {
-    background: transparent;
-    border: none;
-    color: var(--chart-text-secondary);
-    padding: 4px 8px;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: var(--chart-transition);
-    font-size: 14px;
-}
-
-.chart-action-btn:hover {
-    color: var(--chart-text-primary);
-    background: rgba(255, 255, 255, 0.05);
-    transform: scale(1.05);
-}
-
-.chart-action-btn:active {
-    transform: scale(0.95);
-}
-
-/* ============================================
-   BODY
-   ============================================ */
-.chart-body {
-    position: relative;
-    width: 100%;
-    min-height: 200px;
-}
-
-.chart-container {
-    position: relative;
-    width: 100%;
-}
-
-.chart-container canvas {
-    width: 100% !important;
-    height: 100% !important;
-}
-
-/* ============================================
-   OVERLAYS
-   ============================================ */
-.chart-loading-overlay,
-.chart-error-overlay,
-.chart-empty-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    display: none;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 16px;
-    border-radius: 8px;
-    z-index: 10;
-    background: rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(4px);
-}
-
-.chart-loading-spinner {
-    width: 40px;
-    height: 40px;
-    border: 3px solid rgba(108, 99, 255, 0.1);
-    border-top-color: var(--chart-primary);
-    border-radius: 50%;
-    animation: chart-spin 1s linear infinite;
-}
-
-@keyframes chart-spin {
-    to { transform: rotate(360deg); }
-}
-
-.chart-loading-text {
-    color: var(--chart-text-secondary);
-    font-size: 14px;
-}
-
-.chart-loading-progress {
-    width: 200px;
-    height: 4px;
-    background: var(--chart-input-bg);
-    border-radius: 2px;
-    overflow: hidden;
-}
-
-.chart-loading-progress-bar {
-    height: 100%;
-    background: linear-gradient(90deg, var(--chart-primary), var(--chart-secondary));
-    border-radius: 2px;
-    transition: width 0.3s ease;
-    width: 0%;
-}
-
-.chart-error-overlay i {
-    font-size: 32px;
-    color: var(--chart-danger);
-}
-
-.chart-error-text {
-    color: var(--chart-text-primary);
-    font-size: 16px;
-    font-weight: 500;
-}
-
-.chart-error-detail {
-    color: var(--chart-text-secondary);
-    font-size: 13px;
-}
-
-.chart-retry-btn {
-    background: var(--chart-primary);
-    border: none;
-    color: #fff;
-    padding: 8px 24px;
-    border-radius: 8px;
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: var(--chart-transition);
-    font-family: inherit;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.chart-retry-btn:hover {
-    background: #5a52d9;
-    transform: scale(1.02);
-}
-
-.chart-empty-overlay i {
-    font-size: 48px;
-    color: var(--chart-text-muted);
-}
-
-.chart-empty-text {
-    color: var(--chart-text-primary);
-    font-size: 16px;
-    font-weight: 500;
-}
-
-.chart-empty-subtext {
-    color: var(--chart-text-secondary);
-    font-size: 13px;
-}
-
-/* ============================================
-   FOOTER
-   ============================================ */
-.chart-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 16px;
-    padding-top: 12px;
-    border-top: 1px solid var(--chart-card-border);
-    flex-wrap: wrap;
-    gap: 10px;
-}
-
-.chart-stats {
-    display: flex;
-    gap: 16px;
-    flex-wrap: wrap;
-}
-
-.stat-item {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0px;
-}
-
-.stat-label {
-    color: var(--chart-text-secondary);
-    font-size: 10px;
-    font-weight: 400;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.stat-value {
-    color: var(--chart-text-primary);
-    font-size: 13px;
-    font-weight: 600;
-    font-variant-numeric: tabular-nums;
-}
-
-.stat-value.positive {
-    color: var(--chart-success);
-}
-
-.stat-value.negative {
-    color: var(--chart-danger);
-}
-
-.stat-value.neutral {
-    color: var(--chart-warning);
-}
-
-/* Legend */
-.chart-legend {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    flex-wrap: wrap;
-}
-
-.legend-item {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 12px;
-    color: var(--chart-text-secondary);
-}
-
-.legend-color {
-    width: 12px;
-    height: 12px;
-    border-radius: 3px;
-    display: inline-block;
-    flex-shrink: 0;
-}
-
-.legend-actions {
-    display: flex;
-    gap: 8px;
-    margin-left: 8px;
-}
-
-.legend-btn {
-    background: transparent;
-    border: 1px solid var(--chart-card-border);
-    color: var(--chart-text-secondary);
-    padding: 2px 10px;
-    border-radius: 4px;
-    font-size: 11px;
-    cursor: pointer;
-    transition: var(--chart-transition);
-    font-family: inherit;
-}
-
-.legend-btn:hover {
-    color: var(--chart-text-primary);
-    border-color: var(--chart-primary);
-}
-
-/* ============================================
-   RESPONSIVE
-   ============================================ */
-@media (max-width: 1200px) {
-    .chart-stats {
-        gap: 12px;
-    }
-    .stat-item {
-        min-width: 60px;
-    }
-}
-
-@media (max-width: 992px) {
-    .chart-controls {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 8px;
-        width: 100%;
-    }
-    .chart-interval-selector,
-    .chart-type-selector,
-    .chart-actions {
-        justify-content: center;
-    }
-}
-
-@media (max-width: 768px) {
-    .chart-card {
-        padding: 16px;
-        margin: 8px 0;
-    }
-    
-    .chart-header {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 8px;
-    }
-    
-    .chart-title {
-        font-size: 16px;
-    }
-    
-    .chart-controls {
-        flex-wrap: wrap;
-        justify-content: center;
-    }
-    
-    .chart-interval-selector {
-        width: 100%;
-        justify-content: center;
-        flex-wrap: wrap;
-    }
-    
-    .chart-footer {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 8px;
-    }
-    
-    .chart-stats {
-        justify-content: center;
-    }
-    
-    .chart-legend {
-        justify-content: center;
-    }
-    
-    .stat-item {
-        align-items: center;
-    }
-}
-
-@media (max-width: 480px) {
-    .chart-card {
-        padding: 12px;
-        border-radius: 12px;
-    }
-    
-    .chart-stats {
-        gap: 8px;
-    }
-    
-    .stat-value {
-        font-size: 11px;
-    }
-    
-    .stat-label {
-        font-size: 9px;
-    }
-    
-    .chart-btn {
-        font-size: 10px;
-        padding: 3px 8px;
-    }
-}
-
-/* ============================================
-   PRINT STYLES
-   ============================================ */
-@media print {
-    .chart-card {
-        box-shadow: none !important;
-        border: 1px solid #ddd !important;
-        break-inside: avoid;
-    }
-    
-    .chart-action-btn,
-    .chart-type-selector,
-    .chart-interval-selector {
-        display: none !important;
-    }
-    
-    .chart-card::before {
-        display: none !important;
-    }
-}
-
-/* ============================================
-   ANIMATIONS
-   ============================================ */
-@keyframes chart-fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-.chart-card {
-    animation: chart-fadeIn 0.3s ease-out;
-}
-
-/* ============================================
-   SCROLLBAR STYLING
-   ============================================ */
-.chart-container::-webkit-scrollbar {
-    width: 4px;
-    height: 4px;
-}
-
-.chart-container::-webkit-scrollbar-track {
-    background: var(--chart-input-bg);
-    border-radius: 2px;
-}
-
-.chart-container::-webkit-scrollbar-thumb {
-    background: var(--chart-primary);
-    border-radius: 2px;
-}
-
-.chart-container::-webkit-scrollbar-thumb:hover {
-    background: #5a52d9;
-}
-</style>
-{% endblock %}
-
-<!-- ======================================================================= -->
-<!-- JAVASCRIPT - COMPLETE IMPLEMENTATION                                    -->
-<!-- ======================================================================= -->
-{% block scripts %}
-<script>
-// ================================================================
-// CHART CARD - COMPLETE JAVASCRIPT IMPLEMENTATION
-// ================================================================
-
-(function() {
-    'use strict';
-
-    // ============================================================
-    // CHART CARD CLASS
-    // ============================================================
-    class ChartCard {
-        constructor(element) {
-            this.element = element;
-            this.chartId = element.dataset.chartId || 'chart-1';
-            this.symbol = element.dataset.symbol || 'BTC/USD';
-            this.chartType = element.dataset.chartType || 'line';
-            this.theme = element.dataset.theme || 'dark';
-            
-            // DOM references
-            this.canvas = element.querySelector('canvas');
-            this.container = element.querySelector('.chart-container');
-            this.loadingOverlay = element.querySelector('.chart-loading-overlay');
-            this.errorOverlay = element.querySelector('.chart-error-overlay');
-            this.emptyOverlay = element.querySelector('.chart-empty-overlay');
-            this.stats = element.querySelector('.chart-stats');
-            this.legend = element.querySelector('.chart-legend');
-            
-            // Chart state
-            this.chartInstance = null;
-            this.currentData = null;
-            this.currentInterval = '1h';
-            this.isLoading = false;
-            this.isFullscreen = false;
-            this.indicators = [];
-            this.showGrid = true;
-            this.zoomLevel = 1;
-            
-            // Configuration
-            this.config = {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        display: false,
-                    },
-                    tooltip: {
-                        mode: 'index',
-                        intersect: false,
-                        backgroundColor: 'rgba(0,0,0,0.8)',
-                        titleFont: { size: 12 },
-                        bodyFont: { size: 12 },
-                        cornerRadius: 8,
-                        padding: 12,
-                    },
-                },
-                scales: {
-                    x: {
-                        grid: {
-                            color: 'rgba(255,255,255,0.05)',
-                            drawBorder: false,
-                        },
-                        ticks: {
-                            color: 'var(--chart-text-secondary)',
-                            font: { size: 11 },
-                            maxRotation: 0,
-                            autoSkip: true,
-                            maxTicksLimit: 20,
-                        },
-                    },
-                    y: {
-                        grid: {
-                            color: 'rgba(255,255,255,0.05)',
-                            drawBorder: false,
-                        },
-                        ticks: {
-                            color: 'var(--chart-text-secondary)',
-                            font: { size: 11 },
-                            callback: function(value) {
-                                return '$' + value.toLocaleString();
-                            },
-                        },
-                    },
-                },
-                interaction: {
-                    intersect: false,
-                    mode: 'index',
-                },
-            };
-            
-            // Initialize
-            this.init();
-        }
-        
-        // ============================================================
-        // INITIALIZATION
-        // ============================================================
-        init() {
-            this.setupEventListeners();
-            this.loadData();
-        }
-        
-        // ============================================================
-        // EVENT LISTENERS
-        // ============================================================
-        setupEventListeners() {
-            // Interval buttons
-            this.element.querySelectorAll('.chart-btn[data-interval]').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    this.setInterval(btn.dataset.interval);
+        // ============================================
+        // SECTION 21: FORMATTERS
+        // ============================================
+        const ChartFormatters = {
+            currency: (value) => {
+                const num = typeof value === 'string' ? parseFloat(value) : value;
+                if (isNaN(num) || !isFinite(num)) return '$0.00';
+                return '$' + num.toLocaleString('en-US', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
                 });
-            });
+            },
             
-            // Type buttons
-            this.element.querySelectorAll('.chart-type-btn').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    this.setChartType(btn.dataset.type);
+            currencyShort: (value) => {
+                const num = typeof value === 'string' ? parseFloat(value) : value;
+                if (isNaN(num) || !isFinite(num)) return '$0';
+                const abs = Math.abs(num);
+                if (abs >= 1e9) return '$' + (num / 1e9).toFixed(1) + 'B';
+                if (abs >= 1e6) return '$' + (num / 1e6).toFixed(1) + 'M';
+                if (abs >= 1e3) return '$' + (num / 1e3).toFixed(1) + 'K';
+                return '$' + num.toFixed(2);
+            },
+            
+            percentage: (value) => {
+                const num = typeof value === 'string' ? parseFloat(value) : value;
+                if (isNaN(num) || !isFinite(num)) return '0.00%';
+                return (num >= 0 ? '+' : '') + num.toFixed(2) + '%';
+            },
+            
+            time: (timestamp) => {
+                if (!timestamp) return '--';
+                const date = new Date(timestamp);
+                return date.toLocaleTimeString('en-US', {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit',
                 });
-            });
+            },
             
-            // Action buttons
-            this.element.querySelectorAll('.chart-action-btn').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    this.handleAction(btn.dataset.action);
-                });
-            });
-            
-            // Retry button
-            this.element.querySelector('.chart-retry-btn')?.addEventListener('click', () => {
-                this.loadData();
-            });
-            
-            // Legend buttons
-            this.element.querySelectorAll('.legend-btn').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    this.handleLegendAction(btn.dataset.action);
-                });
-            });
-            
-            // Resize handler
-            let resizeTimeout;
-            window.addEventListener('resize', () => {
-                clearTimeout(resizeTimeout);
-                resizeTimeout = setTimeout(() => {
-                    if (this.chartInstance) {
-                        this.chartInstance.resize();
-                    }
-                }, 250);
-            });
-        }
+            number: (value, decimals = 2) => {
+                const num = typeof value === 'string' ? parseFloat(value) : value;
+                if (isNaN(num) || !isFinite(num)) return '--';
+                return num.toFixed(decimals);
+            },
+        };
         
-        // ============================================================
-        // INTERVAL MANAGEMENT
-        // ============================================================
-        setInterval(interval) {
-            this.currentInterval = interval;
-            
-            // Update UI
-            this.element.querySelectorAll('.chart-btn[data-interval]').forEach(btn => {
-                btn.classList.toggle('chart-btn-active', btn.dataset.interval === interval);
-            });
-            
-            this.loadData();
-        }
-        
-        // ============================================================
-        // CHART TYPE MANAGEMENT
-        // ============================================================
-        setChartType(type) {
-            this.chartType = type;
-            
-            // Update UI
-            this.element.querySelectorAll('.chart-type-btn').forEach(btn => {
-                btn.classList.toggle('chart-type-active', btn.dataset.type === type);
-            });
-            
-            if (this.currentData) {
-                this.renderChart(this.currentData);
-            }
-        }
-        
-        // ============================================================
-        // DATA LOADING
-        // ============================================================
-        async loadData() {
-            if (this.isLoading) return;
-            
-            this.isLoading = true;
-            this.showLoading();
-            this.hideError();
-            this.hideEmpty();
-            
-            try {
-                const data = await this.fetchData();
+        // ============================================
+        // SECTION 22: API CLIENT
+        // ============================================
+        class APIClient {
+            static async get(endpoint, options = {}) {
+                const url = CHART_CONFIG.API_BASE + endpoint;
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 15000);
                 
-                if (data && data.datasets && data.datasets.length > 0) {
-                    this.currentData = data;
-                    this.renderChart(data);
-                    this.updateStats(data);
-                    this.hideLoading();
-                } else {
-                    this.showEmpty();
+                try {
+                    const response = await fetch(url, {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json',
+                            'Cache-Control': 'no-cache',
+                            'Pragma': 'no-cache',
+                        },
+                        credentials: 'same-origin',
+                        signal: controller.signal,
+                        ...options,
+                    });
+                    
+                    clearTimeout(timeoutId);
+                    
+                    if (!response.ok) {
+                        const errorText = await response.text();
+                        let errorData;
+                        try {
+                            errorData = JSON.parse(errorText);
+                        } catch {
+                            errorData = { detail: errorText || response.statusText };
+                        }
+                        throw new Error(errorData.detail || `HTTP ${response.status}`);
+                    }
+                    
+                    return response.json();
+                } catch (error) {
+                    clearTimeout(timeoutId);
+                    if (error.name === 'AbortError') {
+                        throw new Error('Request timeout');
+                    }
+                    throw error;
                 }
-            } catch (error) {
-                console.error('Chart data load failed:', error);
-                this.showError(error.message || 'Failed to load chart data');
-            } finally {
-                this.isLoading = false;
-                this.hideLoading();
             }
         }
         
-        // ============================================================
-        // API DATA FETCHING
-        // ============================================================
-        async fetchData() {
-            // Simulate API call - replace with real API in production
-            return new Promise((resolve) => {
+        // ============================================
+        // SECTION 23: WEBSOCKET CLIENT
+        // ============================================
+        class WebSocketClient {
+            constructor() {
+                this.ws = null;
+                this.reconnectAttempts = 0;
+                this.maxReconnectAttempts = 10;
+                this.reconnectDelay = 2000;
+                this.isConnecting = false;
+                this.callbacks = {};
+            }
+            
+            connect() {
+                if (this.isConnecting) return;
+                if (this.ws && this.ws.readyState === WebSocket.OPEN) return;
+                
+                this.isConnecting = true;
+                
+                try {
+                    this.ws = new WebSocket(CHART_CONFIG.WS_URL);
+                    
+                    this.ws.onopen = () => {
+                        console.log('[WS] Connected to chart stream');
+                        this.isConnecting = false;
+                        this.reconnectAttempts = 0;
+                        CHART_STATE.isConnected = true;
+                    };
+                    
+                    this.ws.onmessage = (event) => {
+                        try {
+                            const data = JSON.parse(event.data);
+                            this.handleMessage(data);
+                        } catch (e) {
+                            console.error('[WS] Error parsing message:', e);
+                        }
+                    };
+                    
+                    this.ws.onclose = (event) => {
+                        console.warn('[WS] Connection closed:', event.code);
+                        CHART_STATE.isConnected = false;
+                        this.isConnecting = false;
+                        this.handleReconnect();
+                    };
+                    
+                    this.ws.onerror = (error) => {
+                        console.error('[WS] Error:', error);
+                    };
+                } catch (e) {
+                    console.error('[WS] Connection error:', e);
+                    this.handleReconnect();
+                }
+            }
+            
+            handleMessage(data) {
+                switch(data.type) {
+                    case 'price_update':
+                        this.handlePriceUpdate(data.data);
+                        break;
+                    case 'arbitrage_update':
+                        this.handleArbitrageUpdate(data.data);
+                        break;
+                    case 'pnl_update':
+                        this.handlePnlUpdate(data.data);
+                        break;
+                    case 'risk_update':
+                        this.handleRiskUpdate(data.data);
+                        break;
+                    case 'ping':
+                        this.sendPong();
+                        break;
+                    default:
+                        console.log('[WS] Unknown message type:', data.type);
+                }
+            }
+            
+            handlePriceUpdate(data) {
+                if (this.callbacks.price) {
+                    this.callbacks.price(data);
+                }
+            }
+            
+            handleArbitrageUpdate(data) {
+                if (this.callbacks.arbitrage) {
+                    this.callbacks.arbitrage(data);
+                }
+            }
+            
+            handlePnlUpdate(data) {
+                if (this.callbacks.pnl) {
+                    this.callbacks.pnl(data);
+                }
+            }
+            
+            handleRiskUpdate(data) {
+                if (this.callbacks.risk) {
+                    this.callbacks.risk(data);
+                }
+            }
+            
+            sendPong() {
+                if (this.ws && this.ws.readyState === WebSocket.OPEN) {
+                    this.ws.send(JSON.stringify({ type: 'pong' }));
+                }
+            }
+            
+            handleReconnect() {
+                if (this.reconnectAttempts >= this.maxReconnectAttempts) {
+                    console.error('[WS] Max reconnect attempts reached');
+                    return;
+                }
+                
+                this.reconnectAttempts++;
+                const delay = Math.min(
+                    this.reconnectDelay * Math.pow(1.5, this.reconnectAttempts - 1),
+                    30000
+                );
+                
+                console.log(`[WS] Reconnecting in ${delay}ms (attempt ${this.reconnectAttempts})`);
+                
                 setTimeout(() => {
-                    const points = this.getDataPoints();
-                    const data = this.generateSampleData(points);
-                    resolve(data);
-                }, 500 + Math.random() * 500);
-            });
-            
-            /* Real API implementation:
-            const params = new URLSearchParams({
-                symbol: this.symbol,
-                interval: this.currentInterval,
-                limit: 200,
-            });
-            const response = await fetch(`/api/charts/data?${params}`);
-            if (!response.ok) throw new Error('API request failed');
-            const result = await response.json();
-            return this.transformApiData(result);
-            */
-        }
-        
-        getDataPoints() {
-            const intervals = {
-                '1m': 60,
-                '5m': 72,
-                '15m': 96,
-                '1h': 72,
-                '4h': 60,
-                '1d': 90,
-                '1w': 52,
-            };
-            return intervals[this.currentInterval] || 100;
-        }
-        
-        generateSampleData(points) {
-            const data = [];
-            let value = 100 + Math.random() * 50;
-            
-            for (let i = 0; i < points; i++) {
-                const change = (Math.random() - 0.5) * 2;
-                value = Math.max(10, value + change);
-                data.push({
-                    x: i,
-                    y: value,
-                    open: value - change * 0.5,
-                    high: value + Math.random() * 2,
-                    low: value - Math.random() * 2,
-                    close: value,
-                    volume: Math.floor(Math.random() * 1000 + 100),
-                });
+                    this.connect();
+                }, delay);
             }
             
-            const colors = this.getThemeColors();
-            
-            return {
-                labels: data.map(d => d.x),
-                datasets: [{
-                    label: this.symbol,
-                    data: data.map(d => d.y),
-                    backgroundColor: colors.gradient,
-                    borderColor: colors.primary,
-                    pointBackgroundColor: colors.primary,
-                    pointBorderColor: '#fff',
-                    pointRadius: 1,
-                    pointHoverRadius: 6,
-                    borderWidth: 2,
-                    fill: this.chartType === 'area',
-                    tension: 0.4,
-                }],
-                rawData: data,
-            };
-        }
-        
-        getThemeColors() {
-            const isDark = this.theme === 'dark';
-            return {
-                primary: '#6C63FF',
-                secondary: '#00D4FF',
-                success: '#00D4FF',
-                danger: '#FF6B6B',
-                warning: '#FFD93D',
-                text: isDark ? '#E0E0E0' : '#333',
-                textSecondary: isDark ? '#888' : '#666',
-                grid: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)',
-                gradient: (ctx) => {
-                    const gradient = ctx.createLinearGradient(0, 0, 0, 400);
-                    gradient.addColorStop(0, 'rgba(108, 99, 255, 0.3)');
-                    gradient.addColorStop(1, 'rgba(108, 99, 255, 0.0)');
-                    return gradient;
-                },
-            };
-        }
-        
-        // ============================================================
-        // CHART RENDERING
-        // ============================================================
-        renderChart(data) {
-            if (!this.canvas) return;
-            
-            // Destroy existing chart
-            if (this.chartInstance) {
-                this.chartInstance.destroy();
-                this.chartInstance = null;
+            on(channel, callback) {
+                this.callbacks[channel] = callback;
             }
             
-            // Prepare chart data based on type
-            const chartData = this.prepareChartData(data);
-            const chartConfig = this.prepareChartConfig(chartData);
-            
-            // Create chart
-            try {
-                this.chartInstance = new Chart(this.canvas, chartConfig);
-            } catch (error) {
-                console.error('Chart creation failed:', error);
-                this.showError('Failed to render chart');
+            disconnect() {
+                if (this.ws) {
+                    this.ws.close(1000, 'Client disconnect');
+                    this.ws = null;
+                }
+                CHART_STATE.isConnected = false;
             }
         }
         
-        prepareChartData(data) {
-            const colors = this.getThemeColors();
-            
-            switch (this.chartType) {
-                case 'candlestick':
-                    // For candlestick, we need OHLC data
-                    return {
-                        datasets: [{
-                            label: this.symbol,
-                            data: data.rawData || this.generateCandlestickData(data),
-                            borderColor: colors.primary,
-                            backgroundColor: colors.primary,
-                        }],
-                    };
-                    
-                case 'bar':
-                    return {
-                        labels: data.labels,
-                        datasets: [{
-                            label: this.symbol,
-                            data: data.datasets[0].data,
-                            backgroundColor: colors.primary,
-                            borderColor: colors.primary,
-                            borderWidth: 1,
-                        }],
-                    };
-                    
-                case 'line':
-                case 'area':
-                default:
-                    return {
-                        labels: data.labels,
-                        datasets: data.datasets,
-                    };
+        // ============================================
+        // SECTION 24: CHART RENDERER
+        // ============================================
+        class ChartRenderer {
+            constructor(canvasId, type, options = {}) {
+                this.canvasId = canvasId;
+                this.canvas = document.getElementById(canvasId);
+                this.ctx = this.canvas?.getContext('2d');
+                this.type = type;
+                this.options = options;
+                this.chart = null;
+                this.data = null;
+                
+                if (!this.canvas) {
+                    console.warn(`[CHART] Canvas ${canvasId} not found`);
+                    return;
+                }
+                
+                this.init();
             }
-        }
-        
-        generateCandlestickData(data) {
-            // Generate OHLC data from existing data
-            return data.rawData.map(d => ({
-                x: d.x,
-                o: d.open || d.y - 0.5,
-                h: d.high || d.y + 0.5,
-                l: d.low || d.y - 0.5,
-                c: d.close || d.y,
-            }));
-        }
-        
-        prepareChartConfig(data) {
-            const isDark = this.theme === 'dark';
-            const colors = this.getThemeColors();
             
-            let config = {
-                type: this.chartType === 'candlestick' ? 'line' : this.chartType,
-                data: data,
-                options: {
-                    ...this.config,
+            init() {
+                const defaultOptions = {
+                    responsive: true,
+                    maintainAspectRatio: false,
                     plugins: {
-                        ...this.config.plugins,
                         legend: {
                             display: false,
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false,
+                            backgroundColor: 'rgba(10, 10, 15, 0.9)',
+                            titleColor: '#FFFFFF',
+                            bodyColor: '#A0A0B8',
+                            borderColor: 'rgba(108, 60, 225, 0.2)',
+                            borderWidth: 1,
+                            cornerRadius: 8,
+                            padding: 10,
+                            callbacks: {
+                                label: (context) => {
+                                    const label = context.dataset.label || '';
+                                    const value = context.parsed.y || context.parsed.r || context.parsed.v || 0;
+                                    if (this.options.formatter) {
+                                        return label + ': ' + this.options.formatter(value);
+                                    }
+                                    return label + ': ' + value;
+                                }
+                            }
                         },
                     },
                     scales: {
                         x: {
-                            ...this.config.scales.x,
                             grid: {
-                                display: this.showGrid,
-                                color: colors.grid,
+                                color: 'rgba(255, 255, 255, 0.03)',
+                                drawBorder: false,
+                            },
+                            ticks: {
+                                color: '#6B6B85',
+                                font: { size: 10 },
+                                maxTicksLimit: 20,
                             },
                         },
                         y: {
-                            ...this.config.scales.y,
                             grid: {
-                                display: this.showGrid,
-                                color: colors.grid,
+                                color: 'rgba(255, 255, 255, 0.03)',
+                                drawBorder: false,
+                            },
+                            ticks: {
+                                color: '#6B6B85',
+                                font: { size: 10 },
                             },
                         },
                     },
-                },
-            };
-            
-            // Customize for area chart
-            if (this.chartType === 'area') {
-                config.options.plugins.filler = {
-                    propagate: true,
-                };
-            }
-            
-            // Customize for candlestick (requires additional plugin)
-            if (this.chartType === 'candlestick') {
-                // Would use a candlestick plugin in production
-                config.options.plugins = {
-                    ...config.options.plugins,
-                    colors: {
-                        up: colors.success,
-                        down: colors.danger,
+                    animation: {
+                        duration: 600,
+                        easing: 'easeInOutQuart',
                     },
                 };
-            }
-            
-            return config;
-        }
-        
-        // ============================================================
-        // STATS UPDATE
-        // ============================================================
-        updateStats(data) {
-            if (!data || !data.datasets || !data.datasets[0]) return;
-            
-            const dataset = data.datasets[0];
-            const values = dataset.data;
-            
-            if (!values || values.length === 0) return;
-            
-            const open = values[0];
-            const close = values[values.length - 1];
-            const high = Math.max(...values);
-            const low = Math.min(...values);
-            const change = close - open;
-            const changePct = (change / open * 100);
-            
-            const volume = Math.floor(Math.random() * 1000 + 100);
-            
-            this.setStat('stat-open-1', open.toFixed(2));
-            this.setStat('stat-high-1', high.toFixed(2));
-            this.setStat('stat-low-1', low.toFixed(2));
-            this.setStat('stat-close-1', close.toFixed(2));
-            this.setStat('stat-volume-1', volume.toFixed(0));
-            
-            this.setStat('stat-change-1', 
-                `${change >= 0 ? '+' : ''}${change.toFixed(2)}`,
-                change >= 0 ? 'positive' : 'negative'
-            );
-            
-            this.setStat('stat-change-pct-1',
-                `${changePct >= 0 ? '+' : ''}${changePct.toFixed(2)}%`,
-                changePct >= 0 ? 'positive' : 'negative'
-            );
-            
-            // Update subtitle
-            const updateTime = document.getElementById('chart-update-time-1');
-            if (updateTime) {
-                updateTime.innerHTML = `<i class="fas fa-clock"></i> ${new Date().toLocaleTimeString()}`;
-            }
-        }
-        
-        setStat(id, value, className = '') {
-            const el = document.getElementById(id);
-            if (el) {
-                el.textContent = value;
-                el.className = `stat-value ${className}`;
-            }
-        }
-        
-        // ============================================================
-        // ACTIONS
-        // ============================================================
-        handleAction(action) {
-            switch (action) {
-                case 'refresh':
-                    this.loadData();
-                    break;
-                case 'fullscreen':
-                    this.toggleFullscreen();
-                    break;
-                case 'download':
-                    this.downloadChart();
-                    break;
-                case 'settings':
-                    this.showSettings();
-                    break;
-                case 'reset':
-                    this.resetZoom();
-                    break;
-                case 'retry':
-                    this.loadData();
-                    break;
-                default:
-                    console.warn('Unknown action:', action);
-            }
-        }
-        
-        toggleFullscreen() {
-            if (!document.fullscreenElement) {
-                this.element.requestFullscreen().catch(err => {
-                    console.error('Fullscreen error:', err);
+                
+                const mergedOptions = this.mergeDeep(defaultOptions, this.options);
+                
+                this.chart = new Chart(this.ctx, {
+                    type: this.type,
+                    data: {
+                        labels: [],
+                        datasets: [],
+                    },
+                    options: mergedOptions,
                 });
-            } else {
-                document.exitFullscreen();
+            }
+            
+            mergeDeep(target, source) {
+                const output = { ...target };
+                for (const key in source) {
+                    if (source[key] && typeof source[key] === 'object' && !Array.isArray(source[key])) {
+                        output[key] = this.mergeDeep(target[key] || {}, source[key]);
+                    } else {
+                        output[key] = source[key];
+                    }
+                }
+                return output;
+            }
+            
+            setData(data) {
+                this.data = data;
+                this.chart.data = data;
+                this.chart.update('none');
+            }
+            
+            update() {
+                if (this.chart) {
+                    this.chart.update();
+                }
+            }
+            
+            destroy() {
+                if (this.chart) {
+                    this.chart.destroy();
+                    this.chart = null;
+                }
+            }
+            
+            resize() {
+                if (this.chart) {
+                    this.chart.resize();
+                }
+            }
+            
+            showLoading() {
+                const overlay = this.canvas?.parentElement?.querySelector('.chart-overlay');
+                if (overlay) {
+                    overlay.classList.add('visible');
+                }
+            }
+            
+            hideLoading() {
+                const overlay = this.canvas?.parentElement?.querySelector('.chart-overlay');
+                if (overlay) {
+                    overlay.classList.remove('visible');
+                }
+            }
+            
+            updateData(data) {
+                if (!this.chart) return;
+                
+                // Update datasets
+                if (data.datasets) {
+                    data.datasets.forEach((dataset, index) => {
+                        if (this.chart.data.datasets[index]) {
+                            this.chart.data.datasets[index].data = dataset.data;
+                            this.chart.data.datasets[index].label = dataset.label;
+                        } else {
+                            this.chart.data.datasets.push(dataset);
+                        }
+                    });
+                }
+                
+                // Update labels
+                if (data.labels) {
+                    this.chart.data.labels = data.labels;
+                }
+                
+                this.chart.update('none');
             }
         }
         
-        downloadChart() {
-            if (!this.canvas) return;
+        // ============================================
+        // SECTION 25: CHART MANAGER
+        // ============================================
+        class ChartManager {
+            constructor() {
+                this.charts = {};
+                this.ws = new WebSocketClient();
+                this.init();
+                this.setupEventListeners();
+                this.fetchAllData();
+                this.setupWebSocket();
+                
+                // Auto-refresh via REST as fallback
+                setInterval(() => {
+                    if (!CHART_STATE.isConnected) {
+                        this.fetchAllData();
+                    }
+                }, CHART_CONFIG.REFRESH_INTERVAL * 2);
+            }
             
-            const link = document.createElement('a');
-            link.download = `chart_${this.symbol.replace('/', '_')}_${Date.now()}.png`;
-            link.href = this.canvas.toDataURL('image/png', 1.0);
-            link.click();
+            init() {
+                // Price Chart
+                this.charts.price = new ChartRenderer('priceChart', 'line', {
+                    formatter: (value) => '$' + value.toFixed(2),
+                    scales: {
+                        y: {
+                            ticks: {
+                                callback: (value) => '$' + value.toFixed(0),
+                            },
+                        },
+                    },
+                });
+                
+                // Arbitrage Chart
+                this.charts.arbitrage = new ChartRenderer('arbitrageChart', 'line', {
+                    formatter: (value) => value.toFixed(2) + '%',
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: (value) => value.toFixed(2) + '%',
+                            },
+                        },
+                    },
+                });
+                
+                // PnL Chart
+                this.charts.pnl = new ChartRenderer('pnlChart', 'bar', {
+                    formatter: (value) => '$' + value.toFixed(2),
+                    scales: {
+                        y: {
+                            ticks: {
+                                callback: (value) => '$' + value.toFixed(0),
+                            },
+                        },
+                    },
+                });
+                
+                // Risk Chart
+                this.charts.risk = new ChartRenderer('riskChart', 'line', {
+                    formatter: (value) => value.toFixed(2) + '%',
+                    scales: {
+                        y: {
+                            ticks: {
+                                callback: (value) => value.toFixed(2) + '%',
+                            },
+                        },
+                    },
+                });
+                
+                CHART_STATE.charts = this.charts;
+            }
+            
+            setupWebSocket() {
+                // Register WebSocket callbacks
+                this.ws.on('price', (data) => {
+                    this.updatePriceChart(data);
+                });
+                
+                this.ws.on('arbitrage', (data) => {
+                    this.updateArbitrageChart(data);
+                });
+                
+                this.ws.on('pnl', (data) => {
+                    this.updatePnlChart(data);
+                });
+                
+                this.ws.on('risk', (data) => {
+                    this.updateRiskChart(data);
+                });
+                
+                // Connect WebSocket
+                this.ws.connect();
+            }
+            
+            setupEventListeners() {
+                // Timeframe buttons
+                document.querySelectorAll('[data-timeframe]').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const timeframe = btn.dataset.timeframe;
+                        const card = btn.closest('.chart-card');
+                        const chartType = card?.dataset.chart;
+                        
+                        if (chartType && this.charts[chartType]) {
+                            card.querySelectorAll('[data-timeframe]').forEach(b => b.classList.remove('active'));
+                            btn.classList.add('active');
+                            CHART_STATE.currentTimeframes[chartType] = timeframe;
+                            this.fetchChartData(chartType, timeframe);
+                        }
+                    });
+                });
+                
+                // View buttons (PnL)
+                document.querySelectorAll('[data-view]').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const view = btn.dataset.view;
+                        const card = btn.closest('.chart-card');
+                        const chartType = card?.dataset.chart;
+                        
+                        if (chartType === 'pnl' && this.charts.pnl) {
+                            card.querySelectorAll('[data-view]').forEach(b => b.classList.remove('active'));
+                            btn.classList.add('active');
+                            CHART_STATE.currentViews.pnl = view;
+                            
+                            const chartMap = {
+                                'bar': 'bar',
+                                'pie': 'pie',
+                                'doughnut': 'doughnut',
+                            };
+                            
+                            const newType = chartMap[view] || 'bar';
+                            this.charts.pnl.chart.config.type = newType;
+                            this.charts.pnl.update();
+                            this.fetchChartData('pnl', 'all');
+                        }
+                    });
+                });
+                
+                // Dropdown toggles
+                document.querySelectorAll('.dropdown-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        const menu = btn.nextElementSibling;
+                        if (menu?.classList.contains('dropdown-menu')) {
+                            menu.classList.toggle('visible');
+                        }
+                    });
+                });
+                
+                // Dropdown menu items
+                document.querySelectorAll('.dropdown-menu button').forEach(item => {
+                    item.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        const action = item.dataset.action;
+                        const menu = item.closest('.dropdown-menu');
+                        const card = menu?.closest('.chart-card');
+                        const chartType = card?.dataset.chart;
+                        this.handleDropdownAction(action, chartType);
+                        menu?.classList.remove('visible');
+                    });
+                });
+                
+                // Close dropdowns on outside click
+                document.addEventListener('click', () => {
+                    document.querySelectorAll('.dropdown-menu.visible').forEach(menu => {
+                        menu.classList.remove('visible');
+                    });
+                });
+                
+                // Legend item toggle
+                document.querySelectorAll('.legend-item').forEach(item => {
+                    item.addEventListener('click', function() {
+                        const dataset = this.dataset.dataset;
+                        const dot = this.querySelector('.legend-dot');
+                        const card = this.closest('.chart-card');
+                        const chartType = card?.dataset.chart;
+                        
+                        if (chartType && CHART_STATE.charts[chartType]) {
+                            const chart = CHART_STATE.charts[chartType];
+                            const datasets = chart.chart.data.datasets;
+                            const index = datasets.findIndex(d => d.label === dataset);
+                            
+                            if (index !== -1) {
+                                const isHidden = datasets[index].hidden;
+                                datasets[index].hidden = !isHidden;
+                                dot?.classList.toggle('hidden', !isHidden);
+                                chart.update();
+                            }
+                        }
+                    });
+                });
+                
+                // Mouse move for glow effect
+                document.querySelectorAll('.chart-card').forEach(card => {
+                    card.addEventListener('mousemove', (e) => {
+                        const rect = card.getBoundingClientRect();
+                        const x = ((e.clientX - rect.left) / rect.width) * 100;
+                        const y = ((e.clientY - rect.top) / rect.height) * 100;
+                        card.style.setProperty('--mouse-x', x + '%');
+                        card.style.setProperty('--mouse-y', y + '%');
+                    });
+                });
+            }
+            
+            handleDropdownAction(action, chartType) {
+                switch(action) {
+                    case 'export':
+                        this.exportChart(chartType);
+                        break;
+                    case 'fullscreen':
+                        this.toggleFullscreen(chartType);
+                        break;
+                    case 'reset':
+                        this.resetChart(chartType);
+                        break;
+                    default:
+                        console.warn('[CHART] Unknown action:', action);
+                }
+            }
+            
+            async fetchAllData() {
+                CHART_STATE.isUpdating = true;
+                
+                try {
+                    await Promise.all([
+                        this.fetchChartData('price', CHART_STATE.currentTimeframes.price),
+                        this.fetchChartData('arbitrage', CHART_STATE.currentTimeframes.arbitrage),
+                        this.fetchChartData('pnl', 'all'),
+                        this.fetchChartData('risk', CHART_STATE.currentTimeframes.risk),
+                    ]);
+                } catch (error) {
+                    console.error('[CHART] Failed to fetch data:', error);
+                } finally {
+                    CHART_STATE.isUpdating = false;
+                }
+            }
+            
+            async fetchChartData(chartType, timeframe) {
+                const chart = this.charts[chartType];
+                if (!chart) return;
+                
+                chart.showLoading();
+                
+                try {
+                    const data = await APIClient.get(`/arbitrage/charts/${chartType}?timeframe=${timeframe}`);
+                    
+                    switch(chartType) {
+                        case 'price':
+                            this.updatePriceChart(data);
+                            break;
+                        case 'arbitrage':
+                            this.updateArbitrageChart(data);
+                            break;
+                        case 'pnl':
+                            this.updatePnlChart(data);
+                            break;
+                        case 'risk':
+                            this.updateRiskChart(data);
+                            break;
+                    }
+                    
+                    CHART_STATE.lastData[chartType] = data;
+                    
+                } catch (error) {
+                    console.error(`[CHART] Failed to fetch ${chartType} chart:`, error);
+                } finally {
+                    chart.hideLoading();
+                }
+            }
+            
+            updatePriceChart(data) {
+                const chart = this.charts.price;
+                if (!chart) return;
+                
+                // Update stats from real API
+                if (data.stats) {
+                    CHART_DOM.price.value.textContent = ChartFormatters.currency(data.stats.current);
+                    
+                    const change = data.stats.change || 0;
+                    CHART_DOM.price.change.textContent = ChartFormatters.percentage(change);
+                    CHART_DOM.price.change.className = 'chart-stat-value ' + (change >= 0 ? 'positive' : 'negative');
+                    CHART_DOM.price.change.innerHTML = ChartFormatters.percentage(change) + 
+                        ' <span class="change ' + (change >= 0 ? 'positive' : 'negative') + '">' + 
+                        (change >= 0 ? '▲' : '▼') + '</span>';
+                    
+                    CHART_DOM.price.high.textContent = ChartFormatters.currency(data.stats.high);
+                    CHART_DOM.price.low.textContent = ChartFormatters.currency(data.stats.low);
+                    CHART_DOM.price.volume.textContent = ChartFormatters.currencyShort(data.stats.volume);
+                    CHART_DOM.price.updateTime.textContent = ChartFormatters.time(data.timestamp);
+                }
+                
+                // Update chart data from real API
+                if (data.data && data.data.length > 0) {
+                    const labels = data.data.map(d => d.time);
+                    const prices = data.data.map(d => d.close);
+                    const volumes = data.data.map(d => d.volume);
+                    const sma = data.data.map(d => d.sma || null);
+                    
+                    const chartData = {
+                        labels: labels,
+                        datasets: [
+                            {
+                                label: 'Price',
+                                data: prices,
+                                borderColor: CHART_CONFIG.CHART_COLORS.green,
+                                backgroundColor: CHART_CONFIG.CHART_BG.green,
+                                fill: true,
+                                tension: 0.4,
+                                pointRadius: 0,
+                                borderWidth: 2,
+                            },
+                            {
+                                label: 'SMA 20',
+                                data: sma,
+                                borderColor: CHART_CONFIG.CHART_COLORS.yellow,
+                                borderWidth: 2,
+                                pointRadius: 0,
+                                borderDash: [5, 5],
+                                hidden: true,
+                            },
+                            {
+                                label: 'Volume',
+                                data: volumes.map(v => v / 1000000),
+                                borderColor: CHART_CONFIG.CHART_COLORS.blueLight,
+                                backgroundColor: CHART_CONFIG.CHART_BG.blue,
+                                fill: true,
+                                tension: 0.4,
+                                pointRadius: 0,
+                                yAxisID: 'y1',
+                                hidden: true,
+                            },
+                        ],
+                    };
+                    
+                    // Add secondary y-axis for volume
+                    chart.chart.options.scales.y1 = {
+                        position: 'right',
+                        grid: {
+                            drawOnChartArea: false,
+                        },
+                        ticks: {
+                            color: '#6B6B85',
+                            font: { size: 10 },
+                            callback: (value) => value.toFixed(1) + 'M',
+                        },
+                    };
+                    
+                    chart.setData(chartData);
+                }
+            }
+            
+            updateArbitrageChart(data) {
+                const chart = this.charts.arbitrage;
+                if (!chart) return;
+                
+                // Update stats from real API
+                if (data.stats) {
+                    CHART_DOM.arbitrage.total.textContent = (data.stats.total || 0).toLocaleString();
+                    CHART_DOM.arbitrage.avgSpread.textContent = (data.stats.avgSpread || 0).toFixed(2) + '%';
+                    CHART_DOM.arbitrage.bestSpread.textContent = (data.stats.bestSpread || 0).toFixed(2) + '%';
+                    
+                    const success = data.stats.successRate || 0;
+                    CHART_DOM.arbitrage.successRate.textContent = success.toFixed(1) + '%';
+                    CHART_DOM.arbitrage.successRate.className = 'chart-stat-value ' + (success >= 70 ? 'positive' : 'negative');
+                    
+                    CHART_DOM.arbitrage.updateTime.textContent = ChartFormatters.time(data.timestamp);
+                }
+                
+                // Update chart data from real API
+                if (data.data && data.data.length > 0) {
+                    const labels = data.data.map(d => d.time);
+                    
+                    const chartData = {
+                        labels: labels,
+                        datasets: [
+                            {
+                                label: 'Opportunities',
+                                data: data.data.map(d => d.opportunities || 0),
+                                borderColor: CHART_CONFIG.CHART_COLORS.blue,
+                                backgroundColor: CHART_CONFIG.CHART_BG.blue,
+                                fill: true,
+                                tension: 0.4,
+                                pointRadius: 0,
+                                borderWidth: 2,
+                            },
+                            {
+                                label: 'Spread',
+                                data: data.data.map(d => d.spread || 0),
+                                borderColor: CHART_CONFIG.CHART_COLORS.green,
+                                backgroundColor: CHART_CONFIG.CHART_BG.green,
+                                fill: true,
+                                tension: 0.4,
+                                pointRadius: 0,
+                                borderWidth: 2,
+                                borderDash: [3, 3],
+                            },
+                            {
+                                label: 'Executed',
+                                data: data.data.map(d => d.executed || 0),
+                                borderColor: CHART_CONFIG.CHART_COLORS.yellow,
+                                backgroundColor: CHART_CONFIG.CHART_BG.yellow,
+                                fill: true,
+                                tension: 0.4,
+                                pointRadius: 0,
+                                borderWidth: 2,
+                            },
+                        ],
+                    };
+                    
+                    chart.setData(chartData);
+                }
+            }
+            
+            updatePnlChart(data) {
+                const chart = this.charts.pnl;
+                if (!chart) return;
+                
+                // Update stats from real API
+                if (data.stats) {
+                    const total = data.stats.total || 0;
+                    CHART_DOM.pnl.total.textContent = ChartFormatters.currency(total);
+                    CHART_DOM.pnl.total.className = 'chart-stat-value ' + (total >= 0 ? 'positive' : 'negative');
+                    
+                    const winRate = data.stats.winRate || 0;
+                    CHART_DOM.pnl.winRate.textContent = winRate.toFixed(1) + '%';
+                    CHART_DOM.pnl.winRate.className = 'chart-stat-value ' + (winRate >= 50 ? 'positive' : 'negative');
+                    
+                    CHART_DOM.pnl.avgWin.textContent = ChartFormatters.currency(data.stats.avgWin || 0);
+                    CHART_DOM.pnl.avgWin.className = 'chart-stat-value positive';
+                    
+                    CHART_DOM.pnl.avgLoss.textContent = ChartFormatters.currency(data.stats.avgLoss || 0);
+                    CHART_DOM.pnl.avgLoss.className = 'chart-stat-value negative';
+                    
+                    CHART_DOM.pnl.updateTime.textContent = ChartFormatters.time(data.timestamp);
+                }
+                
+                // Update chart data from real API
+                if (data.data && data.data.length > 0) {
+                    const pairs = data.data.map(d => d.pair);
+                    
+                    const chartData = {
+                        labels: pairs,
+                        datasets: [
+                            {
+                                label: 'Profit',
+                                data: data.data.map(d => Math.max(0, d.profit || 0)),
+                                backgroundColor: CHART_CONFIG.CHART_COLORS.green,
+                                borderColor: CHART_CONFIG.CHART_COLORS.greenDark,
+                                borderWidth: 1,
+                                borderRadius: 4,
+                            },
+                            {
+                                label: 'Loss',
+                                data: data.data.map(d => Math.max(0, d.loss || 0)),
+                                backgroundColor: CHART_CONFIG.CHART_COLORS.red,
+                                borderColor: CHART_CONFIG.CHART_COLORS.redDark,
+                                borderWidth: 1,
+                                borderRadius: 4,
+                            },
+                        ],
+                    };
+                    
+                    chart.setData(chartData);
+                }
+            }
+            
+            updateRiskChart(data) {
+                const chart = this.charts.risk;
+                if (!chart) return;
+                
+                // Update stats from real API
+                if (data.stats) {
+                    const drawdown = data.stats.drawdown || 0;
+                    CHART_DOM.risk.drawdown.textContent = drawdown.toFixed(2) + '%';
+                    CHART_DOM.risk.drawdown.className = 'chart-stat-value ' + (drawdown < 0 ? 'negative' : '');
+                    
+                    CHART_DOM.risk.sharpe.textContent = (data.stats.sharpe || 0).toFixed(2);
+                    CHART_DOM.risk.volatility.textContent = (data.stats.volatility || 0).toFixed(2) + '%';
+                    CHART_DOM.risk.var.textContent = ChartFormatters.currency(data.stats.var || 0);
+                    CHART_DOM.risk.updateTime.textContent = ChartFormatters.time(data.timestamp);
+                }
+                
+                // Update chart data from real API
+                if (data.data && data.data.length > 0) {
+                    const labels = data.data.map(d => d.time);
+                    const threshold = data.stats?.threshold || 10;
+                    
+                    const chartData = {
+                        labels: labels,
+                        datasets: [
+                            {
+                                label: 'Drawdown',
+                                data: data.data.map(d => d.drawdown || 0),
+                                borderColor: CHART_CONFIG.CHART_COLORS.red,
+                                backgroundColor: CHART_CONFIG.CHART_BG.red,
+                                fill: true,
+                                tension: 0.4,
+                                pointRadius: 0,
+                                borderWidth: 2,
+                            },
+                            {
+                                label: 'Volatility',
+                                data: data.data.map(d => d.volatility || 0),
+                                borderColor: CHART_CONFIG.CHART_COLORS.yellow,
+                                backgroundColor: CHART_CONFIG.CHART_BG.yellow,
+                                fill: true,
+                                tension: 0.4,
+                                pointRadius: 0,
+                                borderWidth: 2,
+                            },
+                            {
+                                label: 'Threshold',
+                                data: data.data.map(() => threshold),
+                                borderColor: CHART_CONFIG.CHART_COLORS.redDark,
+                                borderWidth: 2,
+                                pointRadius: 0,
+                                borderDash: [8, 4],
+                            },
+                        ],
+                    };
+                    
+                    chart.setData(chartData);
+                }
+            }
+            
+            exportChart(chartType) {
+                const chart = this.charts[chartType];
+                if (!chart) return;
+                
+                const link = document.createElement('a');
+                link.download = `${chartType}_chart_${new Date().toISOString().slice(0,10)}.png`;
+                link.href = chart.canvas.toDataURL('image/png');
+                link.click();
+            }
+            
+            toggleFullscreen(chartType) {
+                const card = document.querySelector(`.chart-card[data-chart="${chartType}"]`);
+                if (!card) return;
+                
+                if (!document.fullscreenElement) {
+                    card.requestFullscreen?.().catch(() => {});
+                } else {
+                    document.exitFullscreen?.();
+                }
+            }
+            
+            resetChart(chartType) {
+                this.fetchChartData(chartType, CHART_STATE.currentTimeframes[chartType] || '1h');
+            }
         }
         
-        showSettings() {
-            // Simple settings modal implementation
-            const settings = {
-                showGrid: this.showGrid,
-                theme: this.theme,
-                chartType: this.chartType,
+        // ============================================
+        // SECTION 26: INITIALIZATION
+        // ============================================
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('[CHART] Initializing with real APIs...');
+            console.log('[CHART] API Base:', CHART_CONFIG.API_BASE);
+            console.log('[CHART] WS URL:', CHART_CONFIG.WS_URL);
+            
+            const manager = new ChartManager();
+            
+            // Expose for debugging
+            window.__NEXUS_CHARTS = {
+                config: CHART_CONFIG,
+                state: CHART_STATE,
+                manager: manager,
+                renderer: ChartRenderer,
+                refresh: () => manager.fetchAllData(),
+                ws: manager.ws,
             };
             
-            // In production, show a proper settings modal
-            console.log('Chart settings:', settings);
-        }
-        
-        resetZoom() {
-            this.zoomLevel = 1;
-            if (this.chartInstance) {
-                this.chartInstance.resetZoom?.();
-            }
-        }
-        
-        handleLegendAction(action) {
-            switch (action) {
-                case 'toggle-indicator':
-                    this.toggleIndicator();
-                    break;
-                case 'toggle-grid':
-                    this.toggleGrid();
-                    break;
-                default:
-                    console.warn('Unknown legend action:', action);
-            }
-        }
-        
-        toggleIndicator() {
-            const indicatorLegend = document.getElementById('legend-indicator-1');
-            if (indicatorLegend) {
-                const isVisible = indicatorLegend.style.display !== 'none';
-                indicatorLegend.style.display = isVisible ? 'none' : 'flex';
-                
-                // Add or remove indicator from chart
-                if (!isVisible) {
-                    this.addIndicator();
-                } else {
-                    this.removeIndicator();
-                }
-            }
-        }
-        
-        addIndicator() {
-            // Add a simple moving average indicator
-            if (!this.chartInstance || !this.currentData) return;
-            
-            const dataset = this.currentData.datasets[0];
-            if (!dataset) return;
-            
-            const values = dataset.data;
-            const ma = this.calculateMA(values, 20);
-            
-            this.chartInstance.data.datasets.push({
-                label: 'MA(20)',
-                data: ma,
-                borderColor: '#00D4FF',
-                backgroundColor: 'rgba(0, 212, 255, 0.1)',
-                borderWidth: 2,
-                pointRadius: 0,
-                fill: false,
-                tension: 0.4,
-            });
-            
-            this.chartInstance.update();
-        }
-        
-        removeIndicator() {
-            if (!this.chartInstance) return;
-            
-            // Remove last added dataset (MA)
-            if (this.chartInstance.data.datasets.length > 1) {
-                this.chartInstance.data.datasets.pop();
-                this.chartInstance.update();
-            }
-        }
-        
-        calculateMA(data, window) {
-            const result = [];
-            for (let i = 0; i < data.length; i++) {
-                if (i < window - 1) {
-                    result.push(null);
-                } else {
-                    let sum = 0;
-                    for (let j = i - window + 1; j <= i; j++) {
-                        sum += data[j];
-                    }
-                    result.push(sum / window);
-                }
-            }
-            return result;
-        }
-        
-        toggleGrid() {
-            this.showGrid = !this.showGrid;
-            if (this.chartInstance) {
-                this.chartInstance.options.scales.x.grid.display = this.showGrid;
-                this.chartInstance.options.scales.y.grid.display = this.showGrid;
-                this.chartInstance.update();
-            }
-        }
-        
-        // ============================================================
-        // OVERLAY MANAGEMENT
-        // ============================================================
-        showLoading() {
-            if (this.loadingOverlay) {
-                this.loadingOverlay.style.display = 'flex';
-                // Animate progress bar
-                const progressBar = this.loadingOverlay.querySelector('.chart-loading-progress-bar');
-                if (progressBar) {
-                    let progress = 0;
-                    const interval = setInterval(() => {
-                        progress += Math.random() * 10;
-                        if (progress >= 90) {
-                            clearInterval(interval);
-                        }
-                        progressBar.style.width = Math.min(progress, 90) + '%';
-                    }, 200);
-                }
-            }
-        }
-        
-        hideLoading() {
-            if (this.loadingOverlay) {
-                this.loadingOverlay.style.display = 'none';
-            }
-        }
-        
-        showError(message) {
-            if (this.errorOverlay) {
-                this.errorOverlay.style.display = 'flex';
-                const detail = document.getElementById('chart-error-detail-1');
-                if (detail) {
-                    detail.textContent = message || 'An unexpected error occurred';
-                }
-            }
-        }
-        
-        hideError() {
-            if (this.errorOverlay) {
-                this.errorOverlay.style.display = 'none';
-            }
-        }
-        
-        showEmpty() {
-            if (this.emptyOverlay) {
-                this.emptyOverlay.style.display = 'flex';
-            }
-        }
-        
-        hideEmpty() {
-            if (this.emptyOverlay) {
-                this.emptyOverlay.style.display = 'none';
-            }
-        }
-        
-        // ============================================================
-        // DESTROY
-        // ============================================================
-        destroy() {
-            if (this.chartInstance) {
-                this.chartInstance.destroy();
-                this.chartInstance = null;
-            }
-            
-            // Remove event listeners
-            // ... cleanup
-        }
-    }
-
-    // ================================================================
-    // CHART API FUNCTIONS
-    // ================================================================
-    window.ChartAPI = {
-        getChartData: async function(symbol, interval, options = {}) {
-            try {
-                const params = new URLSearchParams({
-                    symbol: symbol,
-                    interval: interval,
-                    limit: options.limit || 200,
-                    start: options.start || '',
-                    end: options.end || '',
-                });
-                
-                const response = await fetch(`/api/charts/data?${params}`);
-                if (!response.ok) throw new Error('API request failed');
-                return await response.json();
-            } catch (error) {
-                console.error('Chart API error:', error);
-                throw error;
-            }
-        },
-        
-        getChartConfig: async function(chartId) {
-            try {
-                const response = await fetch(`/api/charts/config/${chartId}`);
-                if (!response.ok) throw new Error('API request failed');
-                return await response.json();
-            } catch (error) {
-                console.error('Chart config API error:', error);
-                throw error;
-            }
-        },
-        
-        updateChartConfig: async function(chartId, config) {
-            try {
-                const response = await fetch(`/api/charts/config/${chartId}`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(config),
-                });
-                if (!response.ok) throw new Error('API request failed');
-                return await response.json();
-            } catch (error) {
-                console.error('Chart config update error:', error);
-                throw error;
-            }
-        },
-    };
-
-    // ================================================================
-    // WEBSOCKET INTEGRATION
-    // ================================================================
-    window.ChartWebSocket = class ChartWebSocket {
-        constructor(chartId, onData) {
-            this.chartId = chartId;
-            this.onData = onData;
-            this.ws = null;
-            this.reconnectAttempts = 0;
-            this.maxReconnectAttempts = 5;
-        }
-        
-        connect() {
-            try {
-                this.ws = new WebSocket(`wss://api.nexusquantum.com/ws/charts/${this.chartId}`);
-                
-                this.ws.onopen = () => {
-                    console.log('Chart WebSocket connected');
-                    this.reconnectAttempts = 0;
-                };
-                
-                this.ws.onmessage = (event) => {
-                    try {
-                        const data = JSON.parse(event.data);
-                        if (this.onData) this.onData(data);
-                    } catch (error) {
-                        console.error('WebSocket message parse error:', error);
-                    }
-                };
-                
-                this.ws.onclose = () => {
-                    console.log('Chart WebSocket disconnected');
-                    this.reconnect();
-                };
-                
-                this.ws.onerror = (error) => {
-                    console.error('Chart WebSocket error:', error);
-                };
-            } catch (error) {
-                console.error('Chart WebSocket connection failed:', error);
-            }
-        }
-        
-        reconnect() {
-            if (this.reconnectAttempts >= this.maxReconnectAttempts) {
-                console.log('Max reconnect attempts reached');
-                return;
-            }
-            
-            this.reconnectAttempts++;
-            const delay = Math.min(1000 * Math.pow(2, this.reconnectAttempts), 30000);
-            
-            setTimeout(() => {
-                console.log(`Reconnecting to chart WebSocket (attempt ${this.reconnectAttempts})`);
-                this.connect();
-            }, delay);
-        }
-        
-        disconnect() {
-            if (this.ws) {
-                this.ws.close();
-                this.ws = null;
-            }
-        }
-    };
-
-    // ================================================================
-    // INITIALIZE CHART CARDS
-    // ================================================================
-    document.addEventListener('DOMContentLoaded', function() {
-        const chartCards = document.querySelectorAll('.chart-card');
-        const chartInstances = [];
-        
-        chartCards.forEach((card, index) => {
-            try {
-                const instance = new ChartCard(card);
-                chartInstances.push(instance);
-            } catch (error) {
-                console.error(`Chart card ${index + 1} initialization failed:`, error);
-            }
+            console.log('[CHART] Initialized successfully');
+            console.log('[CHART] Connected to real APIs');
         });
         
-        // Store instances globally
-        window.chartInstances = chartInstances;
-        console.log(`Initialized ${chartInstances.length} chart cards`);
-    });
-
-})();
-</script>
-{% endblock %}
-
-<!-- ======================================================================= -->
-<!-- RENDER COMPONENT                                                        -->
-<!-- ======================================================================= -->
-{% if not loop %}
-    {{ chart_card(title, chart_type, data, height, width, options, symbol, show_controls) }}
-{% endif %}
-
+        // ============================================
+        // SECTION 27: ERROR HANDLING
+        // ============================================
+        window.addEventListener('error', (e) => {
+            console.error('[CHART] Global error:', e.error);
+        });
+        
+        window.addEventListener('unhandledrejection', (e) => {
+            console.error('[CHART] Unhandled rejection:', e.reason);
+        });
+        
+        // ============================================
+        // SECTION 28: RESIZE HANDLER
+        // ============================================
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                Object.values(CHART_STATE.charts).forEach(chart => {
+                    if (chart?.chart) {
+                        chart.resize();
+                    }
+                });
+            }, 200);
+        });
+        
+        // ============================================
+        // SECTION 29: CLEANUP
+        // ============================================
+        window.addEventListener('beforeunload', () => {
+            if (CHART_STATE.ws) {
+                CHART_STATE.ws.disconnect();
+            }
+        });
+    </script>
+    
 </body>
 </html>
