@@ -1,1293 +1,1338 @@
-<!-- trading/bots/arbitrage_bot/templates/components/exchange_card.html -->
-<!-- NEXUS AI TRADING SYSTEM -->
-<!-- Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved -->
-<!-- Version: 4.2.0 - Complete Exchange Card Component -->
+<!--
+╔═══════════════════════════════════════════════════════════════════════════════════╗
+║                                                                                   ║
+║   ███████╗██╗  ██╗ ██████╗██╗  ██╗ █████╗ ███╗   ██╗ ██████╗ ███████╗          ║
+║   ██╔════╝╚██╗██╔╝██╔════╝██║  ██║██╔══██╗████╗  ██║██╔════╝ ██╔════╝          ║
+║   █████╗   ╚███╔╝ ██║     ███████║███████║██╔██╗ ██║██║  ███╗█████╗            ║
+║   ██╔══╝   ██╔██╗ ██║     ██╔══██║██╔══██║██║╚██╗██║██║   ██║██╔══╝            ║
+║   ███████╗██╔╝ ██╗╚██████╗██║  ██║██║  ██║██║ ╚████║╚██████╔╝███████╗          ║
+║   ╚══════╝╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝ ╚═════╝ ╚══════╝          ║
+║                                                                                   ║
+║   NEXUS AI TRADING SYSTEM - EXCHANGE CARD COMPONENT                              ║
+║   Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved                       ║
+║   Version: 3.0.0 - Build: 2026.07.20                                             ║
+║   CEO: Dr X... - Majority Shareholder                                            ║
+║                                                                                   ║
+╚═══════════════════════════════════════════════════════════════════════════════════╝
+-->
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Exchange Card Component</title>
-    <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="theme-color" content="#0A0A0F">
+    <meta name="description" content="NEXUS Arbitrage Bot - Live exchange cards with real APIs">
+    <title>NEXUS Exchange Cards - Live APIs</title>
+    
+    <!-- ============================================
+    FONTS & ICONS
+    ============================================ -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    
+    <style>
+        /* ============================================
+           SECTION 1: ROOT VARIABLES - NEXUS THEME
+           ============================================ */
+        :root {
+            /* --- Brand Colors --- */
+            --nexus-primary: #6C3CE1;
+            --nexus-primary-dark: #4A1FA8;
+            --nexus-primary-light: #8B6BEE;
+            --nexus-primary-gradient: linear-gradient(135deg, #6C3CE1 0%, #8B6BEE 50%, #00D4AA 100%);
+            --nexus-secondary: #00D4AA;
+            --nexus-secondary-dark: #00A88A;
+            --nexus-secondary-light: #33E0C0;
+            --nexus-accent: #FF6B6B;
+            --nexus-accent-dark: #E05555;
+            --nexus-warning: #FFB84D;
+            --nexus-warning-dark: #E6A040;
+            
+            /* --- Exchange Colors --- */
+            --exchange-binance: #F0B90B;
+            --exchange-binance-bg: rgba(240, 185, 11, 0.1);
+            --exchange-coinbase: #0052FF;
+            --exchange-coinbase-bg: rgba(0, 82, 255, 0.1);
+            --exchange-kraken: #5842BE;
+            --exchange-kraken-bg: rgba(88, 66, 190, 0.1);
+            --exchange-bybit: #F7A61D;
+            --exchange-bybit-bg: rgba(247, 166, 29, 0.1);
+            --exchange-okx: #000000;
+            --exchange-okx-bg: rgba(255, 255, 255, 0.05);
+            --exchange-kuCoin: #31A65E;
+            --exchange-kuCoin-bg: rgba(49, 166, 94, 0.1);
+            --exchange-gateio: #1A1A1A;
+            --exchange-gateio-bg: rgba(255, 255, 255, 0.05);
+            --exchange-huobi: #244F9E;
+            --exchange-huobi-bg: rgba(36, 79, 158, 0.1);
+            
+            /* --- Gradients --- */
+            --gradient-primary: linear-gradient(135deg, #6C3CE1 0%, #00D4AA 100%);
+            --gradient-accent: linear-gradient(135deg, #FF6B6B 0%, #FFB84D 100%);
+            --gradient-success: linear-gradient(135deg, #00D4AA 0%, #33E0C0 100%);
+            --gradient-danger: linear-gradient(135deg, #FF6B6B 0%, #FF0044 100%);
+            
+            /* --- Backgrounds --- */
+            --bg-primary: #0A0A0F;
+            --bg-secondary: #0F0F18;
+            --bg-tertiary: #13131A;
+            --bg-card: #1A1A24;
+            --bg-card-hover: #222233;
+            --bg-card-active: #2A2A3E;
+            --bg-elevated: rgba(26, 26, 36, 0.95);
+            
+            /* --- Text --- */
+            --text-primary: #FFFFFF;
+            --text-secondary: #A0A0B8;
+            --text-muted: #6B6B85;
+            --text-disabled: #3D3D55;
+            
+            /* --- Status --- */
+            --status-online: #00D4AA;
+            --status-online-bg: rgba(0, 212, 170, 0.1);
+            --status-degraded: #FFB84D;
+            --status-degraded-bg: rgba(255, 184, 77, 0.1);
+            --status-offline: #FF6B6B;
+            --status-offline-bg: rgba(255, 107, 107, 0.1);
+            
+            /* --- Borders --- */
+            --border-color: rgba(108, 60, 225, 0.12);
+            --border-color-hover: rgba(108, 60, 225, 0.3);
+            --border-color-light: rgba(255, 255, 255, 0.05);
+            
+            /* --- Shadows --- */
+            --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.4);
+            --shadow-card-hover: 0 12px 48px rgba(0, 0, 0, 0.6);
+            --shadow-glow: 0 0 60px rgba(108, 60, 225, 0.06);
+            
+            /* --- Animations --- */
+            --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-base: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-slow: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-bounce: 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            
+            /* --- Border Radius --- */
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
+            --radius-full: 9999px;
+        }
+        
+        /* ============================================
+           SECTION 2: RESET & BASE
+           ============================================ */
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 24px;
+        }
+        
+        /* ============================================
+           SECTION 3: SCROLLBAR
+           ============================================ */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--nexus-primary);
+            border-radius: var(--radius-full);
+            transition: var(--transition-base);
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--nexus-primary-light);
+        }
+        
+        /* ============================================
+           SECTION 4: EXCHANGE CONTAINER
+           ============================================ */
+        .exchange-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .exchange-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+        
+        .exchange-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .exchange-title i {
+            -webkit-text-fill-color: var(--nexus-secondary);
+            margin-right: 10px;
+        }
+        
+        .exchange-controls {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        
+        .exchange-controls button {
+            padding: 8px 16px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            color: var(--text-secondary);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all var(--transition-base);
+            outline: none;
+        }
+        
+        .exchange-controls button:hover {
+            border-color: var(--border-color-hover);
+            color: var(--text-primary);
+            background: var(--bg-card-hover);
+        }
+        
+        .exchange-controls button.active {
+            background: var(--gradient-primary);
+            color: var(--text-primary);
+            border: none;
+        }
+        
+        .exchange-controls button.active:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(108, 60, 225, 0.3);
+        }
+        
+        .exchange-controls .refresh-btn {
+            background: var(--gradient-primary);
+            color: var(--text-primary);
+            border: none;
+        }
+        
+        .exchange-controls .refresh-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(108, 60, 225, 0.3);
+        }
+        
+        .exchange-controls .refresh-btn:active {
+            transform: scale(0.95);
+        }
+        
+        .exchange-controls .refresh-btn.loading {
+            pointer-events: none;
+            opacity: 0.7;
+        }
+        
+        /* ============================================
+           SECTION 5: EXCHANGE GRID
+           ============================================ */
+        .exchange-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 16px;
+        }
+        
+        /* ============================================
+           SECTION 6: EXCHANGE CARD
+           ============================================ */
+        .exchange-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            transition: all var(--transition-bounce);
+            position: relative;
+            overflow: hidden;
+            cursor: default;
+        }
+        
+        .exchange-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--gradient-primary);
+            opacity: 0;
+            transition: opacity var(--transition-base);
+        }
+        
+        .exchange-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--border-color-hover);
+            box-shadow: var(--shadow-card-hover), var(--shadow-glow);
+            background: var(--bg-card-hover);
+        }
+        
+        .exchange-card:hover::before {
+            opacity: 1;
+        }
+        
+        .exchange-card:active {
+            transform: scale(0.98);
+        }
+        
+        /* --- Card Glow --- */
+        .exchange-card::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), 
+                rgba(108, 60, 225, 0.03) 0%, 
+                transparent 60%);
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity var(--transition-base);
+        }
+        
+        .exchange-card:hover::after {
+            opacity: 1;
+        }
+        
+        /* ============================================
+           SECTION 7: EXCHANGE CARD HEADER
+           ============================================ */
+        .exchange-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 14px;
+        }
+        
+        .exchange-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .exchange-logo {
+            width: 44px;
+            height: 44px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            font-weight: 700;
+            flex-shrink: 0;
+            transition: all var(--transition-base);
+        }
+        
+        .exchange-card:hover .exchange-logo {
+            transform: scale(1.05) rotate(-5deg);
+        }
+        
+        .exchange-logo.binance {
+            background: var(--exchange-binance-bg);
+            color: var(--exchange-binance);
+        }
+        
+        .exchange-logo.coinbase {
+            background: var(--exchange-coinbase-bg);
+            color: var(--exchange-coinbase);
+        }
+        
+        .exchange-logo.kraken {
+            background: var(--exchange-kraken-bg);
+            color: var(--exchange-kraken);
+        }
+        
+        .exchange-logo.bybit {
+            background: var(--exchange-bybit-bg);
+            color: var(--exchange-bybit);
+        }
+        
+        .exchange-logo.okx {
+            background: var(--exchange-okx-bg);
+            color: var(--text-secondary);
+        }
+        
+        .exchange-logo.kucoin {
+            background: var(--exchange-kuCoin-bg);
+            color: var(--exchange-kuCoin);
+        }
+        
+        .exchange-logo.gateio {
+            background: var(--exchange-gateio-bg);
+            color: var(--text-secondary);
+        }
+        
+        .exchange-logo.huobi {
+            background: var(--exchange-huobi-bg);
+            color: var(--exchange-huobi);
+        }
+        
+        .exchange-name-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .exchange-name {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+        
+        .exchange-ticker {
+            font-size: 0.55rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .exchange-status {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            border-radius: var(--radius-full);
+            font-size: 0.6rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .exchange-status.online {
+            background: var(--status-online-bg);
+            color: var(--status-online);
+        }
+        
+        .exchange-status.online .status-dot {
+            background: var(--status-online);
+        }
+        
+        .exchange-status.degraded {
+            background: var(--status-degraded-bg);
+            color: var(--status-degraded);
+        }
+        
+        .exchange-status.degraded .status-dot {
+            background: var(--status-degraded);
+        }
+        
+        .exchange-status.offline {
+            background: var(--status-offline-bg);
+            color: var(--status-offline);
+        }
+        
+        .exchange-status.offline .status-dot {
+            background: var(--status-offline);
+        }
+        
+        .exchange-status .status-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        
+        /* ============================================
+           SECTION 8: EXCHANGE STATS
+           ============================================ */
+        .exchange-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 14px;
+        }
+        
+        .exchange-stat {
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: var(--radius-sm);
+            padding: 10px 12px;
+            transition: all var(--transition-base);
+        }
+        
+        .exchange-card:hover .exchange-stat {
+            background: rgba(255, 255, 255, 0.04);
+        }
+        
+        .exchange-stat-label {
+            font-size: 0.55rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+        }
+        
+        .exchange-stat-value {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            font-variant-numeric: tabular-nums;
+            margin-top: 2px;
+        }
+        
+        .exchange-stat-value.positive {
+            color: var(--status-online);
+        }
+        
+        .exchange-stat-value.negative {
+            color: var(--status-offline);
+        }
+        
+        .exchange-stat-value .change {
+            font-size: 0.65rem;
+            font-weight: 600;
+            margin-left: 4px;
+        }
+        
+        .exchange-stat-value .change.positive {
+            color: var(--status-online);
+        }
+        
+        .exchange-stat-value .change.negative {
+            color: var(--status-offline);
+        }
+        
+        /* ============================================
+           SECTION 9: EXCHANGE PAIRS
+           ============================================ */
+        .exchange-pairs {
+            border-top: 1px solid var(--border-color-light);
+            padding-top: 12px;
+            margin-top: 2px;
+        }
+        
+        .exchange-pairs-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.55rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+            padding: 0 4px 6px;
+        }
+        
+        .exchange-pair {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 4px 4px;
+            border-radius: var(--radius-sm);
+            transition: all var(--transition-fast);
+            cursor: pointer;
+        }
+        
+        .exchange-pair:hover {
+            background: rgba(255, 255, 255, 0.03);
+        }
+        
+        .exchange-pair .pair-name {
+            font-size: 0.7rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+        
+        .exchange-pair .pair-price {
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            font-variant-numeric: tabular-nums;
+        }
+        
+        .exchange-pair .pair-change {
+            font-size: 0.6rem;
+            font-weight: 600;
+            padding: 0.05rem 0.5rem;
+            border-radius: var(--radius-full);
+        }
+        
+        .exchange-pair .pair-change.positive {
+            color: var(--status-online);
+            background: var(--status-online-bg);
+        }
+        
+        .exchange-pair .pair-change.negative {
+            color: var(--status-offline);
+            background: var(--status-offline-bg);
+        }
+        
+        .exchange-pairs-more {
+            text-align: center;
+            padding: 6px 0 2px;
+            font-size: 0.6rem;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+        
+        .exchange-pairs-more:hover {
+            color: var(--text-secondary);
+        }
+        
+        /* ============================================
+           SECTION 10: RESPONSIVE
+           ============================================ */
+        @media (max-width: 1200px) {
+            .exchange-grid {
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .exchange-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 12px;
+            }
+            
+            .exchange-grid {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+            
+            .exchange-card {
+                padding: 16px;
+            }
+            
+            .exchange-title {
+                font-size: 1.2rem;
+            }
+            
+            .exchange-stats {
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+            }
+            
+            .exchange-stat {
+                padding: 8px 10px;
+            }
+            
+            .exchange-stat-value {
+                font-size: 0.85rem;
+            }
+            
+            .exchange-controls {
+                width: 100%;
+                justify-content: flex-start;
+            }
+            
+            .exchange-controls button {
+                font-size: 0.65rem;
+                padding: 6px 12px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            body {
+                padding: 8px;
+            }
+            
+            .exchange-card {
+                padding: 14px;
+                border-radius: var(--radius-md);
+            }
+            
+            .exchange-logo {
+                width: 36px;
+                height: 36px;
+                font-size: 1rem;
+            }
+            
+            .exchange-name {
+                font-size: 0.8rem;
+            }
+            
+            .exchange-stats {
+                grid-template-columns: 1fr 1fr;
+                gap: 6px;
+            }
+            
+            .exchange-stat-value {
+                font-size: 0.75rem;
+            }
+            
+            .exchange-stat-label {
+                font-size: 0.45rem;
+            }
+            
+            .exchange-pair .pair-name {
+                font-size: 0.6rem;
+            }
+            
+            .exchange-pair .pair-price {
+                font-size: 0.6rem;
+            }
+            
+            .exchange-status {
+                font-size: 0.5rem;
+                padding: 2px 8px;
+            }
+        }
+        
+        /* ============================================
+           SECTION 11: UTILITY ANIMATIONS
+           ============================================ */
+        .fade-in {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .pulse-once {
+            animation: pulseOnce 0.5s ease-out;
+        }
+        
+        @keyframes pulseOnce {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+        
+        .shimmer {
+            background: linear-gradient(90deg, 
+                var(--bg-card) 25%, 
+                var(--bg-card-hover) 50%, 
+                var(--bg-card) 75%
+            );
+            background-size: 200% 100%;
+            animation: shimmer 1.5s ease-in-out infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+    </style>
 </head>
 <body>
-
-<!-- ======================================================================= -->
-<!-- EXCHANGE CARD MACRO                                                     -->
-<!-- ======================================================================= -->
-{% macro exchange_card(exchange, show_controls=True, expanded=False) %}
-<div class="exchange-card" 
-     id="exchange-card-{{ exchange.id if exchange.id else loop.index }}"
-     data-exchange-id="{{ exchange.id if exchange.id else loop.index }}"
-     data-exchange-name="{{ exchange.name }}"
-     data-exchange-type="{{ exchange.type }}"
-     data-status="{{ exchange.status }}"
-     data-theme="{{ exchange.theme if exchange.theme else 'dark' }}">
     
-    <!-- ======================== HEADER ======================== -->
-    <div class="exchange-header">
-        <div class="exchange-info">
-            <div class="exchange-logo">
-                {% if exchange.logo %}
-                    <img src="{{ exchange.logo }}" alt="{{ exchange.name }}" class="exchange-logo-img">
-                {% else %}
-                    <div class="exchange-logo-placeholder">
-                        <i class="fas fa-exchange-alt"></i>
-                    </div>
-                {% endif %}
+    <!-- ============================================
+    SECTION 12: EXCHANGE CONTAINER
+    ============================================ -->
+    <div class="exchange-container" id="exchangeContainer">
+        
+        <!-- Header -->
+        <div class="exchange-header">
+            <div class="exchange-title">
+                <i class="fas fa-university"></i>
+                Exchange Status
+                <span style="font-size: 0.6rem; -webkit-text-fill-color: var(--text-muted); font-weight: 400; margin-left: 8px;">
+                    <span style="color: var(--status-online); -webkit-text-fill-color: var(--status-online);">
+                        <i class="fas fa-circle" style="font-size: 0.4rem;"></i> LIVE
+                    </span>
+                    — Real-time API data
+                </span>
             </div>
-            <div class="exchange-details">
-                <h3 class="exchange-name">{{ exchange.name }}</h3>
-                <div class="exchange-meta">
-                    <span class="exchange-type">
-                        <span class="type-badge type-{{ exchange.type|lower }}">
-                            {{ exchange.type }}
-                        </span>
-                    </span>
-                    <span class="exchange-status">
-                        <span class="status-dot status-{{ exchange.status|lower }}"></span>
-                        {{ exchange.status|capitalize }}
-                    </span>
-                    <span class="exchange-latency" title="Latency">
-                        <i class="fas fa-bolt"></i>
-                        {{ exchange.latency if exchange.latency else '--' }}ms
-                    </span>
-                </div>
+            <div class="exchange-controls">
+                <button class="active" data-filter="all">All</button>
+                <button data-filter="online">Online</button>
+                <button data-filter="degraded">Degraded</button>
+                <button data-filter="offline">Offline</button>
+                <button class="refresh-btn" id="exchangeRefreshBtn" aria-label="Refresh exchanges">
+                    <i class="fas fa-sync-alt"></i> Refresh
+                </button>
             </div>
         </div>
         
-        {% if show_controls %}
-        <div class="exchange-actions">
-            <button class="exchange-action-btn" data-action="refresh" title="Refresh Exchange Data">
-                <i class="fas fa-sync-alt"></i>
-            </button>
-            <button class="exchange-action-btn" data-action="toggle" title="Toggle Details">
-                <i class="fas fa-chevron-down"></i>
-            </button>
-            <button class="exchange-action-btn" data-action="settings" title="Exchange Settings">
-                <i class="fas fa-cog"></i>
-            </button>
-            <button class="exchange-action-btn exchange-status-toggle" data-action="toggle-status" title="Toggle Connection">
-                <i class="fas fa-power-off"></i>
-            </button>
+        <!-- Exchange Grid -->
+        <div class="exchange-grid" id="exchangeGrid">
+            <!-- Cards will be rendered dynamically from API -->
         </div>
-        {% endif %}
+        
+        <!-- Timestamp -->
+        <div style="text-align: center; margin-top: 16px; font-size: 0.6rem; color: var(--text-disabled);">
+            <i class="far fa-clock"></i> Last updated: <span id="exchangeUpdateTime">--</span>
+            <span style="margin: 0 8px;">|</span>
+            <span style="color: var(--text-muted);">
+                <i class="fas fa-database"></i> Data from real exchange APIs
+            </span>
+        </div>
+        
     </div>
     
-    <!-- ======================== BODY ======================== -->
-    <div class="exchange-body {% if not expanded %}collapsed{% endif %}">
-        <!-- Metrics Grid -->
-        <div class="exchange-metrics">
-            <div class="metric-group">
-                <span class="metric-label">24h Volume</span>
-                <span class="metric-value">{{ exchange.volume_24h|format_currency if exchange.volume_24h else '$--' }}</span>
-                <span class="metric-change {% if exchange.volume_change and exchange.volume_change > 0 %}positive{% elif exchange.volume_change and exchange.volume_change < 0 %}negative{% endif %}">
-                    {% if exchange.volume_change %}
-                        {{ exchange.volume_change|format_percentage }}
-                    {% endif %}
-                </span>
-            </div>
-            <div class="metric-group">
-                <span class="metric-label">Trading Pairs</span>
-                <span class="metric-value">{{ exchange.trading_pairs if exchange.trading_pairs else '--' }}</span>
-            </div>
-            <div class="metric-group">
-                <span class="metric-label">Active Markets</span>
-                <span class="metric-value">
-                    {% if exchange.markets %}
-                        {{ exchange.markets|join(', ') }}
-                    {% else %}
-                        --
-                    {% endif %}
-                </span>
-            </div>
-            <div class="metric-group">
-                <span class="metric-label">Connection Status</span>
-                <span class="metric-value">
-                    <span class="status-dot status-{{ exchange.connection_status|lower if exchange.connection_status else 'disconnected' }}"></span>
-                    {{ exchange.connection_status|capitalize if exchange.connection_status else 'Disconnected' }}
-                </span>
-            </div>
-        </div>
+    <!-- ============================================
+    SECTION 13: JAVASCRIPT - COMPLETE WITH REAL APIs
+    ============================================ -->
+    <script>
+        'use strict';
         
-        <!-- Performance Metrics -->
-        <div class="exchange-performance">
-            <h4 class="performance-title">Performance</h4>
-            <div class="performance-grid">
-                <div class="performance-item">
-                    <span class="perf-label">Success Rate</span>
-                    <span class="perf-value">{{ exchange.success_rate|format_percentage if exchange.success_rate else '--' }}</span>
-                </div>
-                <div class="performance-item">
-                    <span class="perf-label">Avg Execution Time</span>
-                    <span class="perf-value">{{ exchange.avg_execution_time if exchange.avg_execution_time else '--' }}ms</span>
-                </div>
-                <div class="performance-item">
-                    <span class="perf-label">Order Fill Rate</span>
-                    <span class="perf-value">{{ exchange.fill_rate|format_percentage if exchange.fill_rate else '--' }}</span>
-                </div>
-                <div class="performance-item">
-                    <span class="perf-label">Active Connections</span>
-                    <span class="perf-value">{{ exchange.active_connections if exchange.active_connections else '--' }}</span>
-                </div>
-            </div>
-        </div>
+        // ============================================
+        // SECTION 14: CONFIGURATION
+        // ============================================
+        const EXCHANGE_CONFIG = {
+            API_BASE: window.location.origin + '/api/v1',
+            WS_URL: 'wss://' + window.location.host + '/ws/exchanges',
+            REFRESH_INTERVAL: 10000,
+            RETRY_DELAY: 3000,
+            MAX_RETRIES: 3,
+            EXCHANGE_LOGOS: {
+                binance: 'B',
+                coinbase: 'C',
+                kraken: 'K',
+                bybit: 'B',
+                okx: 'O',
+                kucoin: 'K',
+                gateio: 'G',
+                huobi: 'H',
+            },
+            EXCHANGE_COLORS: {
+                binance: '#F0B90B',
+                coinbase: '#0052FF',
+                kraken: '#5842BE',
+                bybit: '#F7A61D',
+                okx: '#FFFFFF',
+                kucoin: '#31A65E',
+                gateio: '#FFFFFF',
+                huobi: '#244F9E',
+            },
+        };
         
-        <!-- Status Details -->
-        <div class="exchange-status-details">
-            <div class="status-row">
-                <span class="status-label">API Status</span>
-                <span class="status-value">
-                    <span class="status-dot status-{{ exchange.api_status|lower if exchange.api_status else 'unknown' }}"></span>
-                    {{ exchange.api_status|capitalize if exchange.api_status else 'Unknown' }}
-                </span>
-            </div>
-            <div class="status-row">
-                <span class="status-label">WebSocket</span>
-                <span class="status-value">
-                    <span class="status-dot status-{{ exchange.websocket_status|lower if exchange.websocket_status else 'unknown' }}"></span>
-                    {{ exchange.websocket_status|capitalize if exchange.websocket_status else 'Unknown' }}
-                </span>
-            </div>
-            <div class="status-row">
-                <span class="status-label">Last Ping</span>
-                <span class="status-value">{{ exchange.last_ping|format_datetime if exchange.last_ping else 'Never' }}</span>
-            </div>
-            <div class="status-row">
-                <span class="status-label">Connected Since</span>
-                <span class="status-value">{{ exchange.connected_since|format_datetime if exchange.connected_since else 'Never' }}</span>
-            </div>
-        </div>
+        // ============================================
+        // SECTION 15: DOM REFS
+        // ============================================
+        const EXCHANGE_DOM = {
+            grid: document.getElementById('exchangeGrid'),
+            refreshBtn: document.getElementById('exchangeRefreshBtn'),
+            updateTime: document.getElementById('exchangeUpdateTime'),
+            filters: document.querySelectorAll('[data-filter]'),
+        };
         
-        <!-- Error History -->
-        {% if exchange.errors and exchange.errors|length > 0 %}
-        <div class="exchange-errors">
-            <h4 class="errors-title">
-                <i class="fas fa-exclamation-triangle"></i>
-                Recent Errors
-            </h4>
-            <ul class="errors-list">
-                {% for error in exchange.errors[:5] %}
-                <li class="error-item">
-                    <span class="error-time">{{ error.timestamp|format_datetime }}</span>
-                    <span class="error-message">{{ error.message }}</span>
-                    <span class="error-severity severity-{{ error.severity|lower }}">
-                        {{ error.severity|capitalize }}
-                    </span>
-                </li>
-                {% endfor %}
-            </ul>
-        </div>
-        {% endif %}
-    </div>
-    
-    <!-- ======================== FOOTER ======================== -->
-    <div class="exchange-footer">
-        <div class="exchange-features">
-            <span class="feature-tag">
-                <i class="fas fa-check-circle"></i>
-                {{ 'WebSocket' if exchange.websocket else 'REST' }}
-            </span>
-            <span class="feature-tag">
-                <i class="fas fa-shield-alt"></i>
-                {{ 'Secure' if exchange.secure else 'Standard' }}
-            </span>
-            {% if exchange.sandbox %}
-            <span class="feature-tag feature-sandbox">
-                <i class="fas fa-flask"></i>
-                Sandbox
-            </span>
-            {% endif %}
-            <span class="feature-tag">
-                <i class="fas fa-clock"></i>
-                {{ exchange.uptime|format_duration if exchange.uptime else '--' }}
-            </span>
-        </div>
-        <div class="exchange-version">
-            <span class="version-label">API Version</span>
-            <span class="version-value">v{{ exchange.api_version if exchange.api_version else '--' }}</span>
-        </div>
-    </div>
-</div>
-{% endmacro %}
-
-<!-- ======================================================================= -->
-<!-- CSS STYLES                                                               -->
-<!-- ======================================================================= -->
-{% block styles %}
-<style>
-/* ============================================
-   EXCHANGE CARD - COMPLETE STYLES
-   ============================================ */
-   
-:root {
-    --exchange-primary: #6C63FF;
-    --exchange-secondary: #00D4FF;
-    --exchange-success: #00D4FF;
-    --exchange-danger: #FF6B6B;
-    --exchange-warning: #FFD93D;
-    --exchange-card-bg: #16213E;
-    --exchange-card-border: rgba(255, 255, 255, 0.05);
-    --exchange-text-primary: #E0E0E0;
-    --exchange-text-secondary: #888;
-    --exchange-text-muted: #666;
-    --exchange-input-bg: rgba(255, 255, 255, 0.05);
-    --exchange-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
-    --exchange-radius: 16px;
-    --exchange-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* Dark Theme */
-[data-theme="dark"] {
-    --exchange-card-bg: #1a1a2e;
-    --exchange-text-primary: #f0f0f0;
-    --exchange-text-secondary: #aaa;
-}
-
-/* Light Theme */
-[data-theme="light"] {
-    --exchange-card-bg: #ffffff;
-    --exchange-card-border: #e0e0e0;
-    --exchange-text-primary: #333;
-    --exchange-text-secondary: #666;
-    --exchange-text-muted: #999;
-    --exchange-input-bg: #f5f5f5;
-    --exchange-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
-}
-
-/* ============================================
-   EXCHANGE CARD CONTAINER
-   ============================================ */
-.exchange-card {
-    background: var(--exchange-card-bg);
-    border-radius: var(--exchange-radius);
-    padding: 20px;
-    margin: 10px 0;
-    box-shadow: var(--exchange-shadow);
-    border: 1px solid var(--exchange-card-border);
-    transition: var(--exchange-transition);
-    position: relative;
-    overflow: hidden;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-}
-
-.exchange-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 36px rgba(0, 0, 0, 0.3);
-}
-
-.exchange-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 2px;
-    background: var(--exchange-primary);
-    opacity: 0.5;
-    transition: opacity 0.3s ease;
-}
-
-.exchange-card:hover::before {
-    opacity: 1;
-}
-
-/* Status-specific border colors */
-.exchange-card[data-status="connected"]::before {
-    background: var(--exchange-success);
-}
-
-.exchange-card[data-status="disconnected"]::before {
-    background: var(--exchange-danger);
-}
-
-.exchange-card[data-status="degraded"]::before {
-    background: var(--exchange-warning);
-}
-
-/* ============================================
-   HEADER
-   ============================================ */
-.exchange-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 16px;
-    flex-wrap: wrap;
-}
-
-.exchange-info {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-}
-
-.exchange-logo {
-    flex-shrink: 0;
-}
-
-.exchange-logo-img {
-    width: 48px;
-    height: 48px;
-    border-radius: 12px;
-    object-fit: contain;
-    background: var(--exchange-input-bg);
-    padding: 8px;
-}
-
-.exchange-logo-placeholder {
-    width: 48px;
-    height: 48px;
-    border-radius: 12px;
-    background: linear-gradient(135deg, var(--exchange-primary), var(--exchange-secondary));
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #fff;
-    font-size: 24px;
-}
-
-.exchange-details {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-}
-
-.exchange-name {
-    color: var(--exchange-text-primary);
-    font-size: 18px;
-    font-weight: 600;
-    margin: 0;
-}
-
-.exchange-meta {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    flex-wrap: wrap;
-}
-
-/* Type Badge */
-.type-badge {
-    font-size: 10px;
-    font-weight: 600;
-    padding: 2px 10px;
-    border-radius: 12px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.type-badge.cex {
-    background: rgba(108, 99, 255, 0.2);
-    color: #6C63FF;
-}
-
-.type-badge.dex {
-    background: rgba(0, 212, 255, 0.2);
-    color: #00D4FF;
-}
-
-.type-badge.aggregator {
-    background: rgba(255, 217, 61, 0.2);
-    color: #FFD93D;
-}
-
-/* Status Dot */
-.status-dot {
-    display: inline-block;
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    margin-right: 4px;
-}
-
-.status-dot.connected {
-    background: var(--exchange-success);
-    box-shadow: 0 0 8px rgba(0, 212, 255, 0.5);
-}
-
-.status-dot.disconnected {
-    background: var(--exchange-danger);
-}
-
-.status-dot.degraded {
-    background: var(--exchange-warning);
-}
-
-.status-dot.unknown {
-    background: var(--exchange-text-muted);
-}
-
-.exchange-latency {
-    color: var(--exchange-text-secondary);
-    font-size: 12px;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-}
-
-/* ============================================
-   ACTIONS
-   ============================================ */
-.exchange-actions {
-    display: flex;
-    gap: 4px;
-    background: var(--exchange-input-bg);
-    padding: 3px;
-    border-radius: 8px;
-    border: 1px solid var(--exchange-card-border);
-}
-
-.exchange-action-btn {
-    background: transparent;
-    border: none;
-    color: var(--exchange-text-secondary);
-    padding: 6px 10px;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: var(--exchange-transition);
-    font-size: 14px;
-}
-
-.exchange-action-btn:hover {
-    color: var(--exchange-text-primary);
-    background: rgba(255, 255, 255, 0.05);
-}
-
-.exchange-action-btn:active {
-    transform: scale(0.95);
-}
-
-.exchange-status-toggle {
-    color: var(--exchange-success);
-}
-
-.exchange-status-toggle:hover {
-    color: var(--exchange-danger);
-}
-
-/* ============================================
-   BODY
-   ============================================ */
-.exchange-body {
-    margin-top: 16px;
-    padding-top: 16px;
-    border-top: 1px solid var(--exchange-card-border);
-    transition: var(--exchange-transition);
-    overflow: hidden;
-}
-
-.exchange-body.collapsed {
-    display: none;
-}
-
-/* Metrics Grid */
-.exchange-metrics {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 16px;
-    margin-bottom: 16px;
-}
-
-.metric-group {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-}
-
-.metric-label {
-    color: var(--exchange-text-secondary);
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.metric-value {
-    color: var(--exchange-text-primary);
-    font-size: 16px;
-    font-weight: 600;
-}
-
-.metric-change {
-    font-size: 12px;
-    font-weight: 500;
-}
-
-.metric-change.positive {
-    color: var(--exchange-success);
-}
-
-.metric-change.negative {
-    color: var(--exchange-danger);
-}
-
-/* Performance */
-.exchange-performance {
-    margin-bottom: 16px;
-}
-
-.performance-title {
-    color: var(--exchange-text-secondary);
-    font-size: 12px;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin: 0 0 12px 0;
-}
-
-.performance-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-    gap: 12px;
-}
-
-.performance-item {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    padding: 10px;
-    background: var(--exchange-input-bg);
-    border-radius: 8px;
-}
-
-.perf-label {
-    color: var(--exchange-text-secondary);
-    font-size: 10px;
-    text-transform: uppercase;
-    letter-spacing: 0.3px;
-}
-
-.perf-value {
-    color: var(--exchange-text-primary);
-    font-size: 14px;
-    font-weight: 600;
-}
-
-/* Status Details */
-.exchange-status-details {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 12px;
-    margin-bottom: 16px;
-}
-
-.status-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 8px 12px;
-    background: var(--exchange-input-bg);
-    border-radius: 8px;
-}
-
-.status-label {
-    color: var(--exchange-text-secondary);
-    font-size: 12px;
-}
-
-.status-value {
-    color: var(--exchange-text-primary);
-    font-size: 12px;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-}
-
-/* Errors */
-.exchange-errors {
-    margin-top: 8px;
-}
-
-.errors-title {
-    color: var(--exchange-danger);
-    font-size: 12px;
-    font-weight: 500;
-    margin: 0 0 8px 0;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-}
-
-.errors-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.error-item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 6px 12px;
-    background: var(--exchange-input-bg);
-    border-radius: 6px;
-    margin-bottom: 4px;
-    font-size: 12px;
-}
-
-.error-time {
-    color: var(--exchange-text-secondary);
-    font-size: 11px;
-    flex-shrink: 0;
-}
-
-.error-message {
-    color: var(--exchange-text-primary);
-    flex: 1;
-}
-
-.error-severity {
-    font-size: 10px;
-    font-weight: 600;
-    padding: 2px 8px;
-    border-radius: 10px;
-    text-transform: uppercase;
-}
-
-.error-severity.critical {
-    background: rgba(255, 107, 107, 0.2);
-    color: var(--exchange-danger);
-}
-
-.error-severity.error {
-    background: rgba(255, 107, 107, 0.1);
-    color: var(--exchange-danger);
-}
-
-.error-severity.warning {
-    background: rgba(255, 217, 61, 0.2);
-    color: var(--exchange-warning);
-}
-
-/* ============================================
-   FOOTER
-   ============================================ */
-.exchange-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 16px;
-    padding-top: 12px;
-    border-top: 1px solid var(--exchange-card-border);
-    flex-wrap: wrap;
-    gap: 10px;
-}
-
-.exchange-features {
-    display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
-}
-
-.feature-tag {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    font-size: 11px;
-    color: var(--exchange-text-secondary);
-    padding: 2px 10px;
-    background: var(--exchange-input-bg);
-    border-radius: 12px;
-}
-
-.feature-tag i {
-    font-size: 10px;
-}
-
-.feature-sandbox {
-    color: var(--exchange-warning);
-    border: 1px solid rgba(255, 217, 61, 0.3);
-}
-
-.exchange-version {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 11px;
-    color: var(--exchange-text-secondary);
-}
-
-.version-label {
-    opacity: 0.6;
-}
-
-.version-value {
-    font-weight: 500;
-    color: var(--exchange-text-primary);
-}
-
-/* ============================================
-   RESPONSIVE
-   ============================================ */
-@media (max-width: 992px) {
-    .exchange-metrics {
-        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    }
-    
-    .performance-grid {
-        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-    }
-}
-
-@media (max-width: 768px) {
-    .exchange-card {
-        padding: 16px;
-    }
-    
-    .exchange-header {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 12px;
-    }
-    
-    .exchange-info {
-        flex: 1;
-    }
-    
-    .exchange-actions {
-        justify-content: center;
-    }
-    
-    .exchange-metrics {
-        grid-template-columns: 1fr 1fr;
-        gap: 12px;
-    }
-    
-    .performance-grid {
-        grid-template-columns: 1fr 1fr;
-    }
-    
-    .exchange-status-details {
-        grid-template-columns: 1fr;
-    }
-    
-    .exchange-footer {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 8px;
-    }
-    
-    .exchange-features {
-        justify-content: center;
-    }
-    
-    .exchange-version {
-        justify-content: center;
-    }
-}
-
-@media (max-width: 480px) {
-    .exchange-card {
-        padding: 12px;
-        border-radius: 12px;
-    }
-    
-    .exchange-logo-img,
-    .exchange-logo-placeholder {
-        width: 36px;
-        height: 36px;
-    }
-    
-    .exchange-name {
-        font-size: 15px;
-    }
-    
-    .exchange-metrics {
-        grid-template-columns: 1fr;
-    }
-    
-    .performance-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .error-item {
-        flex-wrap: wrap;
-        gap: 4px;
-    }
-}
-
-/* ============================================
-   ANIMATIONS
-   ============================================ */
-@keyframes exchange-fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-.exchange-card {
-    animation: exchange-fadeIn 0.3s ease-out;
-}
-
-/* ============================================
-   PRINT STYLES
-   ============================================ */
-@media print {
-    .exchange-card {
-        box-shadow: none !important;
-        border: 1px solid #ddd !important;
-        break-inside: avoid;
-    }
-    
-    .exchange-action-btn {
-        display: none !important;
-    }
-    
-    .exchange-card::before {
-        display: none !important;
-    }
-    
-    .exchange-body.collapsed {
-        display: block !important;
-    }
-}
-</style>
-{% endblock %}
-
-<!-- ======================================================================= -->
-<!-- JAVASCRIPT - COMPLETE IMPLEMENTATION                                    -->
-<!-- ======================================================================= -->
-{% block scripts %}
-<script>
-// ================================================================
-// EXCHANGE CARD - COMPLETE JAVASCRIPT IMPLEMENTATION
-// ================================================================
-
-(function() {
-    'use strict';
-
-    // ============================================================
-    // EXCHANGE CARD CLASS
-    // ============================================================
-    class ExchangeCard {
-        constructor(element) {
-            this.element = element;
-            this.exchangeId = element.dataset.exchangeId;
-            this.exchangeName = element.dataset.exchangeName;
-            this.exchangeType = element.dataset.exchangeType;
-            this.status = element.dataset.status;
-            this.theme = element.dataset.theme || 'dark';
-            
-            // DOM references
-            this.body = element.querySelector('.exchange-body');
-            this.actions = element.querySelector('.exchange-actions');
-            this.statusDot = element.querySelector('.status-dot');
-            this.statusToggle = element.querySelector('.exchange-status-toggle');
-            
-            // State
-            this.isExpanded = !this.body?.classList.contains('collapsed');
-            this.isConnected = this.status === 'connected';
-            this.autoRefreshInterval = null;
-            
-            // Initialize
-            this.init();
-        }
+        // ============================================
+        // SECTION 16: STATE
+        // ============================================
+        const EXCHANGE_STATE = {
+            exchanges: [],
+            currentFilter: 'all',
+            isUpdating: false,
+            ws: null,
+            isConnected: false,
+            retryCount: 0,
+            lastUpdate: null,
+        };
         
-        // ============================================================
-        // INITIALIZATION
-        // ============================================================
-        init() {
-            this.setupEventListeners();
-            this.startAutoRefresh();
-        }
-        
-        // ============================================================
-        // EVENT LISTENERS
-        // ============================================================
-        setupEventListeners() {
-            // Toggle button
-            const toggleBtn = this.element.querySelector('[data-action="toggle"]');
-            if (toggleBtn) {
-                toggleBtn.addEventListener('click', () => this.toggle());
-            }
-            
-            // Refresh button
-            const refreshBtn = this.element.querySelector('[data-action="refresh"]');
-            if (refreshBtn) {
-                refreshBtn.addEventListener('click', () => this.refresh());
-            }
-            
-            // Settings button
-            const settingsBtn = this.element.querySelector('[data-action="settings"]');
-            if (settingsBtn) {
-                settingsBtn.addEventListener('click', () => this.showSettings());
-            }
-            
-            // Status toggle button
-            if (this.statusToggle) {
-                this.statusToggle.addEventListener('click', () => this.toggleStatus());
-            }
-        }
-        
-        // ============================================================
-        // TOGGLE EXPAND
-        // ============================================================
-        toggle() {
-            this.isExpanded = !this.isExpanded;
-            
-            if (this.body) {
-                this.body.classList.toggle('collapsed');
-            }
-            
-            // Update toggle icon
-            const toggleBtn = this.element.querySelector('[data-action="toggle"] i');
-            if (toggleBtn) {
-                toggleBtn.className = this.isExpanded ? 'fas fa-chevron-up' : 'fas fa-chevron-down';
-            }
-        }
-        
-        // ============================================================
-        // REFRESH
-        // ============================================================
-        async refresh() {
-            const refreshBtn = this.element.querySelector('[data-action="refresh"] i');
-            if (refreshBtn) {
-                refreshBtn.className = 'fas fa-sync-alt fa-spin';
-            }
-            
-            try {
-                // In production, fetch fresh data from API
-                const data = await this.fetchExchangeData();
-                this.updateCard(data);
-            } catch (error) {
-                console.error('Exchange refresh failed:', error);
-                this.showError('Failed to refresh exchange data');
-            } finally {
-                if (refreshBtn) {
-                    refreshBtn.className = 'fas fa-sync-alt';
-                }
-            }
-        }
-        
-        async fetchExchangeData() {
-            // Simulate API call
-            return new Promise((resolve) => {
-                setTimeout(() => {
-                    resolve({
-                        status: this.isConnected ? 'connected' : 'disconnected',
-                        latency: Math.floor(Math.random() * 50 + 10),
-                        volume_24h: Math.random() * 1000000 + 100000,
-                        success_rate: 90 + Math.random() * 9,
-                        fill_rate: 85 + Math.random() * 14,
-                        active_connections: Math.floor(Math.random() * 10 + 1),
-                    });
-                }, 500);
-            });
-        }
-        
-        updateCard(data) {
-            // Update metrics
-            this.updateMetric('volume_24h', data.volume_24h);
-            this.updateMetric('latency', data.latency);
-            this.updateMetric('success_rate', data.success_rate);
-            this.updateMetric('fill_rate', data.fill_rate);
-            this.updateMetric('active_connections', data.active_connections);
-            
-            // Update status
-            if (data.status) {
-                this.setStatus(data.status);
-            }
-        }
-        
-        updateMetric(key, value) {
-            const metricMap = {
-                'volume_24h': { selector: '.metric-value', formatter: (v) => `$${v?.toLocaleString()}` },
-                'latency': { selector: '.exchange-latency', formatter: (v) => `${v}ms` },
-                'success_rate': { selector: '.perf-value', formatter: (v) => `${v?.toFixed(1)}%` },
-                'fill_rate': { selector: '.perf-value', formatter: (v) => `${v?.toFixed(1)}%` },
-                'active_connections': { selector: '.perf-value', formatter: (v) => v },
-            };
-            
-            const mapping = metricMap[key];
-            if (!mapping) return;
-            
-            const el = this.element.querySelector(mapping.selector);
-            if (el) {
-                el.textContent = mapping.formatter(value);
-            }
-        }
-        
-        // ============================================================
-        // STATUS MANAGEMENT
-        // ============================================================
-        setStatus(status) {
-            this.status = status;
-            this.isConnected = status === 'connected';
-            
-            // Update status dot
-            if (this.statusDot) {
-                this.statusDot.className = `status-dot status-${status}`;
-            }
-            
-            // Update card data attribute
-            this.element.dataset.status = status;
-            
-            // Update status text
-            const statusText = this.element.querySelector('.exchange-status');
-            if (statusText) {
-                const text = status.charAt(0).toUpperCase() + status.slice(1);
-                statusText.innerHTML = `<span class="status-dot status-${status}"></span> ${text}`;
-            }
-            
-            // Update status toggle icon
-            if (this.statusToggle) {
-                const icon = this.statusToggle.querySelector('i');
-                if (icon) {
-                    icon.className = this.isConnected ? 'fas fa-power-off' : 'fas fa-plug';
-                }
-            }
-        }
-        
-        async toggleStatus() {
-            const newStatus = this.isConnected ? 'disconnected' : 'connected';
-            
-            try {
-                // In production, call API to toggle connection
-                await this.toggleConnection(newStatus);
-                this.setStatus(newStatus);
-                
-                // Show notification
-                this.showNotification(
-                    this.isConnected ? 'Connected to exchange' : 'Disconnected from exchange',
-                    this.isConnected ? 'success' : 'warning'
-                );
-            } catch (error) {
-                console.error('Status toggle failed:', error);
-                this.showError('Failed to toggle connection status');
-            }
-        }
-        
-        async toggleConnection(status) {
-            // Simulate API call
-            return new Promise((resolve) => {
-                setTimeout(resolve, 500);
-            });
-        }
-        
-        // ============================================================
-        // SETTINGS
-        // ============================================================
-        showSettings() {
-            // Simple settings modal
-            console.log('Open settings for exchange:', this.exchangeName);
-            
-            // In production, show a proper settings modal
-            const settings = {
-                exchange: this.exchangeName,
-                autoRefresh: !!this.autoRefreshInterval,
-                theme: this.theme,
-                notifications: true,
-            };
-            
-            alert(`Exchange Settings:\n${JSON.stringify(settings, null, 2)}`);
-        }
-        
-        // ============================================================
-        // AUTO REFRESH
-        // ============================================================
-        startAutoRefresh() {
-            if (this.autoRefreshInterval) {
-                clearInterval(this.autoRefreshInterval);
-            }
-            
-            this.autoRefreshInterval = setInterval(() => {
-                this.refresh();
-            }, 30000); // 30 seconds
-        }
-        
-        stopAutoRefresh() {
-            if (this.autoRefreshInterval) {
-                clearInterval(this.autoRefreshInterval);
-                this.autoRefreshInterval = null;
-            }
-        }
-        
-        // ============================================================
-        // NOTIFICATIONS
-        // ============================================================
-        showNotification(message, type = 'info') {
-            // Simple notification - would use a proper notification system in production
-            console.log(`[${type.toUpperCase()}] ${message}`);
-            
-            // Show in UI
-            const notification = document.createElement('div');
-            notification.className = `exchange-notification exchange-notification-${type}`;
-            notification.textContent = message;
-            notification.style.cssText = `
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                padding: 12px 24px;
-                border-radius: 8px;
-                background: ${type === 'success' ? '#00D4FF' : type === 'warning' ? '#FFD93D' : '#6C63FF'};
-                color: ${type === 'warning' ? '#333' : '#fff'};
-                font-weight: 500;
-                z-index: 9999;
-                animation: slideIn 0.3s ease-out;
-                box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-            `;
-            document.body.appendChild(notification);
-            
-            setTimeout(() => {
-                notification.style.animation = 'slideOut 0.3s ease-in';
-                setTimeout(() => notification.remove(), 300);
-            }, 3000);
-        }
-        
-        showError(message) {
-            this.showNotification(message, 'error');
-        }
-        
-        // ============================================================
-        // DESTROY
-        // ============================================================
-        destroy() {
-            this.stopAutoRefresh();
-            // Remove event listeners
-            // ... cleanup
-        }
-    }
-
-    // ================================================================
-    // EXCHANGE API FUNCTIONS
-    // ================================================================
-    window.ExchangeAPI = {
-        getExchangeData: async function(exchangeId) {
-            try {
-                const response = await fetch(`/api/exchanges/${exchangeId}`);
-                if (!response.ok) throw new Error('API request failed');
-                return await response.json();
-            } catch (error) {
-                console.error('Exchange API error:', error);
-                throw error;
-            }
-        },
-        
-        updateExchangeStatus: async function(exchangeId, status) {
-            try {
-                const response = await fetch(`/api/exchanges/${exchangeId}/status`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ status }),
+        // ============================================
+        // SECTION 17: FORMATTERS
+        // ============================================
+        const ExchangeFormatters = {
+            currency: (value) => {
+                const num = typeof value === 'string' ? parseFloat(value) : value;
+                if (isNaN(num) || !isFinite(num)) return '$0.00';
+                return '$' + num.toLocaleString('en-US', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
                 });
-                if (!response.ok) throw new Error('API request failed');
-                return await response.json();
-            } catch (error) {
-                console.error('Exchange status update error:', error);
-                throw error;
-            }
-        },
+            },
+            
+            currencyShort: (value) => {
+                const num = typeof value === 'string' ? parseFloat(value) : value;
+                if (isNaN(num) || !isFinite(num)) return '$0';
+                const abs = Math.abs(num);
+                if (abs >= 1e9) return '$' + (num / 1e9).toFixed(1) + 'B';
+                if (abs >= 1e6) return '$' + (num / 1e6).toFixed(1) + 'M';
+                if (abs >= 1e3) return '$' + (num / 1e3).toFixed(1) + 'K';
+                return '$' + num.toFixed(2);
+            },
+            
+            percentage: (value) => {
+                const num = typeof value === 'string' ? parseFloat(value) : value;
+                if (isNaN(num) || !isFinite(num)) return '0.00%';
+                return (num >= 0 ? '+' : '') + num.toFixed(2) + '%';
+            },
+            
+            time: (timestamp) => {
+                if (!timestamp) return '--';
+                const date = new Date(timestamp);
+                return date.toLocaleTimeString('en-US', {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit',
+                });
+            },
+            
+            number: (value, decimals = 0) => {
+                const num = typeof value === 'string' ? parseFloat(value) : value;
+                if (isNaN(num) || !isFinite(num)) return '--';
+                return num.toLocaleString('en-US', {
+                    minimumFractionDigits: decimals,
+                    maximumFractionDigits: decimals,
+                });
+            },
+        };
         
-        getExchangeMetrics: async function(exchangeId) {
-            try {
-                const response = await fetch(`/api/exchanges/${exchangeId}/metrics`);
-                if (!response.ok) throw new Error('API request failed');
-                return await response.json();
-            } catch (error) {
-                console.error('Exchange metrics error:', error);
-                throw error;
-            }
-        },
-    };
-
-    // ================================================================
-    // WEBSOCKET INTEGRATION
-    // ================================================================
-    window.ExchangeWebSocket = class ExchangeWebSocket {
-        constructor(exchangeId, onData) {
-            this.exchangeId = exchangeId;
-            this.onData = onData;
-            this.ws = null;
-            this.reconnectAttempts = 0;
-            this.maxReconnectAttempts = 5;
-        }
-        
-        connect() {
-            try {
-                this.ws = new WebSocket(`wss://api.nexusquantum.com/ws/exchanges/${this.exchangeId}`);
+        // ============================================
+        // SECTION 18: API CLIENT
+        // ============================================
+        class APIClient {
+            static async get(endpoint, options = {}) {
+                const url = EXCHANGE_CONFIG.API_BASE + endpoint;
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 15000);
                 
-                this.ws.onopen = () => {
-                    console.log(`Exchange WebSocket connected: ${this.exchangeId}`);
-                    this.reconnectAttempts = 0;
-                };
-                
-                this.ws.onmessage = (event) => {
-                    try {
-                        const data = JSON.parse(event.data);
-                        if (this.onData) this.onData(data);
-                    } catch (error) {
-                        console.error('WebSocket message parse error:', error);
+                try {
+                    const response = await fetch(url, {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json',
+                            'Cache-Control': 'no-cache',
+                            'Pragma': 'no-cache',
+                        },
+                        credentials: 'same-origin',
+                        signal: controller.signal,
+                        ...options,
+                    });
+                    
+                    clearTimeout(timeoutId);
+                    
+                    if (!response.ok) {
+                        const errorText = await response.text();
+                        let errorData;
+                        try {
+                            errorData = JSON.parse(errorText);
+                        } catch {
+                            errorData = { detail: errorText || response.statusText };
+                        }
+                        throw new Error(errorData.detail || `HTTP ${response.status}`);
                     }
-                };
-                
-                this.ws.onclose = () => {
-                    console.log(`Exchange WebSocket disconnected: ${this.exchangeId}`);
-                    this.reconnect();
-                };
-                
-                this.ws.onerror = (error) => {
-                    console.error(`Exchange WebSocket error: ${this.exchangeId}`, error);
-                };
-            } catch (error) {
-                console.error('Exchange WebSocket connection failed:', error);
+                    
+                    return response.json();
+                } catch (error) {
+                    clearTimeout(timeoutId);
+                    if (error.name === 'AbortError') {
+                        throw new Error('Request timeout');
+                    }
+                    throw error;
+                }
             }
         }
         
-        reconnect() {
-            if (this.reconnectAttempts >= this.maxReconnectAttempts) {
-                console.log('Max reconnect attempts reached');
-                return;
-            }
-            
-            this.reconnectAttempts++;
-            const delay = Math.min(1000 * Math.pow(2, this.reconnectAttempts), 30000);
-            
-            setTimeout(() => {
-                console.log(`Reconnecting to exchange WebSocket (attempt ${this.reconnectAttempts})`);
-                this.connect();
-            }, delay);
-        }
-        
-        disconnect() {
-            if (this.ws) {
-                this.ws.close();
+        // ============================================
+        // SECTION 19: WEBSOCKET CLIENT
+        // ============================================
+        class ExchangeWebSocket {
+            constructor() {
                 this.ws = null;
+                this.reconnectAttempts = 0;
+                this.maxReconnectAttempts = 10;
+                this.reconnectDelay = 2000;
+                this.isConnecting = false;
+                this.onUpdate = null;
+            }
+            
+            connect() {
+                if (this.isConnecting) return;
+                if (this.ws && this.ws.readyState === WebSocket.OPEN) return;
+                
+                this.isConnecting = true;
+                
+                try {
+                    this.ws = new WebSocket(EXCHANGE_CONFIG.WS_URL);
+                    
+                    this.ws.onopen = () => {
+                        console.log('[WS] Connected to exchange stream');
+                        this.isConnecting = false;
+                        this.reconnectAttempts = 0;
+                        EXCHANGE_STATE.isConnected = true;
+                    };
+                    
+                    this.ws.onmessage = (event) => {
+                        try {
+                            const data = JSON.parse(event.data);
+                            if (data.type === 'exchange_update' && this.onUpdate) {
+                                this.onUpdate(data.data);
+                            }
+                            if (data.type === 'ping') {
+                                this.sendPong();
+                            }
+                        } catch (e) {
+                            console.error('[WS] Error parsing message:', e);
+                        }
+                    };
+                    
+                    this.ws.onclose = (event) => {
+                        console.warn('[WS] Connection closed:', event.code);
+                        EXCHANGE_STATE.isConnected = false;
+                        this.isConnecting = false;
+                        this.handleReconnect();
+                    };
+                    
+                    this.ws.onerror = (error) => {
+                        console.error('[WS] Error:', error);
+                    };
+                } catch (e) {
+                    console.error('[WS] Connection error:', e);
+                    this.handleReconnect();
+                }
+            }
+            
+            sendPong() {
+                if (this.ws && this.ws.readyState === WebSocket.OPEN) {
+                    this.ws.send(JSON.stringify({ type: 'pong' }));
+                }
+            }
+            
+            handleReconnect() {
+                if (this.reconnectAttempts >= this.maxReconnectAttempts) {
+                    console.error('[WS] Max reconnect attempts reached');
+                    return;
+                }
+                
+                this.reconnectAttempts++;
+                const delay = Math.min(
+                    this.reconnectDelay * Math.pow(1.5, this.reconnectAttempts - 1),
+                    30000
+                );
+                
+                console.log(`[WS] Reconnecting in ${delay}ms (attempt ${this.reconnectAttempts})`);
+                
+                setTimeout(() => {
+                    this.connect();
+                }, delay);
+            }
+            
+            disconnect() {
+                if (this.ws) {
+                    this.ws.close(1000, 'Client disconnect');
+                    this.ws = null;
+                }
+                EXCHANGE_STATE.isConnected = false;
             }
         }
-    };
-
-    // ================================================================
-    // INITIALIZE EXCHANGE CARDS
-    // ================================================================
-    document.addEventListener('DOMContentLoaded', function() {
-        const exchangeCards = document.querySelectorAll('.exchange-card');
-        const exchangeInstances = [];
         
-        exchangeCards.forEach((card, index) => {
-            try {
-                const instance = new ExchangeCard(card);
-                exchangeInstances.push(instance);
-            } catch (error) {
-                console.error(`Exchange card ${index + 1} initialization failed:`, error);
+        // ============================================
+        // SECTION 20: EXCHANGE RENDERER
+        // ============================================
+        class ExchangeRenderer {
+            static render(exchange) {
+                const card = document.createElement('div');
+                card.className = 'exchange-card';
+                card.dataset.exchange = exchange.id;
+                card.dataset.status = exchange.status;
+                
+                const logo = EXCHANGE_CONFIG.EXCHANGE_LOGOS[exchange.id] || exchange.id.charAt(0).toUpperCase();
+                const color = EXCHANGE_CONFIG.EXCHANGE_COLORS[exchange.id] || '#6C3CE1';
+                
+                card.innerHTML = `
+                    <div class="exchange-card-header">
+                        <div class="exchange-info">
+                            <div class="exchange-logo ${exchange.id}" style="color: ${color};">
+                                ${logo}
+                            </div>
+                            <div class="exchange-name-group">
+                                <div class="exchange-name">${exchange.name}</div>
+                                <div class="exchange-ticker">${exchange.ticker || exchange.id.toUpperCase()}</div>
+                            </div>
+                        </div>
+                        <div class="exchange-status ${exchange.status}">
+                            <span class="status-dot"></span>
+                            ${exchange.status}
+                        </div>
+                    </div>
+                    
+                    <div class="exchange-stats">
+                        <div class="exchange-stat">
+                            <div class="exchange-stat-label">Balance</div>
+                            <div class="exchange-stat-value ${exchange.balance >= 0 ? 'positive' : ''}">
+                                ${ExchangeFormatters.currencyShort(exchange.balance || 0)}
+                            </div>
+                        </div>
+                        <div class="exchange-stat">
+                            <div class="exchange-stat-label">24h Volume</div>
+                            <div class="exchange-stat-value">
+                                ${ExchangeFormatters.currencyShort(exchange.volume24h || 0)}
+                            </div>
+                        </div>
+                        <div class="exchange-stat">
+                            <div class="exchange-stat-label">Latency</div>
+                            <div class="exchange-stat-value ${exchange.latency < 100 ? 'positive' : exchange.latency < 300 ? '' : 'negative'}">
+                                ${exchange.latency || 0}ms
+                                <span class="change ${exchange.latency < 100 ? 'positive' : exchange.latency < 300 ? '' : 'negative'}">
+                                    ${exchange.latency < 100 ? '▼' : exchange.latency < 300 ? '—' : '▲'}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="exchange-stat">
+                            <div class="exchange-stat-label">Pairs</div>
+                            <div class="exchange-stat-value">${exchange.pairs || 0}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="exchange-pairs">
+                        <div class="exchange-pairs-header">
+                            <span>Pair</span>
+                            <span>Price</span>
+                            <span>24h</span>
+                        </div>
+                        ${exchange.topPairs && exchange.topPairs.length > 0 ? 
+                            exchange.topPairs.slice(0, 4).map(pair => `
+                                <div class="exchange-pair">
+                                    <span class="pair-name">${pair.symbol}</span>
+                                    <span class="pair-price">${ExchangeFormatters.currency(pair.price)}</span>
+                                    <span class="pair-change ${pair.change24h >= 0 ? 'positive' : 'negative'}">
+                                        ${ExchangeFormatters.percentage(pair.change24h)}
+                                    </span>
+                                </div>
+                            `).join('') :
+                            `<div style="text-align: center; padding: 8px 0; font-size: 0.65rem; color: var(--text-muted);">No pairs available</div>`
+                        }
+                        ${exchange.topPairs && exchange.topPairs.length > 4 ? `
+                            <div class="exchange-pairs-more">
+                                +${exchange.topPairs.length - 4} more pairs
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+                
+                // Mouse move for glow
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = ((e.clientX - rect.left) / rect.width) * 100;
+                    const y = ((e.clientY - rect.top) / rect.height) * 100;
+                    card.style.setProperty('--mouse-x', x + '%');
+                    card.style.setProperty('--mouse-y', y + '%');
+                });
+                
+                return card;
             }
+            
+            static renderAll(exchanges) {
+                const grid = EXCHANGE_DOM.grid;
+                grid.innerHTML = '';
+                
+                const filtered = exchanges.filter(ex => {
+                    if (EXCHANGE_STATE.currentFilter === 'all') return true;
+                    return ex.status === EXCHANGE_STATE.currentFilter;
+                });
+                
+                if (filtered.length === 0) {
+                    grid.innerHTML = `
+                        <div style="grid-column: 1 / -1; text-align: center; padding: 40px 20px; color: var(--text-muted);">
+                            <i class="fas fa-inbox" style="font-size: 2rem; display: block; margin-bottom: 12px; opacity: 0.3;"></i>
+                            No exchanges match the filter "${EXCHANGE_STATE.currentFilter}"
+                        </div>
+                    `;
+                    return;
+                }
+                
+                filtered.forEach(exchange => {
+                    const card = this.render(exchange);
+                    grid.appendChild(card);
+                });
+            }
+            
+            static updateExchange(exchange) {
+                const existingCard = EXCHANGE_DOM.grid.querySelector(`[data-exchange="${exchange.id}"]`);
+                if (existingCard) {
+                    // Update the card in place with new data
+                    const newCard = this.render(exchange);
+                    existingCard.replaceWith(newCard);
+                } else {
+                    // Add new card
+                    const card = this.render(exchange);
+                    EXCHANGE_DOM.grid.appendChild(card);
+                }
+            }
+        }
+        
+        // ============================================
+        // SECTION 21: EXCHANGE MANAGER
+        // ============================================
+        class ExchangeManager {
+            constructor() {
+                this.ws = new ExchangeWebSocket();
+                this.ws.onUpdate = (data) => {
+                    this.handleWebSocketUpdate(data);
+                };
+                this.init();
+                this.setupEventListeners();
+                this.fetchExchanges();
+                this.ws.connect();
+                
+                // Auto-refresh via REST as fallback
+                setInterval(() => {
+                    if (!EXCHANGE_STATE.isConnected) {
+                        this.fetchExchanges();
+                    }
+                }, EXCHANGE_CONFIG.REFRESH_INTERVAL * 2);
+            }
+            
+            init() {
+                // Set initial timestamp
+                EXCHANGE_DOM.updateTime.textContent = ExchangeFormatters.time(new Date());
+            }
+            
+            setupEventListeners() {
+                // Filter buttons
+                EXCHANGE_DOM.filters.forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        EXCHANGE_DOM.filters.forEach(b => b.classList.remove('active'));
+                        btn.classList.add('active');
+                        EXCHANGE_STATE.currentFilter = btn.dataset.filter;
+                        ExchangeRenderer.renderAll(EXCHANGE_STATE.exchanges);
+                    });
+                });
+                
+                // Refresh button
+                EXCHANGE_DOM.refreshBtn.addEventListener('click', () => {
+                    if (EXCHANGE_DOM.refreshBtn.classList.contains('loading')) return;
+                    EXCHANGE_DOM.refreshBtn.classList.add('loading');
+                    EXCHANGE_DOM.refreshBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading...';
+                    this.fetchExchanges().finally(() => {
+                        EXCHANGE_DOM.refreshBtn.classList.remove('loading');
+                        EXCHANGE_DOM.refreshBtn.innerHTML = '<i class="fas fa-sync-alt"></i> Refresh';
+                    });
+                });
+            }
+            
+            async fetchExchanges() {
+                if (EXCHANGE_STATE.isUpdating) return;
+                EXCHANGE_STATE.isUpdating = true;
+                
+                try {
+                    const data = await APIClient.get('/arbitrage/exchanges');
+                    
+                    if (data.exchanges && data.exchanges.length > 0) {
+                        EXCHANGE_STATE.exchanges = data.exchanges;
+                        ExchangeRenderer.renderAll(data.exchanges);
+                        EXCHANGE_DOM.updateTime.textContent = ExchangeFormatters.time(data.timestamp || new Date());
+                        EXCHANGE_STATE.retryCount = 0;
+                    }
+                } catch (error) {
+                    console.error('[EXCHANGE] Failed to fetch exchanges:', error);
+                    EXCHANGE_STATE.retryCount++;
+                    
+                    if (EXCHANGE_STATE.retryCount <= EXCHANGE_CONFIG.MAX_RETRIES) {
+                        setTimeout(() => {
+                            this.fetchExchanges();
+                        }, EXCHANGE_CONFIG.RETRY_DELAY * EXCHANGE_STATE.retryCount);
+                    } else {
+                        // Show error state
+                        EXCHANGE_DOM.grid.innerHTML = `
+                            <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px; color: var(--text-muted);">
+                                <i class="fas fa-exclamation-triangle" style="font-size: 2.5rem; display: block; margin-bottom: 16px; color: var(--nexus-warning);"></i>
+                                <h3 style="color: var(--text-secondary); margin-bottom: 8px;">Unable to connect to exchange APIs</h3>
+                                <p style="font-size: 0.85rem;">Please check your connection and try again.</p>
+                                <button onclick="window.__NEXUS_EXCHANGES.manager.fetchExchanges()" 
+                                        style="margin-top: 16px; padding: 8px 24px; background: var(--gradient-primary); border: none; border-radius: var(--radius-sm); color: white; cursor: pointer; font-family: 'Inter', sans-serif; font-size: 0.8rem; font-weight: 600;">
+                                    Retry
+                                </button>
+                            </div>
+                        `;
+                    }
+                } finally {
+                    EXCHANGE_STATE.isUpdating = false;
+                }
+            }
+            
+            handleWebSocketUpdate(data) {
+                // Update specific exchange or full list
+                if (data.exchange) {
+                    const index = EXCHANGE_STATE.exchanges.findIndex(e => e.id === data.exchange.id);
+                    if (index !== -1) {
+                        EXCHANGE_STATE.exchanges[index] = { ...EXCHANGE_STATE.exchanges[index], ...data.exchange };
+                        ExchangeRenderer.renderAll(EXCHANGE_STATE.exchanges);
+                    } else {
+                        EXCHANGE_STATE.exchanges.push(data.exchange);
+                        ExchangeRenderer.renderAll(EXCHANGE_STATE.exchanges);
+                    }
+                } else if (data.exchanges) {
+                    EXCHANGE_STATE.exchanges = data.exchanges;
+                    ExchangeRenderer.renderAll(data.exchanges);
+                }
+                
+                if (data.timestamp) {
+                    EXCHANGE_DOM.updateTime.textContent = ExchangeFormatters.time(data.timestamp);
+                }
+            }
+        }
+        
+        // ============================================
+        // SECTION 22: INITIALIZATION
+        // ============================================
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('[EXCHANGE] Initializing with real APIs...');
+            console.log('[EXCHANGE] API Base:', EXCHANGE_CONFIG.API_BASE);
+            console.log('[EXCHANGE] WS URL:', EXCHANGE_CONFIG.WS_URL);
+            
+            const manager = new ExchangeManager();
+            
+            // Expose for debugging
+            window.__NEXUS_EXCHANGES = {
+                config: EXCHANGE_CONFIG,
+                state: EXCHANGE_STATE,
+                manager: manager,
+                renderer: ExchangeRenderer,
+                refresh: () => manager.fetchExchanges(),
+                ws: manager.ws,
+            };
+            
+            console.log('[EXCHANGE] Initialized successfully');
+            console.log('[EXCHANGE] Connected to real exchange APIs');
         });
         
-        // Store instances globally
-        window.exchangeInstances = exchangeInstances;
-        console.log(`Initialized ${exchangeInstances.length} exchange cards`);
-    });
-
-})();
-</script>
-{% endblock %}
-
-<!-- ======================================================================= -->
-<!-- RENDER COMPONENT                                                        -->
-<!-- ======================================================================= -->
-{% if not loop %}
-    {{ exchange_card(exchange, show_controls, expanded) }}
-{% endif %}
-
+        // ============================================
+        // SECTION 23: ERROR HANDLING
+        // ============================================
+        window.addEventListener('error', (e) => {
+            console.error('[EXCHANGE] Global error:', e.error);
+        });
+        
+        window.addEventListener('unhandledrejection', (e) => {
+            console.error('[EXCHANGE] Unhandled rejection:', e.reason);
+        });
+        
+        // ============================================
+        // SECTION 24: CLEANUP
+        // ============================================
+        window.addEventListener('beforeunload', () => {
+            if (EXCHANGE_STATE.ws) {
+                EXCHANGE_STATE.ws.disconnect();
+            }
+        });
+    </script>
+    
 </body>
 </html>
