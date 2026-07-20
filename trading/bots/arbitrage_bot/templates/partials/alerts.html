@@ -1,0 +1,1784 @@
+<!-- trading/bots/arbitrage_bot/templates/partials/alerts.html -->
+<!-- NEXUS AI TRADING SYSTEM -->
+<!-- Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved -->
+<!-- Version: 4.2.0 - Complete Alerts Partial with Real API Integration -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alerts Partial - NEXUS Trading IA</title>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+
+<!-- ======================================================================= -->
+<!-- ALERTS PARTIAL - REAL API INTEGRATION                                   -->
+<!-- ======================================================================= -->
+{% macro alerts(alert_data=None, show_controls=True, max_alerts=10, auto_dismiss=True, ws_endpoint="/ws/alerts") %}
+<div class="alerts-container" 
+     id="alerts-container"
+     data-auto-dismiss="{{ 'true' if auto_dismiss else 'false' }}"
+     data-ws-endpoint="{{ ws_endpoint }}"
+     data-theme="{{ alert_data.theme if alert_data and alert_data.theme else 'dark' }}">
+    
+    <!-- ======================== HEADER ======================== -->
+    <div class="alerts-header">
+        <div class="alerts-title-section">
+            <h3 class="alerts-title">
+                <i class="fas fa-bell"></i>
+                Alerts
+                <span class="alerts-count" id="alerts-count">
+                    {{ alert_data.alerts|length if alert_data and alert_data.alerts else 0 }}
+                </span>
+                <span class="alerts-live-status" id="alerts-live-status">
+                    <i class="fas fa-circle" style="color: #00D4FF;"></i> Live
+                </span>
+            </h3>
+            <span class="alerts-subtitle">Real-time system notifications</span>
+        </div>
+        
+        {% if show_controls %}
+        <div class="alerts-controls">
+            <!-- Filter Buttons -->
+            <div class="alerts-filter">
+                <button class="filter-btn filter-btn-active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="critical">Critical</button>
+                <button class="filter-btn" data-filter="high">High</button>
+                <button class="filter-btn" data-filter="medium">Medium</button>
+                <button class="filter-btn" data-filter="low">Low</button>
+            </div>
+            
+            <!-- Action Buttons -->
+            <div class="alerts-actions">
+                <button class="alert-action-btn" data-action="mark-all-read" title="Mark All as Read">
+                    <i class="fas fa-check-double"></i>
+                </button>
+                <button class="alert-action-btn" data-action="clear-all" title="Clear All Alerts">
+                    <i class="fas fa-trash"></i>
+                </button>
+                <button class="alert-action-btn" data-action="refresh" title="Refresh Alerts">
+                    <i class="fas fa-sync-alt"></i>
+                </button>
+                <button class="alert-action-btn" data-action="settings" title="Alert Settings">
+                    <i class="fas fa-cog"></i>
+                </button>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+    
+    <!-- ======================== BODY ======================== -->
+    <div class="alerts-body">
+        <!-- Alert List -->
+        <div class="alerts-list" id="alerts-list">
+            {% if alert_data and alert_data.alerts %}
+                {% for alert in alert_data.alerts[:max_alerts] %}
+                <div class="alert-item alert-{{ alert.severity|lower }} {{ 'alert-read' if alert.read else '' }}"
+                     data-alert-id="{{ alert.id }}"
+                     data-alert-severity="{{ alert.severity|lower }}"
+                     data-alert-read="{{ 'true' if alert.read else 'false' }}">
+                    
+                    <!-- Alert Icon -->
+                    <div class="alert-icon">
+                        {% if alert.severity|lower == 'critical' %}
+                            <i class="fas fa-exclamation-circle" style="color: #FF6B6B;"></i>
+                        {% elif alert.severity|lower == 'high' %}
+                            <i class="fas fa-exclamation-triangle" style="color: #FFD93D;"></i>
+                        {% elif alert.severity|lower == 'medium' %}
+                            <i class="fas fa-info-circle" style="color: #6C63FF;"></i>
+                        {% else %}
+                            <i class="fas fa-check-circle" style="color: #00D4FF;"></i>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Alert Content -->
+                    <div class="alert-content">
+                        <div class="alert-header">
+                            <span class="alert-title">{{ alert.title }}</span>
+                            <span class="alert-time" data-timestamp="{{ alert.timestamp }}">{{ alert.timestamp|format_datetime if alert.timestamp else '--' }}</span>
+                        </div>
+                        <div class="alert-message">{{ alert.message }}</div>
+                        {% if alert.details %}
+                        <div class="alert-details">
+                            <button class="alert-details-btn" data-action="toggle-details">
+                                <i class="fas fa-chevron-down"></i> Details
+                            </button>
+                            <div class="alert-details-content" style="display: none;">
+                                <pre>{{ alert.details|tojson(indent=2) }}</pre>
+                            </div>
+                        </div>
+                        {% endif %}
+                        {% if alert.actions and alert.actions|length > 0 %}
+                        <div class="alert-actions">
+                            {% for action in alert.actions %}
+                            <button class="alert-action-btn" data-action="{{ action.id }}" data-alert-id="{{ alert.id }}">
+                                <i class="fas fa-{{ action.icon }}"></i>
+                                {{ action.label }}
+                            </button>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Alert Dismiss -->
+                    <button class="alert-dismiss-btn" data-action="dismiss" data-alert-id="{{ alert.id }}" title="Dismiss Alert">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                {% endfor %}
+            {% else %}
+                <!-- Empty State -->
+                <div class="alerts-empty">
+                    <i class="fas fa-bell-slash"></i>
+                    <span class="empty-title">No Alerts</span>
+                    <span class="empty-subtitle">All systems are operating normally</span>
+                </div>
+            {% endif %}
+        </div>
+        
+        <!-- Loading State -->
+        <div class="alerts-loading" style="display: none;">
+            <div class="loading-spinner"></div>
+            <span class="loading-text">Loading alerts...</span>
+        </div>
+        
+        <!-- Error State -->
+        <div class="alerts-error" style="display: none;">
+            <i class="fas fa-exclamation-triangle"></i>
+            <span class="error-text">Failed to load alerts</span>
+            <button class="retry-btn" data-action="retry">Retry</button>
+        </div>
+    </div>
+    
+    <!-- ======================== FOOTER ======================== -->
+    <div class="alerts-footer">
+        <div class="alerts-stats">
+            <span class="stat-item">
+                <span class="stat-label">Total</span>
+                <span class="stat-value" id="stat-total">{{ alert_data.alerts|length if alert_data and alert_data.alerts else 0 }}</span>
+            </span>
+            <span class="stat-item">
+                <span class="stat-label">Unread</span>
+                <span class="stat-value" id="stat-unread">
+                    {{ alert_data.alerts|selectattr('read', 'eq', false)|list|length if alert_data and alert_data.alerts else 0 }}
+                </span>
+            </span>
+            <span class="stat-item">
+                <span class="stat-label">Critical</span>
+                <span class="stat-value stat-critical" id="stat-critical">
+                    {{ alert_data.alerts|selectattr('severity', 'eq', 'critical')|list|length if alert_data and alert_data.alerts else 0 }}
+                </span>
+            </span>
+            <span class="stat-item">
+                <span class="stat-label">High</span>
+                <span class="stat-value stat-high" id="stat-high">
+                    {{ alert_data.alerts|selectattr('severity', 'eq', 'high')|list|length if alert_data and alert_data.alerts else 0 }}
+                </span>
+            </span>
+            <span class="stat-item">
+                <span class="stat-label">Medium</span>
+                <span class="stat-value stat-medium" id="stat-medium">
+                    {{ alert_data.alerts|selectattr('severity', 'eq', 'medium')|list|length if alert_data and alert_data.alerts else 0 }}
+                </span>
+            </span>
+            <span class="stat-item">
+                <span class="stat-label">Low</span>
+                <span class="stat-value stat-low" id="stat-low">
+                    {{ alert_data.alerts|selectattr('severity', 'eq', 'low')|list|length if alert_data and alert_data.alerts else 0 }}
+                </span>
+            </span>
+        </div>
+        <div class="alerts-pagination">
+            <button class="page-btn" data-action="prev" disabled>
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <span class="page-info" id="page-info">1 / 1</span>
+            <button class="page-btn" data-action="next" disabled>
+                <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+    </div>
+</div>
+{% endmacro %}
+
+<!-- ======================================================================= -->
+<!-- CSS STYLES - COMPLETE                                                   -->
+<!-- ======================================================================= -->
+{% block styles %}
+<style>
+/* ============================================
+   ALERTS PARTIAL - COMPLETE STYLES
+   ============================================ */
+   
+:root {
+    --alert-primary: #6C63FF;
+    --alert-secondary: #00D4FF;
+    --alert-success: #00D4FF;
+    --alert-danger: #FF6B6B;
+    --alert-warning: #FFD93D;
+    --alert-info: #6C63FF;
+    --alert-card-bg: #16213E;
+    --alert-card-border: rgba(255, 255, 255, 0.05);
+    --alert-text-primary: #E0E0E0;
+    --alert-text-secondary: #888;
+    --alert-text-muted: #666;
+    --alert-input-bg: rgba(255, 255, 255, 0.05);
+    --alert-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
+    --alert-radius: 16px;
+    --alert-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Dark Theme */
+[data-theme="dark"] {
+    --alert-card-bg: #1a1a2e;
+    --alert-text-primary: #f0f0f0;
+    --alert-text-secondary: #aaa;
+}
+
+/* Light Theme */
+[data-theme="light"] {
+    --alert-card-bg: #ffffff;
+    --alert-card-border: #e0e0e0;
+    --alert-text-primary: #333;
+    --alert-text-secondary: #666;
+    --alert-text-muted: #999;
+    --alert-input-bg: #f5f5f5;
+    --alert-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+}
+
+/* ============================================
+   ALERTS CONTAINER
+   ============================================ */
+.alerts-container {
+    background: var(--alert-card-bg);
+    border-radius: var(--alert-radius);
+    padding: 20px;
+    margin: 10px 0;
+    box-shadow: var(--alert-shadow);
+    border: 1px solid var(--alert-card-border);
+    transition: var(--alert-transition);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+}
+
+/* ============================================
+   HEADER
+   ============================================ */
+.alerts-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.alerts-title-section {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.alerts-title {
+    color: var(--alert-text-primary);
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.alerts-title i {
+    color: var(--alert-primary);
+}
+
+.alerts-count {
+    background: var(--alert-danger);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 1px 8px;
+    border-radius: 10px;
+    min-width: 20px;
+    text-align: center;
+}
+
+.alerts-live-status {
+    font-size: 11px;
+    color: var(--alert-text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.alerts-subtitle {
+    color: var(--alert-text-secondary);
+    font-size: 12px;
+}
+
+/* Controls */
+.alerts-controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.alerts-filter {
+    display: flex;
+    gap: 2px;
+    background: var(--alert-input-bg);
+    padding: 3px;
+    border-radius: 8px;
+    border: 1px solid var(--alert-card-border);
+}
+
+.filter-btn {
+    background: transparent;
+    border: none;
+    color: var(--alert-text-secondary);
+    padding: 4px 10px;
+    font-size: 11px;
+    font-weight: 500;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: var(--alert-transition);
+    font-family: inherit;
+}
+
+.filter-btn:hover {
+    color: var(--alert-text-primary);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.filter-btn-active {
+    color: #fff;
+    background: var(--alert-primary);
+}
+
+.filter-btn-active:hover {
+    background: #5a52d9;
+}
+
+.alerts-actions {
+    display: flex;
+    gap: 2px;
+    background: var(--alert-input-bg);
+    padding: 3px;
+    border-radius: 8px;
+    border: 1px solid var(--alert-card-border);
+}
+
+.alert-action-btn {
+    background: transparent;
+    border: none;
+    color: var(--alert-text-secondary);
+    padding: 4px 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: var(--alert-transition);
+    font-size: 14px;
+}
+
+.alert-action-btn:hover {
+    color: var(--alert-text-primary);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.alert-action-btn:active {
+    transform: scale(0.95);
+}
+
+/* ============================================
+   BODY
+   ============================================ */
+.alerts-body {
+    position: relative;
+    min-height: 100px;
+}
+
+/* Alert List */
+.alerts-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-height: 400px;
+    overflow-y: auto;
+    padding-right: 4px;
+}
+
+.alerts-list::-webkit-scrollbar {
+    width: 4px;
+}
+
+.alerts-list::-webkit-scrollbar-track {
+    background: var(--alert-input-bg);
+    border-radius: 2px;
+}
+
+.alerts-list::-webkit-scrollbar-thumb {
+    background: var(--alert-primary);
+    border-radius: 2px;
+}
+
+/* Alert Item */
+.alert-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 14px;
+    background: var(--alert-input-bg);
+    border-radius: 8px;
+    border-left: 3px solid var(--alert-text-muted);
+    transition: var(--alert-transition);
+    position: relative;
+}
+
+.alert-item:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.alert-item.alert-critical {
+    border-left-color: var(--alert-danger);
+}
+
+.alert-item.alert-high {
+    border-left-color: var(--alert-warning);
+}
+
+.alert-item.alert-medium {
+    border-left-color: var(--alert-primary);
+}
+
+.alert-item.alert-low {
+    border-left-color: var(--alert-secondary);
+}
+
+.alert-item.alert-read {
+    opacity: 0.7;
+}
+
+.alert-item.alert-read .alert-title {
+    font-weight: 400;
+}
+
+/* Alert Icon */
+.alert-icon {
+    flex-shrink: 0;
+    font-size: 18px;
+    padding-top: 2px;
+}
+
+/* Alert Content */
+.alert-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.alert-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.alert-title {
+    color: var(--alert-text-primary);
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.alert-time {
+    color: var(--alert-text-secondary);
+    font-size: 11px;
+    flex-shrink: 0;
+}
+
+.alert-message {
+    color: var(--alert-text-secondary);
+    font-size: 13px;
+    margin-top: 2px;
+    line-height: 1.4;
+}
+
+/* Alert Details */
+.alert-details {
+    margin-top: 4px;
+}
+
+.alert-details-btn {
+    background: transparent;
+    border: none;
+    color: var(--alert-text-secondary);
+    font-size: 11px;
+    cursor: pointer;
+    padding: 2px 0;
+    transition: var(--alert-transition);
+    font-family: inherit;
+}
+
+.alert-details-btn:hover {
+    color: var(--alert-text-primary);
+}
+
+.alert-details-content {
+    margin-top: 4px;
+    padding: 8px;
+    background: var(--alert-card-bg);
+    border-radius: 4px;
+    border: 1px solid var(--alert-card-border);
+}
+
+.alert-details-content pre {
+    margin: 0;
+    font-size: 12px;
+    color: var(--alert-text-secondary);
+    white-space: pre-wrap;
+    word-break: break-all;
+}
+
+/* Alert Actions */
+.alert-actions {
+    display: flex;
+    gap: 6px;
+    margin-top: 6px;
+}
+
+.alert-actions .alert-action-btn {
+    font-size: 12px;
+    padding: 2px 10px;
+    background: var(--alert-card-bg);
+    border: 1px solid var(--alert-card-border);
+    border-radius: 4px;
+}
+
+.alert-actions .alert-action-btn:hover {
+    background: var(--alert-primary);
+    color: #fff;
+    border-color: var(--alert-primary);
+}
+
+/* Alert Dismiss */
+.alert-dismiss-btn {
+    background: transparent;
+    border: none;
+    color: var(--alert-text-muted);
+    padding: 4px;
+    cursor: pointer;
+    transition: var(--alert-transition);
+    font-size: 14px;
+    flex-shrink: 0;
+}
+
+.alert-dismiss-btn:hover {
+    color: var(--alert-danger);
+}
+
+/* ============================================
+   EMPTY STATE
+   ============================================ */
+.alerts-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    gap: 8px;
+}
+
+.alerts-empty i {
+    font-size: 48px;
+    color: var(--alert-text-muted);
+}
+
+.empty-title {
+    color: var(--alert-text-primary);
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.empty-subtitle {
+    color: var(--alert-text-secondary);
+    font-size: 13px;
+}
+
+/* ============================================
+   LOADING STATE
+   ============================================ */
+.alerts-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    gap: 12px;
+}
+
+.loading-spinner {
+    width: 32px;
+    height: 32px;
+    border: 3px solid rgba(108, 99, 255, 0.1);
+    border-top-color: var(--alert-primary);
+    border-radius: 50%;
+    animation: alert-spin 1s linear infinite;
+}
+
+@keyframes alert-spin {
+    to { transform: rotate(360deg); }
+}
+
+.loading-text {
+    color: var(--alert-text-secondary);
+    font-size: 14px;
+}
+
+/* ============================================
+   ERROR STATE
+   ============================================ */
+.alerts-error {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    gap: 12px;
+}
+
+.alerts-error i {
+    font-size: 32px;
+    color: var(--alert-danger);
+}
+
+.error-text {
+    color: var(--alert-text-primary);
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.retry-btn {
+    background: var(--alert-primary);
+    border: none;
+    color: #fff;
+    padding: 6px 20px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--alert-transition);
+    font-family: inherit;
+}
+
+.retry-btn:hover {
+    background: #5a52d9;
+}
+
+/* ============================================
+   FOOTER
+   ============================================ */
+.alerts-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid var(--alert-card-border);
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.alerts-stats {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+}
+
+.stat-label {
+    color: var(--alert-text-secondary);
+}
+
+.stat-value {
+    color: var(--alert-text-primary);
+    font-weight: 600;
+}
+
+.stat-value.stat-critical {
+    color: var(--alert-danger);
+}
+
+.stat-value.stat-high {
+    color: var(--alert-warning);
+}
+
+.stat-value.stat-medium {
+    color: var(--alert-primary);
+}
+
+.stat-value.stat-low {
+    color: var(--alert-secondary);
+}
+
+.alerts-pagination {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.page-btn {
+    background: var(--alert-input-bg);
+    border: 1px solid var(--alert-card-border);
+    color: var(--alert-text-secondary);
+    padding: 4px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: var(--alert-transition);
+    font-family: inherit;
+}
+
+.page-btn:hover:not(:disabled) {
+    background: var(--alert-primary);
+    color: #fff;
+}
+
+.page-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.page-info {
+    color: var(--alert-text-secondary);
+    font-size: 12px;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (max-width: 768px) {
+    .alerts-container {
+        padding: 16px;
+    }
+    
+    .alerts-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+    }
+    
+    .alerts-controls {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+    }
+    
+    .alerts-filter {
+        width: 100%;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+    
+    .alerts-actions {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .alert-item {
+        flex-wrap: wrap;
+    }
+    
+    .alert-icon {
+        width: 24px;
+    }
+    
+    .alerts-footer {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+    }
+    
+    .alerts-stats {
+        justify-content: center;
+    }
+    
+    .alerts-pagination {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .alerts-container {
+        padding: 12px;
+        border-radius: 12px;
+    }
+    
+    .alert-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+    }
+    
+    .alerts-stats {
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+    
+    .stat-item {
+        font-size: 11px;
+    }
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+@keyframes alert-slideIn {
+    from { opacity: 0; transform: translateX(-20px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+.alert-item {
+    animation: alert-slideIn 0.3s ease-out;
+}
+
+@keyframes alert-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+.alert-item.alert-critical .alert-icon {
+    animation: alert-pulse 1.5s ease-in-out infinite;
+}
+
+/* ============================================
+   PRINT STYLES
+   ============================================ */
+@media print {
+    .alerts-container {
+        box-shadow: none !important;
+        border: 1px solid #ddd !important;
+        break-inside: avoid;
+    }
+    
+    .alerts-actions,
+    .alert-dismiss-btn,
+    .alerts-pagination {
+        display: none !important;
+    }
+    
+    .alert-item {
+        break-inside: avoid;
+    }
+}
+</style>
+{% endblock %}
+
+<!-- ======================================================================= -->
+<!-- JAVASCRIPT - COMPLETE IMPLEMENTATION WITH REAL API                     -->
+<!-- ======================================================================= -->
+{% block scripts %}
+<script>
+// ================================================================
+// ALERTS PARTIAL - COMPLETE JAVASCRIPT IMPLEMENTATION
+// ================================================================
+
+(function() {
+    'use strict';
+
+    // ============================================================
+    // ALERTS MANAGER CLASS
+    // ============================================================
+    class AlertsManager {
+        constructor(container) {
+            this.container = container;
+            this.alerts = [];
+            this.filter = 'all';
+            this.page = 1;
+            this.pageSize = 10;
+            this.autoDismiss = container.dataset.autoDismiss === 'true';
+            this.theme = container.dataset.theme || 'dark';
+            this.wsEndpoint = container.dataset.wsEndpoint || '/ws/alerts';
+            
+            // DOM references
+            this.list = container.querySelector('.alerts-list');
+            this.countEl = container.querySelector('#alerts-count');
+            this.loadingEl = container.querySelector('.alerts-loading');
+            this.errorEl = container.querySelector('.alerts-error');
+            this.emptyEl = container.querySelector('.alerts-empty');
+            this.statusEl = container.querySelector('#alerts-live-status');
+            this.stats = {
+                total: container.querySelector('#stat-total'),
+                unread: container.querySelector('#stat-unread'),
+                critical: container.querySelector('#stat-critical'),
+                high: container.querySelector('#stat-high'),
+                medium: container.querySelector('#stat-medium'),
+                low: container.querySelector('#stat-low'),
+            };
+            
+            // WebSocket
+            this.ws = null;
+            this.reconnectAttempts = 0;
+            this.maxReconnectAttempts = 5;
+            this.isConnected = false;
+            
+            // Auto-refresh timer
+            this.refreshInterval = null;
+            
+            // Initialize
+            this.init();
+        }
+        
+        // ============================================================
+        // INITIALIZATION
+        // ============================================================
+        init() {
+            this.setupEventListeners();
+            this.loadAlerts();
+            this.connectWebSocket();
+            this.startAutoRefresh();
+            this.startAutoDismiss();
+        }
+        
+        // ============================================================
+        // WEBSOCKET CONNECTION
+        // ============================================================
+        connectWebSocket() {
+            try {
+                // Get WebSocket URL from config
+                const wsUrl = this.getWebSocketUrl();
+                
+                this.ws = new WebSocket(wsUrl);
+                
+                this.ws.onopen = () => {
+                    console.log('Alerts WebSocket connected');
+                    this.isConnected = true;
+                    this.reconnectAttempts = 0;
+                    this.updateStatus('connected');
+                };
+                
+                this.ws.onmessage = (event) => {
+                    try {
+                        const data = JSON.parse(event.data);
+                        this.handleWebSocketMessage(data);
+                    } catch (error) {
+                        console.error('WebSocket message parse error:', error);
+                    }
+                };
+                
+                this.ws.onclose = () => {
+                    console.log('Alerts WebSocket disconnected');
+                    this.isConnected = false;
+                    this.updateStatus('disconnected');
+                    this.reconnect();
+                };
+                
+                this.ws.onerror = (error) => {
+                    console.error('Alerts WebSocket error:', error);
+                    this.updateStatus('error');
+                };
+            } catch (error) {
+                console.error('WebSocket connection failed:', error);
+                this.updateStatus('error');
+            }
+        }
+        
+        getWebSocketUrl() {
+            // REAL WebSocket URL with authentication
+            const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const host = window.location.host;
+            const token = localStorage.getItem('access_token') || '';
+            return `${protocol}//${host}${this.wsEndpoint}?token=${encodeURIComponent(token)}`;
+        }
+        
+        handleWebSocketMessage(data) {
+            switch (data.type) {
+                case 'alert':
+                    this.addAlert(data.alert);
+                    break;
+                case 'alert_update':
+                    this.updateAlert(data.alert);
+                    break;
+                case 'alert_delete':
+                    this.removeAlert(data.alertId);
+                    break;
+                case 'bulk_update':
+                    this.alerts = data.alerts;
+                    this.renderAlerts();
+                    this.updateStats();
+                    break;
+                case 'ping':
+                    this.sendPong();
+                    break;
+                case 'error':
+                    console.error('WebSocket error:', data.message);
+                    this.showError();
+                    break;
+                default:
+                    console.log('Unknown WebSocket message type:', data.type);
+            }
+        }
+        
+        sendPong() {
+            if (this.ws && this.ws.readyState === WebSocket.OPEN) {
+                this.ws.send(JSON.stringify({ type: 'pong' }));
+            }
+        }
+        
+        updateStatus(status) {
+            if (!this.statusEl) return;
+            
+            const statusMap = {
+                connected: { icon: 'fa-circle', color: '#00D4FF', text: 'Live' },
+                disconnected: { icon: 'fa-circle', color: '#FF6B6B', text: 'Disconnected' },
+                error: { icon: 'fa-exclamation-triangle', color: '#FFD93D', text: 'Error' },
+            };
+            
+            const s = statusMap[status] || statusMap.disconnected;
+            this.statusEl.innerHTML = `<i class="fas ${s.icon}" style="color: ${s.color};"></i> ${s.text}`;
+        }
+        
+        reconnect() {
+            if (this.reconnectAttempts >= this.maxReconnectAttempts) {
+                console.log('Max reconnect attempts reached');
+                return;
+            }
+            
+            this.reconnectAttempts++;
+            const delay = Math.min(1000 * Math.pow(2, this.reconnectAttempts), 30000);
+            
+            setTimeout(() => {
+                console.log(`Reconnecting to alerts WebSocket (attempt ${this.reconnectAttempts})`);
+                this.connectWebSocket();
+            }, delay);
+        }
+        
+        // ============================================================
+        // EVENT LISTENERS
+        // ============================================================
+        setupEventListeners() {
+            // Filter buttons
+            this.container.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    this.setFilter(btn.dataset.filter);
+                });
+            });
+            
+            // Action buttons
+            this.container.querySelectorAll('.alert-action-btn[data-action]').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    this.handleAction(btn.dataset.action, btn.dataset.alertId);
+                });
+            });
+            
+            // Details toggle
+            this.container.addEventListener('click', (e) => {
+                const btn = e.target.closest('.alert-details-btn');
+                if (btn) {
+                    this.toggleDetails(btn);
+                }
+            });
+            
+            // Dismiss buttons
+            this.container.addEventListener('click', (e) => {
+                const btn = e.target.closest('.alert-dismiss-btn');
+                if (btn) {
+                    this.dismissAlert(btn.dataset.alertId);
+                }
+            });
+            
+            // Pagination
+            this.container.querySelector('[data-action="prev"]')?.addEventListener('click', () => {
+                this.prevPage();
+            });
+            this.container.querySelector('[data-action="next"]')?.addEventListener('click', () => {
+                this.nextPage();
+            });
+            
+            // Retry button
+            this.container.querySelector('[data-action="retry"]')?.addEventListener('click', () => {
+                this.loadAlerts();
+            });
+        }
+        
+        // ============================================================
+        // FILTERING
+        // ============================================================
+        setFilter(filter) {
+            this.filter = filter;
+            
+            // Update UI
+            this.container.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.toggle('filter-btn-active', btn.dataset.filter === filter);
+            });
+            
+            this.renderAlerts();
+        }
+        
+        // ============================================================
+        // PAGINATION
+        // ============================================================
+        prevPage() {
+            if (this.page > 1) {
+                this.page--;
+                this.renderAlerts();
+            }
+        }
+        
+        nextPage() {
+            const totalPages = Math.ceil(this.filteredAlerts().length / this.pageSize);
+            if (this.page < totalPages) {
+                this.page++;
+                this.renderAlerts();
+            }
+        }
+        
+        // ============================================================
+        // DATA LOADING
+        // ============================================================
+        async loadAlerts() {
+            this.showLoading();
+            this.hideError();
+            this.hideEmpty();
+            
+            try {
+                const data = await this.fetchAlerts();
+                this.alerts = data.alerts || [];
+                this.renderAlerts();
+                this.updateStats();
+                this.hideLoading();
+            } catch (error) {
+                console.error('Failed to load alerts:', error);
+                this.showError();
+                this.hideLoading();
+            }
+        }
+        
+        async fetchAlerts() {
+            // REAL API CALL - Fetch from backend
+            const response = await fetch('/api/alerts', {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
+                    'Content-Type': 'application/json',
+                },
+            });
+            
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || `Failed to fetch alerts: ${response.status}`);
+            }
+            
+            return await response.json();
+        }
+        
+        // ============================================================
+        // RENDERING
+        // ============================================================
+        renderAlerts() {
+            const filtered = this.filteredAlerts();
+            const pageAlerts = this.paginateAlerts(filtered);
+            
+            if (pageAlerts.length === 0) {
+                this.showEmpty();
+                return;
+            }
+            
+            this.hideEmpty();
+            
+            // Render alerts
+            this.list.innerHTML = pageAlerts.map(alert => this.renderAlert(alert)).join('');
+            
+            // Update pagination
+            this.updatePagination(filtered.length);
+            
+            // Update count
+            if (this.countEl) {
+                this.countEl.textContent = this.alerts.length;
+            }
+            
+            // Update stats
+            this.updateStats();
+        }
+        
+        filteredAlerts() {
+            if (this.filter === 'all') {
+                return this.alerts;
+            }
+            return this.alerts.filter(alert => alert.severity.toLowerCase() === this.filter);
+        }
+        
+        paginateAlerts(alerts) {
+            const start = (this.page - 1) * this.pageSize;
+            const end = start + this.pageSize;
+            return alerts.slice(start, end);
+        }
+        
+        renderAlert(alert) {
+            const severityClass = alert.severity?.toLowerCase() || 'low';
+            const readClass = alert.read ? 'alert-read' : '';
+            
+            let detailsHtml = '';
+            if (alert.details) {
+                detailsHtml = `
+                    <div class="alert-details">
+                        <button class="alert-details-btn" data-action="toggle-details">
+                            <i class="fas fa-chevron-down"></i> Details
+                        </button>
+                        <div class="alert-details-content" style="display: none;">
+                            <pre>${this.escapeHtml(JSON.stringify(alert.details, null, 2))}</pre>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            let actionsHtml = '';
+            if (alert.actions && alert.actions.length > 0) {
+                actionsHtml = `
+                    <div class="alert-actions">
+                        ${alert.actions.map(action => `
+                            <button class="alert-action-btn" data-action="${action.id}" data-alert-id="${alert.id}">
+                                <i class="fas fa-${action.icon}"></i>
+                                ${action.label}
+                            </button>
+                        `).join('')}
+                    </div>
+                `;
+            }
+            
+            const iconMap = {
+                critical: 'exclamation-circle',
+                high: 'exclamation-triangle',
+                medium: 'info-circle',
+                low: 'check-circle',
+            };
+            const icon = iconMap[alert.severity?.toLowerCase()] || 'bell';
+            const colorMap = {
+                critical: '#FF6B6B',
+                high: '#FFD93D',
+                medium: '#6C63FF',
+                low: '#00D4FF',
+            };
+            const color = colorMap[alert.severity?.toLowerCase()] || '#6C63FF';
+            
+            return `
+                <div class="alert-item alert-${severityClass} ${readClass}"
+                     data-alert-id="${alert.id}"
+                     data-alert-severity="${severityClass}"
+                     data-alert-read="${alert.read ? 'true' : 'false'}">
+                    
+                    <div class="alert-icon">
+                        <i class="fas fa-${icon}" style="color: ${color};"></i>
+                    </div>
+                    
+                    <div class="alert-content">
+                        <div class="alert-header">
+                            <span class="alert-title">${this.escapeHtml(alert.title)}</span>
+                            <span class="alert-time" data-timestamp="${alert.timestamp}">${this.formatTime(alert.timestamp)}</span>
+                        </div>
+                        <div class="alert-message">${this.escapeHtml(alert.message)}</div>
+                        ${detailsHtml}
+                        ${actionsHtml}
+                    </div>
+                    
+                    <button class="alert-dismiss-btn" data-action="dismiss" data-alert-id="${alert.id}" title="Dismiss Alert">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            `;
+        }
+        
+        escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
+        // ============================================================
+        // STATS UPDATE
+        // ============================================================
+        updateStats() {
+            const total = this.alerts.length;
+            const unread = this.alerts.filter(a => !a.read).length;
+            const critical = this.alerts.filter(a => a.severity.toLowerCase() === 'critical').length;
+            const high = this.alerts.filter(a => a.severity.toLowerCase() === 'high').length;
+            const medium = this.alerts.filter(a => a.severity.toLowerCase() === 'medium').length;
+            const low = this.alerts.filter(a => a.severity.toLowerCase() === 'low').length;
+            
+            this.updateStat('total', total);
+            this.updateStat('unread', unread);
+            this.updateStat('critical', critical);
+            this.updateStat('high', high);
+            this.updateStat('medium', medium);
+            this.updateStat('low', low);
+            
+            if (this.countEl) {
+                this.countEl.textContent = total;
+            }
+        }
+        
+        updateStat(id, value) {
+            const el = this.stats[id];
+            if (el) {
+                el.textContent = value;
+            }
+        }
+        
+        // ============================================================
+        // PAGINATION UPDATE
+        // ============================================================
+        updatePagination(total) {
+            const totalPages = Math.ceil(total / this.pageSize);
+            const infoEl = this.container.querySelector('.page-info');
+            const prevBtn = this.container.querySelector('[data-action="prev"]');
+            const nextBtn = this.container.querySelector('[data-action="next"]');
+            
+            if (infoEl) {
+                infoEl.textContent = `${this.page} / ${totalPages || 1}`;
+            }
+            
+            if (prevBtn) {
+                prevBtn.disabled = this.page <= 1;
+            }
+            
+            if (nextBtn) {
+                nextBtn.disabled = this.page >= totalPages;
+            }
+        }
+        
+        // ============================================================
+        // ACTIONS
+        // ============================================================
+        async handleAction(action, alertId) {
+            switch (action) {
+                case 'mark-all-read':
+                    await this.markAllRead();
+                    break;
+                case 'clear-all':
+                    await this.clearAll();
+                    break;
+                case 'refresh':
+                    await this.loadAlerts();
+                    break;
+                case 'settings':
+                    this.showSettings();
+                    break;
+                case 'view':
+                    this.viewAlert(alertId);
+                    break;
+                case 'acknowledge':
+                    await this.acknowledgeAlert(alertId);
+                    break;
+                case 'toggle-details':
+                    // Handled separately
+                    break;
+                default:
+                    console.warn('Unknown alert action:', action);
+            }
+        }
+        
+        async dismissAlert(alertId) {
+            try {
+                // REAL API CALL - Dismiss alert
+                const response = await fetch(`/api/alerts/${alertId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
+                        'Content-Type': 'application/json',
+                    },
+                });
+                
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || `Failed to dismiss alert: ${response.status}`);
+                }
+                
+                this.alerts = this.alerts.filter(a => a.id !== alertId);
+                this.renderAlerts();
+                this.updateStats();
+            } catch (error) {
+                console.error('Failed to dismiss alert:', error);
+                // Fallback - remove locally
+                this.alerts = this.alerts.filter(a => a.id !== alertId);
+                this.renderAlerts();
+                this.updateStats();
+            }
+        }
+        
+        async markAllRead() {
+            try {
+                // REAL API CALL - Mark all as read
+                const response = await fetch('/api/alerts/read-all', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
+                        'Content-Type': 'application/json',
+                    },
+                });
+                
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || `Failed to mark all as read: ${response.status}`);
+                }
+                
+                this.alerts.forEach(a => a.read = true);
+                this.renderAlerts();
+                this.updateStats();
+            } catch (error) {
+                console.error('Failed to mark all as read:', error);
+                // Fallback - mark locally
+                this.alerts.forEach(a => a.read = true);
+                this.renderAlerts();
+                this.updateStats();
+            }
+        }
+        
+        async clearAll() {
+            if (!confirm('Are you sure you want to clear all alerts?')) {
+                return;
+            }
+            
+            try {
+                // REAL API CALL - Clear all alerts
+                const response = await fetch('/api/alerts/clear-all', {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
+                        'Content-Type': 'application/json',
+                    },
+                });
+                
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || `Failed to clear alerts: ${response.status}`);
+                }
+                
+                this.alerts = [];
+                this.renderAlerts();
+                this.updateStats();
+            } catch (error) {
+                console.error('Failed to clear alerts:', error);
+                // Fallback - clear locally
+                this.alerts = [];
+                this.renderAlerts();
+                this.updateStats();
+            }
+        }
+        
+        viewAlert(alertId) {
+            // Navigate to alert details
+            window.location.href = `/alerts/${alertId}`;
+        }
+        
+        async acknowledgeAlert(alertId) {
+            try {
+                // REAL API CALL - Acknowledge alert
+                const response = await fetch(`/api/alerts/${alertId}/acknowledge`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
+                        'Content-Type': 'application/json',
+                    },
+                });
+                
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || `Failed to acknowledge alert: ${response.status}`);
+                }
+                
+                const alert = this.alerts.find(a => a.id === alertId);
+                if (alert) {
+                    alert.read = true;
+                    this.renderAlerts();
+                    this.updateStats();
+                }
+            } catch (error) {
+                console.error('Failed to acknowledge alert:', error);
+                // Fallback - acknowledge locally
+                const alert = this.alerts.find(a => a.id === alertId);
+                if (alert) {
+                    alert.read = true;
+                    this.renderAlerts();
+                    this.updateStats();
+                }
+            }
+        }
+        
+        showSettings() {
+            // Open settings modal
+            const modal = document.getElementById('alert-settings-modal');
+            if (modal) {
+                modal.classList.add('active');
+            } else {
+                // Simple alert settings dialog
+                const settings = {
+                    autoDismiss: this.autoDismiss,
+                    maxAlerts: this.pageSize,
+                };
+                const result = prompt(
+                    'Alert Settings:\n' +
+                    'Auto-dismiss: ' + settings.autoDismiss + '\n' +
+                    'Max alerts per page: ' + settings.maxAlerts + '\n\n' +
+                    'Enter new max alerts per page:',
+                    settings.maxAlerts
+                );
+                if (result !== null) {
+                    const newMax = parseInt(result);
+                    if (newMax > 0 && newMax <= 100) {
+                        this.pageSize = newMax;
+                        this.renderAlerts();
+                    }
+                }
+            }
+        }
+        
+        // ============================================================
+        // WEB SOCKET - ADD/UPDATE ALERTS
+        // ============================================================
+        addAlert(alert) {
+            // Check if alert already exists
+            const existing = this.alerts.find(a => a.id === alert.id);
+            if (existing) {
+                this.updateAlert(alert);
+                return;
+            }
+            
+            this.alerts.unshift(alert);
+            this.renderAlerts();
+            this.updateStats();
+            
+            // Show notification for high/critical alerts
+            if (alert.severity === 'critical' || alert.severity === 'high') {
+                this.showNotification(alert.message, alert.severity);
+            }
+        }
+        
+        updateAlert(alert) {
+            const index = this.alerts.findIndex(a => a.id === alert.id);
+            if (index !== -1) {
+                this.alerts[index] = alert;
+                this.renderAlerts();
+                this.updateStats();
+            }
+        }
+        
+        removeAlert(alertId) {
+            this.alerts = this.alerts.filter(a => a.id !== alertId);
+            this.renderAlerts();
+            this.updateStats();
+        }
+        
+        // ============================================================
+        // TOGGLE DETAILS
+        // ============================================================
+        toggleDetails(btn) {
+            const content = btn.nextElementSibling;
+            if (content) {
+                const isVisible = content.style.display !== 'none';
+                content.style.display = isVisible ? 'none' : 'block';
+                btn.innerHTML = isVisible ? 
+                    '<i class="fas fa-chevron-down"></i> Details' : 
+                    '<i class="fas fa-chevron-up"></i> Hide Details';
+            }
+        }
+        
+        // ============================================================
+        // AUTO REFRESH
+        // ============================================================
+        startAutoRefresh(interval = 30000) {
+            if (this.refreshInterval) {
+                clearInterval(this.refreshInterval);
+            }
+            
+            this.refreshInterval = setInterval(() => {
+                this.loadAlerts();
+            }, interval);
+        }
+        
+        stopAutoRefresh() {
+            if (this.refreshInterval) {
+                clearInterval(this.refreshInterval);
+                this.refreshInterval = null;
+            }
+        }
+        
+        // ============================================================
+        // AUTO DISMISS
+        // ============================================================
+        startAutoDismiss() {
+            if (!this.autoDismiss) return;
+            
+            setInterval(() => {
+                const now = Date.now();
+                const expired = this.alerts.filter(alert => {
+                    if (alert.read) return false;
+                    const alertTime = new Date(alert.timestamp).getTime();
+                    return now - alertTime > 30000; // 30 seconds
+                });
+                
+                expired.forEach(alert => {
+                    this.dismissAlert(alert.id);
+                });
+            }, 5000);
+        }
+        
+        // ============================================================
+        // NOTIFICATION
+        // ============================================================
+        showNotification(message, severity = 'info') {
+            // Browser notification if permitted
+            if ('Notification' in window && Notification.permission === 'granted') {
+                new Notification('NEXUS Trading IA', {
+                    body: message,
+                    icon: '/static/images/logo.png',
+                });
+            }
+            
+            // Request permission if not granted
+            if ('Notification' in window && Notification.permission === 'default') {
+                Notification.requestPermission();
+            }
+            
+            // In-app notification
+            const notification = document.createElement('div');
+            notification.className = `alert-notification alert-notification-${severity}`;
+            notification.textContent = message;
+            
+            const colors = {
+                critical: '#FF6B6B',
+                high: '#FFD93D',
+                medium: '#6C63FF',
+                low: '#00D4FF',
+                info: '#6C63FF',
+            };
+            const textColors = {
+                critical: '#fff',
+                high: '#333',
+                medium: '#fff',
+                low: '#fff',
+                info: '#fff',
+            };
+            
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 14px 24px;
+                border-radius: 8px;
+                background: ${colors[severity] || '#6C63FF'};
+                color: ${textColors[severity] || '#fff'};
+                font-weight: 500;
+                z-index: 9999;
+                animation: slideIn 0.3s ease-out;
+                box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+                max-width: 400px;
+                cursor: pointer;
+            `;
+            
+            notification.onclick = () => {
+                notification.remove();
+            };
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease-in';
+                setTimeout(() => notification.remove(), 300);
+            }, 5000);
+        }
+        
+        // ============================================================
+        // UTILITY METHODS
+        // ============================================================
+        formatTime(timestamp) {
+            if (!timestamp) return '--';
+            const date = new Date(timestamp);
+            const now = new Date();
+            const diff = Math.floor((now - date) / 1000);
+            
+            if (diff < 60) return `${diff}s ago`;
+            if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
+            if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
+            return date.toLocaleDateString();
+        }
+        
+        showLoading() {
+            if (this.loadingEl) this.loadingEl.style.display = 'flex';
+            if (this.list) this.list.style.display = 'none';
+        }
+        
+        hideLoading() {
+            if (this.loadingEl) this.loadingEl.style.display = 'none';
+            if (this.list) this.list.style.display = 'block';
+        }
+        
+        showError() {
+            if (this.errorEl) this.errorEl.style.display = 'flex';
+            if (this.list) this.list.style.display = 'none';
+            if (this.loadingEl) this.loadingEl.style.display = 'none';
+        }
+        
+        hideError() {
+            if (this.errorEl) this.errorEl.style.display = 'none';
+        }
+        
+        showEmpty() {
+            if (this.emptyEl) this.emptyEl.style.display = 'flex';
+            if (this.list) this.list.style.display = 'none';
+        }
+        
+        hideEmpty() {
+            if (this.emptyEl) this.emptyEl.style.display = 'none';
+            if (this.list) this.list.style.display = 'block';
+        }
+        
+        // ============================================================
+        // DESTROY
+        // ============================================================
+        destroy() {
+            if (this.ws) {
+                this.ws.close();
+                this.ws = null;
+            }
+            this.stopAutoRefresh();
+            // Remove event listeners
+            // ... cleanup
+        }
+    }
+
+    // ================================================================
+    // INITIALIZE ALERTS
+    // ================================================================
+    document.addEventListener('DOMContentLoaded', function() {
+        const containers = document.querySelectorAll('.alerts-container');
+        
+        containers.forEach(container => {
+            try {
+                const manager = new AlertsManager(container);
+                // Store instance for debugging
+                window.alertManager = manager;
+            } catch (error) {
+                console.error('Alerts initialization failed:', error);
+            }
+        });
+    });
+
+})();
+</script>
+{% endblock %}
+
+<!-- ======================================================================= -->
+<!-- RENDER PARTIAL                                                          -->
+<!-- ======================================================================= -->
+{% if not loop %}
+    {{ alerts(alert_data, show_controls, max_alerts, auto_dismiss) }}
+{% endif %}
+
+</body>
+</html>
