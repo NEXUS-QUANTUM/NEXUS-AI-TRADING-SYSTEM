@@ -1,0 +1,1433 @@
+<!--
+╔═══════════════════════════════════════════════════════════════════════════════════╗
+║                                                                                   ║
+║   ███████╗██╗██████╗ ███████╗██████╗  █████╗ ██████╗                           ║
+║   ██╔════╝██║██╔══██╗██╔════╝██╔══██╗██╔══██╗██╔══██╗                          ║
+║   ███████╗██║██████╔╝█████╗  ██████╔╝███████║██████╔╝                          ║
+║   ╚════██║██║██╔══██╗██╔══╝  ██╔══██╗██╔══██║██╔══██╗                          ║
+║   ███████║██║██████╔╝███████╗██║  ██║██║  ██║██████╔╝                          ║
+║   ╚══════╝╚═╝╚═════╝ ╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═════╝                           ║
+║                                                                                   ║
+║   NEXUS AI TRADING SYSTEM - ARBITRAGE SIDEBAR                                   ║
+║   Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved                       ║
+║   Version: 3.0.0 - Build: 2026.07.20                                             ║
+║   CEO: Dr X... - Majority Shareholder                                            ║
+║                                                                                   ║
+╚═══════════════════════════════════════════════════════════════════════════════════╝
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="theme-color" content="#0A0A0F">
+    <meta name="description" content="NEXUS Arbitrage Bot - Navigation sidebar">
+    <title>NEXUS Arbitrage Sidebar</title>
+    
+    <!-- ============================================
+    FONTS & ICONS
+    ============================================ -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    
+    <style>
+        /* ============================================
+           SECTION 1: ROOT VARIABLES - NEXUS THEME
+           ============================================ */
+        :root {
+            /* --- Brand Colors --- */
+            --nexus-primary: #6C3CE1;
+            --nexus-primary-dark: #4A1FA8;
+            --nexus-primary-light: #8B6BEE;
+            --nexus-primary-gradient: linear-gradient(135deg, #6C3CE1 0%, #8B6BEE 50%, #00D4AA 100%);
+            --nexus-secondary: #00D4AA;
+            --nexus-secondary-dark: #00A88A;
+            --nexus-secondary-light: #33E0C0;
+            --nexus-accent: #FF6B6B;
+            --nexus-accent-dark: #E05555;
+            --nexus-warning: #FFB84D;
+            --nexus-warning-dark: #E6A040;
+            
+            /* --- Gradients --- */
+            --gradient-primary: linear-gradient(135deg, #6C3CE1 0%, #00D4AA 100%);
+            --gradient-primary-hover: linear-gradient(135deg, #7A4CE8 0%, #10E0B0 100%);
+            --gradient-accent: linear-gradient(135deg, #FF6B6B 0%, #FFB84D 100%);
+            --gradient-dark: linear-gradient(135deg, #0A0A0F 0%, #1A1A24 100%);
+            
+            /* --- Backgrounds --- */
+            --bg-primary: #0A0A0F;
+            --bg-secondary: #0F0F18;
+            --bg-tertiary: #13131A;
+            --bg-card: #1A1A24;
+            --bg-card-hover: #222233;
+            --bg-card-active: #2A2A3E;
+            --bg-elevated: rgba(26, 26, 36, 0.95);
+            --bg-sidebar: #0A0A0F;
+            --bg-sidebar-hover: rgba(255, 255, 255, 0.03);
+            
+            /* --- Text --- */
+            --text-primary: #FFFFFF;
+            --text-secondary: #A0A0B8;
+            --text-muted: #6B6B85;
+            --text-disabled: #3D3D55;
+            --text-inverse: #0A0A0F;
+            
+            /* --- Borders --- */
+            --border-color: rgba(108, 60, 225, 0.12);
+            --border-color-hover: rgba(108, 60, 225, 0.3);
+            --border-color-light: rgba(255, 255, 255, 0.05);
+            --border-color-dark: rgba(0, 0, 0, 0.3);
+            
+            /* --- Shadows --- */
+            --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.4);
+            --shadow-card-hover: 0 12px 48px rgba(0, 0, 0, 0.6);
+            --shadow-glow: 0 0 60px rgba(108, 60, 225, 0.06);
+            --shadow-glow-strong: 0 0 80px rgba(108, 60, 225, 0.12);
+            --shadow-sidebar: 4px 0 40px rgba(0, 0, 0, 0.5);
+            
+            /* --- Animations --- */
+            --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-base: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-slow: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-bounce: 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            
+            /* --- Border Radius --- */
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
+            --radius-full: 9999px;
+            
+            /* --- Sizing --- */
+            --sidebar-width: 260px;
+            --sidebar-width-collapsed: 68px;
+            --sidebar-width-mobile: 280px;
+            --header-height: 72px;
+            --header-height-mobile: 56px;
+        }
+        
+        /* ============================================
+           SECTION 2: RESET & BASE
+           ============================================ */
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        /* ============================================
+           SECTION 3: SCROLLBAR
+           ============================================ */
+        ::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--nexus-primary);
+            border-radius: var(--radius-full);
+            transition: var(--transition-base);
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--nexus-primary-light);
+        }
+        
+        /* ============================================
+           SECTION 4: SIDEBAR CONTAINER
+           ============================================ */
+        .nexus-sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            z-index: 1000;
+            width: var(--sidebar-width);
+            background: var(--bg-sidebar);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            transition: all var(--transition-bounce);
+            overflow: hidden;
+            box-shadow: var(--shadow-sidebar);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+        
+        .nexus-sidebar.collapsed {
+            width: var(--sidebar-width-collapsed);
+        }
+        
+        .nexus-sidebar.collapsed .sidebar-brand-text,
+        .nexus-sidebar.collapsed .sidebar-nav-label,
+        .nexus-sidebar.collapsed .sidebar-nav-badge,
+        .nexus-sidebar.collapsed .sidebar-section-title,
+        .nexus-sidebar.collapsed .sidebar-user-info,
+        .nexus-sidebar.collapsed .sidebar-footer-text {
+            opacity: 0;
+            visibility: hidden;
+            width: 0;
+            overflow: hidden;
+        }
+        
+        .nexus-sidebar.collapsed .sidebar-brand {
+            justify-content: center;
+            padding: 16px 0;
+        }
+        
+        .nexus-sidebar.collapsed .sidebar-nav-item {
+            justify-content: center;
+            padding: 10px 0;
+        }
+        
+        .nexus-sidebar.collapsed .sidebar-nav-item .icon-wrapper {
+            margin: 0;
+        }
+        
+        .nexus-sidebar.collapsed .sidebar-toggle-btn {
+            transform: rotate(180deg);
+        }
+        
+        .nexus-sidebar.collapsed .sidebar-user {
+            justify-content: center;
+            padding: 12px 0;
+        }
+        
+        .nexus-sidebar.collapsed .sidebar-user-avatar {
+            width: 36px;
+            height: 36px;
+        }
+        
+        /* ============================================
+           SECTION 5: SIDEBAR BRAND
+           ============================================ */
+        .sidebar-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border-color-light);
+            min-height: var(--header-height);
+            transition: all var(--transition-base);
+            text-decoration: none;
+        }
+        
+        .sidebar-brand:hover {
+            background: var(--bg-sidebar-hover);
+        }
+        
+        .sidebar-brand-logo {
+            width: 38px;
+            height: 38px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--gradient-primary);
+            border-radius: var(--radius-md);
+            font-weight: 900;
+            font-size: 1.1rem;
+            color: var(--text-primary);
+            box-shadow: 0 0 30px rgba(108, 60, 225, 0.2);
+            transition: all var(--transition-base);
+            flex-shrink: 0;
+        }
+        
+        .sidebar-brand:hover .sidebar-brand-logo {
+            transform: rotate(-10deg) scale(1.05);
+            box-shadow: 0 0 40px rgba(108, 60, 225, 0.3);
+        }
+        
+        .sidebar-brand-text {
+            display: flex;
+            flex-direction: column;
+            transition: all var(--transition-base);
+        }
+        
+        .sidebar-brand-name {
+            font-size: 1.1rem;
+            font-weight: 800;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 0.5px;
+        }
+        
+        .sidebar-brand-tagline {
+            font-size: 0.5rem;
+            font-weight: 400;
+            color: var(--text-muted);
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            -webkit-text-fill-color: var(--text-muted);
+        }
+        
+        /* ============================================
+           SECTION 6: SIDEBAR TOGGLE
+           ============================================ */
+        .sidebar-toggle-wrapper {
+            display: flex;
+            justify-content: flex-end;
+            padding: 8px 16px 4px;
+            border-bottom: 1px solid var(--border-color-light);
+        }
+        
+        .sidebar-toggle-btn {
+            width: 32px;
+            height: 32px;
+            border: none;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: var(--radius-full);
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all var(--transition-base);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+        }
+        
+        .sidebar-toggle-btn:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--text-primary);
+            transform: scale(1.05);
+        }
+        
+        .sidebar-toggle-btn:active {
+            transform: scale(0.9);
+        }
+        
+        /* ============================================
+           SECTION 7: SIDEBAR NAVIGATION
+           ============================================ */
+        .sidebar-nav {
+            flex: 1;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding: 8px 12px 16px;
+        }
+        
+        .sidebar-nav::-webkit-scrollbar {
+            width: 3px;
+        }
+        
+        .sidebar-nav::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        
+        .sidebar-nav::-webkit-scrollbar-thumb {
+            background: var(--nexus-primary);
+            border-radius: var(--radius-full);
+        }
+        
+        .sidebar-section {
+            margin-bottom: 8px;
+        }
+        
+        .sidebar-section-title {
+            font-size: 0.55rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text-disabled);
+            padding: 8px 12px 6px;
+            transition: all var(--transition-base);
+            white-space: nowrap;
+        }
+        
+        .sidebar-nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 12px;
+            border-radius: var(--radius-sm);
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all var(--transition-base);
+            cursor: pointer;
+            position: relative;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+        
+        .sidebar-nav-item::before {
+            content: '';
+            position: absolute;
+            inset: 2px;
+            border-radius: var(--radius-sm);
+            background: var(--gradient-primary);
+            opacity: 0;
+            transition: opacity var(--transition-base);
+        }
+        
+        .sidebar-nav-item:hover {
+            background: var(--bg-sidebar-hover);
+            color: var(--text-primary);
+        }
+        
+        .sidebar-nav-item:hover::before {
+            opacity: 0.05;
+        }
+        
+        .sidebar-nav-item.active {
+            background: rgba(108, 60, 225, 0.08);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+        
+        .sidebar-nav-item.active::before {
+            opacity: 0.1;
+        }
+        
+        .sidebar-nav-item.active .icon-wrapper {
+            background: var(--gradient-primary);
+            color: var(--text-primary);
+            box-shadow: 0 0 20px rgba(108, 60, 225, 0.2);
+        }
+        
+        .sidebar-nav-item .icon-wrapper {
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: var(--radius-sm);
+            background: rgba(255, 255, 255, 0.03);
+            color: var(--text-muted);
+            transition: all var(--transition-base);
+            flex-shrink: 0;
+            font-size: 0.9rem;
+        }
+        
+        .sidebar-nav-item:hover .icon-wrapper {
+            background: rgba(255, 255, 255, 0.06);
+            color: var(--text-primary);
+        }
+        
+        .sidebar-nav-item.active .icon-wrapper i {
+            color: var(--text-primary);
+        }
+        
+        .sidebar-nav-label {
+            flex: 1;
+            font-size: 0.8rem;
+            font-weight: 500;
+            transition: all var(--transition-base);
+        }
+        
+        .sidebar-nav-badge {
+            font-size: 0.55rem;
+            font-weight: 700;
+            padding: 0.1rem 0.6rem;
+            border-radius: var(--radius-full);
+            background: var(--gradient-accent);
+            color: var(--text-primary);
+            transition: all var(--transition-base);
+            flex-shrink: 0;
+        }
+        
+        .sidebar-nav-badge.opportunity {
+            background: var(--gradient-primary);
+            animation: badgePulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes badgePulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.8; }
+        }
+        
+        .sidebar-nav-item .nav-indicator {
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background: var(--nexus-secondary);
+            transition: all var(--transition-base);
+            flex-shrink: 0;
+        }
+        
+        .sidebar-nav-item.active .nav-indicator {
+            background: var(--nexus-primary-light);
+            box-shadow: 0 0 10px rgba(108, 60, 225, 0.3);
+        }
+        
+        .sidebar-nav-item .nav-shortcut {
+            font-size: 0.5rem;
+            color: var(--text-disabled);
+            background: rgba(255, 255, 255, 0.02);
+            padding: 0.05rem 0.4rem;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-color-light);
+            transition: all var(--transition-base);
+        }
+        
+        .sidebar-nav-item:hover .nav-shortcut {
+            color: var(--text-muted);
+            border-color: var(--border-color-hover);
+        }
+        
+        /* ============================================
+           SECTION 8: SIDEBAR DIVIDER
+           ============================================ */
+        .sidebar-divider {
+            height: 1px;
+            background: var(--border-color-light);
+            margin: 4px 12px;
+        }
+        
+        /* ============================================
+           SECTION 9: SIDEBAR USER
+           ============================================ */
+        .sidebar-user {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            border-top: 1px solid var(--border-color-light);
+            transition: all var(--transition-base);
+            cursor: pointer;
+        }
+        
+        .sidebar-user:hover {
+            background: var(--bg-sidebar-hover);
+        }
+        
+        .sidebar-user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 2px solid var(--nexus-primary);
+            transition: all var(--transition-base);
+            flex-shrink: 0;
+            position: relative;
+        }
+        
+        .sidebar-user-avatar::after {
+            content: '';
+            position: absolute;
+            inset: -3px;
+            border-radius: 50%;
+            border: 2px solid transparent;
+            background: var(--gradient-primary);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0;
+            transition: opacity var(--transition-base);
+            pointer-events: none;
+        }
+        
+        .sidebar-user:hover .sidebar-user-avatar::after {
+            opacity: 1;
+        }
+        
+        .sidebar-user-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform var(--transition-base);
+        }
+        
+        .sidebar-user:hover .sidebar-user-avatar img {
+            transform: scale(1.05);
+        }
+        
+        .sidebar-user-avatar .status-dot {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            border: 2px solid var(--bg-primary);
+            background: var(--status-online);
+        }
+        
+        .sidebar-user-info {
+            flex: 1;
+            min-width: 0;
+            transition: all var(--transition-base);
+        }
+        
+        .sidebar-user-name {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .sidebar-user-role {
+            font-size: 0.55rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .sidebar-user-actions {
+            display: flex;
+            gap: 4px;
+            transition: all var(--transition-base);
+        }
+        
+        .sidebar-user-actions button {
+            width: 28px;
+            height: 28px;
+            border: none;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: var(--radius-full);
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+        }
+        
+        .sidebar-user-actions button:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--text-primary);
+        }
+        
+        .sidebar-user-actions button.logout-btn:hover {
+            background: rgba(255, 107, 107, 0.1);
+            color: var(--nexus-accent);
+        }
+        
+        /* ============================================
+           SECTION 10: SIDEBAR FOOTER
+           ============================================ */
+        .sidebar-footer {
+            padding: 8px 16px 12px;
+            border-top: 1px solid var(--border-color-light);
+            font-size: 0.55rem;
+            color: var(--text-disabled);
+            text-align: center;
+            transition: all var(--transition-base);
+        }
+        
+        .sidebar-footer-text {
+            transition: all var(--transition-base);
+        }
+        
+        .sidebar-footer .footer-version {
+            color: var(--text-muted);
+        }
+        
+        /* ============================================
+           SECTION 11: SIDEBAR OVERLAY (Mobile)
+           ============================================ */
+        .sidebar-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 999;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            opacity: 0;
+            visibility: hidden;
+            transition: all var(--transition-base);
+        }
+        
+        .sidebar-overlay.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* ============================================
+           SECTION 12: MOBILE TOGGLE BUTTON
+           ============================================ */
+        .sidebar-mobile-toggle {
+            position: fixed;
+            top: 12px;
+            left: 12px;
+            z-index: 1001;
+            width: 40px;
+            height: 40px;
+            border: none;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all var(--transition-base);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            backdrop-filter: blur(12px);
+            box-shadow: var(--shadow-card);
+        }
+        
+        .sidebar-mobile-toggle:hover {
+            border-color: var(--border-color-hover);
+            color: var(--text-primary);
+            transform: scale(1.05);
+        }
+        
+        .sidebar-mobile-toggle:active {
+            transform: scale(0.9);
+        }
+        
+        .sidebar-mobile-toggle.visible {
+            display: flex;
+        }
+        
+        /* ============================================
+           SECTION 13: RESPONSIVE
+           ============================================ */
+        @media (max-width: 992px) {
+            .nexus-sidebar {
+                transform: translateX(-100%);
+                width: var(--sidebar-width-mobile);
+                box-shadow: var(--shadow-card-hover);
+            }
+            
+            .nexus-sidebar.open {
+                transform: translateX(0);
+            }
+            
+            .nexus-sidebar.collapsed {
+                width: var(--sidebar-width-mobile);
+            }
+            
+            .nexus-sidebar.collapsed .sidebar-brand-text,
+            .nexus-sidebar.collapsed .sidebar-nav-label,
+            .nexus-sidebar.collapsed .sidebar-nav-badge,
+            .nexus-sidebar.collapsed .sidebar-section-title,
+            .nexus-sidebar.collapsed .sidebar-user-info,
+            .nexus-sidebar.collapsed .sidebar-footer-text {
+                opacity: 1;
+                visibility: visible;
+                width: auto;
+            }
+            
+            .nexus-sidebar.collapsed .sidebar-brand {
+                justify-content: flex-start;
+                padding: 16px 20px;
+            }
+            
+            .nexus-sidebar.collapsed .sidebar-nav-item {
+                justify-content: flex-start;
+                padding: 8px 12px;
+            }
+            
+            .nexus-sidebar.collapsed .sidebar-nav-item .icon-wrapper {
+                margin: 0;
+            }
+            
+            .nexus-sidebar.collapsed .sidebar-user {
+                justify-content: flex-start;
+                padding: 12px 16px;
+            }
+            
+            .nexus-sidebar.collapsed .sidebar-user-avatar {
+                width: 40px;
+                height: 40px;
+            }
+            
+            .nexus-sidebar.collapsed .sidebar-toggle-btn {
+                transform: none;
+            }
+            
+            .sidebar-mobile-toggle {
+                display: flex;
+            }
+            
+            .sidebar-overlay.visible {
+                opacity: 1;
+                visibility: visible;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .nexus-sidebar {
+                width: 100%;
+                max-width: 320px;
+            }
+            
+            .sidebar-mobile-toggle {
+                top: 8px;
+                left: 8px;
+                width: 36px;
+                height: 36px;
+                font-size: 0.9rem;
+            }
+        }
+        
+        /* ============================================
+           SECTION 14: UTILITY ANIMATIONS
+           ============================================ */
+        .fade-in {
+            animation: fadeIn 0.3s ease-out forwards;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateX(-10px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        .slide-in {
+            animation: slideIn 0.3s ease-out forwards;
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        /* ============================================
+           SECTION 15: TOOLTIP (Collapsed mode)
+           ============================================ */
+        .sidebar-nav-item .nav-tooltip {
+            position: fixed;
+            left: calc(var(--sidebar-width-collapsed) + 12px);
+            top: var(--tooltip-top, 0);
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            padding: 4px 12px;
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all var(--transition-fast);
+            pointer-events: none;
+            box-shadow: var(--shadow-card);
+            backdrop-filter: blur(12px);
+            z-index: 1002;
+        }
+        
+        .nexus-sidebar.collapsed .sidebar-nav-item:hover .nav-tooltip {
+            opacity: 1;
+            visibility: visible;
+        }
+    </style>
+</head>
+<body>
+    
+    <!-- ============================================
+    SECTION 16: MOBILE TOGGLE
+    ============================================ -->
+    <button class="sidebar-mobile-toggle" id="mobileToggle" aria-label="Toggle sidebar">
+        <i class="fas fa-bars"></i>
+    </button>
+    
+    <!-- ============================================
+    SECTION 17: OVERLAY
+    ============================================ -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    
+    <!-- ============================================
+    SECTION 18: SIDEBAR
+    ============================================ -->
+    <aside class="nexus-sidebar" id="nexusSidebar" role="navigation" aria-label="Main navigation">
+        
+        <!-- Brand -->
+        <a href="/arbitrage/dashboard" class="sidebar-brand" aria-label="NEXUS Home">
+            <div class="sidebar-brand-logo">N</div>
+            <div class="sidebar-brand-text">
+                <span class="sidebar-brand-name">NEXUS</span>
+                <span class="sidebar-brand-tagline">Arbitrage Bot</span>
+            </div>
+        </a>
+        
+        <!-- Toggle Button -->
+        <div class="sidebar-toggle-wrapper">
+            <button class="sidebar-toggle-btn" id="sidebarToggle" aria-label="Toggle sidebar collapse">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+        </div>
+        
+        <!-- Navigation -->
+        <nav class="sidebar-nav" id="sidebarNav">
+            
+            <!-- Main Section -->
+            <div class="sidebar-section">
+                <div class="sidebar-section-title">Main</div>
+                
+                <a href="/arbitrage/dashboard" class="sidebar-nav-item active" data-tooltip="Dashboard">
+                    <span class="icon-wrapper"><i class="fas fa-th-large"></i></span>
+                    <span class="sidebar-nav-label">Dashboard</span>
+                    <span class="nav-indicator"></span>
+                    <span class="nav-shortcut">⌘D</span>
+                    <span class="nav-tooltip">Dashboard</span>
+                </a>
+                
+                <a href="/arbitrage/opportunities" class="sidebar-nav-item" data-tooltip="Opportunities">
+                    <span class="icon-wrapper"><i class="fas fa-bolt"></i></span>
+                    <span class="sidebar-nav-label">Opportunities</span>
+                    <span class="sidebar-nav-badge opportunity" id="oppBadge">0</span>
+                    <span class="nav-shortcut">⌘O</span>
+                    <span class="nav-tooltip">Opportunities</span>
+                </a>
+                
+                <a href="/arbitrage/positions" class="sidebar-nav-item" data-tooltip="Positions">
+                    <span class="icon-wrapper"><i class="fas fa-layer-group"></i></span>
+                    <span class="sidebar-nav-label">Positions</span>
+                    <span class="sidebar-nav-badge" id="posBadge">0</span>
+                    <span class="nav-shortcut">⌘P</span>
+                    <span class="nav-tooltip">Positions</span>
+                </a>
+                
+                <a href="/arbitrage/orders" class="sidebar-nav-item" data-tooltip="Orders">
+                    <span class="icon-wrapper"><i class="fas fa-receipt"></i></span>
+                    <span class="sidebar-nav-label">Orders</span>
+                    <span class="nav-shortcut">⌘R</span>
+                    <span class="nav-tooltip">Orders</span>
+                </a>
+            </div>
+            
+            <div class="sidebar-divider"></div>
+            
+            <!-- Analytics Section -->
+            <div class="sidebar-section">
+                <div class="sidebar-section-title">Analytics</div>
+                
+                <a href="/arbitrage/performance" class="sidebar-nav-item" data-tooltip="Performance">
+                    <span class="icon-wrapper"><i class="fas fa-chart-line"></i></span>
+                    <span class="sidebar-nav-label">Performance</span>
+                    <span class="nav-shortcut">⌘E</span>
+                    <span class="nav-tooltip">Performance</span>
+                </a>
+                
+                <a href="/arbitrage/metrics" class="sidebar-nav-item" data-tooltip="Metrics">
+                    <span class="icon-wrapper"><i class="fas fa-chart-pie"></i></span>
+                    <span class="sidebar-nav-label">Metrics</span>
+                    <span class="nav-shortcut">⌘M</span>
+                    <span class="nav-tooltip">Metrics</span>
+                </a>
+                
+                <a href="/arbitrage/backtesting" class="sidebar-nav-item" data-tooltip="Backtesting">
+                    <span class="icon-wrapper"><i class="fas fa-flask"></i></span>
+                    <span class="sidebar-nav-label">Backtesting</span>
+                    <span class="nav-shortcut">⌘B</span>
+                    <span class="nav-tooltip">Backtesting</span>
+                </a>
+                
+                <a href="/arbitrage/reports" class="sidebar-nav-item" data-tooltip="Reports">
+                    <span class="icon-wrapper"><i class="fas fa-file-alt"></i></span>
+                    <span class="sidebar-nav-label">Reports</span>
+                    <span class="nav-shortcut">⌘F</span>
+                    <span class="nav-tooltip">Reports</span>
+                </a>
+            </div>
+            
+            <div class="sidebar-divider"></div>
+            
+            <!-- Risk & Strategy Section -->
+            <div class="sidebar-section">
+                <div class="sidebar-section-title">Risk & Strategy</div>
+                
+                <a href="/arbitrage/risk-management" class="sidebar-nav-item" data-tooltip="Risk Management">
+                    <span class="icon-wrapper"><i class="fas fa-shield-alt"></i></span>
+                    <span class="sidebar-nav-label">Risk Management</span>
+                    <span class="nav-shortcut">⌘K</span>
+                    <span class="nav-tooltip">Risk Management</span>
+                </a>
+                
+                <a href="/arbitrage/strategies" class="sidebar-nav-item" data-tooltip="Strategies">
+                    <span class="icon-wrapper"><i class="fas fa-robot"></i></span>
+                    <span class="sidebar-nav-label">Strategies</span>
+                    <span class="nav-shortcut">⌘S</span>
+                    <span class="nav-tooltip">Strategies</span>
+                </a>
+                
+                <a href="/arbitrage/signals" class="sidebar-nav-item" data-tooltip="Signals">
+                    <span class="icon-wrapper"><i class="fas fa-bullseye"></i></span>
+                    <span class="sidebar-nav-label">Signals</span>
+                    <span class="sidebar-nav-badge" id="signalBadge">0</span>
+                    <span class="nav-shortcut">⌘G</span>
+                    <span class="nav-tooltip">Signals</span>
+                </a>
+            </div>
+            
+            <div class="sidebar-divider"></div>
+            
+            <!-- System Section -->
+            <div class="sidebar-section">
+                <div class="sidebar-section-title">System</div>
+                
+                <a href="/arbitrage/exchanges" class="sidebar-nav-item" data-tooltip="Exchanges">
+                    <span class="icon-wrapper"><i class="fas fa-university"></i></span>
+                    <span class="sidebar-nav-label">Exchanges</span>
+                    <span class="nav-shortcut">⌘X</span>
+                    <span class="nav-tooltip">Exchanges</span>
+                </a>
+                
+                <a href="/arbitrage/settings" class="sidebar-nav-item" data-tooltip="Settings">
+                    <span class="icon-wrapper"><i class="fas fa-cog"></i></span>
+                    <span class="sidebar-nav-label">Settings</span>
+                    <span class="nav-shortcut">⌘,</span>
+                    <span class="nav-tooltip">Settings</span>
+                </a>
+                
+                <a href="/arbitrage/logs" class="sidebar-nav-item" data-tooltip="Logs">
+                    <span class="icon-wrapper"><i class="fas fa-terminal"></i></span>
+                    <span class="sidebar-nav-label">Logs</span>
+                    <span class="nav-shortcut">⌘L</span>
+                    <span class="nav-tooltip">Logs</span>
+                </a>
+                
+                <a href="/arbitrage/support" class="sidebar-nav-item" data-tooltip="Support">
+                    <span class="icon-wrapper"><i class="fas fa-life-ring"></i></span>
+                    <span class="sidebar-nav-label">Support</span>
+                    <span class="nav-shortcut">⌘H</span>
+                    <span class="nav-tooltip">Support</span>
+                </a>
+            </div>
+            
+        </nav>
+        
+        <!-- User Section -->
+        <div class="sidebar-user" id="sidebarUser">
+            <div class="sidebar-user-avatar">
+                <img src="/static/images/avatars/default-avatar.png" alt="User avatar" id="sidebarAvatar">
+                <span class="status-dot"></span>
+            </div>
+            <div class="sidebar-user-info">
+                <div class="sidebar-user-name" id="sidebarUserName">Loading...</div>
+                <div class="sidebar-user-role" id="sidebarUserRole">Arbitrage Trader</div>
+            </div>
+            <div class="sidebar-user-actions">
+                <button class="logout-btn" id="logoutBtn" aria-label="Logout" title="Logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="sidebar-footer">
+            <span class="sidebar-footer-text">
+                <span class="footer-version">v3.0.0</span>
+                <span style="margin: 0 4px;">·</span>
+                <span style="color: var(--text-disabled);">NEXUS</span>
+            </span>
+        </div>
+        
+    </aside>
+    
+    <!-- ============================================
+    SECTION 19: JAVASCRIPT - COMPLETE
+    ============================================ -->
+    <script>
+        'use strict';
+        
+        // ============================================
+        // SECTION 20: CONFIGURATION
+        // ============================================
+        const SIDEBAR_CONFIG = {
+            API_BASE: '/api/v1',
+            REFRESH_INTERVAL: 15000,
+            COLLAPSED_KEY: 'nexus_sidebar_collapsed',
+            MOBILE_BREAKPOINT: 992,
+        };
+        
+        // ============================================
+        // SECTION 21: DOM REFS
+        // ============================================
+        const SIDEBAR_DOM = {
+            sidebar: document.getElementById('nexusSidebar'),
+            toggle: document.getElementById('sidebarToggle'),
+            mobileToggle: document.getElementById('mobileToggle'),
+            overlay: document.getElementById('sidebarOverlay'),
+            nav: document.getElementById('sidebarNav'),
+            user: document.getElementById('sidebarUser'),
+            userName: document.getElementById('sidebarUserName'),
+            userRole: document.getElementById('sidebarUserRole'),
+            userAvatar: document.getElementById('sidebarAvatar'),
+            oppBadge: document.getElementById('oppBadge'),
+            posBadge: document.getElementById('posBadge'),
+            signalBadge: document.getElementById('signalBadge'),
+            logoutBtn: document.getElementById('logoutBtn'),
+        };
+        
+        // ============================================
+        // SECTION 22: STATE
+        // ============================================
+        const SIDEBAR_STATE = {
+            isCollapsed: false,
+            isMobileOpen: false,
+            isMobile: window.innerWidth <= SIDEBAR_CONFIG.MOBILE_BREAKPOINT,
+            activeItem: null,
+            opportunities: 0,
+            positions: 0,
+            signals: 0,
+        };
+        
+        // ============================================
+        // SECTION 23: SIDEBAR MANAGER
+        // ============================================
+        class SidebarManager {
+            constructor() {
+                this.loadState();
+                this.init();
+                this.setupEventListeners();
+                this.setupKeyboardShortcuts();
+                this.fetchBadges();
+                this.fetchUserInfo();
+                
+                // Auto-refresh badges
+                setInterval(() => this.fetchBadges(), SIDEBAR_CONFIG.REFRESH_INTERVAL);
+            }
+            
+            loadState() {
+                const collapsed = localStorage.getItem(SIDEBAR_CONFIG.COLLAPSED_KEY);
+                SIDEBAR_STATE.isCollapsed = collapsed === 'true';
+            }
+            
+            saveState() {
+                localStorage.setItem(SIDEBAR_CONFIG.COLLAPSED_KEY, SIDEBAR_STATE.isCollapsed);
+            }
+            
+            init() {
+                // Apply collapsed state
+                if (SIDEBAR_STATE.isCollapsed && !SIDEBAR_STATE.isMobile) {
+                    SIDEBAR_DOM.sidebar.classList.add('collapsed');
+                }
+                
+                // Update toggle icon
+                this.updateToggleIcon();
+                
+                // Highlight active item based on current URL
+                this.highlightActiveItem();
+                
+                // Handle mobile
+                if (SIDEBAR_STATE.isMobile) {
+                    SIDEBAR_DOM.sidebar.classList.remove('collapsed');
+                    SIDEBAR_DOM.mobileToggle.classList.add('visible');
+                }
+            }
+            
+            setupEventListeners() {
+                // Desktop toggle
+                SIDEBAR_DOM.toggle.addEventListener('click', () => {
+                    if (SIDEBAR_STATE.isMobile) return;
+                    this.toggleCollapse();
+                });
+                
+                // Mobile toggle
+                SIDEBAR_DOM.mobileToggle.addEventListener('click', () => {
+                    this.toggleMobile();
+                });
+                
+                // Overlay close
+                SIDEBAR_DOM.overlay.addEventListener('click', () => {
+                    this.closeMobile();
+                });
+                
+                // Resize handler
+                let resizeTimeout;
+                window.addEventListener('resize', () => {
+                    clearTimeout(resizeTimeout);
+                    resizeTimeout = setTimeout(() => {
+                        const isMobile = window.innerWidth <= SIDEBAR_CONFIG.MOBILE_BREAKPOINT;
+                        if (isMobile !== SIDEBAR_STATE.isMobile) {
+                            SIDEBAR_STATE.isMobile = isMobile;
+                            if (isMobile) {
+                                SIDEBAR_DOM.sidebar.classList.remove('collapsed');
+                                SIDEBAR_DOM.mobileToggle.classList.add('visible');
+                            } else {
+                                SIDEBAR_DOM.mobileToggle.classList.remove('visible');
+                                this.closeMobile();
+                                if (SIDEBAR_STATE.isCollapsed) {
+                                    SIDEBAR_DOM.sidebar.classList.add('collapsed');
+                                }
+                            }
+                        }
+                    }, 200);
+                });
+                
+                // Logout
+                SIDEBAR_DOM.logoutBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    this.handleLogout();
+                });
+                
+                // Navigation item clicks
+                document.querySelectorAll('.sidebar-nav-item').forEach(item => {
+                    item.addEventListener('click', (e) => {
+                        // Close mobile on navigation
+                        if (SIDEBAR_STATE.isMobile) {
+                            this.closeMobile();
+                        }
+                    });
+                });
+            }
+            
+            toggleCollapse() {
+                SIDEBAR_STATE.isCollapsed = !SIDEBAR_STATE.isCollapsed;
+                SIDEBAR_DOM.sidebar.classList.toggle('collapsed', SIDEBAR_STATE.isCollapsed);
+                this.saveState();
+                this.updateToggleIcon();
+                
+                // Dispatch event for other components
+                window.dispatchEvent(new CustomEvent('sidebarToggle', {
+                    detail: { collapsed: SIDEBAR_STATE.isCollapsed }
+                }));
+            }
+            
+            toggleMobile() {
+                SIDEBAR_STATE.isMobileOpen = !SIDEBAR_STATE.isMobileOpen;
+                SIDEBAR_DOM.sidebar.classList.toggle('open', SIDEBAR_STATE.isMobileOpen);
+                SIDEBAR_DOM.overlay.classList.toggle('visible', SIDEBAR_STATE.isMobileOpen);
+                document.body.style.overflow = SIDEBAR_STATE.isMobileOpen ? 'hidden' : '';
+                
+                // Update mobile toggle icon
+                const icon = SIDEBAR_DOM.mobileToggle.querySelector('i');
+                if (icon) {
+                    icon.className = SIDEBAR_STATE.isMobileOpen ? 'fas fa-times' : 'fas fa-bars';
+                }
+            }
+            
+            closeMobile() {
+                SIDEBAR_STATE.isMobileOpen = false;
+                SIDEBAR_DOM.sidebar.classList.remove('open');
+                SIDEBAR_DOM.overlay.classList.remove('visible');
+                document.body.style.overflow = '';
+                
+                const icon = SIDEBAR_DOM.mobileToggle.querySelector('i');
+                if (icon) {
+                    icon.className = 'fas fa-bars';
+                }
+            }
+            
+            updateToggleIcon() {
+                const icon = SIDEBAR_DOM.toggle.querySelector('i');
+                if (icon) {
+                    icon.className = SIDEBAR_STATE.isCollapsed ? 'fas fa-chevron-right' : 'fas fa-chevron-left';
+                }
+            }
+            
+            highlightActiveItem() {
+                const currentPath = window.location.pathname;
+                document.querySelectorAll('.sidebar-nav-item').forEach(item => {
+                    const href = item.getAttribute('href');
+                    if (href && currentPath.startsWith(href)) {
+                        item.classList.add('active');
+                        SIDEBAR_STATE.activeItem = item;
+                    } else {
+                        item.classList.remove('active');
+                    }
+                });
+            }
+            
+            async fetchBadges() {
+                try {
+                    const response = await fetch(`${SIDEBAR_CONFIG.API_BASE}/arbitrage/badges`, {
+                        headers: {
+                            'Accept': 'application/json',
+                            'Cache-Control': 'no-cache',
+                        },
+                        credentials: 'same-origin',
+                    });
+                    
+                    if (!response.ok) throw new Error('Failed to fetch badges');
+                    
+                    const data = await response.json();
+                    
+                    SIDEBAR_STATE.opportunities = data.opportunities || 0;
+                    SIDEBAR_STATE.positions = data.positions || 0;
+                    SIDEBAR_STATE.signals = data.signals || 0;
+                    
+                    this.updateBadges();
+                } catch (error) {
+                    console.warn('[SIDEBAR] Failed to fetch badges:', error);
+                }
+            }
+            
+            updateBadges() {
+                // Opportunities badge
+                const oppBadge = SIDEBAR_DOM.oppBadge;
+                if (oppBadge) {
+                    const count = SIDEBAR_STATE.opportunities;
+                    oppBadge.textContent = count > 99 ? '99+' : count;
+                    oppBadge.style.display = count > 0 ? 'inline-block' : 'none';
+                }
+                
+                // Positions badge
+                const posBadge = SIDEBAR_DOM.posBadge;
+                if (posBadge) {
+                    const count = SIDEBAR_STATE.positions;
+                    posBadge.textContent = count > 99 ? '99+' : count;
+                    posBadge.style.display = count > 0 ? 'inline-block' : 'none';
+                }
+                
+                // Signals badge
+                const signalBadge = SIDEBAR_DOM.signalBadge;
+                if (signalBadge) {
+                    const count = SIDEBAR_STATE.signals;
+                    signalBadge.textContent = count > 99 ? '99+' : count;
+                    signalBadge.style.display = count > 0 ? 'inline-block' : 'none';
+                }
+            }
+            
+            async fetchUserInfo() {
+                try {
+                    const response = await fetch(`${SIDEBAR_CONFIG.API_BASE}/auth/me`, {
+                        headers: {
+                            'Accept': 'application/json',
+                            'Cache-Control': 'no-cache',
+                        },
+                        credentials: 'same-origin',
+                    });
+                    
+                    if (!response.ok) throw new Error('Failed to fetch user info');
+                    
+                    const data = await response.json();
+                    
+                    SIDEBAR_DOM.userName.textContent = data.name || 'User';
+                    SIDEBAR_DOM.userRole.textContent = data.role || 'Arbitrage Trader';
+                    if (data.avatar) {
+                        SIDEBAR_DOM.userAvatar.src = data.avatar;
+                    }
+                } catch (error) {
+                    console.warn('[SIDEBAR] Failed to fetch user info:', error);
+                }
+            }
+            
+            handleLogout() {
+                if (confirm('Are you sure you want to logout?')) {
+                    window.location.href = '/api/auth/logout';
+                }
+            }
+            
+            setupKeyboardShortcuts() {
+                document.addEventListener('keydown', (e) => {
+                    // Ctrl+B - Toggle sidebar
+                    if (e.ctrlKey && e.key === 'b' && !e.shiftKey) {
+                        e.preventDefault();
+                        if (SIDEBAR_STATE.isMobile) {
+                            this.toggleMobile();
+                        } else {
+                            this.toggleCollapse();
+                        }
+                    }
+                    
+                    // Escape - Close mobile
+                    if (e.key === 'Escape' && SIDEBAR_STATE.isMobileOpen) {
+                        this.closeMobile();
+                    }
+                    
+                    // Navigation shortcuts
+                    const shortcuts = {
+                        'd': '/arbitrage/dashboard',
+                        'o': '/arbitrage/opportunities',
+                        'p': '/arbitrage/positions',
+                        'r': '/arbitrage/orders',
+                        'e': '/arbitrage/performance',
+                        'm': '/arbitrage/metrics',
+                        'b': '/arbitrage/backtesting',
+                        'f': '/arbitrage/reports',
+                        'k': '/arbitrage/risk-management',
+                        's': '/arbitrage/strategies',
+                        'g': '/arbitrage/signals',
+                        'x': '/arbitrage/exchanges',
+                        ',': '/arbitrage/settings',
+                        'l': '/arbitrage/logs',
+                        'h': '/arbitrage/support',
+                    };
+                    
+                    if (e.ctrlKey && shortcuts[e.key]) {
+                        e.preventDefault();
+                        window.location.href = shortcuts[e.key];
+                    }
+                });
+            }
+        }
+        
+        // ============================================
+        // SECTION 24: TOOLTIP POSITIONING (Collapsed)
+        // ============================================
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.sidebar-nav-item').forEach(item => {
+                item.addEventListener('mouseenter', function(e) {
+                    const tooltip = this.querySelector('.nav-tooltip');
+                    if (tooltip && SIDEBAR_STATE.isCollapsed && !SIDEBAR_STATE.isMobile) {
+                        const rect = this.getBoundingClientRect();
+                        tooltip.style.setProperty('--tooltip-top', (rect.top + rect.height / 2) + 'px');
+                        tooltip.style.left = 'calc(var(--sidebar-width-collapsed) + 12px)';
+                    }
+                });
+            });
+        });
+        
+        // ============================================
+        // SECTION 25: INITIALIZATION
+        // ============================================
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('[SIDEBAR] Initializing...');
+            console.log('[SIDEBAR] Version: 3.0.0 - Build: 2026.07.20');
+            
+            const sidebar = new SidebarManager();
+            
+            // Expose for debugging
+            window.__NEXUS_SIDEBAR = {
+                config: SIDEBAR_CONFIG,
+                state: SIDEBAR_STATE,
+                manager: sidebar,
+                toggle: () => sidebar.toggleCollapse(),
+                open: () => sidebar.toggleMobile(),
+                close: () => sidebar.closeMobile(),
+                refresh: () => sidebar.fetchBadges(),
+            };
+            
+            console.log('[SIDEBAR] Initialized successfully');
+            console.log('[SIDEBAR] Keyboard shortcuts:');
+            console.log('  - Ctrl+B: Toggle sidebar');
+            console.log('  - Ctrl+D: Dashboard');
+            console.log('  - Ctrl+O: Opportunities');
+            console.log('  - Ctrl+P: Positions');
+            console.log('  - Ctrl+R: Orders');
+            console.log('  - Ctrl+E: Performance');
+            console.log('  - Ctrl+M: Metrics');
+            console.log('  - Ctrl+B: Backtesting');
+            console.log('  - Ctrl+F: Reports');
+            console.log('  - Ctrl+K: Risk Management');
+            console.log('  - Ctrl+S: Strategies');
+            console.log('  - Ctrl+G: Signals');
+            console.log('  - Ctrl+X: Exchanges');
+            console.log('  - Ctrl+,: Settings');
+            console.log('  - Ctrl+L: Logs');
+            console.log('  - Ctrl+H: Support');
+        });
+        
+        // ============================================
+        // SECTION 26: ERROR HANDLING
+        // ============================================
+        window.addEventListener('error', (e) => {
+            console.error('[SIDEBAR] Global error:', e.error);
+        });
+        
+        window.addEventListener('unhandledrejection', (e) => {
+            console.error('[SIDEBAR] Unhandled rejection:', e.reason);
+        });
+    </script>
+    
+</body>
+</html>
