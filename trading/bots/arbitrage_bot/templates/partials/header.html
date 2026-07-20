@@ -1,0 +1,2449 @@
+<!--
+╔═══════════════════════════════════════════════════════════════════════════════════╗
+║                                                                                   ║
+║   ███╗   ██╗███████╗██╗  ██╗██╗   ██╗███████╗    █████╗ ██╗                     ║
+║   ████╗  ██║██╔════╝╚██╗██╔╝██║   ██║██╔════╝   ██╔══██╗██║                     ║
+║   ██╔██╗ ██║█████╗   ╚███╔╝ ██║   ██║███████╗   ███████║██║                     ║
+║   ██║╚██╗██║██╔══╝   ██╔██╗ ██║   ██║╚════██║   ██╔══██║██║                     ║
+║   ██║ ╚████║███████╗██╔╝ ██╗╚██████╔╝███████║   ██║  ██║██║                     ║
+║   ╚═╝  ╚═══╝╚══════╝╚═╝  ╚═╝ ╚═════╝ ╚══════╝   ╚═╝  ╚═╝╚═╝                     ║
+║                                                                                   ║
+║   NEXUS AI TRADING SYSTEM - ARBITRAGE BOT HEADER                                 ║
+║   Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved                       ║
+║   Version: 3.0.0 - Build: 2026.07.20                                             ║
+║   CEO: Dr X... - Majority Shareholder                                            ║
+║                                                                                   ║
+╚═══════════════════════════════════════════════════════════════════════════════════╝
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="theme-color" content="#0A0A0F">
+    <meta name="description" content="NEXUS Arbitrage Bot - Real-time arbitrage trading system">
+    <title>NEXUS Arbitrage Bot</title>
+    
+    <!-- ============================================
+    FONTS & ICONS
+    ============================================ -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    
+    <style>
+        /* ============================================
+           SECTION 1: ROOT VARIABLES - NEXUS THEME
+           ============================================ */
+        :root {
+            /* --- Brand Colors --- */
+            --nexus-primary: #6C3CE1;
+            --nexus-primary-dark: #4A1FA8;
+            --nexus-primary-light: #8B6BEE;
+            --nexus-primary-gradient: linear-gradient(135deg, #6C3CE1 0%, #8B6BEE 50%, #00D4AA 100%);
+            --nexus-secondary: #00D4AA;
+            --nexus-secondary-dark: #00A88A;
+            --nexus-secondary-light: #33E0C0;
+            --nexus-accent: #FF6B6B;
+            --nexus-accent-dark: #E05555;
+            --nexus-warning: #FFB84D;
+            --nexus-warning-dark: #E6A040;
+            
+            /* --- Gradients --- */
+            --gradient-primary: linear-gradient(135deg, #6C3CE1 0%, #00D4AA 100%);
+            --gradient-primary-hover: linear-gradient(135deg, #7A4CE8 0%, #10E0B0 100%);
+            --gradient-accent: linear-gradient(135deg, #FF6B6B 0%, #FFB84D 100%);
+            --gradient-dark: linear-gradient(135deg, #0A0A0F 0%, #1A1A24 100%);
+            
+            /* --- Backgrounds --- */
+            --bg-primary: #0A0A0F;
+            --bg-secondary: #0F0F18;
+            --bg-tertiary: #13131A;
+            --bg-card: #1A1A24;
+            --bg-card-hover: #222233;
+            --bg-card-active: #2A2A3E;
+            --bg-elevated: rgba(26, 26, 36, 0.95);
+            
+            /* --- Text --- */
+            --text-primary: #FFFFFF;
+            --text-secondary: #A0A0B8;
+            --text-muted: #6B6B85;
+            --text-disabled: #3D3D55;
+            --text-inverse: #0A0A0F;
+            
+            /* --- Status --- */
+            --status-online: #00D4AA;
+            --status-online-glow: rgba(0, 212, 170, 0.3);
+            --status-degraded: #FFB84D;
+            --status-degraded-glow: rgba(255, 184, 77, 0.3);
+            --status-offline: #FF6B6B;
+            --status-offline-glow: rgba(255, 107, 107, 0.3);
+            --status-warning: #FFB84D;
+            
+            /* --- Metrics --- */
+            --profit-positive: #00D4AA;
+            --profit-positive-bg: rgba(0, 212, 170, 0.1);
+            --profit-negative: #FF6B6B;
+            --profit-negative-bg: rgba(255, 107, 107, 0.1);
+            --profit-neutral: #A0A0B8;
+            --profit-neutral-bg: rgba(160, 160, 184, 0.05);
+            
+            /* --- Borders --- */
+            --border-color: rgba(108, 60, 225, 0.15);
+            --border-color-hover: rgba(108, 60, 225, 0.35);
+            --border-color-light: rgba(255, 255, 255, 0.06);
+            --border-color-dark: rgba(0, 0, 0, 0.3);
+            
+            /* --- Shadows --- */
+            --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.4);
+            --shadow-card-hover: 0 12px 48px rgba(0, 0, 0, 0.6);
+            --shadow-glow: 0 0 60px rgba(108, 60, 225, 0.08);
+            --shadow-glow-strong: 0 0 80px rgba(108, 60, 225, 0.15);
+            --shadow-dropdown: 0 20px 60px rgba(0, 0, 0, 0.6);
+            
+            /* --- Animations --- */
+            --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-base: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-slow: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-bounce: 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            
+            /* --- Spacing --- */
+            --header-height: 72px;
+            --header-height-mobile: 56px;
+            --container-max: 1600px;
+            
+            /* --- Border Radius --- */
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
+            --radius-full: 9999px;
+        }
+        
+        /* ============================================
+           SECTION 2: RESET & BASE STYLES
+           ============================================ */
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        /* ============================================
+           SECTION 3: SCROLLBAR STYLING
+           ============================================ */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--nexus-primary);
+            border-radius: var(--radius-full);
+            transition: var(--transition-base);
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--nexus-primary-light);
+        }
+        
+        ::-webkit-scrollbar-corner {
+            background: var(--bg-primary);
+        }
+        
+        /* ============================================
+           SECTION 4: SELECTION
+           ============================================ */
+        ::selection {
+            background: var(--nexus-primary);
+            color: var(--text-primary);
+        }
+        
+        /* ============================================
+           SECTION 5: HEADER CONTAINER
+           ============================================ */
+        .nexus-header {
+            position: sticky;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            height: var(--header-height);
+            background: rgba(10, 10, 15, 0.92);
+            backdrop-filter: blur(24px) saturate(1.4);
+            -webkit-backdrop-filter: blur(24px) saturate(1.4);
+            border-bottom: 1px solid var(--border-color);
+            box-shadow: var(--shadow-card), var(--shadow-glow);
+            transition: all var(--transition-base);
+            will-change: transform, opacity;
+        }
+        
+        .nexus-header.scrolled {
+            background: rgba(10, 10, 15, 0.98);
+            border-bottom-color: var(--border-color-hover);
+            box-shadow: var(--shadow-card-hover), var(--shadow-glow-strong);
+        }
+        
+        .nexus-header:hover {
+            border-bottom-color: var(--border-color-hover);
+            box-shadow: var(--shadow-card-hover), var(--shadow-glow-strong), 0 0 80px rgba(108, 60, 225, 0.04);
+        }
+        
+        .header-container {
+            max-width: var(--container-max);
+            width: 100%;
+            height: 100%;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1.5rem;
+        }
+        
+        /* ============================================
+           SECTION 6: BRAND SECTION
+           ============================================ */
+        .header-brand {
+            display: flex;
+            align-items: center;
+            flex-shrink: 0;
+            position: relative;
+        }
+        
+        .brand-link {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            transition: all var(--transition-base);
+            position: relative;
+        }
+        
+        .brand-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--gradient-primary);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform var(--transition-base);
+            border-radius: var(--radius-full);
+        }
+        
+        .brand-link:hover::after {
+            transform: scaleX(1);
+        }
+        
+        .brand-link:hover {
+            opacity: 0.9;
+        }
+        
+        .brand-logo-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 42px;
+            height: 42px;
+            flex-shrink: 0;
+        }
+        
+        .brand-logo {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            filter: drop-shadow(0 0 20px rgba(108, 60, 225, 0.3));
+            transition: filter var(--transition-base);
+        }
+        
+        .brand-link:hover .brand-logo {
+            filter: drop-shadow(0 0 30px rgba(108, 60, 225, 0.5));
+        }
+        
+        .brand-logo-glow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 70px;
+            height: 70px;
+            background: radial-gradient(circle, rgba(108, 60, 225, 0.15) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: pulse-glow 3s ease-in-out infinite;
+        }
+        
+        @keyframes pulse-glow {
+            0%,
+            100% {
+                opacity: 0.5;
+                transform: translate(-50%, -50%) scale(1);
+            }
+            50% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1.3);
+            }
+        }
+        
+        .brand-name {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.1;
+        }
+        
+        .brand-highlight {
+            font-size: 1.3rem;
+            font-weight: 900;
+            background: var(--nexus-primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 0.5px;
+            text-shadow: none;
+        }
+        
+        .brand-sub {
+            font-size: 0.55rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            -webkit-text-fill-color: var(--text-secondary);
+        }
+        
+        .brand-version {
+            font-size: 0.45rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            background: rgba(108, 60, 225, 0.12);
+            padding: 0.1rem 0.6rem;
+            border-radius: var(--radius-full);
+            border: 1px solid rgba(108, 60, 225, 0.15);
+            margin-left: 0.5rem;
+            -webkit-text-fill-color: var(--text-muted);
+            transition: all var(--transition-base);
+            white-space: nowrap;
+        }
+        
+        .brand-link:hover .brand-version {
+            background: rgba(108, 60, 225, 0.2);
+            border-color: rgba(108, 60, 225, 0.3);
+            color: var(--text-secondary);
+        }
+        
+        .brand-badge {
+            position: absolute;
+            top: -6px;
+            right: -8px;
+            font-size: 0.4rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--text-primary);
+            background: var(--gradient-accent);
+            padding: 0.05rem 0.4rem;
+            border-radius: var(--radius-full);
+            letter-spacing: 0.5px;
+            box-shadow: 0 0 20px rgba(255, 107, 107, 0.3);
+            animation: pulse-badge 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulse-badge {
+            0%,
+            100% {
+                transform: scale(1);
+                opacity: 0.9;
+            }
+            50% {
+                transform: scale(1.05);
+                opacity: 1;
+            }
+        }
+        
+        /* ============================================
+           SECTION 7: METRICS SECTION
+           ============================================ */
+        .header-metrics {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex: 1;
+            justify-content: center;
+            padding: 0 0.5rem;
+        }
+        
+        .metric-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 0.3rem 1.2rem;
+            background: rgba(26, 26, 36, 0.5);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color-light);
+            transition: all var(--transition-base);
+            min-width: 110px;
+            position: relative;
+            cursor: default;
+        }
+        
+        .metric-item::before {
+            content: '';
+            position: absolute;
+            inset: -1px;
+            border-radius: var(--radius-md);
+            padding: 1px;
+            background: var(--gradient-primary);
+            opacity: 0;
+            transition: opacity var(--transition-base);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+        
+        .metric-item:hover::before {
+            opacity: 0.3;
+        }
+        
+        .metric-item:hover {
+            background: var(--bg-card-hover);
+            border-color: var(--border-color-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 24px rgba(108, 60, 225, 0.1);
+        }
+        
+        .metric-item:active {
+            transform: translateY(0px) scale(0.98);
+        }
+        
+        .metric-label {
+            font-size: 0.55rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            color: var(--text-muted);
+            margin-bottom: 0.1rem;
+            transition: color var(--transition-base);
+        }
+        
+        .metric-item:hover .metric-label {
+            color: var(--text-secondary);
+        }
+        
+        .metric-value {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            font-variant-numeric: tabular-nums;
+            transition: all var(--transition-base);
+            line-height: 1.3;
+        }
+        
+        .metric-value.loading {
+            opacity: 0.4;
+            animation: shimmer 1.5s ease-in-out infinite;
+        }
+        
+        @keyframes shimmer {
+            0%,
+            100% {
+                opacity: 0.3;
+            }
+            50% {
+                opacity: 0.7;
+            }
+        }
+        
+        .metric-change {
+            font-size: 0.55rem;
+            font-weight: 600;
+            padding: 0.05rem 0.6rem;
+            border-radius: var(--radius-full);
+            margin-top: 0.05rem;
+            transition: all var(--transition-base);
+            line-height: 1.5;
+        }
+        
+        .metric-change.positive {
+            color: var(--profit-positive);
+            background: var(--profit-positive-bg);
+        }
+        
+        .metric-change.negative {
+            color: var(--profit-negative);
+            background: var(--profit-negative-bg);
+        }
+        
+        .metric-change.neutral {
+            color: var(--text-muted);
+            background: var(--profit-neutral-bg);
+        }
+        
+        .metric-change.positive:hover {
+            background: rgba(0, 212, 170, 0.2);
+        }
+        
+        .metric-change.negative:hover {
+            background: rgba(255, 107, 107, 0.2);
+        }
+        
+        /* --- Metric Tooltip --- */
+        .metric-tooltip {
+            position: absolute;
+            bottom: calc(100% + 8px);
+            left: 50%;
+            transform: translateX(-50%) scale(0.8);
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            padding: 0.5rem 0.8rem;
+            font-size: 0.65rem;
+            color: var(--text-secondary);
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all var(--transition-base);
+            box-shadow: var(--shadow-dropdown);
+            backdrop-filter: blur(16px);
+            pointer-events: none;
+        }
+        
+        .metric-item:hover .metric-tooltip {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) scale(1);
+        }
+        
+        /* ============================================
+           SECTION 8: ARBITRAGE SPECIFIC METRICS
+           ============================================ */
+        .metric-item.arbitrage-metric {
+            min-width: 130px;
+            background: rgba(108, 60, 225, 0.06);
+            border-color: rgba(108, 60, 225, 0.15);
+        }
+        
+        .metric-item.arbitrage-metric::before {
+            background: var(--gradient-primary);
+            opacity: 0.2;
+        }
+        
+        .metric-item.arbitrage-metric:hover {
+            background: rgba(108, 60, 225, 0.12);
+            border-color: rgba(108, 60, 225, 0.3);
+        }
+        
+        .metric-item.arbitrage-metric .metric-value {
+            background: var(--nexus-primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 800;
+        }
+        
+        .metric-opportunity-badge {
+            display: inline-block;
+            font-size: 0.5rem;
+            font-weight: 700;
+            padding: 0.1rem 0.7rem;
+            border-radius: var(--radius-full);
+            background: rgba(0, 212, 170, 0.15);
+            color: var(--profit-positive);
+            border: 1px solid rgba(0, 212, 170, 0.2);
+            animation: pulse-opportunity 2s ease-in-out infinite;
+            margin-top: 0.05rem;
+            transition: all var(--transition-base);
+        }
+        
+        .metric-opportunity-badge.has-opportunities {
+            background: rgba(255, 107, 107, 0.15);
+            color: var(--profit-negative);
+            border-color: rgba(255, 107, 107, 0.2);
+            animation: pulse-opportunity-active 1s ease-in-out infinite;
+        }
+        
+        @keyframes pulse-opportunity {
+            0%,
+            100% {
+                opacity: 0.6;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.03);
+            }
+        }
+        
+        @keyframes pulse-opportunity-active {
+            0%,
+            100% {
+                opacity: 0.7;
+                transform: scale(1);
+                box-shadow: 0 0 10px rgba(255, 107, 107, 0);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.05);
+                box-shadow: 0 0 20px rgba(255, 107, 107, 0.2);
+            }
+        }
+        
+        /* ============================================
+           SECTION 9: STATUS SECTION
+           ============================================ */
+        .header-status {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            flex-shrink: 0;
+        }
+        
+        .system-status {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.35rem 1rem;
+            background: rgba(26, 26, 36, 0.5);
+            border-radius: var(--radius-full);
+            border: 1px solid var(--border-color-light);
+            transition: all var(--transition-base);
+            cursor: default;
+            position: relative;
+        }
+        
+        .system-status:hover {
+            background: var(--bg-card-hover);
+            border-color: var(--border-color-hover);
+            box-shadow: 0 4px 20px rgba(108, 60, 225, 0.05);
+        }
+        
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+            transition: all var(--transition-base);
+            position: relative;
+            flex-shrink: 0;
+        }
+        
+        .status-dot.online {
+            background: var(--status-online);
+            box-shadow: 0 0 20px var(--status-online-glow);
+            animation: pulse-dot-online 2s ease-in-out infinite;
+        }
+        
+        .status-dot.degraded {
+            background: var(--status-degraded);
+            box-shadow: 0 0 20px var(--status-degraded-glow);
+            animation: pulse-dot-degraded 1.5s ease-in-out infinite;
+        }
+        
+        .status-dot.offline {
+            background: var(--status-offline);
+            box-shadow: 0 0 20px var(--status-offline-glow);
+            animation: pulse-dot-offline 1s ease-in-out infinite;
+        }
+        
+        @keyframes pulse-dot-online {
+            0%,
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.25);
+                opacity: 0.8;
+            }
+        }
+        
+        @keyframes pulse-dot-degraded {
+            0%,
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(0.8);
+                opacity: 0.6;
+            }
+        }
+        
+        @keyframes pulse-dot-offline {
+            0%,
+            100% {
+                transform: scale(1);
+                opacity: 0.5;
+            }
+            50% {
+                transform: scale(1.1);
+                opacity: 0.2;
+            }
+        }
+        
+        .status-dot::after {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            border-radius: 50%;
+            background: inherit;
+            opacity: 0.2;
+            animation: ripple-dot 2s ease-out infinite;
+        }
+        
+        .status-dot.online::after {
+            animation: ripple-dot 2s ease-out infinite;
+        }
+        
+        @keyframes ripple-dot {
+            0% {
+                transform: scale(1);
+                opacity: 0.3;
+            }
+            100% {
+                transform: scale(2);
+                opacity: 0;
+            }
+        }
+        
+        .status-label {
+            font-size: 0.7rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            letter-spacing: 0.3px;
+            transition: color var(--transition-base);
+        }
+        
+        .system-status:hover .status-label {
+            color: var(--text-primary);
+        }
+        
+        .status-latency {
+            font-size: 0.55rem;
+            font-weight: 400;
+            color: var(--text-muted);
+            padding-left: 0.6rem;
+            border-left: 1px solid var(--border-color);
+            transition: color var(--transition-base);
+            font-variant-numeric: tabular-nums;
+        }
+        
+        .system-status:hover .status-latency {
+            color: var(--text-secondary);
+        }
+        
+        /* --- Status Details Popup --- */
+        .status-details {
+            position: absolute;
+            top: calc(100% + 12px);
+            right: 0;
+            min-width: 240px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 1rem 1.2rem;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px) scale(0.95);
+            transition: all var(--transition-base);
+            box-shadow: var(--shadow-dropdown);
+            backdrop-filter: blur(16px);
+            pointer-events: none;
+        }
+        
+        .system-status:hover .status-details {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0) scale(1);
+            pointer-events: auto;
+        }
+        
+        .status-details-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.3rem 0;
+            font-size: 0.7rem;
+            border-bottom: 1px solid var(--border-color-light);
+        }
+        
+        .status-details-item:last-child {
+            border-bottom: none;
+        }
+        
+        .status-details-item .label {
+            color: var(--text-muted);
+        }
+        
+        .status-details-item .value {
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+        
+        .status-details-item .value.online {
+            color: var(--status-online);
+        }
+        
+        .status-details-item .value.degraded {
+            color: var(--status-degraded);
+        }
+        
+        .status-details-item .value.offline {
+            color: var(--status-offline);
+        }
+        
+        /* ============================================
+           SECTION 10: USER SECTION
+           ============================================ */
+        .header-user {
+            position: relative;
+            flex-shrink: 0;
+        }
+        
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.2rem 0.8rem 0.2rem 0.3rem;
+            background: rgba(26, 26, 36, 0.5);
+            border-radius: var(--radius-full);
+            border: 1px solid var(--border-color-light);
+            cursor: pointer;
+            transition: all var(--transition-base);
+            position: relative;
+        }
+        
+        .user-profile::before {
+            content: '';
+            position: absolute;
+            inset: -1px;
+            border-radius: var(--radius-full);
+            padding: 1px;
+            background: var(--gradient-primary);
+            opacity: 0;
+            transition: opacity var(--transition-base);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+        
+        .user-profile:hover::before {
+            opacity: 0.4;
+        }
+        
+        .user-profile:hover {
+            background: var(--bg-card-hover);
+            border-color: var(--border-color-hover);
+            box-shadow: 0 4px 24px rgba(108, 60, 225, 0.08);
+            transform: translateY(-1px);
+        }
+        
+        .user-profile:active {
+            transform: translateY(0px) scale(0.97);
+        }
+        
+        .user-avatar {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 2px solid var(--nexus-primary);
+            transition: all var(--transition-base);
+            flex-shrink: 0;
+            position: relative;
+        }
+        
+        .user-avatar::after {
+            content: '';
+            position: absolute;
+            inset: -3px;
+            border-radius: 50%;
+            border: 2px solid transparent;
+            background: var(--gradient-primary);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0;
+            transition: opacity var(--transition-base);
+            pointer-events: none;
+        }
+        
+        .user-profile:hover .user-avatar::after {
+            opacity: 1;
+        }
+        
+        .user-profile:hover .user-avatar {
+            border-color: var(--nexus-primary-light);
+            box-shadow: 0 0 30px rgba(108, 60, 225, 0.2);
+            transform: scale(1.05);
+        }
+        
+        .user-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform var(--transition-base);
+        }
+        
+        .user-profile:hover .user-avatar img {
+            transform: scale(1.1);
+        }
+        
+        .user-avatar .status-indicator {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            border: 2px solid var(--bg-primary);
+            background: var(--status-online);
+        }
+        
+        .user-info {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.2;
+            min-width: 70px;
+        }
+        
+        .user-name {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            transition: color var(--transition-base);
+            white-space: nowrap;
+        }
+        
+        .user-profile:hover .user-name {
+            color: var(--nexus-primary-light);
+        }
+        
+        .user-role {
+            font-size: 0.5rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+        }
+        
+        .user-dropdown-icon {
+            font-size: 0.55rem;
+            color: var(--text-muted);
+            transition: all var(--transition-base);
+            margin-left: 0.1rem;
+        }
+        
+        .user-profile:hover .user-dropdown-icon {
+            color: var(--text-primary);
+        }
+        
+        .user-dropdown-icon.rotated {
+            transform: rotate(180deg);
+        }
+        
+        /* ============================================
+           SECTION 11: DROPDOWN MENU
+           ============================================ */
+        .user-dropdown-menu {
+            position: absolute;
+            top: calc(100% + 0.75rem);
+            right: 0;
+            min-width: 260px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 0.5rem 0;
+            box-shadow: var(--shadow-dropdown), var(--shadow-glow-strong);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-12px) scale(0.92);
+            transition: all var(--transition-bounce);
+            transform-origin: top right;
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            overflow: hidden;
+        }
+        
+        .user-dropdown-menu.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0) scale(1);
+        }
+        
+        .user-dropdown-menu::before {
+            content: '';
+            position: absolute;
+            top: -6px;
+            right: 20px;
+            width: 12px;
+            height: 12px;
+            background: var(--bg-elevated);
+            border-left: 1px solid var(--border-color);
+            border-top: 1px solid var(--border-color);
+            transform: rotate(45deg);
+            border-radius: 2px 0 0 0;
+        }
+        
+        .dropdown-user-header {
+            padding: 0.8rem 1.2rem 0.6rem;
+            border-bottom: 1px solid var(--border-color-light);
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+        
+        .dropdown-user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 2px solid var(--nexus-primary);
+        }
+        
+        .dropdown-user-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .dropdown-user-info {
+            flex: 1;
+        }
+        
+        .dropdown-user-name {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .dropdown-user-email {
+            font-size: 0.65rem;
+            color: var(--text-muted);
+        }
+        
+        .user-dropdown-menu a {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0.6rem 1.2rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.8rem;
+            font-weight: 500;
+            transition: all var(--transition-fast);
+            position: relative;
+        }
+        
+        .user-dropdown-menu a::before {
+            content: '';
+            position: absolute;
+            inset: 0 0.5rem;
+            border-radius: var(--radius-sm);
+            background: rgba(108, 60, 225, 0);
+            transition: background var(--transition-fast);
+            z-index: 0;
+        }
+        
+        .user-dropdown-menu a:hover::before {
+            background: rgba(108, 60, 225, 0.08);
+        }
+        
+        .user-dropdown-menu a:hover {
+            color: var(--text-primary);
+        }
+        
+        .user-dropdown-menu a i {
+            width: 20px;
+            text-align: center;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            transition: color var(--transition-fast);
+            z-index: 1;
+            flex-shrink: 0;
+        }
+        
+        .user-dropdown-menu a:hover i {
+            color: var(--nexus-primary-light);
+        }
+        
+        .user-dropdown-menu a .shortcut {
+            margin-left: auto;
+            font-size: 0.55rem;
+            color: var(--text-disabled);
+            background: rgba(255, 255, 255, 0.03);
+            padding: 0.05rem 0.5rem;
+            border-radius: var(--radius-sm);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+        }
+        
+        .dropdown-divider {
+            height: 1px;
+            background: var(--border-color-light);
+            margin: 0.3rem 0.8rem;
+        }
+        
+        .user-dropdown-menu .logout-item {
+            color: var(--profit-negative);
+        }
+        
+        .user-dropdown-menu .logout-item:hover {
+            color: var(--profit-negative);
+        }
+        
+        .user-dropdown-menu .logout-item:hover::before {
+            background: rgba(255, 107, 107, 0.08);
+        }
+        
+        .user-dropdown-menu .logout-item i {
+            color: var(--profit-negative);
+        }
+        
+        .user-dropdown-menu .logout-item:hover i {
+            color: var(--profit-negative);
+        }
+        
+        /* ============================================
+           SECTION 12: NOTIFICATIONS BELL
+           ============================================ */
+        .header-notifications {
+            position: relative;
+            flex-shrink: 0;
+        }
+        
+        .notification-btn {
+            background: rgba(26, 26, 36, 0.5);
+            border: 1px solid var(--border-color-light);
+            border-radius: var(--radius-full);
+            width: 38px;
+            height: 38px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all var(--transition-base);
+            font-size: 0.9rem;
+            position: relative;
+        }
+        
+        .notification-btn:hover {
+            background: var(--bg-card-hover);
+            border-color: var(--border-color-hover);
+            color: var(--text-primary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(108, 60, 225, 0.05);
+        }
+        
+        .notification-btn:active {
+            transform: translateY(0px) scale(0.95);
+        }
+        
+        .notification-badge {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            background: var(--gradient-accent);
+            color: var(--text-primary);
+            font-size: 0.5rem;
+            font-weight: 700;
+            min-width: 18px;
+            height: 18px;
+            border-radius: var(--radius-full);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 0.3rem;
+            box-shadow: 0 0 20px rgba(255, 107, 107, 0.3);
+            animation: pulse-badge 2s ease-in-out infinite;
+        }
+        
+        /* ============================================
+           SECTION 13: RESPONSIVE DESIGN
+           ============================================ */
+        /* --- Large Screens --- */
+        @media (max-width: 1400px) {
+            .header-metrics {
+                gap: 0.8rem;
+            }
+            
+            .metric-item {
+                min-width: 95px;
+                padding: 0.25rem 1rem;
+            }
+            
+            .metric-value {
+                font-size: 1rem;
+            }
+        }
+        
+        /* --- Medium Screens --- */
+        @media (max-width: 1200px) {
+            .header-metrics {
+                gap: 0.6rem;
+            }
+            
+            .metric-item {
+                min-width: 80px;
+                padding: 0.2rem 0.8rem;
+            }
+            
+            .metric-value {
+                font-size: 0.9rem;
+            }
+            
+            .metric-label {
+                font-size: 0.5rem;
+            }
+            
+            .brand-sub {
+                font-size: 0.5rem;
+                letter-spacing: 1.5px;
+            }
+            
+            .brand-highlight {
+                font-size: 1.1rem;
+            }
+        }
+        
+        /* --- Tablets --- */
+        @media (max-width: 992px) {
+            .nexus-header {
+                height: var(--header-height-mobile);
+                padding: 0;
+            }
+            
+            .header-container {
+                padding: 0 1rem;
+                gap: 0.75rem;
+            }
+            
+            .header-metrics {
+                gap: 0.4rem;
+                padding: 0;
+                flex: 0 1 auto;
+            }
+            
+            .metric-item {
+                min-width: 65px;
+                padding: 0.15rem 0.6rem;
+                border-radius: var(--radius-sm);
+            }
+            
+            .metric-value {
+                font-size: 0.75rem;
+            }
+            
+            .metric-change {
+                font-size: 0.45rem;
+                padding: 0.02rem 0.4rem;
+            }
+            
+            .metric-opportunity-badge {
+                font-size: 0.4rem;
+                padding: 0.05rem 0.4rem;
+            }
+            
+            .brand-sub {
+                display: none;
+            }
+            
+            .brand-version {
+                display: none;
+            }
+            
+            .brand-highlight {
+                font-size: 0.95rem;
+            }
+            
+            .brand-logo-wrapper {
+                width: 32px;
+                height: 32px;
+            }
+            
+            .brand-link {
+                gap: 0.4rem;
+            }
+            
+            .user-info {
+                display: none;
+            }
+            
+            .user-profile {
+                padding: 0.15rem 0.5rem 0.15rem 0.2rem;
+            }
+            
+            .user-avatar {
+                width: 28px;
+                height: 28px;
+            }
+            
+            .user-avatar .status-indicator {
+                width: 8px;
+                height: 8px;
+            }
+            
+            .system-status {
+                padding: 0.2rem 0.6rem;
+                gap: 0.4rem;
+            }
+            
+            .status-label {
+                font-size: 0.6rem;
+            }
+            
+            .status-latency {
+                display: none;
+            }
+            
+            .status-dot {
+                width: 8px;
+                height: 8px;
+            }
+            
+            .notification-btn {
+                width: 32px;
+                height: 32px;
+                font-size: 0.75rem;
+            }
+            
+            .notification-badge {
+                min-width: 14px;
+                height: 14px;
+                font-size: 0.4rem;
+            }
+            
+            .metric-item.arbitrage-metric {
+                min-width: 80px;
+            }
+        }
+        
+        /* --- Mobile --- */
+        @media (max-width: 768px) {
+            .nexus-header {
+                height: 52px;
+            }
+            
+            .header-container {
+                padding: 0 0.6rem;
+                gap: 0.4rem;
+                overflow-x: auto;
+                flex-wrap: nowrap;
+                -webkit-overflow-scrolling: touch;
+            }
+            
+            .header-container::-webkit-scrollbar {
+                display: none;
+            }
+            
+            .header-metrics {
+                gap: 0.3rem;
+                flex: 0 0 auto;
+            }
+            
+            .metric-item {
+                min-width: 55px;
+                padding: 0.1rem 0.4rem;
+                border-radius: 6px;
+                border-width: 1px;
+            }
+            
+            .metric-item:not(.arbitrage-metric) .metric-change {
+                display: none;
+            }
+            
+            .metric-value {
+                font-size: 0.65rem;
+                font-weight: 600;
+            }
+            
+            .metric-label {
+                font-size: 0.4rem;
+                letter-spacing: 0.5px;
+            }
+            
+            .metric-opportunity-badge {
+                font-size: 0.35rem;
+                padding: 0.02rem 0.3rem;
+            }
+            
+            .brand-highlight {
+                font-size: 0.8rem;
+            }
+            
+            .brand-logo-wrapper {
+                width: 28px;
+                height: 28px;
+            }
+            
+            .brand-link {
+                gap: 0.3rem;
+            }
+            
+            .brand-badge {
+                display: none;
+            }
+            
+            .system-status {
+                padding: 0.15rem 0.5rem;
+                gap: 0.3rem;
+            }
+            
+            .status-label {
+                font-size: 0.5rem;
+            }
+            
+            .status-dot {
+                width: 6px;
+                height: 6px;
+            }
+            
+            .user-profile {
+                padding: 0.1rem 0.4rem 0.1rem 0.15rem;
+                gap: 0.3rem;
+            }
+            
+            .user-avatar {
+                width: 24px;
+                height: 24px;
+                border-width: 1.5px;
+            }
+            
+            .user-avatar .status-indicator {
+                width: 6px;
+                height: 6px;
+                border-width: 1px;
+            }
+            
+            .user-dropdown-icon {
+                font-size: 0.45rem;
+            }
+            
+            .notification-btn {
+                width: 28px;
+                height: 28px;
+                font-size: 0.65rem;
+            }
+            
+            .notification-badge {
+                min-width: 12px;
+                height: 12px;
+                font-size: 0.35rem;
+                top: -3px;
+                right: -3px;
+            }
+            
+            .user-dropdown-menu {
+                min-width: 220px;
+                right: -10px;
+            }
+            
+            .user-dropdown-menu::before {
+                right: 14px;
+            }
+            
+            .metric-item.arbitrage-metric {
+                min-width: 65px;
+            }
+            
+            .metric-item.arbitrage-metric .metric-value {
+                font-size: 0.7rem;
+            }
+        }
+        
+        /* --- Small Mobile --- */
+        @media (max-width: 480px) {
+            .nexus-header {
+                height: 48px;
+            }
+            
+            .header-container {
+                padding: 0 0.4rem;
+                gap: 0.2rem;
+            }
+            
+            .header-metrics .metric-item:not(.arbitrage-metric) {
+                display: none;
+            }
+            
+            .metric-item.arbitrage-metric {
+                min-width: 60px;
+                padding: 0.08rem 0.3rem;
+            }
+            
+            .metric-item.arbitrage-metric .metric-value {
+                font-size: 0.6rem;
+            }
+            
+            .metric-item.arbitrage-metric .metric-label {
+                font-size: 0.35rem;
+            }
+            
+            .brand-highlight {
+                font-size: 0.7rem;
+            }
+            
+            .brand-logo-wrapper {
+                width: 24px;
+                height: 24px;
+            }
+            
+            .brand-link {
+                gap: 0.2rem;
+            }
+            
+            .system-status {
+                padding: 0.1rem 0.4rem;
+                gap: 0.2rem;
+            }
+            
+            .status-label {
+                font-size: 0.45rem;
+            }
+            
+            .status-dot {
+                width: 5px;
+                height: 5px;
+            }
+            
+            .user-avatar {
+                width: 20px;
+                height: 20px;
+                border-width: 1px;
+            }
+            
+            .user-profile {
+                padding: 0.05rem 0.3rem 0.05rem 0.1rem;
+                gap: 0.2rem;
+            }
+            
+            .user-dropdown-icon {
+                font-size: 0.35rem;
+            }
+            
+            .notification-btn {
+                width: 24px;
+                height: 24px;
+                font-size: 0.55rem;
+            }
+            
+            .notification-badge {
+                min-width: 10px;
+                height: 10px;
+                font-size: 0.3rem;
+                top: -2px;
+                right: -2px;
+            }
+        }
+        
+        /* ============================================
+           SECTION 14: ANIMATIONS & UTILITIES
+           ============================================ */
+        .fade-in {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .slide-down {
+            animation: slideDown 0.3s ease-out forwards;
+        }
+        
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .pulse-once {
+            animation: pulseOnce 0.5s ease-out;
+        }
+        
+        @keyframes pulseOnce {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+        
+        /* ============================================
+           SECTION 15: LOADING STATE
+           ============================================ */
+        .header-loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 9999;
+            background: var(--bg-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 2rem;
+            transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
+        }
+        
+        .header-loading.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+        
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 3px solid var(--border-color);
+            border-top: 3px solid var(--nexus-primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        
+        .loading-text {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            letter-spacing: 2px;
+            animation: pulse-text 1.5s ease-in-out infinite;
+        }
+        
+        @keyframes pulse-text {
+            0%,
+            100% {
+                opacity: 0.5;
+            }
+            50% {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <!-- ============================================
+    SECTION 16: LOADING OVERLAY
+    ============================================ -->
+    <div class="header-loading" id="headerLoading">
+        <div class="loading-spinner"></div>
+        <div class="loading-text">NEXUS ARBITRAGE SYSTEM</div>
+    </div>
+    
+    <!-- ============================================
+    SECTION 17: HEADER
+    ============================================ -->
+    <header class="nexus-header" id="nexusHeader" data-nexus-version="3.0.0" role="banner" aria-label="Main Navigation">
+        <div class="header-container">
+            
+            <!-- ==========================================
+            SECTION 18: BRAND
+            ========================================== -->
+            <div class="header-brand">
+                <a href="/arbitrage/dashboard" class="brand-link" aria-label="Nexus Arbitrage Bot Dashboard">
+                    <div class="brand-logo-wrapper">
+                        <img src="/static/logos/nexus-favicon.svg" alt="Nexus Quantum" class="brand-logo" loading="lazy">
+                        <div class="brand-logo-glow"></div>
+                        <span class="brand-badge">Live</span>
+                    </div>
+                    <div class="brand-name">
+                        <span class="brand-highlight">NEXUS</span>
+                        <span class="brand-sub">Arbitrage Bot</span>
+                    </div>
+                    <span class="brand-version">v3.0</span>
+                </a>
+            </div>
+            
+            <!-- ==========================================
+            SECTION 19: METRICS
+            ========================================== -->
+            <div class="header-metrics" id="headerMetrics" role="status" aria-live="polite">
+                
+                <!-- Balance -->
+                <div class="metric-item" id="metricBalance" title="Total account balance">
+                    <span class="metric-label">
+                        <i class="fas fa-wallet" style="margin-right: 4px; font-size: 0.5rem;"></i>
+                        Balance
+                    </span>
+                    <span class="metric-value loading" id="balanceValue">$--</span>
+                    <span class="metric-change neutral" id="balanceChange">--</span>
+                    <div class="metric-tooltip">Total balance across all exchanges</div>
+                </div>
+                
+                <!-- PnL Today -->
+                <div class="metric-item" id="metricPnl" title="Today's profit and loss">
+                    <span class="metric-label">
+                        <i class="fas fa-chart-line" style="margin-right: 4px; font-size: 0.5rem;"></i>
+                        PnL Today
+                    </span>
+                    <span class="metric-value loading" id="pnlValue">$--</span>
+                    <span class="metric-change neutral" id="pnlChange">--</span>
+                    <div class="metric-tooltip">Profit/Loss for the current day</div>
+                </div>
+                
+                <!-- Open Positions -->
+                <div class="metric-item" id="metricPositions" title="Number of open positions">
+                    <span class="metric-label">
+                        <i class="fas fa-exchange-alt" style="margin-right: 4px; font-size: 0.5rem;"></i>
+                        Positions
+                    </span>
+                    <span class="metric-value loading" id="positionsValue">--</span>
+                    <div class="metric-tooltip">Currently open trading positions</div>
+                </div>
+                
+                <!-- Arbitrage Opportunities -->
+                <div class="metric-item arbitrage-metric" id="metricOpportunities" title="Active arbitrage opportunities">
+                    <span class="metric-label">
+                        <i class="fas fa-bolt" style="margin-right: 4px; font-size: 0.5rem;"></i>
+                        Opportunities
+                    </span>
+                    <span class="metric-value loading" id="opportunitiesValue">--</span>
+                    <span class="metric-opportunity-badge" id="opportunityBadge">Scanning...</span>
+                    <div class="metric-tooltip">Active arbitrage opportunities detected</div>
+                </div>
+                
+            </div>
+            
+            <!-- ==========================================
+            SECTION 20: STATUS & NOTIFICATIONS
+            ========================================== -->
+            <div class="header-status">
+                
+                <!-- System Status -->
+                <div class="system-status" id="systemStatus">
+                    <span class="status-dot online" id="statusDot"></span>
+                    <span class="status-label" id="statusLabel">System Online</span>
+                    <span class="status-latency" id="statusLatency">&lt; 10ms</span>
+                    
+                    <!-- Status Details Popup -->
+                    <div class="status-details" id="statusDetails">
+                        <div class="status-details-item">
+                            <span class="label">API Status</span>
+                            <span class="value online" id="statusApi">Online</span>
+                        </div>
+                        <div class="status-details-item">
+                            <span class="label">WebSocket</span>
+                            <span class="value online" id="statusWs">Connected</span>
+                        </div>
+                        <div class="status-details-item">
+                            <span class="label">Database</span>
+                            <span class="value online" id="statusDb">Online</span>
+                        </div>
+                        <div class="status-details-item">
+                            <span class="label">Latency</span>
+                            <span class="value" id="statusLatencyDetail">&lt; 10ms</span>
+                        </div>
+                        <div class="status-details-item">
+                            <span class="label">Uptime</span>
+                            <span class="value" id="statusUptime">99.98%</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Notifications -->
+                <div class="header-notifications">
+                    <button class="notification-btn" id="notificationBtn" aria-label="Notifications">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge" id="notificationBadge">3</span>
+                    </button>
+                </div>
+                
+            </div>
+            
+            <!-- ==========================================
+            SECTION 21: USER
+            ========================================== -->
+            <div class="header-user">
+                <div class="user-profile" id="userProfile" role="button" tabindex="0" aria-haspopup="true" aria-expanded="false">
+                    <div class="user-avatar">
+                        <img src="/static/images/avatars/default-avatar.png" alt="User Profile" id="userAvatar" loading="lazy">
+                        <span class="status-indicator"></span>
+                    </div>
+                    <div class="user-info">
+                        <span class="user-name" id="userName">Loading...</span>
+                        <span class="user-role" id="userRole">Arbitrage Trader</span>
+                    </div>
+                    <span class="user-dropdown-icon" id="userDropdownIcon">▼</span>
+                </div>
+                
+                <!-- ==========================================
+                SECTION 22: DROPDOWN MENU
+                ========================================== -->
+                <div class="user-dropdown-menu" id="userDropdownMenu" role="menu">
+                    <div class="dropdown-user-header">
+                        <div class="dropdown-user-avatar">
+                            <img src="/static/images/avatars/default-avatar.png" alt="User" id="dropdownUserAvatar">
+                        </div>
+                        <div class="dropdown-user-info">
+                            <div class="dropdown-user-name" id="dropdownUserName">User</div>
+                            <div class="dropdown-user-email" id="dropdownUserEmail">user@nexusquantum.com</div>
+                        </div>
+                    </div>
+                    
+                    <div class="dropdown-divider"></div>
+                    
+                    <a href="/arbitrage/dashboard" role="menuitem">
+                        <i class="fas fa-tachometer-alt"></i> Dashboard
+                        <span class="shortcut">⌘D</span>
+                    </a>
+                    <a href="/arbitrage/strategies" role="menuitem">
+                        <i class="fas fa-robot"></i> Strategies
+                        <span class="shortcut">⌘S</span>
+                    </a>
+                    <a href="/arbitrage/opportunities" role="menuitem">
+                        <i class="fas fa-bolt"></i> Opportunities
+                        <span class="shortcut">⌘O</span>
+                    </a>
+                    <a href="/arbitrage/performance" role="menuitem">
+                        <i class="fas fa-chart-line"></i> Performance
+                        <span class="shortcut">⌘P</span>
+                    </a>
+                    <a href="/arbitrage/history" role="menuitem">
+                        <i class="fas fa-history"></i> Trade History
+                        <span class="shortcut">⌘H</span>
+                    </a>
+                    
+                    <div class="dropdown-divider"></div>
+                    
+                    <a href="/dashboard/settings" role="menuitem">
+                        <i class="fas fa-cog"></i> Settings
+                        <span class="shortcut">⌘,</span>
+                    </a>
+                    <a href="/dashboard/portfolio" role="menuitem">
+                        <i class="fas fa-wallet"></i> Portfolio
+                        <span class="shortcut">⌘W</span>
+                    </a>
+                    <a href="/dashboard/security" role="menuitem">
+                        <i class="fas fa-shield-alt"></i> Security
+                        <span class="shortcut">⌘K</span>
+                    </a>
+                    
+                    <div class="dropdown-divider"></div>
+                    
+                    <a href="/api/auth/logout" class="logout-item" role="menuitem">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                        <span class="shortcut">⌘⇧Q</span>
+                    </a>
+                </div>
+            </div>
+            
+        </div>
+    </header>
+    
+    <!-- ============================================
+    SECTION 23: JAVASCRIPT - COMPLETE
+    ============================================ -->
+    <script>
+        'use strict';
+        
+        // ============================================
+        // SECTION 24: CONFIGURATION
+        // ============================================
+        const CONFIG = {
+            API_BASE: '/api/v1',
+            REFRESH_INTERVAL: 10000, // 10 seconds
+            RETRY_DELAY: 3000,
+            MAX_RETRIES: 5,
+            STALE_THRESHOLD: 30000, // 30 seconds
+            CACHE_KEY: 'arbitrage_header_metrics',
+        };
+        
+        // ============================================
+        // SECTION 25: DOM REFS
+        // ============================================
+        const DOM = {
+            header: document.getElementById('nexusHeader'),
+            loading: document.getElementById('headerLoading'),
+            
+            balance: {
+                value: document.getElementById('balanceValue'),
+                change: document.getElementById('balanceChange'),
+            },
+            
+            pnl: {
+                value: document.getElementById('pnlValue'),
+                change: document.getElementById('pnlChange'),
+            },
+            
+            positions: document.getElementById('positionsValue'),
+            opportunities: document.getElementById('opportunitiesValue'),
+            opportunityBadge: document.getElementById('opportunityBadge'),
+            
+            status: {
+                dot: document.getElementById('statusDot'),
+                label: document.getElementById('statusLabel'),
+                latency: document.getElementById('statusLatency'),
+                api: document.getElementById('statusApi'),
+                ws: document.getElementById('statusWs'),
+                db: document.getElementById('statusDb'),
+                latencyDetail: document.getElementById('statusLatencyDetail'),
+                uptime: document.getElementById('statusUptime'),
+            },
+            
+            user: {
+                name: document.getElementById('userName'),
+                role: document.getElementById('userRole'),
+                avatar: document.getElementById('userAvatar'),
+                dropdownName: document.getElementById('dropdownUserName'),
+                dropdownEmail: document.getElementById('dropdownUserEmail'),
+                dropdownAvatar: document.getElementById('dropdownUserAvatar'),
+            },
+            
+            profile: document.getElementById('userProfile'),
+            dropdown: document.getElementById('userDropdownMenu'),
+            dropdownIcon: document.getElementById('userDropdownIcon'),
+            notifications: document.getElementById('notificationBtn'),
+            notificationBadge: document.getElementById('notificationBadge'),
+        };
+        
+        // ============================================
+        // SECTION 26: STATE
+        // ============================================
+        let state = {
+            metrics: null,
+            isUpdating: false,
+            retryCount: 0,
+            lastUpdate: null,
+            isDropdownOpen: false,
+            hasErrors: false,
+            connectionStatus: 'online',
+            uptime: 0,
+        };
+        
+        // ============================================
+        // SECTION 27: FORMATTERS
+        // ============================================
+        const Formatters = {
+            currency: (value) => {
+                const num = typeof value === 'string' ? parseFloat(value) : value;
+                if (isNaN(num) || !isFinite(num)) return '$0.00';
+                return '$' + num.toLocaleString('en-US', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                });
+            },
+            
+            currencyShort: (value) => {
+                const num = typeof value === 'string' ? parseFloat(value) : value;
+                if (isNaN(num) || !isFinite(num)) return '$0';
+                const abs = Math.abs(num);
+                if (abs >= 1e9) return '$' + (num / 1e9).toFixed(1) + 'B';
+                if (abs >= 1e6) return '$' + (num / 1e6).toFixed(1) + 'M';
+                if (abs >= 1e3) return '$' + (num / 1e3).toFixed(1) + 'K';
+                return '$' + num.toFixed(2);
+            },
+            
+            percentage: (value) => {
+                const num = typeof value === 'string' ? parseFloat(value) : value;
+                if (isNaN(num) || !isFinite(num)) return '+0.00%';
+                return (num >= 0 ? '+' : '') + num.toFixed(2) + '%';
+            },
+            
+            integer: (value) => {
+                const num = typeof value === 'string' ? parseInt(value) : value;
+                if (isNaN(num) || !isFinite(num)) return '0';
+                return num.toLocaleString('en-US');
+            },
+            
+            latency: (ms) => {
+                const num = typeof ms === 'string' ? parseInt(ms) : ms;
+                if (isNaN(num) || !isFinite(num) || num < 0) return '< 1ms';
+                if (num < 1) return '< 1ms';
+                if (num < 1000) return num + 'ms';
+                return (num / 1000).toFixed(1) + 's';
+            },
+            
+            time: (timestamp) => {
+                if (!timestamp) return '--';
+                const date = new Date(timestamp);
+                return date.toLocaleTimeString('en-US', {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit',
+                });
+            },
+        };
+        
+        // ============================================
+        // SECTION 28: API CLIENT
+        // ============================================
+        class APIClient {
+            static async get(endpoint, options = {}) {
+                const url = CONFIG.API_BASE + endpoint;
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 15000);
+                
+                try {
+                    const response = await fetch(url, {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json',
+                            'Cache-Control': 'no-cache',
+                            'Pragma': 'no-cache',
+                        },
+                        credentials: 'same-origin',
+                        signal: controller.signal,
+                        ...options,
+                    });
+                    
+                    clearTimeout(timeoutId);
+                    
+                    if (!response.ok) {
+                        const errorText = await response.text();
+                        let errorData;
+                        try {
+                            errorData = JSON.parse(errorText);
+                        } catch {
+                            errorData = { detail: errorText || response.statusText };
+                        }
+                        throw new Error(errorData.detail || `HTTP ${response.status}: ${response.statusText}`);
+                    }
+                    
+                    return response.json();
+                } catch (error) {
+                    clearTimeout(timeoutId);
+                    if (error.name === 'AbortError') {
+                        throw new Error('Request timeout');
+                    }
+                    throw error;
+                }
+            }
+        }
+        
+        // ============================================
+        // SECTION 29: CACHE MANAGER
+        // ============================================
+        class CacheManager {
+            static get(key) {
+                try {
+                    const data = localStorage.getItem(key);
+                    if (!data) return null;
+                    const parsed = JSON.parse(data);
+                    if (parsed.expiry && parsed.expiry < Date.now()) {
+                        localStorage.removeItem(key);
+                        return null;
+                    }
+                    return parsed.value;
+                } catch {
+                    return null;
+                }
+            }
+            
+            static set(key, value, ttl = CONFIG.REFRESH_INTERVAL * 2) {
+                try {
+                    const data = {
+                        value: value,
+                        expiry: Date.now() + ttl,
+                    };
+                    localStorage.setItem(key, JSON.stringify(data));
+                } catch {
+                    // Silently fail
+                }
+            }
+            
+            static remove(key) {
+                try {
+                    localStorage.removeItem(key);
+                } catch {
+                    // Silently fail
+                }
+            }
+        }
+        
+        // ============================================
+        // SECTION 30: UPDATE FUNCTIONS
+        // ============================================
+        async function updateHeaderMetrics() {
+            if (state.isUpdating) return;
+            state.isUpdating = true;
+            
+            try {
+                const data = await APIClient.get('/arbitrage/header-metrics');
+                state.metrics = data;
+                state.lastUpdate = Date.now();
+                state.retryCount = 0;
+                state.hasErrors = false;
+                state.connectionStatus = data.system_status || 'online';
+                
+                renderMetrics(data);
+                updateSystemStatus(data.system_status);
+                updateUserInfo(data.user);
+                
+                // Cache data
+                CacheManager.set(CONFIG.CACHE_KEY, data);
+                
+            } catch (error) {
+                console.error('[NEXUS] Failed to fetch header metrics:', error);
+                state.hasErrors = true;
+                state.retryCount++;
+                
+                // Try to use cached data
+                const cached = CacheManager.get(CONFIG.CACHE_KEY);
+                if (cached) {
+                    console.warn('[NEXUS] Using cached data');
+                    renderMetrics(cached);
+                    updateSystemStatus(cached.system_status || 'online');
+                    updateUserInfo(cached.user);
+                } else if (state.retryCount <= CONFIG.MAX_RETRIES) {
+                    setTimeout(updateHeaderMetrics, CONFIG.RETRY_DELAY * state.retryCount);
+                } else {
+                    showErrorState();
+                }
+            } finally {
+                state.isUpdating = false;
+                hideLoading();
+            }
+        }
+        
+        function renderMetrics(data) {
+            // Balance
+            if (data.balance) {
+                DOM.balance.value.textContent = Formatters.currency(data.balance.total);
+                DOM.balance.value.classList.remove('loading');
+                
+                if (data.balance.change !== undefined) {
+                    const change = data.balance.change;
+                    DOM.balance.change.textContent = Formatters.percentage(change);
+                    DOM.balance.change.className = 'metric-change ' + (
+                        change > 0 ? 'positive' :
+                        change < 0 ? 'negative' : 'neutral'
+                    );
+                }
+            }
+            
+            // PnL
+            if (data.pnl) {
+                DOM.pnl.value.textContent = Formatters.currency(data.pnl.today);
+                DOM.pnl.value.classList.remove('loading');
+                
+                if (data.pnl.percentage !== undefined) {
+                    const pct = data.pnl.percentage;
+                    DOM.pnl.change.textContent = Formatters.percentage(pct);
+                    DOM.pnl.change.className = 'metric-change ' + (
+                        pct > 0 ? 'positive' :
+                        pct < 0 ? 'negative' : 'neutral'
+                    );
+                }
+            }
+            
+            // Positions
+            if (data.positions !== undefined) {
+                DOM.positions.textContent = Formatters.integer(data.positions);
+                DOM.positions.classList.remove('loading');
+            }
+            
+            // Opportunities
+            if (data.opportunities !== undefined) {
+                const opps = data.opportunities;
+                DOM.opportunities.textContent = Formatters.integer(opps);
+                DOM.opportunities.classList.remove('loading');
+                
+                if (opps > 0) {
+                    DOM.opportunityBadge.textContent = `🔥 ${opps} found`;
+                    DOM.opportunityBadge.className = 'metric-opportunity-badge has-opportunities';
+                } else {
+                    DOM.opportunityBadge.textContent = '🔍 Scanning...';
+                    DOM.opportunityBadge.className = 'metric-opportunity-badge';
+                }
+            }
+            
+            // Latency
+            if (data.latency !== undefined) {
+                DOM.status.latency.textContent = Formatters.latency(data.latency);
+            }
+        }
+        
+        function updateSystemStatus(status) {
+            const dot = DOM.status.dot;
+            const label = DOM.status.label;
+            
+            // Reset classes
+            dot.className = 'status-dot';
+            
+            // Update based on status
+            switch (status) {
+                case 'online':
+                    dot.classList.add('online');
+                    label.textContent = 'System Online';
+                    state.connectionStatus = 'online';
+                    break;
+                case 'degraded':
+                    dot.classList.add('degraded');
+                    label.textContent = 'Performance Degraded';
+                    state.connectionStatus = 'degraded';
+                    break;
+                case 'offline':
+                    dot.classList.add('offline');
+                    label.textContent = 'System Offline';
+                    state.connectionStatus = 'offline';
+                    break;
+                default:
+                    dot.classList.add('online');
+                    label.textContent = 'System Online';
+                    state.connectionStatus = 'online';
+            }
+        }
+        
+        function updateUserInfo(user) {
+            if (!user) return;
+            
+            const name = user.name || 'User';
+            const role = user.role || 'Arbitrage Trader';
+            const email = user.email || 'user@nexusquantum.com';
+            const avatar = user.avatar || '/static/images/avatars/default-avatar.png';
+            
+            DOM.user.name.textContent = name;
+            DOM.user.role.textContent = role;
+            DOM.user.avatar.src = avatar;
+            DOM.user.dropdownName.textContent = name;
+            DOM.user.dropdownEmail.textContent = email;
+            DOM.user.dropdownAvatar.src = avatar;
+        }
+        
+        function showErrorState() {
+            DOM.balance.value.textContent = '⚠️ Error';
+            DOM.balance.value.classList.remove('loading');
+            DOM.pnl.value.textContent = '⚠️ Error';
+            DOM.pnl.value.classList.remove('loading');
+            DOM.positions.textContent = '⚠️';
+            DOM.positions.classList.remove('loading');
+            DOM.opportunities.textContent = '⚠️';
+            DOM.opportunities.classList.remove('loading');
+            DOM.opportunityBadge.textContent = '⚠️ Offline';
+            DOM.opportunityBadge.className = 'metric-opportunity-badge';
+            
+            DOM.status.dot.className = 'status-dot offline';
+            DOM.status.label.textContent = 'Connection Error';
+            DOM.status.latency.textContent = '--';
+        }
+        
+        function hideLoading() {
+            if (DOM.loading) {
+                DOM.loading.classList.add('hidden');
+                setTimeout(() => {
+                    DOM.loading.style.display = 'none';
+                }, 500);
+            }
+        }
+        
+        // ============================================
+        // SECTION 31: DROPDOWN TOGGLE
+        // ============================================
+        DOM.profile.addEventListener('click', function(e) {
+            e.stopPropagation();
+            toggleDropdown();
+        });
+        
+        DOM.profile.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                toggleDropdown();
+            }
+        });
+        
+        function toggleDropdown() {
+            state.isDropdownOpen = !state.isDropdownOpen;
+            DOM.dropdown.classList.toggle('visible', state.isDropdownOpen);
+            DOM.dropdownIcon.classList.toggle('rotated', state.isDropdownOpen);
+            DOM.profile.setAttribute('aria-expanded', state.isDropdownOpen);
+        }
+        
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.header-user')) {
+                DOM.dropdown.classList.remove('visible');
+                DOM.dropdownIcon.classList.remove('rotated');
+                state.isDropdownOpen = false;
+                DOM.profile.setAttribute('aria-expanded', 'false');
+            }
+        });
+        
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && state.isDropdownOpen) {
+                toggleDropdown();
+            }
+        });
+        
+        // ============================================
+        // SECTION 32: NOTIFICATIONS
+        // ============================================
+        DOM.notifications.addEventListener('click', function() {
+            // TODO: Open notification panel
+            console.log('[NEXUS] Notification bell clicked');
+            // Simulate clearing badge
+            DOM.notificationBadge.style.display = 'none';
+        });
+        
+        // ============================================
+        // SECTION 33: HEADER SCROLL EFFECT
+        // ============================================
+        let lastScrollY = 0;
+        
+        window.addEventListener('scroll', function() {
+            const scrollY = window.scrollY;
+            if (scrollY > 20) {
+                DOM.header.classList.add('scrolled');
+            } else {
+                DOM.header.classList.remove('scrolled');
+            }
+            lastScrollY = scrollY;
+        }, { passive: true });
+        
+        // ============================================
+        // SECTION 34: KEYBOARD SHORTCUTS
+        // ============================================
+        document.addEventListener('keydown', function(e) {
+            // Ctrl+Shift+H for help
+            if (e.ctrlKey && e.shiftKey && e.key === 'H') {
+                e.preventDefault();
+                console.log('[NEXUS] Help requested');
+            }
+            
+            // Escape to close dropdown
+            if (e.key === 'Escape' && state.isDropdownOpen) {
+                toggleDropdown();
+            }
+            
+            // Ctrl+Shift+Q for logout
+            if (e.ctrlKey && e.shiftKey && e.key === 'Q') {
+                e.preventDefault();
+                if (confirm('Are you sure you want to logout?')) {
+                    window.location.href = '/api/auth/logout';
+                }
+            }
+        });
+        
+        // ============================================
+        // SECTION 35: VISIBILITY CHANGE HANDLER
+        // ============================================
+        document.addEventListener('visibilitychange', function() {
+            if (!document.hidden) {
+                // Refresh when tab becomes visible
+                const elapsed = Date.now() - (state.lastUpdate || 0);
+                if (elapsed > CONFIG.STALE_THRESHOLD) {
+                    updateHeaderMetrics();
+                }
+            }
+        });
+        
+        // ============================================
+        // SECTION 36: NETWORK STATUS HANDLER
+        // ============================================
+        window.addEventListener('online', function() {
+            console.log('[NEXUS] Network online - refreshing data');
+            updateHeaderMetrics();
+        });
+        
+        window.addEventListener('offline', function() {
+            console.warn('[NEXUS] Network offline');
+            showErrorState();
+        });
+        
+        // ============================================
+        // SECTION 37: INITIALIZATION
+        // ============================================
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('[NEXUS] Initializing header...');
+            
+            // Load cached data first for immediate display
+            const cached = CacheManager.get(CONFIG.CACHE_KEY);
+            if (cached) {
+                console.log('[NEXUS] Loading cached data');
+                renderMetrics(cached);
+                updateSystemStatus(cached.system_status || 'online');
+                updateUserInfo(cached.user);
+                hideLoading();
+            }
+            
+            // Fetch fresh data
+            setTimeout(updateHeaderMetrics, 100);
+            
+            // Set up interval
+            setInterval(updateHeaderMetrics, CONFIG.REFRESH_INTERVAL);
+            
+            // Update uptime
+            setInterval(() => {
+                state.uptime += 1;
+                const hours = Math.floor(state.uptime / 3600);
+                const minutes = Math.floor((state.uptime % 3600) / 60);
+                const seconds = state.uptime % 60;
+                DOM.status.uptime.textContent = 
+                    `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            }, 1000);
+            
+            console.log('[NEXUS] Header initialized successfully');
+        });
+        
+        // ============================================
+        // SECTION 38: EXPOSE FOR DEBUGGING
+        // ============================================
+        window.__NEXUS = {
+            header: {
+                state: state,
+                update: updateHeaderMetrics,
+                config: CONFIG,
+                refresh: () => { state.lastUpdate = 0; updateHeaderMetrics(); },
+                clearCache: () => CacheManager.remove(CONFIG.CACHE_KEY),
+            }
+        };
+        
+        console.log('[NEXUS] Debug: window.__NEXUS.header available');
+    </script>
+    
+</body>
+</html>
