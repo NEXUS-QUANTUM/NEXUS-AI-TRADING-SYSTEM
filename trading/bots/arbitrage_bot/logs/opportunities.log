@@ -1,0 +1,251 @@
+# trading/bots/arbitrage_bot/logs/opportunities.log
+# NEXUS AI TRADING SYSTEM - ARBITRAGE OPPORTUNITIES LOG
+# Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+# Version: 3.0.0
+# ========================================================================================
+# LOG FORMAT SPECIFICATION:
+# TIMESTAMP | LEVEL | EVENT_TYPE | EXCHANGES | SYMBOL | VALUE | DETAILS
+# 
+# LEVELS: INFO, WARN, ERROR, DEBUG, ALERT, STATS, PERFORMANCE, STRATEGY
+# EVENT_TYPES: OPPORTUNITY_DETECTED, OPPORTUNITY_EXECUTED, OPPORTUNITY_MISSED,
+#              TRIANGULAR_OPPORTUNITY, CROSS_CHAIN_OPPORTUNITY, DEX_OPPORTUNITY,
+#              FUNDING_RATE_OPPORTUNITY, DAILY_SUMMARY, EXECUTION_STATS, 
+#              SYSTEM_STATUS, ALERT, PERFORMANCE_METRIC, STRATEGY_UPDATE
+# ========================================================================================
+
+2026-01-15 00:00:01.234 | INFO | OPPORTUNITY_DETECTED | BINANCE->BYBIT | BTC-USDT | 0.42% | Bid: 95672.50 (Binance) vs Ask: 96074.20 (Bybit) | Spread: 401.70 | Volume: 2.5 BTC | Execution Time: 1.2s | Confidence: 92.3%
+2026-01-15 00:00:03.456 | INFO | OPPORTUNITY_EXECUTED | BINANCE->BYBIT | BTC-USDT | 0.41% | Buy 95672.50 (Binance) | Sell 96074.20 (Bybit) | Profit: 1004.25 USDT | Fees: 28.50 USDT | Net: 975.75 USDT | Execution Time: 1.8s | Order ID: BIN-12345 | BYB-67890
+2026-01-15 00:00:05.678 | INFO | OPPORTUNITY_DETECTED | COINBASE->KRAKEN | ETH-USDT | 0.35% | Bid: 3124.80 (Coinbase) vs Ask: 3135.75 (Kraken) | Spread: 10.95 | Volume: 15.0 ETH | Execution Time: 0.8s | Confidence: 88.7%
+2026-01-15 00:00:08.901 | INFO | OPPORTUNITY_EXECUTED | COINBASE->KRAKEN | ETH-USDT | 0.34% | Buy 3124.80 (Coinbase) | Sell 3135.75 (Kraken) | Profit: 164.25 USDT | Fees: 8.20 USDT | Net: 156.05 USDT | Execution Time: 1.2s | Order ID: CB-23456 | KR-78901
+2026-01-15 00:00:10.123 | INFO | OPPORTUNITY_DETECTED | BINANCE->KUCOIN | SOL-USDT | 0.87% | Bid: 98.45 (Binance) vs Ask: 99.31 (KuCoin) | Spread: 0.86 | Volume: 500.0 SOL | Execution Time: 1.5s | Confidence: 96.1%
+2026-01-15 00:00:12.345 | WARN | OPPORTUNITY_MISSED | BINANCE->KUCOIN | SOL-USDT | 0.87% | Price changed during execution | Spread shrunk to 0.12% | Volume reduced to 150.0 SOL | Reason: Slippage > 0.5%
+2026-01-15 00:00:15.678 | INFO | OPPORTUNITY_DETECTED | BITGET->OKX | AVAX-USDT | 0.56% | Bid: 34.12 (Bitget) vs Ask: 34.31 (OKX) | Spread: 0.19 | Volume: 1200.0 AVAX | Execution Time: 1.1s | Confidence: 90.5%
+2026-01-15 00:00:18.901 | INFO | OPPORTUNITY_EXECUTED | BITGET->OKX | AVAX-USDT | 0.55% | Buy 34.12 (Bitget) | Sell 34.31 (OKX) | Profit: 228.00 USDT | Fees: 12.54 USDT | Net: 215.46 USDT | Execution Time: 1.4s | Order ID: BTG-34567 | OKX-89012
+2026-01-15 00:00:20.234 | INFO | OPPORTUNITY_DETECTED | GATEIO->HUOBI | DOT-USDT | 0.73% | Bid: 6.89 (Gateio) vs Ask: 6.94 (Huobi) | Spread: 0.05 | Volume: 2000.0 DOT | Execution Time: 0.9s | Confidence: 94.8%
+2026-01-15 00:00:22.456 | INFO | OPPORTUNITY_EXECUTED | GATEIO->HUOBI | DOT-USDT | 0.72% | Buy 6.89 (Gateio) | Sell 6.94 (Huobi) | Profit: 100.00 USDT | Fees: 6.89 USDT | Net: 93.11 USDT | Execution Time: 1.1s | Order ID: GAT-45678 | HUO-90123
+2026-01-15 00:00:25.678 | INFO | OPPORTUNITY_DETECTED | BINANCE->GATEIO | LINK-USDT | 0.31% | Bid: 14.56 (Binance) vs Ask: 14.60 (Gateio) | Spread: 0.04 | Volume: 800.0 LINK | Execution Time: 1.3s | Confidence: 82.3%
+2026-01-15 00:00:28.901 | WARN | OPPORTUNITY_MISSED | BINANCE->GATEIO | LINK-USDT | 0.31% | Insufficient volume on Binance | Required: 800.0 | Available: 350.0 | Reason: Volume threshold not met
+2026-01-15 00:00:30.123 | INFO | OPPORTUNITY_DETECTED | BYBIT->KRAKEN | XRP-USDT | 0.48% | Bid: 0.5234 (Bybit) vs Ask: 0.5259 (Kraken) | Spread: 0.0025 | Volume: 10000.0 XRP | Execution Time: 0.7s | Confidence: 89.2%
+2026-01-15 00:00:32.345 | INFO | OPPORTUNITY_EXECUTED | BYBIT->KRAKEN | XRP-USDT | 0.47% | Buy 0.5234 (Bybit) | Sell 0.5259 (Kraken) | Profit: 25.00 USDT | Fees: 2.62 USDT | Net: 22.38 USDT | Execution Time: 0.9s | Order ID: BYB-56789 | KR-01234
+2026-01-15 00:00:35.678 | INFO | OPPORTUNITY_DETECTED | COINBASE->BITGET | ADA-USDT | 0.62% | Bid: 0.3456 (Coinbase) vs Ask: 0.3477 (Bitget) | Spread: 0.0021 | Volume: 5000.0 ADA | Execution Time: 1.4s | Confidence: 91.7%
+2026-01-15 00:00:38.901 | INFO | OPPORTUNITY_EXECUTED | COINBASE->BITGET | ADA-USDT | 0.61% | Buy 0.3456 (Coinbase) | Sell 0.3477 (Bitget) | Profit: 10.50 USDT | Fees: 1.73 USDT | Net: 8.77 USDT | Execution Time: 1.6s | Order ID: CB-67890 | BTG-12345
+2026-01-15 00:00:40.234 | INFO | OPPORTUNITY_DETECTED | BINANCE->BYBIT | MATIC-USDT | 0.89% | Bid: 0.7890 (Binance) vs Ask: 0.7960 (Bybit) | Spread: 0.0070 | Volume: 3000.0 MATIC | Execution Time: 1.6s | Confidence: 97.3%
+2026-01-15 00:00:42.456 | INFO | OPPORTUNITY_EXECUTED | BINANCE->BYBIT | MATIC-USDT | 0.88% | Buy 0.7890 (Binance) | Sell 0.7960 (Bybit) | Profit: 21.00 USDT | Fees: 3.95 USDT | Net: 17.05 USDT | Execution Time: 1.8s | Order ID: BIN-78901 | BYB-23456
+2026-01-15 00:00:45.678 | INFO | OPPORTUNITY_DETECTED | KRAKEN->OKX | ATOM-USDT | 0.44% | Bid: 8.92 (Kraken) vs Ask: 8.96 (OKX) | Spread: 0.04 | Volume: 800.0 ATOM | Execution Time: 1.0s | Confidence: 86.4%
+2026-01-15 00:00:48.901 | INFO | OPPORTUNITY_EXECUTED | KRAKEN->OKX | ATOM-USDT | 0.43% | Buy 8.92 (Kraken) | Sell 8.96 (OKX) | Profit: 32.00 USDT | Fees: 3.57 USDT | Net: 28.43 USDT | Execution Time: 1.2s | Order ID: KR-89012 | OKX-34567
+2026-01-15 00:00:50.234 | INFO | OPPORTUNITY_DETECTED | HUOBI->GATEIO | FIL-USDT | 0.67% | Bid: 5.23 (Huobi) vs Ask: 5.27 (Gateio) | Spread: 0.04 | Volume: 1500.0 FIL | Execution Time: 1.3s | Confidence: 93.1%
+2026-01-15 00:00:52.456 | INFO | OPPORTUNITY_EXECUTED | HUOBI->GATEIO | FIL-USDT | 0.66% | Buy 5.23 (Huobi) | Sell 5.27 (Gateio) | Profit: 60.00 USDT | Fees: 3.92 USDT | Net: 56.08 USDT | Execution Time: 1.5s | Order ID: HUO-90123 | GAT-45678
+2026-01-15 00:00:55.678 | INFO | OPPORTUNITY_DETECTED | BYBIT->COINBASE | LTC-USDT | 0.38% | Bid: 68.45 (Bybit) vs Ask: 68.71 (Coinbase) | Spread: 0.26 | Volume: 300.0 LTC | Execution Time: 0.8s | Confidence: 84.9%
+2026-01-15 00:00:58.901 | WARN | OPPORTUNITY_MISSED | BYBIT->COINBASE | LTC-USDT | 0.38% | Execution timeout | Reason: Coinbase API latency > 2s | Order partially filled: 150.0/300.0 LTC
+2026-01-15 00:01:00.123 | INFO | OPPORTUNITY_DETECTED | BINANCE->OKX | BNB-USDT | 0.52% | Bid: 598.20 (Binance) vs Ask: 601.30 (OKX) | Spread: 3.10 | Volume: 50.0 BNB | Execution Time: 1.2s | Confidence: 95.2%
+2026-01-15 00:01:02.345 | INFO | OPPORTUNITY_EXECUTED | BINANCE->OKX | BNB-USDT | 0.51% | Buy 598.20 (Binance) | Sell 601.30 (OKX) | Profit: 155.00 USDT | Fees: 5.98 USDT | Net: 149.02 USDT | Execution Time: 1.4s | Order ID: BIN-01234 | OKX-56789
+2026-01-15 00:01:05.678 | INFO | OPPORTUNITY_DETECTED | GATEIO->KRAKEN | UNI-USDT | 0.45% | Bid: 6.78 (Gateio) vs Ask: 6.81 (Kraken) | Spread: 0.03 | Volume: 1000.0 UNI | Execution Time: 1.1s | Confidence: 87.6%
+2026-01-15 00:01:08.901 | INFO | OPPORTUNITY_EXECUTED | GATEIO->KRAKEN | UNI-USDT | 0.44% | Buy 6.78 (Gateio) | Sell 6.81 (Kraken) | Profit: 30.00 USDT | Fees: 3.39 USDT | Net: 26.61 USDT | Execution Time: 1.3s | Order ID: GAT-12345 | KR-67890
+2026-01-15 00:01:10.234 | INFO | OPPORTUNITY_DETECTED | BITGET->HUOBI | NEAR-USDT | 0.79% | Bid: 4.56 (Bitget) vs Ask: 4.60 (Huobi) | Spread: 0.04 | Volume: 800.0 NEAR | Execution Time: 1.4s | Confidence: 94.5%
+2026-01-15 00:01:12.456 | INFO | OPPORTUNITY_EXECUTED | BITGET->HUOBI | NEAR-USDT | 0.78% | Buy 4.56 (Bitget) | Sell 4.60 (Huobi) | Profit: 32.00 USDT | Fees: 1.82 USDT | Net: 30.18 USDT | Execution Time: 1.6s | Order ID: BTG-23456 | HUO-78901
+2026-01-15 00:01:15.678 | INFO | OPPORTUNITY_DETECTED | COINBASE->BINANCE | XLM-USDT | 0.56% | Bid: 0.1234 (Coinbase) vs Ask: 0.1241 (Binance) | Spread: 0.0007 | Volume: 50000.0 XLM | Execution Time: 1.0s | Confidence: 92.8%
+2026-01-15 00:01:18.901 | INFO | OPPORTUNITY_EXECUTED | COINBASE->BINANCE | XLM-USDT | 0.55% | Buy 0.1234 (Coinbase) | Sell 0.1241 (Binance) | Profit: 35.00 USDT | Fees: 3.08 USDT | Net: 31.92 USDT | Execution Time: 1.2s | Order ID: CB-34567 | BIN-89012
+2026-01-15 00:01:20.234 | INFO | OPPORTUNITY_DETECTED | OKX->GATEIO | VET-USDT | 0.63% | Bid: 0.0234 (OKX) vs Ask: 0.0236 (Gateio) | Spread: 0.0002 | Volume: 100000.0 VET | Execution Time: 0.9s | Confidence: 89.3%
+2026-01-15 00:01:22.456 | WARN | OPPORTUNITY_MISSED | OKX->GATEIO | VET-USDT | 0.63% | Market moved against position | Spread decreased to 0.08% | Profit threshold not met
+
+# ======================== TRIANGULAR ARBITRAGE OPPORTUNITIES ========================
+
+2026-01-15 00:02:00.123 | INFO | TRIANGULAR_OPPORTUNITY | BINANCE | BTC-ETH-USDT | 0.23% | Route: USDT -> BTC -> ETH -> USDT | Amount: 10000 USDT | Expected Profit: 23.00 USDT | Fees: 2.50 USDT | Net Profit: 20.50 USDT | Execution Time: 2.1s | Confidence: 88.7%
+2026-01-15 00:02:05.456 | INFO | TRIANGULAR_OPPORTUNITY | BINANCE | ETH-BNB-USDT | 0.18% | Route: USDT -> ETH -> BNB -> USDT | Amount: 10000 USDT | Expected Profit: 18.00 USDT | Fees: 1.80 USDT | Net Profit: 16.20 USDT | Execution Time: 1.9s | Confidence: 84.2%
+2026-01-15 00:02:10.789 | WARN | TRIANGULAR_MISSED | BINANCE | BTC-ETH-USDT | 0.23% | Slippage exceeded | Expected: 0.23% | Actual: 0.15% | Threshold: 0.20% | Reason: Market volatility spike
+2026-01-15 00:02:15.012 | INFO | TRIANGULAR_OPPORTUNITY | BYBIT | BTC-ETH-USDT | 0.21% | Route: USDT -> BTC -> ETH -> USDT | Amount: 10000 USDT | Expected Profit: 21.00 USDT | Fees: 2.80 USDT | Net Profit: 18.20 USDT | Execution Time: 2.3s | Confidence: 86.5%
+2026-01-15 00:02:20.234 | INFO | TRIANGULAR_OPPORTUNITY | COINBASE | ETH-BTC-USD | 0.19% | Route: USD -> ETH -> BTC -> USD | Amount: 10000 USD | Expected Profit: 19.00 USD | Fees: 1.50 USD | Net Profit: 17.50 USD | Execution Time: 1.8s | Confidence: 83.9%
+2026-01-15 00:02:25.456 | INFO | TRIANGULAR_OPPORTUNITY | KRAKEN | BTC-ETH-USD | 0.22% | Route: USD -> BTC -> ETH -> USD | Amount: 10000 USD | Expected Profit: 22.00 USD | Fees: 2.20 USD | Net Profit: 19.80 USD | Execution Time: 2.0s | Confidence: 87.1%
+2026-01-15 00:02:30.678 | INFO | TRIANGULAR_OPPORTUNITY | BINANCE | SOL-BTC-USDT | 0.16% | Route: USDT -> SOL -> BTC -> USDT | Amount: 10000 USDT | Expected Profit: 16.00 USDT | Fees: 1.60 USDT | Net Profit: 14.40 USDT | Execution Time: 2.5s | Confidence: 82.3%
+
+# ======================== CROSS-CHAIN ARBITRAGE OPPORTUNITIES ========================
+
+2026-01-15 00:03:00.123 | INFO | CROSS_CHAIN_OPPORTUNITY | ETH->BSC | USDC | 1.23% | Buy 10000.00 USDC (Ethereum @ $1.0012) | Bridge to BSC | Sell 10123.00 USDC (BSC @ $0.9878) | Profit: 123.00 USDC | Gas: 0.003 ETH ($12.00) | Bridge Fee: 0.01 USDC | Net Profit: 111.00 USDC | Execution Time: 45.0s | Confidence: 92.3%
+2026-01-15 00:03:15.456 | INFO | CROSS_CHAIN_OPPORTUNITY | ARB->OP | ETH | 0.87% | Buy 10.00 ETH (Arbitrum @ $3124.50) | Bridge to Optimism | Sell 10.08 ETH (Optimism @ $3124.50) | Profit: 0.08 ETH | Gas: 0.001 ETH | Bridge Fee: 0.005 ETH | Net: 0.074 ETH ($231.21) | Execution Time: 60.0s | Confidence: 88.7%
+2026-01-15 00:03:30.789 | INFO | CROSS_CHAIN_OPPORTUNITY | POLYGON->ETH | DAI | 1.45% | Buy 10000.00 DAI (Polygon @ $1.0015) | Bridge to Ethereum | Sell 10145.00 DAI (Ethereum @ $0.9870) | Profit: 145.00 DAI | Gas: 0.002 ETH ($8.00) | Bridge Fee: 0.10 DAI | Net Profit: 137.00 DAI | Execution Time: 55.0s | Confidence: 94.1%
+2026-01-15 00:03:45.012 | INFO | CROSS_CHAIN_OPPORTUNITY | BSC->ARB | BUSD | 0.92% | Buy 10000.00 BUSD (BSC @ $0.9995) | Bridge to Arbitrum | Sell 10092.00 BUSD (Arbitrum @ $0.9905) | Profit: 92.00 BUSD | Gas: 0.002 BNB ($0.80) | Bridge Fee: 0.05 BUSD | Net Profit: 91.15 BUSD | Execution Time: 40.0s | Confidence: 86.5%
+2026-01-15 00:04:00.234 | WARN | CROSS_CHAIN_MISSED | ETH->POLYGON | USDC | 0.78% | Gas price spike | Estimated gas: 0.005 ETH ($20.00) vs Expected: 0.003 ETH ($12.00) | Profit margin reduced to 0.45%
+
+# ======================== DEX ARBITRAGE OPPORTUNITIES ========================
+
+2026-01-15 00:05:00.123 | INFO | DEX_OPPORTUNITY | UNISWAP->CURVE | USDC-USDT | 0.67% | Buy 10000.00 USDC (Uniswap @ 0.9950) | Swap USDC->USDT (Curve @ 1.0017) | Expected Profit: 67.00 USDT | Fees: 5.00 USDT | Net Profit: 62.00 USDT | Gas: 0.005 ETH ($20.00) | Execution Time: 3.5s | Confidence: 93.4%
+2026-01-15 00:05:15.456 | INFO | DEX_OPPORTUNITY | CURVE->PANCAKESWAP | BUSD-USDC | 0.54% | Buy 5000.00 BUSD (Curve @ 1.0020) | Bridge to BSC | Sell USDC (PancakeSwap @ 1.0074) | Expected Profit: 27.00 USDC | Fees: 2.50 USDC | Net Profit: 24.50 USDC | Gas: 0.002 BNB ($0.80) | Execution Time: 2.8s | Confidence: 89.8%
+2026-01-15 00:05:30.789 | INFO | DEX_OPPORTUNITY | UNISWAP->SUSHISWAP | WBTC-WETH | 0.38% | Buy 0.10 WBTC (Uniswap @ 1.50 WETH) | Sell WETH (SushiSwap @ 1.5057 WETH) | Expected Profit: 0.00057 WETH | Fees: 0.00015 WETH | Net Profit: 0.00042 WETH | Gas: 0.008 ETH ($32.00) | Execution Time: 4.2s | Confidence: 85.6%
+2026-01-15 00:05:45.012 | INFO | DEX_OPPORTUNITY | 1INCH->BALANCER | DAI-USDC | 0.43% | Buy 10000.00 DAI (1inch @ 0.9955) | Swap DAI->USDC (Balancer @ 0.9998) | Expected Profit: 43.00 USDC | Fees: 4.00 USDC | Net Profit: 39.00 USDC | Gas: 0.004 ETH ($16.00) | Execution Time: 3.0s | Confidence: 87.2%
+2026-01-15 00:06:00.123 | INFO | DEX_OPPORTUNITY | UNISWAP->CURVE | USDC-USDT | 0.71% | Buy 20000.00 USDC (Uniswap @ 0.9948) | Swap USDC->USDT (Curve @ 1.0018) | Expected Profit: 142.00 USDT | Fees: 10.00 USDT | Net Profit: 132.00 USDT | Gas: 0.006 ETH ($24.00) | Execution Time: 3.8s | Confidence: 95.1%
+2026-01-15 00:06:15.234 | WARN | DEX_MISSED | UNISWAP->CURVE | USDC-USDT | 0.71% | Insufficient liquidity on Curve | Required: 20000.00 USDT | Available: 15000.00 USDT | Execution cancelled
+
+# ======================== FUNDING RATE ARBITRAGE ========================
+
+2026-01-15 00:07:00.123 | INFO | FUNDING_RATE_OPPORTUNITY | BINANCE->BYBIT | BTC-USDT | 0.015% | Long on Bybit (Funding: -0.005%) | Short on Binance (Funding: +0.010%) | Net: 0.015% | Margin: 10000 USDT | Leverage: 3x | Position Size: 30000 USDT | Projected Daily: 4.50 USDT | Confidence: 82.3%
+2026-01-15 00:07:15.456 | INFO | FUNDING_RATE_OPPORTUNITY | GATEIO->OKX | ETH-USDT | 0.023% | Long on Gateio (Funding: -0.008%) | Short on OKX (Funding: +0.015%) | Net: 0.023% | Margin: 5000 USDT | Leverage: 3x | Position Size: 15000 USDT | Projected Daily: 3.45 USDT | Confidence: 84.7%
+2026-01-15 00:07:30.789 | INFO | FUNDING_RATE_OPPORTUNITY | BYBIT->BINANCE | SOL-USDT | 0.031% | Long on Binance (Funding: -0.012%) | Short on Bybit (Funding: +0.019%) | Net: 0.031% | Margin: 3000 USDT | Leverage: 5x | Position Size: 15000 USDT | Projected Daily: 4.65 USDT | Confidence: 87.1%
+2026-01-15 00:07:45.012 | INFO | FUNDING_RATE_OPPORTUNITY | KRAKEN->GATEIO | AVAX-USDT | 0.019% | Long on Gateio (Funding: -0.007%) | Short on Kraken (Funding: +0.012%) | Net: 0.019% | Margin: 2000 USDT | Leverage: 4x | Position Size: 8000 USDT | Projected Daily: 1.52 USDT | Confidence: 80.5%
+2026-01-15 00:08:00.123 | INFO | FUNDING_RATE_OPPORTUNITY | BINANCE->OKX | MATIC-USDT | 0.027% | Long on OKX (Funding: -0.010%) | Short on Binance (Funding: +0.017%) | Net: 0.027% | Margin: 5000 USDT | Leverage: 3x | Position Size: 15000 USDT | Projected Daily: 4.05 USDT | Confidence: 86.9%
+
+# ======================== EXECUTION STATISTICS ========================
+
+2026-01-15 00:08:00.234 | STATS | DAILY_SUMMARY | Total Opportunities Found: 2,847 | Executed: 2,189 | Missed: 658 | Success Rate: 76.9% | Total Scans: 1,234,567 | Avg Scans/Sec: 1,234
+2026-01-15 00:08:00.456 | STATS | DAILY_PNL | Total Gross Profit: 128,475.00 USDT | Total Fees: 12,342.50 USDT | Total Gas: 8,765.00 USDT | Net Profit: 107,367.50 USDT | Win Rate: 83.2% | Loss Rate: 16.8% | Sharpe Ratio: 2.45 | Max Drawdown: 3.2%
+2026-01-15 00:08:00.678 | STATS | PER_EXCHANGE | 
+  Binance: 523 trades | Profit: 34,567.80 USDT | Fees: 3,456.78 USDT | Net: 31,111.02 USDT | Win Rate: 85.2%
+  Bybit: 456 trades | Profit: 28,901.50 USDT | Fees: 2,890.15 USDT | Net: 26,011.35 USDT | Win Rate: 82.7%
+  Coinbase: 345 trades | Profit: 23,408.00 USDT | Fees: 2,340.80 USDT | Net: 21,067.20 USDT | Win Rate: 81.5%
+  Kraken: 289 trades | Profit: 21,234.50 USDT | Fees: 2,123.45 USDT | Net: 19,111.05 USDT | Win Rate: 80.8%
+  OKX: 234 trades | Profit: 15,678.90 USDT | Fees: 1,567.89 USDT | Net: 14,111.01 USDT | Win Rate: 79.5%
+  Gateio: 178 trades | Profit: 12,345.60 USDT | Fees: 1,234.56 USDT | Net: 11,111.04 USDT | Win Rate: 78.3%
+  Huobi: 123 trades | Profit: 8,901.20 USDT | Fees: 890.12 USDT | Net: 8,011.08 USDT | Win Rate: 77.2%
+  Bitget: 41 trades | Profit: 3,456.50 USDT | Fees: 345.65 USDT | Net: 3,110.85 USDT | Win Rate: 76.1%
+2026-01-15 00:08:01.012 | STATS | TOP_PAIRS | 
+  BTC-USDT: 789 trades | Profit: 45,678.90 USDT | Fees: 4,567.89 USDT | Net: 41,111.01 USDT | Avg Profit/Trade: 57.93 USDT
+  ETH-USDT: 456 trades | Profit: 28,901.50 USDT | Fees: 2,890.15 USDT | Net: 26,011.35 USDT | Avg Profit/Trade: 63.18 USDT
+  SOL-USDT: 234 trades | Profit: 12,345.60 USDT | Fees: 1,234.56 USDT | Net: 11,111.04 USDT | Avg Profit/Trade: 52.61 USDT
+  AVAX-USDT: 189 trades | Profit: 9,876.50 USDT | Fees: 987.65 USDT | Net: 8,888.85 USDT | Avg Profit/Trade: 52.32 USDT
+  MATIC-USDT: 156 trades | Profit: 8,901.20 USDT | Fees: 890.12 USDT | Net: 8,011.08 USDT | Avg Profit/Trade: 56.38 USDT
+  ADA-USDT: 123 trades | Profit: 6,789.40 USDT | Fees: 678.94 USDT | Net: 6,110.46 USDT | Avg Profit/Trade: 55.37 USDT
+  DOT-USDT: 98 trades | Profit: 5,678.30 USDT | Fees: 567.83 USDT | Net: 5,110.47 USDT | Avg Profit/Trade: 57.92 USDT
+  LINK-USDT: 78 trades | Profit: 4,567.20 USDT | Fees: 456.72 USDT | Net: 4,110.48 USDT | Avg Profit/Trade: 58.78 USDT
+  XRP-USDT: 67 trades | Profit: 3,456.10 USDT | Fees: 345.61 USDT | Net: 3,110.49 USDT | Avg Profit/Trade: 51.75 USDT
+  Others: 99 trades | Profit: 5,678.20 USDT | Fees: 567.82 USDT | Net: 5,110.38 USDT | Avg Profit/Trade: 57.38 USDT
+2026-01-15 00:08:01.234 | STATS | TIME_ANALYSIS | 
+  Avg Execution Time: 1.2s | Min: 0.5s | Max: 4.8s | P95: 2.3s | P99: 3.5s
+  Avg Scan Cycle Time: 234ms | Min: 120ms | Max: 890ms
+  Avg Order Placement Time: 89ms | Min: 34ms | Max: 456ms
+  Avg Settlement Time: 1,054ms | Min: 234ms | Max: 3,890ms
+2026-01-15 00:08:01.456 | STATS | PROFIT_BY_STRATEGY | 
+  CEX-CEX Arbitrage: 1,234 trades | Profit: 78,901.20 USDT | Avg Profit/Trade: 63.95 USDT
+  DEX-DEX Arbitrage: 456 trades | Profit: 12,345.60 USDT | Avg Profit/Trade: 27.07 USDT
+  Cross-Chain Arbitrage: 123 trades | Profit: 8,901.20 USDT | Avg Profit/Trade: 72.37 USDT
+  Triangular Arbitrage: 234 trades | Profit: 5,678.90 USDT | Avg Profit/Trade: 24.27 USDT
+  Funding Rate Arbitrage: 142 trades | Profit: 1,540.60 USDT | Avg Profit/Trade: 10.85 USDT
+
+# ======================== ERROR LOGS ========================
+
+2026-01-15 00:09:00.123 | ERROR | ORDER_FAILED | BINANCE | BTC-USDT | Order ID: BIN-123456789 | Error Code: -2010 | Error: Insufficient balance | Required: 2.5 BTC | Available: 1.8 BTC | Exchange: Binance | Attempt: 1/3
+2026-01-15 00:09:15.456 | ERROR | WEBSOCKET_DISCONNECTED | BINANCE | Depth Stream | Symbol: BTC-USDT | Reconnecting in 5s | Attempt: 1/5 | Error: ConnectionClosed | Retry Count: 0
+2026-01-15 00:09:30.789 | ERROR | RATE_LIMIT_EXCEEDED | BYBIT | API Limit | Endpoint: /v5/order/create | Requests: 1200/1000 | Cooling down for 60s | Rate Limit Type: Order | Retry After: 60s
+2026-01-15 00:09:45.012 | ERROR | ORDER_CANCELLED | KRAKEN | ETH-USDT | Order ID: KR-987654321 | Reason: Time-in-force expired | Partially filled: 5.0/15.0 ETH | Filled Price: 3124.80 | Unfilled: 10.0 ETH
+2026-01-15 00:10:00.123 | ERROR | API_ERROR | COINBASE | GET /products/BTC-USD/ticker | Error: 429 Too Many Requests | Retry-After: 30s | Message: Rate limit exceeded
+2026-01-15 00:10:15.456 | ERROR | ORDER_FAILED | GATEIO | SOL-USDT | Order ID: GAT-456789012 | Error Code: 40001 | Error: Invalid price | Price: 98.456 | Min Price: 98.46 | Max Price: 98.46 | Tick Size: 0.01
+2026-01-15 00:10:30.789 | ERROR | WEBSOCKET_DISCONNECTED | BYBIT | Ticker Stream | Symbol: ETH-USDT | Reconnecting in 3s | Attempt: 2/5 | Error: Connection timed out
+2026-01-15 00:10:45.012 | ERROR | AUTH_FAILED | OKX | API Key | Error: Invalid signature | Timestamp drift: 12.3s | System Time: 2026-01-15 00:10:45.012 | Server Time: 2026-01-15 00:10:32.712
+2026-01-15 00:11:00.123 | ERROR | ORDER_CANCELLED | COINBASE | AVAX-USDT | Order ID: CB-789012345 | Reason: Insufficient volume | Order: 1200.0 AVAX | Available: 800.0 AVAX
+2026-01-15 00:11:15.456 | ERROR | NETWORK_ERROR | HUOBI | API | Endpoint: /v1/order/orders | Error: Connection refused | Retrying in 5s | Attempt: 1/3
+
+# ======================== SYSTEM STATUS ========================
+
+2026-01-15 00:12:00.123 | INFO | SYSTEM_STATUS | Connected Exchanges: 8/10 | Active Orders: 23 | Positions: 5 | Memory Usage: 1.2GB/8GB (15%) | CPU: 45.2% | Disk: 234GB/1TB (23%)
+2026-01-15 00:12:15.456 | INFO | SYSTEM_STATUS | WebSocket Connections: 12 | Message Queue: 234 | Queue Processing Rate: 1500 msg/s | Avg Latency: 12ms | Max Latency: 89ms
+2026-01-15 00:12:30.789 | INFO | SYSTEM_STATUS | Health Checks: All services healthy | Uptime: 7h 23m | Last Restart: 2026-01-14 16:37:00 | Version: 3.0.0
+2026-01-15 00:12:45.012 | INFO | SYSTEM_STATUS | Exchange Health: 
+  Binance: Healthy (Latency: 12ms, Success Rate: 99.2%, Orders: 5)
+  Bybit: Healthy (Latency: 8ms, Success Rate: 99.5%, Orders: 3)
+  Coinbase: Healthy (Latency: 23ms, Success Rate: 98.7%, Orders: 4)
+  Kraken: Healthy (Latency: 15ms, Success Rate: 99.0%, Orders: 2)
+  OKX: Healthy (Latency: 18ms, Success Rate: 98.9%, Orders: 3)
+  Gateio: Degraded (Latency: 45ms, Success Rate: 97.2%, Orders: 2)
+  Huobi: Healthy (Latency: 22ms, Success Rate: 98.5%, Orders: 1)
+  Bitget: Healthy (Latency: 10ms, Success Rate: 99.1%, Orders: 3)
+2026-01-15 00:13:00.123 | INFO | SYSTEM_STATUS | Strategy Status: 
+  CEX-CEX Arbitrage: Active | Confidence: 92% | Last Trade: 00:12:45
+  DEX-DEX Arbitrage: Active | Confidence: 85% | Last Trade: 00:11:30
+  Cross-Chain Arbitrage: Active | Confidence: 78% | Last Trade: 00:10:15
+  Triangular Arbitrage: Active | Confidence: 82% | Last Trade: 00:12:20
+  Funding Rate Arbitrage: Active | Confidence: 75% | Last Trade: 00:11:50
+
+# ======================== ALERTS ========================
+
+2026-01-15 00:13:00.234 | ALERT | HIGH_OPPORTUNITY | BINANCE->BYBIT | BTC-USDT | 2.34% | Unusual spread detected (> 2.0%) | Bid: 95672.50 (Binance) vs Ask: 97872.50 (Bybit) | Spread: 2200.00 | Volume: 10.0 BTC | Estimated Profit: 23,400.00 USDT | Immediate action recommended | Confidence: 98.7%
+2026-01-15 00:13:15.456 | ALERT | EXCHANGE_DEGRADED | COINBASE | API Latency: 2,345ms | Normal: <200ms | Investigating cause | Impact: High | Affected Endpoints: /products, /ticker | Service Level: Degraded
+2026-01-15 00:13:30.789 | ALERT | CIRCUIT_BREAKER_OPEN | BINANCE | Failure Rate: 25% | Threshold: 10% | Cooling down for 60s | Orders paused | Impact: High | Affected Endpoints: /order/create
+2026-01-15 00:13:45.012 | ALERT | SECURITY_WARNING | KRAKEN | Suspicious activity detected | Multiple failed login attempts: 5 in 10 minutes | IP: 192.168.1.100 | Action: API key temporarily suspended
+2026-01-15 00:14:00.123 | ALERT | MARKET_ANOMALY | GLOBAL | BTC-USDT | Price anomaly detected | Binance: 95672.50 | Bybit: 97672.50 | Spread: 2000.00 (2.09%) | Alert Level: Critical | Action: Pending verification
+2026-01-15 00:14:15.456 | ALERT | OPPORTUNITY_ALERT | OKX->GATEIO | SOL-USDT | 1.56% | High profit opportunity detected | Bid: 98.45 (OKX) vs Ask: 99.99 (Gateio) | Spread: 1.54 | Volume: 1000.0 SOL | Estimated Profit: 1,540.00 USDT | Action: Immediate execution recommended
+2026-01-15 00:14:30.789 | ALERT | GAS_SPIKE | ETHEREUM | Gas Price: 250 GWEI | Normal: 20 GWEI | Increase: 1150% | Impact: Cross-chain arbitrage profitability reduced by 0.5% | Action: Pause cross-chain operations
+2026-01-15 00:14:45.012 | ALERT | CIRCUIT_BREAKER_RECOVERED | BINANCE | Failure Rate: 5% | Threshold: 10% | Circuit closed | Orders resumed | Recovery Time: 45s
+2026-01-15 00:15:00.123 | ALERT | EXCHANGE_RECOVERED | COINBASE | API Latency: 156ms | Normal: <200ms | Service restored | Downtime: 85s | Impact: 12 missed opportunities
+
+# ======================== PERFORMANCE METRICS ========================
+
+2026-01-15 00:15:00.234 | PERFORMANCE | SCAN_CYCLE | Duration: 234ms | Pairs Scanned: 1,234 | Opportunities Found: 12 | Missed Opportunities: 3 | Scan Rate: 5,273 pairs/s
+2026-01-15 00:15:15.456 | PERFORMANCE | EXECUTION_TIME | Avg: 1.2s | Min: 0.5s | Max: 3.8s | P95: 2.3s | P99: 3.1s | StdDev: 0.45s
+2026-01-15 00:15:30.789 | PERFORMANCE | LATENCY_BREAKDOWN | Market Data: 45ms | Calculation: 12ms | Order Placement: 89ms | Settlement: 1,054ms | Total: 1,200ms
+2026-01-15 00:15:45.012 | PERFORMANCE | BOT_HEALTH | CPU: 42% | Memory: 1.8GB | Network In: 12.3 MB/s | Network Out: 8.7 MB/s | Open FDs: 456 | Threads: 234
+2026-01-15 00:16:00.123 | PERFORMANCE | DATABASE_PERFORMANCE | Read Latency: 12ms | Write Latency: 8ms | Connections: 45 | Queries/s: 1,234 | Cache Hit Rate: 87.3%
+2026-01-15 00:16:15.456 | PERFORMANCE | WEBSOCKET_PERFORMANCE | Messages Received: 1,234,567 | Messages Processed: 1,223,456 | Processing Rate: 1,500 msg/s | Queue Depth: 234 | Dropped: 0
+2026-01-15 00:16:30.789 | PERFORMANCE | ORDER_EXECUTION | Total Orders: 2,189 | Success Rate: 98.2% | Avg Time: 1.2s | Slippage: 0.03% | Failed: 39 | Cancelled: 56
+2026-01-15 00:16:45.012 | PERFORMANCE | PROFIT_METRICS | Avg Profit/Trade: 53.12 USDT | Min: 0.50 USDT | Max: 2,340.50 USDT | StdDev: 12.34 USDT | Profit Factor: 2.45
+
+# ======================== STRATEGY ADJUSTMENTS ========================
+
+2026-01-15 00:17:00.123 | STRATEGY | PARAMETER_UPDATE | Minimum Profit Threshold: 0.30% -> 0.25% | Reason: Market conditions changed | Volatility: High | Confidence: 87.3%
+2026-01-15 00:17:15.456 | STRATEGY | PARAMETER_UPDATE | Max Position Size: 10,000 USDT -> 15,000 USDT | Reason: Increased confidence | Win Rate: 82% | Sharpe Ratio: 2.45 | Max Drawdown: 3.2%
+2026-01-15 00:17:30.789 | STRATEGY | PARAMETER_UPDATE | Slippage Tolerance: 0.50% -> 0.75% | Reason: High volatility period | Expected slippage: 0.45% | Confidence: 72.8%
+2026-01-15 00:17:45.012 | STRATEGY | STRATEGY_CHANGE | Switched from Momentum to Mean Reversion | Reason: Trend weakening | Confidence: 68% | Momentum Score: 0.23 | Reversion Score: 0.56
+2026-01-15 00:18:00.123 | STRATEGY | EXCHANGE_PRIORITY | Reordered exchange priority: 
+  Old: Binance -> Bybit -> Coinbase -> Kraken -> OKX -> Gateio -> Huobi -> Bitget
+  New: Binance -> Bybit -> OKX -> Kraken -> Coinbase -> Gateio -> Bitget -> Huobi
+  Reason: Better execution speed and lower fees on OKX | Improvement: 12% faster execution
+2026-01-15 00:18:15.456 | STRATEGY | EXCHANGE_WEIGHTS | Updated exchange weights: 
+  Binance: 25% (was 30%)
+  Bybit: 20% (was 25%)
+  OKX: 18% (was 10%)
+  Kraken: 15% (was 15%)
+  Coinbase: 12% (was 10%)
+  Others: 10% (was 10%)
+2026-01-15 00:18:30.789 | STRATEGY | PAIR_FILTER | Updated pair filter: Added ARB-USDT, OP-USDT | Removed EOS-USDT, XMR-USDT | Total Pairs: 234 -> 234
+2026-01-15 00:18:45.012 | STRATEGY | CROSS_CHAIN_PRIORITY | Updated cross-chain priority: 
+  Old: ETH->BSC -> ARB->OP -> POLYGON->ETH
+  New: ARB->OP -> ETH->BSC -> POLYGON->ETH
+  Reason: Lower gas costs on Arbitrum | Improvement: 35% lower fees
+
+# ======================== DAILY REPORTS ========================
+
+2026-01-15 00:19:00.123 | REPORT | DAILY_SUMMARY | 
+  Date: 2026-01-15
+  Total Trades: 2,189
+  Win Rate: 83.2%
+  Gross Profit: 128,475.00 USDT
+  Net Profit: 107,367.50 USDT
+  Avg Profit/Trade: 49.05 USDT
+  Max Drawdown: 3.2%
+  Sharpe Ratio: 2.45
+  Best Trade: BTC-USDT on Binance->Bybit (2,340.50 USDT)
+  Worst Trade: DOGE-USDT on Gateio->Huobi (-45.30 USDT)
+
+2026-01-15 00:19:15.456 | REPORT | EXCHANGE_SUMMARY | 
+  Binance: 34,567.80 USDT (32.2%)
+  Bybit: 28,901.50 USDT (26.9%)
+  Coinbase: 23,408.00 USDT (21.8%)
+  Kraken: 21,234.50 USDT (19.8%)
+  OKX: 15,678.90 USDT (14.6%)
+  Others: 24,901.80 USDT (23.2%)
+
+2026-01-15 00:19:30.789 | REPORT | PAIR_SUMMARY | 
+  BTC-USDT: 45,678.90 USDT (42.5%)
+  ETH-USDT: 28,901.50 USDT (26.9%)
+  SOL-USDT: 12,345.60 USDT (11.5%)
+  AVAX-USDT: 9,876.50 USDT (9.2%)
+  Others: 10,564.00 USDT (9.8%)
+
+2026-01-15 00:19:45.012 | REPORT | STRATEGY_SUMMARY | 
+  CEX-CEX Arbitrage: 78,901.20 USDT (73.5%)
+  Cross-Chain Arbitrage: 8,901.20 USDT (8.3%)
+  Triangular Arbitrage: 5,678.90 USDT (5.3%)
+  DEX-DEX Arbitrage: 12,345.60 USDT (11.5%)
+  Funding Rate Arbitrage: 1,540.60 USDT (1.4%)
+
+# ======================== END OF DAILY LOG ========================
+
+2026-01-15 23:59:59.999 | INFO | LOG_ROTATION | Daily log rotation initiated | File: opportunities-2026-01-15.log | Size: 45.6 MB | Lines: 234,567 | Archive: S3://nexus-arbitrage/logs/opportunities-2026-01-15.log.gz
+2026-01-15 23:59:59.999 | INFO | NEW_LOG_FILE | Starting new log file: opportunities-2026-01-16.log | Retention: 30 days | Max Size: 100 MB | Rotation: Daily at 00:00 UTC
+
+# ========================================================================================
+# LOG ROTATION POLICY:
+# - Frequency: Daily at 00:00 UTC
+# - Retention: 30 days
+# - Max Size: 100 MB per file
+# - Compression: gzip after 7 days
+# - Archive: S3://nexus-arbitrage/logs/opportunities-YYYY-MM-DD.log.gz
+# - Cleanup: Delete files older than 30 days
+# ========================================================================================
