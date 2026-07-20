@@ -1,0 +1,1802 @@
+<!--
+╔═══════════════════════════════════════════════════════════════════════════════════╗
+║                                                                                   ║
+║   ███╗   ███╗███████╗████████╗██████╗ ██╗ ██████╗███████╗                      ║
+║   ████╗ ████║██╔════╝╚══██╔══╝██╔══██╗██║██╔════╝██╔════╝                      ║
+║   ██╔████╔██║█████╗     ██║   ██████╔╝██║██║     ███████╗                      ║
+║   ██║╚██╔╝██║██╔══╝     ██║   ██╔══██╗██║██║     ╚════██║                      ║
+║   ██║ ╚═╝ ██║███████╗   ██║   ██║  ██║██║╚██████╗███████║                      ║
+║   ╚═╝     ╚═╝╚══════╝   ╚═╝   ╚═╝  ╚═╝╚═╝ ╚═════╝╚══════╝                      ║
+║                                                                                   ║
+║   NEXUS AI TRADING SYSTEM - ARBITRAGE METRICS DASHBOARD                         ║
+║   Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved                       ║
+║   Version: 3.0.0 - Build: 2026.07.20                                             ║
+║   CEO: Dr X... - Majority Shareholder                                            ║
+║                                                                                   ║
+╚═══════════════════════════════════════════════════════════════════════════════════╝
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="theme-color" content="#0A0A0F">
+    <meta name="description" content="NEXUS Arbitrage Bot - Real-time metrics dashboard">
+    <title>NEXUS Arbitrage Metrics</title>
+    
+    <!-- ============================================
+    FONTS & ICONS
+    ============================================ -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    
+    <style>
+        /* ============================================
+           SECTION 1: ROOT VARIABLES - NEXUS THEME
+           ============================================ */
+        :root {
+            /* --- Brand Colors --- */
+            --nexus-primary: #6C3CE1;
+            --nexus-primary-dark: #4A1FA8;
+            --nexus-primary-light: #8B6BEE;
+            --nexus-primary-gradient: linear-gradient(135deg, #6C3CE1 0%, #8B6BEE 50%, #00D4AA 100%);
+            --nexus-secondary: #00D4AA;
+            --nexus-secondary-dark: #00A88A;
+            --nexus-secondary-light: #33E0C0;
+            --nexus-accent: #FF6B6B;
+            --nexus-accent-dark: #E05555;
+            --nexus-warning: #FFB84D;
+            --nexus-warning-dark: #E6A040;
+            
+            /* --- Gradients --- */
+            --gradient-primary: linear-gradient(135deg, #6C3CE1 0%, #00D4AA 100%);
+            --gradient-primary-hover: linear-gradient(135deg, #7A4CE8 0%, #10E0B0 100%);
+            --gradient-accent: linear-gradient(135deg, #FF6B6B 0%, #FFB84D 100%);
+            --gradient-dark: linear-gradient(135deg, #0A0A0F 0%, #1A1A24 100%);
+            --gradient-success: linear-gradient(135deg, #00D4AA 0%, #33E0C0 100%);
+            --gradient-danger: linear-gradient(135deg, #FF6B6B 0%, #FF0044 100%);
+            
+            /* --- Backgrounds --- */
+            --bg-primary: #0A0A0F;
+            --bg-secondary: #0F0F18;
+            --bg-tertiary: #13131A;
+            --bg-card: #1A1A24;
+            --bg-card-hover: #222233;
+            --bg-card-active: #2A2A3E;
+            --bg-elevated: rgba(26, 26, 36, 0.95);
+            
+            /* --- Text --- */
+            --text-primary: #FFFFFF;
+            --text-secondary: #A0A0B8;
+            --text-muted: #6B6B85;
+            --text-disabled: #3D3D55;
+            
+            /* --- Metrics Colors --- */
+            --metric-positive: #00D4AA;
+            --metric-positive-bg: rgba(0, 212, 170, 0.1);
+            --metric-negative: #FF6B6B;
+            --metric-negative-bg: rgba(255, 107, 107, 0.1);
+            --metric-neutral: #A0A0B8;
+            --metric-neutral-bg: rgba(160, 160, 184, 0.05);
+            
+            /* --- Borders --- */
+            --border-color: rgba(108, 60, 225, 0.12);
+            --border-color-hover: rgba(108, 60, 225, 0.3);
+            --border-color-light: rgba(255, 255, 255, 0.05);
+            
+            /* --- Shadows --- */
+            --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.4);
+            --shadow-card-hover: 0 12px 48px rgba(0, 0, 0, 0.6);
+            --shadow-glow: 0 0 60px rgba(108, 60, 225, 0.06);
+            --shadow-glow-strong: 0 0 80px rgba(108, 60, 225, 0.12);
+            
+            /* --- Animations --- */
+            --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-base: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-slow: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-bounce: 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            
+            /* --- Border Radius --- */
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
+            --radius-full: 9999px;
+        }
+        
+        /* ============================================
+           SECTION 2: RESET & BASE STYLES
+           ============================================ */
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 24px;
+        }
+        
+        /* ============================================
+           SECTION 3: SCROLLBAR
+           ============================================ */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--nexus-primary);
+            border-radius: var(--radius-full);
+            transition: var(--transition-base);
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--nexus-primary-light);
+        }
+        
+        /* ============================================
+           SECTION 4: METRICS CONTAINER
+           ============================================ */
+        .metrics-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px 0;
+        }
+        
+        .metrics-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+        
+        .metrics-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .metrics-title i {
+            -webkit-text-fill-color: var(--nexus-secondary);
+            margin-right: 10px;
+        }
+        
+        .metrics-controls {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        
+        .metrics-controls select,
+        .metrics-controls button {
+            padding: 8px 16px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            color: var(--text-secondary);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all var(--transition-base);
+            outline: none;
+        }
+        
+        .metrics-controls select:hover,
+        .metrics-controls button:hover {
+            border-color: var(--border-color-hover);
+            color: var(--text-primary);
+            background: var(--bg-card-hover);
+        }
+        
+        .metrics-controls select:focus,
+        .metrics-controls button:focus {
+            border-color: var(--nexus-primary);
+            box-shadow: 0 0 0 3px rgba(108, 60, 225, 0.1);
+        }
+        
+        .metrics-controls button.refresh-btn {
+            background: var(--gradient-primary);
+            color: var(--text-primary);
+            border: none;
+            font-weight: 600;
+        }
+        
+        .metrics-controls button.refresh-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(108, 60, 225, 0.3);
+        }
+        
+        .metrics-controls button.refresh-btn:active {
+            transform: scale(0.95);
+        }
+        
+        .metrics-controls button.refresh-btn.loading {
+            pointer-events: none;
+            opacity: 0.7;
+        }
+        
+        /* ============================================
+           SECTION 5: METRICS GRID
+           ============================================ */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        
+        /* ============================================
+           SECTION 6: METRIC CARD
+           ============================================ */
+        .metric-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 18px 20px;
+            transition: all var(--transition-bounce);
+            position: relative;
+            overflow: hidden;
+            cursor: default;
+        }
+        
+        .metric-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--gradient-primary);
+            opacity: 0;
+            transition: opacity var(--transition-base);
+        }
+        
+        .metric-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--border-color-hover);
+            box-shadow: var(--shadow-card-hover), var(--shadow-glow);
+            background: var(--bg-card-hover);
+        }
+        
+        .metric-card:hover::before {
+            opacity: 1;
+        }
+        
+        .metric-card:active {
+            transform: scale(0.98);
+        }
+        
+        /* --- Card Glow Effect --- */
+        .metric-card::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), 
+                rgba(108, 60, 225, 0.03) 0%, 
+                transparent 60%);
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity var(--transition-base);
+        }
+        
+        .metric-card:hover::after {
+            opacity: 1;
+        }
+        
+        /* --- Card Types --- */
+        .metric-card.type-positive {
+            border-left: 3px solid var(--metric-positive);
+        }
+        
+        .metric-card.type-negative {
+            border-left: 3px solid var(--metric-negative);
+        }
+        
+        .metric-card.type-neutral {
+            border-left: 3px solid var(--metric-neutral);
+        }
+        
+        .metric-card.type-primary {
+            border-left: 3px solid var(--nexus-primary);
+        }
+        
+        .metric-card.type-warning {
+            border-left: 3px solid var(--nexus-warning);
+        }
+        
+        /* --- Card Content --- */
+        .metric-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        
+        .metric-card-label {
+            font-size: 0.65rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+        }
+        
+        .metric-card-icon {
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: var(--radius-full);
+            font-size: 0.8rem;
+            transition: all var(--transition-base);
+        }
+        
+        .metric-card.type-positive .metric-card-icon {
+            background: var(--metric-positive-bg);
+            color: var(--metric-positive);
+        }
+        
+        .metric-card.type-negative .metric-card-icon {
+            background: var(--metric-negative-bg);
+            color: var(--metric-negative);
+        }
+        
+        .metric-card.type-neutral .metric-card-icon {
+            background: var(--metric-neutral-bg);
+            color: var(--metric-neutral);
+        }
+        
+        .metric-card.type-primary .metric-card-icon {
+            background: rgba(108, 60, 225, 0.1);
+            color: var(--nexus-primary);
+        }
+        
+        .metric-card.type-warning .metric-card-icon {
+            background: rgba(255, 184, 77, 0.1);
+            color: var(--nexus-warning);
+        }
+        
+        .metric-card:hover .metric-card-icon {
+            transform: scale(1.1) rotate(-5deg);
+        }
+        
+        .metric-card-value {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            font-variant-numeric: tabular-nums;
+            line-height: 1.2;
+            margin-bottom: 2px;
+            transition: all var(--transition-base);
+        }
+        
+        .metric-card-value.loading {
+            opacity: 0.4;
+            animation: shimmer 1.5s ease-in-out infinite;
+        }
+        
+        @keyframes shimmer {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.7; }
+        }
+        
+        .metric-card-value .currency {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+        
+        .metric-card-change {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            padding: 2px 10px;
+            border-radius: var(--radius-full);
+            margin-top: 2px;
+            transition: all var(--transition-base);
+        }
+        
+        .metric-card-change.positive {
+            color: var(--metric-positive);
+            background: var(--metric-positive-bg);
+        }
+        
+        .metric-card-change.negative {
+            color: var(--metric-negative);
+            background: var(--metric-negative-bg);
+        }
+        
+        .metric-card-change.neutral {
+            color: var(--text-muted);
+            background: var(--metric-neutral-bg);
+        }
+        
+        .metric-card-change i {
+            font-size: 0.6rem;
+        }
+        
+        .metric-card-sub {
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+        
+        .metric-card-sub i {
+            margin-right: 4px;
+        }
+        
+        /* ============================================
+           SECTION 7: METRIC SPARKLINE
+           ============================================ */
+        .metric-sparkline {
+            margin-top: 12px;
+            height: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .metric-sparkline canvas {
+            width: 100%;
+            height: 100%;
+            border-radius: var(--radius-sm);
+        }
+        
+        /* ============================================
+           SECTION 8: METRICS DETAIL PANEL
+           ============================================ */
+        .metrics-detail-panel {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 16px;
+            margin-top: 16px;
+        }
+        
+        .metrics-detail-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            transition: all var(--transition-base);
+        }
+        
+        .metrics-detail-card:hover {
+            border-color: var(--border-color-hover);
+            box-shadow: var(--shadow-card);
+        }
+        
+        .metrics-detail-card .detail-title {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .metrics-detail-card .detail-title i {
+            color: var(--nexus-secondary);
+        }
+        
+        /* --- Mini Table --- */
+        .mini-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .mini-table th,
+        .mini-table td {
+            padding: 6px 0;
+            font-size: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color-light);
+        }
+        
+        .mini-table th {
+            color: var(--text-muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.6rem;
+            letter-spacing: 0.5px;
+        }
+        
+        .mini-table td {
+            color: var(--text-secondary);
+        }
+        
+        .mini-table td .highlight-positive {
+            color: var(--metric-positive);
+        }
+        
+        .mini-table td .highlight-negative {
+            color: var(--metric-negative);
+        }
+        
+        .mini-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .mini-table tr:hover td {
+            color: var(--text-primary);
+        }
+        
+        /* --- Progress Bar --- */
+        .metric-progress {
+            margin-top: 8px;
+        }
+        
+        .metric-progress-bar {
+            height: 4px;
+            background: var(--border-color-light);
+            border-radius: var(--radius-full);
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .metric-progress-bar .fill {
+            height: 100%;
+            border-radius: var(--radius-full);
+            transition: width 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+            width: 0%;
+        }
+        
+        .metric-progress-bar .fill.success {
+            background: var(--gradient-success);
+        }
+        
+        .metric-progress-bar .fill.danger {
+            background: var(--gradient-danger);
+        }
+        
+        .metric-progress-bar .fill.warning {
+            background: var(--nexus-warning);
+        }
+        
+        .metric-progress-bar .fill.primary {
+            background: var(--gradient-primary);
+        }
+        
+        .metric-progress-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.6rem;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+        
+        /* ============================================
+           SECTION 9: RESPONSIVE
+           ============================================ */
+        @media (max-width: 1200px) {
+            .metrics-detail-panel {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .metrics-grid {
+                grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+                gap: 12px;
+            }
+            
+            .metric-card-value {
+                font-size: 1.5rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 12px;
+            }
+            
+            .metrics-container {
+                padding: 10px 0;
+            }
+            
+            .metrics-header {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 12px;
+            }
+            
+            .metrics-title {
+                font-size: 1.2rem;
+            }
+            
+            .metrics-controls {
+                flex-wrap: wrap;
+            }
+            
+            .metrics-controls select,
+            .metrics-controls button {
+                font-size: 0.7rem;
+                padding: 6px 12px;
+                flex: 1;
+                min-width: 100px;
+            }
+            
+            .metrics-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                gap: 10px;
+            }
+            
+            .metric-card {
+                padding: 14px 16px;
+            }
+            
+            .metric-card-value {
+                font-size: 1.2rem;
+            }
+            
+            .metric-card-change {
+                font-size: 0.6rem;
+                padding: 1px 8px;
+            }
+            
+            .metric-sparkline {
+                height: 24px;
+            }
+            
+            .metrics-detail-card {
+                padding: 14px 16px;
+            }
+            
+            .mini-table th,
+            .mini-table td {
+                font-size: 0.65rem;
+                padding: 4px 0;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            body {
+                padding: 8px;
+            }
+            
+            .metrics-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+            }
+            
+            .metric-card {
+                padding: 12px 14px;
+            }
+            
+            .metric-card-value {
+                font-size: 1rem;
+            }
+            
+            .metric-card-label {
+                font-size: 0.55rem;
+            }
+            
+            .metric-card-icon {
+                width: 26px;
+                height: 26px;
+                font-size: 0.65rem;
+            }
+            
+            .metric-card-change {
+                font-size: 0.5rem;
+                padding: 1px 6px;
+            }
+            
+            .metric-sparkline {
+                height: 20px;
+                margin-top: 8px;
+            }
+            
+            .metrics-controls select,
+            .metrics-controls button {
+                font-size: 0.6rem;
+                padding: 4px 8px;
+                min-width: 60px;
+            }
+        }
+        
+        /* ============================================
+           SECTION 10: UTILITY ANIMATIONS
+           ============================================ */
+        .fade-in {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .slide-up {
+            animation: slideUp 0.6s ease-out forwards;
+        }
+        
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .pulse-once {
+            animation: pulseOnce 0.5s ease-out;
+        }
+        
+        @keyframes pulseOnce {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .count-up {
+            animation: countUp 0.8s ease-out;
+        }
+        
+        @keyframes countUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    
+    <!-- ============================================
+    SECTION 11: METRICS CONTAINER
+    ============================================ -->
+    <div class="metrics-container" id="metricsContainer">
+        
+        <!-- Header -->
+        <div class="metrics-header">
+            <div class="metrics-title">
+                <i class="fas fa-chart-pie"></i>
+                Arbitrage Metrics
+                <span style="font-size: 0.6rem; -webkit-text-fill-color: var(--text-muted); font-weight: 400; margin-left: 8px;">
+                    Live Dashboard
+                </span>
+            </div>
+            <div class="metrics-controls">
+                <select id="timeRange" aria-label="Time range">
+                    <option value="1h">Last Hour</option>
+                    <option value="24h" selected>Last 24 Hours</option>
+                    <option value="7d">Last 7 Days</option>
+                    <option value="30d">Last 30 Days</option>
+                </select>
+                <select id="metricType" aria-label="Metric type">
+                    <option value="all" selected>All Metrics</option>
+                    <option value="arbitrage">Arbitrage</option>
+                    <option value="performance">Performance</option>
+                    <option value="risk">Risk</option>
+                    <option value="system">System</option>
+                </select>
+                <button class="refresh-btn" id="refreshBtn" aria-label="Refresh metrics">
+                    <i class="fas fa-sync-alt"></i> Refresh
+                </button>
+            </div>
+        </div>
+        
+        <!-- ==========================================
+        SECTION 12: METRICS GRID
+        ========================================== -->
+        <div class="metrics-grid" id="metricsGrid">
+            
+            <!-- Total Balance -->
+            <div class="metric-card type-positive" id="metricBalance" data-type="performance">
+                <div class="metric-card-header">
+                    <span class="metric-card-label">
+                        <i class="fas fa-wallet" style="margin-right: 4px;"></i>
+                        Total Balance
+                    </span>
+                    <div class="metric-card-icon">
+                        <i class="fas fa-coins"></i>
+                    </div>
+                </div>
+                <div class="metric-card-value loading" id="balanceValue">$--</div>
+                <div class="metric-card-change neutral" id="balanceChange">
+                    <i class="fas fa-minus"></i> --
+                </div>
+                <div class="metric-sparkline" id="balanceSparkline">
+                    <canvas id="balanceChart"></canvas>
+                </div>
+            </div>
+            
+            <!-- 24h PnL -->
+            <div class="metric-card type-neutral" id="metricPnl" data-type="performance">
+                <div class="metric-card-header">
+                    <span class="metric-card-label">
+                        <i class="fas fa-chart-line" style="margin-right: 4px;"></i>
+                        24h PnL
+                    </span>
+                    <div class="metric-card-icon">
+                        <i class="fas fa-arrow-trend-up"></i>
+                    </div>
+                </div>
+                <div class="metric-card-value loading" id="pnlValue">$--</div>
+                <div class="metric-card-change neutral" id="pnlChange">
+                    <i class="fas fa-minus"></i> --
+                </div>
+                <div class="metric-sub" style="font-size: 0.6rem; color: var(--text-muted); margin-top: 4px;">
+                    <i class="fas fa-percent"></i> <span id="pnlPercent">--</span>% today
+                </div>
+            </div>
+            
+            <!-- Active Positions -->
+            <div class="metric-card type-primary" id="metricPositions" data-type="arbitrage">
+                <div class="metric-card-header">
+                    <span class="metric-card-label">
+                        <i class="fas fa-exchange-alt" style="margin-right: 4px;"></i>
+                        Active Positions
+                    </span>
+                    <div class="metric-card-icon">
+                        <i class="fas fa-layer-group"></i>
+                    </div>
+                </div>
+                <div class="metric-card-value loading" id="positionsValue">--</div>
+                <div class="metric-card-change neutral" id="positionsChange">
+                    <i class="fas fa-minus"></i> --
+                </div>
+                <div class="metric-progress" id="positionsProgress">
+                    <div class="metric-progress-bar">
+                        <div class="fill primary" id="positionsFill" style="width: 0%;"></div>
+                    </div>
+                    <div class="metric-progress-labels">
+                        <span>Used: <span id="positionsUsed">0</span></span>
+                        <span>Limit: <span id="positionsLimit">10</span></span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Arbitrage Opportunities -->
+            <div class="metric-card type-warning" id="metricOpportunities" data-type="arbitrage">
+                <div class="metric-card-header">
+                    <span class="metric-card-label">
+                        <i class="fas fa-bolt" style="margin-right: 4px;"></i>
+                        Opportunities
+                    </span>
+                    <div class="metric-card-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                </div>
+                <div class="metric-card-value loading" id="opportunitiesValue">--</div>
+                <div class="metric-card-change neutral" id="opportunitiesChange">
+                    <i class="fas fa-minus"></i> --
+                </div>
+                <div class="metric-card-sub" id="opportunityDetails">
+                    <i class="fas fa-robot"></i> Scanning <span id="scanningExchanges">0</span> exchanges
+                </div>
+            </div>
+            
+            <!-- Win Rate -->
+            <div class="metric-card type-positive" id="metricWinRate" data-type="performance">
+                <div class="metric-card-header">
+                    <span class="metric-card-label">
+                        <i class="fas fa-trophy" style="margin-right: 4px;"></i>
+                        Win Rate
+                    </span>
+                    <div class="metric-card-icon">
+                        <i class="fas fa-medal"></i>
+                    </div>
+                </div>
+                <div class="metric-card-value loading" id="winRateValue">--%</div>
+                <div class="metric-card-change neutral" id="winRateChange">
+                    <i class="fas fa-minus"></i> --
+                </div>
+                <div class="metric-progress">
+                    <div class="metric-progress-bar">
+                        <div class="fill success" id="winRateFill" style="width: 0%;"></div>
+                    </div>
+                    <div class="metric-progress-labels">
+                        <span>Wins: <span id="winsCount">0</span></span>
+                        <span>Losses: <span id="lossesCount">0</span></span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- System Uptime -->
+            <div class="metric-card type-primary" id="metricUptime" data-type="system">
+                <div class="metric-card-header">
+                    <span class="metric-card-label">
+                        <i class="fas fa-heartbeat" style="margin-right: 4px;"></i>
+                        System Uptime
+                    </span>
+                    <div class="metric-card-icon">
+                        <i class="fas fa-server"></i>
+                    </div>
+                </div>
+                <div class="metric-card-value loading" id="uptimeValue">--</div>
+                <div class="metric-card-change neutral" id="uptimeChange">
+                    <i class="fas fa-minus"></i> --
+                </div>
+                <div class="metric-card-sub" id="uptimeDetails">
+                    <i class="fas fa-microchip"></i> <span id="uptimeCpu">--</span>% CPU · <span id="uptimeMem">--</span>% RAM
+                </div>
+            </div>
+            
+            <!-- Success Rate -->
+            <div class="metric-card type-positive" id="metricSuccess" data-type="arbitrage">
+                <div class="metric-card-header">
+                    <span class="metric-card-label">
+                        <i class="fas fa-check-circle" style="margin-right: 4px;"></i>
+                        Success Rate
+                    </span>
+                    <div class="metric-card-icon">
+                        <i class="fas fa-check"></i>
+                    </div>
+                </div>
+                <div class="metric-card-value loading" id="successValue">--%</div>
+                <div class="metric-card-change neutral" id="successChange">
+                    <i class="fas fa-minus"></i> --
+                </div>
+                <div class="metric-card-sub">
+                    <i class="fas fa-rocket"></i> <span id="successTotal">0</span> executed · <span id="successFailed">0</span> failed
+                </div>
+            </div>
+            
+            <!-- Avg Execution Time -->
+            <div class="metric-card type-neutral" id="metricExecution" data-type="system">
+                <div class="metric-card-header">
+                    <span class="metric-card-label">
+                        <i class="fas fa-clock" style="margin-right: 4px;"></i>
+                        Avg Execution
+                    </span>
+                    <div class="metric-card-icon">
+                        <i class="fas fa-stopwatch"></i>
+                    </div>
+                </div>
+                <div class="metric-card-value loading" id="executionValue">--ms</div>
+                <div class="metric-card-change neutral" id="executionChange">
+                    <i class="fas fa-minus"></i> --
+                </div>
+                <div class="metric-card-sub">
+                    <i class="fas fa-arrow-right"></i> <span id="executionMin">--</span>ms min · <span id="executionMax">--</span>ms max
+                </div>
+            </div>
+            
+        </div>
+        
+        <!-- ==========================================
+        SECTION 13: DETAIL PANEL
+        ========================================== -->
+        <div class="metrics-detail-panel">
+            
+            <!-- Top Pairs -->
+            <div class="metrics-detail-card">
+                <div class="detail-title">
+                    <i class="fas fa-coins"></i>
+                    Top Performing Pairs
+                </div>
+                <table class="mini-table" id="topPairsTable">
+                    <thead>
+                        <tr>
+                            <th>Pair</th>
+                            <th>Volume</th>
+                            <th>Profit</th>
+                            <th>Spread</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="topPairsBody">
+                        <tr>
+                            <td colspan="5" style="text-align: center; color: var(--text-muted); padding: 20px 0;">
+                                <i class="fas fa-spinner fa-spin"></i> Loading...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Risk Metrics -->
+            <div class="metrics-detail-card">
+                <div class="detail-title">
+                    <i class="fas fa-shield-alt"></i>
+                    Risk Metrics
+                </div>
+                <table class="mini-table" id="riskMetricsTable">
+                    <thead>
+                        <tr>
+                            <th>Metric</th>
+                            <th>Value</th>
+                            <th>Limit</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="riskMetricsBody">
+                        <tr>
+                            <td colspan="4" style="text-align: center; color: var(--text-muted); padding: 20px 0;">
+                                <i class="fas fa-spinner fa-spin"></i> Loading...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+        </div>
+        
+        <!-- ==========================================
+        SECTION 14: TIMESTAMP
+        ========================================== -->
+        <div style="text-align: center; margin-top: 16px; font-size: 0.6rem; color: var(--text-disabled);">
+            <i class="far fa-clock"></i> Last updated: <span id="lastUpdate">--</span>
+            <span style="margin: 0 8px;">|</span>
+            <i class="fas fa-circle" style="color: var(--status-online); font-size: 0.4rem;"></i>
+            <span style="color: var(--text-muted);">Live</span>
+        </div>
+        
+    </div>
+    
+    <!-- ============================================
+    SECTION 15: JAVASCRIPT - COMPLETE
+    ============================================ -->
+    <script>
+        'use strict';
+        
+        // ============================================
+        // SECTION 16: CONFIGURATION
+        // ============================================
+        const METRICS_CONFIG = {
+            API_BASE: '/api/v1',
+            REFRESH_INTERVAL: 10000,
+            RETRY_DELAY: 3000,
+            MAX_RETRIES: 3,
+            ANIMATION_DURATION: 1000,
+            PAIRS_LIMIT: 5,
+        };
+        
+        // ============================================
+        // SECTION 17: DOM REFS
+        // ============================================
+        const METRICS_DOM = {
+            grid: document.getElementById('metricsGrid'),
+            refreshBtn: document.getElementById('refreshBtn'),
+            timeRange: document.getElementById('timeRange'),
+            metricType: document.getElementById('metricType'),
+            lastUpdate: document.getElementById('lastUpdate'),
+            
+            balance: {
+                value: document.getElementById('balanceValue'),
+                change: document.getElementById('balanceChange'),
+                chart: document.getElementById('balanceChart'),
+            },
+            
+            pnl: {
+                value: document.getElementById('pnlValue'),
+                change: document.getElementById('pnlChange'),
+                percent: document.getElementById('pnlPercent'),
+            },
+            
+            positions: {
+                value: document.getElementById('positionsValue'),
+                change: document.getElementById('positionsChange'),
+                fill: document.getElementById('positionsFill'),
+                used: document.getElementById('positionsUsed'),
+                limit: document.getElementById('positionsLimit'),
+            },
+            
+            opportunities: {
+                value: document.getElementById('opportunitiesValue'),
+                change: document.getElementById('opportunitiesChange'),
+                exchanges: document.getElementById('scanningExchanges'),
+            },
+            
+            winRate: {
+                value: document.getElementById('winRateValue'),
+                change: document.getElementById('winRateChange'),
+                fill: document.getElementById('winRateFill'),
+                wins: document.getElementById('winsCount'),
+                losses: document.getElementById('lossesCount'),
+            },
+            
+            uptime: {
+                value: document.getElementById('uptimeValue'),
+                change: document.getElementById('uptimeChange'),
+                cpu: document.getElementById('uptimeCpu'),
+                mem: document.getElementById('uptimeMem'),
+            },
+            
+            success: {
+                value: document.getElementById('successValue'),
+                change: document.getElementById('successChange'),
+                total: document.getElementById('successTotal'),
+                failed: document.getElementById('successFailed'),
+            },
+            
+            execution: {
+                value: document.getElementById('executionValue'),
+                change: document.getElementById('executionChange'),
+                min: document.getElementById('executionMin'),
+                max: document.getElementById('executionMax'),
+            },
+            
+            topPairs: document.getElementById('topPairsBody'),
+            riskMetrics: document.getElementById('riskMetricsBody'),
+        };
+        
+        // ============================================
+        // SECTION 18: STATE
+        // ============================================
+        const METRICS_STATE = {
+            isUpdating: false,
+            retryCount: 0,
+            lastData: null,
+            chartInstances: {},
+            animationFrame: null,
+        };
+        
+        // ============================================
+        // SECTION 19: FORMATTERS
+        // ============================================
+        const Formatters = {
+            currency: (value) => {
+                const num = typeof value === 'string' ? parseFloat(value) : value;
+                if (isNaN(num) || !isFinite(num)) return '$0.00';
+                return '$' + num.toLocaleString('en-US', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                });
+            },
+            
+            currencyShort: (value) => {
+                const num = typeof value === 'string' ? parseFloat(value) : value;
+                if (isNaN(num) || !isFinite(num)) return '$0';
+                const abs = Math.abs(num);
+                if (abs >= 1e9) return '$' + (num / 1e9).toFixed(1) + 'B';
+                if (abs >= 1e6) return '$' + (num / 1e6).toFixed(1) + 'M';
+                if (abs >= 1e3) return '$' + (num / 1e3).toFixed(1) + 'K';
+                return '$' + num.toFixed(2);
+            },
+            
+            percentage: (value) => {
+                const num = typeof value === 'string' ? parseFloat(value) : value;
+                if (isNaN(num) || !isFinite(num)) return '+0.00%';
+                return (num >= 0 ? '+' : '') + num.toFixed(2) + '%';
+            },
+            
+            integer: (value) => {
+                const num = typeof value === 'string' ? parseInt(value) : value;
+                if (isNaN(num) || !isFinite(num)) return '0';
+                return num.toLocaleString('en-US');
+            },
+            
+            time: (timestamp) => {
+                if (!timestamp) return '--';
+                const date = new Date(timestamp);
+                return date.toLocaleTimeString('en-US', {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit',
+                });
+            },
+            
+            duration: (ms) => {
+                const num = typeof ms === 'string' ? parseInt(ms) : ms;
+                if (isNaN(num) || !isFinite(num)) return '--';
+                if (num < 1000) return num + 'ms';
+                if (num < 60000) return (num / 1000).toFixed(1) + 's';
+                return Math.floor(num / 60000) + 'm ' + Math.floor((num % 60000) / 1000) + 's';
+            },
+        };
+        
+        // ============================================
+        // SECTION 20: API CLIENT
+        // ============================================
+        class APIClient {
+            static async get(endpoint, options = {}) {
+                const url = METRICS_CONFIG.API_BASE + endpoint;
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 15000);
+                
+                try {
+                    const response = await fetch(url, {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json',
+                            'Cache-Control': 'no-cache',
+                        },
+                        credentials: 'same-origin',
+                        signal: controller.signal,
+                        ...options,
+                    });
+                    
+                    clearTimeout(timeoutId);
+                    
+                    if (!response.ok) {
+                        const errorText = await response.text();
+                        let errorData;
+                        try {
+                            errorData = JSON.parse(errorText);
+                        } catch {
+                            errorData = { detail: errorText || response.statusText };
+                        }
+                        throw new Error(errorData.detail || `HTTP ${response.status}`);
+                    }
+                    
+                    return response.json();
+                } catch (error) {
+                    clearTimeout(timeoutId);
+                    if (error.name === 'AbortError') {
+                        throw new Error('Request timeout');
+                    }
+                    throw error;
+                }
+            }
+        }
+        
+        // ============================================
+        // SECTION 21: CHART RENDERER (Sparkline)
+        // ============================================
+        class SparklineRenderer {
+            constructor(canvas) {
+                this.canvas = canvas;
+                this.ctx = canvas.getContext('2d');
+                this.width = 0;
+                this.height = 0;
+                this.data = [];
+                this.resize();
+            }
+            
+            resize() {
+                const rect = this.canvas.parentElement.getBoundingClientRect();
+                const dpr = window.devicePixelRatio || 1;
+                this.width = rect.width || 200;
+                this.height = this.canvas.parentElement.clientHeight || 30;
+                this.canvas.width = this.width * dpr;
+                this.canvas.height = this.height * dpr;
+                this.canvas.style.width = this.width + 'px';
+                this.canvas.style.height = this.height + 'px';
+                this.ctx.scale(dpr, dpr);
+            }
+            
+            setData(data) {
+                this.data = data;
+                this.draw();
+            }
+            
+            draw() {
+                const ctx = this.ctx;
+                const w = this.width;
+                const h = this.height;
+                
+                ctx.clearRect(0, 0, w, h);
+                
+                if (!this.data || this.data.length < 2) return;
+                
+                const padding = 2;
+                const drawW = w - padding * 2;
+                const drawH = h - padding * 2;
+                
+                const min = Math.min(...this.data);
+                const max = Math.max(...this.data);
+                const range = max - min || 1;
+                
+                // Determine color
+                const last = this.data[this.data.length - 1];
+                const first = this.data[0];
+                const isPositive = last >= first;
+                const color = isPositive ? '#00D4AA' : '#FF6B6B';
+                const gradient = ctx.createLinearGradient(0, 0, 0, h);
+                
+                if (isPositive) {
+                    gradient.addColorStop(0, 'rgba(0, 212, 170, 0.3)');
+                    gradient.addColorStop(1, 'rgba(0, 212, 170, 0)');
+                } else {
+                    gradient.addColorStop(0, 'rgba(255, 107, 107, 0.3)');
+                    gradient.addColorStop(1, 'rgba(255, 107, 107, 0)');
+                }
+                
+                // Draw area
+                ctx.beginPath();
+                this.data.forEach((value, i) => {
+                    const x = padding + (i / (this.data.length - 1)) * drawW;
+                    const y = padding + drawH - ((value - min) / range) * drawH;
+                    if (i === 0) ctx.moveTo(x, y);
+                    else ctx.lineTo(x, y);
+                });
+                ctx.lineTo(padding + drawW, padding + drawH);
+                ctx.lineTo(padding, padding + drawH);
+                ctx.closePath();
+                ctx.fillStyle = gradient;
+                ctx.fill();
+                
+                // Draw line
+                ctx.beginPath();
+                this.data.forEach((value, i) => {
+                    const x = padding + (i / (this.data.length - 1)) * drawW;
+                    const y = padding + drawH - ((value - min) / range) * drawH;
+                    if (i === 0) ctx.moveTo(x, y);
+                    else ctx.lineTo(x, y);
+                });
+                ctx.strokeStyle = color;
+                ctx.lineWidth = 1.5;
+                ctx.stroke();
+                
+                // Draw dot at end
+                const lastX = padding + drawW;
+                const lastY = padding + drawH - ((last - min) / range) * drawH;
+                ctx.beginPath();
+                ctx.arc(lastX, lastY, 3, 0, Math.PI * 2);
+                ctx.fillStyle = color;
+                ctx.fill();
+                ctx.shadowColor = color;
+                ctx.shadowBlur = 10;
+                ctx.fill();
+                ctx.shadowBlur = 0;
+            }
+        }
+        
+        // ============================================
+        // SECTION 22: METRICS RENDERER
+        // ============================================
+        class MetricsRenderer {
+            static render(data) {
+                METRICS_STATE.lastData = data;
+                
+                // Balance
+                if (data.balance) {
+                    METRICS_DOM.balance.value.textContent = Formatters.currency(data.balance.total);
+                    METRICS_DOM.balance.value.classList.remove('loading');
+                    
+                    if (data.balance.change !== undefined) {
+                        const change = data.balance.change;
+                        METRICS_DOM.balance.change.textContent = Formatters.percentage(change);
+                        METRICS_DOM.balance.change.className = 'metric-card-change ' + (
+                            change > 0 ? 'positive' :
+                            change < 0 ? 'negative' : 'neutral'
+                        );
+                        METRICS_DOM.balance.change.innerHTML = (change >= 0 ? '<i class="fas fa-arrow-up"></i>' : '<i class="fas fa-arrow-down"></i>') + ' ' + Formatters.percentage(change);
+                    }
+                    
+                    // Sparkline
+                    if (data.balance.history && data.balance.history.length > 1) {
+                        this.renderSparkline('balanceChart', data.balance.history);
+                    }
+                }
+                
+                // PnL
+                if (data.pnl) {
+                    METRICS_DOM.pnl.value.textContent = Formatters.currency(data.pnl.today);
+                    METRICS_DOM.pnl.value.classList.remove('loading');
+                    
+                    if (data.pnl.change !== undefined) {
+                        const change = data.pnl.change;
+                        METRICS_DOM.pnl.change.textContent = Formatters.percentage(change);
+                        METRICS_DOM.pnl.change.className = 'metric-card-change ' + (
+                            change > 0 ? 'positive' :
+                            change < 0 ? 'negative' : 'neutral'
+                        );
+                        METRICS_DOM.pnl.change.innerHTML = (change >= 0 ? '<i class="fas fa-arrow-up"></i>' : '<i class="fas fa-arrow-down"></i>') + ' ' + Formatters.percentage(change);
+                    }
+                    
+                    if (data.pnl.percentage !== undefined) {
+                        METRICS_DOM.pnl.percent.textContent = Formatters.percentage(data.pnl.percentage);
+                    }
+                }
+                
+                // Positions
+                if (data.positions !== undefined) {
+                    METRICS_DOM.positions.value.textContent = Formatters.integer(data.positions.open || data.positions);
+                    METRICS_DOM.positions.value.classList.remove('loading');
+                    
+                    const positions = data.positions.open || data.positions;
+                    const limit = data.positions.limit || 10;
+                    const used = Math.min(positions, limit);
+                    const pct = (positions / limit) * 100;
+                    
+                    METRICS_DOM.positions.fill.style.width = Math.min(pct, 100) + '%';
+                    METRICS_DOM.positions.used.textContent = used;
+                    METRICS_DOM.positions.limit.textContent = limit;
+                    
+                    if (data.positions.change !== undefined) {
+                        const change = data.positions.change;
+                        METRICS_DOM.positions.change.textContent = (change >= 0 ? '+' : '') + change;
+                        METRICS_DOM.positions.change.className = 'metric-card-change ' + (
+                            change > 0 ? 'positive' :
+                            change < 0 ? 'negative' : 'neutral'
+                        );
+                        METRICS_DOM.positions.change.innerHTML = (change >= 0 ? '<i class="fas fa-arrow-up"></i>' : '<i class="fas fa-arrow-down"></i>') + ' ' + Math.abs(change);
+                    }
+                }
+                
+                // Opportunities
+                if (data.opportunities !== undefined) {
+                    const opps = data.opportunities;
+                    METRICS_DOM.opportunities.value.textContent = Formatters.integer(opps);
+                    METRICS_DOM.opportunities.value.classList.remove('loading');
+                    
+                    if (data.opportunities.exchanges !== undefined) {
+                        METRICS_DOM.opportunities.exchanges.textContent = data.opportunities.exchanges;
+                    }
+                    
+                    if (data.opportunities.change !== undefined) {
+                        const change = data.opportunities.change;
+                        METRICS_DOM.opportunities.change.textContent = (change >= 0 ? '+' : '') + change;
+                        METRICS_DOM.opportunities.change.className = 'metric-card-change ' + (
+                            change > 0 ? 'positive' :
+                            change < 0 ? 'negative' : 'neutral'
+                        );
+                        METRICS_DOM.opportunities.change.innerHTML = (change >= 0 ? '<i class="fas fa-arrow-up"></i>' : '<i class="fas fa-arrow-down"></i>') + ' ' + Math.abs(change);
+                    }
+                }
+                
+                // Win Rate
+                if (data.winRate !== undefined) {
+                    METRICS_DOM.winRate.value.textContent = data.winRate.rate.toFixed(1) + '%';
+                    METRICS_DOM.winRate.value.classList.remove('loading');
+                    METRICS_DOM.winRate.fill.style.width = Math.min(data.winRate.rate, 100) + '%';
+                    METRICS_DOM.winRate.wins.textContent = data.winRate.wins || 0;
+                    METRICS_DOM.winRate.losses.textContent = data.winRate.losses || 0;
+                    
+                    if (data.winRate.change !== undefined) {
+                        const change = data.winRate.change;
+                        METRICS_DOM.winRate.change.textContent = (change >= 0 ? '+' : '') + change.toFixed(1) + '%';
+                        METRICS_DOM.winRate.change.className = 'metric-card-change ' + (
+                            change > 0 ? 'positive' :
+                            change < 0 ? 'negative' : 'neutral'
+                        );
+                        METRICS_DOM.winRate.change.innerHTML = (change >= 0 ? '<i class="fas fa-arrow-up"></i>' : '<i class="fas fa-arrow-down"></i>') + ' ' + Math.abs(change).toFixed(1) + '%';
+                    }
+                }
+                
+                // Uptime
+                if (data.uptime) {
+                    METRICS_DOM.uptime.value.textContent = data.uptime.value || '--';
+                    METRICS_DOM.uptime.value.classList.remove('loading');
+                    
+                    if (data.uptime.cpu !== undefined) {
+                        METRICS_DOM.uptime.cpu.textContent = data.uptime.cpu.toFixed(1);
+                    }
+                    if (data.uptime.mem !== undefined) {
+                        METRICS_DOM.uptime.mem.textContent = data.uptime.mem.toFixed(1);
+                    }
+                    
+                    if (data.uptime.change !== undefined) {
+                        const change = data.uptime.change;
+                        METRICS_DOM.uptime.change.textContent = (change >= 0 ? '+' : '') + change + '%';
+                        METRICS_DOM.uptime.change.className = 'metric-card-change ' + (
+                            change > 0 ? 'positive' :
+                            change < 0 ? 'negative' : 'neutral'
+                        );
+                        METRICS_DOM.uptime.change.innerHTML = (change >= 0 ? '<i class="fas fa-arrow-up"></i>' : '<i class="fas fa-arrow-down"></i>') + ' ' + Math.abs(change) + '%';
+                    }
+                }
+                
+                // Success Rate
+                if (data.success) {
+                    METRICS_DOM.success.value.textContent = data.success.rate.toFixed(1) + '%';
+                    METRICS_DOM.success.value.classList.remove('loading');
+                    METRICS_DOM.success.total.textContent = data.success.total || 0;
+                    METRICS_DOM.success.failed.textContent = data.success.failed || 0;
+                    
+                    if (data.success.change !== undefined) {
+                        const change = data.success.change;
+                        METRICS_DOM.success.change.textContent = (change >= 0 ? '+' : '') + change.toFixed(1) + '%';
+                        METRICS_DOM.success.change.className = 'metric-card-change ' + (
+                            change > 0 ? 'positive' :
+                            change < 0 ? 'negative' : 'neutral'
+                        );
+                        METRICS_DOM.success.change.innerHTML = (change >= 0 ? '<i class="fas fa-arrow-up"></i>' : '<i class="fas fa-arrow-down"></i>') + ' ' + Math.abs(change).toFixed(1) + '%';
+                    }
+                }
+                
+                // Execution Time
+                if (data.execution) {
+                    METRICS_DOM.execution.value.textContent = Formatters.duration(data.execution.avg || data.execution);
+                    METRICS_DOM.execution.value.classList.remove('loading');
+                    
+                    if (data.execution.min !== undefined) {
+                        METRICS_DOM.execution.min.textContent = Formatters.duration(data.execution.min);
+                    }
+                    if (data.execution.max !== undefined) {
+                        METRICS_DOM.execution.max.textContent = Formatters.duration(data.execution.max);
+                    }
+                    
+                    if (data.execution.change !== undefined) {
+                        const change = data.execution.change;
+                        METRICS_DOM.execution.change.textContent = (change >= 0 ? '+' : '') + change + 'ms';
+                        METRICS_DOM.execution.change.className = 'metric-card-change ' + (
+                            change < 0 ? 'positive' :
+                            change > 0 ? 'negative' : 'neutral'
+                        );
+                        METRICS_DOM.execution.change.innerHTML = (change <= 0 ? '<i class="fas fa-arrow-down"></i>' : '<i class="fas fa-arrow-up"></i>') + ' ' + Math.abs(change) + 'ms';
+                    }
+                }
+                
+                // Top Pairs
+                if (data.topPairs && data.topPairs.length > 0) {
+                    this.renderTopPairs(data.topPairs);
+                }
+                
+                // Risk Metrics
+                if (data.riskMetrics) {
+                    this.renderRiskMetrics(data.riskMetrics);
+                }
+                
+                // Last update
+                METRICS_DOM.lastUpdate.textContent = Formatters.time(data.timestamp || new Date());
+            }
+            
+            static renderSparkline(canvasId, data) {
+                const canvas = document.getElementById(canvasId);
+                if (!canvas) return;
+                
+                if (!METRICS_STATE.chartInstances[canvasId]) {
+                    METRICS_STATE.chartInstances[canvasId] = new SparklineRenderer(canvas);
+                }
+                
+                METRICS_STATE.chartInstances[canvasId].setData(data);
+            }
+            
+            static renderTopPairs(pairs) {
+                const tbody = METRICS_DOM.topPairs;
+                
+                if (!pairs || pairs.length === 0) {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="5" style="text-align: center; color: var(--text-muted); padding: 20px 0;">
+                                <i class="fas fa-inbox"></i> No data available
+                            </td>
+                        </tr>
+                    `;
+                    return;
+                }
+                
+                tbody.innerHTML = pairs.slice(0, METRICS_CONFIG.PAIRS_LIMIT).map(pair => `
+                    <tr>
+                        <td><strong>${pair.pair}</strong></td>
+                        <td>${Formatters.currencyShort(pair.volume)}</td>
+                        <td class="${pair.profit >= 0 ? 'highlight-positive' : 'highlight-negative'}">
+                            ${pair.profit >= 0 ? '+' : ''}${pair.profit.toFixed(2)}%
+                        </td>
+                        <td>${pair.spread.toFixed(2)}%</td>
+                        <td>
+                            <span style="color: ${pair.status === 'active' ? 'var(--metric-positive)' : 'var(--text-muted)'};">
+                                ${pair.status === 'active' ? '● Active' : '○ Idle'}
+                            </span>
+                        </td>
+                    </tr>
+                `).join('');
+            }
+            
+            static renderRiskMetrics(metrics) {
+                const tbody = METRICS_DOM.riskMetrics;
+                
+                if (!metrics || Object.keys(metrics).length === 0) {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="4" style="text-align: center; color: var(--text-muted); padding: 20px 0;">
+                                <i class="fas fa-inbox"></i> No data available
+                            </td>
+                        </tr>
+                    `;
+                    return;
+                }
+                
+                const items = [
+                    { key: 'drawdown', label: 'Drawdown', value: metrics.drawdown || 0, limit: metrics.drawdownLimit || 10 },
+                    { key: 'exposure', label: 'Exposure', value: metrics.exposure || 0, limit: metrics.exposureLimit || 100 },
+                    { key: 'leverage', label: 'Leverage', value: metrics.leverage || 0, limit: metrics.leverageLimit || 3 },
+                    { key: 'volatility', label: 'Volatility', value: metrics.volatility || 0, limit: metrics.volatilityLimit || 50 },
+                ];
+                
+                tbody.innerHTML = items.map(item => {
+                    const isSafe = item.value <= item.limit;
+                    const pct = Math.min((item.value / item.limit) * 100, 100);
+                    
+                    return `
+                        <tr>
+                            <td>${item.label}</td>
+                            <td>${item.value.toFixed(1)}%</td>
+                            <td>${item.limit}%</td>
+                            <td>
+                                <span style="color: ${isSafe ? 'var(--metric-positive)' : 'var(--metric-negative)'};">
+                                    ${isSafe ? '✓ Safe' : '⚠️ Warning'}
+                                </span>
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+            }
+            
+            static showError() {
+                const loadingElements = document.querySelectorAll('.metric-card-value.loading');
+                loadingElements.forEach(el => {
+                    el.textContent = '⚠️ Error';
+                    el.classList.remove('loading');
+                });
+            }
+        }
+        
+        // ============================================
+        // SECTION 23: METRICS MANAGER
+        // ============================================
+        class MetricsManager {
+            static async fetch() {
+                if (METRICS_STATE.isUpdating) return;
+                METRICS_STATE.isUpdating = true;
+                
+                try {
+                    const timeRange = METRICS_DOM.timeRange.value;
+                    const metricType = METRICS_DOM.metricType.value;
+                    
+                    const data = await APIClient.get(`/arbitrage/metrics?range=${timeRange}&type=${metricType}`);
+                    MetricsRenderer.render(data);
+                    METRICS_STATE.retryCount = 0;
+                    
+                    // Update refresh button
+                    METRICS_DOM.refreshBtn.classList.remove('loading');
+                    METRICS_DOM.refreshBtn.innerHTML = '<i class="fas fa-sync-alt"></i> Refresh';
+                    
+                } catch (error) {
+                    console.error('[METRICS] Fetch error:', error);
+                    METRICS_STATE.retryCount++;
+                    
+                    if (METRICS_STATE.retryCount <= METRICS_CONFIG.MAX_RETRIES) {
+                        setTimeout(() => {
+                            this.fetch();
+                        }, METRICS_CONFIG.RETRY_DELAY * METRICS_STATE.retryCount);
+                    } else {
+                        MetricsRenderer.showError();
+                        METRICS_DOM.refreshBtn.classList.remove('loading');
+                        METRICS_DOM.refreshBtn.innerHTML = '<i class="fas fa-sync-alt"></i> Retry';
+                    }
+                } finally {
+                    METRICS_STATE.isUpdating = false;
+                }
+            }
+            
+            static startAutoRefresh() {
+                this.fetch();
+                setInterval(() => {
+                    this.fetch();
+                }, METRICS_CONFIG.REFRESH_INTERVAL);
+            }
+        }
+        
+        // ============================================
+        // SECTION 24: EVENT HANDLERS
+        // ============================================
+        // Refresh button
+        METRICS_DOM.refreshBtn.addEventListener('click', function() {
+            if (this.classList.contains('loading')) return;
+            this.classList.add('loading');
+            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading...';
+            MetricsManager.fetch();
+        });
+        
+        // Time range change
+        METRICS_DOM.timeRange.addEventListener('change', () => {
+            MetricsManager.fetch();
+        });
+        
+        // Metric type filter
+        METRICS_DOM.metricType.addEventListener('change', () => {
+            MetricsManager.fetch();
+        });
+        
+        // Mouse move for card glow
+        document.querySelectorAll('.metric-card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = ((e.clientX - rect.left) / rect.width) * 100;
+                const y = ((e.clientY - rect.top) / rect.height) * 100;
+                card.style.setProperty('--mouse-x', x + '%');
+                card.style.setProperty('--mouse-y', y + '%');
+            });
+        });
+        
+        // ============================================
+        // SECTION 25: KEYBOARD SHORTCUTS
+        // ============================================
+        document.addEventListener('keydown', (e) => {
+            // Ctrl+Shift+R - Refresh
+            if (e.ctrlKey && e.shiftKey && e.key === 'R') {
+                e.preventDefault();
+                METRICS_DOM.refreshBtn.click();
+            }
+            
+            // Ctrl+Shift+1-4 - Time ranges
+            if (e.ctrlKey && e.shiftKey) {
+                const ranges = {
+                    '1': '1h',
+                    '2': '24h',
+                    '3': '7d',
+                    '4': '30d',
+                };
+                if (ranges[e.key]) {
+                    e.preventDefault();
+                    METRICS_DOM.timeRange.value = ranges[e.key];
+                    METRICS_DOM.timeRange.dispatchEvent(new Event('change'));
+                }
+            }
+        });
+        
+        // ============================================
+        // SECTION 26: RESIZE HANDLER
+        // ============================================
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                // Resize sparklines
+                Object.values(METRICS_STATE.chartInstances).forEach(instance => {
+                    instance.resize();
+                    instance.draw();
+                });
+            }, 200);
+        });
+        
+        // ============================================
+        // SECTION 27: INITIALIZATION
+        // ============================================
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('[METRICS] Initializing...');
+            console.log(`[METRICS] Version: 3.0.0 - Build: 2026.07.20`);
+            
+            // Start auto-refresh
+            MetricsManager.startAutoRefresh();
+            
+            // Expose for debugging
+            window.__NEXUS_METRICS = {
+                config: METRICS_CONFIG,
+                state: METRICS_STATE,
+                manager: MetricsManager,
+                renderer: MetricsRenderer,
+                formatters: Formatters,
+                refresh: MetricsManager.fetch,
+            };
+            
+            console.log('[METRICS] Initialized successfully');
+            console.log('[METRICS] Keyboard shortcuts:');
+            console.log('  - Ctrl+Shift+R: Refresh');
+            console.log('  - Ctrl+Shift+1: 1h range');
+            console.log('  - Ctrl+Shift+2: 24h range');
+            console.log('  - Ctrl+Shift+3: 7d range');
+            console.log('  - Ctrl+Shift+4: 30d range');
+        });
+        
+        // ============================================
+        // SECTION 28: ERROR HANDLING
+        // ============================================
+        window.addEventListener('error', (e) => {
+            console.error('[METRICS] Global error:', e.error);
+        });
+        
+        window.addEventListener('unhandledrejection', (e) => {
+            console.error('[METRICS] Unhandled rejection:', e.reason);
+        });
+    </script>
+    
+</body>
+</html>
