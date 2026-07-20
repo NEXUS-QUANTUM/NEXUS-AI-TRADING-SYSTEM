@@ -1,0 +1,477 @@
+# trading/bots/arbitrage_bot/logs/errors.log
+# NEXUS AI TRADING SYSTEM - Error Log
+# Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+# Log Level: ERROR, CRITICAL
+# Rotation: Daily, Max 10 files
+# Format: [TIMESTAMP] [LEVEL] [MODULE] [EXCHANGE] Error Code | Message | Stack Trace
+
+"""
+This file contains error and critical-level logs from the NEXUS AI Trading System.
+It tracks all failures, exceptions, and critical issues that require attention.
+"""
+
+# Sample error log entries
+LOG_ENTRIES = """
+[2026-01-01 00:00:40.890] [ERROR] [ORDER_EXECUTOR] [BINANCE] ERR-1001 | Order failed: Insufficient balance for BTC/USD
+    Error Code: -2010
+    Message: Insufficient balance
+    Symbol: BTC/USD
+    Order Side: BUY
+    Quantity: 0.5 BTC
+    Required Balance: $47,100.00
+    Available Balance: $12,345.67
+    Recommendation: Check wallet balance before placing orders
+
+[2026-01-01 00:00:55.123] [ERROR] [WEBSOCKET] [BINANCE] ERR-2001 | WebSocket connection error: Connection reset by peer
+    Stream: BTC/USD@depth
+    Endpoint: wss://stream.binance.com:9443/ws
+    Error: ConnectionResetError(104, 'Connection reset by peer')
+    Attempt: 1/5
+    Stack Trace:
+      File "websocket_client.py", line 234, in connect
+      File "websocket_client.py", line 178, in _handshake
+      File "socket.py", line 456, in read
+    Action: Reconnecting in 5 seconds...
+
+[2026-01-01 00:01:30.456] [ERROR] [PRICE_DETECTOR] [OKX] ERR-3001 | Price fetch timeout for ETH/USD
+    Symbol: ETH/USD
+    Timeout: 30s
+    Endpoint: /api/v5/market/ticker
+    Response: None
+    Attempt: 3/3
+    Recommendation: Increase timeout or check API availability
+
+[2026-01-01 00:02:15.789] [ERROR] [DEX_EXECUTOR] [UNISWAP] ERR-4001 | Transaction failed: Out of gas
+    Transaction Hash: 0x1234567890abcdef1234567890abcdef12345678
+    Gas Limit: 300,000
+    Gas Used: 312,456
+    Block: 19,876,543
+    Error: OutOfGasError
+    Recommendation: Increase gas limit for complex swaps
+
+[2026-01-01 00:03:00.123] [ERROR] [FLASH_LOAN_EXECUTOR] [AAVE] ERR-5001 | Flash loan execution failed: Insufficient collateral
+    Protocol: AAVE V3
+    Asset: USDC
+    Amount: $100,000
+    Error: InsufficientCollateralError
+    Collateral Ratio: 78.5%
+    Minimum Required: 80.0%
+    Recommendation: Add more collateral or reduce loan amount
+
+[2026-01-01 00:04:20.456] [ERROR] [DATABASE] [POSTGRES] ERR-6001 | Database connection error: Connection refused
+    Host: localhost:5432
+    Database: nexus_trading
+    User: nexus_user
+    Error: ConnectionRefusedError
+    Attempt: 2/5
+    Recommendation: Check if PostgreSQL is running
+
+[2026-01-01 00:05:10.789] [ERROR] [CROSS_EXCHANGE_EXECUTOR] [BYBIT] ERR-7001 | Order placement failed: Rate limit exceeded
+    Symbol: SOL/USD
+    Order Type: LIMIT
+    Quantity: 100 SOL
+    Error: RateLimitError
+    Retry-After: 60s
+    Recommendation: Implement exponential backoff
+
+[2026-01-01 00:06:05.234] [ERROR] [STATISTICAL_EXECUTOR] [BINANCE] ERR-8001 | Cointegration analysis failed
+    Pair: BTC/ETH
+    Data Points: 45
+    Error: ValueError('Insufficient data for cointegration')
+    Recommendation: Wait for more data points (minimum 100)
+
+[2026-01-01 00:07:30.567] [ERROR] [TRIANGULAR_EXECUTOR] [OKX] ERR-9001 | Leg execution failed: Order partially filled
+    Leg: 2 of 3
+    Symbol: ETH/SOL
+    Quantity: 10 ETH
+    Filled: 8.5 ETH
+    Error: PartialFillError
+    Recommendation: Adjust order quantity or use market orders
+
+[2026-01-01 00:08:15.890] [ERROR] [REDIS] [CACHE] ERR-10001 | Redis connection error: Timeout
+    Host: localhost:6379
+    Timeout: 5s
+    Error: TimeoutError
+    Recommendation: Check Redis availability or increase timeout
+
+[2026-01-01 00:09:45.123] [ERROR] [MIXED_EXECUTOR] [ALL] ERR-11001 | Strategy combination failed
+    Strategies: dex_arbitrage, cross_exchange, statistical
+    Error: IncompatibleStrategiesError
+    Reason: Conflicting position directions
+    Recommendation: Check strategy compatibility before combining
+
+[2026-01-01 00:10:30.456] [ERROR] [SMART_EXECUTOR] [ALL] ERR-12001 | Strategy selection failed
+    Available Strategies: 8
+    Error: NoSuitableStrategyError
+    Market Condition: Extreme volatility
+    Recommendation: Fall back to default strategy
+
+[2026-01-01 00:11:20.789] [ERROR] [BACKTEST_ENGINE] [ALL] ERR-13001 | Historical data fetch failed
+    Symbol: BTC/USD
+    Interval: 1m
+    Start: 2025-12-01 00:00:00
+    End: 2025-12-31 23:59:59
+    Error: DataUnavailableError
+    Recommendation: Use alternative data source
+
+[2026-01-01 00:12:10.234] [ERROR] [POSITION_MANAGER] [ALL] ERR-14001 | Position update failed
+    Position ID: pos_1234567890
+    Symbol: ETH/USD
+    Error: PositionNotFoundError
+    Recommendation: Verify position exists before updating
+
+[2026-01-01 00:13:00.567] [ERROR] [RISK_MANAGER] [ALL] ERR-15001 | Risk limit exceeded
+    Current Risk: 8.5%
+    Max Allowed: 5.0%
+    Violation Type: Position size
+    Recommendation: Close or reduce positions immediately
+
+[2026-01-01 00:13:00.568] [CRITICAL] [RISK_MANAGER] [ALL] CRT-15002 | Emergency stop triggered
+    Reason: Risk limit exceeded
+    Action: All trading paused
+    Positions: 12
+    Total Exposure: $1,245,678.90
+    Recommendation: Manual intervention required
+
+[2026-01-01 00:14:45.890] [ERROR] [BATCH_EXECUTOR] [ALL] ERR-16001 | Batch execution incomplete
+    Batch ID: batch_1234567890
+    Total Orders: 5
+    Filled: 3
+    Failed: 2
+    Error: PartialFillError
+    Recommendation: Retry failed orders
+
+[2026-01-01 00:15:30.123] [ERROR] [PARALLEL_EXECUTOR] [ALL] ERR-17001 | Worker pool exhausted
+    Active Tasks: 20
+    Max Workers: 10
+    Error: WorkerPoolExhaustedError
+    Recommendation: Increase worker pool size
+
+[2026-01-01 00:16:15.456] [ERROR] [SEQUENTIAL_EXECUTOR] [ALL] ERR-18001 | Step execution failed
+    Step ID: step_1234567890
+    Step Type: order_placement
+    Error: StepFailedError
+    Recommendation: Rollback previous steps
+
+[2026-01-01 00:17:00.789] [ERROR] [ORDER_BOOK] [KRAKEN] ERR-19001 | Order book sync failed
+    Symbol: BTC/USD
+    Depth: 100
+    Error: SyncError
+    Recommendation: Check WebSocket connection
+
+[2026-01-01 00:18:45.234] [ERROR] [FUNDING_RATE] [BINANCE] ERR-20001 | Funding rate calculation failed
+    Symbol: BTC/USDT
+    Error: CalculationError
+    Data: Missing historical rates
+    Recommendation: Wait for next funding cycle
+
+[2026-01-01 00:19:30.567] [ERROR] [GAS_OPTIMIZER] [ETHEREUM] ERR-21001 | Gas estimation failed
+    Transaction: Multi-hop swap
+    Estimated Gas: 500,000
+    Error: GasEstimationError
+    Recommendation: Use static gas limit
+
+[2026-01-01 00:20:15.890] [ERROR] [WEB3] [ETHEREUM] ERR-22001 | RPC connection error
+    Provider: infura
+    Endpoint: https://mainnet.infura.io/v3/
+    Error: ConnectionError
+    Recommendation: Switch to backup provider
+
+[2026-01-01 00:21:00.123] [CRITICAL] [SYSTEM] [ALL] CRT-23001 | Out of memory
+    Memory Usage: 4.2 GB
+    Limit: 4.0 GB
+    Action: System restart required
+    Recommendation: Increase memory allocation
+
+[2026-01-01 00:21:00.124] [ERROR] [SYSTEM] [ALL] ERR-23002 | Crash recovery initiated
+    Dump: /var/log/nexus/crash.dump
+    Timestamp: 2026-01-01 00:21:00.123
+    Action: Restarting in 30 seconds...
+
+[2026-01-01 00:22:00.456] [ERROR] [AUTH] [API] ERR-24001 | Authentication failed
+    User: nexus_user
+    API Key: ****1234
+    Error: InvalidAPIKeyError
+    Recommendation: Check API key validity
+
+[2026-01-01 00:23:45.789] [ERROR] [RATE_LIMIT] [API] ERR-25001 | Rate limit exceeded
+    Endpoint: /api/v1/trade
+    Limit: 100/min
+    Current: 101/min
+    Recommendation: Implement backoff strategy
+
+[2026-01-01 00:24:30.234] [ERROR] [ENCRYPTION] [SECURITY] ERR-26001 | Decryption failed
+    Data: credentials.enc
+    Error: InvalidKeyError
+    Recommendation: Check encryption key
+
+[2026-01-01 00:25:15.567] [ERROR] [COMPLIANCE] [KYC] ERR-27001 | KYC verification failed
+    User: user_12345
+    Document: passport.pdf
+    Error: DocumentExpiredError
+    Recommendation: Request updated documents
+
+[2026-01-01 00:26:00.890] [ERROR] [AUDIT] [LOGGING] ERR-28001 | Audit log write failed
+    Log File: audit.log
+    Error: DiskFullError
+    Recommendation: Free up disk space
+
+[2026-01-01 00:27:45.123] [ERROR] [NOTIFICATION] [TELEGRAM] ERR-29001 | Notification failed
+    Channel: @nexus_alerts
+    Message: System alert
+    Error: SendMessageError
+    Recommendation: Check bot token
+
+[2026-01-01 00:28:30.456] [ERROR] [METRICS] [PROMETHEUS] ERR-30001 | Metrics export failed
+    Endpoint: /metrics
+    Error: ExportError
+    Recommendation: Check Prometheus connectivity
+
+[2026-01-01 00:29:15.789] [ERROR] [GRPC] [SERVICE] ERR-31001 | gRPC connection failed
+    Service: position_service
+    Error: DeadlineExceededError
+    Recommendation: Increase timeout
+
+[2026-01-01 00:30:00.123] [ERROR] [KAFKA] [STREAM] ERR-32001 | Kafka producer error
+    Topic: trades
+    Error: LeaderNotAvailableError
+    Recommendation: Check Kafka cluster health
+
+[2026-01-01 00:31:45.456] [ERROR] [ELASTICSEARCH] [SEARCH] ERR-33001 | Index not found
+    Index: trades-2026-01
+    Error: IndexNotFoundError
+    Recommendation: Check index exists
+
+[2026-01-01 00:32:30.789] [ERROR] [MONGO] [DB] ERR-34001 | MongoDB connection failed
+    Host: localhost:27017
+    Database: nexus
+    Error: ConnectionRefusedError
+    Recommendation: Check MongoDB service
+
+[2026-01-01 00:33:15.234] [ERROR] [INFLUXDB] [TIME_SERIES] ERR-35001 | Write failed
+    Database: nexus_metrics
+    Measurement: trades
+    Error: WriteError
+    Recommendation: Check database permissions
+
+[2026-01-01 00:34:00.567] [ERROR] [GRAPHQL] [API] ERR-36001 | Query resolution failed
+    Query: getTradeHistory
+    Error: ResolverError
+    Recommendation: Check resolver implementation
+
+[2026-01-01 00:35:45.890] [ERROR] [REST] [API] ERR-37001 | Request validation failed
+    Endpoint: /api/v1/trade
+    Error: ValidationError
+    Field: quantity
+    Value: -100
+    Recommendation: Validate input before sending
+
+[2026-01-01 00:36:30.123] [ERROR] [WEBSERVER] [NEXUS] ERR-38001 | Request timeout
+    Endpoint: /api/v1/portfolio
+    Timeout: 30s
+    Error: TimeoutError
+    Recommendation: Optimize query performance
+
+[2026-01-01 00:37:15.456] [ERROR] [LOAD_BALANCER] [NGINX] ERR-39001 | Upstream server unavailable
+    Upstream: nexus_backend
+    Port: 8080
+    Error: ConnectionRefusedError
+    Recommendation: Check backend service health
+
+[2026-01-01 00:38:00.789] [ERROR] [DNS] [NETWORK] ERR-40001 | DNS resolution failed
+    Domain: api.binance.com
+    Error: DNSLookupError
+    Recommendation: Check DNS configuration
+
+[2026-01-01 00:39:45.234] [ERROR] [TLS] [SECURITY] ERR-41001 | TLS handshake failed
+    Endpoint: api.bybit.com
+    Error: CertificateExpiredError
+    Recommendation: Update certificates
+
+[2026-01-01 00:40:30.567] [ERROR] [PROXY] [NETWORK] ERR-42001 | Proxy connection failed
+    Proxy: 192.168.1.100:8080
+    Error: ProxyError
+    Recommendation: Check proxy configuration
+
+[2026-01-01 00:41:15.890] [ERROR] [FIREWALL] [SECURITY] ERR-43001 | Firewall blocked connection
+    Source: 203.0.113.45
+    Destination: api.binance.com
+    Port: 443
+    Action: Blocked
+    Recommendation: Whitelist IP
+
+[2026-01-01 00:42:00.123] [CRITICAL] [SYSTEM] [ALL] CRT-44001 | Critical memory leak detected
+    Module: price_detector
+    Memory Growth: 256 MB/hour
+    Current: 1.2 GB
+    Action: Module restart required
+    Recommendation: Investigate memory leak
+
+[2026-01-01 00:43:45.456] [ERROR] [SCHEDULER] [TASKS] ERR-45001 | Scheduled task failed
+    Task: daily_cleanup
+    Schedule: 00:00:00
+    Error: TaskExecutionError
+    Recommendation: Check task implementation
+
+[2026-01-01 00:44:30.789] [ERROR] [QUEUE] [RABBITMQ] ERR-46001 | Queue connection failed
+    Host: localhost:5672
+    Queue: trade_orders
+    Error: ConnectionRefusedError
+    Recommendation: Check RabbitMQ service
+
+[2026-01-01 00:45:15.234] [ERROR] [CACHE] [MEMCACHED] ERR-47001 | Memcached connection failed
+    Host: localhost:11211
+    Error: ConnectionRefusedError
+    Recommendation: Check Memcached service
+
+[2026-01-01 00:46:00.567] [ERROR] [S3] [STORAGE] ERR-48001 | S3 upload failed
+    Bucket: nexus-logs
+    Key: trade-2026-01-01.json
+    Error: AccessDeniedError
+    Recommendation: Check S3 permissions
+
+[2026-01-01 00:47:45.890] [ERROR] [SMTP] [EMAIL] ERR-49001 | Email send failed
+    To: admin@nexusquantum.com
+    Subject: System Alert
+    Error: SMTPAuthenticationError
+    Recommendation: Check email credentials
+
+[2026-01-01 00:48:30.123] [ERROR] [SLACK] [NOTIFICATION] ERR-50001 | Slack webhook failed
+    Webhook: https://hooks.slack.com/services/...
+    Error: InvalidWebhookError
+    Recommendation: Check webhook URL
+
+[2026-01-01 00:49:15.456] [ERROR] [PAGERDUTY] [ALERT] ERR-51001 | PagerDuty notification failed
+    Service: nexus-production
+    Integration Key: ****1234
+    Error: InvalidKeyError
+    Recommendation: Check integration key
+
+[2026-01-01 00:50:00.789] [ERROR] [TWILIO] [SMS] ERR-52001 | SMS send failed
+    To: +1234567890
+    Message: System alert
+    Error: AuthenticationError
+    Recommendation: Check Twilio credentials
+
+[2026-01-01 00:51:45.234] [ERROR] [GRAFANA] [DASHBOARD] ERR-53001 | Dashboard update failed
+    Dashboard: nexus-overview
+    Error: PermissionDeniedError
+    Recommendation: Check Grafana permissions
+
+[2026-01-01 00:52:30.567] [ERROR] [PROMETHEUS] [ALERTMANAGER] ERR-54001 | Alert configuration failed
+    Alert: HighErrorRate
+    Error: ConfigError
+    Recommendation: Validate alert rules
+
+[2026-01-01 00:53:15.890] [ERROR] [LOKI] [LOGS] ERR-55001 | Log push failed
+    Endpoint: localhost:3100
+    Stream: nexus_logs
+    Error: ConnectionRefusedError
+    Recommendation: Check Loki service
+
+[2026-01-01 00:54:00.123] [ERROR] [TEMPO] [TRACING] ERR-56001 | Trace export failed
+    Endpoint: localhost:4318
+    Service: nexus
+    Error: ConnectionRefusedError
+    Recommendation: Check Tempo service
+
+[2026-01-01 00:55:45.456] [ERROR] [OTEL] [TELEMETRY] ERR-57001 | Telemetry export failed
+    Endpoint: otel-collector:4317
+    Error: ConnectionRefusedError
+    Recommendation: Check OpenTelemetry collector
+
+[2026-01-01 00:56:30.789] [CRITICAL] [SYSTEM] [ALL] CRT-58001 | System has been running for 24 hours without maintenance
+    Current: 24h 30m
+    Recommended: 24h
+    Action: Maintenance required
+    Recommendation: Schedule maintenance window
+
+[2026-01-01 00:57:15.234] [ERROR] [MAINTENANCE] [SYSTEM] ERR-58002 | Maintenance task failed
+    Task: database_vacuum
+    Error: VacuumError
+    Recommendation: Check database health
+
+[2026-01-01 00:58:00.567] [ERROR] [BACKUP] [SYSTEM] ERR-59001 | Backup failed
+    Target: /backup/nexus_2026-01-01.tar.gz
+    Error: DiskFullError
+    Recommendation: Free up disk space
+
+[2026-01-01 00:59:45.890] [ERROR] [RESTORE] [SYSTEM] ERR-60001 | Restore failed
+    Source: /backup/nexus_2025-12-31.tar.gz
+    Error: FileNotFoundError
+    Recommendation: Verify backup exists
+
+[2026-01-01 01:00:30.123] [ERROR] [MIGRATION] [DATABASE] ERR-61001 | Database migration failed
+    Migration: 001_initial_schema
+    Error: MigrationError
+    Recommendation: Rollback to previous version
+
+[2026-01-01 01:01:15.456] [ERROR] [ROLLBACK] [DATABASE] ERR-62001 | Rollback failed
+    Migration: 001_initial_schema
+    Error: RollbackError
+    Recommendation: Manual database intervention required
+
+[2026-01-01 01:02:00.789] [CRITICAL] [SYSTEM] [ALL] CRT-63001 | Database corruption detected
+    Table: trades
+    Index: idx_trades_timestamp
+    Action: Emergency shutdown initiated
+    Recommendation: Restore from backup
+
+[2026-01-01 01:02:00.790] [ERROR] [SYSTEM] [ALL] ERR-63002 | Emergency shutdown in progress...
+[2026-01-01 01:02:00.791] [ERROR] [SYSTEM] [ALL] ERR-63003 | Save state: FAILED
+[2026-01-01 01:02:00.792] [ERROR] [SYSTEM] [ALL] ERR-63004 | Close connections: SUCCESS
+[2026-01-01 01:02:00.793] [CRITICAL] [SYSTEM] [ALL] CRT-63005 | System shutdown complete
+"""
+
+# Error metadata
+ERROR_METADATA = {
+    "filename": "errors.log",
+    "file_size_mb": 8.7,
+    "entries_count": 234,
+    "error_count": 198,
+    "critical_count": 36,
+    "by_module": {
+        "ORDER_EXECUTOR": 28,
+        "WEBSOCKET": 22,
+        "PRICE_DETECTOR": 18,
+        "DEX_EXECUTOR": 15,
+        "FLASH_LOAN_EXECUTOR": 12,
+        "DATABASE": 10,
+        "CROSS_EXCHANGE_EXECUTOR": 8,
+        "STATISTICAL_EXECUTOR": 7,
+        "SYSTEM": 6,
+        "OTHER": 108,
+    },
+    "by_exchange": {
+        "BINANCE": 45,
+        "BYBIT": 32,
+        "OKX": 28,
+        "UNISWAP": 22,
+        "AAVE": 15,
+        "OTHER": 92,
+    },
+    "by_error_type": {
+        "CONNECTION": 45,
+        "EXECUTION": 38,
+        "VALIDATION": 32,
+        "TIMEOUT": 28,
+        "PERMISSION": 22,
+        "RESOURCE": 18,
+        "OTHER": 51,
+    },
+    "most_frequent_errors": [
+        {"code": "ERR-1001", "count": 12, "description": "Insufficient balance"},
+        {"code": "ERR-2001", "count": 10, "description": "WebSocket connection error"},
+        {"code": "ERR-3001", "count": 8, "description": "Price fetch timeout"},
+        {"code": "ERR-4001", "count": 6, "description": "Out of gas"},
+        {"code": "ERR-5001", "count": 5, "description": "Flash loan failed"},
+    ],
+    "start_time": "2026-01-01 00:00:00.000",
+    "end_time": "2026-01-01 01:02:00.793",
+}
+
+# Module exports
+__all__ = [
+    'LOG_ENTRIES',
+    'ERROR_METADATA',
+]
