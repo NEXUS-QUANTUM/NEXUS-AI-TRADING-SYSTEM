@@ -1,1784 +1,2581 @@
-<!-- trading/bots/arbitrage_bot/templates/partials/alerts.html -->
-<!-- NEXUS AI TRADING SYSTEM. -->
-<!-- Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved -->
-<!-- Version: 4.2.0 - Complete Alerts Partial with Real API Integration -->
+<!--
+╔═══════════════════════════════════════════════════════════════════════════════════╗
+║                                                                                   ║
+║   █████╗ ██╗     ███████╗██████╗ ████████╗███████╗                              ║
+║  ██╔══██╗██║     ██╔════╝██╔══██╗╚══██╔══╝██╔════╝                              ║
+║  ███████║██║     █████╗  ██████╔╝   ██║   ███████╗                              ║
+║  ██╔══██║██║     ██╔══╝  ██╔══██╗   ██║   ╚════██║                              ║
+║  ██║  ██║███████╗███████╗██║  ██║   ██║   ███████║                              ║
+║  ╚═╝  ╚═╝╚══════╝╚══════╝╚═╝  ╚═╝   ╚═╝   ╚══════╝                              ║
+║                                                                                   ║
+║   NEXUS AI TRADING SYSTEM - ARBITRAGE ALERTS                                     ║
+║   Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved                       ║
+║   Version: 3.0.0 - Build: 2026.07.20                                             ║
+║   CEO: Dr X... - Majority Shareholder                                            ║
+║                                                                                   ║
+╚═══════════════════════════════════════════════════════════════════════════════════╝
+-->
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alerts Partial - NEXUS Trading IA</title>
-    <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="theme-color" content="#0A0A0F">
+    <meta name="description" content="NEXUS Arbitrage Bot - Real-time trading alerts system">
+    <title>NEXUS Arbitrage Alerts</title>
+    
+    <!-- ============================================
+    FONTS & ICONS
+    ============================================ -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    
+    <style>
+        /* ============================================
+           SECTION 1: ROOT VARIABLES - NEXUS THEME
+           ============================================ */
+        :root {
+            /* --- Brand Colors --- */
+            --nexus-primary: #6C3CE1;
+            --nexus-primary-dark: #4A1FA8;
+            --nexus-primary-light: #8B6BEE;
+            --nexus-primary-gradient: linear-gradient(135deg, #6C3CE1 0%, #8B6BEE 50%, #00D4AA 100%);
+            --nexus-secondary: #00D4AA;
+            --nexus-secondary-dark: #00A88A;
+            --nexus-secondary-light: #33E0C0;
+            --nexus-accent: #FF6B6B;
+            --nexus-accent-dark: #E05555;
+            --nexus-warning: #FFB84D;
+            --nexus-warning-dark: #E6A040;
+            
+            /* --- Alert Types --- */
+            --alert-info: #6C3CE1;
+            --alert-info-bg: rgba(108, 60, 225, 0.08);
+            --alert-info-border: rgba(108, 60, 225, 0.15);
+            --alert-info-glow: rgba(108, 60, 225, 0.15);
+            
+            --alert-success: #00D4AA;
+            --alert-success-bg: rgba(0, 212, 170, 0.08);
+            --alert-success-border: rgba(0, 212, 170, 0.15);
+            --alert-success-glow: rgba(0, 212, 170, 0.15);
+            
+            --alert-warning: #FFB84D;
+            --alert-warning-bg: rgba(255, 184, 77, 0.08);
+            --alert-warning-border: rgba(255, 184, 77, 0.15);
+            --alert-warning-glow: rgba(255, 184, 77, 0.15);
+            
+            --alert-danger: #FF6B6B;
+            --alert-danger-bg: rgba(255, 107, 107, 0.08);
+            --alert-danger-border: rgba(255, 107, 107, 0.15);
+            --alert-danger-glow: rgba(255, 107, 107, 0.15);
+            
+            --alert-critical: #FF0044;
+            --alert-critical-bg: rgba(255, 0, 68, 0.1);
+            --alert-critical-border: rgba(255, 0, 68, 0.25);
+            --alert-critical-glow: rgba(255, 0, 68, 0.3);
+            
+            /* --- Gradients --- */
+            --gradient-primary: linear-gradient(135deg, #6C3CE1 0%, #00D4AA 100%);
+            --gradient-accent: linear-gradient(135deg, #FF6B6B 0%, #FFB84D 100%);
+            --gradient-critical: linear-gradient(135deg, #FF0044 0%, #FF6B6B 100%);
+            --gradient-success: linear-gradient(135deg, #00D4AA 0%, #33E0C0 100%);
+            
+            /* --- Backgrounds --- */
+            --bg-primary: #0A0A0F;
+            --bg-secondary: #0F0F18;
+            --bg-tertiary: #13131A;
+            --bg-card: #1A1A24;
+            --bg-card-hover: #222233;
+            --bg-card-active: #2A2A3E;
+            --bg-elevated: rgba(26, 26, 36, 0.95);
+            --bg-overlay: rgba(10, 10, 15, 0.85);
+            
+            /* --- Text --- */
+            --text-primary: #FFFFFF;
+            --text-secondary: #A0A0B8;
+            --text-muted: #6B6B85;
+            --text-disabled: #3D3D55;
+            
+            /* --- Borders --- */
+            --border-color: rgba(108, 60, 225, 0.12);
+            --border-color-hover: rgba(108, 60, 225, 0.3);
+            --border-color-light: rgba(255, 255, 255, 0.05);
+            --border-color-dark: rgba(0, 0, 0, 0.3);
+            
+            /* --- Shadows --- */
+            --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.4);
+            --shadow-card-hover: 0 12px 48px rgba(0, 0, 0, 0.6);
+            --shadow-glow: 0 0 60px rgba(108, 60, 225, 0.06);
+            --shadow-glow-strong: 0 0 80px rgba(108, 60, 225, 0.12);
+            --shadow-dropdown: 0 20px 60px rgba(0, 0, 0, 0.6);
+            
+            /* --- Animations --- */
+            --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-base: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-slow: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-bounce: 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            
+            /* --- Border Radius --- */
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
+            --radius-full: 9999px;
+        }
+        
+        /* ============================================
+           SECTION 2: RESET & BASE STYLES
+           ============================================ */
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
+            padding: 20px;
+        }
+        
+        /* ============================================
+           SECTION 3: SCROLLBAR STYLING
+           ============================================ */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--nexus-primary);
+            border-radius: var(--radius-full);
+            transition: var(--transition-base);
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--nexus-primary-light);
+        }
+        
+        ::-webkit-scrollbar-corner {
+            background: var(--bg-primary);
+        }
+        
+        /* ============================================
+           SECTION 4: SELECTION
+           ============================================ */
+        ::selection {
+            background: var(--nexus-primary);
+            color: var(--text-primary);
+        }
+        
+        /* ============================================
+           SECTION 5: ALERTS CONTAINER
+           ============================================ */
+        .alerts-container {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-width: 460px;
+            width: 100%;
+            pointer-events: none;
+            max-height: calc(100vh - 120px);
+            overflow-y: auto;
+            padding: 4px;
+        }
+        
+        .alerts-container::-webkit-scrollbar {
+            width: 4px;
+        }
+        
+        .alerts-container::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        
+        .alerts-container::-webkit-scrollbar-thumb {
+            background: var(--nexus-primary);
+            border-radius: var(--radius-full);
+        }
+        
+        /* ============================================
+           SECTION 6: SINGLE ALERT
+           ============================================ */
+        .alert-item {
+            pointer-events: auto;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 16px 20px;
+            backdrop-filter: blur(24px) saturate(1.4);
+            -webkit-backdrop-filter: blur(24px) saturate(1.4);
+            box-shadow: var(--shadow-card);
+            transition: all var(--transition-bounce);
+            position: relative;
+            overflow: hidden;
+            animation: alertSlideIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+            transform-origin: top right;
+            will-change: transform, opacity;
+        }
+        
+        .alert-item:hover {
+            transform: translateX(-6px) scale(1.01);
+            box-shadow: var(--shadow-card-hover), var(--shadow-glow);
+            border-color: var(--border-color-hover);
+        }
+        
+        .alert-item.removing {
+            animation: alertSlideOut 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+        
+        @keyframes alertSlideIn {
+            0% {
+                opacity: 0;
+                transform: translateX(120px) scale(0.85) rotateY(10deg);
+            }
+            60% {
+                opacity: 1;
+                transform: translateX(-10px) scale(1.02);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(0) scale(1) rotateY(0deg);
+            }
+        }
+        
+        @keyframes alertSlideOut {
+            0% {
+                opacity: 1;
+                transform: translateX(0) scale(1) rotateY(0deg);
+            }
+            100% {
+                opacity: 0;
+                transform: translateX(120px) scale(0.85) rotateY(-10deg);
+            }
+        }
+        
+        /* --- Alert Glow Effect --- */
+        .alert-item::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), 
+                rgba(108, 60, 225, 0.04) 0%, 
+                transparent 60%);
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity var(--transition-base);
+        }
+        
+        .alert-item:hover::before {
+            opacity: 1;
+        }
+        
+        /* --- Alert Type Glow --- */
+        .alert-item.type-info::after {
+            box-shadow: 0 0 40px var(--alert-info-glow);
+        }
+        .alert-item.type-success::after {
+            box-shadow: 0 0 40px var(--alert-success-glow);
+        }
+        .alert-item.type-warning::after {
+            box-shadow: 0 0 40px var(--alert-warning-glow);
+        }
+        .alert-item.type-danger::after {
+            box-shadow: 0 0 40px var(--alert-danger-glow);
+        }
+        .alert-item.type-critical::after {
+            box-shadow: 0 0 60px var(--alert-critical-glow);
+            animation: criticalGlow 1.5s ease-in-out infinite;
+        }
+        
+        @keyframes criticalGlow {
+            0%, 100% { box-shadow: 0 0 40px var(--alert-critical-glow); }
+            50% { box-shadow: 0 0 80px var(--alert-critical-glow); }
+        }
+        
+        /* --- Alert Progress Bar --- */
+        .alert-progress {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 0 0 var(--radius-md) var(--radius-md);
+            overflow: hidden;
+        }
+        
+        .alert-progress-bar {
+            height: 100%;
+            border-radius: 0 0 var(--radius-md) var(--radius-md);
+            background: var(--gradient-primary);
+            transition: width 0.3s linear;
+            width: 100%;
+            will-change: width;
+        }
+        
+        .alert-progress-bar.paused {
+            animation-play-state: paused;
+        }
+        
+        /* ============================================
+           SECTION 7: ALERT TYPES
+           ============================================ */
+        .alert-item.type-info {
+            border-left: 4px solid var(--alert-info);
+            background: var(--alert-info-bg);
+        }
+        .alert-item.type-info .alert-progress-bar {
+            background: var(--alert-info);
+        }
+        .alert-item.type-info .alert-icon {
+            color: var(--alert-info);
+        }
+        .alert-item.type-info .alert-icon-wrapper {
+            background: var(--alert-info-bg);
+            border: 1px solid var(--alert-info-border);
+        }
+        
+        .alert-item.type-success {
+            border-left: 4px solid var(--alert-success);
+            background: var(--alert-success-bg);
+        }
+        .alert-item.type-success .alert-progress-bar {
+            background: var(--gradient-success);
+        }
+        .alert-item.type-success .alert-icon {
+            color: var(--alert-success);
+        }
+        .alert-item.type-success .alert-icon-wrapper {
+            background: var(--alert-success-bg);
+            border: 1px solid var(--alert-success-border);
+        }
+        
+        .alert-item.type-warning {
+            border-left: 4px solid var(--alert-warning);
+            background: var(--alert-warning-bg);
+        }
+        .alert-item.type-warning .alert-progress-bar {
+            background: var(--alert-warning);
+        }
+        .alert-item.type-warning .alert-icon {
+            color: var(--alert-warning);
+        }
+        .alert-item.type-warning .alert-icon-wrapper {
+            background: var(--alert-warning-bg);
+            border: 1px solid var(--alert-warning-border);
+        }
+        
+        .alert-item.type-danger {
+            border-left: 4px solid var(--alert-danger);
+            background: var(--alert-danger-bg);
+        }
+        .alert-item.type-danger .alert-progress-bar {
+            background: var(--alert-danger);
+        }
+        .alert-item.type-danger .alert-icon {
+            color: var(--alert-danger);
+        }
+        .alert-item.type-danger .alert-icon-wrapper {
+            background: var(--alert-danger-bg);
+            border: 1px solid var(--alert-danger-border);
+        }
+        
+        .alert-item.type-critical {
+            border-left: 4px solid var(--alert-critical);
+            border-color: var(--alert-critical-border);
+            background: var(--alert-critical-bg);
+            animation: criticalPulse 2s ease-in-out infinite;
+        }
+        .alert-item.type-critical .alert-progress-bar {
+            background: var(--gradient-critical);
+        }
+        .alert-item.type-critical .alert-icon {
+            color: var(--alert-critical);
+        }
+        .alert-item.type-critical .alert-icon-wrapper {
+            background: var(--alert-critical-bg);
+            border: 1px solid var(--alert-critical-border);
+            animation: criticalIconPulse 1.5s ease-in-out infinite;
+        }
+        .alert-item.type-critical .alert-title {
+            color: var(--alert-critical);
+        }
+        
+        @keyframes criticalPulse {
+            0%, 100% { border-color: var(--alert-critical-border); }
+            50% { border-color: var(--alert-critical); }
+        }
+        
+        @keyframes criticalIconPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+        }
+        
+        /* ============================================
+           SECTION 8: ALERT CONTENT
+           ============================================ */
+        .alert-content {
+            display: flex;
+            gap: 14px;
+            align-items: flex-start;
+        }
+        
+        .alert-icon-wrapper {
+            flex-shrink: 0;
+            width: 38px;
+            height: 38px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: var(--radius-full);
+            font-size: 1.1rem;
+            transition: all var(--transition-base);
+        }
+        
+        .alert-item:hover .alert-icon-wrapper {
+            transform: scale(1.05);
+        }
+        
+        .alert-text {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .alert-title {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 3px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        
+        .alert-title .alert-badge {
+            font-size: 0.45rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            padding: 0.08rem 0.6rem;
+            border-radius: var(--radius-full);
+            background: rgba(255, 255, 255, 0.04);
+            color: var(--text-muted);
+            border: 1px solid var(--border-color-light);
+            transition: all var(--transition-base);
+        }
+        
+        .alert-item:hover .alert-badge {
+            background: rgba(255, 255, 255, 0.08);
+        }
+        
+        .alert-item.type-critical .alert-badge {
+            background: var(--alert-critical-bg);
+            color: var(--alert-critical);
+            border-color: var(--alert-critical-border);
+            animation: badgePulse 1.5s ease-in-out infinite;
+        }
+        
+        @keyframes badgePulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(0.95); }
+        }
+        
+        .alert-message {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            word-break: break-word;
+        }
+        
+        .alert-message strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+        
+        .alert-message .highlight {
+            color: var(--nexus-secondary);
+            font-weight: 600;
+        }
+        
+        .alert-message .highlight-danger {
+            color: var(--alert-danger);
+            font-weight: 600;
+        }
+        
+        .alert-message .highlight-warning {
+            color: var(--alert-warning);
+            font-weight: 600;
+        }
+        
+        .alert-message .highlight-info {
+            color: var(--alert-info);
+            font-weight: 600;
+        }
+        
+        /* ============================================
+           SECTION 9: ALERT METADATA
+           ============================================ */
+        .alert-meta {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 6px;
+            font-size: 0.6rem;
+            color: var(--text-muted);
+            flex-wrap: wrap;
+        }
+        
+        .alert-meta .alert-time {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 0.05rem 0.5rem;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: var(--radius-full);
+        }
+        
+        .alert-meta .alert-time i {
+            font-size: 0.5rem;
+        }
+        
+        .alert-meta .alert-source {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 0.05rem 0.6rem;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: var(--radius-full);
+            border: 1px solid var(--border-color-light);
+        }
+        
+        .alert-meta .alert-source i {
+            font-size: 0.5rem;
+        }
+        
+        .alert-meta .alert-tag {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 0.05rem 0.6rem;
+            background: rgba(108, 60, 225, 0.08);
+            border-radius: var(--radius-full);
+            border: 1px solid var(--alert-info-border);
+            color: var(--alert-info);
+            font-weight: 500;
+        }
+        
+        .alert-meta .alert-tag i {
+            font-size: 0.5rem;
+        }
+        
+        /* ============================================
+           SECTION 10: ALERT ACTIONS
+           ============================================ */
+        .alert-actions {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            flex-shrink: 0;
+            margin-left: auto;
+            padding-left: 8px;
+        }
+        
+        .alert-action-btn {
+            width: 30px;
+            height: 30px;
+            border: none;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: var(--radius-full);
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            position: relative;
+        }
+        
+        .alert-action-btn::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            border-radius: var(--radius-full);
+            background: var(--gradient-primary);
+            opacity: 0;
+            transition: opacity var(--transition-fast);
+        }
+        
+        .alert-action-btn:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--text-primary);
+            transform: translateY(-1px);
+        }
+        
+        .alert-action-btn:hover::before {
+            opacity: 0.1;
+        }
+        
+        .alert-action-btn:active {
+            transform: scale(0.9);
+        }
+        
+        .alert-action-btn.dismiss-btn:hover {
+            background: var(--alert-danger-bg);
+            color: var(--alert-danger);
+        }
+        
+        .alert-action-btn.dismiss-btn:hover::before {
+            background: var(--alert-danger);
+        }
+        
+        .alert-action-btn.snooze-btn:hover {
+            background: var(--alert-warning-bg);
+            color: var(--alert-warning);
+        }
+        
+        .alert-action-btn.action-btn:hover {
+            background: var(--alert-info-bg);
+            color: var(--alert-info);
+        }
+        
+        .alert-action-btn.execute-btn:hover {
+            background: var(--alert-success-bg);
+            color: var(--alert-success);
+        }
+        
+        .alert-action-btn.emergency-btn:hover {
+            background: var(--alert-critical-bg);
+            color: var(--alert-critical);
+            animation: emergencyPulse 0.5s ease-in-out 3;
+        }
+        
+        @keyframes emergencyPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+        
+        /* ============================================
+           SECTION 11: ALERT COUNTER
+           ============================================ */
+        .alert-counter {
+            position: fixed;
+            top: 76px;
+            right: 20px;
+            z-index: 10000;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-full);
+            padding: 5px 16px 5px 12px;
+            display: none;
+            align-items: center;
+            gap: 10px;
+            backdrop-filter: blur(20px);
+            box-shadow: var(--shadow-card);
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all var(--transition-base);
+            pointer-events: auto;
+        }
+        
+        .alert-counter:hover {
+            border-color: var(--border-color-hover);
+            transform: scale(1.03);
+            box-shadow: var(--shadow-card-hover);
+        }
+        
+        .alert-counter:active {
+            transform: scale(0.95);
+        }
+        
+        .alert-counter.visible {
+            display: flex;
+        }
+        
+        .alert-counter .counter-badge {
+            background: var(--gradient-accent);
+            color: var(--text-primary);
+            font-weight: 700;
+            font-size: 0.6rem;
+            padding: 0.1rem 0.6rem;
+            border-radius: var(--radius-full);
+            min-width: 22px;
+            text-align: center;
+            box-shadow: 0 0 20px rgba(255, 107, 107, 0.2);
+        }
+        
+        .alert-counter .counter-text {
+            font-weight: 500;
+        }
+        
+        .alert-counter .counter-icon {
+            color: var(--nexus-secondary);
+            animation: counterPulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes counterPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        
+        /* ============================================
+           SECTION 12: SOUND INDICATOR
+           ============================================ */
+        .alert-sound-indicator {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 9998;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-full);
+            padding: 10px 18px;
+            backdrop-filter: blur(20px);
+            box-shadow: var(--shadow-card);
+            display: none;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            animation: alertSlideIn 0.5s ease-out;
+            cursor: pointer;
+            transition: all var(--transition-base);
+            pointer-events: auto;
+        }
+        
+        .alert-sound-indicator:hover {
+            border-color: var(--border-color-hover);
+            transform: scale(1.02);
+        }
+        
+        .alert-sound-indicator.visible {
+            display: flex;
+        }
+        
+        .alert-sound-indicator .sound-wave {
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            height: 18px;
+        }
+        
+        .alert-sound-indicator .sound-wave span {
+            display: block;
+            width: 3px;
+            background: var(--nexus-secondary);
+            border-radius: var(--radius-full);
+            animation: soundWave 0.6s ease-in-out infinite alternate;
+        }
+        
+        .alert-sound-indicator .sound-wave span:nth-child(1) { height: 6px; animation-delay: 0s; }
+        .alert-sound-indicator .sound-wave span:nth-child(2) { height: 12px; animation-delay: 0.12s; }
+        .alert-sound-indicator .sound-wave span:nth-child(3) { height: 18px; animation-delay: 0.24s; }
+        .alert-sound-indicator .sound-wave span:nth-child(4) { height: 12px; animation-delay: 0.36s; }
+        .alert-sound-indicator .sound-wave span:nth-child(5) { height: 6px; animation-delay: 0.48s; }
+        
+        @keyframes soundWave {
+            0% { transform: scaleY(0.2); opacity: 0.3; }
+            100% { transform: scaleY(1); opacity: 1; }
+        }
+        
+        .alert-sound-indicator .sound-label {
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+        
+        .alert-sound-indicator .sound-toggle {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color-light);
+            border-radius: var(--radius-full);
+            padding: 0.1rem 0.6rem;
+            font-size: 0.6rem;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+        
+        .alert-sound-indicator .sound-toggle:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+        }
+        
+        .alert-sound-indicator .sound-toggle.muted {
+            color: var(--alert-danger);
+            border-color: var(--alert-danger-border);
+        }
+        
+        /* ============================================
+           SECTION 13: ALERT SETTINGS PANEL
+           ============================================ */
+        .alert-settings-toggle {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            z-index: 9998;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-full);
+            padding: 10px 16px;
+            backdrop-filter: blur(20px);
+            box-shadow: var(--shadow-card);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all var(--transition-base);
+            pointer-events: auto;
+        }
+        
+        .alert-settings-toggle:hover {
+            border-color: var(--border-color-hover);
+            transform: scale(1.02);
+        }
+        
+        .alert-settings-toggle i {
+            color: var(--nexus-secondary);
+        }
+        
+        /* ============================================
+           SECTION 14: ALERT HISTORY PANEL
+           ============================================ */
+        .alert-history-panel {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.9);
+            z-index: 10001;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            backdrop-filter: blur(24px);
+            box-shadow: var(--shadow-dropdown), var(--shadow-glow-strong);
+            opacity: 0;
+            visibility: hidden;
+            transition: all var(--transition-bounce);
+            pointer-events: none;
+            overflow-y: auto;
+        }
+        
+        .alert-history-panel.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translate(-50%, -50%) scale(1);
+            pointer-events: auto;
+        }
+        
+        .alert-history-panel .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border-color-light);
+        }
+        
+        .alert-history-panel .panel-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+        
+        .alert-history-panel .panel-close {
+            width: 32px;
+            height: 32px;
+            border: none;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: var(--radius-full);
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .alert-history-panel .panel-close:hover {
+            background: var(--alert-danger-bg);
+            color: var(--alert-danger);
+        }
+        
+        .alert-history-item {
+            padding: 10px 12px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-color-light);
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all var(--transition-fast);
+            cursor: pointer;
+        }
+        
+        .alert-history-item:hover {
+            background: var(--bg-card-hover);
+            border-color: var(--border-color-hover);
+        }
+        
+        .alert-history-item .item-info {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .alert-history-item .item-title {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .alert-history-item .item-time {
+            font-size: 0.6rem;
+            color: var(--text-muted);
+        }
+        
+        .alert-history-item .item-type-badge {
+            font-size: 0.5rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 0.05rem 0.5rem;
+            border-radius: var(--radius-full);
+            flex-shrink: 0;
+        }
+        
+        .alert-history-item .item-type-badge.type-info {
+            background: var(--alert-info-bg);
+            color: var(--alert-info);
+        }
+        .alert-history-item .item-type-badge.type-success {
+            background: var(--alert-success-bg);
+            color: var(--alert-success);
+        }
+        .alert-history-item .item-type-badge.type-warning {
+            background: var(--alert-warning-bg);
+            color: var(--alert-warning);
+        }
+        .alert-history-item .item-type-badge.type-danger {
+            background: var(--alert-danger-bg);
+            color: var(--alert-danger);
+        }
+        .alert-history-item .item-type-badge.type-critical {
+            background: var(--alert-critical-bg);
+            color: var(--alert-critical);
+        }
+        
+        /* ============================================
+           SECTION 15: OVERLAY
+           ============================================ */
+        .alert-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 10000;
+            background: var(--bg-overlay);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            opacity: 0;
+            visibility: hidden;
+            transition: all var(--transition-base);
+        }
+        
+        .alert-overlay.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* ============================================
+           SECTION 16: RESPONSIVE
+           ============================================ */
+        @media (max-width: 1024px) {
+            .alerts-container {
+                max-width: 400px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .alerts-container {
+                top: 68px;
+                right: 10px;
+                left: 10px;
+                max-width: none;
+                gap: 10px;
+                padding: 2px;
+                max-height: calc(100vh - 100px);
+            }
+            
+            .alert-item {
+                padding: 14px 16px;
+                border-radius: var(--radius-sm);
+                border-left-width: 3px;
+            }
+            
+            .alert-title {
+                font-size: 0.8rem;
+            }
+            
+            .alert-message {
+                font-size: 0.75rem;
+            }
+            
+            .alert-icon-wrapper {
+                width: 32px;
+                height: 32px;
+                font-size: 0.9rem;
+            }
+            
+            .alert-actions {
+                gap: 3px;
+                padding-left: 4px;
+            }
+            
+            .alert-action-btn {
+                width: 26px;
+                height: 26px;
+                font-size: 0.6rem;
+            }
+            
+            .alert-meta {
+                font-size: 0.55rem;
+                gap: 6px;
+                flex-wrap: wrap;
+            }
+            
+            .alert-meta .alert-source {
+                padding: 0.03rem 0.4rem;
+            }
+            
+            .alert-counter {
+                top: 64px;
+                right: 10px;
+                font-size: 0.65rem;
+                padding: 4px 12px 4px 10px;
+            }
+            
+            .alert-counter .counter-badge {
+                font-size: 0.5rem;
+                min-width: 18px;
+                padding: 0.05rem 0.4rem;
+            }
+            
+            .alert-sound-indicator {
+                bottom: 10px;
+                right: 10px;
+                padding: 8px 14px;
+                font-size: 0.6rem;
+            }
+            
+            .alert-settings-toggle {
+                bottom: 10px;
+                left: 10px;
+                padding: 8px 12px;
+                font-size: 0.6rem;
+            }
+            
+            .alert-history-panel {
+                padding: 16px;
+                max-width: 95%;
+                max-height: 85vh;
+            }
+            
+            .alert-history-panel .panel-title {
+                font-size: 0.95rem;
+            }
+            
+            .alert-history-item {
+                padding: 8px 10px;
+            }
+            
+            .alert-history-item .item-title {
+                font-size: 0.75rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .alerts-container {
+                top: 60px;
+                right: 6px;
+                left: 6px;
+                gap: 8px;
+                padding: 0;
+            }
+            
+            .alert-item {
+                padding: 12px 14px;
+                border-left-width: 3px;
+                border-radius: var(--radius-sm);
+            }
+            
+            .alert-title {
+                font-size: 0.75rem;
+                gap: 4px;
+            }
+            
+            .alert-title .alert-badge {
+                font-size: 0.4rem;
+                padding: 0.05rem 0.4rem;
+            }
+            
+            .alert-message {
+                font-size: 0.7rem;
+            }
+            
+            .alert-icon-wrapper {
+                width: 28px;
+                height: 28px;
+                font-size: 0.8rem;
+            }
+            
+            .alert-content {
+                gap: 10px;
+            }
+            
+            .alert-actions {
+                gap: 2px;
+            }
+            
+            .alert-action-btn {
+                width: 22px;
+                height: 22px;
+                font-size: 0.5rem;
+            }
+            
+            .alert-meta .alert-source {
+                display: none;
+            }
+            
+            .alert-meta .alert-tag {
+                display: none;
+            }
+            
+            .alert-counter {
+                top: 56px;
+                right: 6px;
+                font-size: 0.55rem;
+                padding: 3px 8px 3px 6px;
+                gap: 6px;
+            }
+            
+            .alert-counter .counter-badge {
+                font-size: 0.45rem;
+                min-width: 16px;
+                padding: 0.03rem 0.3rem;
+            }
+            
+            .alert-sound-indicator {
+                bottom: 6px;
+                right: 6px;
+                padding: 6px 10px;
+                font-size: 0.55rem;
+                gap: 6px;
+            }
+            
+            .alert-sound-indicator .sound-wave {
+                height: 14px;
+                gap: 1px;
+            }
+            
+            .alert-sound-indicator .sound-wave span:nth-child(3) {
+                height: 14px;
+            }
+            
+            .alert-settings-toggle {
+                bottom: 6px;
+                left: 6px;
+                padding: 6px 10px;
+                font-size: 0.55rem;
+            }
+        }
+        
+        /* ============================================
+           SECTION 17: UTILITY ANIMATIONS
+           ============================================ */
+        .fade-in {
+            animation: fadeIn 0.3s ease-out forwards;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .slide-up {
+            animation: slideUp 0.4s ease-out forwards;
+        }
+        
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .shake {
+            animation: shake 0.5s ease-out;
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(-10px); }
+            40% { transform: translateX(10px); }
+            60% { transform: translateX(-6px); }
+            80% { transform: translateX(6px); }
+        }
+        
+        .zoom-in {
+            animation: zoomIn 0.3s ease-out forwards;
+        }
+        
+        @keyframes zoomIn {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+    </style>
 </head>
 <body>
-
-<!-- ======================================================================= -->
-<!-- ALERTS PARTIAL - REAL API INTEGRATION                                   -->
-<!-- ======================================================================= -->
-{% macro alerts(alert_data=None, show_controls=True, max_alerts=10, auto_dismiss=True, ws_endpoint="/ws/alerts") %}
-<div class="alerts-container" 
-     id="alerts-container"
-     data-auto-dismiss="{{ 'true' if auto_dismiss else 'false' }}"
-     data-ws-endpoint="{{ ws_endpoint }}"
-     data-theme="{{ alert_data.theme if alert_data and alert_data.theme else 'dark' }}">
     
-    <!-- ======================== HEADER ======================== -->
-    <div class="alerts-header">
-        <div class="alerts-title-section">
-            <h3 class="alerts-title">
-                <i class="fas fa-bell"></i>
-                Alerts
-                <span class="alerts-count" id="alerts-count">
-                    {{ alert_data.alerts|length if alert_data and alert_data.alerts else 0 }}
-                </span>
-                <span class="alerts-live-status" id="alerts-live-status">
-                    <i class="fas fa-circle" style="color: #00D4FF;"></i> Live
-                </span>
-            </h3>
-            <span class="alerts-subtitle">Real-time system notifications</span>
-        </div>
-        
-        {% if show_controls %}
-        <div class="alerts-controls">
-            <!-- Filter Buttons -->
-            <div class="alerts-filter">
-                <button class="filter-btn filter-btn-active" data-filter="all">All</button>
-                <button class="filter-btn" data-filter="critical">Critical</button>
-                <button class="filter-btn" data-filter="high">High</button>
-                <button class="filter-btn" data-filter="medium">Medium</button>
-                <button class="filter-btn" data-filter="low">Low</button>
-            </div>
-            
-            <!-- Action Buttons -->
-            <div class="alerts-actions">
-                <button class="alert-action-btn" data-action="mark-all-read" title="Mark All as Read">
-                    <i class="fas fa-check-double"></i>
-                </button>
-                <button class="alert-action-btn" data-action="clear-all" title="Clear All Alerts">
-                    <i class="fas fa-trash"></i>
-                </button>
-                <button class="alert-action-btn" data-action="refresh" title="Refresh Alerts">
-                    <i class="fas fa-sync-alt"></i>
-                </button>
-                <button class="alert-action-btn" data-action="settings" title="Alert Settings">
-                    <i class="fas fa-cog"></i>
-                </button>
-            </div>
-        </div>
-        {% endif %}
+    <!-- ============================================
+    SECTION 18: OVERLAY
+    ============================================ -->
+    <div class="alert-overlay" id="alertOverlay"></div>
+    
+    <!-- ============================================
+    SECTION 19: ALERT COUNTER
+    ============================================ -->
+    <div class="alert-counter" id="alertCounter" title="Click to view all alerts">
+        <span class="counter-icon"><i class="fas fa-bell"></i></span>
+        <span class="counter-badge" id="counterBadge">0</span>
+        <span class="counter-text">Alerts</span>
     </div>
     
-    <!-- ======================== BODY ======================== -->
-    <div class="alerts-body">
-        <!-- Alert List -->
-        <div class="alerts-list" id="alerts-list">
-            {% if alert_data and alert_data.alerts %}
-                {% for alert in alert_data.alerts[:max_alerts] %}
-                <div class="alert-item alert-{{ alert.severity|lower }} {{ 'alert-read' if alert.read else '' }}"
-                     data-alert-id="{{ alert.id }}"
-                     data-alert-severity="{{ alert.severity|lower }}"
-                     data-alert-read="{{ 'true' if alert.read else 'false' }}">
-                    
-                    <!-- Alert Icon -->
-                    <div class="alert-icon">
-                        {% if alert.severity|lower == 'critical' %}
-                            <i class="fas fa-exclamation-circle" style="color: #FF6B6B;"></i>
-                        {% elif alert.severity|lower == 'high' %}
-                            <i class="fas fa-exclamation-triangle" style="color: #FFD93D;"></i>
-                        {% elif alert.severity|lower == 'medium' %}
-                            <i class="fas fa-info-circle" style="color: #6C63FF;"></i>
-                        {% else %}
-                            <i class="fas fa-check-circle" style="color: #00D4FF;"></i>
-                        {% endif %}
-                    </div>
-                    
-                    <!-- Alert Content -->
+    <!-- ============================================
+    SECTION 20: ALERTS CONTAINER
+    ============================================ -->
+    <div class="alerts-container" id="alertsContainer"></div>
+    
+    <!-- ============================================
+    SECTION 21: SOUND INDICATOR
+    ============================================ -->
+    <div class="alert-sound-indicator" id="soundIndicator">
+        <div class="sound-wave">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <span class="sound-label">Alert Sound</span>
+        <button class="sound-toggle" id="soundToggle">ON</button>
+    </div>
+    
+    <!-- ============================================
+    SECTION 22: SETTINGS TOGGLE
+    ============================================ -->
+    <div class="alert-settings-toggle" id="settingsToggle" title="Alert Settings">
+        <i class="fas fa-sliders-h"></i>
+        <span>Settings</span>
+    </div>
+    
+    <!-- ============================================
+    SECTION 23: HISTORY PANEL
+    ============================================ -->
+    <div class="alert-history-panel" id="historyPanel">
+        <div class="panel-header">
+            <span class="panel-title"><i class="fas fa-history" style="margin-right: 10px; color: var(--nexus-secondary);"></i>Alert History</span>
+            <button class="panel-close" id="historyClose"><i class="fas fa-times"></i></button>
+        </div>
+        <div id="historyList">
+            <div style="text-align: center; color: var(--text-muted); padding: 40px 0; font-size: 0.85rem;">
+                <i class="fas fa-inbox" style="font-size: 2rem; display: block; margin-bottom: 12px; opacity: 0.3;"></i>
+                No alert history available
+            </div>
+        </div>
+    </div>
+    
+    <!-- ============================================
+    SECTION 24: JAVASCRIPT - COMPLETE
+    ============================================ -->
+    <script>
+        'use strict';
+        
+        // ============================================
+        // SECTION 25: CONFIGURATION
+        // ============================================
+        const ALERT_CONFIG = {
+            API_BASE: '/api/v1',
+            WS_URL: 'wss://' + window.location.host + '/ws/alerts',
+            REFRESH_INTERVAL: 5000,
+            MAX_ALERTS: 50,
+            DEFAULT_DURATION: 8000,
+            CRITICAL_DURATION: 15000,
+            SUCCESS_DURATION: 6000,
+            SOUND_ENABLED: true,
+            DESKTOP_NOTIFICATIONS: true,
+            HISTORY_LIMIT: 100,
+            AUTO_DISMISS: true,
+        };
+        
+        // ============================================
+        // SECTION 26: DOM REFS
+        // ============================================
+        const ALERT_DOM = {
+            container: document.getElementById('alertsContainer'),
+            counter: document.getElementById('alertCounter'),
+            counterBadge: document.getElementById('counterBadge'),
+            soundIndicator: document.getElementById('soundIndicator'),
+            soundToggle: document.getElementById('soundToggle'),
+            settingsToggle: document.getElementById('settingsToggle'),
+            historyPanel: document.getElementById('historyPanel'),
+            historyClose: document.getElementById('historyClose'),
+            historyList: document.getElementById('historyList'),
+            overlay: document.getElementById('alertOverlay'),
+        };
+        
+        // ============================================
+        // SECTION 27: STATE
+        // ============================================
+        const ALERT_STATE = {
+            alerts: [],
+            activeAlerts: [],
+            history: [],
+            idCounter: 0,
+            isConnected: false,
+            soundEnabled: true,
+            notificationsEnabled: true,
+            muted: false,
+            isHistoryOpen: false,
+            isSettingsOpen: false,
+            soundContext: null,
+        };
+        
+        // ============================================
+        // SECTION 28: ALERT FACTORY
+        // ============================================
+        class AlertFactory {
+            static create(data) {
+                const defaults = {
+                    id: ++ALERT_STATE.idCounter,
+                    type: 'info',
+                    title: 'System Alert',
+                    message: 'No details provided',
+                    duration: ALERT_CONFIG.DEFAULT_DURATION,
+                    source: 'System',
+                    time: new Date(),
+                    actions: [],
+                    metadata: {},
+                    read: false,
+                    dismissed: false,
+                };
+                
+                return { ...defaults, ...data };
+            }
+            
+            static createOpportunity(data) {
+                return this.create({
+                    type: 'success',
+                    title: '🚀 Arbitrage Opportunity',
+                    message: `Found <strong>${data.pair}</strong> opportunity with <span class="highlight">${data.spread}%</span> spread on <span class="highlight">${data.exchange}</span>`,
+                    duration: ALERT_CONFIG.SUCCESS_DURATION,
+                    source: 'Arbitrage Engine',
+                    actions: [
+                        { label: 'Execute', action: 'execute_arbitrage', icon: 'fa-rocket', class: 'execute-btn' },
+                        { label: 'Snooze', action: 'snooze', icon: 'fa-clock', class: 'snooze-btn' },
+                    ],
+                    metadata: {
+                        pair: data.pair,
+                        spread: data.spread,
+                        exchange: data.exchange,
+                        profit: data.profit,
+                        profitUsd: data.profitUsd,
+                    },
+                });
+            }
+            
+            static createRisk(data) {
+                return this.create({
+                    type: 'danger',
+                    title: '⚠️ Risk Alert',
+                    message: `Risk limit <strong>${data.limit}</strong> exceeded at <span class="highlight-danger">${data.value}</span>`,
+                    duration: ALERT_CONFIG.DEFAULT_DURATION,
+                    source: 'Risk Engine',
+                    actions: [
+                        { label: 'View', action: 'view_risk', icon: 'fa-chart-line', class: 'action-btn' },
+                        { label: 'Dismiss', action: 'dismiss', icon: 'fa-times', class: 'dismiss-btn' },
+                    ],
+                    metadata: data,
+                });
+            }
+            
+            static createSystem(data) {
+                const typeMap = {
+                    'error': 'danger',
+                    'critical': 'critical',
+                    'warning': 'warning',
+                    'info': 'info',
+                    'success': 'success',
+                };
+                
+                return this.create({
+                    type: typeMap[data.level] || 'info',
+                    title: data.title || 'System Notification',
+                    message: data.message,
+                    duration: data.level === 'critical' ? ALERT_CONFIG.CRITICAL_DURATION : ALERT_CONFIG.DEFAULT_DURATION,
+                    source: 'System',
+                    actions: [
+                        { label: 'Details', action: 'view_details', icon: 'fa-info-circle', class: 'action-btn' },
+                        { label: 'Dismiss', action: 'dismiss', icon: 'fa-times', class: 'dismiss-btn' },
+                    ],
+                    metadata: data,
+                });
+            }
+            
+            static createCritical(data) {
+                return this.create({
+                    type: 'critical',
+                    title: '🔴 CRITICAL: ' + data.title,
+                    message: data.message,
+                    duration: ALERT_CONFIG.CRITICAL_DURATION,
+                    source: 'Critical System',
+                    actions: [
+                        { label: 'Emergency Stop', action: 'emergency', icon: 'fa-exclamation-triangle', class: 'emergency-btn' },
+                        { label: 'Dismiss', action: 'dismiss', icon: 'fa-times', class: 'dismiss-btn' },
+                    ],
+                    metadata: data,
+                });
+            }
+            
+            static createTrade(data) {
+                return this.create({
+                    type: data.profit > 0 ? 'success' : 'danger',
+                    title: data.profit > 0 ? '✅ Trade Executed' : '❌ Trade Executed',
+                    message: `Trade <strong>${data.pair}</strong> executed with <span class="${data.profit > 0 ? 'highlight' : 'highlight-danger'}">${data.profit > 0 ? '+' : ''}${data.profit}%</span>`,
+                    duration: ALERT_CONFIG.SUCCESS_DURATION,
+                    source: 'Execution Engine',
+                    actions: [
+                        { label: 'View Trade', action: 'view_trade', icon: 'fa-receipt', class: 'action-btn' },
+                        { label: 'Dismiss', action: 'dismiss', icon: 'fa-times', class: 'dismiss-btn' },
+                    ],
+                    metadata: data,
+                });
+            }
+        }
+        
+        // ============================================
+        // SECTION 29: ALERT RENDERER
+        // ============================================
+        class AlertRenderer {
+            static render(alert) {
+                const el = document.createElement('div');
+                el.className = `alert-item type-${alert.type}`;
+                el.dataset.id = alert.id;
+                el.setAttribute('role', 'alert');
+                el.setAttribute('aria-live', alert.type === 'critical' ? 'assertive' : 'polite');
+                
+                // Mouse move for glow
+                el.addEventListener('mousemove', (e) => {
+                    const rect = el.getBoundingClientRect();
+                    const x = ((e.clientX - rect.left) / rect.width) * 100;
+                    const y = ((e.clientY - rect.top) / rect.height) * 100;
+                    el.style.setProperty('--mouse-x', x + '%');
+                    el.style.setProperty('--mouse-y', y + '%');
+                });
+                
+                const iconMap = {
+                    info: 'fa-info-circle',
+                    success: 'fa-check-circle',
+                    warning: 'fa-exclamation-triangle',
+                    danger: 'fa-times-circle',
+                    critical: 'fa-skull-crossbones',
+                };
+                
+                const icon = iconMap[alert.type] || 'fa-bell';
+                
+                el.innerHTML = `
                     <div class="alert-content">
-                        <div class="alert-header">
-                            <span class="alert-title">{{ alert.title }}</span>
-                            <span class="alert-time" data-timestamp="{{ alert.timestamp }}">{{ alert.timestamp|format_datetime if alert.timestamp else '--' }}</span>
+                        <div class="alert-icon-wrapper">
+                            <i class="fas ${icon} alert-icon"></i>
                         </div>
-                        <div class="alert-message">{{ alert.message }}</div>
-                        {% if alert.details %}
-                        <div class="alert-details">
-                            <button class="alert-details-btn" data-action="toggle-details">
-                                <i class="fas fa-chevron-down"></i> Details
-                            </button>
-                            <div class="alert-details-content" style="display: none;">
-                                <pre>{{ alert.details|tojson(indent=2) }}</pre>
+                        <div class="alert-text">
+                            <div class="alert-title">
+                                ${alert.title}
+                                <span class="alert-badge">${alert.type.toUpperCase()}</span>
+                            </div>
+                            <div class="alert-message">${alert.message}</div>
+                            <div class="alert-meta">
+                                <span class="alert-time">
+                                    <i class="fas fa-clock"></i>
+                                    ${this.formatTime(alert.time)}
+                                </span>
+                                <span class="alert-source">
+                                    <i class="fas fa-robot"></i>
+                                    ${alert.source}
+                                </span>
+                                ${alert.metadata.pair ? `<span class="alert-tag"><i class="fas fa-coins"></i> ${alert.metadata.pair}</span>` : ''}
+                                ${alert.metadata.spread ? `<span class="alert-tag"><i class="fas fa-percent"></i> ${alert.metadata.spread}%</span>` : ''}
                             </div>
                         </div>
-                        {% endif %}
-                        {% if alert.actions and alert.actions|length > 0 %}
                         <div class="alert-actions">
-                            {% for action in alert.actions %}
-                            <button class="alert-action-btn" data-action="{{ action.id }}" data-alert-id="{{ alert.id }}">
-                                <i class="fas fa-{{ action.icon }}"></i>
-                                {{ action.label }}
+                            ${alert.actions.map(action => `
+                                <button class="alert-action-btn ${action.class || ''}" data-action="${action.action}" data-id="${alert.id}" title="${action.label}">
+                                    <i class="fas ${action.icon}"></i>
+                                </button>
+                            `).join('')}
+                            <button class="alert-action-btn dismiss-btn" data-action="dismiss" data-id="${alert.id}" title="Dismiss">
+                                <i class="fas fa-times"></i>
                             </button>
-                            {% endfor %}
                         </div>
-                        {% endif %}
                     </div>
+                    <div class="alert-progress">
+                        <div class="alert-progress-bar" style="animation: none; width: 100%;"></div>
+                    </div>
+                `;
+                
+                // Event listeners for actions
+                el.querySelectorAll('.alert-action-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        const action = btn.dataset.action;
+                        const id = parseInt(btn.dataset.id);
+                        this.handleAction(id, action);
+                    });
+                });
+                
+                // Click on alert to expand details
+                el.addEventListener('click', (e) => {
+                    if (!e.target.closest('.alert-action-btn')) {
+                        this.handleAction(alert.id, 'expand');
+                    }
+                });
+                
+                // Progress bar
+                this.startProgress(el, alert.duration || ALERT_CONFIG.DEFAULT_DURATION);
+                
+                return el;
+            }
+            
+            static formatTime(date) {
+                const d = new Date(date);
+                const now = new Date();
+                const diff = Math.floor((now - d) / 1000);
+                
+                if (diff < 60) return 'Just now';
+                if (diff < 3600) return Math.floor(diff / 60) + 'm ago';
+                if (diff < 86400) return Math.floor(diff / 3600) + 'h ago';
+                return d.toLocaleDateString() + ' ' + d.toLocaleTimeString();
+            }
+            
+            static startProgress(el, duration) {
+                const progressBar = el.querySelector('.alert-progress-bar');
+                let startTime = Date.now();
+                let paused = false;
+                let pauseTime = 0;
+                
+                const updateProgress = () => {
+                    if (paused) return;
+                    const elapsed = Date.now() - startTime;
+                    const progress = Math.max(0, 1 - (elapsed / duration));
+                    progressBar.style.width = (progress * 100) + '%';
                     
-                    <!-- Alert Dismiss -->
-                    <button class="alert-dismiss-btn" data-action="dismiss" data-alert-id="{{ alert.id }}" title="Dismiss Alert">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
-                {% endfor %}
-            {% else %}
-                <!-- Empty State -->
-                <div class="alerts-empty">
-                    <i class="fas fa-bell-slash"></i>
-                    <span class="empty-title">No Alerts</span>
-                    <span class="empty-subtitle">All systems are operating normally</span>
-                </div>
-            {% endif %}
-        </div>
-        
-        <!-- Loading State -->
-        <div class="alerts-loading" style="display: none;">
-            <div class="loading-spinner"></div>
-            <span class="loading-text">Loading alerts...</span>
-        </div>
-        
-        <!-- Error State -->
-        <div class="alerts-error" style="display: none;">
-            <i class="fas fa-exclamation-triangle"></i>
-            <span class="error-text">Failed to load alerts</span>
-            <button class="retry-btn" data-action="retry">Retry</button>
-        </div>
-    </div>
-    
-    <!-- ======================== FOOTER ======================== -->
-    <div class="alerts-footer">
-        <div class="alerts-stats">
-            <span class="stat-item">
-                <span class="stat-label">Total</span>
-                <span class="stat-value" id="stat-total">{{ alert_data.alerts|length if alert_data and alert_data.alerts else 0 }}</span>
-            </span>
-            <span class="stat-item">
-                <span class="stat-label">Unread</span>
-                <span class="stat-value" id="stat-unread">
-                    {{ alert_data.alerts|selectattr('read', 'eq', false)|list|length if alert_data and alert_data.alerts else 0 }}
-                </span>
-            </span>
-            <span class="stat-item">
-                <span class="stat-label">Critical</span>
-                <span class="stat-value stat-critical" id="stat-critical">
-                    {{ alert_data.alerts|selectattr('severity', 'eq', 'critical')|list|length if alert_data and alert_data.alerts else 0 }}
-                </span>
-            </span>
-            <span class="stat-item">
-                <span class="stat-label">High</span>
-                <span class="stat-value stat-high" id="stat-high">
-                    {{ alert_data.alerts|selectattr('severity', 'eq', 'high')|list|length if alert_data and alert_data.alerts else 0 }}
-                </span>
-            </span>
-            <span class="stat-item">
-                <span class="stat-label">Medium</span>
-                <span class="stat-value stat-medium" id="stat-medium">
-                    {{ alert_data.alerts|selectattr('severity', 'eq', 'medium')|list|length if alert_data and alert_data.alerts else 0 }}
-                </span>
-            </span>
-            <span class="stat-item">
-                <span class="stat-label">Low</span>
-                <span class="stat-value stat-low" id="stat-low">
-                    {{ alert_data.alerts|selectattr('severity', 'eq', 'low')|list|length if alert_data and alert_data.alerts else 0 }}
-                </span>
-            </span>
-        </div>
-        <div class="alerts-pagination">
-            <button class="page-btn" data-action="prev" disabled>
-                <i class="fas fa-chevron-left"></i>
-            </button>
-            <span class="page-info" id="page-info">1 / 1</span>
-            <button class="page-btn" data-action="next" disabled>
-                <i class="fas fa-chevron-right"></i>
-            </button>
-        </div>
-    </div>
-</div>
-{% endmacro %}
-
-<!-- ======================================================================= -->
-<!-- CSS STYLES - COMPLETE                                                   -->
-<!-- ======================================================================= -->
-{% block styles %}
-<style>
-/* ============================================
-   ALERTS PARTIAL - COMPLETE STYLES
-   ============================================ */
-   
-:root {
-    --alert-primary: #6C63FF;
-    --alert-secondary: #00D4FF;
-    --alert-success: #00D4FF;
-    --alert-danger: #FF6B6B;
-    --alert-warning: #FFD93D;
-    --alert-info: #6C63FF;
-    --alert-card-bg: #16213E;
-    --alert-card-border: rgba(255, 255, 255, 0.05);
-    --alert-text-primary: #E0E0E0;
-    --alert-text-secondary: #888;
-    --alert-text-muted: #666;
-    --alert-input-bg: rgba(255, 255, 255, 0.05);
-    --alert-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
-    --alert-radius: 16px;
-    --alert-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* Dark Theme */
-[data-theme="dark"] {
-    --alert-card-bg: #1a1a2e;
-    --alert-text-primary: #f0f0f0;
-    --alert-text-secondary: #aaa;
-}
-
-/* Light Theme */
-[data-theme="light"] {
-    --alert-card-bg: #ffffff;
-    --alert-card-border: #e0e0e0;
-    --alert-text-primary: #333;
-    --alert-text-secondary: #666;
-    --alert-text-muted: #999;
-    --alert-input-bg: #f5f5f5;
-    --alert-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
-}
-
-/* ============================================
-   ALERTS CONTAINER
-   ============================================ */
-.alerts-container {
-    background: var(--alert-card-bg);
-    border-radius: var(--alert-radius);
-    padding: 20px;
-    margin: 10px 0;
-    box-shadow: var(--alert-shadow);
-    border: 1px solid var(--alert-card-border);
-    transition: var(--alert-transition);
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-}
-
-/* ============================================
-   HEADER
-   ============================================ */
-.alerts-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 16px;
-    flex-wrap: wrap;
-    gap: 10px;
-}
-
-.alerts-title-section {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-}
-
-.alerts-title {
-    color: var(--alert-text-primary);
-    font-size: 18px;
-    font-weight: 600;
-    margin: 0;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.alerts-title i {
-    color: var(--alert-primary);
-}
-
-.alerts-count {
-    background: var(--alert-danger);
-    color: #fff;
-    font-size: 11px;
-    font-weight: 600;
-    padding: 1px 8px;
-    border-radius: 10px;
-    min-width: 20px;
-    text-align: center;
-}
-
-.alerts-live-status {
-    font-size: 11px;
-    color: var(--alert-text-secondary);
-    display: flex;
-    align-items: center;
-    gap: 4px;
-}
-
-.alerts-subtitle {
-    color: var(--alert-text-secondary);
-    font-size: 12px;
-}
-
-/* Controls */
-.alerts-controls {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    flex-wrap: wrap;
-}
-
-.alerts-filter {
-    display: flex;
-    gap: 2px;
-    background: var(--alert-input-bg);
-    padding: 3px;
-    border-radius: 8px;
-    border: 1px solid var(--alert-card-border);
-}
-
-.filter-btn {
-    background: transparent;
-    border: none;
-    color: var(--alert-text-secondary);
-    padding: 4px 10px;
-    font-size: 11px;
-    font-weight: 500;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: var(--alert-transition);
-    font-family: inherit;
-}
-
-.filter-btn:hover {
-    color: var(--alert-text-primary);
-    background: rgba(255, 255, 255, 0.05);
-}
-
-.filter-btn-active {
-    color: #fff;
-    background: var(--alert-primary);
-}
-
-.filter-btn-active:hover {
-    background: #5a52d9;
-}
-
-.alerts-actions {
-    display: flex;
-    gap: 2px;
-    background: var(--alert-input-bg);
-    padding: 3px;
-    border-radius: 8px;
-    border: 1px solid var(--alert-card-border);
-}
-
-.alert-action-btn {
-    background: transparent;
-    border: none;
-    color: var(--alert-text-secondary);
-    padding: 4px 8px;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: var(--alert-transition);
-    font-size: 14px;
-}
-
-.alert-action-btn:hover {
-    color: var(--alert-text-primary);
-    background: rgba(255, 255, 255, 0.05);
-}
-
-.alert-action-btn:active {
-    transform: scale(0.95);
-}
-
-/* ============================================
-   BODY
-   ============================================ */
-.alerts-body {
-    position: relative;
-    min-height: 100px;
-}
-
-/* Alert List */
-.alerts-list {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    max-height: 400px;
-    overflow-y: auto;
-    padding-right: 4px;
-}
-
-.alerts-list::-webkit-scrollbar {
-    width: 4px;
-}
-
-.alerts-list::-webkit-scrollbar-track {
-    background: var(--alert-input-bg);
-    border-radius: 2px;
-}
-
-.alerts-list::-webkit-scrollbar-thumb {
-    background: var(--alert-primary);
-    border-radius: 2px;
-}
-
-/* Alert Item */
-.alert-item {
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    padding: 12px 14px;
-    background: var(--alert-input-bg);
-    border-radius: 8px;
-    border-left: 3px solid var(--alert-text-muted);
-    transition: var(--alert-transition);
-    position: relative;
-}
-
-.alert-item:hover {
-    background: rgba(255, 255, 255, 0.08);
-}
-
-.alert-item.alert-critical {
-    border-left-color: var(--alert-danger);
-}
-
-.alert-item.alert-high {
-    border-left-color: var(--alert-warning);
-}
-
-.alert-item.alert-medium {
-    border-left-color: var(--alert-primary);
-}
-
-.alert-item.alert-low {
-    border-left-color: var(--alert-secondary);
-}
-
-.alert-item.alert-read {
-    opacity: 0.7;
-}
-
-.alert-item.alert-read .alert-title {
-    font-weight: 400;
-}
-
-/* Alert Icon */
-.alert-icon {
-    flex-shrink: 0;
-    font-size: 18px;
-    padding-top: 2px;
-}
-
-/* Alert Content */
-.alert-content {
-    flex: 1;
-    min-width: 0;
-}
-
-.alert-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 8px;
-    flex-wrap: wrap;
-}
-
-.alert-title {
-    color: var(--alert-text-primary);
-    font-size: 14px;
-    font-weight: 600;
-}
-
-.alert-time {
-    color: var(--alert-text-secondary);
-    font-size: 11px;
-    flex-shrink: 0;
-}
-
-.alert-message {
-    color: var(--alert-text-secondary);
-    font-size: 13px;
-    margin-top: 2px;
-    line-height: 1.4;
-}
-
-/* Alert Details */
-.alert-details {
-    margin-top: 4px;
-}
-
-.alert-details-btn {
-    background: transparent;
-    border: none;
-    color: var(--alert-text-secondary);
-    font-size: 11px;
-    cursor: pointer;
-    padding: 2px 0;
-    transition: var(--alert-transition);
-    font-family: inherit;
-}
-
-.alert-details-btn:hover {
-    color: var(--alert-text-primary);
-}
-
-.alert-details-content {
-    margin-top: 4px;
-    padding: 8px;
-    background: var(--alert-card-bg);
-    border-radius: 4px;
-    border: 1px solid var(--alert-card-border);
-}
-
-.alert-details-content pre {
-    margin: 0;
-    font-size: 12px;
-    color: var(--alert-text-secondary);
-    white-space: pre-wrap;
-    word-break: break-all;
-}
-
-/* Alert Actions */
-.alert-actions {
-    display: flex;
-    gap: 6px;
-    margin-top: 6px;
-}
-
-.alert-actions .alert-action-btn {
-    font-size: 12px;
-    padding: 2px 10px;
-    background: var(--alert-card-bg);
-    border: 1px solid var(--alert-card-border);
-    border-radius: 4px;
-}
-
-.alert-actions .alert-action-btn:hover {
-    background: var(--alert-primary);
-    color: #fff;
-    border-color: var(--alert-primary);
-}
-
-/* Alert Dismiss */
-.alert-dismiss-btn {
-    background: transparent;
-    border: none;
-    color: var(--alert-text-muted);
-    padding: 4px;
-    cursor: pointer;
-    transition: var(--alert-transition);
-    font-size: 14px;
-    flex-shrink: 0;
-}
-
-.alert-dismiss-btn:hover {
-    color: var(--alert-danger);
-}
-
-/* ============================================
-   EMPTY STATE
-   ============================================ */
-.alerts-empty {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 40px 20px;
-    gap: 8px;
-}
-
-.alerts-empty i {
-    font-size: 48px;
-    color: var(--alert-text-muted);
-}
-
-.empty-title {
-    color: var(--alert-text-primary);
-    font-size: 16px;
-    font-weight: 500;
-}
-
-.empty-subtitle {
-    color: var(--alert-text-secondary);
-    font-size: 13px;
-}
-
-/* ============================================
-   LOADING STATE
-   ============================================ */
-.alerts-loading {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 40px 20px;
-    gap: 12px;
-}
-
-.loading-spinner {
-    width: 32px;
-    height: 32px;
-    border: 3px solid rgba(108, 99, 255, 0.1);
-    border-top-color: var(--alert-primary);
-    border-radius: 50%;
-    animation: alert-spin 1s linear infinite;
-}
-
-@keyframes alert-spin {
-    to { transform: rotate(360deg); }
-}
-
-.loading-text {
-    color: var(--alert-text-secondary);
-    font-size: 14px;
-}
-
-/* ============================================
-   ERROR STATE
-   ============================================ */
-.alerts-error {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 40px 20px;
-    gap: 12px;
-}
-
-.alerts-error i {
-    font-size: 32px;
-    color: var(--alert-danger);
-}
-
-.error-text {
-    color: var(--alert-text-primary);
-    font-size: 16px;
-    font-weight: 500;
-}
-
-.retry-btn {
-    background: var(--alert-primary);
-    border: none;
-    color: #fff;
-    padding: 6px 20px;
-    border-radius: 6px;
-    font-size: 13px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: var(--alert-transition);
-    font-family: inherit;
-}
-
-.retry-btn:hover {
-    background: #5a52d9;
-}
-
-/* ============================================
-   FOOTER
-   ============================================ */
-.alerts-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 14px;
-    padding-top: 12px;
-    border-top: 1px solid var(--alert-card-border);
-    flex-wrap: wrap;
-    gap: 10px;
-}
-
-.alerts-stats {
-    display: flex;
-    gap: 16px;
-    flex-wrap: wrap;
-}
-
-.stat-item {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    font-size: 12px;
-}
-
-.stat-label {
-    color: var(--alert-text-secondary);
-}
-
-.stat-value {
-    color: var(--alert-text-primary);
-    font-weight: 600;
-}
-
-.stat-value.stat-critical {
-    color: var(--alert-danger);
-}
-
-.stat-value.stat-high {
-    color: var(--alert-warning);
-}
-
-.stat-value.stat-medium {
-    color: var(--alert-primary);
-}
-
-.stat-value.stat-low {
-    color: var(--alert-secondary);
-}
-
-.alerts-pagination {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.page-btn {
-    background: var(--alert-input-bg);
-    border: 1px solid var(--alert-card-border);
-    color: var(--alert-text-secondary);
-    padding: 4px 10px;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: var(--alert-transition);
-    font-family: inherit;
-}
-
-.page-btn:hover:not(:disabled) {
-    background: var(--alert-primary);
-    color: #fff;
-}
-
-.page-btn:disabled {
-    opacity: 0.4;
-    cursor: not-allowed;
-}
-
-.page-info {
-    color: var(--alert-text-secondary);
-    font-size: 12px;
-}
-
-/* ============================================
-   RESPONSIVE
-   ============================================ */
-@media (max-width: 768px) {
-    .alerts-container {
-        padding: 16px;
-    }
-    
-    .alerts-header {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 8px;
-    }
-    
-    .alerts-controls {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 8px;
-    }
-    
-    .alerts-filter {
-        width: 100%;
-        justify-content: center;
-        flex-wrap: wrap;
-    }
-    
-    .alerts-actions {
-        width: 100%;
-        justify-content: center;
-    }
-    
-    .alert-item {
-        flex-wrap: wrap;
-    }
-    
-    .alert-icon {
-        width: 24px;
-    }
-    
-    .alerts-footer {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 8px;
-    }
-    
-    .alerts-stats {
-        justify-content: center;
-    }
-    
-    .alerts-pagination {
-        justify-content: center;
-    }
-}
-
-@media (max-width: 480px) {
-    .alerts-container {
-        padding: 12px;
-        border-radius: 12px;
-    }
-    
-    .alert-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 4px;
-    }
-    
-    .alerts-stats {
-        gap: 8px;
-        flex-wrap: wrap;
-    }
-    
-    .stat-item {
-        font-size: 11px;
-    }
-}
-
-/* ============================================
-   ANIMATIONS
-   ============================================ */
-@keyframes alert-slideIn {
-    from { opacity: 0; transform: translateX(-20px); }
-    to { opacity: 1; transform: translateX(0); }
-}
-
-.alert-item {
-    animation: alert-slideIn 0.3s ease-out;
-}
-
-@keyframes alert-pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.5; }
-}
-
-.alert-item.alert-critical .alert-icon {
-    animation: alert-pulse 1.5s ease-in-out infinite;
-}
-
-/* ============================================
-   PRINT STYLES
-   ============================================ */
-@media print {
-    .alerts-container {
-        box-shadow: none !important;
-        border: 1px solid #ddd !important;
-        break-inside: avoid;
-    }
-    
-    .alerts-actions,
-    .alert-dismiss-btn,
-    .alerts-pagination {
-        display: none !important;
-    }
-    
-    .alert-item {
-        break-inside: avoid;
-    }
-}
-</style>
-{% endblock %}
-
-<!-- ======================================================================= -->
-<!-- JAVASCRIPT - COMPLETE IMPLEMENTATION WITH REAL API                     -->
-<!-- ======================================================================= -->
-{% block scripts %}
-<script>
-// ================================================================
-// ALERTS PARTIAL - COMPLETE JAVASCRIPT IMPLEMENTATION
-// ================================================================
-
-(function() {
-    'use strict';
-
-    // ============================================================
-    // ALERTS MANAGER CLASS
-    // ============================================================
-    class AlertsManager {
-        constructor(container) {
-            this.container = container;
-            this.alerts = [];
-            this.filter = 'all';
-            this.page = 1;
-            this.pageSize = 10;
-            this.autoDismiss = container.dataset.autoDismiss === 'true';
-            this.theme = container.dataset.theme || 'dark';
-            this.wsEndpoint = container.dataset.wsEndpoint || '/ws/alerts';
-            
-            // DOM references
-            this.list = container.querySelector('.alerts-list');
-            this.countEl = container.querySelector('#alerts-count');
-            this.loadingEl = container.querySelector('.alerts-loading');
-            this.errorEl = container.querySelector('.alerts-error');
-            this.emptyEl = container.querySelector('.alerts-empty');
-            this.statusEl = container.querySelector('#alerts-live-status');
-            this.stats = {
-                total: container.querySelector('#stat-total'),
-                unread: container.querySelector('#stat-unread'),
-                critical: container.querySelector('#stat-critical'),
-                high: container.querySelector('#stat-high'),
-                medium: container.querySelector('#stat-medium'),
-                low: container.querySelector('#stat-low'),
-            };
-            
-            // WebSocket
-            this.ws = null;
-            this.reconnectAttempts = 0;
-            this.maxReconnectAttempts = 5;
-            this.isConnected = false;
-            
-            // Auto-refresh timer
-            this.refreshInterval = null;
-            
-            // Initialize
-            this.init();
-        }
-        
-        // ============================================================
-        // INITIALIZATION
-        // ============================================================
-        init() {
-            this.setupEventListeners();
-            this.loadAlerts();
-            this.connectWebSocket();
-            this.startAutoRefresh();
-            this.startAutoDismiss();
-        }
-        
-        // ============================================================
-        // WEBSOCKET CONNECTION
-        // ============================================================
-        connectWebSocket() {
-            try {
-                // Get WebSocket URL from config
-                const wsUrl = this.getWebSocketUrl();
-                
-                this.ws = new WebSocket(wsUrl);
-                
-                this.ws.onopen = () => {
-                    console.log('Alerts WebSocket connected');
-                    this.isConnected = true;
-                    this.reconnectAttempts = 0;
-                    this.updateStatus('connected');
-                };
-                
-                this.ws.onmessage = (event) => {
-                    try {
-                        const data = JSON.parse(event.data);
-                        this.handleWebSocketMessage(data);
-                    } catch (error) {
-                        console.error('WebSocket message parse error:', error);
+                    if (progress <= 0) {
+                        this.dismiss(parseInt(el.dataset.id));
+                    } else {
+                        requestAnimationFrame(updateProgress);
                     }
                 };
                 
-                this.ws.onclose = () => {
-                    console.log('Alerts WebSocket disconnected');
-                    this.isConnected = false;
-                    this.updateStatus('disconnected');
-                    this.reconnect();
-                };
+                el.addEventListener('mouseenter', () => {
+                    paused = true;
+                    progressBar.classList.add('paused');
+                    pauseTime = Date.now();
+                });
                 
-                this.ws.onerror = (error) => {
-                    console.error('Alerts WebSocket error:', error);
-                    this.updateStatus('error');
-                };
-            } catch (error) {
-                console.error('WebSocket connection failed:', error);
-                this.updateStatus('error');
-            }
-        }
-        
-        getWebSocketUrl() {
-            // REAL WebSocket URL with authentication
-            const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-            const host = window.location.host;
-            const token = localStorage.getItem('access_token') || '';
-            return `${protocol}//${host}${this.wsEndpoint}?token=${encodeURIComponent(token)}`;
-        }
-        
-        handleWebSocketMessage(data) {
-            switch (data.type) {
-                case 'alert':
-                    this.addAlert(data.alert);
-                    break;
-                case 'alert_update':
-                    this.updateAlert(data.alert);
-                    break;
-                case 'alert_delete':
-                    this.removeAlert(data.alertId);
-                    break;
-                case 'bulk_update':
-                    this.alerts = data.alerts;
-                    this.renderAlerts();
-                    this.updateStats();
-                    break;
-                case 'ping':
-                    this.sendPong();
-                    break;
-                case 'error':
-                    console.error('WebSocket error:', data.message);
-                    this.showError();
-                    break;
-                default:
-                    console.log('Unknown WebSocket message type:', data.type);
-            }
-        }
-        
-        sendPong() {
-            if (this.ws && this.ws.readyState === WebSocket.OPEN) {
-                this.ws.send(JSON.stringify({ type: 'pong' }));
-            }
-        }
-        
-        updateStatus(status) {
-            if (!this.statusEl) return;
-            
-            const statusMap = {
-                connected: { icon: 'fa-circle', color: '#00D4FF', text: 'Live' },
-                disconnected: { icon: 'fa-circle', color: '#FF6B6B', text: 'Disconnected' },
-                error: { icon: 'fa-exclamation-triangle', color: '#FFD93D', text: 'Error' },
-            };
-            
-            const s = statusMap[status] || statusMap.disconnected;
-            this.statusEl.innerHTML = `<i class="fas ${s.icon}" style="color: ${s.color};"></i> ${s.text}`;
-        }
-        
-        reconnect() {
-            if (this.reconnectAttempts >= this.maxReconnectAttempts) {
-                console.log('Max reconnect attempts reached');
-                return;
-            }
-            
-            this.reconnectAttempts++;
-            const delay = Math.min(1000 * Math.pow(2, this.reconnectAttempts), 30000);
-            
-            setTimeout(() => {
-                console.log(`Reconnecting to alerts WebSocket (attempt ${this.reconnectAttempts})`);
-                this.connectWebSocket();
-            }, delay);
-        }
-        
-        // ============================================================
-        // EVENT LISTENERS
-        // ============================================================
-        setupEventListeners() {
-            // Filter buttons
-            this.container.querySelectorAll('.filter-btn').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    this.setFilter(btn.dataset.filter);
+                el.addEventListener('mouseleave', () => {
+                    paused = false;
+                    progressBar.classList.remove('paused');
+                    const elapsed = Date.now() - startTime;
+                    const remainingTime = duration - elapsed;
+                    if (remainingTime > 0) {
+                        startTime = Date.now();
+                        requestAnimationFrame(updateProgress);
+                    }
                 });
-            });
+                
+                requestAnimationFrame(updateProgress);
+            }
             
-            // Action buttons
-            this.container.querySelectorAll('.alert-action-btn[data-action]').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    this.handleAction(btn.dataset.action, btn.dataset.alertId);
-                });
-            });
-            
-            // Details toggle
-            this.container.addEventListener('click', (e) => {
-                const btn = e.target.closest('.alert-details-btn');
-                if (btn) {
-                    this.toggleDetails(btn);
+            static handleAction(id, action) {
+                const alert = ALERT_STATE.activeAlerts.find(a => a.id === id);
+                if (!alert) return;
+                
+                switch(action) {
+                    case 'dismiss':
+                        this.dismiss(id);
+                        break;
+                    case 'execute_arbitrage':
+                        console.log('[ALERT] Executing arbitrage for alert', id, alert);
+                        this.showToast('Executing arbitrage...', 'info');
+                        // API call would go here
+                        break;
+                    case 'view_risk':
+                        console.log('[ALERT] Viewing risk details', id);
+                        this.showToast('Opening risk dashboard...', 'info');
+                        break;
+                    case 'view_details':
+                        console.log('[ALERT] Viewing details', id);
+                        this.showAlertDetails(alert);
+                        break;
+                    case 'emergency':
+                        console.log('[ALERT] EMERGENCY STOP triggered', id);
+                        this.showToast('🚨 EMERGENCY STOP ACTIVATED!', 'critical');
+                        // API call would go here
+                        break;
+                    case 'snooze':
+                        this.snooze(id);
+                        break;
+                    case 'view_trade':
+                        console.log('[ALERT] Viewing trade', id);
+                        this.showToast('Opening trade details...', 'info');
+                        break;
+                    case 'expand':
+                        this.toggleExpand(id);
+                        break;
+                    default:
+                        console.warn('[ALERT] Unknown action:', action);
                 }
-            });
+            }
             
-            // Dismiss buttons
-            this.container.addEventListener('click', (e) => {
-                const btn = e.target.closest('.alert-dismiss-btn');
-                if (btn) {
-                    this.dismissAlert(btn.dataset.alertId);
+            static dismiss(id) {
+                const el = ALERT_DOM.container.querySelector(`[data-id="${id}"]`);
+                if (el) {
+                    el.classList.add('removing');
+                    setTimeout(() => {
+                        el.remove();
+                        ALERT_STATE.activeAlerts = ALERT_STATE.activeAlerts.filter(a => a.id !== id);
+                        AlertRenderer.updateCounter();
+                    }, 400);
                 }
-            });
-            
-            // Pagination
-            this.container.querySelector('[data-action="prev"]')?.addEventListener('click', () => {
-                this.prevPage();
-            });
-            this.container.querySelector('[data-action="next"]')?.addEventListener('click', () => {
-                this.nextPage();
-            });
-            
-            // Retry button
-            this.container.querySelector('[data-action="retry"]')?.addEventListener('click', () => {
-                this.loadAlerts();
-            });
-        }
-        
-        // ============================================================
-        // FILTERING
-        // ============================================================
-        setFilter(filter) {
-            this.filter = filter;
-            
-            // Update UI
-            this.container.querySelectorAll('.filter-btn').forEach(btn => {
-                btn.classList.toggle('filter-btn-active', btn.dataset.filter === filter);
-            });
-            
-            this.renderAlerts();
-        }
-        
-        // ============================================================
-        // PAGINATION
-        // ============================================================
-        prevPage() {
-            if (this.page > 1) {
-                this.page--;
-                this.renderAlerts();
-            }
-        }
-        
-        nextPage() {
-            const totalPages = Math.ceil(this.filteredAlerts().length / this.pageSize);
-            if (this.page < totalPages) {
-                this.page++;
-                this.renderAlerts();
-            }
-        }
-        
-        // ============================================================
-        // DATA LOADING
-        // ============================================================
-        async loadAlerts() {
-            this.showLoading();
-            this.hideError();
-            this.hideEmpty();
-            
-            try {
-                const data = await this.fetchAlerts();
-                this.alerts = data.alerts || [];
-                this.renderAlerts();
-                this.updateStats();
-                this.hideLoading();
-            } catch (error) {
-                console.error('Failed to load alerts:', error);
-                this.showError();
-                this.hideLoading();
-            }
-        }
-        
-        async fetchAlerts() {
-            // REAL API CALL - Fetch from backend
-            const response = await fetch('/api/alerts', {
-                headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
-                    'Content-Type': 'application/json',
-                },
-            });
-            
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.message || `Failed to fetch alerts: ${response.status}`);
             }
             
-            return await response.json();
-        }
-        
-        // ============================================================
-        // RENDERING
-        // ============================================================
-        renderAlerts() {
-            const filtered = this.filteredAlerts();
-            const pageAlerts = this.paginateAlerts(filtered);
-            
-            if (pageAlerts.length === 0) {
-                this.showEmpty();
-                return;
+            static snooze(id) {
+                const alert = ALERT_STATE.activeAlerts.find(a => a.id === id);
+                if (alert) {
+                    this.dismiss(id);
+                    setTimeout(() => {
+                        AlertManager.add(alert);
+                    }, 30000);
+                    this.showToast('Alert snoozed for 30 seconds', 'warning');
+                }
             }
             
-            this.hideEmpty();
-            
-            // Render alerts
-            this.list.innerHTML = pageAlerts.map(alert => this.renderAlert(alert)).join('');
-            
-            // Update pagination
-            this.updatePagination(filtered.length);
-            
-            // Update count
-            if (this.countEl) {
-                this.countEl.textContent = this.alerts.length;
+            static toggleExpand(id) {
+                const el = ALERT_DOM.container.querySelector(`[data-id="${id}"]`);
+                if (el) {
+                    const content = el.querySelector('.alert-message');
+                    const meta = el.querySelector('.alert-meta');
+                    if (content) {
+                        // Toggle expanded state
+                        const isExpanded = el.dataset.expanded === 'true';
+                        el.dataset.expanded = isExpanded ? 'false' : 'true';
+                        // Could add expansion animation here
+                    }
+                }
             }
             
-            // Update stats
-            this.updateStats();
-        }
-        
-        filteredAlerts() {
-            if (this.filter === 'all') {
-                return this.alerts;
-            }
-            return this.alerts.filter(alert => alert.severity.toLowerCase() === this.filter);
-        }
-        
-        paginateAlerts(alerts) {
-            const start = (this.page - 1) * this.pageSize;
-            const end = start + this.pageSize;
-            return alerts.slice(start, end);
-        }
-        
-        renderAlert(alert) {
-            const severityClass = alert.severity?.toLowerCase() || 'low';
-            const readClass = alert.read ? 'alert-read' : '';
-            
-            let detailsHtml = '';
-            if (alert.details) {
-                detailsHtml = `
-                    <div class="alert-details">
-                        <button class="alert-details-btn" data-action="toggle-details">
-                            <i class="fas fa-chevron-down"></i> Details
-                        </button>
-                        <div class="alert-details-content" style="display: none;">
-                            <pre>${this.escapeHtml(JSON.stringify(alert.details, null, 2))}</pre>
-                        </div>
+            static showAlertDetails(alert) {
+                const details = `
+                    <div style="padding: 12px; background: var(--bg-secondary); border-radius: var(--radius-sm); margin-top: 8px;">
+                        <div><strong>ID:</strong> ${alert.id}</div>
+                        <div><strong>Type:</strong> ${alert.type}</div>
+                        <div><strong>Source:</strong> ${alert.source}</div>
+                        <div><strong>Time:</strong> ${new Date(alert.time).toLocaleString()}</div>
+                        ${alert.metadata ? `<div><strong>Metadata:</strong> <pre style="font-size: 0.6rem; color: var(--text-muted); margin-top: 4px;">${JSON.stringify(alert.metadata, null, 2)}</pre></div>` : ''}
                     </div>
                 `;
+                // Could open a modal with details
+                console.log('[ALERT] Details:', alert);
+                this.showToast('📋 Alert details logged to console', 'info');
             }
             
-            let actionsHtml = '';
-            if (alert.actions && alert.actions.length > 0) {
-                actionsHtml = `
-                    <div class="alert-actions">
-                        ${alert.actions.map(action => `
-                            <button class="alert-action-btn" data-action="${action.id}" data-alert-id="${alert.id}">
-                                <i class="fas fa-${action.icon}"></i>
-                                ${action.label}
-                            </button>
-                        `).join('')}
-                    </div>
+            static showToast(message, type = 'info') {
+                // Simple toast notification
+                const toast = document.createElement('div');
+                toast.style.cssText = `
+                    position: fixed;
+                    bottom: 80px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    background: var(--bg-elevated);
+                    border: 1px solid var(--border-color);
+                    border-radius: var(--radius-md);
+                    padding: 12px 24px;
+                    backdrop-filter: blur(20px);
+                    box-shadow: var(--shadow-card);
+                    color: var(--text-primary);
+                    font-size: 0.8rem;
+                    z-index: 99999;
+                    animation: slideUp 0.3s ease-out;
+                    max-width: 90%;
+                    text-align: center;
                 `;
-            }
-            
-            const iconMap = {
-                critical: 'exclamation-circle',
-                high: 'exclamation-triangle',
-                medium: 'info-circle',
-                low: 'check-circle',
-            };
-            const icon = iconMap[alert.severity?.toLowerCase()] || 'bell';
-            const colorMap = {
-                critical: '#FF6B6B',
-                high: '#FFD93D',
-                medium: '#6C63FF',
-                low: '#00D4FF',
-            };
-            const color = colorMap[alert.severity?.toLowerCase()] || '#6C63FF';
-            
-            return `
-                <div class="alert-item alert-${severityClass} ${readClass}"
-                     data-alert-id="${alert.id}"
-                     data-alert-severity="${severityClass}"
-                     data-alert-read="${alert.read ? 'true' : 'false'}">
-                    
-                    <div class="alert-icon">
-                        <i class="fas fa-${icon}" style="color: ${color};"></i>
-                    </div>
-                    
-                    <div class="alert-content">
-                        <div class="alert-header">
-                            <span class="alert-title">${this.escapeHtml(alert.title)}</span>
-                            <span class="alert-time" data-timestamp="${alert.timestamp}">${this.formatTime(alert.timestamp)}</span>
-                        </div>
-                        <div class="alert-message">${this.escapeHtml(alert.message)}</div>
-                        ${detailsHtml}
-                        ${actionsHtml}
-                    </div>
-                    
-                    <button class="alert-dismiss-btn" data-action="dismiss" data-alert-id="${alert.id}" title="Dismiss Alert">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
-            `;
-        }
-        
-        escapeHtml(text) {
-            if (!text) return '';
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
-        }
-        
-        // ============================================================
-        // STATS UPDATE
-        // ============================================================
-        updateStats() {
-            const total = this.alerts.length;
-            const unread = this.alerts.filter(a => !a.read).length;
-            const critical = this.alerts.filter(a => a.severity.toLowerCase() === 'critical').length;
-            const high = this.alerts.filter(a => a.severity.toLowerCase() === 'high').length;
-            const medium = this.alerts.filter(a => a.severity.toLowerCase() === 'medium').length;
-            const low = this.alerts.filter(a => a.severity.toLowerCase() === 'low').length;
-            
-            this.updateStat('total', total);
-            this.updateStat('unread', unread);
-            this.updateStat('critical', critical);
-            this.updateStat('high', high);
-            this.updateStat('medium', medium);
-            this.updateStat('low', low);
-            
-            if (this.countEl) {
-                this.countEl.textContent = total;
-            }
-        }
-        
-        updateStat(id, value) {
-            const el = this.stats[id];
-            if (el) {
-                el.textContent = value;
-            }
-        }
-        
-        // ============================================================
-        // PAGINATION UPDATE
-        // ============================================================
-        updatePagination(total) {
-            const totalPages = Math.ceil(total / this.pageSize);
-            const infoEl = this.container.querySelector('.page-info');
-            const prevBtn = this.container.querySelector('[data-action="prev"]');
-            const nextBtn = this.container.querySelector('[data-action="next"]');
-            
-            if (infoEl) {
-                infoEl.textContent = `${this.page} / ${totalPages || 1}`;
-            }
-            
-            if (prevBtn) {
-                prevBtn.disabled = this.page <= 1;
-            }
-            
-            if (nextBtn) {
-                nextBtn.disabled = this.page >= totalPages;
-            }
-        }
-        
-        // ============================================================
-        // ACTIONS
-        // ============================================================
-        async handleAction(action, alertId) {
-            switch (action) {
-                case 'mark-all-read':
-                    await this.markAllRead();
-                    break;
-                case 'clear-all':
-                    await this.clearAll();
-                    break;
-                case 'refresh':
-                    await this.loadAlerts();
-                    break;
-                case 'settings':
-                    this.showSettings();
-                    break;
-                case 'view':
-                    this.viewAlert(alertId);
-                    break;
-                case 'acknowledge':
-                    await this.acknowledgeAlert(alertId);
-                    break;
-                case 'toggle-details':
-                    // Handled separately
-                    break;
-                default:
-                    console.warn('Unknown alert action:', action);
-            }
-        }
-        
-        async dismissAlert(alertId) {
-            try {
-                // REAL API CALL - Dismiss alert
-                const response = await fetch(`/api/alerts/${alertId}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
-                        'Content-Type': 'application/json',
-                    },
-                });
                 
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    throw new Error(errorData.message || `Failed to dismiss alert: ${response.status}`);
-                }
-                
-                this.alerts = this.alerts.filter(a => a.id !== alertId);
-                this.renderAlerts();
-                this.updateStats();
-            } catch (error) {
-                console.error('Failed to dismiss alert:', error);
-                // Fallback - remove locally
-                this.alerts = this.alerts.filter(a => a.id !== alertId);
-                this.renderAlerts();
-                this.updateStats();
-            }
-        }
-        
-        async markAllRead() {
-            try {
-                // REAL API CALL - Mark all as read
-                const response = await fetch('/api/alerts/read-all', {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
-                        'Content-Type': 'application/json',
-                    },
-                });
-                
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    throw new Error(errorData.message || `Failed to mark all as read: ${response.status}`);
-                }
-                
-                this.alerts.forEach(a => a.read = true);
-                this.renderAlerts();
-                this.updateStats();
-            } catch (error) {
-                console.error('Failed to mark all as read:', error);
-                // Fallback - mark locally
-                this.alerts.forEach(a => a.read = true);
-                this.renderAlerts();
-                this.updateStats();
-            }
-        }
-        
-        async clearAll() {
-            if (!confirm('Are you sure you want to clear all alerts?')) {
-                return;
-            }
-            
-            try {
-                // REAL API CALL - Clear all alerts
-                const response = await fetch('/api/alerts/clear-all', {
-                    method: 'DELETE',
-                    headers: {
-                        'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
-                        'Content-Type': 'application/json',
-                    },
-                });
-                
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    throw new Error(errorData.message || `Failed to clear alerts: ${response.status}`);
-                }
-                
-                this.alerts = [];
-                this.renderAlerts();
-                this.updateStats();
-            } catch (error) {
-                console.error('Failed to clear alerts:', error);
-                // Fallback - clear locally
-                this.alerts = [];
-                this.renderAlerts();
-                this.updateStats();
-            }
-        }
-        
-        viewAlert(alertId) {
-            // Navigate to alert details
-            window.location.href = `/alerts/${alertId}`;
-        }
-        
-        async acknowledgeAlert(alertId) {
-            try {
-                // REAL API CALL - Acknowledge alert
-                const response = await fetch(`/api/alerts/${alertId}/acknowledge`, {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
-                        'Content-Type': 'application/json',
-                    },
-                });
-                
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    throw new Error(errorData.message || `Failed to acknowledge alert: ${response.status}`);
-                }
-                
-                const alert = this.alerts.find(a => a.id === alertId);
-                if (alert) {
-                    alert.read = true;
-                    this.renderAlerts();
-                    this.updateStats();
-                }
-            } catch (error) {
-                console.error('Failed to acknowledge alert:', error);
-                // Fallback - acknowledge locally
-                const alert = this.alerts.find(a => a.id === alertId);
-                if (alert) {
-                    alert.read = true;
-                    this.renderAlerts();
-                    this.updateStats();
-                }
-            }
-        }
-        
-        showSettings() {
-            // Open settings modal
-            const modal = document.getElementById('alert-settings-modal');
-            if (modal) {
-                modal.classList.add('active');
-            } else {
-                // Simple alert settings dialog
-                const settings = {
-                    autoDismiss: this.autoDismiss,
-                    maxAlerts: this.pageSize,
+                const colors = {
+                    info: 'var(--alert-info)',
+                    success: 'var(--alert-success)',
+                    warning: 'var(--alert-warning)',
+                    danger: 'var(--alert-danger)',
+                    critical: 'var(--alert-critical)',
                 };
-                const result = prompt(
-                    'Alert Settings:\n' +
-                    'Auto-dismiss: ' + settings.autoDismiss + '\n' +
-                    'Max alerts per page: ' + settings.maxAlerts + '\n\n' +
-                    'Enter new max alerts per page:',
-                    settings.maxAlerts
+                
+                toast.style.borderLeftColor = colors[type] || colors.info;
+                toast.style.borderLeftWidth = '4px';
+                toast.style.borderLeftStyle = 'solid';
+                toast.textContent = message;
+                
+                document.body.appendChild(toast);
+                
+                setTimeout(() => {
+                    toast.style.opacity = '0';
+                    toast.style.transform = 'translateX(-50%) translateY(-20px)';
+                    toast.style.transition = 'all 0.3s ease';
+                    setTimeout(() => toast.remove(), 300);
+                }, 3000);
+            }
+            
+            static updateCounter() {
+                const count = ALERT_STATE.activeAlerts.length;
+                if (count > 0) {
+                    ALERT_DOM.counter.classList.add('visible');
+                    ALERT_DOM.counterBadge.textContent = count;
+                } else {
+                    ALERT_DOM.counter.classList.remove('visible');
+                }
+            }
+        }
+        
+        // ============================================
+        // SECTION 30: ALERT MANAGER
+        // ============================================
+        class AlertManager {
+            static add(data) {
+                const alert = typeof data === 'object' && data.type 
+                    ? data 
+                    : AlertFactory.create(data);
+                
+                // Check for duplicate (same title and message within 5 seconds)
+                const exists = ALERT_STATE.activeAlerts.some(a => 
+                    a.title === alert.title && 
+                    a.message === alert.message &&
+                    a.type === alert.type &&
+                    Math.abs(new Date(a.time) - new Date(alert.time)) < 5000
                 );
-                if (result !== null) {
-                    const newMax = parseInt(result);
-                    if (newMax > 0 && newMax <= 100) {
-                        this.pageSize = newMax;
-                        this.renderAlerts();
+                
+                if (exists) {
+                    // Update existing alert instead
+                    const existing = ALERT_STATE.activeAlerts.find(a => 
+                        a.title === alert.title && a.message === alert.message
+                    );
+                    if (existing) {
+                        // Bump the alert
+                        const el = ALERT_DOM.container.querySelector(`[data-id="${existing.id}"]`);
+                        if (el) {
+                            el.style.animation = 'none';
+                            setTimeout(() => {
+                                el.style.animation = 'alertSlideIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards';
+                            }, 10);
+                        }
                     }
+                    return null;
+                }
+                
+                ALERT_STATE.activeAlerts.push(alert);
+                ALERT_STATE.history.unshift({ ...alert, dismissedAt: null });
+                
+                // Limit alerts
+                if (ALERT_STATE.activeAlerts.length > ALERT_CONFIG.MAX_ALERTS) {
+                    const oldest = ALERT_STATE.activeAlerts.shift();
+                    AlertRenderer.dismiss(oldest.id);
+                }
+                
+                // Limit history
+                if (ALERT_STATE.history.length > ALERT_CONFIG.HISTORY_LIMIT) {
+                    ALERT_STATE.history = ALERT_STATE.history.slice(0, ALERT_CONFIG.HISTORY_LIMIT);
+                }
+                
+                // Render
+                const el = AlertRenderer.render(alert);
+                ALERT_DOM.container.prepend(el);
+                
+                // Update counter
+                AlertRenderer.updateCounter();
+                
+                // Sound
+                if (ALERT_STATE.soundEnabled && !ALERT_STATE.muted) {
+                    this.playSound(alert.type);
+                }
+                
+                // Desktop notification
+                if (ALERT_CONFIG.DESKTOP_NOTIFICATIONS && 
+                    'Notification' in window && 
+                    Notification.permission === 'granted') {
+                    this.sendDesktopNotification(alert);
+                }
+                
+                // Log
+                console.log(`[ALERT] ${alert.type.toUpperCase()}: ${alert.title}`, alert);
+                
+                return alert;
+            }
+            
+            static addOpportunity(data) {
+                return this.add(AlertFactory.createOpportunity(data));
+            }
+            
+            static addRisk(data) {
+                return this.add(AlertFactory.createRisk(data));
+            }
+            
+            static addSystem(data) {
+                return this.add(AlertFactory.createSystem(data));
+            }
+            
+            static addCritical(data) {
+                return this.add(AlertFactory.createCritical(data));
+            }
+            
+            static addTrade(data) {
+                return this.add(AlertFactory.createTrade(data));
+            }
+            
+            static playSound(type) {
+                try {
+                    if (!ALERT_STATE.soundContext) {
+                        ALERT_STATE.soundContext = new (window.AudioContext || window.webkitAudioContext)();
+                    }
+                    
+                    const ctx = ALERT_STATE.soundContext;
+                    const frequencies = {
+                        info: [523, 659],
+                        success: [523, 659, 784],
+                        warning: [440, 349, 440],
+                        danger: [349, 293, 261],
+                        critical: [262, 220, 174, 220],
+                    };
+                    
+                    const freqs = frequencies[type] || frequencies.info;
+                    
+                    freqs.forEach((freq, i) => {
+                        const oscillator = ctx.createOscillator();
+                        const gainNode = ctx.createGain();
+                        
+                        oscillator.connect(gainNode);
+                        gainNode.connect(ctx.destination);
+                        
+                        oscillator.frequency.value = freq;
+                        oscillator.type = 'sine';
+                        
+                        const startTime = ctx.currentTime + i * 0.08;
+                        gainNode.gain.setValueAtTime(0.12, startTime);
+                        gainNode.gain.exponentialRampToValueAtTime(0.001, startTime + 0.2);
+                        
+                        oscillator.start(startTime);
+                        oscillator.stop(startTime + 0.2);
+                    });
+                } catch (e) {
+                    // Silently fail for audio
+                }
+            }
+            
+            static sendDesktopNotification(alert) {
+                try {
+                    const iconMap = {
+                        info: 'ℹ️',
+                        success: '✅',
+                        warning: '⚠️',
+                        danger: '❌',
+                        critical: '🔴',
+                    };
+                    
+                    const notification = new Notification(`NEXUS Alert: ${alert.title}`, {
+                        body: alert.message.replace(/<[^>]*>/g, ''),
+                        icon: '/static/logos/nexus-favicon.svg',
+                        tag: `alert-${alert.id}`,
+                        requireInteraction: alert.type === 'critical',
+                        silent: true,
+                    });
+                    
+                    notification.onclick = () => {
+                        window.focus();
+                        AlertRenderer.handleAction(alert.id, 'expand');
+                    };
+                } catch (e) {
+                    // Silently fail
+                }
+            }
+            
+            static clearAll() {
+                if (ALERT_STATE.activeAlerts.length === 0) return;
+                
+                if (confirm('Clear all active alerts?')) {
+                    ALERT_STATE.activeAlerts.forEach(a => AlertRenderer.dismiss(a.id));
+                    ALERT_STATE.activeAlerts = [];
+                    AlertRenderer.updateCounter();
+                    AlertRenderer.showToast('All alerts cleared', 'info');
+                }
+            }
+            
+            static toggleSound() {
+                ALERT_STATE.soundEnabled = !ALERT_STATE.soundEnabled;
+                ALERT_DOM.soundIndicator.classList.toggle('visible', ALERT_STATE.soundEnabled);
+                ALERT_DOM.soundToggle.textContent = ALERT_STATE.soundEnabled ? 'ON' : 'OFF';
+                ALERT_DOM.soundToggle.classList.toggle('muted', !ALERT_STATE.soundEnabled);
+                
+                if (ALERT_STATE.soundEnabled) {
+                    this.playSound('info');
+                    AlertRenderer.showToast('🔊 Sound enabled', 'success');
+                } else {
+                    AlertRenderer.showToast('🔇 Sound disabled', 'warning');
+                }
+                
+                return ALERT_STATE.soundEnabled;
+            }
+            
+            static toggleNotifications() {
+                ALERT_STATE.notificationsEnabled = !ALERT_STATE.notificationsEnabled;
+                
+                if (!ALERT_STATE.notificationsEnabled) {
+                    AlertRenderer.showToast('🔕 Notifications disabled', 'warning');
+                } else {
+                    AlertRenderer.showToast('🔔 Notifications enabled', 'success');
+                }
+                
+                return ALERT_STATE.notificationsEnabled;
+            }
+            
+            static toggleMute() {
+                ALERT_STATE.muted = !ALERT_STATE.muted;
+                AlertRenderer.showToast(
+                    ALERT_STATE.muted ? '🔇 All sounds muted' : '🔊 All sounds unmuted',
+                    ALERT_STATE.muted ? 'warning' : 'success'
+                );
+                return ALERT_STATE.muted;
+            }
+        }
+        
+        // ============================================
+        // SECTION 31: WEBSOCKET CONNECTION
+        // ============================================
+        class AlertWebSocket {
+            constructor() {
+                this.ws = null;
+                this.reconnectAttempts = 0;
+                this.maxReconnectAttempts = 15;
+                this.reconnectDelay = 1000;
+                this.isConnecting = false;
+                this.heartbeatInterval = null;
+            }
+            
+            connect() {
+                if (this.isConnecting) return;
+                if (this.ws && this.ws.readyState === WebSocket.OPEN) return;
+                
+                this.isConnecting = true;
+                
+                try {
+                    this.ws = new WebSocket(ALERT_CONFIG.WS_URL);
+                    
+                    this.ws.onopen = this.handleOpen.bind(this);
+                    this.ws.onmessage = this.handleMessage.bind(this);
+                    this.ws.onclose = this.handleClose.bind(this);
+                    this.ws.onerror = this.handleError.bind(this);
+                } catch (e) {
+                    console.error('[WS] Connection error:', e);
+                    this.handleReconnect();
+                }
+            }
+            
+            handleOpen() {
+                console.log('[WS] Connected to alert stream');
+                this.isConnecting = false;
+                this.reconnectAttempts = 0;
+                ALERT_STATE.isConnected = true;
+                
+                // Start heartbeat
+                this.heartbeatInterval = setInterval(() => {
+                    this.sendPing();
+                }, 30000);
+                
+                AlertRenderer.showToast('🔌 Connected to alert stream', 'success');
+            }
+            
+            handleMessage(event) {
+                try {
+                    const data = JSON.parse(event.data);
+                    
+                    switch(data.type) {
+                        case 'arbitrage_opportunity':
+                            AlertManager.addOpportunity(data.data);
+                            break;
+                        case 'risk_alert':
+                            AlertManager.addRisk(data.data);
+                            break;
+                        case 'system_alert':
+                            AlertManager.addSystem(data.data);
+                            break;
+                        case 'critical_alert':
+                            AlertManager.addCritical(data.data);
+                            break;
+                        case 'trade_alert':
+                            AlertManager.addTrade(data.data);
+                            break;
+                        case 'ping':
+                            this.sendPong();
+                            break;
+                        case 'pong':
+                            // Heartbeat received
+                            break;
+                        default:
+                            AlertManager.add(data);
+                    }
+                } catch (e) {
+                    console.error('[WS] Error processing message:', e);
+                }
+            }
+            
+            handleClose(event) {
+                console.warn('[WS] Connection closed:', event.code, event.reason);
+                ALERT_STATE.isConnected = false;
+                this.isConnecting = false;
+                
+                if (this.heartbeatInterval) {
+                    clearInterval(this.heartbeatInterval);
+                    this.heartbeatInterval = null;
+                }
+                
+                if (event.code !== 1000) {
+                    this.handleReconnect();
+                }
+            }
+            
+            handleError(error) {
+                console.error('[WS] Error:', error);
+                this.isConnecting = false;
+            }
+            
+            handleReconnect() {
+                if (this.reconnectAttempts >= this.maxReconnectAttempts) {
+                    console.error('[WS] Max reconnect attempts reached');
+                    AlertRenderer.showToast('❌ Alert stream disconnected', 'danger');
+                    return;
+                }
+                
+                this.reconnectAttempts++;
+                const delay = Math.min(
+                    this.reconnectDelay * Math.pow(1.5, this.reconnectAttempts - 1),
+                    30000
+                );
+                
+                console.log(`[WS] Reconnecting in ${delay}ms (attempt ${this.reconnectAttempts})`);
+                
+                setTimeout(() => {
+                    this.connect();
+                }, delay);
+            }
+            
+            sendPing() {
+                if (this.ws && this.ws.readyState === WebSocket.OPEN) {
+                    this.ws.send(JSON.stringify({ type: 'ping' }));
+                }
+            }
+            
+            sendPong() {
+                if (this.ws && this.ws.readyState === WebSocket.OPEN) {
+                    this.ws.send(JSON.stringify({ type: 'pong' }));
+                }
+            }
+            
+            disconnect() {
+                if (this.heartbeatInterval) {
+                    clearInterval(this.heartbeatInterval);
+                    this.heartbeatInterval = null;
+                }
+                if (this.ws) {
+                    this.ws.close(1000, 'Client disconnect');
+                    this.ws = null;
+                }
+                ALERT_STATE.isConnected = false;
+            }
+        }
+        
+        // ============================================
+        // SECTION 32: ALERT HISTORY
+        // ============================================
+        class AlertHistory {
+            static async fetch(limit = 50) {
+                try {
+                    const response = await fetch(`${ALERT_CONFIG.API_BASE}/alerts/history?limit=${limit}`, {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json',
+                        },
+                        credentials: 'same-origin',
+                    });
+                    
+                    if (!response.ok) throw new Error('Failed to fetch history');
+                    
+                    const data = await response.json();
+                    return data.alerts || [];
+                } catch (e) {
+                    console.error('[ALERT] Failed to fetch history:', e);
+                    return [];
+                }
+            }
+            
+            static async loadHistory() {
+                try {
+                    const alerts = await this.fetch(ALERT_CONFIG.HISTORY_LIMIT);
+                    ALERT_STATE.history = alerts.map(a => ({ ...a, read: true }));
+                    this.renderHistory();
+                } catch (e) {
+                    // Silently fail
+                }
+            }
+            
+            static renderHistory() {
+                const list = ALERT_DOM.historyList;
+                if (ALERT_STATE.history.length === 0) {
+                    list.innerHTML = `
+                        <div style="text-align: center; color: var(--text-muted); padding: 40px 0; font-size: 0.85rem;">
+                            <i class="fas fa-inbox" style="font-size: 2rem; display: block; margin-bottom: 12px; opacity: 0.3;"></i>
+                            No alert history available
+                        </div>
+                    `;
+                    return;
+                }
+                
+                list.innerHTML = ALERT_STATE.history.slice(0, 50).map(alert => `
+                    <div class="alert-history-item" data-id="${alert.id}">
+                        <div class="item-info">
+                            <div class="item-title">${alert.title}</div>
+                            <div class="item-time">${new Date(alert.time).toLocaleString()}</div>
+                        </div>
+                        <span class="item-type-badge type-${alert.type}">${alert.type.toUpperCase()}</span>
+                    </div>
+                `).join('');
+                
+                // Add click handlers
+                list.querySelectorAll('.alert-history-item').forEach(el => {
+                    el.addEventListener('click', () => {
+                        const id = parseInt(el.dataset.id);
+                        const alert = ALERT_STATE.history.find(a => a.id === id);
+                        if (alert) {
+                            AlertRenderer.showAlertDetails(alert);
+                        }
+                    });
+                });
+            }
+            
+            static togglePanel() {
+                const panel = ALERT_DOM.historyPanel;
+                const overlay = ALERT_DOM.overlay;
+                ALERT_STATE.isHistoryOpen = !ALERT_STATE.isHistoryOpen;
+                
+                panel.classList.toggle('visible', ALERT_STATE.isHistoryOpen);
+                overlay.classList.toggle('visible', ALERT_STATE.isHistoryOpen);
+                document.body.style.overflow = ALERT_STATE.isHistoryOpen ? 'hidden' : '';
+                
+                if (ALERT_STATE.isHistoryOpen) {
+                    this.renderHistory();
                 }
             }
         }
         
-        // ============================================================
-        // WEB SOCKET - ADD/UPDATE ALERTS
-        // ============================================================
-        addAlert(alert) {
-            // Check if alert already exists
-            const existing = this.alerts.find(a => a.id === alert.id);
-            if (existing) {
-                this.updateAlert(alert);
-                return;
-            }
-            
-            this.alerts.unshift(alert);
-            this.renderAlerts();
-            this.updateStats();
-            
-            // Show notification for high/critical alerts
-            if (alert.severity === 'critical' || alert.severity === 'high') {
-                this.showNotification(alert.message, alert.severity);
-            }
-        }
-        
-        updateAlert(alert) {
-            const index = this.alerts.findIndex(a => a.id === alert.id);
-            if (index !== -1) {
-                this.alerts[index] = alert;
-                this.renderAlerts();
-                this.updateStats();
-            }
-        }
-        
-        removeAlert(alertId) {
-            this.alerts = this.alerts.filter(a => a.id !== alertId);
-            this.renderAlerts();
-            this.updateStats();
-        }
-        
-        // ============================================================
-        // TOGGLE DETAILS
-        // ============================================================
-        toggleDetails(btn) {
-            const content = btn.nextElementSibling;
-            if (content) {
-                const isVisible = content.style.display !== 'none';
-                content.style.display = isVisible ? 'none' : 'block';
-                btn.innerHTML = isVisible ? 
-                    '<i class="fas fa-chevron-down"></i> Details' : 
-                    '<i class="fas fa-chevron-up"></i> Hide Details';
-            }
-        }
-        
-        // ============================================================
-        // AUTO REFRESH
-        // ============================================================
-        startAutoRefresh(interval = 30000) {
-            if (this.refreshInterval) {
-                clearInterval(this.refreshInterval);
-            }
-            
-            this.refreshInterval = setInterval(() => {
-                this.loadAlerts();
-            }, interval);
-        }
-        
-        stopAutoRefresh() {
-            if (this.refreshInterval) {
-                clearInterval(this.refreshInterval);
-                this.refreshInterval = null;
-            }
-        }
-        
-        // ============================================================
-        // AUTO DISMISS
-        // ============================================================
-        startAutoDismiss() {
-            if (!this.autoDismiss) return;
-            
-            setInterval(() => {
-                const now = Date.now();
-                const expired = this.alerts.filter(alert => {
-                    if (alert.read) return false;
-                    const alertTime = new Date(alert.timestamp).getTime();
-                    return now - alertTime > 30000; // 30 seconds
-                });
+        // ============================================
+        // SECTION 33: DEMO ALERTS
+        // ============================================
+        class AlertDemo {
+            static generate() {
+                const types = ['info', 'success', 'warning', 'danger', 'critical'];
+                const weights = [25, 25, 20, 20, 10]; // Critical less frequent
                 
-                expired.forEach(alert => {
-                    this.dismissAlert(alert.id);
-                });
-            }, 5000);
+                let totalWeight = weights.reduce((a, b) => a + b, 0);
+                let random = Math.random() * totalWeight;
+                let type = types[0];
+                
+                for (let i = 0; i < weights.length; i++) {
+                    random -= weights[i];
+                    if (random <= 0) {
+                        type = types[i];
+                        break;
+                    }
+                }
+                
+                const titles = {
+                    info: [
+                        'System Update', 'New Feature Available', 'Market Data Synced',
+                        'Strategy Deployed', 'Configuration Updated', 'Cache Cleared',
+                        'Database Optimized', 'API Connected', 'WebSocket Ready',
+                    ],
+                    success: [
+                        'Arbitrage Executed', 'Position Closed', 'Profit Locked',
+                        'Order Filled', 'Trade Confirmed', 'Balance Updated',
+                        'Strategy Active', 'Connection Established', 'Data Synced',
+                    ],
+                    warning: [
+                        'High Volatility', 'Approaching Limit', 'Network Latency',
+                        'Slippage Detected', 'Order Partially Filled', 'Balance Low',
+                        'Price Deviation', 'Spread Narrowing', 'Position Risk',
+                    ],
+                    danger: [
+                        'Order Failed', 'Connection Lost', 'Risk Limit Exceeded',
+                        'Balance Insufficient', 'Price Discrepancy', 'Order Rejected',
+                        'Market Closed', 'API Rate Limited', 'Authentication Failed',
+                    ],
+                    critical: [
+                        'System Error', 'Emergency Stop', 'Critical Failure',
+                        'Data Corruption', 'Security Breach', 'Memory Exhausted',
+                        'CPU Overload', 'Network Partition', 'Database Down',
+                    ],
+                };
+                
+                const messages = {
+                    info: [
+                        'Market data synchronized successfully in <span class="highlight">2.3s</span>',
+                        'New arbitrage strategy <span class="highlight">v2.4.1</span> deployed to production',
+                        'System update completed with <span class="highlight">0</span> errors',
+                        'Configuration updated: <span class="highlight">risk_limit</span> set to 5%',
+                        'Cache cleared, performance improved by <span class="highlight">12%</span>',
+                    ],
+                    success: [
+                        'Arbitrage opportunity executed with <span class="highlight">2.4%</span> profit',
+                        'Position closed with <span class="highlight">$1,245.67</span> profit',
+                        'Cross-exchange arbitrage completed in <span class="highlight">247ms</span>',
+                        'Order #<span class="highlight">NEX-2026-0001</span> filled successfully',
+                        'Trade confirmed: <span class="highlight">+3.2%</span> on BTC/USDT',
+                    ],
+                    warning: [
+                        'Volatility index at <span class="highlight-warning">82%</span>',
+                        'Drawdown approaching <span class="highlight-warning">5%</span> limit',
+                        'Network latency increased to <span class="highlight-warning">247ms</span>',
+                        'Slippage detected: <span class="highlight-warning">0.15%</span>',
+                        'Order partially filled: <span class="highlight-warning">40%</span> remaining',
+                    ],
+                    danger: [
+                        'Order execution failed: <strong>insufficient balance</strong>',
+                        'WebSocket connection lost, reconnecting...',
+                        'Risk limit <strong>max_position</strong> exceeded by <span class="highlight-danger">150%</span>',
+                        'Balance insufficient for <strong>BTC/USDT</strong> order',
+                        'Order rejected: <strong>price out of range</strong>',
+                    ],
+                    critical: [
+                        'System error in arbitrage engine: <strong>critical</strong>',
+                        'Emergency stop triggered by risk management',
+                        'Critical failure in order execution pipeline',
+                        'Data corruption detected in <strong>trade_history</strong>',
+                        'Security breach detected on <strong>exchange API</strong>',
+                    ],
+                };
+                
+                const titleList = titles[type] || titles.info;
+                const messageList = messages[type] || messages.info;
+                const exchanges = ['Binance', 'Coinbase', 'Kraken', 'Bybit', 'OKX', 'KuCoin'];
+                const pairs = ['BTC/USDT', 'ETH/USDT', 'SOL/USDT', 'DOGE/USDT', 'ADA/USDT'];
+                
+                const title = titleList[Math.floor(Math.random() * titleList.length)];
+                const message = messageList[Math.floor(Math.random() * messageList.length)];
+                
+                return {
+                    type: type,
+                    title: title,
+                    message: message,
+                    source: type === 'critical' ? 'Critical System' : 'Arbitrage Engine',
+                    duration: type === 'critical' ? ALERT_CONFIG.CRITICAL_DURATION : 
+                              type === 'success' ? ALERT_CONFIG.SUCCESS_DURATION : 
+                              ALERT_CONFIG.DEFAULT_DURATION,
+                    metadata: {
+                        pair: pairs[Math.floor(Math.random() * pairs.length)],
+                        spread: (1 + Math.random() * 4).toFixed(2),
+                        exchange: exchanges[Math.floor(Math.random() * exchanges.length)],
+                        profit: (1 + Math.random() * 3).toFixed(2),
+                        profitUsd: Math.round(100 + Math.random() * 1000),
+                    },
+                };
+            }
+            
+            static startDemo(interval = 10000, maxAlerts = 20) {
+                let count = 0;
+                
+                const timer = setInterval(() => {
+                    if (count >= maxAlerts) {
+                        clearInterval(timer);
+                        AlertRenderer.showToast('🎯 Demo completed', 'success');
+                        return;
+                    }
+                    
+                    const alert = this.generate();
+                    AlertManager.add(alert);
+                    count++;
+                }, interval);
+                
+                return timer;
+            }
         }
         
-        // ============================================================
-        // NOTIFICATION
-        // ============================================================
-        showNotification(message, severity = 'info') {
-            // Browser notification if permitted
-            if ('Notification' in window && Notification.permission === 'granted') {
-                new Notification('NEXUS Trading IA', {
-                    body: message,
-                    icon: '/static/images/logo.png',
-                });
-            }
-            
-            // Request permission if not granted
-            if ('Notification' in window && Notification.permission === 'default') {
-                Notification.requestPermission();
-            }
-            
-            // In-app notification
-            const notification = document.createElement('div');
-            notification.className = `alert-notification alert-notification-${severity}`;
-            notification.textContent = message;
-            
-            const colors = {
-                critical: '#FF6B6B',
-                high: '#FFD93D',
-                medium: '#6C63FF',
-                low: '#00D4FF',
-                info: '#6C63FF',
-            };
-            const textColors = {
-                critical: '#fff',
-                high: '#333',
-                medium: '#fff',
-                low: '#fff',
-                info: '#fff',
-            };
-            
-            notification.style.cssText = `
+        // ============================================
+        // SECTION 34: UI EVENT HANDLERS
+        // ============================================
+        // Counter click - show history
+        ALERT_DOM.counter.addEventListener('click', () => {
+            AlertHistory.togglePanel();
+        });
+        
+        // Sound toggle
+        ALERT_DOM.soundToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            AlertManager.toggleSound();
+        });
+        
+        // Sound indicator click
+        ALERT_DOM.soundIndicator.addEventListener('click', () => {
+            AlertManager.toggleSound();
+        });
+        
+        // Settings toggle
+        ALERT_DOM.settingsToggle.addEventListener('click', () => {
+            // Simple settings menu
+            const menu = document.createElement('div');
+            menu.style.cssText = `
                 position: fixed;
-                top: 20px;
-                right: 20px;
-                padding: 14px 24px;
-                border-radius: 8px;
-                background: ${colors[severity] || '#6C63FF'};
-                color: ${textColors[severity] || '#fff'};
-                font-weight: 500;
+                bottom: 70px;
+                left: 20px;
+                background: var(--bg-elevated);
+                border: 1px solid var(--border-color);
+                border-radius: var(--radius-md);
+                padding: 12px 16px;
+                backdrop-filter: blur(20px);
+                box-shadow: var(--shadow-dropdown);
                 z-index: 9999;
-                animation: slideIn 0.3s ease-out;
-                box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-                max-width: 400px;
-                cursor: pointer;
+                min-width: 200px;
+                animation: slideUp 0.3s ease-out;
+            `;
+            menu.innerHTML = `
+                <div style="font-weight: 600; color: var(--text-primary); margin-bottom: 10px; font-size: 0.8rem;">
+                    <i class="fas fa-sliders-h" style="margin-right: 8px; color: var(--nexus-secondary);"></i>Alert Settings
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 6px; font-size: 0.75rem;">
+                    <label style="display: flex; justify-content: space-between; align-items: center; color: var(--text-secondary); cursor: pointer;">
+                        <span>🔊 Sound</span>
+                        <input type="checkbox" ${ALERT_STATE.soundEnabled ? 'checked' : ''} id="settingsSound">
+                    </label>
+                    <label style="display: flex; justify-content: space-between; align-items: center; color: var(--text-secondary); cursor: pointer;">
+                        <span>🔔 Notifications</span>
+                        <input type="checkbox" ${ALERT_STATE.notificationsEnabled ? 'checked' : ''} id="settingsNotifications">
+                    </label>
+                    <label style="display: flex; justify-content: space-between; align-items: center; color: var(--text-secondary); cursor: pointer;">
+                        <span>🔇 Mute All</span>
+                        <input type="checkbox" ${ALERT_STATE.muted ? 'checked' : ''} id="settingsMute">
+                    </label>
+                    <div style="border-top: 1px solid var(--border-color-light); margin: 6px 0; padding-top: 6px;">
+                        <button id="settingsClear" style="background: none; border: none; color: var(--alert-danger); cursor: pointer; font-size: 0.75rem; width: 100%; text-align: left; padding: 4px 0;">
+                            <i class="fas fa-trash"></i> Clear All Alerts
+                        </button>
+                    </div>
+                    <div>
+                        <button id="settingsDemo" style="background: none; border: none; color: var(--nexus-secondary); cursor: pointer; font-size: 0.75rem; width: 100%; text-align: left; padding: 4px 0;">
+                            <i class="fas fa-flask"></i> Generate Demo Alert
+                        </button>
+                    </div>
+                </div>
             `;
             
-            notification.onclick = () => {
-                notification.remove();
+            document.body.appendChild(menu);
+            
+            // Close on click outside
+            const closeMenu = (e) => {
+                if (!menu.contains(e.target) && e.target !== ALERT_DOM.settingsToggle) {
+                    menu.remove();
+                    document.removeEventListener('click', closeMenu);
+                }
             };
             
-            document.body.appendChild(notification);
-            
             setTimeout(() => {
-                notification.style.animation = 'slideOut 0.3s ease-in';
-                setTimeout(() => notification.remove(), 300);
-            }, 5000);
-        }
-        
-        // ============================================================
-        // UTILITY METHODS
-        // ============================================================
-        formatTime(timestamp) {
-            if (!timestamp) return '--';
-            const date = new Date(timestamp);
-            const now = new Date();
-            const diff = Math.floor((now - date) / 1000);
+                document.addEventListener('click', closeMenu);
+            }, 100);
             
-            if (diff < 60) return `${diff}s ago`;
-            if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
-            if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
-            return date.toLocaleDateString();
-        }
+            // Event handlers for settings
+            menu.querySelector('#settingsSound').addEventListener('change', (e) => {
+                if (!e.target.checked) {
+                    AlertManager.toggleSound();
+                } else {
+                    AlertManager.toggleSound();
+                }
+            });
+            
+            menu.querySelector('#settingsNotifications').addEventListener('change', (e) => {
+                AlertManager.toggleNotifications();
+            });
+            
+            menu.querySelector('#settingsMute').addEventListener('change', (e) => {
+                AlertManager.toggleMute();
+            });
+            
+            menu.querySelector('#settingsClear').addEventListener('click', () => {
+                AlertManager.clearAll();
+                menu.remove();
+            });
+            
+            menu.querySelector('#settingsDemo').addEventListener('click', () => {
+                AlertManager.add(AlertDemo.generate());
+                menu.remove();
+            });
+        });
         
-        showLoading() {
-            if (this.loadingEl) this.loadingEl.style.display = 'flex';
-            if (this.list) this.list.style.display = 'none';
-        }
+        // History panel close
+        ALERT_DOM.historyClose.addEventListener('click', AlertHistory.togglePanel);
+        ALERT_DOM.overlay.addEventListener('click', AlertHistory.togglePanel);
         
-        hideLoading() {
-            if (this.loadingEl) this.loadingEl.style.display = 'none';
-            if (this.list) this.list.style.display = 'block';
-        }
-        
-        showError() {
-            if (this.errorEl) this.errorEl.style.display = 'flex';
-            if (this.list) this.list.style.display = 'none';
-            if (this.loadingEl) this.loadingEl.style.display = 'none';
-        }
-        
-        hideError() {
-            if (this.errorEl) this.errorEl.style.display = 'none';
-        }
-        
-        showEmpty() {
-            if (this.emptyEl) this.emptyEl.style.display = 'flex';
-            if (this.list) this.list.style.display = 'none';
-        }
-        
-        hideEmpty() {
-            if (this.emptyEl) this.emptyEl.style.display = 'none';
-            if (this.list) this.list.style.display = 'block';
-        }
-        
-        // ============================================================
-        // DESTROY
-        // ============================================================
-        destroy() {
-            if (this.ws) {
-                this.ws.close();
-                this.ws = null;
-            }
-            this.stopAutoRefresh();
-            // Remove event listeners
-            // ... cleanup
-        }
-    }
-
-    // ================================================================
-    // INITIALIZE ALERTS
-    // ================================================================
-    document.addEventListener('DOMContentLoaded', function() {
-        const containers = document.querySelectorAll('.alerts-container');
-        
-        containers.forEach(container => {
-            try {
-                const manager = new AlertsManager(container);
-                // Store instance for debugging
-                window.alertManager = manager;
-            } catch (error) {
-                console.error('Alerts initialization failed:', error);
+        // ESC key to close history
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && ALERT_STATE.isHistoryOpen) {
+                AlertHistory.togglePanel();
             }
         });
-    });
-
-})();
-</script>
-{% endblock %}
-
-<!-- ======================================================================= -->
-<!-- RENDER PARTIAL                                                          -->
-<!-- ======================================================================= -->
-{% if not loop %}
-    {{ alerts(alert_data, show_controls, max_alerts, auto_dismiss) }}
-{% endif %}
-
+        
+        // ============================================
+        // SECTION 35: KEYBOARD SHORTCUTS
+        // ============================================
+        document.addEventListener('keydown', (e) => {
+            // Ctrl+Shift+A - Demo alert
+            if (e.ctrlKey && e.shiftKey && e.key === 'A') {
+                e.preventDefault();
+                AlertManager.add(AlertDemo.generate());
+                AlertRenderer.showToast('🎯 Demo alert generated', 'info');
+            }
+            
+            // Ctrl+Shift+M - Mute toggle
+            if (e.ctrlKey && e.shiftKey && e.key === 'M') {
+                e.preventDefault();
+                AlertManager.toggleMute();
+            }
+            
+            // Ctrl+Shift+H - History
+            if (e.ctrlKey && e.shiftKey && e.key === 'H') {
+                e.preventDefault();
+                AlertHistory.togglePanel();
+            }
+            
+            // Escape - Clear all if any alerts
+            if (e.key === 'Escape' && ALERT_STATE.activeAlerts.length > 0 && !ALERT_STATE.isHistoryOpen) {
+                AlertManager.clearAll();
+            }
+        });
+        
+        // ============================================
+        // SECTION 36: INITIALIZATION
+        // ============================================
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('[ALERT] Initializing alert system...');
+            console.log(`[ALERT] Version: 3.0.0 - Build: 2026.07.20`);
+            
+            // Request notification permission
+            if ('Notification' in window && ALERT_CONFIG.DESKTOP_NOTIFICATIONS) {
+                if (Notification.permission === 'default') {
+                    Notification.requestPermission();
+                }
+            }
+            
+            // Load alert history
+            AlertHistory.loadHistory();
+            
+            // Connect WebSocket
+            const ws = new AlertWebSocket();
+            ws.connect();
+            
+            // Show sound indicator if enabled
+            if (ALERT_STATE.soundEnabled) {
+                ALERT_DOM.soundIndicator.classList.add('visible');
+            }
+            
+            // Expose globally for debugging
+            window.__NEXUS_ALERTS = {
+                manager: AlertManager,
+                renderer: AlertRenderer,
+                factory: AlertFactory,
+                config: ALERT_CONFIG,
+                state: ALERT_STATE,
+                ws: ws,
+                demo: AlertDemo,
+                history: AlertHistory,
+                clear: AlertManager.clearAll,
+                toggleSound: AlertManager.toggleSound,
+                toggleNotifications: AlertManager.toggleNotifications,
+                toggleMute: AlertManager.toggleMute,
+            };
+            
+            console.log('[ALERT] System initialized successfully');
+            console.log('[ALERT] Keyboard shortcuts:');
+            console.log('  - Ctrl+Shift+A: Demo alert');
+            console.log('  - Ctrl+Shift+M: Mute/unmute');
+            console.log('  - Ctrl+Shift+H: History panel');
+            console.log('  - ESC: Clear all alerts');
+            
+            // Optional: Start demo after 3 seconds
+            // setTimeout(() => {
+            //     AlertDemo.startDemo(12000, 10);
+            // }, 3000);
+        });
+        
+        // ============================================
+        // SECTION 37: ERROR HANDLING
+        // ============================================
+        window.addEventListener('error', (e) => {
+            console.error('[ALERT] Global error:', e.error);
+            // Could send to error tracking service
+        });
+        
+        window.addEventListener('unhandledrejection', (e) => {
+            console.error('[ALERT] Unhandled rejection:', e.reason);
+        });
+        
+        // ============================================
+        // SECTION 38: CLEANUP
+        // ============================================
+        window.addEventListener('beforeunload', () => {
+            // Close WebSocket
+            if (window.__NEXUS_ALERTS && window.__NEXUS_ALERTS.ws) {
+                window.__NEXUS_ALERTS.ws.disconnect();
+            }
+        });
+    </script>
+    
 </body>
 </html>
