@@ -1,0 +1,1196 @@
+<!-- trading/bots/arbitrage_bot/templates/components/metric_card.html -->
+<!-- NEXUS AI TRADING SYSTEM -->
+<!-- Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved -->
+<!-- Version: 4.2.0 - Complete Metric Card Component -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Metric Card Component</title>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+
+<!-- ======================================================================= -->
+<!-- METRIC CARD MACRO                                                       -->
+<!-- ======================================================================= -->
+{% macro metric_card(metric, show_icon=True, show_trend=True, show_progress=True, size='normal') %}
+<div class="metric-card" 
+     id="metric-card-{{ metric.id if metric.id else loop.index }}"
+     data-metric-id="{{ metric.id if metric.id else loop.index }}"
+     data-metric-type="{{ metric.type }}"
+     data-metric-status="{{ metric.status if metric.status else 'normal' }}"
+     data-theme="{{ metric.theme if metric.theme else 'dark' }}"
+     data-size="{{ size }}">
+    
+    <!-- ======================== ICON ======================== -->
+    {% if show_icon %}
+    <div class="metric-icon-wrapper">
+        <div class="metric-icon" style="{% if metric.icon_color %}background: {{ metric.icon_color }};{% endif %}">
+            <i class="{% if metric.icon %}{{ metric.icon }}{% else %}fas fa-chart-simple{% endif %}"></i>
+        </div>
+    </div>
+    {% endif %}
+    
+    <!-- ======================== CONTENT ======================== -->
+    <div class="metric-content">
+        <div class="metric-header">
+            <span class="metric-label">{{ metric.label if metric.label else 'Metric' }}</span>
+            {% if show_trend and metric.trend %}
+            <span class="metric-trend trend-{{ metric.trend.direction if metric.trend.direction else 'neutral' }}">
+                <i class="fas fa-arrow-{{ 'up' if metric.trend.direction == 'up' else 'down' if metric.trend.direction == 'down' else 'right' }}"></i>
+                {{ metric.trend.value|format_percentage if metric.trend.value else '' }}
+            </span>
+            {% endif %}
+        </div>
+        
+        <div class="metric-value-wrapper">
+            <span class="metric-value" id="metric-value-{{ metric.id if metric.id else loop.index }}">
+                {{ metric.value|format_currency if metric.type == 'currency' else metric.value|format_percentage if metric.type == 'percentage' else metric.value|format_decimal if metric.type == 'decimal' else metric.value }}
+            </span>
+            {% if metric.unit %}
+            <span class="metric-unit">{{ metric.unit }}</span>
+            {% endif %}
+        </div>
+        
+        <!-- ======================== PROGRESS BAR ======================== -->
+        {% if show_progress and metric.progress is defined and metric.progress is not none %}
+        <div class="metric-progress">
+            <div class="progress-track">
+                <div class="progress-bar" style="width: {{ metric.progress }}%; 
+                    {% if metric.progress_color %}background: {{ metric.progress_color }};{% endif %}">
+                </div>
+            </div>
+            <span class="progress-label">{{ metric.progress_label if metric.progress_label else metric.progress|format_percentage }}</span>
+        </div>
+        {% endif %}
+        
+        <!-- ======================== DESCRIPTION ======================== -->
+        {% if metric.description %}
+        <div class="metric-description">
+            <span class="description-text">{{ metric.description }}</span>
+        </div>
+        {% endif %}
+        
+        <!-- ======================== SUB-METRICS ======================== -->
+        {% if metric.sub_metrics and metric.sub_metrics|length > 0 %}
+        <div class="metric-sub-metrics">
+            {% for sub in metric.sub_metrics %}
+            <div class="sub-metric">
+                <span class="sub-label">{{ sub.label }}</span>
+                <span class="sub-value {% if sub.change and sub.change > 0 %}positive{% elif sub.change and sub.change < 0 %}negative{% endif %}">
+                    {{ sub.value }}
+                    {% if sub.change %}
+                    <span class="sub-change">
+                        ({{ sub.change|format_percentage if sub.change else '' }})
+                    </span>
+                    {% endif %}
+                </span>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        
+        <!-- ======================== STATUS INDICATOR ======================== -->
+        {% if metric.status %}
+        <div class="metric-status">
+            <span class="status-dot status-{{ metric.status|lower }}"></span>
+            <span class="status-text">{{ metric.status|capitalize }}</span>
+            {% if metric.status_message %}
+            <span class="status-message">{{ metric.status_message }}</span>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+    
+    <!-- ======================== ACTIONS ======================== -->
+    {% if metric.actions and metric.actions|length > 0 %}
+    <div class="metric-actions">
+        {% for action in metric.actions %}
+        <button class="metric-action-btn" data-action="{{ action.id }}" title="{{ action.tooltip }}">
+            <i class="fas fa-{{ action.icon }}"></i>
+        </button>
+        {% endfor %}
+    </div>
+    {% endif %}
+    
+    <!-- ======================== MINI CHART ======================== -->
+    {% if metric.mini_chart and metric.mini_chart.data %}
+    <div class="metric-mini-chart">
+        <canvas id="mini-chart-{{ metric.id if metric.id else loop.index }}" 
+                data-data='{{ metric.mini_chart.data|tojson }}'
+                data-color="{{ metric.mini_chart.color if metric.mini_chart.color else '#6C63FF' }}"
+                data-height="{{ metric.mini_chart.height if metric.mini_chart.height else 30 }}">
+        </canvas>
+    </div>
+    {% endif %}
+</div>
+{% endmacro %}
+
+<!-- ======================================================================= -->
+<!-- CSS STYLES                                                               -->
+<!-- ======================================================================= -->
+{% block styles %}
+<style>
+/* ============================================
+   METRIC CARD - COMPLETE STYLES
+   ============================================ */
+   
+:root {
+    --metric-primary: #6C63FF;
+    --metric-secondary: #00D4FF;
+    --metric-success: #00D4FF;
+    --metric-danger: #FF6B6B;
+    --metric-warning: #FFD93D;
+    --metric-card-bg: #16213E;
+    --metric-card-border: rgba(255, 255, 255, 0.05);
+    --metric-text-primary: #E0E0E0;
+    --metric-text-secondary: #888;
+    --metric-text-muted: #666;
+    --metric-input-bg: rgba(255, 255, 255, 0.05);
+    --metric-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
+    --metric-radius: 16px;
+    --metric-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Dark Theme */
+[data-theme="dark"] {
+    --metric-card-bg: #1a1a2e;
+    --metric-text-primary: #f0f0f0;
+    --metric-text-secondary: #aaa;
+}
+
+/* Light Theme */
+[data-theme="light"] {
+    --metric-card-bg: #ffffff;
+    --metric-card-border: #e0e0e0;
+    --metric-text-primary: #333;
+    --metric-text-secondary: #666;
+    --metric-text-muted: #999;
+    --metric-input-bg: #f5f5f5;
+    --metric-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+}
+
+/* ============================================
+   METRIC CARD CONTAINER
+   ============================================ */
+.metric-card {
+    background: var(--metric-card-bg);
+    border-radius: var(--metric-radius);
+    padding: 18px 20px;
+    margin: 8px 0;
+    box-shadow: var(--metric-shadow);
+    border: 1px solid var(--metric-card-border);
+    transition: var(--metric-transition);
+    position: relative;
+    overflow: hidden;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-height: 80px;
+}
+
+.metric-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 36px rgba(0, 0, 0, 0.3);
+}
+
+.metric-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--metric-primary);
+    opacity: 0.5;
+    transition: opacity 0.3s ease;
+}
+
+.metric-card:hover::before {
+    opacity: 1;
+}
+
+/* Status-specific border colors */
+.metric-card[data-metric-status="success"]::before {
+    background: var(--metric-success);
+}
+
+.metric-card[data-metric-status="warning"]::before {
+    background: var(--metric-warning);
+}
+
+.metric-card[data-metric-status="danger"]::before {
+    background: var(--metric-danger);
+}
+
+/* ============================================
+   SIZES
+   ============================================ */
+.metric-card[data-size="small"] {
+    padding: 12px 16px;
+    min-height: 60px;
+}
+
+.metric-card[data-size="small"] .metric-value {
+    font-size: 20px;
+}
+
+.metric-card[data-size="small"] .metric-label {
+    font-size: 11px;
+}
+
+.metric-card[data-size="large"] {
+    padding: 24px 28px;
+    min-height: 120px;
+}
+
+.metric-card[data-size="large"] .metric-value {
+    font-size: 36px;
+}
+
+.metric-card[data-size="large"] .metric-label {
+    font-size: 16px;
+}
+
+/* ============================================
+   ICON
+   ============================================ */
+.metric-icon-wrapper {
+    flex-shrink: 0;
+}
+
+.metric-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    color: #fff;
+    background: var(--metric-primary);
+}
+
+.metric-icon i {
+    line-height: 1;
+}
+
+/* ============================================
+   CONTENT
+   ============================================ */
+.metric-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+}
+
+.metric-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+}
+
+.metric-label {
+    color: var(--metric-text-secondary);
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.metric-trend {
+    font-size: 11px;
+    font-weight: 500;
+    padding: 2px 8px;
+    border-radius: 10px;
+}
+
+.metric-trend.trend-up {
+    color: var(--metric-success);
+    background: rgba(0, 212, 255, 0.1);
+}
+
+.metric-trend.trend-down {
+    color: var(--metric-danger);
+    background: rgba(255, 107, 107, 0.1);
+}
+
+.metric-trend.trend-neutral {
+    color: var(--metric-warning);
+    background: rgba(255, 217, 61, 0.1);
+}
+
+.metric-value-wrapper {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+}
+
+.metric-value {
+    color: var(--metric-text-primary);
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 1.2;
+    font-variant-numeric: tabular-nums;
+}
+
+.metric-unit {
+    color: var(--metric-text-secondary);
+    font-size: 14px;
+    font-weight: 400;
+}
+
+/* ============================================
+   PROGRESS BAR
+   ============================================ */
+.metric-progress {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 4px;
+}
+
+.progress-track {
+    flex: 1;
+    height: 4px;
+    background: var(--metric-input-bg);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    border-radius: 2px;
+    background: var(--metric-primary);
+    transition: width 0.6s ease;
+}
+
+.progress-label {
+    color: var(--metric-text-secondary);
+    font-size: 11px;
+    font-weight: 500;
+    flex-shrink: 0;
+}
+
+/* ============================================
+   DESCRIPTION
+   ============================================ */
+.metric-description {
+    margin-top: 2px;
+}
+
+.description-text {
+    color: var(--metric-text-secondary);
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+/* ============================================
+   SUB-METRICS
+   ============================================ */
+.metric-sub-metrics {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-top: 4px;
+    padding-top: 8px;
+    border-top: 1px solid var(--metric-card-border);
+}
+
+.sub-metric {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+}
+
+.sub-label {
+    color: var(--metric-text-secondary);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+.sub-value {
+    color: var(--metric-text-primary);
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.sub-value.positive {
+    color: var(--metric-success);
+}
+
+.sub-value.negative {
+    color: var(--metric-danger);
+}
+
+.sub-change {
+    font-size: 11px;
+    font-weight: 400;
+}
+
+/* ============================================
+   STATUS
+   ============================================ */
+.metric-status {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 2px;
+}
+
+.status-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+.status-dot.status-success {
+    background: var(--metric-success);
+    box-shadow: 0 0 8px rgba(0, 212, 255, 0.5);
+}
+
+.status-dot.status-warning {
+    background: var(--metric-warning);
+    box-shadow: 0 0 8px rgba(255, 217, 61, 0.5);
+}
+
+.status-dot.status-danger {
+    background: var(--metric-danger);
+    box-shadow: 0 0 8px rgba(255, 107, 107, 0.5);
+}
+
+.status-dot.status-normal {
+    background: var(--metric-primary);
+}
+
+.status-dot.status-unknown {
+    background: var(--metric-text-muted);
+}
+
+.status-text {
+    color: var(--metric-text-secondary);
+    font-size: 11px;
+}
+
+.status-message {
+    color: var(--metric-text-muted);
+    font-size: 11px;
+}
+
+/* ============================================
+   ACTIONS
+   ============================================ */
+.metric-actions {
+    display: flex;
+    gap: 4px;
+    position: absolute;
+    top: 12px;
+    right: 12px;
+}
+
+.metric-action-btn {
+    background: transparent;
+    border: none;
+    color: var(--metric-text-secondary);
+    padding: 4px 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: var(--metric-transition);
+    font-size: 12px;
+}
+
+.metric-action-btn:hover {
+    color: var(--metric-text-primary);
+    background: var(--metric-input-bg);
+}
+
+/* ============================================
+   MINI CHART
+   ============================================ */
+.metric-mini-chart {
+    margin-top: 8px;
+    height: 30px;
+    opacity: 0.6;
+}
+
+.metric-mini-chart canvas {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+/* ============================================
+   LAYOUT VARIANTS
+   ============================================ */
+.metric-card.layout-horizontal {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 16px;
+}
+
+.metric-card.layout-horizontal .metric-icon-wrapper {
+    flex-shrink: 0;
+}
+
+.metric-card.layout-horizontal .metric-content {
+    flex: 1;
+}
+
+.metric-card.layout-horizontal .metric-value-wrapper {
+    flex-wrap: wrap;
+}
+
+.metric-card.layout-compact {
+    padding: 12px 16px;
+}
+
+.metric-card.layout-compact .metric-value {
+    font-size: 20px;
+}
+
+.metric-card.layout-compact .metric-label {
+    font-size: 11px;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (max-width: 768px) {
+    .metric-card {
+        padding: 14px 16px;
+        min-height: 70px;
+    }
+    
+    .metric-value {
+        font-size: 22px;
+    }
+    
+    .metric-icon {
+        width: 36px;
+        height: 36px;
+        font-size: 14px;
+    }
+    
+    .metric-card[data-size="large"] {
+        padding: 18px 20px;
+    }
+    
+    .metric-card[data-size="large"] .metric-value {
+        font-size: 28px;
+    }
+    
+    .metric-sub-metrics {
+        gap: 10px;
+    }
+    
+    .metric-actions {
+        position: relative;
+        top: auto;
+        right: auto;
+        justify-content: flex-end;
+        margin-top: 4px;
+    }
+}
+
+@media (max-width: 480px) {
+    .metric-card {
+        padding: 12px 14px;
+        border-radius: 12px;
+    }
+    
+    .metric-value {
+        font-size: 18px;
+    }
+    
+    .metric-label {
+        font-size: 10px;
+    }
+    
+    .metric-icon {
+        width: 32px;
+        height: 32px;
+        font-size: 12px;
+        border-radius: 8px;
+    }
+    
+    .metric-card.layout-horizontal {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+    }
+    
+    .metric-sub-metrics {
+        flex-direction: column;
+        gap: 6px;
+    }
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+@keyframes metric-fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.metric-card {
+    animation: metric-fadeIn 0.3s ease-out;
+}
+
+@keyframes metric-value-update {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+.metric-value.updated {
+    animation: metric-value-update 0.3s ease;
+}
+
+/* ============================================
+   PRINT STYLES
+   ============================================ */
+@media print {
+    .metric-card {
+        box-shadow: none !important;
+        border: 1px solid #ddd !important;
+        break-inside: avoid;
+    }
+    
+    .metric-action-btn {
+        display: none !important;
+    }
+    
+    .metric-card::before {
+        display: none !important;
+    }
+}
+
+/* ============================================
+   LOADING STATE
+   ============================================ */
+.metric-card.loading .metric-value {
+    opacity: 0.4;
+}
+
+.metric-card.loading .metric-value::after {
+    content: '';
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--metric-card-border);
+    border-top-color: var(--metric-primary);
+    border-radius: 50%;
+    animation: metric-spin 0.8s linear infinite;
+    margin-left: 8px;
+}
+
+@keyframes metric-spin {
+    to { transform: rotate(360deg); }
+}
+</style>
+{% endblock %}
+
+<!-- ======================================================================= -->
+<!-- JAVASCRIPT - COMPLETE IMPLEMENTATION                                    -->
+<!-- ======================================================================= -->
+{% block scripts %}
+<script>
+// ================================================================
+// METRIC CARD - COMPLETE JAVASCRIPT IMPLEMENTATION
+// ================================================================
+
+(function() {
+    'use strict';
+
+    // ============================================================
+    // METRIC CARD CLASS
+    // ============================================================
+    class MetricCard {
+        constructor(element) {
+            this.element = element;
+            this.metricId = element.dataset.metricId;
+            this.metricType = element.dataset.metricType;
+            this.metricStatus = element.dataset.metricStatus || 'normal';
+            this.theme = element.dataset.theme || 'dark';
+            this.size = element.dataset.size || 'normal';
+            
+            // DOM references
+            this.valueEl = element.querySelector('.metric-value');
+            this.progressBar = element.querySelector('.progress-bar');
+            this.progressLabel = element.querySelector('.progress-label');
+            this.trendEl = element.querySelector('.metric-trend');
+            this.statusDot = element.querySelector('.status-dot');
+            this.statusText = element.querySelector('.status-text');
+            this.miniChart = element.querySelector('.metric-mini-chart canvas');
+            
+            // State
+            this.currentValue = null;
+            this.targetValue = null;
+            this.updateInterval = null;
+            
+            // Initialize
+            this.init();
+        }
+        
+        // ============================================================
+        // INITIALIZATION
+        // ============================================================
+        init() {
+            this.setupEventListeners();
+            this.initMiniChart();
+            this.startAutoUpdate();
+        }
+        
+        // ============================================================
+        // EVENT LISTENERS
+        // ============================================================
+        setupEventListeners() {
+            // Action buttons
+            this.element.querySelectorAll('.metric-action-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    this.handleAction(btn.dataset.action);
+                });
+            });
+            
+            // Click on card to show details
+            this.element.addEventListener('click', (e) => {
+                // Don't trigger if clicking on action buttons
+                if (e.target.closest('.metric-action-btn')) return;
+                this.onClick();
+            });
+        }
+        
+        // ============================================================
+        // VALUE UPDATE
+        // ============================================================
+        updateValue(value, animate = true) {
+            if (!this.valueEl) return;
+            
+            this.targetValue = value;
+            
+            if (animate) {
+                this.animateValue(this.currentValue || value, value);
+            } else {
+                this.setValue(value);
+            }
+            
+            this.currentValue = value;
+        }
+        
+        setValue(value) {
+            if (!this.valueEl) return;
+            
+            const formattedValue = this.formatValue(value);
+            this.valueEl.textContent = formattedValue;
+            this.valueEl.classList.add('updated');
+            
+            setTimeout(() => {
+                this.valueEl.classList.remove('updated');
+            }, 300);
+        }
+        
+        animateValue(from, to) {
+            const duration = 500;
+            const startTime = performance.now();
+            
+            const animate = (time) => {
+                const progress = Math.min((time - startTime) / duration, 1);
+                const current = from + (to - from) * this.easeInOut(progress);
+                
+                this.setValue(current);
+                
+                if (progress < 1) {
+                    requestAnimationFrame(animate);
+                }
+            };
+            
+            requestAnimationFrame(animate);
+        }
+        
+        easeInOut(t) {
+            return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+        }
+        
+        formatValue(value) {
+            if (value === undefined || value === null) return '--';
+            
+            switch (this.metricType) {
+                case 'currency':
+                    return this.formatCurrency(value);
+                case 'percentage':
+                    return this.formatPercentage(value);
+                case 'decimal':
+                    return this.formatDecimal(value);
+                default:
+                    return value.toString();
+            }
+        }
+        
+        formatCurrency(value) {
+            const num = parseFloat(value);
+            if (isNaN(num)) return '--';
+            
+            if (num >= 1e9) return `$${(num / 1e9).toFixed(2)}B`;
+            if (num >= 1e6) return `$${(num / 1e6).toFixed(2)}M`;
+            if (num >= 1e3) return `$${(num / 1e3).toFixed(2)}K`;
+            return `$${num.toFixed(2)}`;
+        }
+        
+        formatPercentage(value) {
+            const num = parseFloat(value);
+            if (isNaN(num)) return '--';
+            return `${num >= 0 ? '+' : ''}${num.toFixed(2)}%`;
+        }
+        
+        formatDecimal(value) {
+            const num = parseFloat(value);
+            if (isNaN(num)) return '--';
+            return num.toFixed(2);
+        }
+        
+        // ============================================================
+        // PROGRESS UPDATE
+        // ============================================================
+        updateProgress(value, label) {
+            if (this.progressBar) {
+                this.progressBar.style.width = `${Math.min(Math.max(value, 0), 100)}%`;
+            }
+            
+            if (this.progressLabel) {
+                this.progressLabel.textContent = label || `${value.toFixed(1)}%`;
+            }
+        }
+        
+        // ============================================================
+        // TREND UPDATE
+        // ============================================================
+        updateTrend(direction, value) {
+            if (!this.trendEl) return;
+            
+            this.trendEl.className = `metric-trend trend-${direction}`;
+            const icon = direction === 'up' ? 'arrow-up' : direction === 'down' ? 'arrow-down' : 'arrow-right';
+            this.trendEl.innerHTML = `<i class="fas fa-${icon}"></i> ${value || ''}`;
+        }
+        
+        // ============================================================
+        // STATUS UPDATE
+        // ============================================================
+        updateStatus(status, message) {
+            this.metricStatus = status;
+            this.element.dataset.metricStatus = status;
+            
+            if (this.statusDot) {
+                this.statusDot.className = `status-dot status-${status}`;
+            }
+            
+            if (this.statusText) {
+                this.statusText.textContent = status.charAt(0).toUpperCase() + status.slice(1);
+            }
+            
+            if (message) {
+                const msgEl = this.element.querySelector('.status-message');
+                if (msgEl) {
+                    msgEl.textContent = message;
+                }
+            }
+        }
+        
+        // ============================================================
+        // MINI CHART
+        // ============================================================
+        initMiniChart() {
+            if (!this.miniChart) return;
+            
+            try {
+                const data = JSON.parse(this.miniChart.dataset.data || '[]');
+                const color = this.miniChart.dataset.color || '#6C63FF';
+                const height = parseInt(this.miniChart.dataset.height) || 30;
+                
+                // Set canvas size
+                const rect = this.miniChart.parentElement.getBoundingClientRect();
+                const width = rect.width || 100;
+                
+                this.miniChart.width = width;
+                this.miniChart.height = height;
+                
+                this.drawMiniChart(data, color, height);
+            } catch (error) {
+                console.error('Mini chart initialization failed:', error);
+            }
+        }
+        
+        drawMiniChart(data, color, height) {
+            const ctx = this.miniChart.getContext('2d');
+            const width = this.miniChart.width;
+            
+            if (!data || data.length < 2) {
+                ctx.clearRect(0, 0, width, height);
+                return;
+            }
+            
+            ctx.clearRect(0, 0, width, height);
+            
+            const min = Math.min(...data);
+            const max = Math.max(...data);
+            const range = max - min || 1;
+            
+            // Draw line
+            ctx.beginPath();
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 1.5;
+            
+            data.forEach((value, index) => {
+                const x = (index / (data.length - 1)) * width;
+                const y = height - ((value - min) / range) * height;
+                
+                if (index === 0) {
+                    ctx.moveTo(x, y);
+                } else {
+                    ctx.lineTo(x, y);
+                }
+            });
+            ctx.stroke();
+            
+            // Draw gradient fill
+            const gradient = ctx.createLinearGradient(0, 0, 0, height);
+            gradient.addColorStop(0, color + '40');
+            gradient.addColorStop(1, color + '00');
+            
+            ctx.lineTo(width, height);
+            ctx.lineTo(0, height);
+            ctx.closePath();
+            ctx.fillStyle = gradient;
+            ctx.fill();
+        }
+        
+        updateMiniChart(data) {
+            if (!this.miniChart) return;
+            
+            const color = this.miniChart.dataset.color || '#6C63FF';
+            const height = parseInt(this.miniChart.dataset.height) || 30;
+            
+            this.miniChart.dataset.data = JSON.stringify(data);
+            this.drawMiniChart(data, color, height);
+        }
+        
+        // ============================================================
+        // ACTIONS
+        // ============================================================
+        handleAction(action) {
+            switch (action) {
+                case 'refresh':
+                    this.refresh();
+                    break;
+                case 'expand':
+                    this.expand();
+                    break;
+                case 'more':
+                    this.showMore();
+                    break;
+                default:
+                    console.warn('Unknown action:', action);
+            }
+        }
+        
+        onClick() {
+            // Override in subclass or via event
+        }
+        
+        async refresh() {
+            // Override in subclass
+            console.log(`Refreshing metric: ${this.metricId}`);
+        }
+        
+        expand() {
+            // Override in subclass
+            console.log(`Expanding metric: ${this.metricId}`);
+        }
+        
+        showMore() {
+            // Override in subclass
+            console.log(`Showing more for metric: ${this.metricId}`);
+        }
+        
+        // ============================================================
+        // AUTO UPDATE
+        // ============================================================
+        startAutoUpdate(interval = 30000) {
+            if (this.updateInterval) {
+                clearInterval(this.updateInterval);
+            }
+            
+            this.updateInterval = setInterval(() => {
+                this.refresh();
+            }, interval);
+        }
+        
+        stopAutoUpdate() {
+            if (this.updateInterval) {
+                clearInterval(this.updateInterval);
+                this.updateInterval = null;
+            }
+        }
+        
+        // ============================================================
+        // DESTROY
+        // ============================================================
+        destroy() {
+            this.stopAutoUpdate();
+            // Remove event listeners
+            // ... cleanup
+        }
+    }
+
+    // ================================================================
+    // METRIC API FUNCTIONS
+    // ================================================================
+    window.MetricAPI = {
+        getMetricData: async function(metricId) {
+            try {
+                const response = await fetch(`/api/metrics/${metricId}`);
+                if (!response.ok) throw new Error('API request failed');
+                return await response.json();
+            } catch (error) {
+                console.error('Metric API error:', error);
+                throw error;
+            }
+        },
+        
+        updateMetricData: async function(metricId, data) {
+            try {
+                const response = await fetch(`/api/metrics/${metricId}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data),
+                });
+                if (!response.ok) throw new Error('API request failed');
+                return await response.json();
+            } catch (error) {
+                console.error('Metric update error:', error);
+                throw error;
+            }
+        },
+        
+        getMetricHistory: async function(metricId, limit = 30) {
+            try {
+                const response = await fetch(`/api/metrics/${metricId}/history?limit=${limit}`);
+                if (!response.ok) throw new Error('API request failed');
+                return await response.json();
+            } catch (error) {
+                console.error('Metric history error:', error);
+                throw error;
+            }
+        },
+    };
+
+    // ================================================================
+    // WEBSOCKET INTEGRATION
+    // ================================================================
+    window.MetricWebSocket = class MetricWebSocket {
+        constructor(metricId, onData) {
+            this.metricId = metricId;
+            this.onData = onData;
+            this.ws = null;
+            this.reconnectAttempts = 0;
+            this.maxReconnectAttempts = 5;
+        }
+        
+        connect() {
+            try {
+                this.ws = new WebSocket(`wss://api.nexusquantum.com/ws/metrics/${this.metricId}`);
+                
+                this.ws.onopen = () => {
+                    console.log(`Metric WebSocket connected: ${this.metricId}`);
+                    this.reconnectAttempts = 0;
+                };
+                
+                this.ws.onmessage = (event) => {
+                    try {
+                        const data = JSON.parse(event.data);
+                        if (this.onData) this.onData(data);
+                    } catch (error) {
+                        console.error('WebSocket message parse error:', error);
+                    }
+                };
+                
+                this.ws.onclose = () => {
+                    console.log(`Metric WebSocket disconnected: ${this.metricId}`);
+                    this.reconnect();
+                };
+                
+                this.ws.onerror = (error) => {
+                    console.error(`Metric WebSocket error: ${this.metricId}`, error);
+                };
+            } catch (error) {
+                console.error('Metric WebSocket connection failed:', error);
+            }
+        }
+        
+        reconnect() {
+            if (this.reconnectAttempts >= this.maxReconnectAttempts) {
+                console.log('Max reconnect attempts reached');
+                return;
+            }
+            
+            this.reconnectAttempts++;
+            const delay = Math.min(1000 * Math.pow(2, this.reconnectAttempts), 30000);
+            
+            setTimeout(() => {
+                console.log(`Reconnecting to metric WebSocket (attempt ${this.reconnectAttempts})`);
+                this.connect();
+            }, delay);
+        }
+        
+        disconnect() {
+            if (this.ws) {
+                this.ws.close();
+                this.ws = null;
+            }
+        }
+    };
+
+    // ================================================================
+    // INITIALIZE METRIC CARDS
+    // ================================================================
+    document.addEventListener('DOMContentLoaded', function() {
+        const metricCards = document.querySelectorAll('.metric-card');
+        const metricInstances = [];
+        
+        metricCards.forEach((card, index) => {
+            try {
+                const instance = new MetricCard(card);
+                metricInstances.push(instance);
+            } catch (error) {
+                console.error(`Metric card ${index + 1} initialization failed:`, error);
+            }
+        });
+        
+        // Store instances globally
+        window.metricInstances = metricInstances;
+        console.log(`Initialized ${metricInstances.length} metric cards`);
+    });
+
+})();
+</script>
+{% endblock %}
+
+<!-- ======================================================================= -->
+<!-- RENDER COMPONENT                                                        -->
+<!-- ======================================================================= -->
+{% if not loop %}
+    {{ metric_card(metric, show_icon, show_trend, show_progress, size) }}
+{% endif %}
+
+</body>
+</html>
