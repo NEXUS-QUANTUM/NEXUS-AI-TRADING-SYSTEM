@@ -1,0 +1,966 @@
+# ============================================================
+# NEXUS AI TRADING SYSTEM - Arbitrage Bot Strategy Configurations
+# Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+# ============================================================
+# @version 2.0.0
+# @author NEXUS QUANTUM TEAM
+# @description Configuration complète des stratégies d'arbitrage
+# ============================================================
+
+# ============================================================
+# STRATEGY GENERAL SETTINGS
+# ============================================================
+strategy:
+  enabled: true
+  version: "2.0.0"
+  environment: "production"
+  max_concurrent_strategies: 5
+  strategy_timeout: 60  # seconds
+  default_timeframe: "1m"
+  
+# ============================================================
+# CROSS-EXCHANGE ARBITRAGE STRATEGY
+# ============================================================
+cross_exchange:
+  enabled: true
+  name: "Cross-Exchange Arbitrage"
+  description: "Exploite les différences de prix entre les exchanges"
+  type: "arbitrage"
+  priority: 1
+  
+  # General parameters
+  parameters:
+    min_profit_threshold: 0.005  # 0.5%
+    max_spread_percentage: 0.15  # 15%
+    min_volume_threshold: 1000  # USD
+    max_position_size: 50000  # USD
+    execution_timeout: 30  # seconds
+    max_execution_attempts: 3
+    min_time_between_trades: 10  # seconds
+    max_trades_per_minute: 5
+    slippage_tolerance: 0.002  # 0.2%
+    
+  # Profit optimization
+  profit_optimization:
+    enabled: true
+    type: "adaptive"  # fixed | adaptive | dynamic
+    min_profit_adjustment: 0.001
+    max_profit_adjustment: 0.01
+    adjustment_period: 60  # minutes
+    volatility_factor: 0.5
+    
+  # Pair-specific settings
+  pairs:
+    - pair: "BTC/USDT"
+      min_profit: 0.008
+      max_spread: 0.20
+      min_volume: 5000
+      max_position: 50000
+      priority: 1
+      exchanges:
+        - "binance"
+        - "bybit"
+        - "coinbase"
+        
+    - pair: "ETH/USDT"
+      min_profit: 0.010
+      max_spread: 0.25
+      min_volume: 5000
+      max_position: 30000
+      priority: 2
+      exchanges:
+        - "binance"
+        - "bybit"
+        - "coinbase"
+        - "kraken"
+        
+    - pair: "SOL/USDT"
+      min_profit: 0.015
+      max_spread: 0.30
+      min_volume: 3000
+      max_position: 20000
+      priority: 3
+      exchanges:
+        - "binance"
+        - "bybit"
+        - "coinbase"
+        - "kucoin"
+        
+    - pair: "ADA/USDT"
+      min_profit: 0.020
+      max_spread: 0.35
+      min_volume: 2000
+      max_position: 15000
+      priority: 4
+      exchanges:
+        - "binance"
+        - "bybit"
+        - "coinbase"
+        - "kraken"
+        - "kucoin"
+        
+    - pair: "DOT/USDT"
+      min_profit: 0.020
+      max_spread: 0.35
+      min_volume: 2000
+      max_position: 15000
+      priority: 5
+      exchanges:
+        - "binance"
+        - "bybit"
+        - "coinbase"
+        - "kraken"
+        - "kucoin"
+        
+    - pair: "AVAX/USDT"
+      min_profit: 0.020
+      max_spread: 0.35
+      min_volume: 2000
+      max_position: 15000
+      priority: 6
+      exchanges:
+        - "binance"
+        - "bybit"
+        - "coinbase"
+        - "kraken"
+        - "kucoin"
+        
+    - pair: "MATIC/USDT"
+      min_profit: 0.025
+      max_spread: 0.40
+      min_volume: 1500
+      max_position: 10000
+      priority: 7
+      exchanges:
+        - "binance"
+        - "bybit"
+        - "coinbase"
+        - "kraken"
+        - "kucoin"
+        
+    - pair: "LINK/USDT"
+      min_profit: 0.025
+      max_spread: 0.40
+      min_volume: 1500
+      max_position: 10000
+      priority: 8
+      exchanges:
+        - "binance"
+        - "bybit"
+        - "coinbase"
+        - "kraken"
+        - "kucoin"
+        
+    - pair: "XRP/USDT"
+      min_profit: 0.025
+      max_spread: 0.40
+      min_volume: 1500
+      max_position: 10000
+      priority: 9
+      exchanges:
+        - "binance"
+        - "bybit"
+        - "coinbase"
+        - "kraken"
+        - "kucoin"
+        
+    - pair: "DOGE/USDT"
+      min_profit: 0.030
+      max_spread: 0.45
+      min_volume: 1000
+      max_position: 5000
+      priority: 10
+      exchanges:
+        - "binance"
+        - "bybit"
+        - "coinbase"
+        - "kraken"
+        - "kucoin"
+
+  # Exchange-specific settings
+  exchanges:
+    binance:
+      enabled: true
+      priority: 1
+      max_concurrent_trades: 5
+      fee_discount: 0.25
+      
+    bybit:
+      enabled: true
+      priority: 2
+      max_concurrent_trades: 4
+      
+    coinbase:
+      enabled: true
+      priority: 3
+      max_concurrent_trades: 3
+      
+    kraken:
+      enabled: true
+      priority: 4
+      max_concurrent_trades: 2
+      
+    kucoin:
+      enabled: true
+      priority: 5
+      max_concurrent_trades: 2
+      
+    okx:
+      enabled: true
+      priority: 6
+      max_concurrent_trades: 2
+      
+    gateio:
+      enabled: true
+      priority: 7
+      max_concurrent_trades: 2
+
+  # Risk management
+  risk:
+    max_drawdown: 0.05  # 5%
+    max_loss_per_trade: 0.01  # 1%
+    max_loss_per_day: 0.02  # 2%
+    max_consecutive_losses: 3
+    stop_loss: 0.02  # 2%
+    take_profit: 0.03  # 3%
+    
+  # Execution settings
+  execution:
+    order_type: "limit"  # market | limit
+    order_timeout: 30  # seconds
+    fill_or_kill: false
+    post_only: true
+    reduce_only: false
+    
+  # Filter settings
+  filters:
+    min_liquidity: 5000
+    max_slippage: 0.005  # 0.5%
+    min_order_book_depth: 10
+    max_order_book_spread: 0.002  # 0.2%
+    
+  # Monitoring
+  monitoring:
+    enabled: true
+    alert_on_trade: true
+    alert_on_error: true
+    log_trades: true
+    log_errors: true
+
+# ============================================================
+# TRIANGULAR ARBITRAGE STRATEGY
+# ============================================================
+triangular:
+  enabled: true
+  name: "Triangular Arbitrage"
+  description: "Exploite les inefficacités entre 3 paires de trading"
+  type: "arbitrage"
+  priority: 2
+  
+  # General parameters
+  parameters:
+    min_profit_threshold: 0.008  # 0.8%
+    max_position_size: 30000  # USD
+    execution_timeout: 25  # seconds
+    max_execution_attempts: 3
+    min_time_between_trades: 10  # seconds
+    slippage_tolerance: 0.003  # 0.3%
+    
+  # Profit optimization
+  profit_optimization:
+    enabled: true
+    type: "adaptive"
+    min_profit_adjustment: 0.001
+    max_profit_adjustment: 0.01
+    adjustment_period: 60
+    volatility_factor: 0.5
+    
+  # Cycles
+  cycles:
+    - name: "BTC-ETH-USDT"
+      pairs:
+        - "BTC/USDT"
+        - "ETH/BTC"
+        - "ETH/USDT"
+      min_profit: 0.008
+      max_position: 30000
+      priority: 1
+      exchanges:
+        - "binance"
+        - "bybit"
+        
+    - name: "SOL-BTC-USDT"
+      pairs:
+        - "SOL/USDT"
+        - "BTC/SOL"
+        - "BTC/USDT"
+      min_profit: 0.010
+      max_position: 20000
+      priority: 2
+      exchanges:
+        - "binance"
+        - "bybit"
+        - "kucoin"
+        
+    - name: "ADA-BTC-USDT"
+      pairs:
+        - "ADA/USDT"
+        - "BTC/ADA"
+        - "BTC/USDT"
+      min_profit: 0.012
+      max_position: 15000
+      priority: 3
+      exchanges:
+        - "binance"
+        - "bybit"
+        - "kucoin"
+        
+    - name: "DOT-ETH-USDT"
+      pairs:
+        - "DOT/USDT"
+        - "ETH/DOT"
+        - "ETH/USDT"
+      min_profit: 0.012
+      max_position: 15000
+      priority: 4
+      exchanges:
+        - "binance"
+        - "bybit"
+        - "kucoin"
+        
+    - name: "AVAX-SOL-USDT"
+      pairs:
+        - "AVAX/USDT"
+        - "SOL/AVAX"
+        - "SOL/USDT"
+      min_profit: 0.015
+      max_position: 10000
+      priority: 5
+      exchanges:
+        - "binance"
+        - "bybit"
+        - "kucoin"
+        
+    - name: "MATIC-ETH-USDT"
+      pairs:
+        - "MATIC/USDT"
+        - "ETH/MATIC"
+        - "ETH/USDT"
+      min_profit: 0.015
+      max_position: 10000
+      priority: 6
+      exchanges:
+        - "binance"
+        - "bybit"
+        - "kucoin"
+        
+    - name: "LINK-ETH-USDT"
+      pairs:
+        - "LINK/USDT"
+        - "ETH/LINK"
+        - "ETH/USDT"
+      min_profit: 0.015
+      max_position: 10000
+      priority: 7
+      exchanges:
+        - "binance"
+        - "bybit"
+        - "kucoin"
+        
+    - name: "XRP-BTC-USDT"
+      pairs:
+        - "XRP/USDT"
+        - "BTC/XRP"
+        - "BTC/USDT"
+      min_profit: 0.015
+      max_position: 10000
+      priority: 8
+      exchanges:
+        - "binance"
+        - "bybit"
+        - "kucoin"
+        
+    - name: "DOGE-BTC-USDT"
+      pairs:
+        - "DOGE/USDT"
+        - "BTC/DOGE"
+        - "BTC/USDT"
+      min_profit: 0.018
+      max_position: 5000
+      priority: 9
+      exchanges:
+        - "binance"
+        - "bybit"
+        - "kucoin"
+        
+    - name: "UNI-ETH-USDT"
+      pairs:
+        - "UNI/USDT"
+        - "ETH/UNI"
+        - "ETH/USDT"
+      min_profit: 0.015
+      max_position: 10000
+      priority: 10
+      exchanges:
+        - "binance"
+        - "bybit"
+        - "kucoin"
+
+  # Exchange-specific settings
+  exchanges:
+    binance:
+      enabled: true
+      priority: 1
+      max_concurrent_cycles: 3
+      
+    bybit:
+      enabled: true
+      priority: 2
+      max_concurrent_cycles: 2
+      
+    kucoin:
+      enabled: true
+      priority: 3
+      max_concurrent_cycles: 2
+      
+    okx:
+      enabled: true
+      priority: 4
+      max_concurrent_cycles: 2
+
+  # Risk management
+  risk:
+    max_drawdown: 0.04  # 4%
+    max_loss_per_trade: 0.008  # 0.8%
+    max_loss_per_day: 0.015  # 1.5%
+    max_consecutive_losses: 3
+    stop_loss: 0.015  # 1.5%
+    take_profit: 0.025  # 2.5%
+    
+  # Execution settings
+  execution:
+    order_type: "limit"
+    order_timeout: 25
+    fill_or_kill: false
+    post_only: true
+    reduce_only: false
+    
+  # Monitoring
+  monitoring:
+    enabled: true
+    alert_on_trade: true
+    alert_on_error: true
+    log_trades: true
+    log_errors: true
+
+# ============================================================
+# STATISTICAL ARBITRAGE STRATEGY
+# ============================================================
+statistical:
+  enabled: true
+  name: "Statistical Arbitrage"
+  description: "Utilise des modèles statistiques pour identifier les opportunités"
+  type: "statistical_arbitrage"
+  priority: 3
+  
+  # General parameters
+  parameters:
+    min_profit_threshold: 0.010  # 1%
+    lookback_period: 100  # candles
+    cointegration_confidence: 0.95
+    z_score_threshold: 2.0
+    half_life: 20  # periods
+    max_position_size: 20000  # USD
+    min_time_between_trades: 15  # seconds
+    max_trades_per_day: 20
+    
+  # Model parameters
+  model:
+    type: "cointegration"  # cointegration | correlation | machine_learning
+    methods:
+      - "engle_granger"
+      - "johansen"
+      - "kalman_filter"
+      - "ornstein_uhlenbeck"
+    update_frequency: 3600  # seconds (1 hour)
+    retrain_frequency: 86400  # seconds (24 hours)
+    
+  # Indicator parameters
+  indicators:
+    - name: "z_score"
+      period: 20
+      threshold: 2.0
+    - name: "moving_average"
+      period: 50
+      type: "sma"  # sma | ema
+    - name: "bollinger_bands"
+      period: 20
+      std_dev: 2.0
+    - name: "rsi"
+      period: 14
+      overbought: 70
+      oversold: 30
+      
+  # Pairs
+  pairs:
+    - pair1: "BTC/USDT"
+      pair2: "ETH/USDT"
+      hedge_ratio: 0.5
+      min_profit: 0.010
+      max_position: 20000
+      priority: 1
+      exchanges:
+        - "binance"
+        - "bybit"
+        
+    - pair1: "SOL/USDT"
+      pair2: "ADA/USDT"
+      hedge_ratio: 0.8
+      min_profit: 0.012
+      max_position: 15000
+      priority: 2
+      exchanges:
+        - "binance"
+        - "bybit"
+        - "kucoin"
+        
+    - pair1: "DOT/USDT"
+      pair2: "AVAX/USDT"
+      hedge_ratio: 0.7
+      min_profit: 0.012
+      max_position: 15000
+      priority: 3
+      exchanges:
+        - "binance"
+        - "bybit"
+        - "kucoin"
+        
+    - pair1: "MATIC/USDT"
+      pair2: "LINK/USDT"
+      hedge_ratio: 0.6
+      min_profit: 0.015
+      max_position: 10000
+      priority: 4
+      exchanges:
+        - "binance"
+        - "bybit"
+        - "kucoin"
+        
+    - pair1: "XRP/USDT"
+      pair2: "DOGE/USDT"
+      hedge_ratio: 0.5
+      min_profit: 0.015
+      max_position: 10000
+      priority: 5
+      exchanges:
+        - "binance"
+        - "bybit"
+        - "kucoin"
+        
+    - pair1: "UNI/USDT"
+      pair2: "AAVE/USDT"
+      hedge_ratio: 0.6
+      min_profit: 0.015
+      max_position: 10000
+      priority: 6
+      exchanges:
+        - "binance"
+        - "bybit"
+        - "kucoin"
+        
+    - pair1: "ATOM/USDT"
+      pair2: "NEAR/USDT"
+      hedge_ratio: 0.5
+      min_profit: 0.015
+      max_position: 10000
+      priority: 7
+      exchanges:
+        - "binance"
+        - "bybit"
+        - "kucoin"
+        
+    - pair1: "ARB/USDT"
+      pair2: "OP/USDT"
+      hedge_ratio: 0.5
+      min_profit: 0.018
+      max_position: 5000
+      priority: 8
+      exchanges:
+        - "binance"
+        - "bybit"
+        - "kucoin"
+        
+    - pair1: "INJ/USDT"
+      pair2: "SUI/USDT"
+      hedge_ratio: 0.5
+      min_profit: 0.020
+      max_position: 5000
+      priority: 9
+      exchanges:
+        - "binance"
+        - "bybit"
+        - "kucoin"
+
+  # Risk management
+  risk:
+    max_drawdown: 0.06  # 6%
+    max_loss_per_trade: 0.01  # 1%
+    max_loss_per_day: 0.02  # 2%
+    max_consecutive_losses: 4
+    stop_loss: 0.025  # 2.5%
+    take_profit: 0.035  # 3.5%
+    
+  # Execution settings
+  execution:
+    order_type: "limit"
+    order_timeout: 20
+    fill_or_kill: false
+    post_only: true
+    reduce_only: false
+    
+  # Monitoring
+  monitoring:
+    enabled: true
+    alert_on_trade: true
+    alert_on_error: true
+    log_trades: true
+    log_errors: true
+    log_model_updates: true
+
+# ============================================================
+# FLASH LOAN ARBITRAGE STRATEGY
+# ============================================================
+flash_loan:
+  enabled: false
+  name: "Flash Loan Arbitrage"
+  description: "Utilise des flash loans pour les opportunités d'arbitrage"
+  type: "arbitrage"
+  priority: 4
+  
+  # General parameters
+  parameters:
+    min_profit_threshold: 0.02  # 2%
+    max_loan_size: 1000000  # USD
+    gas_limit: 1000000  # gas units
+    max_gas_price: 200  # Gwei
+    execution_timeout: 60  # seconds
+    max_execution_attempts: 2
+    
+  # Platforms
+  platforms:
+    - name: "aave"
+      enabled: true
+      priority: 1
+      max_loan: 500000
+    - name: "dydx"
+      enabled: true
+      priority: 2
+      max_loan: 300000
+    - name: "uniswap"
+      enabled: true
+      priority: 3
+      max_loan: 200000
+      
+  # Pairs
+  pairs:
+    - pair: "WETH/USDT"
+      min_profit: 0.02
+      max_position: 100000
+      priority: 1
+    - pair: "WBTC/USDT"
+      min_profit: 0.02
+      max_position: 100000
+      priority: 2
+    - pair: "USDC/USDT"
+      min_profit: 0.01
+      max_position: 500000
+      priority: 3
+
+  # Risk management
+  risk:
+    max_drawdown: 0.10  # 10%
+    max_loss_per_trade: 0.02  # 2%
+    max_loss_per_day: 0.05  # 5%
+    max_consecutive_losses: 2
+    stop_loss: 0.03  # 3%
+    take_profit: 0.05  # 5%
+    
+  # Execution settings
+  execution:
+    order_type: "market"
+    order_timeout: 60
+    fill_or_kill: true
+    post_only: false
+    reduce_only: false
+    
+  # Monitoring
+  monitoring:
+    enabled: true
+    alert_on_trade: true
+    alert_on_error: true
+    log_trades: true
+    log_errors: true
+    log_gas_usage: true
+
+# ============================================================
+# CROSS-CHAIN ARBITRAGE STRATEGY
+# ============================================================
+cross_chain:
+  enabled: false
+  name: "Cross-Chain Arbitrage"
+  description: "Exploite les différences de prix entre les blockchains"
+  type: "arbitrage"
+  priority: 5
+  
+  # General parameters
+  parameters:
+    min_profit_threshold: 0.015  # 1.5%
+    max_position_size: 100000  # USD
+    bridge_timeout: 120  # seconds
+    execution_timeout: 60
+    max_execution_attempts: 2
+    
+  # Bridges
+  bridges:
+    - name: "anycall"
+      enabled: true
+      priority: 1
+      max_transfer: 50000
+    - name: "wormhole"
+      enabled: true
+      priority: 2
+      max_transfer: 40000
+    - name: "multichain"
+      enabled: true
+      priority: 3
+      max_transfer: 30000
+      
+  # Pairs
+  pairs:
+    - pair: "ETH-USDC"
+      min_profit: 0.015
+      max_position: 50000
+      priority: 1
+    - pair: "USDC-USDT"
+      min_profit: 0.01
+      max_position: 100000
+      priority: 2
+    - pair: "DAI-USDC"
+      min_profit: 0.01
+      max_position: 100000
+      priority: 3
+
+  # Risk management
+  risk:
+    max_drawdown: 0.08  # 8%
+    max_loss_per_trade: 0.015  # 1.5%
+    max_loss_per_day: 0.03  # 3%
+    max_consecutive_losses: 3
+    stop_loss: 0.02  # 2%
+    take_profit: 0.03  # 3%
+    
+  # Execution settings
+  execution:
+    order_type: "market"
+    order_timeout: 60
+    fill_or_kill: true
+    post_only: false
+    reduce_only: false
+    
+  # Monitoring
+  monitoring:
+    enabled: true
+    alert_on_trade: true
+    alert_on_error: true
+    log_trades: true
+    log_errors: true
+    log_bridge_activity: true
+
+# ============================================================
+# STRATEGY SELECTION AND ROUTING
+# ============================================================
+selection:
+  enabled: true
+  method: "adaptive"  # fixed | adaptive | machine_learning
+  
+  # Selection criteria
+  criteria:
+    - "profitability"
+    - "risk_reward"
+    - "market_conditions"
+    - "available_capital"
+    - "strategy_performance"
+    
+  # Weight configuration
+  weights:
+    profitability: 0.30
+    risk_reward: 0.25
+    market_conditions: 0.20
+    available_capital: 0.15
+    strategy_performance: 0.10
+    
+  # Performance tracking
+  performance_tracking:
+    enabled: true
+    lookback_period: 30  # days
+    update_frequency: 3600  # seconds (1 hour)
+
+# ============================================================
+# STRATEGY PERFORMANCE METRICS
+# ============================================================
+performance:
+  enabled: true
+  
+  # Metrics tracked
+  metrics:
+    - "total_trades"
+    - "win_rate"
+    - "total_pnl"
+    - "avg_pnl"
+    - "sharpe_ratio"
+    - "max_drawdown"
+    - "profit_factor"
+    - "avg_win"
+    - "avg_loss"
+    - "win_loss_ratio"
+    - "consecutive_wins"
+    - "consecutive_losses"
+    
+  # Performance thresholds
+  thresholds:
+    min_win_rate: 0.50  # 50%
+    min_profit_factor: 1.2
+    min_sharpe_ratio: 0.5
+    max_drawdown: 0.10  # 10%
+    
+  # Evaluation frequency
+  evaluation:
+    interval: 3600  # seconds (1 hour)
+    min_trades_for_evaluation: 10
+    
+  # Strategy ranking
+  ranking:
+    enabled: true
+    method: "composite"  # composite | weighted | pareto
+    update_frequency: 3600  # seconds (1 hour)
+
+# ============================================================
+# STRATEGY BACKTESTING
+# ============================================================
+backtesting:
+  enabled: true
+  
+  # Backtest parameters
+  parameters:
+    start_date: "2024-01-01"
+    end_date: "2024-12-31"
+    initial_balance: 100000
+    commission: 0.001
+    slippage: 0.002
+    latency: 100  # milliseconds
+    
+  # Optimization
+  optimization:
+    enabled: true
+    iterations: 500
+    method: "bayesian"  # random | grid | bayesian
+    parameters:
+      - name: "min_profit"
+        range: [0.001, 0.02]
+        step: 0.001
+      - name: "max_spread"
+        range: [0.10, 0.50]
+        step: 0.05
+      - name: "position_size"
+        range: [100, 10000]
+        step: 100
+      - name: "stop_loss"
+        range: [0.01, 0.05]
+        step: 0.005
+      - name: "take_profit"
+        range: [0.01, 0.05]
+        step: 0.005
+        
+  # Reporting
+  reporting:
+    enabled: true
+    format: "pdf"
+    include:
+      - "equity_curve"
+      - "drawdown_chart"
+      - "trade_distribution"
+      - "monthly_returns"
+      - "performance_metrics"
+      - "risk_metrics"
+
+# ============================================================
+# STRATEGY COMBINATION
+# ============================================================
+combination:
+  enabled: true
+  method: "ensemble"  # ensemble | weighted | stacking
+  
+  # Combination weights
+  weights:
+    cross_exchange: 0.40
+    triangular: 0.30
+    statistical: 0.20
+    flash_loan: 0.05
+    cross_chain: 0.05
+    
+  # Risk allocation
+  risk_allocation:
+    method: "risk_parity"  # risk_parity | equal | weighted
+    target_volatility: 0.15  # 15%
+    rebalancing_frequency: 86400  # seconds (24 hours)
+    
+  # Diversification
+  diversification:
+    enabled: true
+    max_correlation: 0.70
+    min_strategies: 2
+    max_strategies: 5
+
+# ============================================================
+# STRATEGY MONITORING
+# ============================================================
+monitoring:
+  enabled: true
+  
+  # Alert rules
+  alerts:
+    - name: "strategy_stopped"
+      condition: "strategy.is_running == false"
+      severity: "warning"
+      action: "notify"
+      
+    - name: "low_win_rate"
+      condition: "strategy.win_rate < 0.40"
+      severity: "warning"
+      action: "notify,reduce"
+      
+    - name: "high_loss_rate"
+      condition: "strategy.daily_loss > 0.02"
+      severity: "warning"
+      action: "notify,reduce"
+      
+    - name: "strategy_inactive"
+      condition: "strategy.last_trade > 3600"
+      severity: "info"
+      action: "notify"
+      
+  # Performance dashboard
+  dashboard:
+    enabled: true
+    update_frequency: 60  # seconds
+    metrics_display:
+      - "total_pnl"
+      - "win_rate"
+      - "sharpe_ratio"
+      - "max_drawdown"
+      - "active_positions"
+      - "daily_trades"
+
+# ============================================================
+# END OF STRATEGY CONFIGURATIONS
+# ============================================================
