@@ -1,0 +1,1139 @@
+# ============================================================
+# NEXUS AI TRADING SYSTEM - Arbitrage Bot Notification Configurations
+# Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+# ============================================================
+# @version 2.0.0
+# @author NEXUS QUANTUM TEAM
+# @description Configuration complète des notifications pour le bot d'arbitrage
+# @usage Utilisé pour la gestion des alertes et notifications
+# ============================================================
+
+# ============================================================
+# NOTIFICATION GENERAL SETTINGS
+# ============================================================
+notification:
+  enabled: true
+  default_channel: "telegram"
+  timezone: "UTC"
+  locale: "en_US"
+  max_retry: 3
+  retry_delay: 5  # seconds
+  queue_size: 1000
+  batch_size: 10
+  flush_interval: 5  # seconds
+  deduplication:
+    enabled: true
+    ttl: 300  # seconds
+    keys:
+      - "type"
+      - "source"
+      - "severity"
+
+# ============================================================
+# NOTIFICATION CHANNELS
+# ============================================================
+channels:
+  # --- TELEGRAM ---
+  telegram:
+    enabled: true
+    name: "Telegram"
+    type: "telegram"
+    priority: 1
+    config:
+      bot_token: "${TELEGRAM_BOT_TOKEN}"
+      chat_id: "${TELEGRAM_CHAT_ID}"
+      parse_mode: "HTML"
+      disable_notification: false
+      disable_web_page_preview: true
+      max_message_length: 4096
+      rate_limit: 30  # messages per second
+      retry_attempts: 3
+      retry_delay: 2  # seconds
+    templates:
+      opportunity: |
+        🎯 <b>New Arbitrage Opportunity</b>
+        ──────────────────────────
+        <b>Pair:</b> <code>{{pair}}</code>
+        <b>Spread:</b> ${{spread}}
+        <b>Profit:</b> <code>${{profit}}</code>
+        <b>Exchanges:</b> {{exchange_a}} → {{exchange_b}}
+        <b>Volume:</b> ${{volume}}
+        <b>Exchange A Price:</b> ${{price_a}}
+        <b>Exchange B Price:</b> ${{price_b}}
+        ──────────────────────────
+        <i>Time: {{timestamp}}</i>
+        
+      execution: |
+        ✅ <b>Trade Executed</b>
+        ──────────────────────────
+        <b>ID:</b> <code>{{trade_id}}</code>
+        <b>Pair:</b> <code>{{pair}}</code>
+        <b>Side:</b> {{side}}
+        <b>Size:</b> {{size}}
+        <b>Price:</b> ${{price}}
+        <b>PnL:</b> <code>{{#if (gt pnl 0)}}+{{/if}}${{pnl}}</code>
+        <b>Exchange:</b> {{exchange}}
+        ──────────────────────────
+        <i>Time: {{timestamp}}</i>
+        
+      alert: |
+        ⚠️ <b>Alert: {{alert_type}}</b>
+        ──────────────────────────
+        <b>Message:</b> {{message}}
+        <b>Severity:</b> {{severity}}
+        <b>Source:</b> {{source}}
+        ──────────────────────────
+        <i>Time: {{timestamp}}</i>
+        
+      error: |
+        ❌ <b>Error</b>
+        ──────────────────────────
+        <b>Message:</b> {{error_message}}
+        <b>Service:</b> {{service}}
+        <b>Trace ID:</b> <code>{{trace_id}}</code>
+        ──────────────────────────
+        <i>Time: {{timestamp}}</i>
+        
+      daily_report: |
+        📊 <b>Daily Report - {{date}}</b>
+        ──────────────────────────────
+        <b>Trades:</b> {{total_trades}}
+        <b>Win Rate:</b> {{win_rate}}%
+        <b>Total PnL:</b> <code>${{total_pnl}}</code>
+        <b>Best Trade:</b> ${{best_trade}}
+        <b>Worst Trade:</b> ${{worst_trade}}
+        <b>Avg Trade:</b> ${{avg_trade}}
+        <b>Sharpe Ratio:</b> {{sharpe_ratio}}
+        <b>Max Drawdown:</b> {{max_drawdown}}%
+        ──────────────────────────────
+        
+      weekly_report: |
+        📈 <b>Weekly Report - {{week}}</b>
+        ──────────────────────────────
+        <b>Trades:</b> {{total_trades}}
+        <b>Win Rate:</b> {{win_rate}}%
+        <b>Total PnL:</b> <code>${{total_pnl}}</code>
+        <b>Avg PnL:</b> ${{avg_pnl}}
+        <b>Best Day:</b> ${{best_day}}
+        <b>Worst Day:</b> ${{worst_day}}
+        <b>Sharpe Ratio:</b> {{sharpe_ratio}}
+        <b>Max Drawdown:</b> {{max_drawdown}}%
+        <b>Profit Factor:</b> {{profit_factor}}
+        ──────────────────────────────
+        
+      monthly_report: |
+        📊 <b>Monthly Report - {{month}}</b>
+        ──────────────────────────────
+        <b>Trades:</b> {{total_trades}}
+        <b>Win Rate:</b> {{win_rate}}%
+        <b>Total PnL:</b> <code>${{total_pnl}}</code>
+        <b>Avg PnL:</b> ${{avg_pnl}}
+        <b>Best Week:</b> ${{best_week}}
+        <b>Worst Week:</b> ${{worst_week}}
+        <b>Sharpe Ratio:</b> {{sharpe_ratio}}
+        <b>Max Drawdown:</b> {{max_drawdown}}%
+        <b>Profit Factor:</b> {{profit_factor}}
+        <b>Calmar Ratio:</b> {{calmar_ratio}}
+        ──────────────────────────────
+        
+      risk_alert: |
+        🛡️ <b>Risk Alert</b>
+        ──────────────────────────────
+        <b>Risk Level:</b> {{risk_level}}
+        <b>Current Drawdown:</b> {{current_drawdown}}%
+        <b>Max Allowed:</b> {{max_allowed}}%
+        <b>Action Taken:</b> {{action}}
+        <b>Reason:</b> {{reason}}
+        ──────────────────────────────
+        
+      system_alert: |
+        🖥️ <b>System Alert</b>
+        ──────────────────────────────
+        <b>Component:</b> {{component}}
+        <b>Status:</b> {{status}}
+        <b>Message:</b> {{message}}
+        <b>Uptime:</b> {{uptime}}
+        ──────────────────────────────
+        
+      performance_alert: |
+        📉 <b>Performance Alert</b>
+        ──────────────────────────────
+        <b>Metric:</b> {{metric}}
+        <b>Current:</b> {{current}}
+        <b>Threshold:</b> {{threshold}}
+        <b>Severity:</b> {{severity}}
+        ──────────────────────────────
+
+  # --- SLACK ---
+  slack:
+    enabled: true
+    name: "Slack"
+    type: "slack"
+    priority: 2
+    config:
+      webhook_url: "${SLACK_WEBHOOK_URL}"
+      channel: "#arbitrage"
+      username: "Nexus Arbitrage Bot"
+      icon_emoji: ":robot_face:"
+      icon_url: "https://nexustradingia.com/logo.png"
+      unfurl_links: false
+      unfurl_media: false
+      max_message_length: 4000
+      rate_limit: 10  # messages per second
+    templates:
+      opportunity: |
+        {
+          "blocks": [
+            {
+              "type": "header",
+              "text": {
+                "type": "plain_text",
+                "text": "🎯 New Arbitrage Opportunity",
+                "emoji": true
+              }
+            },
+            {
+              "type": "section",
+              "fields": [
+                {
+                  "type": "mrkdwn",
+                  "text": "*Pair:*\n<code>{{pair}}</code>"
+                },
+                {
+                  "type": "mrkdwn",
+                  "text": "*Profit:*\n<code>${{profit}}</code>"
+                },
+                {
+                  "type": "mrkdwn",
+                  "text": "*Spread:*\n${{spread}}"
+                },
+                {
+                  "type": "mrkdwn",
+                  "text": "*Volume:*\n${{volume}}"
+                },
+                {
+                  "type": "mrkdwn",
+                  "text": "*Exchanges:*\n{{exchange_a}} → {{exchange_b}}"
+                },
+                {
+                  "type": "mrkdwn",
+                  "text": "*Time:*\n{{timestamp}}"
+                }
+              ]
+            },
+            {
+              "type": "divider"
+            },
+            {
+              "type": "context",
+              "elements": [
+                {
+                  "type": "mrkdwn",
+                  "text": "<https://nexustradingia.com/dashboard|View Dashboard> • <https://nexustradingia.com/analytics|Analytics>"
+                }
+              ]
+            }
+          ]
+        }
+        
+      execution: |
+        {
+          "blocks": [
+            {
+              "type": "header",
+              "text": {
+                "type": "plain_text",
+                "text": "✅ Trade Executed",
+                "emoji": true
+              }
+            },
+            {
+              "type": "section",
+              "fields": [
+                {
+                  "type": "mrkdwn",
+                  "text": "*ID:*\n<code>{{trade_id}}</code>"
+                },
+                {
+                  "type": "mrkdwn",
+                  "text": "*Pair:*\n<code>{{pair}}</code>"
+                },
+                {
+                  "type": "mrkdwn",
+                  "text": "*Side:*\n{{side}}"
+                },
+                {
+                  "type": "mrkdwn",
+                  "text": "*Size:*\n{{size}}"
+                },
+                {
+                  "type": "mrkdwn",
+                  "text": "*Price:*\n${{price}}"
+                },
+                {
+                  "type": "mrkdwn",
+                  "text": "*PnL:*\n<code>${{pnl}}</code>"
+                }
+              ]
+            },
+            {
+              "type": "divider"
+            },
+            {
+              "type": "context",
+              "elements": [
+                {
+                  "type": "mrkdwn",
+                  "text": "{{timestamp}}"
+                }
+              ]
+            }
+          ]
+        }
+        
+      alert: |
+        {
+          "blocks": [
+            {
+              "type": "header",
+              "text": {
+                "type": "plain_text",
+                "text": "⚠️ {{alert_type}}",
+                "emoji": true
+              }
+            },
+            {
+              "type": "section",
+              "text": {
+                "type": "mrkdwn",
+                "text": "{{message}}"
+              }
+            },
+            {
+              "type": "section",
+              "fields": [
+                {
+                  "type": "mrkdwn",
+                  "text": "*Severity:*\n{{severity}}"
+                },
+                {
+                  "type": "mrkdwn",
+                  "text": "*Source:*\n{{source}}"
+                }
+              ]
+            },
+            {
+              "type": "divider"
+            },
+            {
+              "type": "context",
+              "elements": [
+                {
+                  "type": "mrkdwn",
+                  "text": "{{timestamp}}"
+                }
+              ]
+            }
+          ]
+        }
+        
+      daily_report: |
+        {
+          "blocks": [
+            {
+              "type": "header",
+              "text": {
+                "type": "plain_text",
+                "text": "📊 Daily Report - {{date}}",
+                "emoji": true
+              }
+            },
+            {
+              "type": "section",
+              "fields": [
+                {
+                  "type": "mrkdwn",
+                  "text": "*Trades:*\n{{total_trades}}"
+                },
+                {
+                  "type": "mrkdwn",
+                  "text": "*Win Rate:*\n{{win_rate}}%"
+                },
+                {
+                  "type": "mrkdwn",
+                  "text": "*Total PnL:*\n<code>${{total_pnl}}</code>"
+                },
+                {
+                  "type": "mrkdwn",
+                  "text": "*Best Trade:*\n${{best_trade}}"
+                },
+                {
+                  "type": "mrkdwn",
+                  "text": "*Worst Trade:*\n${{worst_trade}}"
+                },
+                {
+                  "type": "mrkdwn",
+                  "text": "*Avg Trade:*\n${{avg_trade}}"
+                },
+                {
+                  "type": "mrkdwn",
+                  "text": "*Sharpe Ratio:*\n{{sharpe_ratio}}"
+                },
+                {
+                  "type": "mrkdwn",
+                  "text": "*Max Drawdown:*\n{{max_drawdown}}%"
+                }
+              ]
+            },
+            {
+              "type": "divider"
+            },
+            {
+              "type": "context",
+              "elements": [
+                {
+                  "type": "mrkdwn",
+                  "text": "<https://nexustradingia.com/reports|View Full Report>"
+                }
+              ]
+            }
+          ]
+        }
+
+  # --- EMAIL ---
+  email:
+    enabled: true
+    name: "Email"
+    type: "email"
+    priority: 3
+    config:
+      smtp_host: "${SMTP_HOST}"
+      smtp_port: 587
+      smtp_ssl: false
+      smtp_tls: true
+      username: "${SMTP_USERNAME}"
+      password: "${SMTP_PASSWORD}"
+      from: "notifications@nexustradingia.com"
+      from_name: "NEXUS Arbitrage Bot"
+      reply_to: "support@nexustradingia.com"
+      to:
+        - "alerts@nexustradingia.com"
+        - "team@nexustradingia.com"
+      cc:
+        - "monitoring@nexustradingia.com"
+      bcc: []
+      rate_limit: 10  # emails per minute
+      max_attachments: 5
+      max_attachment_size: 10485760  # 10MB
+    templates:
+      opportunity: |
+        Subject: 🎯 New Arbitrage Opportunity - {{pair}}
+        
+        <html>
+        <head>
+          <style>
+            body { font-family: Arial, sans-serif; color: #333; }
+            .header { background: #00D4AA; color: white; padding: 20px; }
+            .content { padding: 20px; }
+            .field { margin: 10px 0; }
+            .label { font-weight: bold; }
+            .value { color: #1A1A2E; }
+            .footer { background: #f5f5f5; padding: 10px; text-align: center; font-size: 12px; color: #666; }
+          </style>
+        </head>
+        <body>
+          <div class="header">
+            <h1>🎯 New Arbitrage Opportunity</h1>
+          </div>
+          <div class="content">
+            <div class="field">
+              <span class="label">Pair:</span>
+              <span class="value"><code>{{pair}}</code></span>
+            </div>
+            <div class="field">
+              <span class="label">Spread:</span>
+              <span class="value">${{spread}}</span>
+            </div>
+            <div class="field">
+              <span class="label">Profit:</span>
+              <span class="value"><strong>${{profit}}</strong></span>
+            </div>
+            <div class="field">
+              <span class="label">Exchanges:</span>
+              <span class="value">{{exchange_a}} → {{exchange_b}}</span>
+            </div>
+            <div class="field">
+              <span class="label">Volume:</span>
+              <span class="value">${{volume}}</span>
+            </div>
+            <div class="field">
+              <span class="label">Exchange A Price:</span>
+              <span class="value">${{price_a}}</span>
+            </div>
+            <div class="field">
+              <span class="label">Exchange B Price:</span>
+              <span class="value">${{price_b}}</span>
+            </div>
+            <div class="field">
+              <span class="label">Time:</span>
+              <span class="value">{{timestamp}}</span>
+            </div>
+          </div>
+          <div class="footer">
+            <p>NEXUS Arbitrage Bot | <a href="https://nexustradingia.com">nexustradingia.com</a></p>
+          </div>
+        </body>
+        </html>
+        
+      execution: |
+        Subject: ✅ Trade Executed - {{trade_id}}
+        
+        <html>
+        <head>
+          <style>
+            body { font-family: Arial, sans-serif; color: #333; }
+            .header { background: #00D4AA; color: white; padding: 20px; }
+            .content { padding: 20px; }
+            .field { margin: 10px 0; }
+            .label { font-weight: bold; }
+            .value { color: #1A1A2E; }
+            .positive { color: #00D4AA; }
+            .negative { color: #FF6B6B; }
+            .footer { background: #f5f5f5; padding: 10px; text-align: center; font-size: 12px; color: #666; }
+          </style>
+        </head>
+        <body>
+          <div class="header">
+            <h1>✅ Trade Executed</h1>
+          </div>
+          <div class="content">
+            <div class="field">
+              <span class="label">ID:</span>
+              <span class="value"><code>{{trade_id}}</code></span>
+            </div>
+            <div class="field">
+              <span class="label">Pair:</span>
+              <span class="value"><code>{{pair}}</code></span>
+            </div>
+            <div class="field">
+              <span class="label">Side:</span>
+              <span class="value">{{side}}</span>
+            </div>
+            <div class="field">
+              <span class="label">Size:</span>
+              <span class="value">{{size}}</span>
+            </div>
+            <div class="field">
+              <span class="label">Price:</span>
+              <span class="value">${{price}}</span>
+            </div>
+            <div class="field">
+              <span class="label">PnL:</span>
+              <span class="value {{#if (gt pnl 0)}}positive{{else}}negative{{/if}}">
+                <strong>{{#if (gt pnl 0)}}+{{/if}}${{pnl}}</strong>
+              </span>
+            </div>
+            <div class="field">
+              <span class="label">Exchange:</span>
+              <span class="value">{{exchange}}</span>
+            </div>
+            <div class="field">
+              <span class="label">Time:</span>
+              <span class="value">{{timestamp}}</span>
+            </div>
+          </div>
+          <div class="footer">
+            <p>NEXUS Arbitrage Bot | <a href="https://nexustradingia.com">nexustradingia.com</a></p>
+          </div>
+        </body>
+        </html>
+        
+      daily_report: |
+        Subject: 📊 Daily Report - {{date}}
+        
+        <html>
+        <head>
+          <style>
+            body { font-family: Arial, sans-serif; color: #333; }
+            .header { background: #6C5CE7; color: white; padding: 20px; }
+            .content { padding: 20px; }
+            .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 20px 0; }
+            .card { background: #f5f5f5; padding: 15px; border-radius: 8px; }
+            .card .label { font-size: 12px; color: #666; }
+            .card .value { font-size: 20px; font-weight: bold; color: #1A1A2E; }
+            .footer { background: #f5f5f5; padding: 10px; text-align: center; font-size: 12px; color: #666; }
+          </style>
+        </head>
+        <body>
+          <div class="header">
+            <h1>📊 Daily Report - {{date}}</h1>
+          </div>
+          <div class="content">
+            <div class="grid">
+              <div class="card">
+                <div class="label">Total Trades</div>
+                <div class="value">{{total_trades}}</div>
+              </div>
+              <div class="card">
+                <div class="label">Win Rate</div>
+                <div class="value">{{win_rate}}%</div>
+              </div>
+              <div class="card">
+                <div class="label">Total PnL</div>
+                <div class="value">${{total_pnl}}</div>
+              </div>
+              <div class="card">
+                <div class="label">Best Trade</div>
+                <div class="value">${{best_trade}}</div>
+              </div>
+              <div class="card">
+                <div class="label">Worst Trade</div>
+                <div class="value">${{worst_trade}}</div>
+              </div>
+              <div class="card">
+                <div class="label">Avg Trade</div>
+                <div class="value">${{avg_trade}}</div>
+              </div>
+              <div class="card">
+                <div class="label">Sharpe Ratio</div>
+                <div class="value">{{sharpe_ratio}}</div>
+              </div>
+              <div class="card">
+                <div class="label">Max Drawdown</div>
+                <div class="value">{{max_drawdown}}%</div>
+              </div>
+            </div>
+          </div>
+          <div class="footer">
+            <p>NEXUS Arbitrage Bot | <a href="https://nexustradingia.com/reports">View Full Report</a></p>
+          </div>
+        </body>
+        </html>
+
+  # --- WEBHOOK ---
+  webhook:
+    enabled: true
+    name: "Webhook"
+    type: "webhook"
+    priority: 4
+    config:
+      url: "${WEBHOOK_URL}"
+      method: "POST"
+      headers:
+        Authorization: "Bearer ${WEBHOOK_TOKEN}"
+        Content-Type: "application/json"
+        X-Service: "arbitrage-bot"
+        X-Version: "2.0.0"
+      timeout: 10  # seconds
+      retry_attempts: 3
+      retry_delay: 5  # seconds
+      max_payload_size: 1048576  # 1MB
+    templates:
+      opportunity: |
+        {
+          "type": "opportunity",
+          "timestamp": "{{timestamp}}",
+          "data": {
+            "pair": "{{pair}}",
+            "spread": {{spread}},
+            "profit": {{profit}},
+            "exchange_a": "{{exchange_a}}",
+            "exchange_b": "{{exchange_b}}",
+            "price_a": {{price_a}},
+            "price_b": {{price_b}},
+            "volume": {{volume}}
+          }
+        }
+        
+      execution: |
+        {
+          "type": "execution",
+          "timestamp": "{{timestamp}}",
+          "data": {
+            "trade_id": "{{trade_id}}",
+            "pair": "{{pair}}",
+            "side": "{{side}}",
+            "size": {{size}},
+            "price": {{price}},
+            "pnl": {{pnl}},
+            "exchange": "{{exchange}}"
+          }
+        }
+
+  # --- PAGERDUTY ---
+  pagerduty:
+    enabled: true
+    name: "PagerDuty"
+    type: "pagerduty"
+    priority: 5
+    config:
+      integration_key: "${PAGERDUTY_KEY}"
+      api_key: "${PAGERDUTY_API_KEY}"
+      service_id: "${PAGERDUTY_SERVICE_ID}"
+      severity_mapping:
+        critical: "critical"
+        warning: "warning"
+        info: "info"
+        debug: "info"
+      timeout: 10  # seconds
+      retry_attempts: 3
+    templates:
+      alert: |
+        {
+          "payload": {
+            "summary": "{{alert_type}}: {{message}}",
+            "timestamp": "{{timestamp}}",
+            "severity": "{{severity}}",
+            "source": "{{source}}",
+            "component": "arbitrage-bot",
+            "group": "trading",
+            "class": "alert",
+            "custom_details": {
+              "pair": "{{pair}}",
+              "profit": "{{profit}}",
+              "spread": "{{spread}}",
+              "exchange": "{{exchange}}"
+            }
+          },
+          "routing_key": "{{integration_key}}",
+          "event_action": "trigger",
+          "dedup_key": "{{dedup_key}}"
+        }
+
+  # --- SMS (Twilio) ---
+  sms:
+    enabled: false
+    name: "SMS"
+    type: "sms"
+    priority: 6
+    config:
+      provider: "twilio"
+      account_sid: "${TWILIO_ACCOUNT_SID}"
+      auth_token: "${TWILIO_AUTH_TOKEN}"
+      from_number: "${TWILIO_FROM_NUMBER}"
+      to_numbers:
+        - "${ADMIN_PHONE_1}"
+        - "${ADMIN_PHONE_2}"
+      rate_limit: 1  # messages per minute
+      max_retry: 3
+    templates:
+      critical_alert: |
+        [NEXUS] CRITICAL: {{alert_type}} - {{message}} ({{timestamp}})
+        
+      high_alert: |
+        [NEXUS] HIGH: {{alert_type}} - {{message}}
+        
+      system_alert: |
+        [NEXUS] SYSTEM: {{component}} - {{status}} - {{message}}
+
+  # --- DISCORD ---
+  discord:
+    enabled: false
+    name: "Discord"
+    type: "discord"
+    priority: 7
+    config:
+      webhook_url: "${DISCORD_WEBHOOK_URL}"
+      username: "Nexus Arbitrage Bot"
+      avatar_url: "https://nexustradingia.com/logo.png"
+      tts: false
+      rate_limit: 5  # messages per second
+    templates:
+      opportunity: |
+        **🎯 New Arbitrage Opportunity**
+        ──────────────────────────
+        **Pair:** `{{pair}}`
+        **Spread:** ${{spread}}
+        **Profit:** `${{profit}}`
+        **Exchanges:** {{exchange_a}} → {{exchange_b}}
+        **Volume:** ${{volume}}
+        ──────────────────────────
+        *Time: {{timestamp}}*
+        
+      execution: |
+        **✅ Trade Executed**
+        ──────────────────────────
+        **ID:** `{{trade_id}}`
+        **Pair:** `{{pair}}`
+        **Side:** {{side}}
+        **Size:** {{size}}
+        **Price:** ${{price}}
+        **PnL:** `${{pnl}}`
+        ──────────────────────────
+        *Time: {{timestamp}}*
+
+# ============================================================
+# NOTIFICATION EVENTS
+# ============================================================
+events:
+  # --- Trading Events ---
+  opportunity:
+    enabled: true
+    channels:
+      - "telegram"
+      - "slack"
+      - "email"
+    severity: "info"
+    min_interval: 5  # seconds
+    max_per_minute: 10
+    
+  execution:
+    enabled: true
+    channels:
+      - "telegram"
+      - "slack"
+      - "email"
+      - "webhook"
+    severity: "info"
+    min_interval: 2  # seconds
+    max_per_minute: 20
+    
+  order_filled:
+    enabled: true
+    channels:
+      - "telegram"
+      - "slack"
+    severity: "info"
+    min_interval: 2
+    
+  order_cancelled:
+    enabled: true
+    channels:
+      - "telegram"
+    severity: "warning"
+    min_interval: 5
+
+  # --- Alert Events ---
+  alert:
+    enabled: true
+    channels:
+      - "telegram"
+      - "slack"
+      - "email"
+      - "pagerduty"
+    severity: "warning"
+    min_interval: 10
+    
+  error:
+    enabled: true
+    channels:
+      - "telegram"
+      - "slack"
+      - "email"
+      - "pagerduty"
+    severity: "critical"
+    min_interval: 5
+    
+  critical:
+    enabled: true
+    channels:
+      - "telegram"
+      - "slack"
+      - "email"
+      - "sms"
+      - "pagerduty"
+    severity: "critical"
+    min_interval: 0
+
+  # --- Risk Events ---
+  risk_warning:
+    enabled: true
+    channels:
+      - "telegram"
+      - "slack"
+      - "email"
+    severity: "warning"
+    min_interval: 30
+    
+  risk_critical:
+    enabled: true
+    channels:
+      - "telegram"
+      - "slack"
+      - "email"
+      - "pagerduty"
+      - "sms"
+    severity: "critical"
+    min_interval: 0
+
+  # --- System Events ---
+  system_alert:
+    enabled: true
+    channels:
+      - "telegram"
+      - "slack"
+      - "email"
+    severity: "warning"
+    min_interval: 60
+    
+  system_error:
+    enabled: true
+    channels:
+      - "telegram"
+      - "slack"
+      - "email"
+      - "pagerduty"
+    severity: "critical"
+    min_interval: 10
+    
+  status_change:
+    enabled: true
+    channels:
+      - "telegram"
+      - "slack"
+    severity: "info"
+    min_interval: 10
+
+  # --- Report Events ---
+  daily_report:
+    enabled: true
+    channels:
+      - "telegram"
+      - "slack"
+      - "email"
+    severity: "info"
+    schedule: "0 0 * * *"  # daily at midnight
+    
+  weekly_report:
+    enabled: true
+    channels:
+      - "telegram"
+      - "slack"
+      - "email"
+    severity: "info"
+    schedule: "0 0 * * 0"  # weekly on Sunday
+    
+  monthly_report:
+    enabled: true
+    channels:
+      - "telegram"
+      - "slack"
+      - "email"
+    severity: "info"
+    schedule: "0 0 1 * *"  # monthly on 1st
+
+  # --- Performance Events ---
+  performance_alert:
+    enabled: true
+    channels:
+      - "telegram"
+      - "slack"
+      - "email"
+    severity: "warning"
+    min_interval: 60
+    
+  performance_warning:
+    enabled: true
+    channels:
+      - "telegram"
+      - "slack"
+    severity: "warning"
+    min_interval: 300
+
+  # --- Maintenance Events ---
+  maintenance_start:
+    enabled: true
+    channels:
+      - "telegram"
+      - "slack"
+      - "email"
+    severity: "info"
+    min_interval: 0
+    
+  maintenance_end:
+    enabled: true
+    channels:
+      - "telegram"
+      - "slack"
+      - "email"
+    severity: "info"
+    min_interval: 0
+
+# ============================================================
+# NOTIFICATION RULES
+# ============================================================
+rules:
+  # --- Severity Rules ---
+  severity:
+    critical:
+      channels:
+        - "telegram"
+        - "slack"
+        - "email"
+        - "sms"
+        - "pagerduty"
+      retry: true
+      retry_attempts: 5
+      retry_delay: 5  # seconds
+      escalate: true
+      escalate_after: 300  # seconds
+      
+    warning:
+      channels:
+        - "telegram"
+        - "slack"
+        - "email"
+      retry: true
+      retry_attempts: 3
+      retry_delay: 10  # seconds
+      escalate: false
+      
+    info:
+      channels:
+        - "telegram"
+        - "slack"
+      retry: false
+      escalate: false
+      
+    debug:
+      channels:
+        - "telegram"
+      retry: false
+      escalate: false
+
+  # --- Rate Limiting Rules ---
+  rate_limiting:
+    enabled: true
+    default:
+      per_minute: 10
+      per_hour: 100
+      per_day: 500
+    critical:
+      per_minute: 20
+      per_hour: 200
+      per_day: 1000
+    warning:
+      per_minute: 15
+      per_hour: 150
+      per_day: 750
+
+  # --- Time-based Rules ---
+  time_based:
+    enabled: true
+    quiet_hours:
+      start: "23:00"
+      end: "07:00"
+      timezone: "UTC"
+      exception:
+        - "critical"
+        - "error"
+        - "risk_critical"
+    peak_hours:
+      start: "08:00"
+      end: "22:00"
+      timezone: "UTC"
+      channels:
+        - "telegram"
+        - "slack"
+        - "email"
+
+# ============================================================
+# NOTIFICATION TEMPLATE VARIABLES
+# ============================================================
+variables:
+  # --- Trading Variables ---
+  trading:
+    pair: "{{pair}}"
+    side: "{{side}}"
+    size: "{{size}}"
+    price: "{{price}}"
+    pnl: "{{pnl}}"
+    spread: "{{spread}}"
+    profit: "{{profit}}"
+    volume: "{{volume}}"
+    exchange: "{{exchange}}"
+    exchange_a: "{{exchange_a}}"
+    exchange_b: "{{exchange_b}}"
+    price_a: "{{price_a}}"
+    price_b: "{{price_b}}"
+    trade_id: "{{trade_id}}"
+    order_id: "{{order_id}}"
+    
+  # --- Alert Variables ---
+  alert:
+    alert_type: "{{alert_type}}"
+    message: "{{message}}"
+    severity: "{{severity}}"
+    source: "{{source}}"
+    error_message: "{{error_message}}"
+    stack_trace: "{{stack_trace}}"
+    trace_id: "{{trace_id}}"
+    
+  # --- Report Variables ---
+  report:
+    date: "{{date}}"
+    week: "{{week}}"
+    month: "{{month}}"
+    total_trades: "{{total_trades}}"
+    win_rate: "{{win_rate}}"
+    total_pnl: "{{total_pnl}}"
+    best_trade: "{{best_trade}}"
+    worst_trade: "{{worst_trade}}"
+    avg_trade: "{{avg_trade}}"
+    avg_pnl: "{{avg_pnl}}"
+    best_day: "{{best_day}}"
+    worst_day: "{{worst_day}}"
+    best_week: "{{best_week}}"
+    worst_week: "{{worst_week}}"
+    sharpe_ratio: "{{sharpe_ratio}}"
+    max_drawdown: "{{max_drawdown}}"
+    profit_factor: "{{profit_factor}}"
+    calmar_ratio: "{{calmar_ratio}}"
+    sortino_ratio: "{{sortino_ratio}}"
+    
+  # --- Risk Variables ---
+  risk:
+    risk_level: "{{risk_level}}"
+    current_drawdown: "{{current_drawdown}}"
+    max_allowed: "{{max_allowed}}"
+    action: "{{action}}"
+    reason: "{{reason}}"
+    
+  # --- System Variables ---
+  system:
+    component: "{{component}}"
+    status: "{{status}}"
+    uptime: "{{uptime}}"
+    timestamp: "{{timestamp}}"
+    service: "{{service}}"
+    version: "{{version}}"
+    instance: "{{instance}}"
+
+# ============================================================
+# NOTIFICATION QUEUE
+# ============================================================
+queue:
+  enabled: true
+  type: "redis"  # redis | memory
+  max_size: 10000
+  persistence: true
+  ttl: 86400  # seconds (24 hours)
+  retry_interval: 30  # seconds
+  max_retries: 5
+  dead_letter:
+    enabled: true
+    max_size: 1000
+    ttl: 604800  # seconds (7 days)
+
+# ============================================================
+# NOTIFICATION LOGGING
+# ============================================================
+logging:
+  enabled: true
+  level: "info"
+  format: "json"
+  outputs:
+    - type: "file"
+      path: "/var/log/nexus/notifications.log"
+      max_size: 10485760  # 10MB
+      max_files: 10
+    - type: "console"
+      enabled: true
+  fields:
+    service: "notifications"
+    environment: "production"
+    version: "2.0.0"
+
+# ============================================================
+# END OF NOTIFICATION CONFIGURATIONS
+# ============================================================
