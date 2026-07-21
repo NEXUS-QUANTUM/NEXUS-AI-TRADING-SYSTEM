@@ -1,0 +1,785 @@
+# ============================================================
+# NEXUS AI TRADING SYSTEM - Arbitrage Bot Risk Configurations
+# Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+# ============================================================
+# @version 2.0.0
+# @author NEXUS QUANTUM TEAM
+# @description Configuration complète de gestion des risques pour le bot d'arbitrage
+# ============================================================
+
+# ============================================================
+# RISK MANAGEMENT GENERAL SETTINGS
+# ============================================================
+risk:
+  enabled: true
+  version: "2.0.0"
+  environment: "production"
+  risk_free_rate: 0.02  # 2%
+  confidence_level: 0.95  # 95%
+  time_horizon: 1  # day
+  rebalancing_frequency: 60  # minutes
+  stress_testing: true
+  scenario_analysis: true
+  
+# ============================================================
+# DRAWDOWN MANAGEMENT
+# ============================================================
+drawdown:
+  enabled: true
+  
+  # Maximum drawdown limits
+  max_drawdown:
+    daily: 0.05  # 5%
+    weekly: 0.10  # 10%
+    monthly: 0.15  # 15%
+    quarterly: 0.20  # 20%
+    yearly: 0.25  # 25%
+    max_absolute: 0.30  # 30%
+    
+  # Recovery thresholds
+  recovery:
+    min_recovery: 0.02  # 2% recovery before resuming
+    max_recovery_time: 604800  # 7 days in seconds
+    recovery_action: "reduce"  # reduce | pause | stop
+    
+  # Monitoring
+  monitoring:
+    check_interval: 60  # seconds
+    alert_threshold: 0.03  # 3%
+    critical_threshold: 0.05  # 5%
+    
+  # Protection mechanisms
+  protection:
+    enabled: true
+    type: "dynamic"  # static | dynamic | adaptive
+    max_position_reduction: 0.50  # 50% reduction at max drawdown
+    reduction_speed: 0.10  # 10% per day
+    recovery_speed: 0.05  # 5% per day
+
+# ============================================================
+# POSITION SIZING
+# ============================================================
+position_sizing:
+  enabled: true
+  
+  # Strategy configuration
+  strategy:
+    type: "adaptive"  # fixed | kelly | volatility | adaptive | risk_parity
+    parameters:
+      fixed_size: 1000
+      min_size: 100
+      max_size: 50000
+      kelly_fraction: 0.25
+      volatility_window: 30  # days
+      risk_parity: true
+      
+  # Volatility-based sizing
+  volatility:
+    enabled: true
+    lookback_period: 20  # days
+    volatility_multiplier: 0.5
+    max_volatility: 1.0
+    min_volatility: 0.1
+    
+  # Risk-based sizing
+  risk_based:
+    enabled: true
+    risk_per_trade: 0.01  # 1% of portfolio
+    max_risk_per_day: 0.05  # 5% of portfolio
+    max_risk_per_week: 0.10  # 10% of portfolio
+    risk_adjustment: 0.5
+    
+  # Limits
+  limits:
+    max_position_per_symbol: 0.20  # 20% of portfolio
+    max_position_per_exchange: 0.30  # 30% of portfolio
+    max_position_per_strategy: 0.25  # 25% of portfolio
+    min_position_per_symbol: 0.01  # 1% of portfolio
+    
+  # Adaptive sizing
+  adaptive:
+    enabled: true
+    momentum_factor: 0.3
+    volatility_factor: 0.4
+    correlation_factor: 0.3
+    lookback_period: 60  # days
+
+# ============================================================
+# STOP LOSS CONFIGURATION
+# ============================================================
+stop_loss:
+  enabled: true
+  
+  # Types
+  types:
+    fixed:
+      enabled: true
+      percentage: 0.02  # 2%
+      max_percentage: 0.05  # 5%
+      
+    trailing:
+      enabled: true
+      activation: 0.01  # 1%
+      offset: 0.01  # 1%
+      max_offset: 0.05  # 5%
+      min_offset: 0.005  # 0.5%
+      
+    dynamic:
+      enabled: true
+      volatility_multiplier: 1.5
+      atr_period: 14
+      atr_multiplier: 2.0
+      max_dynamic: 0.08  # 8%
+      
+    volatility_based:
+      enabled: true
+      lookback: 20  # days
+      multiplier: 2.0
+      max_stop: 0.06  # 6%
+      
+  # Time-based stops
+  time_based:
+    enabled: true
+    max_position_duration: 86400  # 24 hours
+    partial_close: true
+    partial_percentage: 0.50  # 50%
+    
+  # Protection mechanisms
+  protection:
+    max_loss_per_day: 0.02  # 2%
+    max_loss_per_week: 0.05  # 5%
+    max_loss_per_month: 0.10  # 10%
+    consecutive_loss_limit: 3
+    cooldown_after_loss: 3600  # 1 hour
+
+# ============================================================
+# TAKE PROFIT CONFIGURATION
+# ============================================================
+take_profit:
+  enabled: true
+  
+  # Types
+  types:
+    fixed:
+      enabled: true
+      percentage: 0.03  # 3%
+      max_percentage: 0.10  # 10%
+      
+    multiple:
+      enabled: true
+      levels:
+        - percentage: 0.01  # 1%
+          allocation: 0.20  # 20%
+        - percentage: 0.02  # 2%
+          allocation: 0.20  # 20%
+        - percentage: 0.03  # 3%
+          allocation: 0.20  # 20%
+        - percentage: 0.05  # 5%
+          allocation: 0.20  # 20%
+        - percentage: 0.08  # 8%
+          allocation: 0.20  # 20%
+          
+    trailing:
+      enabled: true
+      activation: 0.02  # 2%
+      offset: 0.01  # 1%
+      max_offset: 0.05  # 5%
+      
+    dynamic:
+      enabled: true
+      volatility_multiplier: 2.0
+      atr_period: 14
+      atr_multiplier: 3.0
+      max_dynamic: 0.12  # 12%
+      
+  # Risk-reward ratio
+  risk_reward:
+    enabled: true
+    min_ratio: 1.5
+    max_ratio: 5.0
+    default_ratio: 2.0
+    adaptive: true
+    
+  # Time-based take profit
+  time_based:
+    enabled: true
+    max_position_duration: 86400  # 24 hours
+    time_decay: 0.01  # 1% per hour
+
+# ============================================================
+# CIRCUIT BREAKER CONFIGURATION
+# ============================================================
+circuit_breaker:
+  enabled: true
+  
+  # General settings
+  general:
+    failure_threshold: 5
+    failure_window: 60  # seconds
+    cooldown_period: 300  # seconds
+    max_failures_per_hour: 20
+    max_failures_per_day: 100
+    
+  # Types of circuit breakers
+  types:
+    exchange:
+      enabled: true
+      failure_threshold: 3
+      cooldown_period: 600  # seconds
+      
+    strategy:
+      enabled: true
+      failure_threshold: 3
+      cooldown_period: 900  # seconds
+      
+    pair:
+      enabled: true
+      failure_threshold: 2
+      cooldown_period: 600  # seconds
+      
+    system:
+      enabled: true
+      failure_threshold: 5
+      cooldown_period: 3600  # seconds
+      
+  # Recovery
+  recovery:
+    enabled: true
+    half_open_timeout: 60  # seconds
+    success_threshold: 3
+    failure_retry_count: 2
+    
+  # Monitoring
+  monitoring:
+    enabled: true
+    alert_on_trip: true
+    alert_on_recovery: true
+    log_trips: true
+
+# ============================================================
+# PORTFOLIO RISK
+# ============================================================
+portfolio_risk:
+  enabled: true
+  
+  # Diversification
+  diversification:
+    enabled: true
+    max_correlation: 0.70
+    max_concentration: 0.20  # 20% per asset
+    min_assets: 5
+    max_assets: 20
+    
+  # Correlation matrix
+  correlation:
+    enabled: true
+    lookback_period: 60  # days
+    calculation_frequency: 3600  # seconds (1 hour)
+    threshold: 0.70  # 70% correlation
+    hedging_enabled: true
+    
+  # Beta exposure
+  beta:
+    enabled: true
+    benchmark: "BTC/USDT"
+    max_beta: 1.5
+    min_beta: -0.5
+    beta_hedging: true
+    
+  # Value at Risk (VaR)
+  var:
+    enabled: true
+    confidence_level: 0.95  # 95%
+    time_horizon: 1  # day
+    calculation_method: "historical"  # historical | monte_carlo | parametric
+    historical_window: 365  # days
+    monte_carlo_simulations: 10000
+    max_var: 0.05  # 5% of portfolio
+    
+  # Conditional Value at Risk (CVaR)
+  cvar:
+    enabled: true
+    confidence_level: 0.95
+    time_horizon: 1  # day
+    max_cvar: 0.08  # 8% of portfolio
+    
+  # Stress testing
+  stress_testing:
+    enabled: true
+    scenarios:
+      - name: "market_crash"
+        factor: 0.30  # 30% drop
+        probability: 0.01  # 1%
+      - name: "flash_crash"
+        factor: 0.50  # 50% drop
+        probability: 0.001  # 0.1%
+      - name: "liquidity_crisis"
+        factor: 0.20  # 20% drop
+        probability: 0.05  # 5%
+      - name: "black_swan"
+        factor: 0.70  # 70% drop
+        probability: 0.0001  # 0.01%
+
+# ============================================================
+# RISK METRICS
+# ============================================================
+metrics:
+  enabled: true
+  
+  # Performance metrics
+  performance:
+    - "sharpe_ratio"
+    - "sortino_ratio"
+    - "calmar_ratio"
+    - "omega_ratio"
+    - "sterling_ratio"
+    - "burke_ratio"
+    - "martin_ratio"
+    
+  # Risk metrics
+  risk:
+    - "var"
+    - "cvar"
+    - "expected_shortfall"
+    - "maximum_drawdown"
+    - "average_drawdown"
+    - "drawdown_duration"
+    - "ulcer_index"
+    
+  # Trading metrics
+  trading:
+    - "win_rate"
+    - "loss_rate"
+    - "profit_factor"
+    - "average_win"
+    - "average_loss"
+    - "win_loss_ratio"
+    - "expectancy"
+    - "risk_reward_ratio"
+    
+  # Calculation settings
+  calculation:
+    frequency: 3600  # seconds (1 hour)
+    lookback_period: 365  # days
+    min_data_points: 30
+    max_data_points: 1000
+
+# ============================================================
+# LIMITS AND THRESHOLDS
+# ============================================================
+limits:
+  enabled: true
+  
+  # Trading limits
+  trading:
+    max_trade_size: 50000
+    max_daily_trades: 100
+    max_weekly_trades: 500
+    max_monthly_trades: 2000
+    max_daily_volume: 1000000
+    max_weekly_volume: 5000000
+    max_monthly_volume: 20000000
+    max_position_size: 100000
+    max_leverage: 3
+    
+  # Exposure limits
+  exposure:
+    max_daily_exposure: 0.50  # 50% of portfolio
+    max_weekly_exposure: 0.75  # 75% of portfolio
+    max_monthly_exposure: 1.00  # 100% of portfolio
+    max_per_asset_exposure: 0.20  # 20% per asset
+    max_per_exchange_exposure: 0.30  # 30% per exchange
+    
+  # Loss limits
+  loss:
+    max_daily_loss: 0.02  # 2%
+    max_weekly_loss: 0.05  # 5%
+    max_monthly_loss: 0.10  # 10%
+    max_single_trade_loss: 0.01  # 1%
+    max_consecutive_loss: 3
+    
+  # Account limits
+  account:
+    min_balance: 1000
+    max_balance: 10000000
+    min_equity: 500
+    margin_requirement: 0.10  # 10%
+
+# ============================================================
+# RISK WARNINGS AND ALERTS
+# ============================================================
+alerts:
+  enabled: true
+  
+  # Alert rules
+  rules:
+    - name: "drawdown_warning"
+      condition: "drawdown > 0.03"
+      severity: "warning"
+      message: "Drawdown has exceeded 3%"
+      action: "notify"
+      
+    - name: "drawdown_critical"
+      condition: "drawdown > 0.05"
+      severity: "critical"
+      message: "Drawdown has exceeded 5%"
+      action: "notify,reduce"
+      
+    - name: "drawdown_emergency"
+      condition: "drawdown > 0.10"
+      severity: "emergency"
+      message: "Drawdown has exceeded 10%"
+      action: "notify,stop"
+      
+    - name: "var_exceeded"
+      condition: "var > 0.05"
+      severity: "warning"
+      message: "VaR has exceeded 5%"
+      action: "notify"
+      
+    - name: "cvar_exceeded"
+      condition: "cvar > 0.08"
+      severity: "warning"
+      message: "CVaR has exceeded 8%"
+      action: "notify"
+      
+    - name: "position_limit"
+      condition: "position_size > 0.20"
+      severity: "warning"
+      message: "Position size exceeded 20% of portfolio"
+      action: "notify,reduce"
+      
+    - name: "daily_loss_limit"
+      condition: "daily_loss > 0.02"
+      severity: "warning"
+      message: "Daily loss limit exceeded 2%"
+      action: "notify,reduce"
+      
+    - name: "daily_loss_critical"
+      condition: "daily_loss > 0.05"
+      severity: "critical"
+      message: "Daily loss limit exceeded 5%"
+      action: "notify,stop"
+      
+    - name: "correlation_warning"
+      condition: "correlation > 0.70"
+      severity: "info"
+      message: "High correlation detected (>70%)"
+      action: "notify"
+      
+    - name: "beta_warning"
+      condition: "beta > 1.5 or beta < -0.5"
+      severity: "warning"
+      message: "Beta exposure outside acceptable range"
+      action: "notify"
+      
+    - name: "liquidity_risk"
+      condition: "spread > 0.02"
+      severity: "warning"
+      message: "High spread detected (>2%)"
+      action: "notify"
+      
+    - name: "margin_call"
+      condition: "margin_usage > 0.80"
+      severity: "critical"
+      message: "Margin usage exceeds 80%"
+      action: "notify,reduce"
+      
+  # Alert channels
+  channels:
+    - "telegram"
+    - "slack"
+    - "email"
+    - "pagerduty"
+    - "webhook"
+    
+  # Cooldown settings
+  cooldown:
+    warning: 300  # seconds
+    critical: 60  # seconds
+    emergency: 0  # seconds
+
+# ============================================================
+# RISK REPORTING
+# ============================================================
+reporting:
+  enabled: true
+  
+  # Report types
+  types:
+    daily:
+      enabled: true
+      schedule: "0 0 * * *"  # daily at midnight
+      format: "pdf"
+      
+    weekly:
+      enabled: true
+      schedule: "0 0 * * 0"  # weekly on Sunday
+      format: "pdf"
+      
+    monthly:
+      enabled: true
+      schedule: "0 0 1 * *"  # monthly on 1st
+      format: "pdf"
+      
+    quarterly:
+      enabled: true
+      schedule: "0 0 1 */3 *"  # quarterly
+      format: "pdf"
+      
+  # Report content
+  content:
+    - "summary"
+    - "drawdown_analysis"
+    - "var_analysis"
+    - "correlation_analysis"
+    - "performance_metrics"
+    - "position_report"
+    - "risk_metrics"
+    - "scenario_analysis"
+    - "stress_test_results"
+    - "compliance_report"
+    
+  # Distribution
+  distribution:
+    enabled: true
+    email:
+      - "risk@nexustradingia.com"
+      - "compliance@nexustradingia.com"
+      - "management@nexustradingia.com"
+    storage:
+      enabled: true
+      path: "s3://${REPORT_BUCKET}/risk_reports/"
+      retention: 90  # days
+
+# ============================================================
+# STRESS TESTING
+# ============================================================
+stress_testing:
+  enabled: true
+  
+  # Scenarios
+  scenarios:
+    - name: "2008_financial_crisis"
+      description: "2008 financial crisis scenario"
+      market_drop: 0.40  # 40% drop
+      volatility_spike: 2.0  # 200% increase
+      liquidity_drop: 0.50  # 50% liquidity drop
+      
+    - name: "2020_covid_crash"
+      description: "2020 COVID-19 crash scenario"
+      market_drop: 0.30  # 30% drop
+      volatility_spike: 1.5  # 150% increase
+      liquidity_drop: 0.30  # 30% liquidity drop
+      
+    - name: "crypto_crash"
+      description: "Cryptocurrency crash scenario"
+      market_drop: 0.70  # 70% drop
+      volatility_spike: 3.0  # 300% increase
+      liquidity_drop: 0.70  # 70% liquidity drop
+      
+    - name: "flash_crash"
+      description: "Flash crash scenario"
+      market_drop: 0.50  # 50% drop
+      volatility_spike: 2.5  # 250% increase
+      liquidity_drop: 0.80  # 80% liquidity drop
+      
+    - name: "liquidity_crisis"
+      description: "Liquidity crisis scenario"
+      market_drop: 0.20  # 20% drop
+      volatility_spike: 1.2  # 120% increase
+      liquidity_drop: 0.90  # 90% liquidity drop
+      
+  # Testing parameters
+  parameters:
+    time_horizon: 30  # days
+    confidence_level: 0.99  # 99%
+    monte_carlo_simulations: 10000
+    historical_lookback: 365  # days
+    
+  # Reporting
+  reporting:
+    enabled: true
+    format: "pdf"
+    include_detailed: true
+    include_summary: true
+
+# ============================================================
+# SCENARIO ANALYSIS
+# ============================================================
+scenario_analysis:
+  enabled: true
+  
+  # Market scenarios
+  market:
+    - name: "bull_market"
+      description: "Bull market conditions"
+      expected_return: 0.15  # 15%
+      volatility: 0.20  # 20%
+      
+    - name: "bear_market"
+      description: "Bear market conditions"
+      expected_return: -0.15  # -15%
+      volatility: 0.25  # 25%
+      
+    - name: "sideways_market"
+      description: "Sideways market conditions"
+      expected_return: 0.02  # 2%
+      volatility: 0.15  # 15%
+      
+  # Volatility scenarios
+  volatility:
+    - name: "low_volatility"
+      description: "Low volatility environment"
+      expected_return: 0.05  # 5%
+      volatility: 0.10  # 10%
+      
+    - name: "normal_volatility"
+      description: "Normal volatility environment"
+      expected_return: 0.08  # 8%
+      volatility: 0.20  # 20%
+      
+    - name: "high_volatility"
+      description: "High volatility environment"
+      expected_return: 0.02  # 2%
+      volatility: 0.35  # 35%
+      
+  # Liquidity scenarios
+  liquidity:
+    - name: "high_liquidity"
+      description: "High liquidity environment"
+      spread: 0.001  # 0.1%
+      slippage: 0.001  # 0.1%
+      
+    - name: "normal_liquidity"
+      description: "Normal liquidity environment"
+      spread: 0.003  # 0.3%
+      slippage: 0.002  # 0.2%
+      
+    - name: "low_liquidity"
+      description: "Low liquidity environment"
+      spread: 0.01  # 1%
+      slippage: 0.005  # 0.5%
+      
+  # Correlation scenarios
+  correlation:
+    - name: "normal_correlation"
+      description: "Normal correlation environment"
+      correlation_matrix: "normal"
+      
+    - name: "high_correlation"
+      description: "High correlation environment"
+      correlation_matrix: "high"
+      
+    - name: "low_correlation"
+      description: "Low correlation environment"
+      correlation_matrix: "low"
+
+# ============================================================
+# RISK OPTIMIZATION
+# ============================================================
+optimization:
+  enabled: true
+  
+  # Objectives
+  objectives:
+    - name: "maximize_sharpe"
+      weight: 0.30
+    - name: "minimize_drawdown"
+      weight: 0.25
+    - name: "minimize_var"
+      weight: 0.20
+    - name: "maximize_profit"
+      weight: 0.15
+    - name: "minimize_turnover"
+      weight: 0.10
+    
+  # Constraints
+  constraints:
+    max_position_size: 0.20  # 20%
+    max_leverage: 3.0
+    min_diversification: 5  # minimum 5 assets
+    max_turnover: 0.50  # 50% per month
+    
+  # Optimization methods
+  methods:
+    - "mean_variance"
+    - "risk_parity"
+    - "equal_weight"
+    - "minimum_variance"
+    - "maximum_diversification"
+    
+  # Optimization parameters
+  parameters:
+    lookback_period: 60  # days
+    rebalancing_frequency: 30  # days
+    transaction_cost: 0.001  # 0.1%
+    risk_free_rate: 0.02  # 2%
+
+# ============================================================
+# RISK DATA
+# ============================================================
+data:
+  enabled: true
+  
+  # Data sources
+  sources:
+    - "market_data"
+    - "historical_data"
+    - "real_time_data"
+    - "fundamental_data"
+    
+  # Data retention
+  retention:
+    market_data: 90  # days
+    historical_data: 730  # days (2 years)
+    risk_metrics: 365  # days (1 year)
+    reports: 1095  # days (3 years)
+    
+  # Data quality
+  quality:
+    min_data_points: 30
+    max_missing_data: 0.05  # 5% missing
+    outlier_threshold: 3.0  # 3 standard deviations
+    data_frequency: "1m"  # 1 minute
+
+# ============================================================
+# RISK LOGGING
+# ============================================================
+logging:
+  enabled: true
+  level: "info"
+  format: "json"
+  
+  outputs:
+    - type: "file"
+      path: "/var/log/nexus/risk.log"
+      max_size: 10485760  # 10MB
+      max_files: 10
+      
+    - type: "console"
+      enabled: true
+      
+    - type: "elasticsearch"
+      enabled: true
+      host: "${ELASTICSEARCH_HOST}"
+      port: 9200
+      index: "nexus-risk"
+      
+  fields:
+    service: "risk-management"
+    environment: "production"
+    version: "2.0.0"
+    
+  # Log content
+  content:
+    - "risk_calculations"
+    - "drawdown_events"
+    - "circuit_breaker_events"
+    - "alert_events"
+    - "position_changes"
+    - "limit_violations"
+
+# ============================================================
+# END OF RISK CONFIGURATIONS
+# ============================================================
