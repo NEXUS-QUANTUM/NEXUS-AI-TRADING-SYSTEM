@@ -1,0 +1,1333 @@
+# ============================================================
+# NEXUS AI TRADING SYSTEM - Arbitrage Bot Pair Configurations
+# Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+# ============================================================
+# @version 2.0.0
+# @author NEXUS QUANTUM TEAM
+# @description Configuration complète des paires de trading pour l'arbitrage
+# ============================================================
+
+# ============================================================
+# PAIR CATEGORIES
+# ============================================================
+pair_categories:
+  major:
+    - "BTC/USDT"
+    - "ETH/USDT"
+    - "BNB/USDT"
+    - "SOL/USDT"
+    - "XRP/USDT"
+    - "ADA/USDT"
+    - "DOGE/USDT"
+    - "DOT/USDT"
+    - "AVAX/USDT"
+    - "MATIC/USDT"
+  
+  medium:
+    - "LINK/USDT"
+    - "UNI/USDT"
+    - "ATOM/USDT"
+    - "ETC/USDT"
+    - "LTC/USDT"
+    - "BCH/USDT"
+    - "NEAR/USDT"
+    - "APT/USDT"
+    - "ARB/USDT"
+    - "OP/USDT"
+    - "INJ/USDT"
+    - "SUI/USDT"
+    - "SEI/USDT"
+    - "RUNE/USDT"
+    - "MKR/USDT"
+  
+  small:
+    - "AAVE/USDT"
+    - "ALGO/USDT"
+    - "VET/USDT"
+    - "ICP/USDT"
+    - "EGLD/USDT"
+    - "FTM/USDT"
+    - "SAND/USDT"
+    - "GALA/USDT"
+    - "AXS/USDT"
+    - "MANA/USDT"
+    - "CHZ/USDT"
+    - "ZIL/USDT"
+    - "ENJ/USDT"
+    - "BAT/USDT"
+    - "OCEAN/USDT"
+    - "RNDR/USDT"
+    - "HNT/USDT"
+    - "STX/USDT"
+    - "CELO/USDT"
+    - "KAVA/USDT"
+
+  stable:
+    - "USDC/USDT"
+    - "DAI/USDT"
+    - "BUSD/USDT"
+    - "TUSD/USDT"
+    - "USDP/USDT"
+    - "GUSD/USDT"
+
+  defi:
+    - "UNI/USDT"
+    - "AAVE/USDT"
+    - "MKR/USDT"
+    - "COMP/USDT"
+    - "CRV/USDT"
+    - "SUSHI/USDT"
+    - "BAL/USDT"
+    - "LDO/USDT"
+    - "RPL/USDT"
+    - "FXS/USDT"
+
+  layer1:
+    - "BTC/USDT"
+    - "ETH/USDT"
+    - "BNB/USDT"
+    - "SOL/USDT"
+    - "ADA/USDT"
+    - "DOT/USDT"
+    - "AVAX/USDT"
+    - "ATOM/USDT"
+    - "NEAR/USDT"
+    - "APT/USDT"
+
+  layer2:
+    - "MATIC/USDT"
+    - "ARB/USDT"
+    - "OP/USDT"
+    - "INJ/USDT"
+    - "SUI/USDT"
+    - "SEI/USDT"
+
+# ============================================================
+# PAIR CONFIGURATIONS
+# ============================================================
+pairs:
+  # --- BTC/USDT ---
+  BTC/USDT:
+    enabled: true
+    base: "BTC"
+    quote: "USDT"
+    category: "major"
+    priority: 1
+    min_profit: 0.008
+    max_spread: 0.20
+    min_volume: 5000
+    max_position: 50000
+    min_order_size: 0.0001
+    max_order_size: 10
+    lot_size: 0.00001
+    quote_precision: 2
+    base_precision: 8
+    fee_multiplier: 1.0
+    volatility: 0.05
+    liquidity: 1.0
+    exchanges:
+      - "binance"
+      - "bybit"
+      - "coinbase"
+      - "kraken"
+      - "kucoin"
+      - "okx"
+      - "gateio"
+    timeframes:
+      - "1m"
+      - "5m"
+      - "15m"
+      - "1h"
+      - "4h"
+      - "1d"
+    indicators:
+      - "rsi"
+      - "macd"
+      - "bb"
+      - "ema"
+      - "sma"
+    alert_thresholds:
+      price_change: 0.02
+      volume_spike: 2.0
+      spread_warning: 0.15
+      spread_critical: 0.25
+
+  # --- ETH/USDT ---
+  ETH/USDT:
+    enabled: true
+    base: "ETH"
+    quote: "USDT"
+    category: "major"
+    priority: 2
+    min_profit: 0.010
+    max_spread: 0.25
+    min_volume: 5000
+    max_position: 30000
+    min_order_size: 0.001
+    max_order_size: 100
+    lot_size: 0.0001
+    quote_precision: 2
+    base_precision: 8
+    fee_multiplier: 1.0
+    volatility: 0.06
+    liquidity: 0.9
+    exchanges:
+      - "binance"
+      - "bybit"
+      - "coinbase"
+      - "kraken"
+      - "kucoin"
+      - "okx"
+      - "gateio"
+    timeframes:
+      - "1m"
+      - "5m"
+      - "15m"
+      - "1h"
+      - "4h"
+      - "1d"
+    indicators:
+      - "rsi"
+      - "macd"
+      - "bb"
+      - "ema"
+      - "sma"
+    alert_thresholds:
+      price_change: 0.02
+      volume_spike: 2.0
+      spread_warning: 0.20
+      spread_critical: 0.30
+
+  # --- BNB/USDT ---
+  BNB/USDT:
+    enabled: true
+    base: "BNB"
+    quote: "USDT"
+    category: "major"
+    priority: 3
+    min_profit: 0.012
+    max_spread: 0.30
+    min_volume: 3000
+    max_position: 20000
+    min_order_size: 0.001
+    max_order_size: 50
+    lot_size: 0.0001
+    quote_precision: 2
+    base_precision: 8
+    fee_multiplier: 1.0
+    volatility: 0.07
+    liquidity: 0.8
+    exchanges:
+      - "binance"
+      - "bybit"
+      - "kucoin"
+      - "okx"
+      - "gateio"
+    timeframes:
+      - "1m"
+      - "5m"
+      - "15m"
+      - "1h"
+      - "4h"
+      - "1d"
+    indicators:
+      - "rsi"
+      - "macd"
+      - "bb"
+      - "ema"
+    alert_thresholds:
+      price_change: 0.025
+      volume_spike: 2.5
+      spread_warning: 0.25
+      spread_critical: 0.35
+
+  # --- SOL/USDT ---
+  SOL/USDT:
+    enabled: true
+    base: "SOL"
+    quote: "USDT"
+    category: "major"
+    priority: 4
+    min_profit: 0.015
+    max_spread: 0.35
+    min_volume: 3000
+    max_position: 20000
+    min_order_size: 0.01
+    max_order_size: 1000
+    lot_size: 0.001
+    quote_precision: 2
+    base_precision: 8
+    fee_multiplier: 1.0
+    volatility: 0.10
+    liquidity: 0.8
+    exchanges:
+      - "binance"
+      - "bybit"
+      - "coinbase"
+      - "kraken"
+      - "kucoin"
+      - "okx"
+      - "gateio"
+    timeframes:
+      - "1m"
+      - "5m"
+      - "15m"
+      - "1h"
+      - "4h"
+      - "1d"
+    indicators:
+      - "rsi"
+      - "macd"
+      - "bb"
+      - "ema"
+      - "sma"
+    alert_thresholds:
+      price_change: 0.03
+      volume_spike: 2.5
+      spread_warning: 0.30
+      spread_critical: 0.40
+
+  # --- ADA/USDT ---
+  ADA/USDT:
+    enabled: true
+    base: "ADA"
+    quote: "USDT"
+    category: "major"
+    priority: 5
+    min_profit: 0.020
+    max_spread: 0.40
+    min_volume: 2000
+    max_position: 15000
+    min_order_size: 1
+    max_order_size: 50000
+    lot_size: 0.1
+    quote_precision: 3
+    base_precision: 8
+    fee_multiplier: 1.0
+    volatility: 0.08
+    liquidity: 0.7
+    exchanges:
+      - "binance"
+      - "bybit"
+      - "coinbase"
+      - "kraken"
+      - "kucoin"
+      - "okx"
+      - "gateio"
+    timeframes:
+      - "1m"
+      - "5m"
+      - "15m"
+      - "1h"
+      - "4h"
+      - "1d"
+    indicators:
+      - "rsi"
+      - "macd"
+      - "bb"
+      - "ema"
+    alert_thresholds:
+      price_change: 0.03
+      volume_spike: 3.0
+      spread_warning: 0.35
+      spread_critical: 0.45
+
+  # --- DOT/USDT ---
+  DOT/USDT:
+    enabled: true
+    base: "DOT"
+    quote: "USDT"
+    category: "major"
+    priority: 6
+    min_profit: 0.020
+    max_spread: 0.40
+    min_volume: 2000
+    max_position: 15000
+    min_order_size: 0.1
+    max_order_size: 5000
+    lot_size: 0.01
+    quote_precision: 3
+    base_precision: 8
+    fee_multiplier: 1.0
+    volatility: 0.09
+    liquidity: 0.7
+    exchanges:
+      - "binance"
+      - "bybit"
+      - "coinbase"
+      - "kraken"
+      - "kucoin"
+      - "okx"
+      - "gateio"
+    timeframes:
+      - "1m"
+      - "5m"
+      - "15m"
+      - "1h"
+      - "4h"
+      - "1d"
+    indicators:
+      - "rsi"
+      - "macd"
+      - "bb"
+      - "ema"
+    alert_thresholds:
+      price_change: 0.03
+      volume_spike: 3.0
+      spread_warning: 0.35
+      spread_critical: 0.45
+
+  # --- AVAX/USDT ---
+  AVAX/USDT:
+    enabled: true
+    base: "AVAX"
+    quote: "USDT"
+    category: "major"
+    priority: 7
+    min_profit: 0.020
+    max_spread: 0.40
+    min_volume: 2000
+    max_position: 15000
+    min_order_size: 0.01
+    max_order_size: 1000
+    lot_size: 0.001
+    quote_precision: 2
+    base_precision: 8
+    fee_multiplier: 1.0
+    volatility: 0.12
+    liquidity: 0.7
+    exchanges:
+      - "binance"
+      - "bybit"
+      - "coinbase"
+      - "kraken"
+      - "kucoin"
+      - "okx"
+      - "gateio"
+    timeframes:
+      - "1m"
+      - "5m"
+      - "15m"
+      - "1h"
+      - "4h"
+      - "1d"
+    indicators:
+      - "rsi"
+      - "macd"
+      - "bb"
+      - "ema"
+    alert_thresholds:
+      price_change: 0.035
+      volume_spike: 3.0
+      spread_warning: 0.35
+      spread_critical: 0.45
+
+  # --- MATIC/USDT ---
+  MATIC/USDT:
+    enabled: true
+    base: "MATIC"
+    quote: "USDT"
+    category: "major"
+    priority: 8
+    min_profit: 0.025
+    max_spread: 0.45
+    min_volume: 1500
+    max_position: 10000
+    min_order_size: 1
+    max_order_size: 100000
+    lot_size: 0.1
+    quote_precision: 3
+    base_precision: 8
+    fee_multiplier: 1.0
+    volatility: 0.11
+    liquidity: 0.6
+    exchanges:
+      - "binance"
+      - "bybit"
+      - "coinbase"
+      - "kraken"
+      - "kucoin"
+      - "okx"
+      - "gateio"
+    timeframes:
+      - "1m"
+      - "5m"
+      - "15m"
+      - "1h"
+      - "4h"
+      - "1d"
+    indicators:
+      - "rsi"
+      - "macd"
+      - "bb"
+      - "ema"
+    alert_thresholds:
+      price_change: 0.035
+      volume_spike: 3.5
+      spread_warning: 0.40
+      spread_critical: 0.50
+
+  # --- LINK/USDT ---
+  LINK/USDT:
+    enabled: true
+    base: "LINK"
+    quote: "USDT"
+    category: "medium"
+    priority: 9
+    min_profit: 0.025
+    max_spread: 0.45
+    min_volume: 1500
+    max_position: 10000
+    min_order_size: 0.1
+    max_order_size: 5000
+    lot_size: 0.01
+    quote_precision: 2
+    base_precision: 8
+    fee_multiplier: 1.0
+    volatility: 0.10
+    liquidity: 0.6
+    exchanges:
+      - "binance"
+      - "bybit"
+      - "coinbase"
+      - "kraken"
+      - "kucoin"
+      - "okx"
+      - "gateio"
+    timeframes:
+      - "1m"
+      - "5m"
+      - "15m"
+      - "1h"
+      - "4h"
+      - "1d"
+    indicators:
+      - "rsi"
+      - "macd"
+      - "bb"
+      - "ema"
+    alert_thresholds:
+      price_change: 0.035
+      volume_spike: 3.5
+      spread_warning: 0.40
+      spread_critical: 0.50
+
+  # --- XRP/USDT ---
+  XRP/USDT:
+    enabled: true
+    base: "XRP"
+    quote: "USDT"
+    category: "major"
+    priority: 10
+    min_profit: 0.025
+    max_spread: 0.45
+    min_volume: 1500
+    max_position: 10000
+    min_order_size: 1
+    max_order_size: 50000
+    lot_size: 0.1
+    quote_precision: 3
+    base_precision: 8
+    fee_multiplier: 1.0
+    volatility: 0.08
+    liquidity: 0.6
+    exchanges:
+      - "binance"
+      - "bybit"
+      - "coinbase"
+      - "kraken"
+      - "kucoin"
+      - "okx"
+      - "gateio"
+    timeframes:
+      - "1m"
+      - "5m"
+      - "15m"
+      - "1h"
+      - "4h"
+      - "1d"
+    indicators:
+      - "rsi"
+      - "macd"
+      - "bb"
+      - "ema"
+    alert_thresholds:
+      price_change: 0.03
+      volume_spike: 3.0
+      spread_warning: 0.40
+      spread_critical: 0.50
+
+  # --- DOGE/USDT ---
+  DOGE/USDT:
+    enabled: true
+    base: "DOGE"
+    quote: "USDT"
+    category: "major"
+    priority: 11
+    min_profit: 0.030
+    max_spread: 0.50
+    min_volume: 1000
+    max_position: 5000
+    min_order_size: 10
+    max_order_size: 1000000
+    lot_size: 1
+    quote_precision: 4
+    base_precision: 8
+    fee_multiplier: 1.0
+    volatility: 0.15
+    liquidity: 0.5
+    exchanges:
+      - "binance"
+      - "bybit"
+      - "coinbase"
+      - "kraken"
+      - "kucoin"
+      - "okx"
+      - "gateio"
+    timeframes:
+      - "1m"
+      - "5m"
+      - "15m"
+      - "1h"
+      - "4h"
+      - "1d"
+    indicators:
+      - "rsi"
+      - "macd"
+      - "bb"
+      - "ema"
+    alert_thresholds:
+      price_change: 0.04
+      volume_spike: 4.0
+      spread_warning: 0.45
+      spread_critical: 0.55
+
+  # --- UNI/USDT ---
+  UNI/USDT:
+    enabled: true
+    base: "UNI"
+    quote: "USDT"
+    category: "defi"
+    priority: 12
+    min_profit: 0.025
+    max_spread: 0.45
+    min_volume: 1000
+    max_position: 10000
+    min_order_size: 0.1
+    max_order_size: 5000
+    lot_size: 0.01
+    quote_precision: 2
+    base_precision: 8
+    fee_multiplier: 1.0
+    volatility: 0.12
+    liquidity: 0.5
+    exchanges:
+      - "binance"
+      - "bybit"
+      - "coinbase"
+      - "kraken"
+      - "kucoin"
+      - "okx"
+      - "gateio"
+    timeframes:
+      - "1m"
+      - "5m"
+      - "15m"
+      - "1h"
+      - "4h"
+      - "1d"
+    indicators:
+      - "rsi"
+      - "macd"
+      - "bb"
+      - "ema"
+    alert_thresholds:
+      price_change: 0.035
+      volume_spike: 3.5
+      spread_warning: 0.40
+      spread_critical: 0.50
+
+  # --- ATOM/USDT ---
+  ATOM/USDT:
+    enabled: true
+    base: "ATOM"
+    quote: "USDT"
+    category: "medium"
+    priority: 13
+    min_profit: 0.025
+    max_spread: 0.45
+    min_volume: 1000
+    max_position: 10000
+    min_order_size: 0.1
+    max_order_size: 5000
+    lot_size: 0.01
+    quote_precision: 2
+    base_precision: 8
+    fee_multiplier: 1.0
+    volatility: 0.11
+    liquidity: 0.5
+    exchanges:
+      - "binance"
+      - "bybit"
+      - "coinbase"
+      - "kraken"
+      - "kucoin"
+      - "okx"
+      - "gateio"
+    timeframes:
+      - "1m"
+      - "5m"
+      - "15m"
+      - "1h"
+      - "4h"
+      - "1d"
+    indicators:
+      - "rsi"
+      - "macd"
+      - "bb"
+      - "ema"
+    alert_thresholds:
+      price_change: 0.035
+      volume_spike: 3.5
+      spread_warning: 0.40
+      spread_critical: 0.50
+
+  # --- NEAR/USDT ---
+  NEAR/USDT:
+    enabled: true
+    base: "NEAR"
+    quote: "USDT"
+    category: "layer1"
+    priority: 14
+    min_profit: 0.025
+    max_spread: 0.45
+    min_volume: 1000
+    max_position: 10000
+    min_order_size: 0.1
+    max_order_size: 5000
+    lot_size: 0.01
+    quote_precision: 2
+    base_precision: 8
+    fee_multiplier: 1.0
+    volatility: 0.14
+    liquidity: 0.5
+    exchanges:
+      - "binance"
+      - "bybit"
+      - "kraken"
+      - "kucoin"
+      - "okx"
+      - "gateio"
+    timeframes:
+      - "1m"
+      - "5m"
+      - "15m"
+      - "1h"
+      - "4h"
+      - "1d"
+    indicators:
+      - "rsi"
+      - "macd"
+      - "bb"
+      - "ema"
+    alert_thresholds:
+      price_change: 0.04
+      volume_spike: 4.0
+      spread_warning: 0.40
+      spread_critical: 0.50
+
+  # --- ARB/USDT ---
+  ARB/USDT:
+    enabled: true
+    base: "ARB"
+    quote: "USDT"
+    category: "layer2"
+    priority: 15
+    min_profit: 0.030
+    max_spread: 0.50
+    min_volume: 1000
+    max_position: 5000
+    min_order_size: 1
+    max_order_size: 50000
+    lot_size: 0.1
+    quote_precision: 3
+    base_precision: 8
+    fee_multiplier: 1.0
+    volatility: 0.18
+    liquidity: 0.4
+    exchanges:
+      - "binance"
+      - "bybit"
+      - "kucoin"
+      - "okx"
+      - "gateio"
+    timeframes:
+      - "1m"
+      - "5m"
+      - "15m"
+      - "1h"
+      - "4h"
+      - "1d"
+    indicators:
+      - "rsi"
+      - "macd"
+      - "bb"
+      - "ema"
+    alert_thresholds:
+      price_change: 0.05
+      volume_spike: 4.0
+      spread_warning: 0.45
+      spread_critical: 0.55
+
+  # --- OP/USDT ---
+  OP/USDT:
+    enabled: true
+    base: "OP"
+    quote: "USDT"
+    category: "layer2"
+    priority: 16
+    min_profit: 0.030
+    max_spread: 0.50
+    min_volume: 1000
+    max_position: 5000
+    min_order_size: 1
+    max_order_size: 50000
+    lot_size: 0.1
+    quote_precision: 3
+    base_precision: 8
+    fee_multiplier: 1.0
+    volatility: 0.20
+    liquidity: 0.4
+    exchanges:
+      - "binance"
+      - "bybit"
+      - "kucoin"
+      - "okx"
+      - "gateio"
+    timeframes:
+      - "1m"
+      - "5m"
+      - "15m"
+      - "1h"
+      - "4h"
+      - "1d"
+    indicators:
+      - "rsi"
+      - "macd"
+      - "bb"
+      - "ema"
+    alert_thresholds:
+      price_change: 0.05
+      volume_spike: 4.0
+      spread_warning: 0.45
+      spread_critical: 0.55
+
+  # --- INJ/USDT ---
+  INJ/USDT:
+    enabled: true
+    base: "INJ"
+    quote: "USDT"
+    category: "layer2"
+    priority: 17
+    min_profit: 0.030
+    max_spread: 0.50
+    min_volume: 1000
+    max_position: 5000
+    min_order_size: 0.1
+    max_order_size: 5000
+    lot_size: 0.01
+    quote_precision: 2
+    base_precision: 8
+    fee_multiplier: 1.0
+    volatility: 0.22
+    liquidity: 0.3
+    exchanges:
+      - "binance"
+      - "bybit"
+      - "kucoin"
+      - "okx"
+      - "gateio"
+    timeframes:
+      - "1m"
+      - "5m"
+      - "15m"
+      - "1h"
+      - "4h"
+      - "1d"
+    indicators:
+      - "rsi"
+      - "macd"
+      - "bb"
+      - "ema"
+    alert_thresholds:
+      price_change: 0.05
+      volume_spike: 4.5
+      spread_warning: 0.45
+      spread_critical: 0.55
+
+  # --- SUI/USDT ---
+  SUI/USDT:
+    enabled: true
+    base: "SUI"
+    quote: "USDT"
+    category: "layer2"
+    priority: 18
+    min_profit: 0.030
+    max_spread: 0.50
+    min_volume: 1000
+    max_position: 5000
+    min_order_size: 1
+    max_order_size: 50000
+    lot_size: 0.1
+    quote_precision: 3
+    base_precision: 8
+    fee_multiplier: 1.0
+    volatility: 0.25
+    liquidity: 0.3
+    exchanges:
+      - "binance"
+      - "bybit"
+      - "kucoin"
+      - "okx"
+      - "gateio"
+    timeframes:
+      - "1m"
+      - "5m"
+      - "15m"
+      - "1h"
+      - "4h"
+      - "1d"
+    indicators:
+      - "rsi"
+      - "macd"
+      - "bb"
+      - "ema"
+    alert_thresholds:
+      price_change: 0.06
+      volume_spike: 5.0
+      spread_warning: 0.45
+      spread_critical: 0.55
+
+  # --- USDC/USDT ---
+  USDC/USDT:
+    enabled: false
+    base: "USDC"
+    quote: "USDT"
+    category: "stable"
+    priority: 100
+    min_profit: 0.001
+    max_spread: 0.05
+    min_volume: 100000
+    max_position: 100000
+    min_order_size: 10
+    max_order_size: 1000000
+    lot_size: 1
+    quote_precision: 2
+    base_precision: 2
+    fee_multiplier: 0.5
+    volatility: 0.001
+    liquidity: 1.0
+    exchanges:
+      - "binance"
+      - "bybit"
+      - "coinbase"
+      - "kraken"
+      - "kucoin"
+      - "okx"
+      - "gateio"
+    timeframes:
+      - "1m"
+      - "5m"
+      - "15m"
+      - "1h"
+    indicators:
+      - "sma"
+    alert_thresholds:
+      price_change: 0.001
+      volume_spike: 5.0
+      spread_warning: 0.03
+      spread_critical: 0.05
+
+# ============================================================
+# PAIR GROUPS FOR ARBITRAGE
+# ============================================================
+groups:
+  # --- High Profit Groups ---
+  high_profit:
+    - "BTC/USDT"
+    - "ETH/USDT"
+    - "SOL/USDT"
+    - "ADA/USDT"
+    - "DOT/USDT"
+    - "AVAX/USDT"
+    - "MATIC/USDT"
+    - "LINK/USDT"
+    - "XRP/USDT"
+    - "DOGE/USDT"
+    - "UNI/USDT"
+    - "ATOM/USDT"
+    - "NEAR/USDT"
+    - "ARB/USDT"
+    - "OP/USDT"
+    - "INJ/USDT"
+    - "SUI/USDT"
+
+  # --- Stable Pairs ---
+  stable_pairs:
+    - "USDC/USDT"
+    - "DAI/USDT"
+    - "BUSD/USDT"
+    - "TUSD/USDT"
+
+  # --- DeFi Pairs ---
+  defi_pairs:
+    - "UNI/USDT"
+    - "AAVE/USDT"
+    - "MKR/USDT"
+    - "COMP/USDT"
+    - "CRV/USDT"
+    - "SUSHI/USDT"
+    - "BAL/USDT"
+    - "LDO/USDT"
+
+  # --- Layer1 Pairs ---
+  layer1_pairs:
+    - "BTC/USDT"
+    - "ETH/USDT"
+    - "BNB/USDT"
+    - "SOL/USDT"
+    - "ADA/USDT"
+    - "DOT/USDT"
+    - "AVAX/USDT"
+    - "ATOM/USDT"
+    - "NEAR/USDT"
+
+  # --- Layer2 Pairs ---
+  layer2_pairs:
+    - "MATIC/USDT"
+    - "ARB/USDT"
+    - "OP/USDT"
+    - "INJ/USDT"
+    - "SUI/USDT"
+
+# ============================================================
+# TRIANGULAR ARBITRAGE CYCLES
+# ============================================================
+triangular_cycles:
+  # --- BTC-ETH-USDT Cycle ---
+  BTC_ETH_USDT:
+    enabled: true
+    name: "BTC-ETH-USDT"
+    pairs:
+      - "BTC/USDT"
+      - "ETH/BTC"
+      - "ETH/USDT"
+    min_profit: 0.008
+    max_position: 30000
+    exchanges:
+      - "binance"
+      - "bybit"
+      - "kucoin"
+      - "okx"
+
+  # --- SOL-BTC-USDT Cycle ---
+  SOL_BTC_USDT:
+    enabled: true
+    name: "SOL-BTC-USDT"
+    pairs:
+      - "SOL/USDT"
+      - "BTC/SOL"
+      - "BTC/USDT"
+    min_profit: 0.010
+    max_position: 20000
+    exchanges:
+      - "binance"
+      - "bybit"
+      - "kucoin"
+      - "okx"
+
+  # --- ADA-BTC-USDT Cycle ---
+  ADA_BTC_USDT:
+    enabled: true
+    name: "ADA-BTC-USDT"
+    pairs:
+      - "ADA/USDT"
+      - "BTC/ADA"
+      - "BTC/USDT"
+    min_profit: 0.012
+    max_position: 15000
+    exchanges:
+      - "binance"
+      - "bybit"
+      - "kucoin"
+      - "okx"
+
+  # --- DOT-ETH-USDT Cycle ---
+  DOT_ETH_USDT:
+    enabled: true
+    name: "DOT-ETH-USDT"
+    pairs:
+      - "DOT/USDT"
+      - "ETH/DOT"
+      - "ETH/USDT"
+    min_profit: 0.012
+    max_position: 15000
+    exchanges:
+      - "binance"
+      - "bybit"
+      - "kucoin"
+      - "okx"
+
+  # --- AVAX-SOL-USDT Cycle ---
+  AVAX_SOL_USDT:
+    enabled: true
+    name: "AVAX-SOL-USDT"
+    pairs:
+      - "AVAX/USDT"
+      - "SOL/AVAX"
+      - "SOL/USDT"
+    min_profit: 0.015
+    max_position: 10000
+    exchanges:
+      - "binance"
+      - "bybit"
+      - "kucoin"
+      - "okx"
+
+  # --- MATIC-ETH-USDT Cycle ---
+  MATIC_ETH_USDT:
+    enabled: true
+    name: "MATIC-ETH-USDT"
+    pairs:
+      - "MATIC/USDT"
+      - "ETH/MATIC"
+      - "ETH/USDT"
+    min_profit: 0.015
+    max_position: 10000
+    exchanges:
+      - "binance"
+      - "bybit"
+      - "kucoin"
+      - "okx"
+
+  # --- LINK-ETH-USDT Cycle ---
+  LINK_ETH_USDT:
+    enabled: true
+    name: "LINK-ETH-USDT"
+    pairs:
+      - "LINK/USDT"
+      - "ETH/LINK"
+      - "ETH/USDT"
+    min_profit: 0.015
+    max_position: 10000
+    exchanges:
+      - "binance"
+      - "bybit"
+      - "kucoin"
+      - "okx"
+
+  # --- XRP-BTC-USDT Cycle ---
+  XRP_BTC_USDT:
+    enabled: true
+    name: "XRP-BTC-USDT"
+    pairs:
+      - "XRP/USDT"
+      - "BTC/XRP"
+      - "BTC/USDT"
+    min_profit: 0.015
+    max_position: 10000
+    exchanges:
+      - "binance"
+      - "bybit"
+      - "kucoin"
+      - "okx"
+
+  # --- DOGE-BTC-USDT Cycle ---
+  DOGE_BTC_USDT:
+    enabled: true
+    name: "DOGE-BTC-USDT"
+    pairs:
+      - "DOGE/USDT"
+      - "BTC/DOGE"
+      - "BTC/USDT"
+    min_profit: 0.018
+    max_position: 5000
+    exchanges:
+      - "binance"
+      - "bybit"
+      - "kucoin"
+      - "okx"
+
+  # --- UNI-ETH-USDT Cycle ---
+  UNI_ETH_USDT:
+    enabled: true
+    name: "UNI-ETH-USDT"
+    pairs:
+      - "UNI/USDT"
+      - "ETH/UNI"
+      - "ETH/USDT"
+    min_profit: 0.015
+    max_position: 10000
+    exchanges:
+      - "binance"
+      - "bybit"
+      - "kucoin"
+      - "okx"
+
+# ============================================================
+# STATISTICAL ARBITRAGE PAIRS
+# ============================================================
+statistical_pairs:
+  # --- BTC-ETH ---
+  BTC_ETH:
+    enabled: true
+    pair1: "BTC/USDT"
+    pair2: "ETH/USDT"
+    hedge_ratio: 0.5
+    min_profit: 0.010
+    max_position: 20000
+    lookback: 100
+    cointegration_confidence: 0.95
+    z_score_threshold: 2.0
+    half_life: 20
+
+  # --- SOL-ADA ---
+  SOL_ADA:
+    enabled: true
+    pair1: "SOL/USDT"
+    pair2: "ADA/USDT"
+    hedge_ratio: 0.8
+    min_profit: 0.012
+    max_position: 15000
+    lookback: 100
+    cointegration_confidence: 0.90
+    z_score_threshold: 2.0
+    half_life: 18
+
+  # --- DOT-AVAX ---
+  DOT_AVAX:
+    enabled: true
+    pair1: "DOT/USDT"
+    pair2: "AVAX/USDT"
+    hedge_ratio: 0.7
+    min_profit: 0.012
+    max_position: 15000
+    lookback: 100
+    cointegration_confidence: 0.90
+    z_score_threshold: 2.0
+    half_life: 18
+
+  # --- MATIC-LINK ---
+  MATIC_LINK:
+    enabled: true
+    pair1: "MATIC/USDT"
+    pair2: "LINK/USDT"
+    hedge_ratio: 0.6
+    min_profit: 0.015
+    max_position: 10000
+    lookback: 80
+    cointegration_confidence: 0.85
+    z_score_threshold: 2.0
+    half_life: 15
+
+  # --- XRP-DOGE ---
+  XRP_DOGE:
+    enabled: true
+    pair1: "XRP/USDT"
+    pair2: "DOGE/USDT"
+    hedge_ratio: 0.5
+    min_profit: 0.015
+    max_position: 10000
+    lookback: 80
+    cointegration_confidence: 0.85
+    z_score_threshold: 2.0
+    half_life: 15
+
+  # --- UNI-AAVE ---
+  UNI_AAVE:
+    enabled: true
+    pair1: "UNI/USDT"
+    pair2: "AAVE/USDT"
+    hedge_ratio: 0.6
+    min_profit: 0.015
+    max_position: 10000
+    lookback: 80
+    cointegration_confidence: 0.85
+    z_score_threshold: 2.0
+    half_life: 15
+
+  # --- ATOM-NEAR ---
+  ATOM_NEAR:
+    enabled: true
+    pair1: "ATOM/USDT"
+    pair2: "NEAR/USDT"
+    hedge_ratio: 0.5
+    min_profit: 0.015
+    max_position: 10000
+    lookback: 80
+    cointegration_confidence: 0.85
+    z_score_threshold: 2.0
+    half_life: 15
+
+  # --- ARB-OP ---
+  ARB_OP:
+    enabled: true
+    pair1: "ARB/USDT"
+    pair2: "OP/USDT"
+    hedge_ratio: 0.5
+    min_profit: 0.018
+    max_position: 5000
+    lookback: 60
+    cointegration_confidence: 0.80
+    z_score_threshold: 2.0
+    half_life: 12
+
+  # --- INJ-SUI ---
+  INJ_SUI:
+    enabled: true
+    pair1: "INJ/USDT"
+    pair2: "SUI/USDT"
+    hedge_ratio: 0.5
+    min_profit: 0.020
+    max_position: 5000
+    lookback: 60
+    cointegration_confidence: 0.80
+    z_score_threshold: 2.0
+    half_life: 12
+
+# ============================================================
+# PAIR MONITORING
+# ============================================================
+monitoring:
+  enabled: true
+  check_interval: 5  # seconds
+  
+  thresholds:
+    min_volume: 1000
+    max_spread: 0.20
+    min_liquidity: 5000
+    
+  alerts:
+    volume_drop:
+      enabled: true
+      threshold: 0.5  # 50% drop
+      duration: 60  # seconds
+      
+    spread_widening:
+      enabled: true
+      threshold: 0.15
+      duration: 30  # seconds
+      
+    price_divergence:
+      enabled: true
+      threshold: 0.02
+      duration: 30  # seconds
+      
+    liquidity_drop:
+      enabled: true
+      threshold: 0.3
+      duration: 60  # seconds
+
+# ============================================================
+# END OF PAIR CONFIGURATIONS
+# ============================================================
