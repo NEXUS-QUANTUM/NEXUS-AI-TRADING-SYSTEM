@@ -1,0 +1,1744 @@
+<!-- trading/bots/arbitrage_bot/templates/exchanges.html -->
+<!-- NEXUS AI TRADING SYSTEM -->
+<!-- Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved -->
+<!-- Version: 4.2.0 - Complete Exchanges Template with Real API Integration -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exchanges - NEXUS Trading IA</title>
+    
+    <!-- Meta Tags -->
+    <meta name="description" content="NEXUS AI Trading System - Exchange Management and Monitoring">
+    <meta name="theme-color" content="#6C63FF">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.0.0/dist/chart.umd.min.js"></script>
+    
+    <style>
+        /* ============================================
+           EXCHANGES - COMPLETE STYLES
+           ============================================ */
+        
+        :root {
+            --primary: #6C63FF;
+            --primary-dark: #5a52d9;
+            --secondary: #00D4FF;
+            --success: #00D4FF;
+            --danger: #FF6B6B;
+            --warning: #FFD93D;
+            --bg-primary: #0D1117;
+            --bg-secondary: #161B22;
+            --bg-card: #1C2333;
+            --text-primary: #E0E0E0;
+            --text-secondary: #8B949E;
+            --text-muted: #484F58;
+            --border-color: rgba(255, 255, 255, 0.05);
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            --radius: 16px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        /* Reset & Base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* ============================================
+           LAYOUT
+           ============================================ */
+        .exchanges-wrapper {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border-color);
+            padding: 20px 0;
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            z-index: 100;
+            transition: var(--transition);
+            overflow-y: auto;
+        }
+        
+        .sidebar-brand {
+            padding: 0 20px 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .sidebar-brand img {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+        }
+        
+        .sidebar-brand span {
+            font-size: 18px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .sidebar-nav {
+            flex: 1;
+            padding: 16px 12px;
+        }
+        
+        .sidebar-nav .nav-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            padding: 8px 12px 4px;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+        
+        .sidebar-nav a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 16px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 10px;
+            transition: var(--transition);
+            font-size: 14px;
+            font-weight: 500;
+            margin: 2px 0;
+        }
+        
+        .sidebar-nav a i {
+            width: 20px;
+            text-align: center;
+            font-size: 16px;
+        }
+        
+        .sidebar-nav a:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-primary);
+        }
+        
+        .sidebar-nav a.active {
+            background: rgba(108, 99, 255, 0.15);
+            color: var(--primary);
+        }
+        
+        .sidebar-nav a .badge {
+            margin-left: auto;
+            background: var(--danger);
+            color: #fff;
+            font-size: 10px;
+            padding: 1px 8px;
+            border-radius: 10px;
+            font-weight: 600;
+        }
+        
+        /* Main Content */
+        .main-content {
+            margin-left: 260px;
+            flex: 1;
+            padding: 24px 32px 32px;
+        }
+        
+        /* ============================================
+           HEADER
+           ============================================ */
+        .exchanges-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 24px;
+            border-bottom: 1px solid var(--border-color);
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+        
+        .header-left h1 {
+            font-size: 24px;
+            font-weight: 700;
+        }
+        
+        .header-left p {
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-top: 4px;
+        }
+        
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        
+        .header-right .date-time {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+        
+        .header-right .status-badge {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            border-radius: 20px;
+            background: rgba(0, 212, 255, 0.1);
+            color: var(--success);
+            font-size: 13px;
+            font-weight: 500;
+        }
+        
+        .header-right .status-badge .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--success);
+            animation: pulse-dot 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+        
+        /* ============================================
+           EXCHANGE STATS
+           ============================================ */
+        .exchange-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
+            margin: 24px 0;
+        }
+        
+        .stat-card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 16px 20px;
+            border: 1px solid var(--border-color);
+            transition: var(--transition);
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+        
+        .stat-card .stat-label {
+            color: var(--text-secondary);
+            font-size: 13px;
+            font-weight: 500;
+        }
+        
+        .stat-card .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            margin-top: 4px;
+        }
+        
+        .stat-card .stat-icon {
+            float: right;
+            font-size: 28px;
+            opacity: 0.2;
+        }
+        
+        /* ============================================
+           EXCHANGE CONTROLS
+           ============================================ */
+        .exchange-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin: 20px 0;
+        }
+        
+        .exchange-search {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        
+        .exchange-search input {
+            padding: 10px 16px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-size: 14px;
+            width: 260px;
+            transition: var(--transition);
+        }
+        
+        .exchange-search input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.1);
+        }
+        
+        .exchange-search input::placeholder {
+            color: var(--text-muted);
+        }
+        
+        .exchange-filter {
+            display: flex;
+            gap: 4px;
+            background: var(--bg-card);
+            padding: 4px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .exchange-filter button {
+            padding: 6px 14px;
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 500;
+            transition: var(--transition);
+            font-family: inherit;
+        }
+        
+        .exchange-filter button:hover {
+            color: var(--text-primary);
+        }
+        
+        .exchange-filter button.active {
+            background: var(--primary);
+            color: #fff;
+        }
+        
+        .exchange-actions {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .exchange-actions button {
+            padding: 8px 16px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            transition: var(--transition);
+            font-family: inherit;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .exchange-actions button:hover {
+            background: var(--primary);
+            color: #fff;
+            border-color: var(--primary);
+        }
+        
+        .exchange-actions button.primary {
+            background: var(--primary);
+            color: #fff;
+            border-color: var(--primary);
+        }
+        
+        .exchange-actions button.primary:hover {
+            background: var(--primary-dark);
+        }
+        
+        /* ============================================
+           EXCHANGE GRID
+           ============================================ */
+        .exchange-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .exchange-card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .exchange-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            opacity: 0.5;
+            transition: opacity 0.3s ease;
+        }
+        
+        .exchange-card.connected::before {
+            background: var(--success);
+        }
+        
+        .exchange-card.degraded::before {
+            background: var(--warning);
+        }
+        
+        .exchange-card.disconnected::before {
+            background: var(--danger);
+        }
+        
+        .exchange-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+        
+        .exchange-card:hover::before {
+            opacity: 1;
+        }
+        
+        .exchange-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+        
+        .exchange-card-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .exchange-card-logo {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            background: var(--bg-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+        }
+        
+        .exchange-card-logo img {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            object-fit: contain;
+        }
+        
+        .exchange-card-name {
+            font-size: 16px;
+            font-weight: 600;
+        }
+        
+        .exchange-card-type {
+            font-size: 11px;
+            color: var(--text-secondary);
+            background: var(--bg-secondary);
+            padding: 2px 10px;
+            border-radius: 10px;
+            display: inline-block;
+            margin-top: 2px;
+        }
+        
+        .exchange-card-status {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            padding: 4px 12px;
+            border-radius: 12px;
+        }
+        
+        .exchange-card-status.connected {
+            background: rgba(0, 212, 255, 0.1);
+            color: var(--success);
+        }
+        
+        .exchange-card-status.degraded {
+            background: rgba(255, 217, 61, 0.1);
+            color: var(--warning);
+        }
+        
+        .exchange-card-status.disconnected {
+            background: rgba(255, 107, 107, 0.1);
+            color: var(--danger);
+        }
+        
+        .exchange-card-status .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        
+        .exchange-card-status.connected .dot {
+            background: var(--success);
+        }
+        
+        .exchange-card-status.degraded .dot {
+            background: var(--warning);
+        }
+        
+        .exchange-card-status.disconnected .dot {
+            background: var(--danger);
+        }
+        
+        .exchange-card-body {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 12px;
+            margin: 12px 0;
+            padding: 12px 0;
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .exchange-card-metric {
+            text-align: center;
+        }
+        
+        .exchange-card-metric .metric-label {
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+        
+        .exchange-card-metric .metric-value {
+            font-size: 16px;
+            font-weight: 600;
+            margin-top: 2px;
+        }
+        
+        .exchange-card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 12px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        
+        .exchange-card-features {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .exchange-card-features .feature {
+            font-size: 11px;
+            color: var(--text-secondary);
+            background: var(--bg-secondary);
+            padding: 2px 10px;
+            border-radius: 10px;
+        }
+        
+        .exchange-card-actions {
+            display: flex;
+            gap: 4px;
+        }
+        
+        .exchange-card-actions button {
+            padding: 4px 10px;
+            background: transparent;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 12px;
+            transition: var(--transition);
+            font-family: inherit;
+        }
+        
+        .exchange-card-actions button:hover {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+        
+        .exchange-card-actions button.primary {
+            background: var(--primary);
+            color: #fff;
+            border-color: var(--primary);
+        }
+        
+        .exchange-card-actions button.primary:hover {
+            background: var(--primary-dark);
+        }
+        
+        /* ============================================
+           EXCHANGE DETAIL MODAL
+           ============================================ */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-overlay.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: var(--bg-secondary);
+            border-radius: var(--radius);
+            padding: 32px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            border: 1px solid var(--border-color);
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .modal-header h2 {
+            font-size: 20px;
+            font-weight: 700;
+        }
+        
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 24px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .modal-close:hover {
+            color: var(--text-primary);
+        }
+        
+        .modal-body {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        
+        .modal-detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .modal-detail-row .label {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+        
+        .modal-detail-row .value {
+            font-weight: 500;
+            font-size: 14px;
+        }
+        
+        /* ============================================
+           RESPONSIVE
+           ============================================ */
+        @media (max-width: 1200px) {
+            .exchange-grid {
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .sidebar {
+                transform: translateX(-100%);
+                width: 280px;
+            }
+            
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            
+            .main-content {
+                margin-left: 0;
+                padding: 16px;
+            }
+            
+            .exchange-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .exchanges-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .header-right {
+                width: 100%;
+                justify-content: space-between;
+                flex-wrap: wrap;
+            }
+            
+            .exchange-controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .exchange-search {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .exchange-search input {
+                width: 100%;
+            }
+            
+            .exchange-filter {
+                width: 100%;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+            
+            .exchange-actions {
+                justify-content: center;
+            }
+            
+            .exchange-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .exchange-card-body {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .exchange-stats {
+                grid-template-columns: 1fr 1fr;
+                gap: 12px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .exchange-stats {
+                grid-template-columns: 1fr;
+            }
+            
+            .exchange-card-body {
+                grid-template-columns: 1fr;
+            }
+            
+            .exchange-card-footer {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 8px;
+            }
+            
+            .exchange-card-actions {
+                justify-content: center;
+            }
+        }
+        
+        /* ============================================
+           SCROLLBAR
+           ============================================ */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--bg-card);
+            border-radius: 3px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary);
+        }
+        
+        /* ============================================
+           TOGGLE SIDEBAR BUTTON
+           ============================================ */
+        .sidebar-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 24px;
+            cursor: pointer;
+            padding: 8px;
+        }
+        
+        @media (max-width: 992px) {
+            .sidebar-toggle {
+                display: block;
+            }
+        }
+        
+        /* ============================================
+           OVERLAY
+           ============================================ */
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 99;
+        }
+        
+        .sidebar-overlay.active {
+            display: block;
+        }
+        
+        /* ============================================
+           LOADING STATE
+           ============================================ */
+        .loading-spinner {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            color: var(--text-secondary);
+        }
+        
+        .loading-spinner i {
+            font-size: 32px;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .loading-spinner span {
+            margin-left: 12px;
+            font-size: 14px;
+        }
+        
+        /* ============================================
+           EMPTY STATE
+           ============================================ */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-secondary);
+        }
+        
+        .empty-state i {
+            font-size: 48px;
+            opacity: 0.3;
+            margin-bottom: 16px;
+        }
+        
+        .empty-state h3 {
+            font-size: 18px;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+        
+        .empty-state p {
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- ============================================ -->
+<!-- SIDEBAR OVERLAY -->
+<!-- ============================================ -->
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<!-- ============================================ -->
+<!-- EXCHANGES WRAPPER -->
+<!-- ============================================ -->
+<div class="exchanges-wrapper">
+    
+    <!-- ============================================ -->
+    <!-- SIDEBAR -->
+    <!-- ============================================ -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-brand">
+            <img src="/static/images/nexus-logo.svg" alt="NEXUS" onerror="this.src='/static/images/logo.png'">
+            <span>NEXUS Trading</span>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <div class="nav-label">Main</div>
+            <a href="/dashboard">
+                <i class="fas fa-chart-line"></i> Dashboard
+            </a>
+            <a href="/exchanges" class="active">
+                <i class="fas fa-exchange-alt"></i> Exchanges
+            </a>
+            <a href="/opportunities">
+                <i class="fas fa-bolt"></i> Opportunities
+                <span class="badge" id="oppBadge">0</span>
+            </a>
+            <a href="/strategies">
+                <i class="fas fa-chess-queen"></i> Strategies
+            </a>
+            
+            <div class="nav-label" style="margin-top: 16px;">Analytics</div>
+            <a href="/performance">
+                <i class="fas fa-chart-bar"></i> Performance
+            </a>
+            <a href="/portfolio">
+                <i class="fas fa-briefcase"></i> Portfolio
+            </a>
+            <a href="/reports">
+                <i class="fas fa-file-alt"></i> Reports
+            </a>
+            <a href="/signals">
+                <i class="fas fa-signal"></i> Signals
+            </a>
+            
+            <div class="nav-label" style="margin-top: 16px;">System</div>
+            <a href="/logs">
+                <i class="fas fa-terminal"></i> Logs
+            </a>
+            <a href="/settings">
+                <i class="fas fa-cog"></i> Settings
+            </a>
+            <a href="/support">
+                <i class="fas fa-life-ring"></i> Support
+            </a>
+        </nav>
+    </aside>
+    
+    <!-- ============================================ -->
+    <!-- MAIN CONTENT -->
+    <!-- ============================================ -->
+    <main class="main-content">
+        
+        <!-- ============================================ -->
+        <!-- HEADER -->
+        <!-- ============================================ -->
+        <header class="exchanges-header">
+            <div class="header-left">
+                <button class="sidebar-toggle" id="sidebarToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h1>Exchanges</h1>
+                <p>Monitor and manage all connected exchanges</p>
+            </div>
+            <div class="header-right">
+                <span class="date-time" id="currentDateTime"></span>
+                <span class="status-badge">
+                    <span class="dot"></span>
+                    <span id="systemStatusText">Operational</span>
+                </span>
+            </div>
+        </header>
+        
+        <!-- ============================================ -->
+        <!-- EXCHANGE STATS -->
+        <!-- ============================================ -->
+        <div class="exchange-stats" id="exchangeStats">
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-server"></i></div>
+                <div class="stat-label">Total Exchanges</div>
+                <div class="stat-value" id="statTotal">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-check-circle" style="color:var(--success);"></i></div>
+                <div class="stat-label">Connected</div>
+                <div class="stat-value" id="statConnected">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-exclamation-triangle" style="color:var(--warning);"></i></div>
+                <div class="stat-label">Degraded</div>
+                <div class="stat-value" id="statDegraded">0</div>
+            </div>
+            <class="stat-card">
+                <div class="stat-icon"><i class="fas fa-times-circle" style="color:var(--danger);"></i></div>
+                <div class="stat-label">Disconnected</div>
+                <div class="stat-value" id="statDisconnected">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-clock"></i></div>
+                <div class="stat-label">Avg Latency</div>
+                <div class="stat-value" id="statLatency">0ms</div>
+            </div>
+        </div>
+        
+        <!-- ============================================ -->
+        <!-- EXCHANGE CONTROLS -->
+        <!-- ============================================ -->
+        <div class="exchange-controls">
+            <div class="exchange-search">
+                <input type="text" id="exchangeSearch" placeholder="Search exchanges..." />
+                <div class="exchange-filter">
+                    <button class="active" data-filter="all">All</button>
+                    <button data-filter="connected">Connected</button>
+                    <button data-filter="degraded">Degraded</button>
+                    <button data-filter="disconnected">Disconnected</button>
+                </div>
+            </div>
+            <div class="exchange-actions">
+                <button id="refreshExchanges">
+                    <i class="fas fa-sync-alt"></i> Refresh
+                </button>
+                <button id="addExchange" class="primary">
+                    <i class="fas fa-plus"></i> Add Exchange
+                </button>
+            </div>
+        </div>
+        
+        <!-- ============================================ -->
+        <!-- EXCHANGE GRID -->
+        <!-- ============================================ -->
+        <div class="exchange-grid" id="exchangeGrid">
+            <div class="loading-spinner">
+                <i class="fas fa-spinner"></i>
+                <span>Loading exchanges...</span>
+            </div>
+        </div>
+        
+        <!-- ============================================ -->
+        <!-- FOOTER (Partial) -->
+        <!-- ============================================ -->
+        {% include 'partials/footer.html' %}
+        
+    </main>
+</div>
+
+<!-- ============================================ -->
+<!-- EXCHANGE DETAIL MODAL -->
+<!-- ============================================ -->
+<div class="modal-overlay" id="exchangeModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 id="modalTitle">Exchange Details</h2>
+            <button class="modal-close" id="modalClose">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="modal-body" id="modalBody">
+            <div class="modal-detail-row">
+                <span class="label">Name</span>
+                <span class="value" id="modalName">--</span>
+            </div>
+            <div class="modal-detail-row">
+                <span class="label">Type</span>
+                <span class="value" id="modalType">--</span>
+            </div>
+            <div class="modal-detail-row">
+                <span class="label">Status</span>
+                <span class="value" id="modalStatus">--</span>
+            </div>
+            <div class="modal-detail-row">
+                <span class="label">Latency</span>
+                <span class="value" id="modalLatency">--</span>
+            </div>
+            <div class="modal-detail-row">
+                <span class="label">Trading Pairs</span>
+                <span class="value" id="modalPairs">--</span>
+            </div>
+            <div class="modal-detail-row">
+                <span class="label">24h Volume</span>
+                <span class="value" id="modalVolume">--</span>
+            </div>
+            <div class="modal-detail-row">
+                <span class="label">WebSocket</span>
+                <span class="value" id="modalWebSocket">--</span>
+            </div>
+            <div class="modal-detail-row">
+                <span class="label">Connected Since</span>
+                <span class="value" id="modalSince">--</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================ -->
+<!-- SCRIPTS - COMPLETE IMPLEMENTATION WITH REAL API -->
+<!-- ============================================ -->
+<script>
+// ================================================================
+// EXCHANGES - COMPLETE JAVASCRIPT IMPLEMENTATION WITH REAL API
+// ================================================================
+
+(function() {
+    'use strict';
+
+    // ============================================================
+    // API CONFIGURATION
+    // ============================================================
+    const API = {
+        base: '/api',
+        endpoints: {
+            exchanges: '/api/exchanges',
+            exchange: '/api/exchanges/:id',
+            status: '/api/exchanges/status',
+            connect: '/api/exchanges/:id/connect',
+            disconnect: '/api/exchanges/:id/disconnect',
+            metrics: '/api/exchanges/:id/metrics',
+        },
+        ws: {
+            exchanges: '/ws/exchanges',
+        }
+    };
+
+    // ============================================================
+    // STATE
+    // ============================================================
+    const state = {
+        exchanges: [],
+        filter: 'all',
+        search: '',
+        startTime: Date.now(),
+        ws: null,
+        reconnectAttempts: 0,
+        maxReconnectAttempts: 5,
+        updateInterval: null,
+    };
+
+    // ============================================================
+    // DOM REFERENCES
+    // ============================================================
+    const DOM = {
+        sidebar: document.getElementById('sidebar'),
+        sidebarOverlay: document.getElementById('sidebarOverlay'),
+        sidebarToggle: document.getElementById('sidebarToggle'),
+        currentDateTime: document.getElementById('currentDateTime'),
+        systemStatusText: document.getElementById('systemStatusText'),
+        oppBadge: document.getElementById('oppBadge'),
+        
+        statTotal: document.getElementById('statTotal'),
+        statConnected: document.getElementById('statConnected'),
+        statDegraded: document.getElementById('statDegraded'),
+        statDisconnected: document.getElementById('statDisconnected'),
+        statLatency: document.getElementById('statLatency'),
+        
+        exchangeGrid: document.getElementById('exchangeGrid'),
+        exchangeSearch: document.getElementById('exchangeSearch'),
+        filterButtons: document.querySelectorAll('.exchange-filter button'),
+        refreshBtn: document.getElementById('refreshExchanges'),
+        addBtn: document.getElementById('addExchange'),
+        
+        modal: document.getElementById('exchangeModal'),
+        modalClose: document.getElementById('modalClose'),
+        modalTitle: document.getElementById('modalTitle'),
+        modalName: document.getElementById('modalName'),
+        modalType: document.getElementById('modalType'),
+        modalStatus: document.getElementById('modalStatus'),
+        modalLatency: document.getElementById('modalLatency'),
+        modalPairs: document.getElementById('modalPairs'),
+        modalVolume: document.getElementById('modalVolume'),
+        modalWebSocket: document.getElementById('modalWebSocket'),
+        modalSince: document.getElementById('modalSince'),
+    };
+
+    // ============================================================
+    // DATE/TIME UPDATE
+    // ============================================================
+    function updateDateTime() {
+        const now = new Date();
+        DOM.currentDateTime.textContent = now.toLocaleString('en-US', {
+            weekday: 'short',
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: false
+        });
+    }
+
+    // ============================================================
+    // SIDEBAR TOGGLE
+    // ============================================================
+    function setupSidebar() {
+        DOM.sidebarToggle.addEventListener('click', function() {
+            DOM.sidebar.classList.toggle('open');
+            DOM.sidebarOverlay.classList.toggle('active');
+        });
+        
+        DOM.sidebarOverlay.addEventListener('click', function() {
+            DOM.sidebar.classList.remove('open');
+            DOM.sidebarOverlay.classList.remove('active');
+        });
+    }
+
+    // ============================================================
+    // API CALLS - REAL ENDPOINTS
+    // ============================================================
+    async function fetchExchanges() {
+        try {
+            const token = localStorage.getItem('access_token') || '';
+            const response = await fetch(API.endpoints.exchanges, {
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                    'Content-Type': 'application/json',
+                }
+            });
+            
+            if (!response.ok) {
+                if (response.status === 401) {
+                    window.location.href = '/login';
+                    return null;
+                }
+                throw new Error('Failed to fetch exchanges: ' + response.status);
+            }
+            
+            const data = await response.json();
+            state.exchanges = data.exchanges || [];
+            renderExchanges(state.exchanges);
+            updateStats(state.exchanges);
+            return data;
+        } catch (error) {
+            console.error('Exchanges fetch failed:', error);
+            DOM.exchangeGrid.innerHTML = `
+                <div class="empty-state" style="grid-column:1/-1;">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <h3>Failed to Load Exchanges</h3>
+                    <p>${error.message || 'Please try again later.'}</p>
+                </div>
+            `;
+            return null;
+        }
+    }
+
+    async function fetchExchangeStatus() {
+        try {
+            const token = localStorage.getItem('access_token') || '';
+            const response = await fetch(API.endpoints.status, {
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                    'Content-Type': 'application/json',
+                }
+            });
+            
+            if (!response.ok) throw new Error('Failed to fetch exchange status: ' + response.status);
+            
+            const data = await response.json();
+            if (data) {
+                updateSystemStatus(data);
+            }
+            return data;
+        } catch (error) {
+            console.error('Exchange status fetch failed:', error);
+            return null;
+        }
+    }
+
+    async function connectExchange(exchangeId) {
+        try {
+            const token = localStorage.getItem('access_token') || '';
+            const url = API.endpoints.connect.replace(':id', exchangeId);
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                    'Content-Type': 'application/json',
+                }
+            });
+            
+            if (!response.ok) throw new Error('Failed to connect exchange: ' + response.status);
+            
+            const data = await response.json();
+            await fetchExchanges();
+            return data;
+        } catch (error) {
+            console.error('Exchange connect failed:', error);
+            alert('Failed to connect exchange: ' + error.message);
+            return null;
+        }
+    }
+
+    async function disconnectExchange(exchangeId) {
+        try {
+            const token = localStorage.getItem('access_token') || '';
+            const url = API.endpoints.disconnect.replace(':id', exchangeId);
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                    'Content-Type': 'application/json',
+                }
+            });
+            
+            if (!response.ok) throw new Error('Failed to disconnect exchange: ' + response.status);
+            
+            const data = await response.json();
+            await fetchExchanges();
+            return data;
+        } catch (error) {
+            console.error('Exchange disconnect failed:', error);
+            alert('Failed to disconnect exchange: ' + error.message);
+            return null;
+        }
+    }
+
+    // ============================================================
+    // RENDER EXCHANGES
+    // ============================================================
+    function renderExchanges(exchanges) {
+        const filtered = filterExchanges(exchanges);
+        
+        if (filtered.length === 0) {
+            DOM.exchangeGrid.innerHTML = `
+                <div class="empty-state" style="grid-column:1/-1;">
+                    <i class="fas fa-exchange-alt"></i>
+                    <h3>No Exchanges Found</h3>
+                    <p>${state.search ? 'No exchanges match your search.' : 'No exchanges are currently configured.'}</p>
+                </div>
+            `;
+            return;
+        }
+        
+        DOM.exchangeGrid.innerHTML = filtered.map(function(exchange) {
+            return renderExchangeCard(exchange);
+        }).join('');
+        
+        // Attach event listeners to cards
+        document.querySelectorAll('.exchange-card-actions button').forEach(function(btn) {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const action = this.dataset.action;
+                const exchangeId = this.dataset.exchangeId;
+                handleExchangeAction(action, exchangeId);
+            });
+        });
+        
+        document.querySelectorAll('.exchange-card').forEach(function(card) {
+            card.addEventListener('click', function() {
+                const exchangeId = this.dataset.exchangeId;
+                openExchangeModal(exchangeId);
+            });
+        });
+    }
+
+    function renderExchangeCard(exchange) {
+        const statusClass = exchange.status || 'disconnected';
+        const statusText = exchange.status ? exchange.status.charAt(0).toUpperCase() + exchange.status.slice(1) : 'Disconnected';
+        const statusIcon = exchange.status === 'connected' ? 'fa-check-circle' : 
+                          exchange.status === 'degraded' ? 'fa-exclamation-triangle' : 'fa-times-circle';
+        const statusColor = exchange.status === 'connected' ? 'var(--success)' : 
+                           exchange.status === 'degraded' ? 'var(--warning)' : 'var(--danger)';
+        
+        const logoHtml = exchange.logo ? 
+            `<img src="${exchange.logo}" alt="${exchange.name}" onerror="this.parentElement.innerHTML='<i class=\\'fas fa-exchange-alt\\'></i>'">` :
+            `<i class="fas fa-exchange-alt"></i>`;
+        
+        const markets = exchange.markets || [];
+        const marketsDisplay = markets.length > 0 ? markets.join(', ') : '--';
+        
+        return `
+            <div class="exchange-card ${statusClass}" data-exchange-id="${exchange.id}">
+                <div class="exchange-card-header">
+                    <div class="exchange-card-info">
+                        <div class="exchange-card-logo">
+                            ${logoHtml}
+                        </div>
+                        <div>
+                            <div class="exchange-card-name">${exchange.name}</div>
+                            <span class="exchange-card-type">${exchange.type || 'CEX'}</span>
+                        </div>
+                    </div>
+                    <span class="exchange-card-status ${statusClass}">
+                        <span class="dot"></span>
+                        ${statusText}
+                    </span>
+                </div>
+                
+                <div class="exchange-card-body">
+                    <div class="exchange-card-metric">
+                        <div class="metric-label">Trading Pairs</div>
+                        <div class="metric-value">${exchange.pairs || 0}</div>
+                    </div>
+                    <div class="exchange-card-metric">
+                        <div class="metric-label">24h Volume</div>
+                        <div class="metric-value">${exchange.volume_24h ? '$' + exchange.volume_24h.toLocaleString() : '--'}</div>
+                    </div>
+                    <div class="exchange-card-metric">
+                        <div class="metric-label">Latency</div>
+                        <div class="metric-value">${exchange.latency || '--'}ms</div>
+                    </div>
+                </div>
+                
+                <div class="exchange-card-footer">
+                    <div class="exchange-card-features">
+                        <span class="feature"><i class="fas fa-${exchange.websocket ? 'wifi' : 'globe'}"></i> ${exchange.websocket ? 'WebSocket' : 'REST'}</span>
+                        <span class="feature">${exchange.secure ? '🔒 Secure' : ''}</span>
+                        ${exchange.sandbox ? '<span class="feature">🧪 Sandbox</span>' : ''}
+                    </div>
+                    <div class="exchange-card-actions">
+                        ${exchange.status === 'connected' ? 
+                            `<button class="" data-action="disconnect" data-exchange-id="${exchange.id}">Disconnect</button>` :
+                            `<button class="primary" data-action="connect" data-exchange-id="${exchange.id}">Connect</button>`
+                        }
+                        <button data-action="details" data-exchange-id="${exchange.id}"><i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    // ============================================================
+    // FILTER EXCHANGES
+    // ============================================================
+    function filterExchanges(exchanges) {
+        let filtered = exchanges;
+        
+        // Filter by status
+        if (state.filter !== 'all') {
+            filtered = filtered.filter(function(e) {
+                return (e.status || 'disconnected') === state.filter;
+            });
+        }
+        
+        // Filter by search
+        if (state.search) {
+            const searchLower = state.search.toLowerCase();
+            filtered = filtered.filter(function(e) {
+                return e.name.toLowerCase().includes(searchLower) ||
+                       (e.type && e.type.toLowerCase().includes(searchLower)) ||
+                       (e.markets && e.markets.some(function(m) { return m.toLowerCase().includes(searchLower); }));
+            });
+        }
+        
+        return filtered;
+    }
+
+    // ============================================================
+    // UPDATE STATS
+    // ============================================================
+    function updateStats(exchanges) {
+        const total = exchanges.length;
+        const connected = exchanges.filter(function(e) { return e.status === 'connected'; }).length;
+        const degraded = exchanges.filter(function(e) { return e.status === 'degraded'; }).length;
+        const disconnected = exchanges.filter(function(e) { return e.status === 'disconnected' || !e.status; }).length;
+        
+        // Calculate average latency
+        const latencies = exchanges.filter(function(e) { return e.latency; }).map(function(e) { return e.latency; });
+        const avgLatency = latencies.length > 0 ? 
+            (latencies.reduce(function(a, b) { return a + b; }, 0) / latencies.length).toFixed(0) : 
+            '--';
+        
+        DOM.statTotal.textContent = total;
+        DOM.statConnected.textContent = connected;
+        DOM.statDegraded.textContent = degraded;
+        DOM.statDisconnected.textContent = disconnected;
+        DOM.statLatency.textContent = avgLatency !== '--' ? avgLatency + 'ms' : '--';
+        
+        // Update badge count
+        if (DOM.oppBadge) {
+            const oppCount = parseInt(DOM.oppBadge.textContent) || 0;
+            // Keep existing badge count
+        }
+    }
+
+    // ============================================================
+    // SYSTEM STATUS UPDATE
+    // ============================================================
+    function updateSystemStatus(status) {
+        if (!status) return;
+        
+        if (status.system) {
+            DOM.systemStatusText.textContent = status.system === 'operational' ? 'Operational' : 'Degraded';
+        }
+    }
+
+    // ============================================================
+    // EXCHANGE ACTIONS
+    // ============================================================
+    function handleExchangeAction(action, exchangeId) {
+        switch (action) {
+            case 'connect':
+                connectExchange(exchangeId);
+                break;
+            case 'disconnect':
+                disconnectExchange(exchangeId);
+                break;
+            case 'details':
+                openExchangeModal(exchangeId);
+                break;
+            default:
+                console.warn('Unknown action:', action);
+        }
+    }
+
+    // ============================================================
+    // EXCHANGE DETAIL MODAL
+    // ============================================================
+    function openExchangeModal(exchangeId) {
+        const exchange = state.exchanges.find(function(e) { return e.id === exchangeId; });
+        if (!exchange) return;
+        
+        DOM.modalTitle.textContent = exchange.name;
+        DOM.modalName.textContent = exchange.name;
+        DOM.modalType.textContent = exchange.type || 'CEX';
+        DOM.modalStatus.textContent = exchange.status ? exchange.status.charAt(0).toUpperCase() + exchange.status.slice(1) : 'Disconnected';
+        DOM.modalLatency.textContent = exchange.latency ? exchange.latency + 'ms' : '--';
+        DOM.modalPairs.textContent = exchange.pairs || '--';
+        DOM.modalVolume.textContent = exchange.volume_24h ? '$' + exchange.volume_24h.toLocaleString() : '--';
+        DOM.modalWebSocket.textContent = exchange.websocket ? '✅ Connected' : '❌ Disabled';
+        DOM.modalSince.textContent = exchange.connected_since ? new Date(exchange.connected_since).toLocaleString() : '--';
+        
+        DOM.modal.classList.add('active');
+    }
+
+    function closeExchangeModal() {
+        DOM.modal.classList.remove('active');
+    }
+
+    // ============================================================
+    // WEBSOCKET CONNECTION - REAL-TIME DATA
+    // ============================================================
+    function connectWebSocket() {
+        try {
+            const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const host = window.location.host;
+            const token = localStorage.getItem('access_token') || '';
+            const wsUrl = protocol + '//' + host + API.ws.exchanges + '?token=' + encodeURIComponent(token);
+            
+            state.ws = new WebSocket(wsUrl);
+            
+            state.ws.onopen = function() {
+                console.log('Exchanges WebSocket connected');
+                state.reconnectAttempts = 0;
+            };
+            
+            state.ws.onmessage = function(event) {
+                try {
+                    const data = JSON.parse(event.data);
+                    handleWebSocketMessage(data);
+                } catch (error) {
+                    console.error('WebSocket message parse error:', error);
+                }
+            };
+            
+            state.ws.onclose = function() {
+                console.log('Exchanges WebSocket disconnected');
+                reconnectWebSocket();
+            };
+            
+            state.ws.onerror = function(error) {
+                console.error('Exchanges WebSocket error:', error);
+            };
+        } catch (error) {
+            console.error('WebSocket connection failed:', error);
+        }
+    }
+
+    function reconnectWebSocket() {
+        if (state.reconnectAttempts >= state.maxReconnectAttempts) {
+            console.log('Max reconnect attempts reached for exchanges WebSocket');
+            return;
+        }
+        
+        state.reconnectAttempts++;
+        const delay = Math.min(1000 * Math.pow(2, state.reconnectAttempts), 30000);
+        setTimeout(function() {
+            console.log('Reconnecting exchanges WebSocket (attempt ' + state.reconnectAttempts + ')');
+            connectWebSocket();
+        }, delay);
+    }
+
+    function handleWebSocketMessage(data) {
+        switch (data.type) {
+            case 'exchange_update':
+                updateExchange(data.exchange);
+                break;
+            case 'exchange_status':
+                updateExchangeStatus(data.exchangeId, data.status);
+                break;
+            case 'metrics_update':
+                updateExchangeMetrics(data.exchangeId, data.metrics);
+                break;
+            case 'ping':
+                if (state.ws && state.ws.readyState === WebSocket.OPEN) {
+                    state.ws.send(JSON.stringify({ type: 'pong' }));
+                }
+                break;
+            default:
+                console.log('Unknown WebSocket message type:', data.type);
+        }
+    }
+
+    function updateExchange(exchange) {
+        const index = state.exchanges.findIndex(function(e) { return e.id === exchange.id; });
+        if (index !== -1) {
+            state.exchanges[index] = exchange;
+        } else {
+            state.exchanges.push(exchange);
+        }
+        renderExchanges(state.exchanges);
+        updateStats(state.exchanges);
+    }
+
+    function updateExchangeStatus(exchangeId, status) {
+        const exchange = state.exchanges.find(function(e) { return e.id === exchangeId; });
+        if (exchange) {
+            exchange.status = status;
+            renderExchanges(state.exchanges);
+            updateStats(state.exchanges);
+        }
+    }
+
+    function updateExchangeMetrics(exchangeId, metrics) {
+        const exchange = state.exchanges.find(function(e) { return e.id === exchangeId; });
+        if (exchange && metrics) {
+            Object.assign(exchange, metrics);
+            renderExchanges(state.exchanges);
+            updateStats(state.exchanges);
+        }
+    }
+
+    // ============================================================
+    // AUTO REFRESH
+    // ============================================================
+    function startAutoRefresh() {
+        if (state.updateInterval) {
+            clearInterval(state.updateInterval);
+        }
+        state.updateInterval = setInterval(function() {
+            fetchExchanges();
+            fetchExchangeStatus();
+        }, 30000); // 30 seconds
+    }
+
+    // ============================================================
+    // EVENT LISTENERS
+    // ============================================================
+    function setupEventListeners() {
+        // Search
+        DOM.exchangeSearch.addEventListener('input', function() {
+            state.search = this.value;
+            renderExchanges(state.exchanges);
+        });
+        
+        // Filter buttons
+        DOM.filterButtons.forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                DOM.filterButtons.forEach(function(b) { b.classList.remove('active'); });
+                this.classList.add('active');
+                state.filter = this.dataset.filter;
+                renderExchanges(state.exchanges);
+            });
+        });
+        
+        // Refresh button
+        DOM.refreshBtn.addEventListener('click', function() {
+            const icon = this.querySelector('i');
+            icon.classList.add('fa-spin');
+            Promise.all([fetchExchanges(), fetchExchangeStatus()]).finally(function() {
+                icon.classList.remove('fa-spin');
+            });
+        });
+        
+        // Add exchange button
+        DOM.addBtn.addEventListener('click', function() {
+            window.location.href = '/exchanges/add';
+        });
+        
+        // Modal close
+        DOM.modalClose.addEventListener('click', closeExchangeModal);
+        DOM.modal.addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeExchangeModal();
+            }
+        });
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeExchangeModal();
+            }
+        });
+    }
+
+    // ============================================================
+    // INITIALIZATION
+    // ============================================================
+    function init() {
+        // Update date/time
+        updateDateTime();
+        setInterval(updateDateTime, 1000);
+        
+        // Setup sidebar
+        setupSidebar();
+        
+        // Setup event listeners
+        setupEventListeners();
+        
+        // Connect WebSocket
+        connectWebSocket();
+        
+        // Fetch initial data
+        Promise.all([
+            fetchExchanges(),
+            fetchExchangeStatus()
+        ]).then(function() {
+            console.log('Exchanges page initialized successfully');
+        }).catch(function(error) {
+            console.error('Exchanges page initialization error:', error);
+        });
+        
+        // Start auto refresh
+        startAutoRefresh();
+    }
+
+    // Start when DOM is ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+
+})();
+</script>
+
+</body>
+</html>
