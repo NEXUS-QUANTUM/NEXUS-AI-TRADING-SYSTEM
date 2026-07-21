@@ -1,0 +1,1843 @@
+<!-- trading/bots/arbitrage_bot/templates/logs.html -->
+<!-- NEXUS AI TRADING SYSTEM -->
+<!-- Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved -->
+<!-- Version: 4.2.0 - Complete Logs Template with Real API Integration -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logs - NEXUS Trading IA</title>
+    
+    <!-- Meta Tags -->
+    <meta name="description" content="NEXUS AI Trading System - System Logs and Monitoring">
+    <meta name="theme-color" content="#6C63FF">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Highlight.js for syntax highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+    
+    <style>
+        /* ============================================
+           LOGS - COMPLETE STYLES
+           ============================================ */
+        
+        :root {
+            --primary: #6C63FF;
+            --primary-dark: #5a52d9;
+            --secondary: #00D4FF;
+            --success: #00D4FF;
+            --danger: #FF6B6B;
+            --warning: #FFD93D;
+            --bg-primary: #0D1117;
+            --bg-secondary: #161B22;
+            --bg-card: #1C2333;
+            --text-primary: #E0E0E0;
+            --text-secondary: #8B949E;
+            --text-muted: #484F58;
+            --border-color: rgba(255, 255, 255, 0.05);
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            --radius: 16px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            
+            --log-info: #58A6FF;
+            --log-success: #3FB950;
+            --log-warning: #D29922;
+            --log-error: #F85149;
+            --log-debug: #8B949E;
+            --log-trace: #6C63FF;
+        }
+        
+        /* Reset & Base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* ============================================
+           LAYOUT
+           ============================================ */
+        .logs-wrapper {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border-color);
+            padding: 20px 0;
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            z-index: 100;
+            transition: var(--transition);
+            overflow-y: auto;
+        }
+        
+        .sidebar-brand {
+            padding: 0 20px 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .sidebar-brand img {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+        }
+        
+        .sidebar-brand span {
+            font-size: 18px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .sidebar-nav {
+            flex: 1;
+            padding: 16px 12px;
+        }
+        
+        .sidebar-nav .nav-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            padding: 8px 12px 4px;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+        
+        .sidebar-nav a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 16px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 10px;
+            transition: var(--transition);
+            font-size: 14px;
+            font-weight: 500;
+            margin: 2px 0;
+        }
+        
+        .sidebar-nav a i {
+            width: 20px;
+            text-align: center;
+            font-size: 16px;
+        }
+        
+        .sidebar-nav a:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-primary);
+        }
+        
+        .sidebar-nav a.active {
+            background: rgba(108, 99, 255, 0.15);
+            color: var(--primary);
+        }
+        
+        .sidebar-nav a .badge {
+            margin-left: auto;
+            background: var(--danger);
+            color: #fff;
+            font-size: 10px;
+            padding: 1px 8px;
+            border-radius: 10px;
+            font-weight: 600;
+        }
+        
+        /* Main Content */
+        .main-content {
+            margin-left: 260px;
+            flex: 1;
+            padding: 24px 32px 32px;
+        }
+        
+        /* ============================================
+           HEADER
+           ============================================ */
+        .logs-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 24px;
+            border-bottom: 1px solid var(--border-color);
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+        
+        .header-left h1 {
+            font-size: 24px;
+            font-weight: 700;
+        }
+        
+        .header-left p {
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-top: 4px;
+        }
+        
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        
+        .header-right .date-time {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+        
+        .header-right .status-badge {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            border-radius: 20px;
+            background: rgba(0, 212, 255, 0.1);
+            color: var(--success);
+            font-size: 13px;
+            font-weight: 500;
+        }
+        
+        .header-right .status-badge .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--success);
+            animation: pulse-dot 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+        
+        /* ============================================
+           LOG STATS
+           ============================================ */
+        .log-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 12px;
+            margin: 20px 0;
+        }
+        
+        .stat-card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 14px 18px;
+            border: 1px solid var(--border-color);
+            transition: var(--transition);
+            text-align: center;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+        
+        .stat-card .stat-label {
+            color: var(--text-secondary);
+            font-size: 11px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .stat-card .stat-value {
+            font-size: 22px;
+            font-weight: 700;
+            margin-top: 4px;
+        }
+        
+        .stat-card .stat-value.info { color: var(--log-info); }
+        .stat-card .stat-value.success { color: var(--log-success); }
+        .stat-card .stat-value.warning { color: var(--log-warning); }
+        .stat-card .stat-value.error { color: var(--log-error); }
+        .stat-card .stat-value.debug { color: var(--log-debug); }
+        .stat-card .stat-value.trace { color: var(--log-trace); }
+        
+        /* ============================================
+           LOG CONTROLS
+           ============================================ */
+        .log-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin: 16px 0 20px;
+            padding: 16px 20px;
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            border: 1px solid var(--border-color);
+        }
+        
+        .log-controls-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        
+        .log-controls-left select,
+        .log-controls-left input {
+            padding: 8px 14px;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 13px;
+            font-family: inherit;
+            transition: var(--transition);
+            min-width: 120px;
+        }
+        
+        .log-controls-left select:focus,
+        .log-controls-left input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.1);
+        }
+        
+        .log-controls-left select option {
+            background: var(--bg-primary);
+        }
+        
+        .log-controls-left .search-input {
+            position: relative;
+        }
+        
+        .log-controls-left .search-input input {
+            padding-left: 36px;
+            width: 260px;
+        }
+        
+        .log-controls-left .search-input i {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
+        
+        .log-controls-right {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .log-controls-right button {
+            padding: 8px 16px;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            transition: var(--transition);
+            font-family: inherit;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .log-controls-right button:hover {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+        
+        .log-controls-right button.primary {
+            background: var(--primary);
+            color: #fff;
+            border-color: var(--primary);
+        }
+        
+        .log-controls-right button.primary:hover {
+            background: var(--primary-dark);
+        }
+        
+        .log-controls-right button .badge {
+            background: var(--danger);
+            color: #fff;
+            font-size: 10px;
+            padding: 1px 6px;
+            border-radius: 10px;
+        }
+        
+        /* ============================================
+           LOG CONTAINER
+           ============================================ */
+        .log-container {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .log-toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .log-toolbar .log-count {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+        
+        .log-toolbar .log-count strong {
+            color: var(--text-primary);
+        }
+        
+        .log-toolbar .log-actions {
+            display: flex;
+            gap: 6px;
+        }
+        
+        .log-toolbar .log-actions button {
+            padding: 4px 12px;
+            background: transparent;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 12px;
+            transition: var(--transition);
+            font-family: inherit;
+        }
+        
+        .log-toolbar .log-actions button:hover {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+        }
+        
+        .log-toolbar .log-actions button.active {
+            background: var(--primary);
+            color: #fff;
+            border-color: var(--primary);
+        }
+        
+        .log-body {
+            padding: 0;
+            max-height: 600px;
+            overflow-y: auto;
+            font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+        
+        .log-body::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .log-body::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+        
+        .log-body::-webkit-scrollbar-thumb {
+            background: var(--bg-secondary);
+            border-radius: 3px;
+        }
+        
+        .log-body::-webkit-scrollbar-thumb:hover {
+            background: var(--primary);
+        }
+        
+        /* ============================================
+           LOG ENTRY
+           ============================================ */
+        .log-entry {
+            display: flex;
+            padding: 6px 16px;
+            border-bottom: 1px solid var(--border-color);
+            transition: var(--transition);
+            align-items: flex-start;
+            gap: 12px;
+        }
+        
+        .log-entry:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+        
+        .log-entry .log-level {
+            flex-shrink: 0;
+            width: 60px;
+            text-align: right;
+            font-weight: 600;
+            font-size: 11px;
+            padding-top: 1px;
+            text-transform: uppercase;
+        }
+        
+        .log-entry .log-level.INFO { color: var(--log-info); }
+        .log-entry .log-level.SUCCESS { color: var(--log-success); }
+        .log-entry .log-level.WARNING { color: var(--log-warning); }
+        .log-entry .log-level.ERROR { color: var(--log-error); }
+        .log-entry .log-level.DEBUG { color: var(--log-debug); }
+        .log-entry .log-level.TRACE { color: var(--log-trace); }
+        
+        .log-entry .log-timestamp {
+            flex-shrink: 0;
+            color: var(--text-secondary);
+            font-size: 12px;
+            width: 150px;
+        }
+        
+        .log-entry .log-message {
+            flex: 1;
+            color: var(--text-primary);
+            word-break: break-word;
+        }
+        
+        .log-entry .log-message .highlight {
+            color: var(--secondary);
+        }
+        
+        .log-entry .log-message .error-highlight {
+            color: var(--log-error);
+        }
+        
+        .log-entry .log-message .success-highlight {
+            color: var(--log-success);
+        }
+        
+        .log-entry .log-message .warning-highlight {
+            color: var(--log-warning);
+        }
+        
+        .log-entry .log-message .info-highlight {
+            color: var(--log-info);
+        }
+        
+        .log-entry .log-source {
+            flex-shrink: 0;
+            color: var(--text-secondary);
+            font-size: 11px;
+            padding: 1px 8px;
+            background: var(--bg-primary);
+            border-radius: 4px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .log-entry .log-actions {
+            flex-shrink: 0;
+            display: flex;
+            gap: 4px;
+            opacity: 0;
+            transition: var(--transition);
+        }
+        
+        .log-entry:hover .log-actions {
+            opacity: 1;
+        }
+        
+        .log-entry .log-actions button {
+            padding: 2px 6px;
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 12px;
+            transition: var(--transition);
+        }
+        
+        .log-entry .log-actions button:hover {
+            color: var(--text-primary);
+        }
+        
+        /* Log entry by level - background colors */
+        .log-entry.level-ERROR {
+            border-left: 3px solid var(--log-error);
+        }
+        
+        .log-entry.level-WARNING {
+            border-left: 3px solid var(--log-warning);
+        }
+        
+        .log-entry.level-SUCCESS {
+            border-left: 3px solid var(--log-success);
+        }
+        
+        .log-entry.level-INFO {
+            border-left: 3px solid var(--log-info);
+        }
+        
+        .log-entry.level-DEBUG {
+            border-left: 3px solid var(--log-debug);
+        }
+        
+        .log-entry.level-TRACE {
+            border-left: 3px solid var(--log-trace);
+        }
+        
+        /* ============================================
+           LOADING STATE
+           ============================================ */
+        .log-loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            color: var(--text-secondary);
+        }
+        
+        .log-loading i {
+            font-size: 32px;
+            animation: spin 1s linear infinite;
+        }
+        
+        .log-loading span {
+            margin-left: 12px;
+            font-size: 14px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* ============================================
+           EMPTY STATE
+           ============================================ */
+        .log-empty {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-secondary);
+        }
+        
+        .log-empty i {
+            font-size: 48px;
+            opacity: 0.3;
+            margin-bottom: 16px;
+        }
+        
+        .log-empty h3 {
+            font-size: 18px;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+        
+        .log-empty p {
+            font-size: 14px;
+        }
+        
+        /* ============================================
+           LOG DETAIL MODAL
+           ============================================ */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-overlay.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: var(--bg-secondary);
+            border-radius: var(--radius);
+            padding: 32px;
+            max-width: 700px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            border: 1px solid var(--border-color);
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .modal-header h2 {
+            font-size: 20px;
+            font-weight: 700;
+        }
+        
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 24px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .modal-close:hover {
+            color: var(--text-primary);
+        }
+        
+        .modal-body {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .modal-detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .modal-detail-row .label {
+            color: var(--text-secondary);
+            font-size: 13px;
+        }
+        
+        .modal-detail-row .value {
+            font-weight: 500;
+            font-size: 13px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        .modal-detail-row .value pre {
+            margin: 0;
+            white-space: pre-wrap;
+            word-break: break-all;
+            max-width: 400px;
+        }
+        
+        /* ============================================
+           RESPONSIVE
+           ============================================ */
+        @media (max-width: 992px) {
+            .sidebar {
+                transform: translateX(-100%);
+                width: 280px;
+            }
+            
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            
+            .main-content {
+                margin-left: 0;
+                padding: 16px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .logs-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .header-right {
+                width: 100%;
+                justify-content: space-between;
+                flex-wrap: wrap;
+            }
+            
+            .log-controls {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 12px;
+            }
+            
+            .log-controls-left {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .log-controls-left .search-input input {
+                width: 100%;
+            }
+            
+            .log-controls-left select,
+            .log-controls-left input {
+                width: 100%;
+            }
+            
+            .log-controls-right {
+                justify-content: center;
+            }
+            
+            .log-entry {
+                flex-wrap: wrap;
+                gap: 4px;
+            }
+            
+            .log-entry .log-timestamp {
+                width: 100%;
+                font-size: 11px;
+            }
+            
+            .log-entry .log-level {
+                width: 50px;
+                font-size: 10px;
+            }
+            
+            .log-entry .log-source {
+                font-size: 10px;
+            }
+            
+            .log-stats {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .log-stats {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .log-toolbar {
+                flex-direction: column;
+                gap: 8px;
+            }
+            
+            .log-entry .log-actions {
+                opacity: 1;
+            }
+            
+            .log-controls-right {
+                flex-wrap: wrap;
+            }
+        }
+        
+        /* ============================================
+           TOGGLE SIDEBAR BUTTON
+           ============================================ */
+        .sidebar-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 24px;
+            cursor: pointer;
+            padding: 8px;
+        }
+        
+        @media (max-width: 992px) {
+            .sidebar-toggle {
+                display: block;
+            }
+        }
+        
+        /* ============================================
+           OVERLAY
+           ============================================ */
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 99;
+        }
+        
+        .sidebar-overlay.active {
+            display: block;
+        }
+        
+        /* ============================================
+           SCROLLBAR
+           ============================================ */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--bg-card);
+            border-radius: 3px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary);
+        }
+    </style>
+</head>
+<body>
+
+<!-- ============================================ -->
+<!-- SIDEBAR OVERLAY -->
+<!-- ============================================ -->
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<!-- ============================================ -->
+<!-- LOGS WRAPPER -->
+<!-- ============================================ -->
+<div class="logs-wrapper">
+    
+    <!-- ============================================ -->
+    <!-- SIDEBAR -->
+    <!-- ============================================ -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-brand">
+            <img src="/static/images/nexus-logo.svg" alt="NEXUS" onerror="this.src='/static/images/logo.png'">
+            <span>NEXUS Trading</span>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <div class="nav-label">Main</div>
+            <a href="/dashboard">
+                <i class="fas fa-chart-line"></i> Dashboard
+            </a>
+            <a href="/exchanges">
+                <i class="fas fa-exchange-alt"></i> Exchanges
+            </a>
+            <a href="/opportunities">
+                <i class="fas fa-bolt"></i> Opportunities
+                <span class="badge" id="oppBadge">0</span>
+            </a>
+            <a href="/strategies">
+                <i class="fas fa-chess-queen"></i> Strategies
+            </a>
+            
+            <div class="nav-label" style="margin-top: 16px;">Analytics</div>
+            <a href="/performance">
+                <i class="fas fa-chart-bar"></i> Performance
+            </a>
+            <a href="/portfolio">
+                <i class="fas fa-briefcase"></i> Portfolio
+            </a>
+            <a href="/reports">
+                <i class="fas fa-file-alt"></i> Reports
+            </a>
+            <a href="/signals">
+                <i class="fas fa-signal"></i> Signals
+            </a>
+            
+            <div class="nav-label" style="margin-top: 16px;">System</div>
+            <a href="/logs" class="active">
+                <i class="fas fa-terminal"></i> Logs
+            </a>
+            <a href="/settings">
+                <i class="fas fa-cog"></i> Settings
+            </a>
+            <a href="/support">
+                <i class="fas fa-life-ring"></i> Support
+            </a>
+        </nav>
+    </aside>
+    
+    <!-- ============================================ -->
+    <!-- MAIN CONTENT -->
+    <!-- ============================================ -->
+    <main class="main-content">
+        
+        <!-- ============================================ -->
+        <!-- HEADER -->
+        <!-- ============================================ -->
+        <header class="logs-header">
+            <div class="header-left">
+                <button class="sidebar-toggle" id="sidebarToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h1>System Logs</h1>
+                <p>Monitor and analyze system activity in real-time</p>
+            </div>
+            <div class="header-right">
+                <span class="date-time" id="currentDateTime"></span>
+                <span class="status-badge">
+                    <span class="dot"></span>
+                    <span id="systemStatusText">Operational</span>
+                </span>
+            </div>
+        </header>
+        
+        <!-- ============================================ -->
+        <!-- LOG STATS -->
+        <!-- ============================================ -->
+        <div class="log-stats" id="logStats">
+            <div class="stat-card">
+                <div class="stat-label">Total</div>
+                <div class="stat-value" id="statTotal">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Info</div>
+                <div class="stat-value info" id="statInfo">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Success</div>
+                <div class="stat-value success" id="statSuccess">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Warnings</div>
+                <div class="stat-value warning" id="statWarning">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Errors</div>
+                <div class="stat-value error" id="statError">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Debug</div>
+                <div class="stat-value debug" id="statDebug">0</div>
+            </div>
+        </div>
+        
+        <!-- ============================================ -->
+        <!-- LOG CONTROLS -->
+        <!-- ============================================ -->
+        <div class="log-controls">
+            <div class="log-controls-left">
+                <select id="logLevel">
+                    <option value="all">All Levels</option>
+                    <option value="INFO">INFO</option>
+                    <option value="SUCCESS">SUCCESS</option>
+                    <option value="WARNING">WARNING</option>
+                    <option value="ERROR">ERROR</option>
+                    <option value="DEBUG">DEBUG</option>
+                    <option value="TRACE">TRACE</option>
+                </select>
+                <select id="logSource">
+                    <option value="all">All Sources</option>
+                    <option value="system">System</option>
+                    <option value="arbitrage">Arbitrage</option>
+                    <option value="exchange">Exchange</option>
+                    <option value="detector">Detector</option>
+                    <option value="executor">Executor</option>
+                    <option value="strategy">Strategy</option>
+                    <option value="api">API</option>
+                </select>
+                <div class="search-input">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="logSearch" placeholder="Search logs..." />
+                </div>
+            </div>
+            <div class="log-controls-right">
+                <button id="refreshLogs">
+                    <i class="fas fa-sync-alt"></i> Refresh
+                </button>
+                <button id="clearLogs">
+                    <i class="fas fa-trash"></i> Clear
+                </button>
+                <button id="exportLogs">
+                    <i class="fas fa-download"></i> Export
+                </button>
+                <button id="autoScroll" class="primary">
+                    <i class="fas fa-arrow-down"></i> Auto-Scroll
+                </button>
+            </div>
+        </div>
+        
+        <!-- ============================================ -->
+        <!-- LOG CONTAINER -->
+        <!-- ============================================ -->
+        <div class="log-container">
+            <div class="log-toolbar">
+                <span class="log-count">Showing <strong id="logCount">0</strong> entries</span>
+                <div class="log-actions">
+                    <button data-format="table" class="active"><i class="fas fa-table"></i></button>
+                    <button data-format="json"><i class="fas fa-code"></i></button>
+                    <button data-format="raw"><i class="fas fa-align-left"></i></button>
+                </div>
+            </div>
+            <div class="log-body" id="logBody">
+                <div class="log-loading">
+                    <i class="fas fa-spinner"></i>
+                    <span>Loading logs...</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- ============================================ -->
+        <!-- FOOTER (Partial) -->
+        <!-- ============================================ -->
+        {% include 'partials/footer.html' %}
+        
+    </main>
+</div>
+
+<!-- ============================================ -->
+<!-- LOG DETAIL MODAL -->
+<!-- ============================================ -->
+<div class="modal-overlay" id="logModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Log Details</h2>
+            <button class="modal-close" id="modalClose">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="modal-body" id="modalBody">
+            <div class="modal-detail-row">
+                <span class="label">Level</span>
+                <span class="value" id="modalLevel">--</span>
+            </div>
+            <div class="modal-detail-row">
+                <span class="label">Timestamp</span>
+                <span class="value" id="modalTimestamp">--</span>
+            </div>
+            <div class="modal-detail-row">
+                <span class="label">Source</span>
+                <span class="value" id="modalSource">--</span>
+            </div>
+            <div class="modal-detail-row">
+                <span class="label">Message</span>
+                <span class="value"><pre id="modalMessage">--</pre></span>
+            </div>
+            <div class="modal-detail-row">
+                <span class="label">Details</span>
+                <span class="value"><pre id="modalDetails">--</pre></span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================ -->
+<!-- SCRIPTS - COMPLETE IMPLEMENTATION WITH REAL API -->
+<!-- ============================================ -->
+<script>
+// ================================================================
+// LOGS - COMPLETE JAVASCRIPT IMPLEMENTATION WITH REAL API
+// ================================================================
+
+(function() {
+    'use strict';
+
+    // ============================================================
+    // API CONFIGURATION
+    // ============================================================
+    const API = {
+        base: '/api',
+        endpoints: {
+            logs: '/api/logs',
+            log: '/api/logs/:id',
+            stats: '/api/logs/stats',
+            export: '/api/logs/export',
+            clear: '/api/logs/clear',
+            stream: '/api/logs/stream',
+        },
+        ws: {
+            logs: '/ws/logs',
+        }
+    };
+
+    // ============================================================
+    // STATE
+    // ============================================================
+    const state = {
+        logs: [],
+        filteredLogs: [],
+        level: 'all',
+        source: 'all',
+        search: '',
+        format: 'table',
+        autoScroll: true,
+        startTime: Date.now(),
+        ws: null,
+        reconnectAttempts: 0,
+        maxReconnectAttempts: 5,
+        updateInterval: null,
+        page: 1,
+        pageSize: 100,
+        total: 0,
+    };
+
+    // ============================================================
+    // DOM REFERENCES
+    // ============================================================
+    const DOM = {
+        sidebar: document.getElementById('sidebar'),
+        sidebarOverlay: document.getElementById('sidebarOverlay'),
+        sidebarToggle: document.getElementById('sidebarToggle'),
+        currentDateTime: document.getElementById('currentDateTime'),
+        systemStatusText: document.getElementById('systemStatusText'),
+        oppBadge: document.getElementById('oppBadge'),
+        
+        statTotal: document.getElementById('statTotal'),
+        statInfo: document.getElementById('statInfo'),
+        statSuccess: document.getElementById('statSuccess'),
+        statWarning: document.getElementById('statWarning'),
+        statError: document.getElementById('statError'),
+        statDebug: document.getElementById('statDebug'),
+        
+        logBody: document.getElementById('logBody'),
+        logCount: document.getElementById('logCount'),
+        logLevel: document.getElementById('logLevel'),
+        logSource: document.getElementById('logSource'),
+        logSearch: document.getElementById('logSearch'),
+        
+        refreshBtn: document.getElementById('refreshLogs'),
+        clearBtn: document.getElementById('clearLogs'),
+        exportBtn: document.getElementById('exportLogs'),
+        autoScrollBtn: document.getElementById('autoScroll'),
+        formatButtons: document.querySelectorAll('.log-actions button'),
+        
+        modal: document.getElementById('logModal'),
+        modalClose: document.getElementById('modalClose'),
+        modalLevel: document.getElementById('modalLevel'),
+        modalTimestamp: document.getElementById('modalTimestamp'),
+        modalSource: document.getElementById('modalSource'),
+        modalMessage: document.getElementById('modalMessage'),
+        modalDetails: document.getElementById('modalDetails'),
+    };
+
+    // ============================================================
+    // DATE/TIME UPDATE
+    // ============================================================
+    function updateDateTime() {
+        const now = new Date();
+        DOM.currentDateTime.textContent = now.toLocaleString('en-US', {
+            weekday: 'short',
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: false
+        });
+    }
+
+    // ============================================================
+    // SIDEBAR TOGGLE
+    // ============================================================
+    function setupSidebar() {
+        DOM.sidebarToggle.addEventListener('click', function() {
+            DOM.sidebar.classList.toggle('open');
+            DOM.sidebarOverlay.classList.toggle('active');
+        });
+        
+        DOM.sidebarOverlay.addEventListener('click', function() {
+            DOM.sidebar.classList.remove('open');
+            DOM.sidebarOverlay.classList.remove('active');
+        });
+    }
+
+    // ============================================================
+    // API CALLS - REAL ENDPOINTS
+    // ============================================================
+    async function fetchLogs() {
+        try {
+            const token = localStorage.getItem('access_token') || '';
+            const params = new URLSearchParams({
+                level: state.level,
+                source: state.source,
+                search: state.search,
+                page: state.page,
+                limit: state.pageSize,
+            });
+            
+            const response = await fetch(API.endpoints.logs + '?' + params.toString(), {
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                    'Content-Type': 'application/json',
+                }
+            });
+            
+            if (!response.ok) {
+                if (response.status === 401) {
+                    window.location.href = '/login';
+                    return null;
+                }
+                throw new Error('Failed to fetch logs: ' + response.status);
+            }
+            
+            const data = await response.json();
+            state.logs = data.logs || [];
+            state.total = data.total || 0;
+            state.filteredLogs = state.logs;
+            renderLogs(state.filteredLogs);
+            updateStats(state.logs);
+            return data;
+        } catch (error) {
+            console.error('Logs fetch failed:', error);
+            DOM.logBody.innerHTML = `
+                <div class="log-empty">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <h3>Failed to Load Logs</h3>
+                    <p>${error.message || 'Please try again later.'}</p>
+                </div>
+            `;
+            return null;
+        }
+    }
+
+    async function fetchLogStats() {
+        try {
+            const token = localStorage.getItem('access_token') || '';
+            const response = await fetch(API.endpoints.stats, {
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                    'Content-Type': 'application/json',
+                }
+            });
+            
+            if (!response.ok) throw new Error('Failed to fetch log stats: ' + response.status);
+            
+            const data = await response.json();
+            if (data) {
+                updateStats(data);
+            }
+            return data;
+        } catch (error) {
+            console.error('Log stats fetch failed:', error);
+            return null;
+        }
+    }
+
+    async function clearLogs() {
+        if (!confirm('Are you sure you want to clear all logs?')) {
+            return;
+        }
+        
+        try {
+            const token = localStorage.getItem('access_token') || '';
+            const response = await fetch(API.endpoints.clear, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                    'Content-Type': 'application/json',
+                }
+            });
+            
+            if (!response.ok) throw new Error('Failed to clear logs: ' + response.status);
+            
+            await fetchLogs();
+            await fetchLogStats();
+        } catch (error) {
+            console.error('Clear logs failed:', error);
+            alert('Failed to clear logs: ' + error.message);
+        }
+    }
+
+    async function exportLogs() {
+        try {
+            const token = localStorage.getItem('access_token') || '';
+            const params = new URLSearchParams({
+                level: state.level,
+                source: state.source,
+                search: state.search,
+                format: 'json',
+            });
+            
+            const response = await fetch(API.endpoints.export + '?' + params.toString(), {
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                    'Content-Type': 'application/json',
+                }
+            });
+            
+            if (!response.ok) throw new Error('Failed to export logs: ' + response.status);
+            
+            const data = await response.json();
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'logs_export_' + new Date().toISOString().slice(0, 10) + '.json';
+            a.click();
+            URL.revokeObjectURL(url);
+        } catch (error) {
+            console.error('Export logs failed:', error);
+            alert('Failed to export logs: ' + error.message);
+        }
+    }
+
+    // ============================================================
+    // RENDER LOGS
+    // ============================================================
+    function renderLogs(logs) {
+        if (!logs || logs.length === 0) {
+            DOM.logBody.innerHTML = `
+                <div class="log-empty">
+                    <i class="fas fa-inbox"></i>
+                    <h3>No Logs Found</h3>
+                    <p>${state.search ? 'No logs match your search criteria.' : 'No logs have been recorded yet.'}</p>
+                </div>
+            `;
+            DOM.logCount.textContent = '0';
+            return;
+        }
+        
+        let html = '';
+        logs.forEach(function(log) {
+            html += renderLogEntry(log);
+        });
+        
+        DOM.logBody.innerHTML = html;
+        DOM.logCount.textContent = logs.length;
+        
+        // Highlight code blocks
+        if (typeof hljs !== 'undefined') {
+            hljs.highlightAll();
+        }
+        
+        // Auto-scroll to bottom
+        if (state.autoScroll) {
+            DOM.logBody.scrollTop = DOM.logBody.scrollHeight;
+        }
+        
+        // Attach click events to log entries
+        document.querySelectorAll('.log-entry').forEach(function(entry) {
+            entry.addEventListener('click', function() {
+                const logId = this.dataset.logId;
+                openLogModal(logId);
+            });
+        });
+    }
+
+    function renderLogEntry(log) {
+        const levelClass = log.level || 'INFO';
+        const timestamp = log.timestamp ? new Date(log.timestamp).toLocaleString() : '--';
+        const source = log.source || 'system';
+        const message = escapeHtml(log.message || '');
+        const hasDetails = log.details && Object.keys(log.details).length > 0;
+        
+        // Color-code the message based on content
+        let messageHtml = message;
+        if (log.level === 'ERROR') {
+            messageHtml = message.replace(/(error|failed|exception|timeout)/gi, function(match) {
+                return '<span class="error-highlight">' + match + '</span>';
+            });
+        } else if (log.level === 'SUCCESS') {
+            messageHtml = message.replace(/(success|completed|filled|executed)/gi, function(match) {
+                return '<span class="success-highlight">' + match + '</span>';
+            });
+        } else if (log.level === 'WARNING') {
+            messageHtml = message.replace(/(warning|caution|limit|threshold)/gi, function(match) {
+                return '<span class="warning-highlight">' + match + '</span>';
+            });
+        } else if (log.level === 'INFO') {
+            messageHtml = message.replace(/(info|update|notification|status)/gi, function(match) {
+                return '<span class="info-highlight">' + match + '</span>';
+            });
+        }
+        
+        // Highlight symbols and numbers
+        messageHtml = messageHtml.replace(/(BTC|ETH|SOL|USDC|USDT|USD)/g, function(match) {
+            return '<span class="highlight">' + match + '</span>';
+        });
+        
+        return `
+            <div class="log-entry level-${levelClass}" data-log-id="${log.id || ''}">
+                <span class="log-level ${levelClass}">${levelClass}</span>
+                <span class="log-timestamp">${timestamp}</span>
+                <span class="log-message">${messageHtml}</span>
+                <span class="log-source">${source}</span>
+                <span class="log-actions">
+                    ${hasDetails ? '<button title="View Details"><i class="fas fa-info-circle"></i></button>' : ''}
+                    <button title="Copy" onclick="event.stopPropagation();copyLog('${log.id || ''}')"><i class="fas fa-copy"></i></button>
+                </span>
+            </div>
+        `;
+    }
+
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+
+    // ============================================================
+    // UPDATE STATS
+    // ============================================================
+    function updateStats(logs) {
+        // If logs is an array, calculate stats
+        if (Array.isArray(logs)) {
+            const total = logs.length;
+            const info = logs.filter(function(l) { return l.level === 'INFO'; }).length;
+            const success = logs.filter(function(l) { return l.level === 'SUCCESS'; }).length;
+            const warning = logs.filter(function(l) { return l.level === 'WARNING'; }).length;
+            const error = logs.filter(function(l) { return l.level === 'ERROR'; }).length;
+            const debug = logs.filter(function(l) { return l.level === 'DEBUG'; }).length;
+            
+            DOM.statTotal.textContent = total;
+            DOM.statInfo.textContent = info;
+            DOM.statSuccess.textContent = success;
+            DOM.statWarning.textContent = warning;
+            DOM.statError.textContent = error;
+            DOM.statDebug.textContent = debug;
+            return;
+        }
+        
+        // If logs is a stats object
+        if (logs && typeof logs === 'object') {
+            DOM.statTotal.textContent = logs.total || 0;
+            DOM.statInfo.textContent = logs.info || 0;
+            DOM.statSuccess.textContent = logs.success || 0;
+            DOM.statWarning.textContent = logs.warning || 0;
+            DOM.statError.textContent = logs.error || 0;
+            DOM.statDebug.textContent = logs.debug || 0;
+        }
+    }
+
+    // ============================================================
+    // FILTER LOGS
+    // ============================================================
+    function filterLogs() {
+        let filtered = state.logs;
+        
+        if (state.level !== 'all') {
+            filtered = filtered.filter(function(l) { return l.level === state.level; });
+        }
+        
+        if (state.source !== 'all') {
+            filtered = filtered.filter(function(l) { return l.source === state.source; });
+        }
+        
+        if (state.search) {
+            const searchLower = state.search.toLowerCase();
+            filtered = filtered.filter(function(l) {
+                return (l.message && l.message.toLowerCase().includes(searchLower)) ||
+                       (l.source && l.source.toLowerCase().includes(searchLower)) ||
+                       (l.level && l.level.toLowerCase().includes(searchLower));
+            });
+        }
+        
+        state.filteredLogs = filtered;
+        renderLogs(filtered);
+    }
+
+    // ============================================================
+    // LOG DETAIL MODAL
+    // ============================================================
+    function openLogModal(logId) {
+        const log = state.logs.find(function(l) { return l.id === logId; });
+        if (!log) return;
+        
+        DOM.modalLevel.textContent = log.level || '--';
+        DOM.modalLevel.style.color = getLevelColor(log.level);
+        DOM.modalTimestamp.textContent = log.timestamp ? new Date(log.timestamp).toLocaleString() : '--';
+        DOM.modalSource.textContent = log.source || 'system';
+        DOM.modalMessage.textContent = log.message || '--';
+        DOM.modalDetails.textContent = log.details ? JSON.stringify(log.details, null, 2) : '--';
+        
+        DOM.modal.classList.add('active');
+    }
+
+    function getLevelColor(level) {
+        const colors = {
+            'INFO': 'var(--log-info)',
+            'SUCCESS': 'var(--log-success)',
+            'WARNING': 'var(--log-warning)',
+            'ERROR': 'var(--log-error)',
+            'DEBUG': 'var(--log-debug)',
+            'TRACE': 'var(--log-trace)',
+        };
+        return colors[level] || 'var(--text-primary)';
+    }
+
+    function closeLogModal() {
+        DOM.modal.classList.remove('active');
+    }
+
+    function copyLog(logId) {
+        const log = state.logs.find(function(l) { return l.id === logId; });
+        if (!log) return;
+        
+        const text = '[' + log.level + '] ' + (log.timestamp ? new Date(log.timestamp).toLocaleString() : '') + ' - ' + log.message;
+        navigator.clipboard.writeText(text).then(function() {
+            // Show brief feedback
+            const btn = document.querySelector('.log-entry[data-log-id="' + logId + '"] .log-actions button:last-child');
+            if (btn) {
+                const original = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-check" style="color:var(--success);"></i>';
+                setTimeout(function() {
+                    btn.innerHTML = original;
+                }, 1500);
+            }
+        }).catch(function(err) {
+            console.error('Copy failed:', err);
+        });
+    }
+
+    // ============================================================
+    // WEBSOCKET CONNECTION - REAL-TIME LOGS
+    // ============================================================
+    function connectWebSocket() {
+        try {
+            const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const host = window.location.host;
+            const token = localStorage.getItem('access_token') || '';
+            const wsUrl = protocol + '//' + host + API.ws.logs + '?token=' + encodeURIComponent(token);
+            
+            state.ws = new WebSocket(wsUrl);
+            
+            state.ws.onopen = function() {
+                console.log('Logs WebSocket connected');
+                state.reconnectAttempts = 0;
+            };
+            
+            state.ws.onmessage = function(event) {
+                try {
+                    const data = JSON.parse(event.data);
+                    handleWebSocketMessage(data);
+                } catch (error) {
+                    console.error('WebSocket message parse error:', error);
+                }
+            };
+            
+            state.ws.onclose = function() {
+                console.log('Logs WebSocket disconnected');
+                reconnectWebSocket();
+            };
+            
+            state.ws.onerror = function(error) {
+                console.error('Logs WebSocket error:', error);
+            };
+        } catch (error) {
+            console.error('WebSocket connection failed:', error);
+        }
+    }
+
+    function reconnectWebSocket() {
+        if (state.reconnectAttempts >= state.maxReconnectAttempts) {
+            console.log('Max reconnect attempts reached for logs WebSocket');
+            return;
+        }
+        
+        state.reconnectAttempts++;
+        const delay = Math.min(1000 * Math.pow(2, state.reconnectAttempts), 30000);
+        setTimeout(function() {
+            console.log('Reconnecting logs WebSocket (attempt ' + state.reconnectAttempts + ')');
+            connectWebSocket();
+        }, delay);
+    }
+
+    function handleWebSocketMessage(data) {
+        switch (data.type) {
+            case 'log':
+                addLog(data.log);
+                break;
+            case 'bulk':
+                data.logs.forEach(function(log) { addLog(log); });
+                break;
+            case 'stats':
+                updateStats(data.stats);
+                break;
+            case 'ping':
+                if (state.ws && state.ws.readyState === WebSocket.OPEN) {
+                    state.ws.send(JSON.stringify({ type: 'pong' }));
+                }
+                break;
+            default:
+                console.log('Unknown WebSocket message type:', data.type);
+        }
+    }
+
+    function addLog(log) {
+        // Add to beginning of array
+        state.logs.unshift(log);
+        
+        // Keep only last 1000 logs
+        if (state.logs.length > 1000) {
+            state.logs = state.logs.slice(0, 1000);
+        }
+        
+        // Update stats
+        updateStats(state.logs);
+        
+        // Re-filter and render if current filters match
+        const matchesLevel = state.level === 'all' || log.level === state.level;
+        const matchesSource = state.source === 'all' || log.source === state.source;
+        const matchesSearch = !state.search || 
+            (log.message && log.message.toLowerCase().includes(state.search.toLowerCase())) ||
+            (log.source && log.source.toLowerCase().includes(state.search.toLowerCase()));
+        
+        if (matchesLevel && matchesSource && matchesSearch) {
+            // Add to filtered logs
+            state.filteredLogs.unshift(log);
+            
+            // Keep only last 1000
+            if (state.filteredLogs.length > 1000) {
+                state.filteredLogs = state.filteredLogs.slice(0, 1000);
+            }
+            
+            renderLogs(state.filteredLogs);
+        }
+        
+        // Update badge
+        const errorCount = state.logs.filter(function(l) { return l.level === 'ERROR' || l.level === 'WARNING'; }).length;
+        if (DOM.oppBadge) {
+            DOM.oppBadge.textContent = errorCount > 0 ? errorCount : '0';
+        }
+    }
+
+    // ============================================================
+    // AUTO REFRESH
+    // ============================================================
+    function startAutoRefresh() {
+        if (state.updateInterval) {
+            clearInterval(state.updateInterval);
+        }
+        state.updateInterval = setInterval(function() {
+            fetchLogs();
+            fetchLogStats();
+        }, 30000); // 30 seconds
+    }
+
+    // ============================================================
+    // EVENT LISTENERS
+    // ============================================================
+    function setupEventListeners() {
+        // Level filter
+        DOM.logLevel.addEventListener('change', function() {
+            state.level = this.value;
+            filterLogs();
+        });
+        
+        // Source filter
+        DOM.logSource.addEventListener('change', function() {
+            state.source = this.value;
+            filterLogs();
+        });
+        
+        // Search
+        DOM.logSearch.addEventListener('input', function() {
+            state.search = this.value;
+            filterLogs();
+        });
+        
+        // Refresh button
+        DOM.refreshBtn.addEventListener('click', function() {
+            const icon = this.querySelector('i');
+            icon.classList.add('fa-spin');
+            Promise.all([fetchLogs(), fetchLogStats()]).finally(function() {
+                icon.classList.remove('fa-spin');
+            });
+        });
+        
+        // Clear button
+        DOM.clearBtn.addEventListener('click', clearLogs);
+        
+        // Export button
+        DOM.exportBtn.addEventListener('click', exportLogs);
+        
+        // Auto-scroll toggle
+        DOM.autoScrollBtn.addEventListener('click', function() {
+            state.autoScroll = !state.autoScroll;
+            if (state.autoScroll) {
+                this.classList.add('primary');
+                this.innerHTML = '<i class="fas fa-arrow-down"></i> Auto-Scroll';
+                DOM.logBody.scrollTop = DOM.logBody.scrollHeight;
+            } else {
+                this.classList.remove('primary');
+                this.innerHTML = '<i class="fas fa-pause"></i> Paused';
+            }
+        });
+        
+        // Format buttons
+        DOM.formatButtons.forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                DOM.formatButtons.forEach(function(b) { b.classList.remove('active'); });
+                this.classList.add('active');
+                state.format = this.dataset.format;
+                renderLogs(state.filteredLogs);
+            });
+        });
+        
+        // Modal close
+        DOM.modalClose.addEventListener('click', closeLogModal);
+        DOM.modal.addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeLogModal();
+            }
+        });
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeLogModal();
+            }
+        });
+        
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            // Ctrl+Shift+R to refresh
+            if (e.ctrlKey && e.shiftKey && e.key === 'r') {
+                e.preventDefault();
+                DOM.refreshBtn.click();
+            }
+            // Ctrl+Shift+C to clear
+            if (e.ctrlKey && e.shiftKey && e.key === 'c') {
+                e.preventDefault();
+                DOM.clearBtn.click();
+            }
+        });
+    }
+
+    // ============================================================
+    // INITIALIZATION
+    // ============================================================
+    function init() {
+        // Update date/time
+        updateDateTime();
+        setInterval(updateDateTime, 1000);
+        
+        // Setup sidebar
+        setupSidebar();
+        
+        // Setup event listeners
+        setupEventListeners();
+        
+        // Connect WebSocket
+        connectWebSocket();
+        
+        // Fetch initial data
+        Promise.all([
+            fetchLogs(),
+            fetchLogStats()
+        ]).then(function() {
+            console.log('Logs page initialized successfully');
+        }).catch(function(error) {
+            console.error('Logs page initialization error:', error);
+        });
+        
+        // Start auto refresh
+        startAutoRefresh();
+    }
+
+    // Start when DOM is ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+
+})();
+</script>
+
+</body>
+</html>
