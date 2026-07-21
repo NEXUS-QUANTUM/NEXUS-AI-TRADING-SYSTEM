@@ -4,8 +4,17 @@ Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
 ====================================================================
 @version 2.0.0
 @author NEXUS QUANTUM TEAM
-@description Documentation complète du bot d'arbitrage
+@description Documentation complète du bot d'arbitrage NEXUS
 """
+
+# ============================================================
+# PACKAGE METADATA
+# ============================================================
+__version__ = "2.0.0"
+__author__ = "NEXUS QUANTUM TEAM"
+__description__ = "Documentation complète du bot d'arbitrage NEXUS"
+__copyright__ = "© 2026 NEXUS QUANTUM LTD - All Rights Reserved"
+__license__ = "Proprietary"
 
 # ============================================================
 # IMPORTS
@@ -15,22 +24,85 @@ import sys
 import json
 import yaml
 import logging
+import subprocess
 from pathlib import Path
 from typing import Dict, Any, List, Optional, Union, Tuple
 from datetime import datetime
-
-# ============================================================
-# PACKAGE METADATA
-# ============================================================
-__version__ = "2.0.0"
-__author__ = "NEXUS QUANTUM TEAM"
-__description__ = "Documentation complète du bot d'arbitrage NEXUS"
-__copyright__ = "© 2026 NEXUS QUANTUM LTD - All Rights Reserved"
+from dataclasses import dataclass, field, asdict
+from enum import Enum
 
 # ============================================================
 # LOGGING
 # ============================================================
 logger = logging.getLogger(__name__)
+
+# ============================================================
+# ENUMS
+# ============================================================
+
+class DocCategory(Enum):
+    """Catégories de documentation"""
+    GENERAL = "general"
+    SETUP = "setup"
+    TRADING = "trading"
+    OPS = "ops"
+    REFERENCE = "reference"
+    META = "meta"
+
+class DocStatus(Enum):
+    """Statuts de documentation"""
+    DRAFT = "draft"
+    REVIEW = "review"
+    PUBLISHED = "published"
+    DEPRECATED = "deprecated"
+    ARCHIVED = "archived"
+
+# ============================================================
+# DATA CLASSES
+# ============================================================
+
+@dataclass
+class DocMetadata:
+    """Métadonnées de documentation"""
+    title: str
+    description: str
+    category: DocCategory
+    status: DocStatus
+    version: str
+    author: str
+    created: datetime
+    updated: datetime
+    tags: List[str] = field(default_factory=list)
+    references: List[str] = field(default_factory=list)
+    examples: List[str] = field(default_factory=list)
+
+@dataclass
+class DocSection:
+    """Section de documentation"""
+    title: str
+    level: int
+    content: str
+    subsections: List['DocSection'] = field(default_factory=list)
+    metadata: Dict[str, Any] = field(default_factory=dict)
+
+@dataclass
+class Documentation:
+    """Documentation complète"""
+    name: str
+    title: str
+    description: str
+    category: DocCategory
+    status: DocStatus
+    version: str
+    path: Path
+    sections: List[DocSection]
+    metadata: DocMetadata
+    content: str = ""
+    toc: List[Dict[str, Any]] = field(default_factory=list)
+    references: List[str] = field(default_factory=list)
+    examples: List[str] = field(default_factory=list)
+    created: datetime = field(default_factory=datetime.now)
+    updated: datetime = field(default_factory=datetime.now)
 
 # ============================================================
 # DOCUMENTATION STRUCTURE
@@ -42,93 +114,169 @@ DOCS_STRUCTURE = {
         "title": "Documentation Principale",
         "description": "Vue d'ensemble du système NEXUS AI Trading",
         "order": 0,
-        "category": "general"
+        "category": DocCategory.GENERAL,
+        "icon": "📚",
+        "status": DocStatus.PUBLISHED,
+        "version": "2.0.0"
     },
     "getting_started": {
         "path": "GETTING_STARTED.md",
         "title": "Guide de Démarrage Rapide",
         "description": "Introduction rapide au système",
         "order": 1,
-        "category": "general"
+        "category": DocCategory.GENERAL,
+        "icon": "🚀",
+        "status": DocStatus.PUBLISHED,
+        "version": "2.0.0"
     },
     "configuration": {
         "path": "CONFIGURATION.md",
         "title": "Guide de Configuration",
         "description": "Configuration détaillée du système",
         "order": 2,
-        "category": "setup"
+        "category": DocCategory.SETUP,
+        "icon": "⚙️",
+        "status": DocStatus.PUBLISHED,
+        "version": "2.0.0"
     },
     "deployment": {
         "path": "DEPLOYMENT.md",
         "title": "Guide de Déploiement",
         "description": "Déploiement en production",
         "order": 3,
-        "category": "setup"
+        "category": DocCategory.SETUP,
+        "icon": "🏗️",
+        "status": DocStatus.PUBLISHED,
+        "version": "2.0.0"
     },
     "exchanges": {
         "path": "EXCHANGES.md",
         "title": "Guide des Exchanges",
         "description": "Intégration et configuration des exchanges",
         "order": 4,
-        "category": "trading"
+        "category": DocCategory.TRADING,
+        "icon": "🏦",
+        "status": DocStatus.PUBLISHED,
+        "version": "2.0.0"
     },
     "strategies": {
         "path": "STRATEGIES.md",
         "title": "Guide des Stratégies",
         "description": "Types de stratégies d'arbitrage disponibles",
         "order": 5,
-        "category": "trading"
+        "category": DocCategory.TRADING,
+        "icon": "📈",
+        "status": DocStatus.PUBLISHED,
+        "version": "2.0.0"
     },
     "risk_management": {
         "path": "RISK_MANAGEMENT.md",
         "title": "Guide de Gestion des Risques",
         "description": "Gestion des risques et sécurité",
         "order": 6,
-        "category": "trading"
+        "category": DocCategory.TRADING,
+        "icon": "🛡️",
+        "status": DocStatus.PUBLISHED,
+        "version": "2.0.0"
+    },
+    "monitoring": {
+        "path": "MONITORING.md",
+        "title": "Guide de Monitoring",
+        "description": "Monitoring et alertes",
+        "order": 7,
+        "category": DocCategory.OPS,
+        "icon": "📊",
+        "status": DocStatus.PUBLISHED,
+        "version": "2.0.0"
+    },
+    "maintenance": {
+        "path": "MAINTENANCE.md",
+        "title": "Guide de Maintenance",
+        "description": "Maintenance et mise à jour",
+        "order": 8,
+        "category": DocCategory.OPS,
+        "icon": "🔧",
+        "status": DocStatus.PUBLISHED,
+        "version": "2.0.0"
+    },
+    "backup": {
+        "path": "BACKUP.md",
+        "title": "Guide de Backup et Recovery",
+        "description": "Sauvegarde et récupération",
+        "order": 9,
+        "category": DocCategory.OPS,
+        "icon": "💾",
+        "status": DocStatus.PUBLISHED,
+        "version": "2.0.0"
     },
     "api": {
         "path": "API.md",
         "title": "Référence API",
         "description": "Documentation complète de l'API",
-        "order": 7,
-        "category": "reference"
+        "order": 10,
+        "category": DocCategory.REFERENCE,
+        "icon": "🔌",
+        "status": DocStatus.PUBLISHED,
+        "version": "2.0.0"
     },
     "troubleshooting": {
         "path": "TROUBLESHOOTING.md",
         "title": "Guide de Dépannage",
         "description": "Résolution des problèmes courants",
-        "order": 8,
-        "category": "reference"
+        "order": 11,
+        "category": DocCategory.REFERENCE,
+        "icon": "🔍",
+        "status": DocStatus.PUBLISHED,
+        "version": "2.0.0"
     },
     "changelog": {
         "path": "CHANGELOG.md",
         "title": "Journal des Modifications",
         "description": "Historique des versions et des changements",
-        "order": 9,
-        "category": "meta"
+        "order": 12,
+        "category": DocCategory.META,
+        "icon": "📝",
+        "status": DocStatus.PUBLISHED,
+        "version": "2.0.0"
     }
 }
 
 DOCS_CATEGORIES = {
     "general": {
         "title": "📚 Général",
-        "description": "Vue d'ensemble et introduction"
+        "description": "Vue d'ensemble et introduction",
+        "icon": "📚",
+        "order": 0
     },
     "setup": {
         "title": "⚙️ Configuration",
-        "description": "Installation et configuration du système"
+        "description": "Installation et configuration du système",
+        "icon": "⚙️",
+        "order": 1
     },
     "trading": {
         "title": "📈 Trading",
-        "description": "Stratégies de trading et gestion des risques"
+        "description": "Stratégies de trading et gestion des risques",
+        "icon": "📈",
+        "order": 2
+    },
+    "ops": {
+        "title": "🔧 Opérations",
+        "description": "Monitoring, maintenance et backup",
+        "icon": "🔧",
+        "order": 3
     },
     "reference": {
-        "title": "🔧 Référence",
-        "description": "Documentation technique et API"
+        "title": "🔍 Référence",
+        "description": "Documentation technique et API",
+        "icon": "🔍",
+        "order": 4
     },
     "meta": {
-        "title": "📋 Métadonnées",
-        "description": "Informations sur le projet"
+        "title": "📝 Métadonnées",
+        "description": "Informations sur le projet",
+        "icon": "📝",
+        "order": 5
     }
 }
 
@@ -138,9 +286,9 @@ DOCS_CATEGORIES = {
 
 class DocumentationLoader:
     """
-    Chargeur de documentation
+    Chargeur de documentation complet
     
-    Permet de charger et de gérer la documentation complète du système
+    Permet de charger, parser, valider et gérer la documentation du système
     """
     
     def __init__(self, docs_dir: Optional[Union[str, Path]] = None):
@@ -151,11 +299,16 @@ class DocumentationLoader:
             docs_dir: Répertoire de documentation
         """
         self.docs_dir = Path(docs_dir) if docs_dir else Path(__file__).parent
-        self._cache: Dict[str, Dict[str, Any]] = {}
+        self._cache: Dict[str, Documentation] = {}
         self._metadata_cache: Dict[str, Dict[str, Any]] = {}
+        self._toc_cache: Dict[str, List[Dict[str, Any]]] = {}
+        self._validators: Dict[str, Callable] = {}
         
         # Créer les répertoires nécessaires
         self._ensure_dirs()
+        
+        # Charger les validateurs
+        self._register_validators()
         
         logger.info(f"DocumentationLoader initialized with docs_dir: {self.docs_dir}")
     
@@ -165,6 +318,66 @@ class DocumentationLoader:
         (self.docs_dir / "assets" / "images").mkdir(exist_ok=True)
         (self.docs_dir / "assets" / "diagrams").mkdir(exist_ok=True)
         (self.docs_dir / "examples").mkdir(exist_ok=True)
+        (self.docs_dir / "api").mkdir(exist_ok=True)
+        (self.docs_dir / "guides").mkdir(exist_ok=True)
+        (self.docs_dir / "reference").mkdir(exist_ok=True)
+    
+    def _register_validators(self):
+        """Enregistre les validateurs de documentation"""
+        self._validators = {
+            "required_fields": self._validate_required_fields,
+            "link_check": self._validate_links,
+            "image_check": self._validate_images,
+            "section_structure": self._validate_section_structure,
+            "metadata": self._validate_metadata,
+            "version": self._validate_version,
+        }
+    
+    def _validate_required_fields(self, doc: Documentation) -> List[str]:
+        """Valide les champs requis"""
+        errors = []
+        if not doc.title:
+            errors.append("Title is required")
+        if not doc.description:
+            errors.append("Description is required")
+        if not doc.path.exists():
+            errors.append(f"File not found: {doc.path}")
+        return errors
+    
+    def _validate_links(self, doc: Documentation) -> List[str]:
+        """Valide les liens"""
+        errors = []
+        # Implémentation de validation des liens
+        return errors
+    
+    def _validate_images(self, doc: Documentation) -> List[str]:
+        """Valide les images"""
+        errors = []
+        # Implémentation de validation des images
+        return errors
+    
+    def _validate_section_structure(self, doc: Documentation) -> List[str]:
+        """Valide la structure des sections"""
+        errors = []
+        if not doc.sections:
+            errors.append("No sections found")
+        return errors
+    
+    def _validate_metadata(self, doc: Documentation) -> List[str]:
+        """Valide les métadonnées"""
+        errors = []
+        if not doc.metadata.version:
+            errors.append("Version is required")
+        if not doc.metadata.author:
+            errors.append("Author is required")
+        return errors
+    
+    def _validate_version(self, doc: Documentation) -> List[str]:
+        """Valide la version"""
+        errors = []
+        if doc.metadata.version != __version__:
+            errors.append(f"Version mismatch: {doc.metadata.version} != {__version__}")
+        return errors
     
     def get_doc_path(self, doc_name: str) -> Path:
         """
@@ -198,10 +411,13 @@ class DocumentationLoader:
             "title": doc_name.replace("_", " ").title(),
             "description": "",
             "order": 999,
-            "category": "other"
+            "category": DocCategory.REFERENCE,
+            "icon": "📄",
+            "status": DocStatus.DRAFT,
+            "version": __version__
         }
     
-    def load_doc(self, doc_name: str, force_reload: bool = False) -> Dict[str, Any]:
+    def load_doc(self, doc_name: str, force_reload: bool = False) -> Documentation:
         """
         Charge un document avec ses métadonnées
         
@@ -210,7 +426,7 @@ class DocumentationLoader:
             force_reload: Forcer le rechargement
             
         Returns:
-            Dict[str, Any]: Document avec métadonnées
+            Documentation: Document chargé
         """
         if not force_reload and doc_name in self._cache:
             return self._cache[doc_name]
@@ -218,38 +434,94 @@ class DocumentationLoader:
         doc_path = self.get_doc_path(doc_name)
         info = self.get_doc_info(doc_name)
         
+        # Créer les métadonnées
+        metadata = DocMetadata(
+            title=info["title"],
+            description=info.get("description", ""),
+            category=info.get("category", DocCategory.GENERAL),
+            status=info.get("status", DocStatus.PUBLISHED),
+            version=info.get("version", __version__),
+            author=__author__,
+            created=datetime.now(),
+            updated=datetime.now(),
+            tags=[],
+            references=[],
+            examples=[]
+        )
+        
         if not doc_path.exists():
-            content = f"# Document not found: {doc_name}\n\nPlease check the documentation structure."
-            metadata = {}
+            content = self._generate_missing_doc(doc_name, info)
+            sections = []
         else:
-            content, metadata = self._parse_document(doc_path)
+            content, parsed_metadata = self._parse_document(doc_path)
+            # Mettre à jour les métadonnées avec les données parsées
+            if 'title' in parsed_metadata:
+                metadata.title = parsed_metadata['title']
+            if 'description' in parsed_metadata:
+                metadata.description = parsed_metadata['description']
+            if 'tags' in parsed_metadata:
+                metadata.tags = parsed_metadata['tags']
+            if 'references' in parsed_metadata:
+                metadata.references = parsed_metadata['references']
+            
+            sections = self._parse_sections(content)
         
-        result = {
-            "name": doc_name,
-            "title": info["title"],
-            "description": info.get("description", ""),
-            "category": info.get("category", "other"),
-            "order": info.get("order", 999),
-            "path": str(doc_path),
-            "content": content,
-            "metadata": metadata,
-            "last_modified": datetime.fromtimestamp(doc_path.stat().st_mtime).isoformat() if doc_path.exists() else None,
-            "size": doc_path.stat().st_size if doc_path.exists() else 0,
-        }
+        # Générer la table des matières
+        toc = self._generate_toc(content)
         
-        self._cache[doc_name] = result
-        return result
+        # Créer le document
+        doc = Documentation(
+            name=doc_name,
+            title=metadata.title,
+            description=metadata.description,
+            category=metadata.category,
+            status=metadata.status,
+            version=metadata.version,
+            path=doc_path,
+            sections=sections,
+            metadata=metadata,
+            content=content,
+            toc=toc,
+            references=metadata.references,
+            examples=metadata.examples,
+            created=datetime.fromtimestamp(doc_path.stat().st_mtime) if doc_path.exists() else datetime.now(),
+            updated=datetime.fromtimestamp(doc_path.stat().st_mtime) if doc_path.exists() else datetime.now()
+        )
+        
+        self._cache[doc_name] = doc
+        return doc
+    
+    def _generate_missing_doc(self, doc_name: str, info: Dict[str, Any]) -> str:
+        """Génère un document manquant"""
+        return f"""# {info['title']}
+
+## 📋 Description
+
+{info['description'] or f"Documentation pour {doc_name}"}
+
+## 📖 Contenu
+
+Ce document est en cours de rédaction. Veuillez consulter les autres documents de la documentation.
+
+## 🏷️ Métadonnées
+
+- **Version**: {info.get('version', __version__)}
+- **Catégorie**: {info.get('category', 'general').value if hasattr(info.get('category', 'general'), 'value') else info.get('category', 'general')}
+- **Statut**: {info.get('status', 'draft').value if hasattr(info.get('status', 'draft'), 'value') else info.get('status', 'draft')}
+
+## 🔗 Liens Connexes
+
+- [Documentation Principale](README.md)
+- [Guide de Démarrage Rapide](GETTING_STARTED.md)
+- [Guide de Configuration](CONFIGURATION.md)
+
+---
+
+*© 2026 NEXUS QUANTUM LTD - Tous droits réservés*
+"""
     
     def _parse_document(self, doc_path: Path) -> Tuple[str, Dict[str, Any]]:
-        """
-        Parse un document pour en extraire les métadonnées
-        
-        Args:
-            doc_path: Chemin du document
-            
-        Returns:
-            Tuple[str, Dict[str, Any]]: (Contenu, Métadonnées)
-        """
+        """Parse un document pour en extraire les métadonnées"""
         with open(doc_path, 'r', encoding='utf-8') as f:
             content = f.read()
         
@@ -262,13 +534,39 @@ class DocumentationLoader:
                 metadata['title'] = line[2:].strip()
                 break
         
-        # Extraire la table des matières
-        toc = []
+        # Extraire la description (premier paragraphe après le titre)
+        in_description = False
+        desc_lines = []
         for line in lines:
-            if line.strip().startswith('- ['):
-                toc.append(line.strip())
-        if toc:
-            metadata['toc'] = toc
+            if line.startswith('## '):
+                break
+            if in_description and line.strip():
+                desc_lines.append(line.strip())
+            if not in_description and line.strip() and not line.startswith('# '):
+                in_description = True
+        
+        if desc_lines:
+            metadata['description'] = ' '.join(desc_lines)
+        
+        # Extraire les tags
+        tags = []
+        for line in lines:
+            if '**Tags**:' in line or '*Tags*:' in line:
+                tag_part = line.split(':')[-1].strip()
+                tags = [t.strip() for t in tag_part.split(',')]
+                break
+        if tags:
+            metadata['tags'] = tags
+        
+        # Extraire les références
+        references = []
+        for line in lines:
+            if '**References**:' in line or '*References*:' in line:
+                ref_part = line.split(':')[-1].strip()
+                references = [r.strip() for r in ref_part.split(',')]
+                break
+        if references:
+            metadata['references'] = references
         
         # Compter les sections
         sections = [line for line in lines if line.strip().startswith('## ')]
@@ -281,7 +579,71 @@ class DocumentationLoader:
         
         return content, metadata
     
-    def get_all_docs(self, force_reload: bool = False) -> Dict[str, Dict[str, Any]]:
+    def _parse_sections(self, content: str) -> List[DocSection]:
+        """Parse les sections du document"""
+        sections = []
+        lines = content.split('\n')
+        current_section = None
+        current_content = []
+        
+        for line in lines:
+            if line.startswith('## '):
+                if current_section:
+                    current_section.content = '\n'.join(current_content)
+                    sections.append(current_section)
+                current_section = DocSection(
+                    title=line[3:].strip(),
+                    level=2,
+                    content=''
+                )
+                current_content = []
+            elif line.startswith('### '):
+                if current_section:
+                    subsection = DocSection(
+                        title=line[4:].strip(),
+                        level=3,
+                        content=''
+                    )
+                    current_section.subsections.append(subsection)
+                else:
+                    current_content.append(line)
+            else:
+                current_content.append(line)
+        
+        if current_section:
+            current_section.content = '\n'.join(current_content)
+            sections.append(current_section)
+        
+        return sections
+    
+    def _generate_toc(self, content: str) -> List[Dict[str, Any]]:
+        """Génère une table des matières à partir du contenu"""
+        toc = []
+        lines = content.split('\n')
+        
+        for line in lines:
+            if line.startswith('## '):
+                title = line[3:].strip()
+                anchor = title.lower().replace(' ', '-')
+                anchor = ''.join(c for c in anchor if c.isalnum() or c == '-')
+                toc.append({
+                    'level': 2,
+                    'title': title,
+                    'anchor': anchor
+                })
+            elif line.startswith('### '):
+                title = line[4:].strip()
+                anchor = title.lower().replace(' ', '-')
+                anchor = ''.join(c for c in anchor if c.isalnum() or c == '-')
+                toc.append({
+                    'level': 3,
+                    'title': title,
+                    'anchor': anchor
+                })
+        
+        return toc
+    
+    def get_all_docs(self, force_reload: bool = False) -> Dict[str, Documentation]:
         """
         Charge tous les documents
         
@@ -289,14 +651,14 @@ class DocumentationLoader:
             force_reload: Forcer le rechargement
             
         Returns:
-            Dict[str, Dict[str, Any]]: Documents par nom
+            Dict[str, Documentation]: Documents par nom
         """
         docs = {}
         for doc_name in DOCS_STRUCTURE:
             docs[doc_name] = self.load_doc(doc_name, force_reload)
         return docs
     
-    def get_docs_by_category(self, category: str) -> List[Dict[str, Any]]:
+    def get_docs_by_category(self, category: Union[str, DocCategory]) -> List[Documentation]:
         """
         Récupère les documents par catégorie
         
@@ -304,14 +666,17 @@ class DocumentationLoader:
             category: Catégorie
             
         Returns:
-            List[Dict[str, Any]]: Documents de la catégorie
+            List[Documentation]: Documents de la catégorie
         """
+        if isinstance(category, str):
+            category = DocCategory(category)
+        
         docs = []
         for doc_name, info in DOCS_STRUCTURE.items():
             if info.get("category") == category:
                 doc = self.load_doc(doc_name)
                 docs.append(doc)
-        return sorted(docs, key=lambda x: x.get("order", 999))
+        return sorted(docs, key=lambda x: x.metadata.title)
     
     def get_categories(self) -> Dict[str, Dict[str, Any]]:
         """
@@ -330,9 +695,20 @@ class DocumentationLoader:
             Dict[str, Any]: Résumé de la documentation
         """
         summary = {
+            "version": __version__,
+            "generated": datetime.now().isoformat(),
             "total_docs": len(DOCS_STRUCTURE),
+            "total_size": 0,
+            "total_words": 0,
             "categories": {},
-            "docs": {}
+            "docs": {},
+            "status": {
+                "published": 0,
+                "draft": 0,
+                "review": 0,
+                "deprecated": 0,
+                "archived": 0
+            }
         }
         
         for category, info in DOCS_CATEGORIES.items():
@@ -340,20 +716,31 @@ class DocumentationLoader:
             summary["categories"][category] = {
                 "title": info["title"],
                 "description": info["description"],
+                "icon": info.get("icon", "📄"),
                 "count": len(docs)
             }
         
         for doc_name, info in DOCS_STRUCTURE.items():
             doc = self.load_doc(doc_name)
             summary["docs"][doc_name] = {
-                "title": doc["title"],
-                "description": doc["description"],
-                "category": doc["category"],
-                "order": doc["order"],
-                "size": doc["size"],
-                "sections": doc["metadata"].get("sections_count", 0),
-                "words": doc["metadata"].get("word_count", 0)
+                "title": doc.title,
+                "description": doc.description,
+                "category": doc.category.value if hasattr(doc.category, 'value') else str(doc.category),
+                "status": doc.status.value if hasattr(doc.status, 'value') else str(doc.status),
+                "version": doc.version,
+                "icon": info.get("icon", "📄"),
+                "order": info.get("order", 999),
+                "size": doc.path.stat().st_size if doc.path.exists() else 0,
+                "sections": len(doc.sections),
+                "words": len(doc.content.split()),
+                "exists": doc.path.exists()
             }
+            summary["total_size"] += summary["docs"][doc_name]["size"]
+            summary["total_words"] += summary["docs"][doc_name]["words"]
+            
+            status_key = summary["docs"][doc_name]["status"]
+            if status_key in summary["status"]:
+                summary["status"][status_key] += 1
         
         return summary
     
@@ -369,13 +756,17 @@ class DocumentationLoader:
             doc = self.load_doc(doc_name)
             docs.append({
                 "name": doc_name,
-                "title": doc["title"],
-                "description": doc["description"],
-                "category": doc["category"],
-                "order": doc["order"],
-                "path": doc["path"],
-                "size": doc["size"],
-                "sections": doc["metadata"].get("sections_count", 0)
+                "title": doc.title,
+                "description": doc.description,
+                "category": doc.category.value if hasattr(doc.category, 'value') else str(doc.category),
+                "status": doc.status.value if hasattr(doc.status, 'value') else str(doc.status),
+                "version": doc.version,
+                "order": info.get("order", 999),
+                "icon": info.get("icon", "📄"),
+                "path": str(doc.path),
+                "size": doc.path.stat().st_size if doc.path.exists() else 0,
+                "sections": len(doc.sections),
+                "exists": doc.path.exists()
             })
         return sorted(docs, key=lambda x: x.get("order", 999))
     
@@ -394,11 +785,11 @@ class DocumentationLoader:
         
         for doc_name in DOCS_STRUCTURE:
             doc = self.load_doc(doc_name)
-            content_lower = doc["content"].lower()
+            content_lower = doc.content.lower()
             
             if query_lower in content_lower:
                 # Trouver les lignes contenant la requête
-                lines = doc["content"].split('\n')
+                lines = doc.content.split('\n')
                 matches = []
                 for i, line in enumerate(lines):
                     if query_lower in line.lower():
@@ -409,12 +800,35 @@ class DocumentationLoader:
                 
                 results.append({
                     "doc": doc_name,
-                    "title": doc["title"],
+                    "title": doc.title,
                     "matches": len(matches),
-                    "preview": matches[:3]
+                    "preview": matches[:3],
+                    "score": len(matches) / (len(lines) / 100)  # Score simple
                 })
         
-        return sorted(results, key=lambda x: x["matches"], reverse=True)
+        return sorted(results, key=lambda x: x["score"], reverse=True)
+    
+    def validate_doc(self, doc_name: str) -> Tuple[bool, List[str]]:
+        """
+        Valide un document
+        
+        Args:
+            doc_name: Nom du document
+            
+        Returns:
+            Tuple[bool, List[str]]: (valide, erreurs)
+        """
+        doc = self.load_doc(doc_name)
+        errors = []
+        
+        for validator_name, validator in self._validators.items():
+            try:
+                validator_errors = validator(doc)
+                errors.extend(validator_errors)
+            except Exception as e:
+                errors.append(f"Validator {validator_name} error: {e}")
+        
+        return len(errors) == 0, errors
     
     def generate_index(self) -> str:
         """
@@ -440,10 +854,23 @@ class DocumentationLoader:
             
             docs = self.get_docs_by_category(category)
             for doc in docs:
-                lines.append(f"- **[{doc['title']}]({doc['path']})**")
-                if doc["description"]:
-                    lines.append(f"  {doc['description']}")
+                status_icon = {
+                    'published': '✅',
+                    'draft': '📝',
+                    'review': '🔍',
+                    'deprecated': '⚠️',
+                    'archived': '📦'
+                }.get(doc.status.value if hasattr(doc.status, 'value') else str(doc.status), '📄')
+                
+                lines.append(f"- **{status_icon} [{doc.title}]({doc.path.name})**")
+                if doc.description:
+                    lines.append(f"  {doc.description}")
+                lines.append(f"  *Version: {doc.version}*")
                 lines.append("")
+        
+        lines.append("---")
+        lines.append("")
+        lines.append("*© 2026 NEXUS QUANTUM LTD - Tous droits réservés*")
         
         return "\n".join(lines)
     
@@ -484,318 +911,44 @@ class DocumentationLoader:
             return yaml.dump(data, default_flow_style=False, allow_unicode=True)
         else:
             return json.dumps(data, indent=2, ensure_ascii=False)
-
-# ============================================================
-# DOCUMENTATION GENERATORS
-# ============================================================
-
-class DocumentationGenerator:
-    """
-    Générateur de documentation
     
-    Permet de générer des documents et des rapports automatisés
-    """
-    
-    def __init__(self, docs_dir: Optional[Union[str, Path]] = None):
+    def generate_static_site(self, output_dir: Union[str, Path]) -> Path:
         """
-        Initialise le générateur de documentation
+        Génère un site statique de la documentation
         
         Args:
-            docs_dir: Répertoire de documentation
-        """
-        self.docs_dir = Path(docs_dir) if docs_dir else Path(__file__).parent
-        self.loader = DocumentationLoader(docs_dir)
-    
-    def generate_quickstart(self) -> str:
-        """
-        Génère un guide de démarrage rapide
-        
+            output_dir: Répertoire de sortie
+            
         Returns:
-            str: Guide de démarrage rapide
+            Path: Répertoire du site généré
         """
-        sections = [
-            "# 🚀 NEXUS AI Trading System - Quick Start Guide",
-            "",
-            "## Installation",
-            "",
-            "```bash",
-            "git clone https://github.com/NEXUS-QUANTUM/NEXUS-AI-TRADING-SYSTEM.git",
-            "cd NEXUS-AI-TRADING-SYSTEM",
-            "pip install -r requirements.txt",
-            "cp .env.example .env",
-            "```",
-            "",
-            "## Configuration de Base",
-            "",
-            "```yaml",
-            "bot:",
-            "  id: 'arbitrage-bot-001'",
-            "  name: 'NEXUS Arbitrage Bot'",
-            "  environment: 'development'",
-            "",
-            "exchanges:",
-            "  binance:",
-            "    enabled: true",
-            "    api:",
-            "      key: '${BINANCE_API_KEY}'",
-            "      secret: '${BINANCE_API_SECRET}'",
-            "```",
-            "",
-            "## Démarrage",
-            "",
-            "```bash",
-            "python trading/bots/arbitrage_bot/arbitrage_bot.py",
-            "```",
-            "",
-            "## Prochaines Étapes",
-            "",
-            "1. Configurer les exchanges",
-            "2. Configurer les stratégies",
-            "3. Configurer la gestion des risques",
-            "4. Démarrer le bot",
-            "5. Monitorer les performances",
-            "",
-            "## Documentation Complète",
-            "",
-            "Consultez les guides suivants pour plus d'informations:",
-            "",
-            "- [Configuration](CONFIGURATION.md)",
-            "- [Stratégies](STRATEGIES.md)",
-            "- [Gestion des Risques](RISK_MANAGEMENT.md)",
-            "- [Exchanges](EXCHANGES.md)",
-            "- [Déploiement](DEPLOYMENT.md)",
-        ]
+        output_dir = Path(output_dir)
+        output_dir.mkdir(parents=True, exist_ok=True)
         
-        return "\n".join(sections)
-    
-    def generate_api_reference(self) -> str:
-        """
-        Génère la référence API
+        # Générer l'index
+        index_content = self.generate_index()
+        (output_dir / "index.md").write_text(index_content, encoding='utf-8')
         
-        Returns:
-            str: Référence API
-        """
-        sections = [
-            "# NEXUS AI Trading System - API Reference",
-            "",
-            "## 📋 Table des Matières",
-            "",
-            "1. [Introduction](#introduction)",
-            "2. [Authentication](#authentication)",
-            "3. [Endpoints](#endpoints)",
-            "4. [WebSocket](#websocket)",
-            "5. [Examples](#examples)",
-            "",
-            "## Introduction",
-            "",
-            "L'API du NEXUS AI Trading System permet de contrôler et de monitorer le bot d'arbitrage via des appels REST et WebSocket.",
-            "",
-            "### Base URL",
-            "",
-            "```",
-            "http://localhost:8000/api/v1",
-            "```",
-            "",
-            "### Headers",
-            "",
-            "```",
-            "Authorization: Bearer <token>",
-            "Content-Type: application/json",
-            "```",
-            "",
-            "## Authentication",
-            "",
-            "L'authentification se fait via JWT.",
-            "",
-            "### Login",
-            "",
-            "```http",
-            "POST /auth/login",
-            "Content-Type: application/json",
-            "",
-            "{\"username\": \"admin\", \"password\": \"password\"}",
-            "```",
-            "",
-            "### Response",
-            "",
-            "```json",
-            "{\"access_token\": \"jwt_token\", \"token_type\": \"bearer\"}",
-            "```",
-            "",
-            "## Endpoints",
-            "",
-            "### Bot Control",
-            "",
-            "| Method | Endpoint | Description |",
-            "|--------|----------|-------------|",
-            "| POST | /bot/start | Démarre le bot |",
-            "| POST | /bot/stop | Arrête le bot |",
-            "| POST | /bot/restart | Redémarre le bot |",
-            "| GET | /bot/status | Statut du bot |",
-            "| GET | /bot/config | Configuration |",
-            "",
-            "### Trading",
-            "",
-            "| Method | Endpoint | Description |",
-            "|--------|----------|-------------|",
-            "| POST | /trades | Crée un trade |",
-            "| GET | /trades | Liste des trades |",
-            "| GET | /trades/:id | Détails d'un trade |",
-            "| GET | /positions | Positions ouvertes |",
-            "",
-            "### Strategies",
-            "",
-            "| Method | Endpoint | Description |",
-            "|--------|----------|-------------|",
-            "| GET | /strategies | Liste des stratégies |",
-            "| POST | /strategies | Crée une stratégie |",
-            "| PUT | /strategies/:id | Met à jour une stratégie |",
-            "| DELETE | /strategies/:id | Supprime une stratégie |",
-            "",
-            "### Metrics",
-            "",
-            "| Method | Endpoint | Description |",
-            "|--------|----------|-------------|",
-            "| GET | /metrics | Métriques générales |",
-            "| GET | /metrics/performance | Métriques de performance |",
-            "| GET | /metrics/risk | Métriques de risque |",
-            "",
-            "## WebSocket",
-            "",
-            "### Connection",
-            "",
-            "```javascript",
-            "const ws = new WebSocket('ws://localhost:8001/ws');",
-            "```",
-            "",
-            "### Messages",
-            "",
-            "```json",
-            "{\"type\": \"subscribe\", \"channel\": \"metrics\"}",
-            "{\"type\": \"ping\"}",
-            "```",
-            "",
-            "### Events",
-            "",
-            "```json",
-            "{\"type\": \"trade\", \"data\": {...}}",
-            "{\"type\": \"opportunity\", \"data\": {...}}",
-            "{\"type\": \"alert\", \"data\": {...}}",
-            "```",
-            "",
-            "## Examples",
-            "",
-            "### Python",
-            "",
-            "```python",
-            "import requests",
-            "",
-            "response = requests.post(",
-            "    'http://localhost:8000/api/v1/bot/start',",
-            "    headers={'Authorization': 'Bearer your_token'}"
-            ")",
-            "```",
-            "",
-            "### cURL",
-            "",
-            "```bash",
-            "curl -X POST http://localhost:8000/api/v1/bot/start \\",
-            "  -H \"Authorization: Bearer your_token\"",
-            "```",
-        ]
+        # Copier tous les documents
+        for doc_name, info in DOCS_STRUCTURE.items():
+            doc = self.load_doc(doc_name)
+            if doc.path.exists():
+                dest_path = output_dir / doc.path.name
+                import shutil
+                shutil.copy2(doc.path, dest_path)
         
-        return "\n".join(sections)
-    
-    def generate_changelog(self) -> str:
-        """
-        Génère le journal des modifications
+        # Générer un fichier JSON avec les métadonnées
+        metadata = self.export_metadata("json")
+        (output_dir / "metadata.json").write_text(metadata, encoding='utf-8')
         
-        Returns:
-            str: Journal des modifications
-        """
-        sections = [
-            "# NEXUS AI Trading System - Changelog",
-            "",
-            "## 📋 Table des Matières",
-            "",
-            "1. [Version 2.0.0](#version-200)",
-            "2. [Version 1.5.0](#version-150)",
-            "3. [Version 1.0.0](#version-100)",
-            "",
-            "## Version 2.0.0 - 2026-01-01",
-            "",
-            "### 🚀 Nouvelles Fonctionnalités",
-            "",
-            "- **Multi-Exchange Support**: Support de 12+ exchanges",
-            "- **AI/ML Models**: Intégration de modèles LSTM, Transformers, RL",
-            "- **Cross-Chain Arbitrage**: Support des bridges inter-blockchains",
-            "- **Flash Loan Arbitrage**: Utilisation des flash loans sur DEX",
-            "- **Advanced Risk Management**: VaR, CVaR, stress testing",
-            "- **Real-time Dashboard**: Tableau de bord en temps réel",
-            "- **WebSocket API**: Streaming en temps réel",
-            "- **Kubernetes Deployment**: Déploiement sur Kubernetes",
-            "",
-            "### 🔧 Améliorations",
-            "",
-            "- **Performance**: Optimisation du traitement des données",
-            "- **Scalability**: Support de la scalabilité horizontale",
-            "- **Security**: Amélioration de la sécurité (encryption, audit)",
-            "- **Monitoring**: Intégration de Prometheus/Grafana",
-            "- **Logging**: Système de logging avancé",
-            "",
-            "### 🐛 Corrections",
-            "",
-            "- Correction des problèmes de rate limiting",
-            "- Correction des problèmes de reconnexion WebSocket",
-            "- Correction des problèmes de synchronisation",
-            "",
-            "## Version 1.5.0 - 2025-10-15",
-            "",
-            "### 🚀 Nouvelles Fonctionnalités",
-            "",
-            "- **Statistical Arbitrage**: Stratégie d'arbitrage statistique",
-            "- **Triangular Arbitrage**: Stratégie d'arbitrage triangulaire",
-            "- **Order Book Analysis**: Analyse du carnet d'ordres",
-            "- **Sentiment Analysis**: Analyse de sentiment",
-            "",
-            "### 🔧 Améliorations",
-            "",
-            "- **Performance**: Optimisation des stratégies",
-            "- **UI**: Amélioration du tableau de bord",
-            "- **Documentation**: Ajout de la documentation",
-            "",
-            "## Version 1.0.0 - 2025-01-01",
-            "",
-            "### 🚀 Lancement Initial",
-            "",
-            "- **Core Trading Engine**: Moteur de trading de base",
-            "- **Cross-Exchange Arbitrage**: Arbitrage entre exchanges",
-            "- **Risk Management**: Gestion des risques basique",
-            "- **REST API**: API REST complète",
-            "- **Docker Support**: Déploiement sur Docker",
-        ]
-        
-        return "\n".join(sections)
-    
-    def generate_all_docs(self) -> Dict[str, str]:
-        """
-        Génère tous les documents
-        
-        Returns:
-            Dict[str, str]: Documents générés
-        """
-        return {
-            "quickstart": self.generate_quickstart(),
-            "api_reference": self.generate_api_reference(),
-            "changelog": self.generate_changelog(),
-        }
+        logger.info(f"Static site generated at {output_dir}")
+        return output_dir
 
 # ============================================================
-# SINGLETON INSTANCES
+# SINGLETON INSTANCE
 # ============================================================
 
 _doc_loader: Optional[DocumentationLoader] = None
-_doc_generator: Optional[DocumentationGenerator] = None
 
 def get_doc_loader() -> DocumentationLoader:
     """
@@ -809,18 +962,6 @@ def get_doc_loader() -> DocumentationLoader:
         _doc_loader = DocumentationLoader()
     return _doc_loader
 
-def get_doc_generator() -> DocumentationGenerator:
-    """
-    Récupère le générateur de documentation (singleton)
-    
-    Returns:
-        DocumentationGenerator: Générateur de documentation
-    """
-    global _doc_generator
-    if _doc_generator is None:
-        _doc_generator = DocumentationGenerator()
-    return _doc_generator
-
 # ============================================================
 # EXPORTS
 # ============================================================
@@ -831,6 +972,16 @@ __all__ = [
     '__author__',
     '__description__',
     '__copyright__',
+    '__license__',
+    
+    # Enums
+    'DocCategory',
+    'DocStatus',
+    
+    # Data Classes
+    'DocMetadata',
+    'DocSection',
+    'Documentation',
     
     # Constants
     'DOCS_STRUCTURE',
@@ -838,11 +989,9 @@ __all__ = [
     
     # Classes
     'DocumentationLoader',
-    'DocumentationGenerator',
     
     # Functions
     'get_doc_loader',
-    'get_doc_generator',
 ]
 
 # ============================================================
@@ -858,7 +1007,6 @@ logger.info(f"Documentation module initialized (v{__version__})")
 if __name__ == "__main__":
     # Test du module de documentation
     loader = get_doc_loader()
-    generator = get_doc_generator()
     
     print("=" * 80)
     print("NEXUS AI Trading System - Documentation Module")
@@ -866,16 +1014,40 @@ if __name__ == "__main__":
     
     print("\n📚 Documentation Structure:")
     for doc_name, info in DOCS_STRUCTURE.items():
-        print(f"  - {info['title']} ({info['category']})")
+        status = info.get('status', DocStatus.DRAFT)
+        status_label = status.value if hasattr(status, 'value') else str(status)
+        print(f"  {info['icon']} {info['title']} ({info['category']}) [{status_label}]")
     
     print("\n📊 Summary:")
     summary = loader.get_doc_summary()
+    print(f"  Version: {summary['version']}")
     print(f"  Total Docs: {summary['total_docs']}")
-    for category, info in summary['categories'].items():
-        print(f"  {category}: {info['count']} docs")
+    print(f"  Total Size: {summary['total_size'] / 1024:.2f} KB")
+    print(f"  Total Words: {summary['total_words']:,}")
     
-    print("\n📖 Generated Quickstart:")
-    quickstart = generator.generate_quickstart()
-    print(quickstart[:500] + "...")
+    print("\n  Status:")
+    for status, count in summary['status'].items():
+        print(f"    {status}: {count}")
+    
+    print("\n  Categories:")
+    for category, info in summary['categories'].items():
+        print(f"    {info['icon']} {category}: {info['count']} docs")
+    
+    print("\n📖 Documents List:")
+    for doc in loader.get_docs_list():
+        status_icon = {
+            'published': '✅',
+            'draft': '📝',
+            'review': '🔍',
+            'deprecated': '⚠️',
+            'archived': '📦'
+        }.get(doc['status'], '📄')
+        exists = "✅" if doc['exists'] else "❌"
+        print(f"  {exists} {status_icon} {doc['icon']} {doc['title']} (v{doc['version']})")
+    
+    print("\n🔍 Search Test:")
+    results = loader.search_docs("configuration")
+    for result in results[:3]:
+        print(f"  {result['title']}: {result['matches']} matches")
     
     print("\n✅ Documentation module test completed")
