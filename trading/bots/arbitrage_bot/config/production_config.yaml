@@ -1,0 +1,1863 @@
+# ============================================================
+# NEXUS AI TRADING SYSTEM - Arbitrage Bot Production Configuration
+# Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+# ============================================================
+# @version 2.0.0
+# @author NEXUS QUANTUM TEAM
+# @description Configuration complète de production pour le bot d'arbitrage
+# @usage Utilisé en environnement de production avec optimisation maximale
+# ============================================================
+
+# ============================================================
+# BOT IDENTITY - PRODUCTION
+# ============================================================
+bot:
+  id: "arbitrage-bot-prod-001"
+  name: "NEXUS Arbitrage Bot (Production)"
+  version: "2.0.0"
+  description: "Bot d'arbitrage algorithmique avancé - Production"
+  environment: "production"
+  instance: "prod-001"
+  deployment: "kubernetes"
+  region: "eu-west-1"
+  cluster: "nexus-prod"
+  availability_zone: "eu-west-1a"
+  replication_factor: 3
+  
+# ============================================================
+# GENERAL SETTINGS - PRODUCTION
+# ============================================================
+general:
+  enabled: true
+  debug: false
+  log_level: "info"  # debug | info | warning | error | critical
+  timezone: "UTC"
+  locale: "en_US"
+  max_concurrent_operations: 50
+  operation_timeout: 30  # seconds
+  retry_attempts: 5
+  retry_delay: 5  # seconds
+  shutdown_timeout: 60  # seconds
+  startup_timeout: 120  # seconds
+  health_check_interval: 10  # seconds
+  enable_profiling: false
+  enable_metrics: true
+  enable_tracing: true
+  graceful_shutdown: true
+  emergency_stop: true
+  auto_restart: true
+  maintenance_mode: false
+  canary_deployment: false
+  
+# ============================================================
+# EXCHANGE CONFIGURATIONS - PRODUCTION
+# ============================================================
+exchanges:
+  # --- Binance (Primary) ---
+  binance:
+    enabled: true
+    name: "Binance"
+    type: "cex"
+    website: "https://www.binance.com"
+    description: "Plus grand exchange de cryptomonnaies au monde"
+    priority: 1
+    tier: "premium"
+    production_ready: true
+    
+    api:
+      key: "${BINANCE_API_KEY}"
+      secret: "${BINANCE_API_SECRET}"
+      passphrase: ""
+      
+    endpoints:
+      rest: "https://api.binance.com"
+      websocket: "wss://stream.binance.com:9443/ws"
+      futures: "https://fapi.binance.com"
+      futures_websocket: "wss://fstream.binance.com/ws"
+      margin: "https://api.binance.com/sapi/v1"
+      options: "https://api.binance.com/eapi/v1"
+      withdraw: "https://api.binance.com/wapi/v3"
+      sub_account: "https://api.binance.com/sapi/v1/sub-account"
+      staking: "https://api.binance.com/sapi/v1/staking"
+      
+    rate_limits:
+      requests_per_second: 50
+      orders_per_second: 10
+      websocket_connections: 10
+      websocket_subscriptions: 1024
+      
+    options:
+      use_spot: true
+      use_futures: true
+      use_margin: false
+      use_options: false
+      use_isolated_margin: false
+      use_cross_margin: false
+      use_dual_side_position: true
+      
+    trading_pairs:
+      spot:
+        - "BTC/USDT"
+        - "ETH/USDT"
+        - "BNB/USDT"
+        - "SOL/USDT"
+        - "ADA/USDT"
+        - "DOT/USDT"
+        - "AVAX/USDT"
+        - "MATIC/USDT"
+        - "LINK/USDT"
+        - "UNI/USDT"
+        - "ATOM/USDT"
+        - "XRP/USDT"
+        - "DOGE/USDT"
+        - "SHIB/USDT"
+        - "TRX/USDT"
+        - "ETC/USDT"
+        - "LTC/USDT"
+        - "BCH/USDT"
+        - "NEAR/USDT"
+        - "APT/USDT"
+        - "ARB/USDT"
+        - "OP/USDT"
+        - "INJ/USDT"
+        - "SUI/USDT"
+        - "SEI/USDT"
+      futures:
+        - "BTC/USDT"
+        - "ETH/USDT"
+        - "BNB/USDT"
+        - "SOL/USDT"
+        - "ADA/USDT"
+        - "DOT/USDT"
+        - "AVAX/USDT"
+        - "MATIC/USDT"
+        - "LINK/USDT"
+        - "XRP/USDT"
+        - "DOGE/USDT"
+        - "NEAR/USDT"
+        - "ARB/USDT"
+        - "OP/USDT"
+        
+    fee:
+      maker: 0.001
+      taker: 0.001
+      futures_maker: 0.0002
+      futures_taker: 0.0004
+      discount: 0.25
+      discount_asset: "BNB"
+      
+    min_order_size:
+      BTC_USDT: 0.0001
+      ETH_USDT: 0.001
+      default: 0.001
+      
+    lot_size:
+      BTC_USDT: 0.00001
+      ETH_USDT: 0.0001
+      default: 0.0001
+      
+    quote_precision:
+      BTC_USDT: 2
+      ETH_USDT: 2
+      default: 2
+      
+    base_precision:
+      BTC_USDT: 8
+      ETH_USDT: 8
+      default: 8
+      
+    security:
+      withdraw_whitelist: true
+      ip_whitelist: true
+      api_key_permissions:
+        - "spot"
+        - "futures"
+        - "margin"
+        
+    markets:
+      - "spot"
+      - "futures"
+      - "margin"
+      
+    features:
+      - "limit_orders"
+      - "market_orders"
+      - "stop_orders"
+      - "stop_limit_orders"
+      - "trailing_stop_orders"
+      - "oco_orders"
+      - "iceberg_orders"
+      - "twap_orders"
+      - "post_only"
+      - "reduce_only"
+      - "close_position"
+      
+    websocket_streams:
+      - "depth"
+      - "trade"
+      - "kline"
+      - "ticker"
+      - "bookTicker"
+      - "markPrice"
+      - "aggTrade"
+      
+    klines:
+      intervals:
+        - "1m"
+        - "3m"
+        - "5m"
+        - "15m"
+        - "30m"
+        - "1h"
+        - "2h"
+        - "4h"
+        - "6h"
+        - "8h"
+        - "12h"
+        - "1d"
+        - "3d"
+        - "1w"
+        - "1M"
+      max_limit: 1000
+      
+    maintenance:
+      scheduled_downtime: true
+      weekly_maintenance: "Sunday 06:00 UTC"
+      emergency_maintenance: true
+      notification_channels:
+        - "telegram"
+        - "email"
+        - "slack"
+        - "pagerduty"
+
+  # --- Bybit (Secondary) ---
+  bybit:
+    enabled: true
+    name: "Bybit"
+    type: "cex"
+    website: "https://www.bybit.com"
+    description: "Plateforme de trading dérivés et spot"
+    priority: 2
+    tier: "premium"
+    production_ready: true
+    
+    api:
+      key: "${BYBIT_API_KEY}"
+      secret: "${BYBIT_API_SECRET}"
+      passphrase: ""
+      
+    endpoints:
+      rest: "https://api.bybit.com"
+      websocket: "wss://stream.bybit.com/v5/public/spot"
+      futures: "https://api.bybit.com/v5"
+      futures_websocket: "wss://stream.bybit.com/v5/public/linear"
+      options: "https://api.bybit.com/v5/market/option"
+      spot: "https://api.bybit.com/v5/market/spot"
+      
+    rate_limits:
+      requests_per_second: 30
+      orders_per_second: 5
+      websocket_connections: 10
+      websocket_subscriptions: 500
+      
+    options:
+      use_spot: true
+      use_futures: true
+      use_linear: true
+      use_inverse: false
+      use_derivatives: true
+      use_options: false
+      
+    trading_pairs:
+      spot:
+        - "BTC/USDT"
+        - "ETH/USDT"
+        - "SOL/USDT"
+        - "ADA/USDT"
+        - "DOT/USDT"
+        - "AVAX/USDT"
+        - "MATIC/USDT"
+        - "LINK/USDT"
+        - "UNI/USDT"
+        - "ATOM/USDT"
+        - "XRP/USDT"
+        - "DOGE/USDT"
+        - "NEAR/USDT"
+        - "ARB/USDT"
+        - "OP/USDT"
+      futures:
+        - "BTC/USDT"
+        - "ETH/USDT"
+        - "SOL/USDT"
+        - "ADA/USDT"
+        - "DOT/USDT"
+        - "AVAX/USDT"
+        - "MATIC/USDT"
+        - "LINK/USDT"
+        - "XRP/USDT"
+        - "DOGE/USDT"
+      inverse:
+        - "BTC/USD"
+        - "ETH/USD"
+        - "SOL/USD"
+        
+    fee:
+      maker: 0.001
+      taker: 0.001
+      futures_maker: 0.0002
+      futures_taker: 0.00055
+      
+    min_order_size:
+      BTC_USDT: 0.0001
+      ETH_USDT: 0.001
+      default: 0.001
+      
+    lot_size:
+      BTC_USDT: 0.00001
+      ETH_USDT: 0.0001
+      default: 0.0001
+      
+    quote_precision:
+      BTC_USDT: 2
+      ETH_USDT: 2
+      default: 2
+      
+    base_precision:
+      BTC_USDT: 8
+      ETH_USDT: 8
+      default: 8
+      
+    security:
+      withdraw_whitelist: true
+      ip_whitelist: true
+      api_key_permissions:
+        - "spot"
+        - "futures"
+        
+    markets:
+      - "spot"
+      - "futures"
+      - "inverse"
+      
+    features:
+      - "limit_orders"
+      - "market_orders"
+      - "stop_orders"
+      - "stop_limit_orders"
+      - "trailing_stop_orders"
+      - "post_only"
+      - "reduce_only"
+      - "close_position"
+      - "take_profit"
+      - "stop_loss"
+      
+    websocket_streams:
+      - "depth"
+      - "trade"
+      - "kline"
+      - "ticker"
+      - "bookTicker"
+      
+    klines:
+      intervals:
+        - "1m"
+        - "3m"
+        - "5m"
+        - "15m"
+        - "30m"
+        - "1h"
+        - "2h"
+        - "4h"
+        - "6h"
+        - "12h"
+        - "1d"
+        - "1w"
+      max_limit: 1000
+      
+    maintenance:
+      scheduled_downtime: true
+      weekly_maintenance: "Saturday 02:00 UTC"
+      notification_channels:
+        - "telegram"
+        - "email"
+        - "slack"
+
+  # --- Coinbase (Tertiary) ---
+  coinbase:
+    enabled: true
+    name: "Coinbase Pro"
+    type: "cex"
+    website: "https://pro.coinbase.com"
+    description: "Exchange régulé américain"
+    priority: 3
+    tier: "premium"
+    production_ready: true
+    
+    api:
+      key: "${COINBASE_API_KEY}"
+      secret: "${COINBASE_API_SECRET}"
+      passphrase: "${COINBASE_PASSPHRASE}"
+      
+    endpoints:
+      rest: "https://api.coinbase.com"
+      websocket: "wss://ws-feed.pro.coinbase.com"
+      prime: "https://api.prime.coinbase.com"
+      
+    rate_limits:
+      requests_per_second: 20
+      orders_per_second: 5
+      websocket_connections: 5
+      websocket_subscriptions: 100
+      
+    options:
+      use_spot: true
+      use_futures: false
+      use_prime: false
+      
+    trading_pairs:
+      spot:
+        - "BTC-USD"
+        - "ETH-USD"
+        - "SOL-USD"
+        - "ADA-USD"
+        - "DOT-USD"
+        - "AVAX-USD"
+        - "MATIC-USD"
+        - "LINK-USD"
+        - "UNI-USD"
+        - "ATOM-USD"
+        - "XRP-USD"
+        - "DOGE-USD"
+        - "SHIB-USD"
+        - "NEAR-USD"
+        - "ARB-USD"
+        
+    fee:
+      maker: 0.004
+      taker: 0.006
+      volume_tiers:
+        - volume: 10000
+          maker: 0.0035
+          taker: 0.0055
+        - volume: 50000
+          maker: 0.0030
+          taker: 0.0050
+        - volume: 100000
+          maker: 0.0025
+          taker: 0.0045
+        - volume: 500000
+          maker: 0.0020
+          taker: 0.0040
+        - volume: 1000000
+          maker: 0.0015
+          taker: 0.0035
+        - volume: 5000000
+          maker: 0.0010
+          taker: 0.0030
+          
+    min_order_size:
+      BTC_USD: 0.0001
+      ETH_USD: 0.001
+      default: 0.001
+      
+    lot_size:
+      BTC_USD: 0.00001
+      ETH_USD: 0.0001
+      default: 0.0001
+      
+    quote_precision:
+      BTC_USD: 2
+      ETH_USD: 2
+      default: 2
+      
+    base_precision:
+      BTC_USD: 8
+      ETH_USD: 8
+      default: 8
+      
+    security:
+      withdraw_whitelist: true
+      ip_whitelist: true
+      api_key_permissions:
+        - "spot"
+        
+    markets:
+      - "spot"
+      
+    features:
+      - "limit_orders"
+      - "market_orders"
+      - "stop_orders"
+      - "post_only"
+      
+    websocket_streams:
+      - "ticker"
+      - "level2"
+      - "matches"
+      - "full"
+      
+    klines:
+      intervals:
+        - "1m"
+        - "5m"
+        - "15m"
+        - "1h"
+        - "6h"
+        - "1d"
+      max_limit: 1000
+      
+    maintenance:
+      scheduled_downtime: true
+      notification_channels:
+        - "telegram"
+        - "email"
+        - "slack"
+
+  # --- Kraken (Backup) ---
+  kraken:
+    enabled: true
+    name: "Kraken"
+    type: "cex"
+    website: "https://www.kraken.com"
+    description: "Exchange européen réputé"
+    priority: 4
+    tier: "standard"
+    production_ready: true
+    
+    api:
+      key: "${KRAKEN_API_KEY}"
+      secret: "${KRAKEN_API_SECRET}"
+      
+    endpoints:
+      rest: "https://api.kraken.com"
+      websocket: "wss://ws.kraken.com"
+      futures: "https://futures.kraken.com"
+      
+    rate_limits:
+      requests_per_second: 15
+      orders_per_second: 3
+      websocket_connections: 5
+      websocket_subscriptions: 100
+      
+    options:
+      use_spot: true
+      use_futures: false
+      use_staking: false
+      
+    trading_pairs:
+      spot:
+        - "XBT/USD"
+        - "ETH/USD"
+        - "SOL/USD"
+        - "ADA/USD"
+        - "DOT/USD"
+        - "AVAX/USD"
+        - "MATIC/USD"
+        - "LINK/USD"
+        - "UNI/USD"
+        - "ATOM/USD"
+        - "XRP/USD"
+        - "DOGE/USD"
+        
+    fee:
+      maker: 0.0016
+      taker: 0.0026
+      volume_tiers:
+        - volume: 10000
+          maker: 0.0014
+          taker: 0.0024
+        - volume: 50000
+          maker: 0.0012
+          taker: 0.0022
+        - volume: 100000
+          maker: 0.0010
+          taker: 0.0020
+        - volume: 500000
+          maker: 0.0008
+          taker: 0.0018
+        - volume: 1000000
+          maker: 0.0006
+          taker: 0.0016
+          
+    min_order_size:
+      XBT_USD: 0.0001
+      ETH_USD: 0.001
+      default: 0.001
+      
+    lot_size:
+      XBT_USD: 0.00001
+      ETH_USD: 0.0001
+      default: 0.0001
+      
+    quote_precision:
+      XBT_USD: 2
+      ETH_USD: 2
+      default: 2
+      
+    base_precision:
+      XBT_USD: 8
+      ETH_USD: 8
+      default: 8
+      
+    security:
+      withdraw_whitelist: true
+      ip_whitelist: true
+      api_key_permissions:
+        - "spot"
+        - "futures"
+        
+    markets:
+      - "spot"
+      - "futures"
+      
+    features:
+      - "limit_orders"
+      - "market_orders"
+      - "stop_orders"
+      - "stop_limit_orders"
+      - "post_only"
+      
+    websocket_streams:
+      - "ticker"
+      - "depth"
+      - "trade"
+      - "ohlc"
+      
+    klines:
+      intervals:
+        - "1m"
+        - "5m"
+        - "15m"
+        - "30m"
+        - "1h"
+        - "4h"
+        - "1d"
+        - "1w"
+      max_limit: 1000
+      
+    maintenance:
+      scheduled_downtime: true
+      notification_channels:
+        - "telegram"
+        - "email"
+
+  # --- KuCoin (Backup) ---
+  kucoin:
+    enabled: true
+    name: "KuCoin"
+    type: "cex"
+    website: "https://www.kucoin.com"
+    description: "Exchange asiatique diversifié"
+    priority: 5
+    tier: "standard"
+    production_ready: true
+    
+    api:
+      key: "${KUCOIN_API_KEY}"
+      secret: "${KUCOIN_API_SECRET}"
+      passphrase: "${KUCOIN_PASSPHRASE}"
+      
+    endpoints:
+      rest: "https://api.kucoin.com"
+      websocket: "wss://ws-api.kucoin.com/endpoint"
+      futures: "https://api-futures.kucoin.com"
+      
+    rate_limits:
+      requests_per_second: 40
+      orders_per_second: 10
+      websocket_connections: 10
+      websocket_subscriptions: 300
+      
+    options:
+      use_spot: true
+      use_futures: true
+      use_margin: false
+      
+    trading_pairs:
+      spot:
+        - "BTC/USDT"
+        - "ETH/USDT"
+        - "SOL/USDT"
+        - "ADA/USDT"
+        - "DOT/USDT"
+        - "AVAX/USDT"
+        - "MATIC/USDT"
+        - "LINK/USDT"
+        - "UNI/USDT"
+        - "ATOM/USDT"
+        - "XRP/USDT"
+        - "DOGE/USDT"
+        - "NEAR/USDT"
+        - "ARB/USDT"
+        - "OP/USDT"
+      futures:
+        - "BTC/USDT"
+        - "ETH/USDT"
+        - "SOL/USDT"
+        - "ADA/USDT"
+        - "DOT/USDT"
+        - "AVAX/USDT"
+        
+    fee:
+      maker: 0.001
+      taker: 0.001
+      futures_maker: 0.0002
+      futures_taker: 0.0006
+      
+    min_order_size:
+      BTC_USDT: 0.00001
+      ETH_USDT: 0.0001
+      default: 0.0001
+      
+    lot_size:
+      BTC_USDT: 0.0000001
+      ETH_USDT: 0.000001
+      default: 0.000001
+      
+    quote_precision:
+      BTC_USDT: 2
+      ETH_USDT: 2
+      default: 2
+      
+    base_precision:
+      BTC_USDT: 8
+      ETH_USDT: 8
+      default: 8
+      
+    security:
+      withdraw_whitelist: true
+      ip_whitelist: true
+      api_key_permissions:
+        - "spot"
+        - "futures"
+        
+    markets:
+      - "spot"
+      - "futures"
+      
+    features:
+      - "limit_orders"
+      - "market_orders"
+      - "stop_orders"
+      - "stop_limit_orders"
+      - "post_only"
+      - "reduce_only"
+      
+    websocket_streams:
+      - "ticker"
+      - "depth"
+      - "trade"
+      - "kline"
+      
+    klines:
+      intervals:
+        - "1m"
+        - "3m"
+        - "5m"
+        - "15m"
+        - "30m"
+        - "1h"
+        - "2h"
+        - "4h"
+        - "6h"
+        - "8h"
+        - "12h"
+        - "1d"
+        - "1w"
+      max_limit: 1000
+      
+    maintenance:
+      scheduled_downtime: true
+      notification_channels:
+        - "telegram"
+        - "email"
+
+  # --- OKX (Backup) ---
+  okx:
+    enabled: true
+    name: "OKX"
+    type: "cex"
+    website: "https://www.okx.com"
+    description: "Exchange chinois complet"
+    priority: 6
+    tier: "standard"
+    production_ready: true
+    
+    api:
+      key: "${OKX_API_KEY}"
+      secret: "${OKX_API_SECRET}"
+      passphrase: "${OKX_PASSPHRASE}"
+      
+    endpoints:
+      rest: "https://www.okx.com"
+      websocket: "wss://ws.okx.com:8443/ws/v5/public"
+      futures: "https://www.okx.com/api/v5"
+      
+    rate_limits:
+      requests_per_second: 25
+      orders_per_second: 5
+      websocket_connections: 10
+      websocket_subscriptions: 200
+      
+    options:
+      use_spot: true
+      use_futures: true
+      use_options: false
+      use_swap: true
+      
+    trading_pairs:
+      spot:
+        - "BTC/USDT"
+        - "ETH/USDT"
+        - "SOL/USDT"
+        - "ADA/USDT"
+        - "DOT/USDT"
+        - "AVAX/USDT"
+        - "MATIC/USDT"
+        - "LINK/USDT"
+        - "UNI/USDT"
+        - "ATOM/USDT"
+        - "XRP/USDT"
+        - "DOGE/USDT"
+      futures:
+        - "BTC/USDT"
+        - "ETH/USDT"
+        - "SOL/USDT"
+        - "ADA/USDT"
+        - "DOT/USDT"
+      swap:
+        - "BTC/USDT"
+        - "ETH/USDT"
+        - "SOL/USDT"
+        
+    fee:
+      maker: 0.001
+      taker: 0.001
+      futures_maker: 0.0002
+      futures_taker: 0.0005
+      
+    min_order_size:
+      BTC_USDT: 0.0001
+      ETH_USDT: 0.001
+      default: 0.001
+      
+    lot_size:
+      BTC_USDT: 0.00001
+      ETH_USDT: 0.0001
+      default: 0.0001
+      
+    quote_precision:
+      BTC_USDT: 2
+      ETH_USDT: 2
+      default: 2
+      
+    base_precision:
+      BTC_USDT: 8
+      ETH_USDT: 8
+      default: 8
+      
+    security:
+      withdraw_whitelist: true
+      ip_whitelist: true
+      api_key_permissions:
+        - "spot"
+        - "futures"
+        - "options"
+        
+    markets:
+      - "spot"
+      - "futures"
+      - "swap"
+      
+    features:
+      - "limit_orders"
+      - "market_orders"
+      - "stop_orders"
+      - "stop_limit_orders"
+      - "post_only"
+      - "reduce_only"
+      - "close_position"
+      
+    websocket_streams:
+      - "ticker"
+      - "depth"
+      - "trade"
+      - "kline"
+      - "mark_price"
+      
+    klines:
+      intervals:
+        - "1m"
+        - "3m"
+        - "5m"
+        - "15m"
+        - "30m"
+        - "1h"
+        - "2h"
+        - "4h"
+        - "6h"
+        - "12h"
+        - "1d"
+        - "1w"
+        - "1M"
+      max_limit: 1000
+      
+    maintenance:
+      scheduled_downtime: true
+      notification_channels:
+        - "telegram"
+        - "email"
+
+  # --- Gate.io (Backup) ---
+  gateio:
+    enabled: true
+    name: "Gate.io"
+    type: "cex"
+    website: "https://www.gate.io"
+    description: "Exchange chinois historique"
+    priority: 7
+    tier: "standard"
+    production_ready: true
+    
+    api:
+      key: "${GATEIO_API_KEY}"
+      secret: "${GATEIO_API_SECRET}"
+      
+    endpoints:
+      rest: "https://api.gateio.ws/api/v4"
+      websocket: "wss://ws.gate.io/v4"
+      futures: "https://api.gateio.ws/api/v4/futures"
+      
+    rate_limits:
+      requests_per_second: 20
+      orders_per_second: 5
+      websocket_connections: 10
+      websocket_subscriptions: 100
+      
+    options:
+      use_spot: true
+      use_futures: true
+      use_margin: false
+      
+    trading_pairs:
+      spot:
+        - "BTC/USDT"
+        - "ETH/USDT"
+        - "SOL/USDT"
+        - "ADA/USDT"
+        - "DOT/USDT"
+        - "AVAX/USDT"
+        - "MATIC/USDT"
+        - "LINK/USDT"
+        - "UNI/USDT"
+        - "ATOM/USDT"
+        - "XRP/USDT"
+        - "DOGE/USDT"
+      futures:
+        - "BTC/USDT"
+        - "ETH/USDT"
+        - "SOL/USDT"
+        - "ADA/USDT"
+        - "DOT/USDT"
+        
+    fee:
+      maker: 0.002
+      taker: 0.002
+      futures_maker: 0.0005
+      futures_taker: 0.0007
+      
+    min_order_size:
+      BTC_USDT: 0.0001
+      ETH_USDT: 0.001
+      default: 0.001
+      
+    lot_size:
+      BTC_USDT: 0.00001
+      ETH_USDT: 0.0001
+      default: 0.0001
+      
+    quote_precision:
+      BTC_USDT: 2
+      ETH_USDT: 2
+      default: 2
+      
+    base_precision:
+      BTC_USDT: 8
+      ETH_USDT: 8
+      default: 8
+      
+    security:
+      withdraw_whitelist: true
+      ip_whitelist: true
+      api_key_permissions:
+        - "spot"
+        - "futures"
+        
+    markets:
+      - "spot"
+      - "futures"
+      
+    features:
+      - "limit_orders"
+      - "market_orders"
+      - "stop_orders"
+      - "post_only"
+      
+    websocket_streams:
+      - "ticker"
+      - "depth"
+      - "trade"
+      - "kline"
+      
+    klines:
+      intervals:
+        - "1m"
+        - "5m"
+        - "15m"
+        - "30m"
+        - "1h"
+        - "4h"
+        - "1d"
+        - "1w"
+      max_limit: 1000
+      
+    maintenance:
+      scheduled_downtime: true
+      notification_channels:
+        - "telegram"
+
+# ============================================================
+# ARBITRAGE STRATEGIES - PRODUCTION
+# ============================================================
+strategies:
+  # --- Cross-Exchange Arbitrage ---
+  cross_exchange:
+    enabled: true
+    name: "Cross-Exchange Arbitrage"
+    description: "Exploite les différences de prix entre les exchanges"
+    min_profit_threshold: 0.005
+    max_spread_percentage: 0.15
+    min_volume_threshold: 1000
+    max_position_size: 50000
+    execution_timeout: 30
+    max_execution_attempts: 3
+    min_time_between_trades: 10
+    max_trades_per_minute: 5
+    
+    pairs:
+      - pair: "BTC/USDT"
+        min_profit: 0.008
+        max_spread: 0.20
+        min_volume: 5000
+        max_position: 50000
+      - pair: "ETH/USDT"
+        min_profit: 0.010
+        max_spread: 0.25
+        min_volume: 5000
+        max_position: 30000
+      - pair: "SOL/USDT"
+        min_profit: 0.015
+        max_spread: 0.30
+        min_volume: 3000
+        max_position: 20000
+      - pair: "ADA/USDT"
+        min_profit: 0.020
+        max_spread: 0.35
+        min_volume: 2000
+        max_position: 15000
+      - pair: "DOT/USDT"
+        min_profit: 0.020
+        max_spread: 0.35
+        min_volume: 2000
+        max_position: 15000
+
+  # --- Triangular Arbitrage ---
+  triangular:
+    enabled: true
+    name: "Triangular Arbitrage"
+    description: "Exploite les inefficacités entre 3 paires de trading"
+    min_profit_threshold: 0.008
+    max_position_size: 30000
+    execution_timeout: 25
+    max_execution_attempts: 3
+    min_time_between_trades: 10
+    
+    cycles:
+      - name: "BTC-ETH-USDT"
+        pairs:
+          - "BTC/USDT"
+          - "ETH/BTC"
+          - "ETH/USDT"
+        min_profit: 0.008
+        max_position: 30000
+      - name: "SOL-BTC-USDT"
+        pairs:
+          - "SOL/USDT"
+          - "BTC/SOL"
+          - "BTC/USDT"
+        min_profit: 0.010
+        max_position: 20000
+      - name: "ADA-BTC-USDT"
+        pairs:
+          - "ADA/USDT"
+          - "BTC/ADA"
+          - "BTC/USDT"
+        min_profit: 0.012
+        max_position: 15000
+
+  # --- Statistical Arbitrage ---
+  statistical:
+    enabled: true
+    name: "Statistical Arbitrage"
+    description: "Utilise des modèles statistiques pour identifier les opportunités"
+    min_profit_threshold: 0.010
+    lookback_period: 100
+    cointegration_confidence: 0.95
+    z_score_threshold: 2.0
+    half_life: 20
+    max_position_size: 20000
+    min_time_between_trades: 15
+    
+    pairs:
+      - pair1: "BTC/USDT"
+        pair2: "ETH/USDT"
+        hedge_ratio: 0.5
+        min_profit: 0.010
+        max_position: 20000
+      - pair1: "SOL/USDT"
+        pair2: "ADA/USDT"
+        hedge_ratio: 0.8
+        min_profit: 0.012
+        max_position: 15000
+      - pair1: "DOT/USDT"
+        pair2: "AVAX/USDT"
+        hedge_ratio: 0.7
+        min_profit: 0.012
+        max_position: 15000
+
+# ============================================================
+# RISK MANAGEMENT - PRODUCTION
+# ============================================================
+risk_management:
+  enabled: true
+  max_drawdown: 0.15
+  daily_loss_limit: 0.05
+  weekly_loss_limit: 0.10
+  max_positions: 10
+  max_positions_per_pair: 3
+  max_positions_per_exchange: 5
+  
+  position_sizing:
+    strategy: "adaptive"
+    fixed_size: 1000
+    max_position_size: 50000
+    min_position_size: 100
+    kelly_fraction: 0.25
+    volatility_factor: 0.5
+    adaptive_factor: 0.3
+    
+  stop_loss:
+    enabled: true
+    type: "trailing"
+    percentage: 0.02
+    trailing_offset: 0.01
+    min_trailing: 0.005
+    max_trailing: 0.05
+    dynamic_factor: 0.5
+    
+  take_profit:
+    enabled: true
+    type: "multiple"
+    targets:
+      - 0.01
+      - 0.02
+      - 0.03
+      - 0.05
+    allocation:
+      - 0.25
+      - 0.25
+      - 0.25
+      - 0.25
+    trailing_activation: 0.015
+    
+  circuit_breaker:
+    enabled: true
+    consecutive_failures: 5
+    failure_window: 60
+    cooldown_period: 300
+    max_failures_per_hour: 20
+    max_failures_per_day: 100
+    
+  drawdown_protection:
+    enabled: true
+    max_drawdown_daily: 0.05
+    max_drawdown_weekly: 0.10
+    max_drawdown_monthly: 0.15
+    action: "reduce"
+    reduce_factor: 0.5
+    recovery_threshold: 0.03
+
+# ============================================================
+# EXECUTION ENGINE - PRODUCTION
+# ============================================================
+execution:
+  enabled: true
+  mode: "smart"
+  order_types:
+    - "market"
+    - "limit"
+    - "stop_loss"
+    - "take_profit"
+    - "trailing_stop"
+    - "oco"
+    - "iceberg"
+    - "twap"
+    
+  order_routing:
+    enabled: true
+    strategy: "smart"
+    max_slippage: 0.005
+    min_liquidity: 5000
+    max_route_depth: 3
+    
+  batch_execution:
+    enabled: true
+    max_batch_size: 10
+    batch_timeout: 5
+    batch_delay: 1
+    
+  timeout:
+    order: 30
+    execution: 60
+    settlement: 120
+    broadcast: 10
+    
+  retry:
+    enabled: true
+    max_attempts: 3
+    delay: 2
+    backoff: 2.0
+    max_delay: 30
+    
+  validation:
+    enabled: true
+    check_balance: true
+    check_limits: true
+    check_risk: true
+    check_market: true
+
+# ============================================================
+# MARKET DATA - PRODUCTION
+# ============================================================
+market_data:
+  enabled: true
+  source: "aggregated"
+  providers:
+    - "binance"
+    - "bybit"
+    - "coinbase"
+    - "kraken"
+    - "kucoin"
+    - "okx"
+    - "gateio"
+    
+  tickers:
+    update_interval: 1
+    batch_size: 100
+    cache_ttl: 5
+    
+  order_book:
+    update_interval: 5
+    depth: 100
+    cache_ttl: 10
+    
+  candles:
+    enabled: true
+    intervals:
+      - "1m"
+      - "5m"
+      - "15m"
+      - "1h"
+      - "4h"
+      - "1d"
+    retention: 1000
+    cache_ttl: 60
+    
+  websocket:
+    enabled: true
+    reconnect_attempts: 10
+    reconnect_delay: 5
+    heartbeat_interval: 30
+    ping_timeout: 10
+    max_retries: 10
+    
+  quality:
+    min_volume: 1000
+    min_trades: 10
+    max_age: 30
+    require_websocket: true
+
+# ============================================================
+# PERFORMANCE METRICS - PRODUCTION
+# ============================================================
+metrics:
+  enabled: true
+  collection_interval: 10
+  retention: 86400
+  aggregation_interval: 60
+  
+  metrics:
+    - "pnl"
+    - "trades"
+    - "volume"
+    - "win_rate"
+    - "sharpe_ratio"
+    - "max_drawdown"
+    - "profit_factor"
+    - "avg_profit"
+    - "avg_loss"
+    - "avg_trade_duration"
+    - "execution_latency"
+    - "order_fill_rate"
+    - "slippage"
+    - "fee_cost"
+    - "opportunity_rate"
+    - "success_rate"
+    - "calmar_ratio"
+    - "sortino_ratio"
+    - "omega_ratio"
+    
+  reporting:
+    enabled: true
+    interval: 3600
+    format: "json"
+    output: "api"
+    
+  alerts:
+    enabled: true
+    channels:
+      - "telegram"
+      - "email"
+      - "slack"
+      - "webhook"
+      - "pagerduty"
+    min_interval: 60
+
+# ============================================================
+# LOGGING - PRODUCTION
+# ============================================================
+logging:
+  enabled: true
+  level: "info"
+  format: "json"
+  colorize: false
+  
+  outputs:
+    - type: "console"
+      enabled: true
+      colorize: false
+      format: "json"
+      
+    - type: "file"
+      enabled: true
+      path: "/var/log/nexus/arbitrage.log"
+      max_size: 104857600
+      max_files: 30
+      format: "json"
+      compress: true
+      
+    - type: "elasticsearch"
+      enabled: true
+      host: "${ELASTICSEARCH_HOST}"
+      port: 9200
+      index: "nexus-arbitrage-prod"
+      ssl: true
+      username: "${ELASTICSEARCH_USER}"
+      password: "${ELASTICSEARCH_PASSWORD}"
+      
+    - type: "loki"
+      enabled: true
+      host: "${LOKI_HOST}"
+      port: 3100
+      labels:
+        service: "arbitrage-bot"
+        environment: "production"
+        version: "2.0.0"
+        
+  fields:
+    service: "arbitrage-bot"
+    environment: "production"
+    version: "2.0.0"
+    instance: "prod-001"
+    cluster: "nexus-prod"
+    
+  filters:
+    - "trace_id"
+    - "span_id"
+    - "request_id"
+
+# ============================================================
+# DATABASE - PRODUCTION
+# ============================================================
+database:
+  enabled: true
+  type: "timescaledb"
+  host: "${DB_HOST}"
+  port: 5432
+  name: "nexus_arbitrage"
+  user: "${DB_USER}"
+  password: "${DB_PASSWORD}"
+  
+  pool_size: 20
+  max_overflow: 40
+  timeout: 30
+  pool_recycle: 3600
+  pool_pre_ping: true
+  
+  ssl:
+    enabled: true
+    mode: "verify-full"
+    ca: "/etc/ssl/certs/ca-certificates.crt"
+    cert: "/etc/ssl/certs/client.crt"
+    key: "/etc/ssl/private/client.key"
+    
+  backups:
+    enabled: true
+    interval: 86400
+    retention: 30
+    path: "s3://${BACKUP_BUCKET}/database/"
+    compress: true
+    encryption: true
+    
+  migrations:
+    enabled: true
+    auto_run: false
+    path: "./migrations/prod"
+    table: "schema_migrations"
+    validate: true
+    
+  queries:
+    timeout: 60
+    max_rows: 100000
+    
+  timescaledb:
+    enabled: true
+    chunk_interval: "1 day"
+    compression: true
+    retention: "90 days"
+    policies:
+      - compression
+      - retention
+      - reorder
+
+# ============================================================
+# CACHE - PRODUCTION
+# ============================================================
+cache:
+  enabled: true
+  type: "redis"
+  host: "${REDIS_HOST}"
+  port: 6379
+  password: "${REDIS_PASSWORD}"
+  db: 0
+  
+  pool:
+    max_connections: 20
+    min_connections: 5
+    
+  ttl:
+    tickers: 60
+    order_books: 30
+    candles: 300
+    opportunities: 10
+    metrics: 300
+    config: 600
+    
+  compression:
+    enabled: true
+    algorithm: "zstd"
+    level: 3
+    
+  invalidation:
+    strategy: "time"
+    max_size: 10000
+    
+  monitoring:
+    enabled: true
+    hit_rate_alert: 0.70
+    miss_rate_alert: 0.30
+
+# ============================================================
+# NOTIFICATIONS - PRODUCTION
+# ============================================================
+notifications:
+  enabled: true
+  
+  channels:
+    telegram:
+      enabled: true
+      bot_token: "${TELEGRAM_BOT_TOKEN}"
+      chat_id: "${TELEGRAM_CHAT_ID}"
+      parse_mode: "HTML"
+      disable_notification: false
+      
+    slack:
+      enabled: true
+      webhook_url: "${SLACK_WEBHOOK_URL}"
+      channel: "#arbitrage"
+      username: "Nexus Arbitrage Bot"
+      icon_emoji: ":robot_face:"
+      
+    email:
+      enabled: true
+      smtp_host: "${SMTP_HOST}"
+      smtp_port: 587
+      username: "${SMTP_USERNAME}"
+      password: "${SMTP_PASSWORD}"
+      from: "arbitrage@nexustradingia.com"
+      to:
+        - "alerts@nexustradingia.com"
+        - "team@nexustradingia.com"
+        - "support@nexustradingia.com"
+      cc:
+        - "monitoring@nexustradingia.com"
+        
+    webhook:
+      enabled: true
+      url: "${WEBHOOK_URL}"
+      headers:
+        Authorization: "Bearer ${WEBHOOK_TOKEN}"
+        Content-Type: "application/json"
+        X-Service: "arbitrage-bot"
+        
+    pagerduty:
+      enabled: true
+      integration_key: "${PAGERDUTY_KEY}"
+      severity: "critical"
+      
+  events:
+    - "opportunity"
+    - "execution"
+    - "alert"
+    - "error"
+    - "status_change"
+    - "daily_report"
+    - "weekly_report"
+    - "monthly_report"
+    - "performance_alert"
+    - "risk_alert"
+    - "system_alert"
+
+# ============================================================
+# API - PRODUCTION
+# ============================================================
+api:
+  enabled: true
+  host: "0.0.0.0"
+  port: 8000
+  prefix: "/api/v1"
+  workers: 4
+  reload: false
+  
+  cors:
+    enabled: true
+    origins:
+      - "https://nexustradingia.com"
+      - "https://app.nexustradingia.com"
+      - "https://dashboard.nexustradingia.com"
+    methods:
+      - "GET"
+      - "POST"
+      - "PUT"
+      - "DELETE"
+      - "OPTIONS"
+      - "PATCH"
+    headers:
+      - "Authorization"
+      - "Content-Type"
+      - "X-Request-ID"
+      - "X-API-Key"
+    credentials: true
+    max_age: 86400
+    
+  rate_limit:
+    enabled: true
+    requests_per_minute: 120
+    burst: 30
+    store: "redis"
+    key_prefix: "rate_limit:api"
+    
+  authentication:
+    enabled: true
+    type: "jwt"
+    jwt_secret: "${JWT_SECRET}"
+    token_expiry: 3600
+    refresh_token_expiry: 86400
+    api_key_header: "X-API-Key"
+    api_keys:
+      - user: "admin"
+        key: "${ADMIN_API_KEY}"
+      - user: "service"
+        key: "${SERVICE_API_KEY}"
+      - user: "monitoring"
+        key: "${MONITORING_API_KEY}"
+        
+  documentation:
+    enabled: true
+    path: "/docs"
+    title: "NEXUS Arbitrage Bot API"
+    version: "2.0.0"
+    description: "API pour le bot d'arbitrage - Production"
+
+# ============================================================
+# WEBSOCKET - PRODUCTION
+# ============================================================
+websocket:
+  enabled: true
+  host: "0.0.0.0"
+  port: 8001
+  path: "/ws"
+  
+  max_connections: 1000
+  max_message_size: 1048576
+  ping_interval: 30
+  ping_timeout: 10
+  max_pong_latency: 20
+  
+  authentication:
+    enabled: true
+    type: "jwt"
+    header: "Authorization"
+    query_param: "token"
+    
+  channels:
+    - "opportunities"
+    - "executions"
+    - "metrics"
+    - "alerts"
+    - "status"
+    - "performance"
+    - "risk"
+    - "logs"
+    - "system"
+    
+  compression:
+    enabled: true
+    algorithm: "permessage-deflate"
+    level: 3
+    
+  monitoring:
+    enabled: true
+    connection_log: true
+    message_log: false
+
+# ============================================================
+# MONITORING - PRODUCTION
+# ============================================================
+monitoring:
+  enabled: true
+  
+  prometheus:
+    enabled: true
+    port: 9090
+    path: "/metrics"
+    namespace: "nexus"
+    subsystem: "arbitrage"
+    labels:
+      environment: "production"
+      version: "2.0.0"
+      instance: "prod-001"
+      cluster: "nexus-prod"
+      
+  grafana:
+    enabled: true
+    host: "${GRAFANA_HOST}"
+    port: 3000
+    dashboard_id: "nexus-arbitrage-prod"
+    datasource: "prometheus"
+    api_key: "${GRAFANA_API_KEY}"
+    
+  health_check:
+    enabled: true
+    interval: 15
+    path: "/health"
+    timeout: 10
+    checks:
+      - "database"
+      - "cache"
+      - "exchanges"
+      - "websocket"
+      - "api"
+      - "disk"
+      - "memory"
+      
+  alerts:
+    enabled: true
+    rules:
+      - name: "high_latency"
+        condition: "execution_latency > 1000ms"
+        severity: "warning"
+        duration: "1m"
+        action: "notify"
+      - name: "critical_latency"
+        condition: "execution_latency > 3000ms"
+        severity: "critical"
+        duration: "30s"
+        action: "notify,escalate"
+      - name: "high_error_rate"
+        condition: "error_rate > 0.05"
+        severity: "critical"
+        duration: "1m"
+        action: "notify,escalate"
+      - name: "high_drawdown"
+        condition: "drawdown > 0.10"
+        severity: "warning"
+        duration: "5m"
+        action: "notify,reduce"
+      - name: "critical_drawdown"
+        condition: "drawdown > 0.15"
+        severity: "critical"
+        duration: "1m"
+        action: "notify,stop"
+    cooldown: 60
+
+# ============================================================
+# SCHEDULER - PRODUCTION
+# ============================================================
+scheduler:
+  enabled: true
+  timezone: "UTC"
+  max_workers: 5
+  thread_pool: 10
+  
+  jobs:
+    - name: "opportunity_scanner"
+      enabled: true
+      interval: 1
+      timeout: 30
+      max_retries: 3
+      priority: 1
+      
+    - name: "performance_reporter"
+      enabled: true
+      schedule: "0 */6 * * *"
+      timeout: 300
+      max_retries: 3
+      priority: 2
+      
+    - name: "daily_cleanup"
+      enabled: true
+      schedule: "0 0 * * *"
+      timeout: 600
+      max_retries: 3
+      priority: 3
+      
+    - name: "health_check"
+      enabled: true
+      interval: 60
+      timeout: 30
+      max_retries: 3
+      priority: 1
+      
+    - name: "backup_rotation"
+      enabled: true
+      schedule: "0 2 * * *"
+      timeout: 1800
+      max_retries: 3
+      priority: 3
+      
+    - name: "risk_recalculation"
+      enabled: true
+      interval: 300
+      timeout: 60
+      max_retries: 3
+      priority: 2
+
+# ============================================================
+# SECURITY - PRODUCTION
+# ============================================================
+security:
+  enabled: true
+  
+  encryption:
+    enabled: true
+    algorithm: "AES-256-GCM"
+    key: "${ENCRYPTION_KEY}"
+    salt: "${ENCRYPTION_SALT}"
+    key_rotation_days: 90
+    
+  api_keys:
+    encryption: true
+    rotation: 90
+    min_length: 32
+    max_length: 64
+    
+  ip_whitelist:
+    enabled: true
+    ips:
+      - "10.0.0.0/8"
+      - "172.16.0.0/12"
+      - "192.168.0.0/16"
+      
+  rate_limiting:
+    enabled: true
+    requests_per_minute: 120
+    burst_limit: 60
+    storage: "redis"
+    key_prefix: "rate_limit:security"
+    
+  ssl:
+    enabled: true
+    cert: "/etc/ssl/certs/nexus.crt"
+    key: "/etc/ssl/private/nexus.key"
+    ca: "/etc/ssl/certs/ca-bundle.crt"
+    verify: true
+    
+  audit:
+    enabled: true
+    log_level: "info"
+    retention: 2555
+    path: "/var/log/nexus/audit.log"
+    encryption: true
+
+# ============================================================
+# COMPLIANCE - PRODUCTION
+# ============================================================
+compliance:
+  enabled: true
+  
+  regulations:
+    - "MIFID_II"
+    - "KYC"
+    - "AML"
+    - "GDPR"
+    - "FCA"
+    
+  reporting:
+    enabled: true
+    interval: "daily"
+    format: "pdf"
+    path: "s3://${REPORT_BUCKET}/compliance/"
+    encryption: true
+    recipients:
+      - "compliance@nexustradingia.com"
+      - "legal@nexustradingia.com"
+      
+  audit:
+    enabled: true
+    log_level: "info"
+    retention: 2555
+    path: "/var/log/nexus/compliance.log"
+    encryption: true
+    signing: true
+    
+  limits:
+    max_trade_size: 50000
+    max_daily_trades: 100
+    max_position_size: 100000
+    max_daily_volume: 1000000
+    max_leverage: 3
+
+# ============================================================
+# END OF PRODUCTION CONFIGURATION
+# ============================================================
