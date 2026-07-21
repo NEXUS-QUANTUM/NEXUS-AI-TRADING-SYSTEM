@@ -1,0 +1,3131 @@
+# ============================================================
+# NEXUS AI TRADING SYSTEM - Exchange Configurations
+# Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+# ============================================================
+# @version 2.0.0
+# @author NEXUS QUANTUM TEAM
+# @description Configuration complète de tous les exchanges supportés
+# ============================================================
+
+# ============================================================
+# EXCHANGE CATEGORIES
+# ============================================================
+exchange_categories:
+  cex:
+    - "binance"
+    - "bybit"
+    - "coinbase"
+    - "kraken"
+    - "kucoin"
+    - "okx"
+    - "gateio"
+    - "huobi"
+    - "mexc"
+    - "bitget"
+    - "deribit"
+    - "bitmex"
+    - "ftx_us"
+    - "gemini"
+    - "bitstamp"
+  dex:
+    - "uniswap"
+    - "pancakeswap"
+    - "sushiswap"
+    - "curve"
+    - "balancer"
+    - "1inch"
+    - "dydx"
+    - "aave"
+    - "compound"
+  forex:
+    - "oanda"
+    - "fxcm"
+    - "ig"
+    - "forexcom"
+    - "dukascopy"
+    - "pepperstone"
+    - "interactive_brokers"
+  stocks:
+    - "alpaca"
+    - "tradestation"
+    - "etrade"
+    - "schwab"
+    - "fidelity"
+    - "tradier"
+    - "ibkr"
+
+# ============================================================
+# EXCHANGE CONFIGURATIONS
+# ============================================================
+
+# --- BINANCE ---
+binance:
+  enabled: false
+  name: "Binance"
+  type: "cex"
+  website: "https://www.binance.com"
+  description: "Plus grand exchange de cryptomonnaies au monde"
+  priority: 1
+  tier: "premium"
+  
+  api:
+    key: "${BINANCE_API_KEY}"
+    secret: "${BINANCE_API_SECRET}"
+    passphrase: ""
+    
+  endpoints:
+    rest: "https://api.binance.com"
+    websocket: "wss://stream.binance.com:9443/ws"
+    futures: "https://fapi.binance.com"
+    futures_websocket: "wss://fstream.binance.com/ws"
+    margin: "https://api.binance.com/sapi/v1"
+    options: "https://api.binance.com/eapi/v1"
+    withdraw: "https://api.binance.com/wapi/v3"
+    sub_account: "https://api.binance.com/sapi/v1/sub-account"
+    staking: "https://api.binance.com/sapi/v1/staking"
+    
+  rate_limits:
+    requests_per_second: 50
+    orders_per_second: 10
+    websocket_connections: 10
+    websocket_subscriptions: 1024
+    
+  options:
+    use_spot: true
+    use_futures: true
+    use_margin: false
+    use_options: false
+    use_isolated_margin: false
+    use_cross_margin: false
+    use_dual_side_position: true
+    
+  trading_pairs:
+    spot:
+      - "BTC/USDT"
+      - "ETH/USDT"
+      - "BNB/USDT"
+      - "SOL/USDT"
+      - "ADA/USDT"
+      - "DOT/USDT"
+      - "AVAX/USDT"
+      - "MATIC/USDT"
+      - "LINK/USDT"
+      - "UNI/USDT"
+      - "ATOM/USDT"
+      - "XRP/USDT"
+      - "DOGE/USDT"
+      - "SHIB/USDT"
+      - "TRX/USDT"
+      - "ETC/USDT"
+      - "LTC/USDT"
+      - "BCH/USDT"
+      - "NEAR/USDT"
+      - "APT/USDT"
+    futures:
+      - "BTC/USDT"
+      - "ETH/USDT"
+      - "BNB/USDT"
+      - "SOL/USDT"
+      - "ADA/USDT"
+      - "DOT/USDT"
+      - "AVAX/USDT"
+      - "MATIC/USDT"
+      - "LINK/USDT"
+      - "XRP/USDT"
+    margin:
+      - "BTC/USDT"
+      - "ETH/USDT"
+      - "BNB/USDT"
+      
+  fee:
+    maker: 0.001
+    taker: 0.001
+    futures_maker: 0.0002
+    futures_taker: 0.0004
+    discount: 0.25  # BNB discount percentage
+    discount_asset: "BNB"
+    
+  min_order_size:
+    BTC_USDT: 0.0001
+    ETH_USDT: 0.001
+    default: 0.001
+    
+  lot_size:
+    BTC_USDT: 0.00001
+    ETH_USDT: 0.0001
+    default: 0.0001
+    
+  quote_precision:
+    BTC_USDT: 2
+    ETH_USDT: 2
+    default: 2
+    
+  base_precision:
+    BTC_USDT: 8
+    ETH_USDT: 8
+    default: 8
+    
+  security:
+    withdraw_whitelist: false
+    ip_whitelist: false
+    api_key_permissions:
+      - "spot"
+      - "futures"
+      - "margin"
+      
+  markets:
+    - "spot"
+    - "futures"
+    - "margin"
+    - "options"
+    
+  features:
+    - "limit_orders"
+    - "market_orders"
+    - "stop_orders"
+    - "stop_limit_orders"
+    - "trailing_stop_orders"
+    - "oco_orders"
+    - "iceberg_orders"
+    - "twap_orders"
+    - "post_only"
+    - "reduce_only"
+    - "close_position"
+    
+  websocket_streams:
+    - "depth"
+    - "trade"
+    - "kline"
+    - "ticker"
+    - "bookTicker"
+    - "markPrice"
+    - "aggTrade"
+    
+  klines:
+    intervals:
+      - "1m"
+      - "3m"
+      - "5m"
+      - "15m"
+      - "30m"
+      - "1h"
+      - "2h"
+      - "4h"
+      - "6h"
+      - "8h"
+      - "12h"
+      - "1d"
+      - "3d"
+      - "1w"
+      - "1M"
+    max_limit: 1000
+    
+  maintenance:
+    scheduled_downtime: false
+    weekly_maintenance: "Sunday 06:00 UTC"
+    emergency_maintenance: false
+
+# --- BYBIT ---
+bybit:
+  enabled: false
+  name: "Bybit"
+  type: "cex"
+  website: "https://www.bybit.com"
+  description: "Plateforme de trading dérivés et spot"
+  priority: 2
+  tier: "premium"
+  
+  api:
+    key: "${BYBIT_API_KEY}"
+    secret: "${BYBIT_API_SECRET}"
+    passphrase: ""
+    
+  endpoints:
+    rest: "https://api.bybit.com"
+    websocket: "wss://stream.bybit.com/v5/public/spot"
+    futures: "https://api.bybit.com/v5"
+    futures_websocket: "wss://stream.bybit.com/v5/public/linear"
+    options: "https://api.bybit.com/v5/market/option"
+    spot: "https://api.bybit.com/v5/market/spot"
+    
+  rate_limits:
+    requests_per_second: 30
+    orders_per_second: 5
+    websocket_connections: 10
+    websocket_subscriptions: 500
+    
+  options:
+    use_spot: true
+    use_futures: true
+    use_linear: true
+    use_inverse: false
+    use_derivatives: true
+    use_options: false
+    
+  trading_pairs:
+    spot:
+      - "BTC/USDT"
+      - "ETH/USDT"
+      - "SOL/USDT"
+      - "ADA/USDT"
+      - "DOT/USDT"
+      - "AVAX/USDT"
+      - "MATIC/USDT"
+      - "LINK/USDT"
+      - "UNI/USDT"
+      - "ATOM/USDT"
+      - "XRP/USDT"
+      - "DOGE/USDT"
+    futures:
+      - "BTC/USDT"
+      - "ETH/USDT"
+      - "SOL/USDT"
+      - "ADA/USDT"
+      - "DOT/USDT"
+      - "AVAX/USDT"
+      - "MATIC/USDT"
+    inverse:
+      - "BTC/USD"
+      - "ETH/USD"
+      - "SOL/USD"
+      
+  fee:
+    maker: 0.001
+    taker: 0.001
+    futures_maker: 0.0002
+    futures_taker: 0.00055
+    
+  min_order_size:
+    BTC_USDT: 0.0001
+    ETH_USDT: 0.001
+    default: 0.001
+    
+  lot_size:
+    BTC_USDT: 0.00001
+    ETH_USDT: 0.0001
+    default: 0.0001
+    
+  quote_precision:
+    BTC_USDT: 2
+    ETH_USDT: 2
+    default: 2
+    
+  base_precision:
+    BTC_USDT: 8
+    ETH_USDT: 8
+    default: 8
+    
+  security:
+    withdraw_whitelist: false
+    ip_whitelist: false
+    api_key_permissions:
+      - "spot"
+      - "futures"
+      
+  markets:
+    - "spot"
+    - "futures"
+    - "inverse"
+    - "options"
+    
+  features:
+    - "limit_orders"
+    - "market_orders"
+    - "stop_orders"
+    - "stop_limit_orders"
+    - "trailing_stop_orders"
+    - "post_only"
+    - "reduce_only"
+    - "close_position"
+    - "take_profit"
+    - "stop_loss"
+    
+  websocket_streams:
+    - "depth"
+    - "trade"
+    - "kline"
+    - "ticker"
+    - "bookTicker"
+    
+  klines:
+    intervals:
+      - "1m"
+      - "3m"
+      - "5m"
+      - "15m"
+      - "30m"
+      - "1h"
+      - "2h"
+      - "4h"
+      - "6h"
+      - "12h"
+      - "1d"
+      - "1w"
+    max_limit: 1000
+    
+  maintenance:
+    scheduled_downtime: false
+    weekly_maintenance: "Saturday 02:00 UTC"
+
+# --- COINBASE ---
+coinbase:
+  enabled: false
+  name: "Coinbase Pro"
+  type: "cex"
+  website: "https://pro.coinbase.com"
+  description: "Exchange régulé américain"
+  priority: 3
+  tier: "premium"
+  
+  api:
+    key: "${COINBASE_API_KEY}"
+    secret: "${COINBASE_API_SECRET}"
+    passphrase: "${COINBASE_PASSPHRASE}"
+    
+  endpoints:
+    rest: "https://api.coinbase.com"
+    websocket: "wss://ws-feed.pro.coinbase.com"
+    prime: "https://api.prime.coinbase.com"
+    
+  rate_limits:
+    requests_per_second: 20
+    orders_per_second: 5
+    websocket_connections: 5
+    websocket_subscriptions: 100
+    
+  options:
+    use_spot: true
+    use_futures: false
+    use_prime: false
+    
+  trading_pairs:
+    spot:
+      - "BTC-USD"
+      - "ETH-USD"
+      - "SOL-USD"
+      - "ADA-USD"
+      - "DOT-USD"
+      - "AVAX-USD"
+      - "MATIC-USD"
+      - "LINK-USD"
+      - "UNI-USD"
+      - "ATOM-USD"
+      - "XRP-USD"
+      - "DOGE-USD"
+      - "SHIB-USD"
+      
+  fee:
+    maker: 0.004
+    taker: 0.006
+    volume_tiers:
+      - volume: 10000
+        maker: 0.0035
+        taker: 0.0055
+      - volume: 50000
+        maker: 0.0030
+        taker: 0.0050
+      - volume: 100000
+        maker: 0.0025
+        taker: 0.0045
+      - volume: 500000
+        maker: 0.0020
+        taker: 0.0040
+      - volume: 1000000
+        maker: 0.0015
+        taker: 0.0035
+        
+  min_order_size:
+    BTC_USD: 0.0001
+    ETH_USD: 0.001
+    default: 0.001
+    
+  lot_size:
+    BTC_USD: 0.00001
+    ETH_USD: 0.0001
+    default: 0.0001
+    
+  quote_precision:
+    BTC_USD: 2
+    ETH_USD: 2
+    default: 2
+    
+  base_precision:
+    BTC_USD: 8
+    ETH_USD: 8
+    default: 8
+    
+  security:
+    withdraw_whitelist: true
+    ip_whitelist: true
+    api_key_permissions:
+      - "spot"
+      
+  markets:
+    - "spot"
+    
+  features:
+    - "limit_orders"
+    - "market_orders"
+    - "stop_orders"
+    - "post_only"
+    
+  websocket_streams:
+    - "ticker"
+    - "level2"
+    - "matches"
+    - "full"
+    
+  klines:
+    intervals:
+      - "1m"
+      - "5m"
+      - "15m"
+      - "1h"
+      - "6h"
+      - "1d"
+    max_limit: 1000
+    
+  maintenance:
+    scheduled_downtime: false
+
+# --- KRAKEN ---
+kraken:
+  enabled: false
+  name: "Kraken"
+  type: "cex"
+  website: "https://www.kraken.com"
+  description: "Exchange européen réputé"
+  priority: 4
+  tier: "standard"
+  
+  api:
+    key: "${KRAKEN_API_KEY}"
+    secret: "${KRAKEN_API_SECRET}"
+    
+  endpoints:
+    rest: "https://api.kraken.com"
+    websocket: "wss://ws.kraken.com"
+    futures: "https://futures.kraken.com"
+    
+  rate_limits:
+    requests_per_second: 15
+    orders_per_second: 3
+    websocket_connections: 5
+    websocket_subscriptions: 100
+    
+  options:
+    use_spot: true
+    use_futures: false
+    use_staking: true
+    
+  trading_pairs:
+    spot:
+      - "XBT/USD"
+      - "ETH/USD"
+      - "SOL/USD"
+      - "ADA/USD"
+      - "DOT/USD"
+      - "AVAX/USD"
+      - "MATIC/USD"
+      - "LINK/USD"
+      - "UNI/USD"
+      - "ATOM/USD"
+      - "XRP/USD"
+      - "DOGE/USD"
+      - "SHIB/USD"
+      - "TRX/USD"
+      - "ETC/USD"
+      - "LTC/USD"
+      - "BCH/USD"
+      - "NEAR/USD"
+      
+  fee:
+    maker: 0.0016
+    taker: 0.0026
+    volume_tiers:
+      - volume: 10000
+        maker: 0.0014
+        taker: 0.0024
+      - volume: 50000
+        maker: 0.0012
+        taker: 0.0022
+      - volume: 100000
+        maker: 0.0010
+        taker: 0.0020
+      - volume: 500000
+        maker: 0.0008
+        taker: 0.0018
+      - volume: 1000000
+        maker: 0.0006
+        taker: 0.0016
+        
+  min_order_size:
+    XBT_USD: 0.0001
+    ETH_USD: 0.001
+    default: 0.001
+    
+  lot_size:
+    XBT_USD: 0.00001
+    ETH_USD: 0.0001
+    default: 0.0001
+    
+  quote_precision:
+    XBT_USD: 2
+    ETH_USD: 2
+    default: 2
+    
+  base_precision:
+    XBT_USD: 8
+    ETH_USD: 8
+    default: 8
+    
+  security:
+    withdraw_whitelist: true
+    ip_whitelist: true
+    api_key_permissions:
+      - "spot"
+      - "futures"
+      
+  markets:
+    - "spot"
+    - "futures"
+    - "staking"
+    
+  features:
+    - "limit_orders"
+    - "market_orders"
+    - "stop_orders"
+    - "stop_limit_orders"
+    - "post_only"
+    
+  websocket_streams:
+    - "ticker"
+    - "depth"
+    - "trade"
+    - "ohlc"
+    
+  klines:
+    intervals:
+      - "1m"
+      - "5m"
+      - "15m"
+      - "30m"
+      - "1h"
+      - "4h"
+      - "1d"
+      - "1w"
+    max_limit: 1000
+    
+  maintenance:
+    scheduled_downtime: false
+
+# --- KUCOIN ---
+kucoin:
+  enabled: false
+  name: "KuCoin"
+  type: "cex"
+  website: "https://www.kucoin.com"
+  description: "Exchange asiatique diversifié"
+  priority: 5
+  tier: "standard"
+  
+  api:
+    key: "${KUCOIN_API_KEY}"
+    secret: "${KUCOIN_API_SECRET}"
+    passphrase: "${KUCOIN_PASSPHRASE}"
+    
+  endpoints:
+    rest: "https://api.kucoin.com"
+    websocket: "wss://ws-api.kucoin.com/endpoint"
+    futures: "https://api-futures.kucoin.com"
+    
+  rate_limits:
+    requests_per_second: 40
+    orders_per_second: 10
+    websocket_connections: 10
+    websocket_subscriptions: 300
+    
+  options:
+    use_spot: true
+    use_futures: true
+    use_margin: false
+    
+  trading_pairs:
+    spot:
+      - "BTC/USDT"
+      - "ETH/USDT"
+      - "SOL/USDT"
+      - "ADA/USDT"
+      - "DOT/USDT"
+      - "AVAX/USDT"
+      - "MATIC/USDT"
+      - "LINK/USDT"
+      - "UNI/USDT"
+      - "ATOM/USDT"
+      - "XRP/USDT"
+      - "DOGE/USDT"
+      - "SHIB/USDT"
+      - "TRX/USDT"
+      - "ETC/USDT"
+      - "LTC/USDT"
+      - "BCH/USDT"
+      - "NEAR/USDT"
+      - "APT/USDT"
+    futures:
+      - "BTC/USDT"
+      - "ETH/USDT"
+      - "SOL/USDT"
+      - "ADA/USDT"
+      - "DOT/USDT"
+      
+  fee:
+    maker: 0.001
+    taker: 0.001
+    futures_maker: 0.0002
+    futures_taker: 0.0006
+    
+  min_order_size:
+    BTC_USDT: 0.00001
+    ETH_USDT: 0.0001
+    default: 0.0001
+    
+  lot_size:
+    BTC_USDT: 0.0000001
+    ETH_USDT: 0.000001
+    default: 0.000001
+    
+  quote_precision:
+    BTC_USDT: 2
+    ETH_USDT: 2
+    default: 2
+    
+  base_precision:
+    BTC_USDT: 8
+    ETH_USDT: 8
+    default: 8
+    
+  security:
+    withdraw_whitelist: false
+    ip_whitelist: false
+    api_key_permissions:
+      - "spot"
+      - "futures"
+      
+  markets:
+    - "spot"
+    - "futures"
+    
+  features:
+    - "limit_orders"
+    - "market_orders"
+    - "stop_orders"
+    - "stop_limit_orders"
+    - "post_only"
+    - "reduce_only"
+    
+  websocket_streams:
+    - "ticker"
+    - "depth"
+    - "trade"
+    - "kline"
+    
+  klines:
+    intervals:
+      - "1m"
+      - "3m"
+      - "5m"
+      - "15m"
+      - "30m"
+      - "1h"
+      - "2h"
+      - "4h"
+      - "6h"
+      - "8h"
+      - "12h"
+      - "1d"
+      - "1w"
+    max_limit: 1000
+    
+  maintenance:
+    scheduled_downtime: false
+
+# --- OKX ---
+okx:
+  enabled: false
+  name: "OKX"
+  type: "cex"
+  website: "https://www.okx.com"
+  description: "Exchange chinois complet"
+  priority: 6
+  tier: "standard"
+  
+  api:
+    key: "${OKX_API_KEY}"
+    secret: "${OKX_API_SECRET}"
+    passphrase: "${OKX_PASSPHRASE}"
+    
+  endpoints:
+    rest: "https://www.okx.com"
+    websocket: "wss://ws.okx.com:8443/ws/v5/public"
+    futures: "https://www.okx.com/api/v5"
+    
+  rate_limits:
+    requests_per_second: 25
+    orders_per_second: 5
+    websocket_connections: 10
+    websocket_subscriptions: 200
+    
+  options:
+    use_spot: true
+    use_futures: true
+    use_options: true
+    use_swap: true
+    
+  trading_pairs:
+    spot:
+      - "BTC/USDT"
+      - "ETH/USDT"
+      - "SOL/USDT"
+      - "ADA/USDT"
+      - "DOT/USDT"
+      - "AVAX/USDT"
+      - "MATIC/USDT"
+      - "LINK/USDT"
+      - "UNI/USDT"
+      - "ATOM/USDT"
+      - "XRP/USDT"
+      - "DOGE/USDT"
+    futures:
+      - "BTC/USDT"
+      - "ETH/USDT"
+      - "SOL/USDT"
+      - "ADA/USDT"
+      - "DOT/USDT"
+    swap:
+      - "BTC/USDT"
+      - "ETH/USDT"
+      - "SOL/USDT"
+      
+  fee:
+    maker: 0.001
+    taker: 0.001
+    futures_maker: 0.0002
+    futures_taker: 0.0005
+    
+  min_order_size:
+    BTC_USDT: 0.0001
+    ETH_USDT: 0.001
+    default: 0.001
+    
+  lot_size:
+    BTC_USDT: 0.00001
+    ETH_USDT: 0.0001
+    default: 0.0001
+    
+  quote_precision:
+    BTC_USDT: 2
+    ETH_USDT: 2
+    default: 2
+    
+  base_precision:
+    BTC_USDT: 8
+    ETH_USDT: 8
+    default: 8
+    
+  security:
+    withdraw_whitelist: true
+    ip_whitelist: true
+    api_key_permissions:
+      - "spot"
+      - "futures"
+      - "options"
+      
+  markets:
+    - "spot"
+    - "futures"
+    - "swap"
+    - "options"
+    
+  features:
+    - "limit_orders"
+    - "market_orders"
+    - "stop_orders"
+    - "stop_limit_orders"
+    - "post_only"
+    - "reduce_only"
+    - "close_position"
+    
+  websocket_streams:
+    - "ticker"
+    - "depth"
+    - "trade"
+    - "kline"
+    - "mark_price"
+    
+  klines:
+    intervals:
+      - "1m"
+      - "3m"
+      - "5m"
+      - "15m"
+      - "30m"
+      - "1h"
+      - "2h"
+      - "4h"
+      - "6h"
+      - "12h"
+      - "1d"
+      - "1w"
+      - "1M"
+    max_limit: 1000
+    
+  maintenance:
+    scheduled_downtime: false
+
+# --- GATEIO ---
+gateio:
+  enabled: false
+  name: "Gate.io"
+  type: "cex"
+  website: "https://www.gate.io"
+  description: "Exchange chinois historique"
+  priority: 7
+  tier: "standard"
+  
+  api:
+    key: "${GATEIO_API_KEY}"
+    secret: "${GATEIO_API_SECRET}"
+    
+  endpoints:
+    rest: "https://api.gateio.ws/api/v4"
+    websocket: "wss://ws.gate.io/v4"
+    futures: "https://api.gateio.ws/api/v4/futures"
+    
+  rate_limits:
+    requests_per_second: 20
+    orders_per_second: 5
+    websocket_connections: 10
+    websocket_subscriptions: 100
+    
+  options:
+    use_spot: true
+    use_futures: true
+    use_margin: false
+    
+  trading_pairs:
+    spot:
+      - "BTC/USDT"
+      - "ETH/USDT"
+      - "SOL/USDT"
+      - "ADA/USDT"
+      - "DOT/USDT"
+      - "AVAX/USDT"
+      - "MATIC/USDT"
+      - "LINK/USDT"
+      - "UNI/USDT"
+      - "ATOM/USDT"
+    futures:
+      - "BTC/USDT"
+      - "ETH/USDT"
+      - "SOL/USDT"
+      
+  fee:
+    maker: 0.002
+    taker: 0.002
+    futures_maker: 0.0005
+    futures_taker: 0.0007
+    
+  min_order_size:
+    BTC_USDT: 0.0001
+    ETH_USDT: 0.001
+    default: 0.001
+    
+  lot_size:
+    BTC_USDT: 0.00001
+    ETH_USDT: 0.0001
+    default: 0.0001
+    
+  quote_precision:
+    BTC_USDT: 2
+    ETH_USDT: 2
+    default: 2
+    
+  base_precision:
+    BTC_USDT: 8
+    ETH_USDT: 8
+    default: 8
+    
+  security:
+    withdraw_whitelist: false
+    ip_whitelist: false
+    api_key_permissions:
+      - "spot"
+      - "futures"
+      
+  markets:
+    - "spot"
+    - "futures"
+    
+  features:
+    - "limit_orders"
+    - "market_orders"
+    - "stop_orders"
+    - "post_only"
+    
+  websocket_streams:
+    - "ticker"
+    - "depth"
+    - "trade"
+    - "kline"
+    
+  klines:
+    intervals:
+      - "1m"
+      - "5m"
+      - "15m"
+      - "30m"
+      - "1h"
+      - "4h"
+      - "1d"
+      - "1w"
+    max_limit: 1000
+    
+  maintenance:
+    scheduled_downtime: false
+
+# --- HUOBI ---
+huobi:
+  enabled: false
+  name: "Huobi Global"
+  type: "cex"
+  website: "https://www.huobi.com"
+  description: "Exchange chinois majeur"
+  priority: 8
+  tier: "standard"
+  
+  api:
+    key: "${HUOBI_API_KEY}"
+    secret: "${HUOBI_API_SECRET}"
+    
+  endpoints:
+    rest: "https://api.huobi.pro"
+    websocket: "wss://api.huobi.pro/ws"
+    futures: "https://api.huobi.com"
+    
+  rate_limits:
+    requests_per_second: 20
+    orders_per_second: 5
+    websocket_connections: 10
+    websocket_subscriptions: 100
+    
+  options:
+    use_spot: true
+    use_futures: true
+    use_margin: false
+    
+  trading_pairs:
+    spot:
+      - "BTC/USDT"
+      - "ETH/USDT"
+      - "SOL/USDT"
+      - "ADA/USDT"
+      - "DOT/USDT"
+      - "AVAX/USDT"
+      - "MATIC/USDT"
+      - "LINK/USDT"
+      - "UNI/USDT"
+      - "ATOM/USDT"
+    futures:
+      - "BTC/USDT"
+      - "ETH/USDT"
+      - "SOL/USDT"
+      
+  fee:
+    maker: 0.002
+    taker: 0.002
+    futures_maker: 0.0002
+    futures_taker: 0.0005
+    
+  min_order_size:
+    BTC_USDT: 0.0001
+    ETH_USDT: 0.001
+    default: 0.001
+    
+  lot_size:
+    BTC_USDT: 0.00001
+    ETH_USDT: 0.0001
+    default: 0.0001
+    
+  quote_precision:
+    BTC_USDT: 2
+    ETH_USDT: 2
+    default: 2
+    
+  base_precision:
+    BTC_USDT: 8
+    ETH_USDT: 8
+    default: 8
+    
+  security:
+    withdraw_whitelist: false
+    ip_whitelist: false
+    api_key_permissions:
+      - "spot"
+      - "futures"
+      
+  markets:
+    - "spot"
+    - "futures"
+    
+  features:
+    - "limit_orders"
+    - "market_orders"
+    - "stop_orders"
+    - "post_only"
+    
+  websocket_streams:
+    - "ticker"
+    - "depth"
+    - "trade"
+    - "kline"
+    
+  klines:
+    intervals:
+      - "1m"
+      - "5m"
+      - "15m"
+      - "30m"
+      - "1h"
+      - "4h"
+      - "1d"
+      - "1w"
+    max_limit: 1000
+    
+  maintenance:
+    scheduled_downtime: false
+
+# --- MEXC ---
+mexc:
+  enabled: false
+  name: "MEXC Global"
+  type: "cex"
+  website: "https://www.mexc.com"
+  description: "Exchange singapourien en croissance"
+  priority: 9
+  tier: "standard"
+  
+  api:
+    key: "${MEXC_API_KEY}"
+    secret: "${MEXC_API_SECRET}"
+    
+  endpoints:
+    rest: "https://api.mexc.com"
+    websocket: "wss://wbs.mexc.com/ws"
+    futures: "https://api.mexc.com/api/v3"
+    
+  rate_limits:
+    requests_per_second: 50
+    orders_per_second: 10
+    websocket_connections: 10
+    websocket_subscriptions: 100
+    
+  options:
+    use_spot: true
+    use_futures: true
+    use_margin: false
+    
+  trading_pairs:
+    spot:
+      - "BTC/USDT"
+      - "ETH/USDT"
+      - "SOL/USDT"
+      - "ADA/USDT"
+      - "DOT/USDT"
+      - "AVAX/USDT"
+      - "MATIC/USDT"
+      - "LINK/USDT"
+      - "UNI/USDT"
+      - "ATOM/USDT"
+    futures:
+      - "BTC/USDT"
+      - "ETH/USDT"
+      - "SOL/USDT"
+      
+  fee:
+    maker: 0.001
+    taker: 0.001
+    futures_maker: 0.0002
+    futures_taker: 0.0005
+    
+  min_order_size:
+    BTC_USDT: 0.0001
+    ETH_USDT: 0.001
+    default: 0.001
+    
+  lot_size:
+    BTC_USDT: 0.00001
+    ETH_USDT: 0.0001
+    default: 0.0001
+    
+  quote_precision:
+    BTC_USDT: 2
+    ETH_USDT: 2
+    default: 2
+    
+  base_precision:
+    BTC_USDT: 8
+    ETH_USDT: 8
+    default: 8
+    
+  security:
+    withdraw_whitelist: false
+    ip_whitelist: false
+    api_key_permissions:
+      - "spot"
+      - "futures"
+      
+  markets:
+    - "spot"
+    - "futures"
+    
+  features:
+    - "limit_orders"
+    - "market_orders"
+    - "stop_orders"
+    - "post_only"
+    
+  websocket_streams:
+    - "ticker"
+    - "depth"
+    - "trade"
+    - "kline"
+    
+  klines:
+    intervals:
+      - "1m"
+      - "5m"
+      - "15m"
+      - "30m"
+      - "1h"
+      - "4h"
+      - "1d"
+      - "1w"
+    max_limit: 1000
+    
+  maintenance:
+    scheduled_downtime: false
+
+# --- BITGET ---
+bitget:
+  enabled: false
+  name: "Bitget"
+  type: "cex"
+  website: "https://www.bitget.com"
+  description: "Exchange singapourien spécialisé"
+  priority: 10
+  tier: "standard"
+  
+  api:
+    key: "${BITGET_API_KEY}"
+    secret: "${BITGET_API_SECRET}"
+    passphrase: "${BITGET_PASSPHRASE}"
+    
+  endpoints:
+    rest: "https://api.bitget.com"
+    websocket: "wss://ws.bitget.com/v2/ws/public"
+    futures: "https://api.bitget.com/api/v2"
+    
+  rate_limits:
+    requests_per_second: 20
+    orders_per_second: 5
+    websocket_connections: 10
+    websocket_subscriptions: 100
+    
+  options:
+    use_spot: true
+    use_futures: true
+    use_margin: false
+    
+  trading_pairs:
+    spot:
+      - "BTC/USDT"
+      - "ETH/USDT"
+      - "SOL/USDT"
+      - "ADA/USDT"
+      - "DOT/USDT"
+      - "AVAX/USDT"
+      - "MATIC/USDT"
+      - "LINK/USDT"
+      - "UNI/USDT"
+      - "ATOM/USDT"
+    futures:
+      - "BTC/USDT"
+      - "ETH/USDT"
+      - "SOL/USDT"
+      
+  fee:
+    maker: 0.001
+    taker: 0.001
+    futures_maker: 0.0002
+    futures_taker: 0.0006
+    
+  min_order_size:
+    BTC_USDT: 0.0001
+    ETH_USDT: 0.001
+    default: 0.001
+    
+  lot_size:
+    BTC_USDT: 0.00001
+    ETH_USDT: 0.0001
+    default: 0.0001
+    
+  quote_precision:
+    BTC_USDT: 2
+    ETH_USDT: 2
+    default: 2
+    
+  base_precision:
+    BTC_USDT: 8
+    ETH_USDT: 8
+    default: 8
+    
+  security:
+    withdraw_whitelist: false
+    ip_whitelist: false
+    api_key_permissions:
+      - "spot"
+      - "futures"
+      
+  markets:
+    - "spot"
+    - "futures"
+    
+  features:
+    - "limit_orders"
+    - "market_orders"
+    - "stop_orders"
+    - "post_only"
+    
+  websocket_streams:
+    - "ticker"
+    - "depth"
+    - "trade"
+    - "kline"
+    
+  klines:
+    intervals:
+      - "1m"
+      - "5m"
+      - "15m"
+      - "30m"
+      - "1h"
+      - "4h"
+      - "1d"
+      - "1w"
+    max_limit: 1000
+    
+  maintenance:
+    scheduled_downtime: false
+
+# --- DERIBIT ---
+deribit:
+  enabled: false
+  name: "Deribit"
+  type: "cex"
+  website: "https://www.deribit.com"
+  description: "Exchange spécialisé options et futures"
+  priority: 11
+  tier: "premium"
+  
+  api:
+    key: "${DERIBIT_API_KEY}"
+    secret: "${DERIBIT_API_SECRET}"
+    
+  endpoints:
+    rest: "https://www.deribit.com/api/v2"
+    websocket: "wss://www.deribit.com/ws/api/v2"
+    
+  rate_limits:
+    requests_per_second: 10
+    orders_per_second: 5
+    websocket_connections: 5
+    websocket_subscriptions: 100
+    
+  options:
+    use_spot: false
+    use_futures: true
+    use_options: true
+    
+  trading_pairs:
+    futures:
+      - "BTC-PERPETUAL"
+      - "ETH-PERPETUAL"
+      - "SOL-PERPETUAL"
+    options:
+      - "BTC"
+      - "ETH"
+      
+  fee:
+    futures_maker: 0.0002
+    futures_taker: 0.0005
+    options_maker: 0.0001
+    options_taker: 0.0001
+    
+  min_order_size:
+    BTC_PERPETUAL: 0.0001
+    ETH_PERPETUAL: 0.001
+    default: 0.001
+    
+  lot_size:
+    BTC_PERPETUAL: 0.00001
+    ETH_PERPETUAL: 0.0001
+    default: 0.0001
+    
+  quote_precision:
+    BTC_PERPETUAL: 2
+    ETH_PERPETUAL: 2
+    default: 2
+    
+  base_precision:
+    BTC_PERPETUAL: 8
+    ETH_PERPETUAL: 8
+    default: 8
+    
+  security:
+    withdraw_whitelist: true
+    ip_whitelist: true
+    api_key_permissions:
+      - "futures"
+      - "options"
+      
+  markets:
+    - "futures"
+    - "options"
+    
+  features:
+    - "limit_orders"
+    - "market_orders"
+    - "stop_orders"
+    - "post_only"
+    - "reduce_only"
+    - "close_position"
+    
+  websocket_streams:
+    - "ticker"
+    - "depth"
+    - "trade"
+    - "kline"
+    
+  klines:
+    intervals:
+      - "1m"
+      - "5m"
+      - "15m"
+      - "30m"
+      - "1h"
+      - "4h"
+      - "1d"
+      - "1w"
+    max_limit: 1000
+    
+  maintenance:
+    scheduled_downtime: false
+
+# --- BITMEX ---
+bitmex:
+  enabled: false
+  name: "BitMEX"
+  type: "cex"
+  website: "https://www.bitmex.com"
+  description: "Exchange de dérivés crypto pionnier"
+  priority: 12
+  tier: "standard"
+  
+  api:
+    key: "${BITMEX_API_KEY}"
+    secret: "${BITMEX_API_SECRET}"
+    
+  endpoints:
+    rest: "https://www.bitmex.com/api/v1"
+    websocket: "wss://www.bitmex.com/realtime"
+    
+  rate_limits:
+    requests_per_second: 10
+    orders_per_second: 5
+    websocket_connections: 5
+    websocket_subscriptions: 100
+    
+  options:
+    use_spot: false
+    use_futures: true
+    use_swap: true
+    
+  trading_pairs:
+    futures:
+      - "XBTUSD"
+      - "ETHUSD"
+      - "SOLUSD"
+      
+  fee:
+    maker: 0.0001
+    taker: 0.0005
+    
+  min_order_size:
+    XBTUSD: 1
+    ETHUSD: 1
+    default: 1
+    
+  lot_size:
+    XBTUSD: 1
+    ETHUSD: 1
+    default: 1
+    
+  quote_precision:
+    XBTUSD: 2
+    ETHUSD: 2
+    default: 2
+    
+  base_precision:
+    XBTUSD: 0
+    ETHUSD: 0
+    default: 0
+    
+  security:
+    withdraw_whitelist: true
+    ip_whitelist: true
+    api_key_permissions:
+      - "futures"
+      - "swap"
+      
+  markets:
+    - "futures"
+    - "swap"
+    
+  features:
+    - "limit_orders"
+    - "market_orders"
+    - "stop_orders"
+    - "post_only"
+    - "reduce_only"
+    - "close_position"
+    
+  websocket_streams:
+    - "ticker"
+    - "depth"
+    - "trade"
+    - "kline"
+    
+  klines:
+    intervals:
+      - "1m"
+      - "5m"
+      - "15m"
+      - "30m"
+      - "1h"
+      - "4h"
+      - "1d"
+      - "1w"
+    max_limit: 1000
+    
+  maintenance:
+    scheduled_downtime: false
+
+# --- GEMINI ---
+gemini:
+  enabled: false
+  name: "Gemini"
+  type: "cex"
+  website: "https://www.gemini.com"
+  description: "Exchange régulé américain"
+  priority: 13
+  tier: "premium"
+  
+  api:
+    key: "${GEMINI_API_KEY}"
+    secret: "${GEMINI_API_SECRET}"
+    
+  endpoints:
+    rest: "https://api.gemini.com/v1"
+    websocket: "wss://api.gemini.com/v1/marketdata"
+    
+  rate_limits:
+    requests_per_second: 10
+    orders_per_second: 3
+    websocket_connections: 5
+    websocket_subscriptions: 50
+    
+  options:
+    use_spot: true
+    use_futures: false
+    
+  trading_pairs:
+    spot:
+      - "BTC/USD"
+      - "ETH/USD"
+      - "SOL/USD"
+      - "ADA/USD"
+      - "DOT/USD"
+      
+  fee:
+    maker: 0.001
+    taker: 0.002
+    
+  min_order_size:
+    BTC_USD: 0.0001
+    ETH_USD: 0.001
+    default: 0.001
+    
+  lot_size:
+    BTC_USD: 0.00001
+    ETH_USD: 0.0001
+    default: 0.0001
+    
+  quote_precision:
+    BTC_USD: 2
+    ETH_USD: 2
+    default: 2
+    
+  base_precision:
+    BTC_USD: 8
+    ETH_USD: 8
+    default: 8
+    
+  security:
+    withdraw_whitelist: true
+    ip_whitelist: true
+    api_key_permissions:
+      - "spot"
+      
+  markets:
+    - "spot"
+    
+  features:
+    - "limit_orders"
+    - "market_orders"
+    - "stop_orders"
+    - "post_only"
+    
+  websocket_streams:
+    - "ticker"
+    - "depth"
+    - "trade"
+    
+  klines:
+    intervals:
+      - "1m"
+      - "5m"
+      - "15m"
+      - "1h"
+      - "1d"
+    max_limit: 1000
+    
+  maintenance:
+    scheduled_downtime: false
+
+# --- BITSTAMP ---
+bitstamp:
+  enabled: false
+  name: "Bitstamp"
+  type: "cex"
+  website: "https://www.bitstamp.net"
+  description: "Exchange européen historique"
+  priority: 14
+  tier: "standard"
+  
+  api:
+    key: "${BITSTAMP_API_KEY}"
+    secret: "${BITSTAMP_API_SECRET}"
+    
+  endpoints:
+    rest: "https://www.bitstamp.net/api/v2"
+    websocket: "wss://ws.bitstamp.net"
+    
+  rate_limits:
+    requests_per_second: 10
+    orders_per_second: 3
+    websocket_connections: 5
+    websocket_subscriptions: 50
+    
+  options:
+    use_spot: true
+    use_futures: false
+    
+  trading_pairs:
+    spot:
+      - "BTC/USD"
+      - "ETH/USD"
+      - "SOL/USD"
+      - "ADA/USD"
+      - "DOT/USD"
+      
+  fee:
+    maker: 0.003
+    taker: 0.004
+    
+  min_order_size:
+    BTC_USD: 0.0001
+    ETH_USD: 0.001
+    default: 0.001
+    
+  lot_size:
+    BTC_USD: 0.00001
+    ETH_USD: 0.0001
+    default: 0.0001
+    
+  quote_precision:
+    BTC_USD: 2
+    ETH_USD: 2
+    default: 2
+    
+  base_precision:
+    BTC_USD: 8
+    ETH_USD: 8
+    default: 8
+    
+  security:
+    withdraw_whitelist: true
+    ip_whitelist: true
+    api_key_permissions:
+      - "spot"
+      
+  markets:
+    - "spot"
+    
+  features:
+    - "limit_orders"
+    - "market_orders"
+    - "stop_orders"
+    
+  websocket_streams:
+    - "ticker"
+    - "depth"
+    - "trade"
+    
+  klines:
+    intervals:
+      - "1m"
+      - "5m"
+      - "15m"
+      - "1h"
+      - "1d"
+    max_limit: 1000
+    
+  maintenance:
+    scheduled_downtime: false
+
+# ============================================================
+# DECENTRALIZED EXCHANGES (DEX)
+# ============================================================
+
+# --- UNISWAP ---
+uniswap:
+  enabled: false
+  name: "Uniswap"
+  type: "dex"
+  website: "https://uniswap.org"
+  description: "Plus grand DEX sur Ethereum"
+  priority: 10
+  tier: "premium"
+  
+  blockchain: "ethereum"
+  chains:
+    - "ethereum"
+    - "optimism"
+    - "arbitrum"
+    - "polygon"
+    - "base"
+    
+  api:
+    key: "${UNISWAP_API_KEY}"
+    
+  endpoints:
+    rest: "https://api.uniswap.com"
+    websocket: "wss://ws.uniswap.com"
+    graph: "https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v3"
+    
+  options:
+    use_v2: true
+    use_v3: true
+    use_optimism: false
+    use_arbitrum: false
+    use_polygon: false
+    use_base: false
+    
+  trading_pairs:
+    - "WETH/USDT"
+    - "WBTC/USDT"
+    - "UNI/USDT"
+    - "USDC/USDT"
+    - "DAI/USDT"
+    - "LINK/USDT"
+    - "AAVE/USDT"
+    - "MKR/USDT"
+    - "CRV/USDT"
+    - "SUSHI/USDT"
+    
+  fee:
+    maker: 0.003
+    taker: 0.003
+    
+  min_order_size:
+    WETH_USDT: 0.001
+    WBTC_USDT: 0.0001
+    default: 0.001
+    
+  liquidity:
+    min_liquidity: 10000
+    max_slippage: 0.01
+    deadline: 600  # seconds
+    
+  gas:
+    max_gas_price: 200  # Gwei
+    gas_limit: 1000000
+    priority_fee: 1
+    
+  security:
+    withdraw_whitelist: false
+    ip_whitelist: false
+    
+  features:
+    - "flash_swaps"
+    - "limit_orders"
+    - "concentrated_liquidity"
+    
+  websocket_streams:
+    - "ticker"
+    - "depth"
+    - "trade"
+    
+  maintenance:
+    scheduled_downtime: false
+
+# --- PANCAKESWAP ---
+pancakeswap:
+  enabled: false
+  name: "PancakeSwap"
+  type: "dex"
+  website: "https://pancakeswap.finance"
+  description: "Plus grand DEX sur BSC"
+  priority: 11
+  tier: "standard"
+  
+  blockchain: "bsc"
+  chains:
+    - "bsc"
+    - "ethereum"
+    - "polygon"
+    
+  api:
+    key: "${PANCAKESWAP_API_KEY}"
+    
+  endpoints:
+    rest: "https://api.pancakeswap.com"
+    websocket: "wss://ws.pancakeswap.com"
+    graph: "https://api.thegraph.com/subgraphs/name/pancakeswap/pancakeswap-v2"
+    
+  options:
+    use_v2: true
+    use_stable_swap: true
+    use_polygon: false
+    
+  trading_pairs:
+    - "WBNB/USDT"
+    - "CAKE/USDT"
+    - "BUSD/USDT"
+    - "ETH/USDT"
+    - "BTCB/USDT"
+    - "XRP/USDT"
+    - "ADA/USDT"
+    - "DOT/USDT"
+    - "SOL/USDT"
+    - "AVAX/USDT"
+    
+  fee:
+    maker: 0.0025
+    taker: 0.0025
+    
+  min_order_size:
+    WBNB_USDT: 0.001
+    CAKE_USDT: 0.1
+    default: 0.001
+    
+  liquidity:
+    min_liquidity: 5000
+    max_slippage: 0.01
+    deadline: 600  # seconds
+    
+  gas:
+    max_gas_price: 50  # Gwei
+    gas_limit: 500000
+    priority_fee: 1
+    
+  security:
+    withdraw_whitelist: false
+    ip_whitelist: false
+    
+  features:
+    - "flash_swaps"
+    - "limit_orders"
+    - "syrup_pools"
+    
+  websocket_streams:
+    - "ticker"
+    - "depth"
+    - "trade"
+    
+  maintenance:
+    scheduled_downtime: false
+
+# --- SUSHISWAP ---
+sushiswap:
+  enabled: false
+  name: "SushiSwap"
+  type: "dex"
+  website: "https://sushi.com"
+  description: "DEX multi-chaînes"
+  priority: 12
+  tier: "standard"
+  
+  blockchain: "ethereum"
+  chains:
+    - "ethereum"
+    - "optimism"
+    - "arbitrum"
+    - "polygon"
+    - "bsc"
+    - "fantom"
+    - "avalanche"
+    
+  api:
+    key: "${SUSHISWAP_API_KEY}"
+    
+  endpoints:
+    rest: "https://api.sushi.com"
+    websocket: "wss://ws.sushi.com"
+    graph: "https://api.thegraph.com/subgraphs/name/sushiswap"
+    
+  options:
+    use_spot: true
+    use_trident: false
+    use_kashi: false
+    
+  trading_pairs:
+    - "WETH/USDT"
+    - "WBTC/USDT"
+    - "SUSHI/USDT"
+    - "USDC/USDT"
+    - "DAI/USDT"
+    - "LINK/USDT"
+    
+  fee:
+    maker: 0.003
+    taker: 0.003
+    
+  min_order_size:
+    WETH_USDT: 0.001
+    WBTC_USDT: 0.0001
+    default: 0.001
+    
+  liquidity:
+    min_liquidity: 5000
+    max_slippage: 0.01
+    deadline: 600  # seconds
+    
+  gas:
+    max_gas_price: 150  # Gwei
+    gas_limit: 800000
+    
+  security:
+    withdraw_whitelist: false
+    ip_whitelist: false
+    
+  features:
+    - "flash_swaps"
+    - "limit_orders"
+    - "cross_chain"
+    
+  websocket_streams:
+    - "ticker"
+    - "depth"
+    - "trade"
+    
+  maintenance:
+    scheduled_downtime: false
+
+# --- CURVE ---
+curve:
+  enabled: false
+  name: "Curve"
+  type: "dex"
+  website: "https://curve.fi"
+  description: "DEX spécialisé stablecoins"
+  priority: 13
+  tier: "standard"
+  
+  blockchain: "ethereum"
+  chains:
+    - "ethereum"
+    - "optimism"
+    - "arbitrum"
+    - "polygon"
+    - "fantom"
+    
+  api:
+    key: "${CURVE_API_KEY}"
+    
+  endpoints:
+    rest: "https://api.curve.fi"
+    websocket: "wss://ws.curve.fi"
+    graph: "https://api.thegraph.com/subgraphs/name/curvefi/curve"
+    
+  options:
+    use_stable_swap: true
+    use_crypto_swap: false
+    use_metapool: false
+    
+  trading_pairs:
+    - "USDC/USDT"
+    - "DAI/USDC"
+    - "DAI/USDT"
+    - "3CRV/USDT"
+    - "MIM/USDT"
+    - "FRAX/USDT"
+    - "USDC/DAI"
+    
+  fee:
+    maker: 0.0004
+    taker: 0.0004
+    
+  min_order_size:
+    USDC_USDT: 10
+    DAI_USDC: 10
+    default: 10
+    
+  liquidity:
+    min_liquidity: 10000
+    max_slippage: 0.005
+    deadline: 600  # seconds
+    
+  gas:
+    max_gas_price: 100  # Gwei
+    gas_limit: 300000
+    
+  security:
+    withdraw_whitelist: false
+    ip_whitelist: false
+    
+  features:
+    - "stable_swap"
+    - "liquidity_pools"
+    
+  websocket_streams:
+    - "ticker"
+    - "trade"
+    
+  maintenance:
+    scheduled_downtime: false
+
+# --- BALANCER ---
+balancer:
+  enabled: false
+  name: "Balancer"
+  type: "dex"
+  website: "https://balancer.fi"
+  description: "DEX avec pools personnalisables"
+  priority: 14
+  tier: "standard"
+  
+  blockchain: "ethereum"
+  chains:
+    - "ethereum"
+    - "polygon"
+    - "arbitrum"
+    
+  api:
+    key: "${BALANCER_API_KEY}"
+    
+  endpoints:
+    rest: "https://api.balancer.fi"
+    websocket: "wss://ws.balancer.fi"
+    graph: "https://api.thegraph.com/subgraphs/name/balancer-labs/balancer"
+    
+  options:
+    use_v2: true
+    use_weighted_pools: true
+    use_stable_pools: false
+    
+  trading_pairs:
+    - "WETH/USDT"
+    - "WBTC/USDT"
+    - "BAL/USDT"
+    - "USDC/USDT"
+    - "DAI/USDT"
+    
+  fee:
+    maker: 0.002
+    taker: 0.002
+    
+  min_order_size:
+    WETH_USDT: 0.001
+    WBTC_USDT: 0.0001
+    default: 0.001
+    
+  liquidity:
+    min_liquidity: 5000
+    max_slippage: 0.01
+    deadline: 600  # seconds
+    
+  gas:
+    max_gas_price: 150  # Gwei
+    gas_limit: 500000
+    
+  security:
+    withdraw_whitelist: false
+    ip_whitelist: false
+    
+  features:
+    - "weighted_pools"
+    - "smart_pools"
+    - "flash_loans"
+    
+  websocket_streams:
+    - "ticker"
+    - "trade"
+    
+  maintenance:
+    scheduled_downtime: false
+
+# --- 1INCH ---
+oneinch:
+  enabled: false
+  name: "1inch"
+  type: "dex"
+  website: "https://1inch.io"
+  description: "DEX aggregator"
+  priority: 15
+  tier: "premium"
+  
+  blockchain: "ethereum"
+  chains:
+    - "ethereum"
+    - "optimism"
+    - "arbitrum"
+    - "polygon"
+    - "bsc"
+    - "fantom"
+    - "avalanche"
+    
+  api:
+    key: "${ONEINCH_API_KEY}"
+    
+  endpoints:
+    rest: "https://api.1inch.io/v5.0"
+    websocket: "wss://ws.1inch.io"
+    
+  options:
+    use_aggregator: true
+    use_limit_order_protocol: true
+    use_spot: true
+    
+  trading_pairs:
+    - "WETH/USDT"
+    - "WBTC/USDT"
+    - "USDC/USDT"
+    - "DAI/USDT"
+    - "UNI/USDT"
+    - "LINK/USDT"
+    - "AAVE/USDT"
+    - "MKR/USDT"
+    
+  fee:
+    maker: 0.001
+    taker: 0.001
+    
+  min_order_size:
+    WETH_USDT: 0.001
+    WBTC_USDT: 0.0001
+    default: 0.001
+    
+  liquidity:
+    min_liquidity: 1000
+    max_slippage: 0.01
+    deadline: 600  # seconds
+    
+  gas:
+    max_gas_price: 200  # Gwei
+    gas_limit: 1000000
+    
+  security:
+    withdraw_whitelist: false
+    ip_whitelist: false
+    
+  features:
+    - "smart_routing"
+    - "limit_orders"
+    - "cross_chain"
+    
+  websocket_streams:
+    - "ticker"
+    - "trade"
+    
+  maintenance:
+    scheduled_downtime: false
+
+# ============================================================
+# FOREX EXCHANGES
+# ============================================================
+
+# --- OANDA ---
+oanda:
+  enabled: false
+  name: "OANDA"
+  type: "forex"
+  website: "https://www.oanda.com"
+  description: "Plateforme de trading Forex"
+  priority: 1
+  tier: "standard"
+  
+  api:
+    key: "${OANDA_API_KEY}"
+    secret: "${OANDA_API_SECRET}"
+    
+  endpoints:
+    rest: "https://api-fxtrade.oanda.com/v3"
+    websocket: "wss://stream-fxtrade.oanda.com/v3"
+    
+  rate_limits:
+    requests_per_second: 10
+    orders_per_second: 5
+    
+  options:
+    use_spot: true
+    use_futures: false
+    
+  trading_pairs:
+    - "EUR/USD"
+    - "GBP/USD"
+    - "USD/JPY"
+    - "AUD/USD"
+    - "USD/CHF"
+    - "USD/CAD"
+    - "NZD/USD"
+    - "EUR/GBP"
+    - "EUR/JPY"
+    - "GBP/JPY"
+    
+  fee:
+    spread: 0.0001
+    commission: 0.00005
+    
+  min_order_size:
+    default: 1000
+    
+  lot_size:
+    default: 1
+    
+  quote_precision:
+    default: 5
+    
+  base_precision:
+    default: 2
+    
+  security:
+    withdraw_whitelist: false
+    ip_whitelist: false
+    
+  features:
+    - "limit_orders"
+    - "market_orders"
+    - "stop_orders"
+    - "trailing_stop_orders"
+    
+  websocket_streams:
+    - "ticker"
+    - "trade"
+    
+  maintenance:
+    scheduled_downtime: false
+
+# --- FXCM ---
+fxcm:
+  enabled: false
+  name: "FXCM"
+  type: "forex"
+  website: "https://www.fxcm.com"
+  description: "Courtier Forex et CFD"
+  priority: 2
+  tier: "standard"
+  
+  api:
+    key: "${FXCM_API_KEY}"
+    secret: "${FXCM_API_SECRET}"
+    
+  endpoints:
+    rest: "https://api.fxcm.com"
+    websocket: "wss://api.fxcm.com/websocket"
+    
+  rate_limits:
+    requests_per_second: 10
+    orders_per_second: 5
+    
+  options:
+    use_spot: true
+    use_futures: false
+    
+  trading_pairs:
+    - "EUR/USD"
+    - "GBP/USD"
+    - "USD/JPY"
+    - "AUD/USD"
+    - "USD/CHF"
+    - "USD/CAD"
+    - "NZD/USD"
+    
+  fee:
+    spread: 0.0001
+    commission: 0.00005
+    
+  min_order_size:
+    default: 1000
+    
+  lot_size:
+    default: 1
+    
+  quote_precision:
+    default: 5
+    
+  base_precision:
+    default: 2
+    
+  security:
+    withdraw_whitelist: false
+    ip_whitelist: false
+    
+  features:
+    - "limit_orders"
+    - "market_orders"
+    - "stop_orders"
+    
+  websocket_streams:
+    - "ticker"
+    - "trade"
+    
+  maintenance:
+    scheduled_downtime: false
+
+# --- IG ---
+ig:
+  enabled: false
+  name: "IG"
+  type: "forex"
+  website: "https://www.ig.com"
+  description: "Plateforme de trading CFD"
+  priority: 3
+  tier: "standard"
+  
+  api:
+    key: "${IG_API_KEY}"
+    secret: "${IG_API_SECRET}"
+    
+  endpoints:
+    rest: "https://api.ig.com/gateway/deal"
+    websocket: "wss://api.ig.com/websocket"
+    
+  rate_limits:
+    requests_per_second: 10
+    orders_per_second: 5
+    
+  options:
+    use_spot: true
+    use_futures: false
+    
+  trading_pairs:
+    - "EUR/USD"
+    - "GBP/USD"
+    - "USD/JPY"
+    - "AUD/USD"
+    - "USD/CHF"
+    - "USD/CAD"
+    
+  fee:
+    spread: 0.0001
+    commission: 0.00005
+    
+  min_order_size:
+    default: 1000
+    
+  lot_size:
+    default: 1
+    
+  quote_precision:
+    default: 5
+    
+  base_precision:
+    default: 2
+    
+  security:
+    withdraw_whitelist: false
+    ip_whitelist: false
+    
+  features:
+    - "limit_orders"
+    - "market_orders"
+    - "stop_orders"
+    
+  websocket_streams:
+    - "ticker"
+    - "trade"
+    
+  maintenance:
+    scheduled_downtime: false
+
+# --- FOREXCOM ---
+forexcom:
+  enabled: false
+  name: "FOREX.com"
+  type: "forex"
+  website: "https://www.forex.com"
+  description: "Plateforme de trading Forex"
+  priority: 4
+  tier: "standard"
+  
+  api:
+    key: "${FOREXCOM_API_KEY}"
+    secret: "${FOREXCOM_API_SECRET}"
+    
+  endpoints:
+    rest: "https://api.forex.com"
+    websocket: "wss://api.forex.com/websocket"
+    
+  rate_limits:
+    requests_per_second: 10
+    orders_per_second: 5
+    
+  options:
+    use_spot: true
+    use_futures: false
+    
+  trading_pairs:
+    - "EUR/USD"
+    - "GBP/USD"
+    - "USD/JPY"
+    - "AUD/USD"
+    - "USD/CHF"
+    - "USD/CAD"
+    
+  fee:
+    spread: 0.0001
+    commission: 0.00005
+    
+  min_order_size:
+    default: 1000
+    
+  lot_size:
+    default: 1
+    
+  quote_precision:
+    default: 5
+    
+  base_precision:
+    default: 2
+    
+  security:
+    withdraw_whitelist: false
+    ip_whitelist: false
+    
+  features:
+    - "limit_orders"
+    - "market_orders"
+    - "stop_orders"
+    
+  websocket_streams:
+    - "ticker"
+    - "trade"
+    
+  maintenance:
+    scheduled_downtime: false
+
+# --- DUKASCOPY ---
+dukascopy:
+  enabled: false
+  name: "Dukascopy"
+  type: "forex"
+  website: "https://www.dukascopy.com"
+  description: "Swiss Forex broker"
+  priority: 5
+  tier: "premium"
+  
+  api:
+    key: "${DUKASCOPY_API_KEY}"
+    secret: "${DUKASCOPY_API_SECRET}"
+    
+  endpoints:
+    rest: "https://api.dukascopy.com"
+    websocket: "wss://api.dukascopy.com/websocket"
+    
+  rate_limits:
+    requests_per_second: 10
+    orders_per_second: 5
+    
+  options:
+    use_spot: true
+    use_futures: false
+    
+  trading_pairs:
+    - "EUR/USD"
+    - "GBP/USD"
+    - "USD/JPY"
+    - "AUD/USD"
+    - "USD/CHF"
+    - "USD/CAD"
+    - "NZD/USD"
+    
+  fee:
+    spread: 0.00005
+    commission: 0.00002
+    
+  min_order_size:
+    default: 1000
+    
+  lot_size:
+    default: 1
+    
+  quote_precision:
+    default: 5
+    
+  base_precision:
+    default: 2
+    
+  security:
+    withdraw_whitelist: true
+    ip_whitelist: true
+    
+  features:
+    - "limit_orders"
+    - "market_orders"
+    - "stop_orders"
+    
+  websocket_streams:
+    - "ticker"
+    - "trade"
+    
+  maintenance:
+    scheduled_downtime: false
+
+# --- PEPPERSTONE ---
+pepperstone:
+  enabled: false
+  name: "Pepperstone"
+  type: "forex"
+  website: "https://www.pepperstone.com"
+  description: "Courtier Forex australien"
+  priority: 6
+  tier: "standard"
+  
+  api:
+    key: "${PEPPERSTONE_API_KEY}"
+    secret: "${PEPPERSTONE_API_SECRET}"
+    
+  endpoints:
+    rest: "https://api.pepperstone.com"
+    websocket: "wss://api.pepperstone.com/websocket"
+    
+  rate_limits:
+    requests_per_second: 10
+    orders_per_second: 5
+    
+  options:
+    use_spot: true
+    use_futures: false
+    
+  trading_pairs:
+    - "EUR/USD"
+    - "GBP/USD"
+    - "USD/JPY"
+    - "AUD/USD"
+    - "USD/CHF"
+    - "USD/CAD"
+    - "NZD/USD"
+    
+  fee:
+    spread: 0.0001
+    commission: 0.00005
+    
+  min_order_size:
+    default: 1000
+    
+  lot_size:
+    default: 1
+    
+  quote_precision:
+    default: 5
+    
+  base_precision:
+    default: 2
+    
+  security:
+    withdraw_whitelist: false
+    ip_whitelist: false
+    
+  features:
+    - "limit_orders"
+    - "market_orders"
+    - "stop_orders"
+    
+  websocket_streams:
+    - "ticker"
+    - "trade"
+    
+  maintenance:
+    scheduled_downtime: false
+
+# ============================================================
+# STOCK EXCHANGES
+# ============================================================
+
+# --- ALPACA ---
+alpaca:
+  enabled: false
+  name: "Alpaca"
+  type: "stocks"
+  website: "https://alpaca.markets"
+  description: "Stock trading API"
+  priority: 1
+  tier: "premium"
+  
+  api:
+    key: "${ALPACA_API_KEY}"
+    secret: "${ALPACA_API_SECRET}"
+    
+  endpoints:
+    rest: "https://api.alpaca.markets/v2"
+    websocket: "wss://stream.data.alpaca.markets/v2"
+    
+  rate_limits:
+    requests_per_second: 10
+    orders_per_second: 5
+    
+  options:
+    use_spot: true
+    use_options: false
+    use_crypto: false
+    
+  trading_pairs:
+    - "AAPL"
+    - "MSFT"
+    - "GOOGL"
+    - "AMZN"
+    - "TSLA"
+    - "NVDA"
+    - "META"
+    - "NFLX"
+    - "SPY"
+    - "QQQ"
+    - "BND"
+    - "VTI"
+    
+  fee:
+    maker: 0.001
+    taker: 0.002
+    
+  min_order_size:
+    default: 1
+    
+  lot_size:
+    default: 1
+    
+  quote_precision:
+    default: 2
+    
+  base_precision:
+    default: 0
+    
+  security:
+    withdraw_whitelist: true
+    ip_whitelist: true
+    api_key_permissions:
+      - "trading"
+      - "data"
+      
+  features:
+    - "limit_orders"
+    - "market_orders"
+    - "stop_orders"
+    - "trailing_stop_orders"
+    - "oco_orders"
+    
+  websocket_streams:
+    - "trades"
+    - "quotes"
+    - "bars"
+    
+  maintenance:
+    scheduled_downtime: false
+
+# --- TRADESTATION ---
+tradestation:
+  enabled: false
+  name: "TradeStation"
+  type: "stocks"
+  website: "https://www.tradestation.com"
+  description: "Platforme de trading actions"
+  priority: 2
+  tier: "standard"
+  
+  api:
+    key: "${TRADESTATION_API_KEY}"
+    secret: "${TRADESTATION_API_SECRET}"
+    
+  endpoints:
+    rest: "https://api.tradestation.com/v3"
+    websocket: "wss://api.tradestation.com/websocket"
+    
+  rate_limits:
+    requests_per_second: 10
+    orders_per_second: 5
+    
+  options:
+    use_spot: true
+    use_options: true
+    use_futures: false
+    
+  trading_pairs:
+    - "AAPL"
+    - "MSFT"
+    - "GOOGL"
+    - "AMZN"
+    - "TSLA"
+    - "NVDA"
+    - "META"
+    - "NFLX"
+    - "SPY"
+    - "QQQ"
+    
+  fee:
+    maker: 0.001
+    taker: 0.002
+    
+  min_order_size:
+    default: 1
+    
+  lot_size:
+    default: 1
+    
+  quote_precision:
+    default: 2
+    
+  base_precision:
+    default: 0
+    
+  security:
+    withdraw_whitelist: true
+    ip_whitelist: true
+    
+  features:
+    - "limit_orders"
+    - "market_orders"
+    - "stop_orders"
+    
+  websocket_streams:
+    - "trades"
+    - "quotes"
+    
+  maintenance:
+    scheduled_downtime: false
+
+# --- ETRADE ---
+etrade:
+  enabled: false
+  name: "E*TRADE"
+  type: "stocks"
+  website: "https://us.etrade.com"
+  description: "Courtier américain"
+  priority: 3
+  tier: "standard"
+  
+  api:
+    key: "${ETRADE_API_KEY}"
+    secret: "${ETRADE_API_SECRET}"
+    
+  endpoints:
+    rest: "https://api.etrade.com/v1"
+    websocket: "wss://api.etrade.com/websocket"
+    
+  rate_limits:
+    requests_per_second: 5
+    orders_per_second: 3
+    
+  options:
+    use_spot: true
+    use_options: true
+    use_futures: false
+    
+  trading_pairs:
+    - "AAPL"
+    - "MSFT"
+    - "GOOGL"
+    - "AMZN"
+    - "TSLA"
+    - "NVDA"
+    - "META"
+    - "SPY"
+    - "QQQ"
+    
+  fee:
+    maker: 0.001
+    taker: 0.002
+    
+  min_order_size:
+    default: 1
+    
+  lot_size:
+    default: 1
+    
+  quote_precision:
+    default: 2
+    
+  base_precision:
+    default: 0
+    
+  security:
+    withdraw_whitelist: true
+    ip_whitelist: true
+    
+  features:
+    - "limit_orders"
+    - "market_orders"
+    - "stop_orders"
+    
+  websocket_streams:
+    - "trades"
+    - "quotes"
+    
+  maintenance:
+    scheduled_downtime: false
+
+# --- SCHWAB ---
+schwab:
+  enabled: false
+  name: "Charles Schwab"
+  type: "stocks"
+  website: "https://www.schwab.com"
+  description: "Courtier américain majeur"
+  priority: 4
+  tier: "premium"
+  
+  api:
+    key: "${SCHWAB_API_KEY}"
+    secret: "${SCHWAB_API_SECRET}"
+    
+  endpoints:
+    rest: "https://api.schwab.com/v1"
+    websocket: "wss://api.schwab.com/websocket"
+    
+  rate_limits:
+    requests_per_second: 5
+    orders_per_second: 3
+    
+  options:
+    use_spot: true
+    use_options: true
+    use_futures: false
+    
+  trading_pairs:
+    - "AAPL"
+    - "MSFT"
+    - "GOOGL"
+    - "AMZN"
+    - "TSLA"
+    - "NVDA"
+    - "META"
+    - "NFLX"
+    - "SPY"
+    - "QQQ"
+    - "BND"
+    - "VTI"
+    
+  fee:
+    maker: 0.000
+    taker: 0.00065
+    
+  min_order_size:
+    default: 1
+    
+  lot_size:
+    default: 1
+    
+  quote_precision:
+    default: 2
+    
+  base_precision:
+    default: 0
+    
+  security:
+    withdraw_whitelist: true
+    ip_whitelist: true
+    
+  features:
+    - "limit_orders"
+    - "market_orders"
+    - "stop_orders"
+    
+  websocket_streams:
+    - "trades"
+    - "quotes"
+    
+  maintenance:
+    scheduled_downtime: false
+
+# --- FIDELITY ---
+fidelity:
+  enabled: false
+  name: "Fidelity"
+  type: "stocks"
+  website: "https://www.fidelity.com"
+  description: "Courtier américain majeur"
+  priority: 5
+  tier: "premium"
+  
+  api:
+    key: "${FIDELITY_API_KEY}"
+    secret: "${FIDELITY_API_SECRET}"
+    
+  endpoints:
+    rest: "https://api.fidelity.com/v1"
+    websocket: "wss://api.fidelity.com/websocket"
+    
+  rate_limits:
+    requests_per_second: 5
+    orders_per_second: 3
+    
+  options:
+    use_spot: true
+    use_options: true
+    use_futures: false
+    
+  trading_pairs:
+    - "AAPL"
+    - "MSFT"
+    - "GOOGL"
+    - "AMZN"
+    - "TSLA"
+    - "NVDA"
+    - "META"
+    - "NFLX"
+    - "SPY"
+    - "QQQ"
+    - "BND"
+    - "VTI"
+    
+  fee:
+    maker: 0.000
+    taker: 0.00065
+    
+  min_order_size:
+    default: 1
+    
+  lot_size:
+    default: 1
+    
+  quote_precision:
+    default: 2
+    
+  base_precision:
+    default: 0
+    
+  security:
+    withdraw_whitelist: true
+    ip_whitelist: true
+    
+  features:
+    - "limit_orders"
+    - "market_orders"
+    - "stop_orders"
+    
+  websocket_streams:
+    - "trades"
+    - "quotes"
+    
+  maintenance:
+    scheduled_downtime: false
+
+# --- TRADIER ---
+tradier:
+  enabled: false
+  name: "Tradier"
+  type: "stocks"
+  website: "https://tradier.com"
+  description: "Stock trading API broker"
+  priority: 6
+  tier: "standard"
+  
+  api:
+    key: "${TRADIER_API_KEY}"
+    secret: "${TRADIER_API_SECRET}"
+    
+  endpoints:
+    rest: "https://api.tradier.com/v1"
+    websocket: "wss://ws.tradier.com/v1"
+    
+  rate_limits:
+    requests_per_second: 10
+    orders_per_second: 5
+    
+  options:
+    use_spot: true
+    use_options: true
+    use_futures: false
+    
+  trading_pairs:
+    - "AAPL"
+    - "MSFT"
+    - "GOOGL"
+    - "AMZN"
+    - "TSLA"
+    - "NVDA"
+    - "META"
+    - "NFLX"
+    - "SPY"
+    - "QQQ"
+    
+  fee:
+    maker: 0.001
+    taker: 0.002
+    
+  min_order_size:
+    default: 1
+    
+  lot_size:
+    default: 1
+    
+  quote_precision:
+    default: 2
+    
+  base_precision:
+    default: 0
+    
+  security:
+    withdraw_whitelist: true
+    ip_whitelist: true
+    
+  features:
+    - "limit_orders"
+    - "market_orders"
+    - "stop_orders"
+    
+  websocket_streams:
+    - "trades"
+    - "quotes"
+    
+  maintenance:
+    scheduled_downtime: false
+
+# ============================================================
+# INTERACTIVE BROKERS
+# ============================================================
+interactive_brokers:
+  enabled: false
+  name: "Interactive Brokers"
+  type: "stocks"
+  website: "https://www.interactivebrokers.com"
+  description: "Courtier international"
+  priority: 7
+  tier: "premium"
+  
+  api:
+    key: "${IB_API_KEY}"
+    secret: "${IB_API_SECRET}"
+    
+  endpoints:
+    rest: "https://api.interactivebrokers.com/v1"
+    websocket: "wss://api.interactivebrokers.com/websocket"
+    
+  rate_limits:
+    requests_per_second: 10
+    orders_per_second: 5
+    
+  options:
+    use_spot: true
+    use_options: true
+    use_futures: true
+    use_forex: true
+    
+  trading_pairs:
+    stocks:
+      - "AAPL"
+      - "MSFT"
+      - "GOOGL"
+      - "AMZN"
+      - "TSLA"
+      - "NVDA"
+      - "META"
+      - "NFLX"
+      - "SPY"
+      - "QQQ"
+    futures:
+      - "ES"
+      - "NQ"
+      - "YM"
+      - "RTY"
+      - "CL"
+      - "GC"
+      - "SI"
+      - "HG"
+    forex:
+      - "EUR/USD"
+      - "GBP/USD"
+      - "USD/JPY"
+      - "AUD/USD"
+      - "USD/CHF"
+      - "USD/CAD"
+      
+  fee:
+    maker: 0.0001
+    taker: 0.0002
+    
+  min_order_size:
+    stocks: 1
+    futures: 1
+    forex: 1000
+    
+  lot_size:
+    stocks: 1
+    futures: 1
+    forex: 1
+    
+  quote_precision:
+    stocks: 2
+    futures: 2
+    forex: 5
+    
+  base_precision:
+    stocks: 0
+    futures: 0
+    forex: 2
+    
+  security:
+    withdraw_whitelist: true
+    ip_whitelist: true
+    api_key_permissions:
+      - "trading"
+      - "data"
+      
+  features:
+    - "limit_orders"
+    - "market_orders"
+    - "stop_orders"
+    - "trailing_stop_orders"
+    - "oco_orders"
+    - "bracket_orders"
+    
+  websocket_streams:
+    - "trades"
+    - "quotes"
+    - "bars"
+    
+  maintenance:
+    scheduled_downtime: false
+
+# ============================================================
+# END OF EXCHANGE CONFIGURATIONS
+# ============================================================
