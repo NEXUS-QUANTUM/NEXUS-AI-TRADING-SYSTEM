@@ -1,0 +1,1672 @@
+<!-- trading/bots/arbitrage_bot/templates/performance.html -->
+<!-- NEXUS AI TRADING SYSTEM -->
+<!-- Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved -->
+<!-- Version: 4.2.0 - Complete Performance Template with Real API Integration -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Performance - NEXUS Trading IA</title>
+    
+    <!-- Meta Tags -->
+    <meta name="description" content="NEXUS AI Trading System - Performance Analytics and Metrics">
+    <meta name="theme-color" content="#6C63FF">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.0.0/dist/chart.umd.min.js"></script>
+    
+    <style>
+        /* ============================================
+           PERFORMANCE - COMPLETE STYLES
+           ============================================ */
+        
+        :root {
+            --primary: #6C63FF;
+            --primary-dark: #5a52d9;
+            --secondary: #00D4FF;
+            --success: #00D4FF;
+            --danger: #FF6B6B;
+            --warning: #FFD93D;
+            --bg-primary: #0D1117;
+            --bg-secondary: #161B22;
+            --bg-card: #1C2333;
+            --text-primary: #E0E0E0;
+            --text-secondary: #8B949E;
+            --text-muted: #484F58;
+            --border-color: rgba(255, 255, 255, 0.05);
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            --radius: 16px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        /* Reset & Base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* ============================================
+           LAYOUT
+           ============================================ */
+        .performance-wrapper {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border-color);
+            padding: 20px 0;
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            z-index: 100;
+            transition: var(--transition);
+            overflow-y: auto;
+        }
+        
+        .sidebar-brand {
+            padding: 0 20px 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .sidebar-brand img {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+        }
+        
+        .sidebar-brand span {
+            font-size: 18px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .sidebar-nav {
+            flex: 1;
+            padding: 16px 12px;
+        }
+        
+        .sidebar-nav .nav-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            padding: 8px 12px 4px;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+        
+        .sidebar-nav a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 16px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 10px;
+            transition: var(--transition);
+            font-size: 14px;
+            font-weight: 500;
+            margin: 2px 0;
+        }
+        
+        .sidebar-nav a i {
+            width: 20px;
+            text-align: center;
+            font-size: 16px;
+        }
+        
+        .sidebar-nav a:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-primary);
+        }
+        
+        .sidebar-nav a.active {
+            background: rgba(108, 99, 255, 0.15);
+            color: var(--primary);
+        }
+        
+        .sidebar-nav a .badge {
+            margin-left: auto;
+            background: var(--danger);
+            color: #fff;
+            font-size: 10px;
+            padding: 1px 8px;
+            border-radius: 10px;
+            font-weight: 600;
+        }
+        
+        /* Main Content */
+        .main-content {
+            margin-left: 260px;
+            flex: 1;
+            padding: 24px 32px 32px;
+        }
+        
+        /* ============================================
+           HEADER
+           ============================================ */
+        .performance-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 24px;
+            border-bottom: 1px solid var(--border-color);
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+        
+        .header-left h1 {
+            font-size: 24px;
+            font-weight: 700;
+        }
+        
+        .header-left p {
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-top: 4px;
+        }
+        
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        
+        .header-right .date-time {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+        
+        .header-right .status-badge {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            border-radius: 20px;
+            background: rgba(0, 212, 255, 0.1);
+            color: var(--success);
+            font-size: 13px;
+            font-weight: 500;
+        }
+        
+        .header-right .status-badge .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--success);
+            animation: pulse-dot 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+        
+        /* ============================================
+           PERFORMANCE PERIOD SELECTOR
+           ============================================ */
+        .period-selector {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 20px 0 24px;
+            padding: 12px 20px;
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            border: 1px solid var(--border-color);
+            flex-wrap: wrap;
+        }
+        
+        .period-selector .period-label {
+            color: var(--text-secondary);
+            font-size: 13px;
+            font-weight: 500;
+        }
+        
+        .period-selector .period-buttons {
+            display: flex;
+            gap: 4px;
+        }
+        
+        .period-selector .period-buttons button {
+            padding: 6px 16px;
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            transition: var(--transition);
+            font-family: inherit;
+        }
+        
+        .period-selector .period-buttons button:hover {
+            color: var(--text-primary);
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .period-selector .period-buttons button.active {
+            background: var(--primary);
+            color: #fff;
+        }
+        
+        .period-selector .period-custom {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-left: auto;
+        }
+        
+        .period-selector .period-custom input[type="date"] {
+            padding: 6px 12px;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: var(--text-primary);
+            font-size: 13px;
+            font-family: inherit;
+        }
+        
+        .period-selector .period-custom input[type="date"]:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        .period-selector .period-custom button {
+            padding: 6px 16px;
+            background: var(--primary);
+            border: none;
+            border-radius: 6px;
+            color: #fff;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            transition: var(--transition);
+            font-family: inherit;
+        }
+        
+        .period-selector .period-custom button:hover {
+            background: var(--primary-dark);
+        }
+        
+        /* ============================================
+           KEY METRICS
+           ============================================ */
+        .key-metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 14px;
+            margin: 0 0 24px;
+        }
+        
+        .metric-card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 16px 18px;
+            border: 1px solid var(--border-color);
+            transition: var(--transition);
+            text-align: center;
+        }
+        
+        .metric-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+        
+        .metric-card .metric-label {
+            color: var(--text-secondary);
+            font-size: 11px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .metric-card .metric-value {
+            font-size: 22px;
+            font-weight: 700;
+            margin-top: 4px;
+        }
+        
+        .metric-card .metric-value.positive { color: var(--success); }
+        .metric-card .metric-value.negative { color: var(--danger); }
+        .metric-card .metric-value.primary { color: var(--primary); }
+        .metric-card .metric-value.warning { color: var(--warning); }
+        
+        .metric-card .metric-change {
+            font-size: 12px;
+            font-weight: 500;
+            margin-top: 2px;
+        }
+        
+        .metric-card .metric-change.positive { color: var(--success); }
+        .metric-card .metric-change.negative { color: var(--danger); }
+        
+        /* ============================================
+           CHARTS SECTION
+           ============================================ */
+        .charts-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .chart-card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 20px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .chart-card .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        
+        .chart-card .chart-title {
+            font-size: 16px;
+            font-weight: 600;
+        }
+        
+        .chart-card .chart-container {
+            height: 280px;
+            position: relative;
+        }
+        
+        /* ============================================
+           SECONDARY CHARTS
+           ============================================ */
+        .secondary-charts {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        /* ============================================
+           PERFORMANCE TABLE
+           ============================================ */
+        .performance-table-container {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            margin: 20px 0;
+        }
+        
+        .performance-table-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .performance-table-header h3 {
+            font-size: 16px;
+            font-weight: 600;
+        }
+        
+        .performance-table-header .table-actions {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .performance-table-header .table-actions button {
+            padding: 6px 14px;
+            background: transparent;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 12px;
+            transition: var(--transition);
+            font-family: inherit;
+        }
+        
+        .performance-table-header .table-actions button:hover {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+        }
+        
+        .performance-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .performance-table thead {
+            background: var(--bg-secondary);
+        }
+        
+        .performance-table th {
+            padding: 12px 16px;
+            text-align: left;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-secondary);
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .performance-table td {
+            padding: 12px 16px;
+            font-size: 14px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .performance-table tr:hover td {
+            background: rgba(255, 255, 255, 0.02);
+        }
+        
+        .performance-table .positive { color: var(--success); }
+        .performance-table .negative { color: var(--danger); }
+        
+        .performance-table .strategy-badge {
+            font-size: 11px;
+            padding: 2px 10px;
+            border-radius: 12px;
+            background: rgba(108, 99, 255, 0.15);
+            color: var(--primary);
+        }
+        
+        /* ============================================
+           LOADING STATE
+           ============================================ */
+        .loading-spinner {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            color: var(--text-secondary);
+        }
+        
+        .loading-spinner i {
+            font-size: 32px;
+            animation: spin 1s linear infinite;
+        }
+        
+        .loading-spinner span {
+            margin-left: 12px;
+            font-size: 14px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* ============================================
+           RESPONSIVE
+           ============================================ */
+        @media (max-width: 1200px) {
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .secondary-charts {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .sidebar {
+                transform: translateX(-100%);
+                width: 280px;
+            }
+            
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            
+            .main-content {
+                margin-left: 0;
+                padding: 16px;
+            }
+            
+            .key-metrics {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .performance-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .header-right {
+                width: 100%;
+                justify-content: space-between;
+                flex-wrap: wrap;
+            }
+            
+            .period-selector {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 10px;
+            }
+            
+            .period-selector .period-custom {
+                margin-left: 0;
+                flex-wrap: wrap;
+            }
+            
+            .period-selector .period-custom input[type="date"] {
+                flex: 1;
+            }
+            
+            .key-metrics {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+            
+            .secondary-charts {
+                grid-template-columns: 1fr;
+            }
+            
+            .performance-table {
+                font-size: 12px;
+            }
+            
+            .performance-table th,
+            .performance-table td {
+                padding: 8px 12px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .key-metrics {
+                grid-template-columns: 1fr;
+            }
+            
+            .performance-table-container {
+                overflow-x: auto;
+            }
+            
+            .period-selector .period-buttons {
+                flex-wrap: wrap;
+            }
+        }
+        
+        /* ============================================
+           TOGGLE SIDEBAR BUTTON
+           ============================================ */
+        .sidebar-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 24px;
+            cursor: pointer;
+            padding: 8px;
+        }
+        
+        @media (max-width: 992px) {
+            .sidebar-toggle {
+                display: block;
+            }
+        }
+        
+        /* ============================================
+           OVERLAY
+           ============================================ */
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 99;
+        }
+        
+        .sidebar-overlay.active {
+            display: block;
+        }
+        
+        /* ============================================
+           SCROLLBAR
+           ============================================ */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--bg-card);
+            border-radius: 3px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary);
+        }
+    </style>
+</head>
+<body>
+
+<!-- ============================================ -->
+<!-- SIDEBAR OVERLAY -->
+<!-- ============================================ -->
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<!-- ============================================ -->
+<!-- PERFORMANCE WRAPPER -->
+<!-- ============================================ -->
+<div class="performance-wrapper">
+    
+    <!-- ============================================ -->
+    <!-- SIDEBAR -->
+    <!-- ============================================ -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-brand">
+            <img src="/static/images/nexus-logo.svg" alt="NEXUS" onerror="this.src='/static/images/logo.png'">
+            <span>NEXUS Trading</span>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <div class="nav-label">Main</div>
+            <a href="/dashboard">
+                <i class="fas fa-chart-line"></i> Dashboard
+            </a>
+            <a href="/exchanges">
+                <i class="fas fa-exchange-alt"></i> Exchanges
+            </a>
+            <a href="/opportunities">
+                <i class="fas fa-bolt"></i> Opportunities
+                <span class="badge" id="oppBadge">0</span>
+            </a>
+            <a href="/strategies">
+                <i class="fas fa-chess-queen"></i> Strategies
+            </a>
+            
+            <div class="nav-label" style="margin-top: 16px;">Analytics</div>
+            <a href="/performance" class="active">
+                <i class="fas fa-chart-bar"></i> Performance
+            </a>
+            <a href="/portfolio">
+                <i class="fas fa-briefcase"></i> Portfolio
+            </a>
+            <a href="/reports">
+                <i class="fas fa-file-alt"></i> Reports
+            </a>
+            <a href="/signals">
+                <i class="fas fa-signal"></i> Signals
+            </a>
+            
+            <div class="nav-label" style="margin-top: 16px;">System</div>
+            <a href="/logs">
+                <i class="fas fa-terminal"></i> Logs
+            </a>
+            <a href="/settings">
+                <i class="fas fa-cog"></i> Settings
+            </a>
+            <a href="/support">
+                <i class="fas fa-life-ring"></i> Support
+            </a>
+        </nav>
+    </aside>
+    
+    <!-- ============================================ -->
+    <!-- MAIN CONTENT -->
+    <!-- ============================================ -->
+    <main class="main-content">
+        
+        <!-- ============================================ -->
+        <!-- HEADER -->
+        <!-- ============================================ -->
+        <header class="performance-header">
+            <div class="header-left">
+                <button class="sidebar-toggle" id="sidebarToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h1>Performance Analytics</h1>
+                <p>Comprehensive performance metrics and analytics</p>
+            </div>
+            <div class="header-right">
+                <span class="date-time" id="currentDateTime"></span>
+                <span class="status-badge">
+                    <span class="dot"></span>
+                    <span id="systemStatusText">Operational</span>
+                </span>
+            </div>
+        </header>
+        
+        <!-- ============================================ -->
+        <!-- PERIOD SELECTOR -->
+        <!-- ============================================ -->
+        <div class="period-selector">
+            <span class="period-label"><i class="fas fa-calendar-alt"></i> Period:</span>
+            <div class="period-buttons">
+                <button data-period="1d">1D</button>
+                <button data-period="7d" class="active">7D</button>
+                <button data-period="30d">30D</button>
+                <button data-period="90d">90D</button>
+                <button data-period="1y">1Y</button>
+                <button data-period="all">All</button>
+            </div>
+            <div class="period-custom">
+                <input type="date" id="startDate">
+                <span style="color:var(--text-secondary);">to</span>
+                <input type="date" id="endDate">
+                <button id="applyCustomPeriod">Apply</button>
+            </div>
+        </div>
+        
+        <!-- ============================================ -->
+        <!-- KEY METRICS -->
+        <!-- ============================================ -->
+        <div class="key-metrics" id="keyMetrics">
+            <div class="metric-card">
+                <div class="metric-label">Total Return</div>
+                <div class="metric-value positive" id="metricReturn">+0.00%</div>
+                <div class="metric-change positive" id="metricReturnChange">+0.00%</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">Sharpe Ratio</div>
+                <div class="metric-value primary" id="metricSharpe">0.00</div>
+                <div class="metric-change" id="metricSharpeChange" style="color:var(--text-secondary);">--</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">Max Drawdown</div>
+                <div class="metric-value negative" id="metricDrawdown">-0.00%</div>
+                <div class="metric-change negative" id="metricDrawdownChange">-0.00%</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">Win Rate</div>
+                <div class="metric-value primary" id="metricWinRate">0%</div>
+                <div class="metric-change positive" id="metricWinRateChange">+0.0%</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">Profit Factor</div>
+                <div class="metric-value primary" id="metricProfitFactor">0.00</div>
+                <div class="metric-change" id="metricProfitFactorChange" style="color:var(--text-secondary);">--</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">Total Trades</div>
+                <div class="metric-value" id="metricTrades" style="color:var(--text-primary);">0</div>
+                <div class="metric-change" id="metricTradesChange" style="color:var(--text-secondary);">--</div>
+            </div>
+        </div>
+        
+        <!-- ============================================ -->
+        <!-- MAIN CHARTS -->
+        <!-- ============================================ -->
+        <div class="charts-grid">
+            <div class="chart-card">
+                <div class="chart-header">
+                    <span class="chart-title">Equity Curve</span>
+                    <div>
+                        <button class="chart-btn" data-chart="equity" data-type="linear" style="background:none;border:none;color:var(--text-secondary);cursor:pointer;padding:4px 8px;font-size:12px;border-radius:4px;">Linear</button>
+                        <button class="chart-btn active" data-chart="equity" data-type="log" style="background:rgba(108,99,255,0.15);border:none;color:var(--primary);cursor:pointer;padding:4px 8px;font-size:12px;border-radius:4px;">Log</button>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="equityChart"></canvas>
+                </div>
+            </div>
+            <div class="chart-card">
+                <div class="chart-header">
+                    <span class="chart-title">Monthly Returns</span>
+                </div>
+                <div class="chart-container">
+                    <canvas id="monthlyChart"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <!-- ============================================ -->
+        <!-- SECONDARY CHARTS -->
+        <!-- ============================================ -->
+        <div class="secondary-charts">
+            <div class="chart-card">
+                <div class="chart-header">
+                    <span class="chart-title">Drawdown</span>
+                </div>
+                <div class="chart-container" style="height:200px;">
+                    <canvas id="drawdownChart"></canvas>
+                </div>
+            </div>
+            <div class="chart-card">
+                <div class="chart-header">
+                    <span class="chart-title">Strategy Distribution</span>
+                </div>
+                <div class="chart-container" style="height:200px;">
+                    <canvas id="strategyDistChart"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <!-- ============================================ -->
+        <!-- PERFORMANCE TABLE -->
+        <!-- ============================================ -->
+        <div class="performance-table-container">
+            <div class="performance-table-header">
+                <h3><i class="fas fa-table" style="color:var(--secondary);"></i> Strategy Performance</h3>
+                <div class="table-actions">
+                    <button id="exportCSV"><i class="fas fa-file-csv"></i> Export CSV</button>
+                    <button id="refreshTable"><i class="fas fa-sync-alt"></i> Refresh</button>
+                </div>
+            </div>
+            <div class="performance-table-wrapper" style="overflow-x:auto;">
+                <table class="performance-table" id="performanceTable">
+                    <thead>
+                        <tr>
+                            <th>Strategy</th>
+                            <th>Trades</th>
+                            <th>Win Rate</th>
+                            <th>Profit</th>
+                            <th>Avg Win</th>
+                            <th>Avg Loss</th>
+                            <th>Profit Factor</th>
+                            <th>Sharpe</th>
+                            <th>Max DD</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        <tr>
+                            <td colspan="9" style="text-align:center;padding:40px;color:var(--text-secondary);">
+                                <i class="fas fa-spinner fa-spin"></i> Loading performance data...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <!-- ============================================ -->
+        <!-- FOOTER (Partial) -->
+        <!-- ============================================ -->
+        {% include 'partials/footer.html' %}
+        
+    </main>
+</div>
+
+<!-- ============================================ -->
+<!-- SCRIPTS - COMPLETE IMPLEMENTATION WITH REAL API -->
+<!-- ============================================ -->
+<script>
+// ================================================================
+// PERFORMANCE - COMPLETE JAVASCRIPT IMPLEMENTATION WITH REAL API
+// ================================================================
+
+(function() {
+    'use strict';
+
+    // ============================================================
+    // API CONFIGURATION
+    // =============================================${SYSTEM}
+    const API = {
+        base: '/api',
+        endpoints: {
+            performance: '/api/performance',
+            metrics: '/api/performance/metrics',
+            equity: '/api/performance/equity',
+            monthly: '/api/performance/monthly',
+            drawdown: '/api/performance/drawdown',
+            strategies: '/api/performance/strategies',
+            strategy_dist: '/api/performance/strategy-distribution',
+            export: '/api/performance/export',
+        },
+        ws: {
+            performance: '/ws/performance',
+        }
+    };
+
+    // ============================================================
+    // STATE
+    // ============================================================
+    const state = {
+        period: '7d',
+        startDate: null,
+        endDate: null,
+        data: {},
+        ws: null,
+        reconnectAttempts: 0,
+        maxReconnectAttempts: 5,
+        updateInterval: null,
+        equityChartType: 'log',
+    };
+
+    // ============================================================
+    // DOM REFERENCES
+    // ============================================================
+    const DOM = {
+        sidebar: document.getElementById('sidebar'),
+        sidebarOverlay: document.getElementById('sidebarOverlay'),
+        sidebarToggle: document.getElementById('sidebarToggle'),
+        currentDateTime: document.getElementById('currentDateTime'),
+        systemStatusText: document.getElementById('systemStatusText'),
+        oppBadge: document.getElementById('oppBadge'),
+        
+        metricReturn: document.getElementById('metricReturn'),
+        metricReturnChange: document.getElementById('metricReturnChange'),
+        metricSharpe: document.getElementById('metricSharpe'),
+        metricSharpeChange: document.getElementById('metricSharpeChange'),
+        metricDrawdown: document.getElementById('metricDrawdown'),
+        metricDrawdownChange: document.getElementById('metricDrawdownChange'),
+        metricWinRate: document.getElementById('metricWinRate'),
+        metricWinRateChange: document.getElementById('metricWinRateChange'),
+        metricProfitFactor: document.getElementById('metricProfitFactor'),
+        metricProfitFactorChange: document.getElementById('metricProfitFactorChange'),
+        metricTrades: document.getElementById('metricTrades'),
+        metricTradesChange: document.getElementById('metricTradesChange'),
+        
+        periodButtons: document.querySelectorAll('.period-buttons button'),
+        startDate: document.getElementById('startDate'),
+        endDate: document.getElementById('endDate'),
+        applyCustom: document.getElementById('applyCustomPeriod'),
+        
+        tableBody: document.getElementById('tableBody'),
+        refreshTable: document.getElementById('refreshTable'),
+        exportCSV: document.getElementById('exportCSV'),
+    };
+
+    // ============================================================
+    // CHARTS
+    // ============================================================
+    let equityChartInstance = null;
+    let monthlyChartInstance = null;
+    let drawdownChartInstance = null;
+    let strategyDistChartInstance = null;
+
+    function initCharts() {
+        // Equity Chart
+        const equityCtx = document.getElementById('equityChart').getContext('2d');
+        equityChartInstance = new Chart(equityCtx, {
+            type: 'line',
+            data: {
+                labels: [],
+                datasets: [{
+                    label: 'Equity',
+                    data: [],
+                    borderColor: '#6C63FF',
+                    backgroundColor: 'rgba(108, 99, 255, 0.1)',
+                    fill: true,
+                    tension: 0.4,
+                    pointRadius: 1,
+                    pointHoverRadius: 5,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: 'rgba(0,0,0,0.8)',
+                        titleFont: { size: 12 },
+                        bodyFont: { size: 12 },
+                        cornerRadius: 8,
+                        padding: 12,
+                        callbacks: {
+                            label: function(context) {
+                                return '$' + context.parsed.y.toFixed(2);
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: { color: 'rgba(255,255,255,0.05)' },
+                        ticks: { color: '#8B949E', font: { size: 11 }, maxTicksLimit: 20 }
+                    },
+                    y: {
+                        grid: { color: 'rgba(255,255,255,0.05)' },
+                        ticks: { 
+                            color: '#8B949E', 
+                            font: { size: 11 },
+                            callback: function(value) { return '$' + value; }
+                        }
+                    }
+                },
+                interaction: {
+                    intersect: false,
+                    mode: 'index',
+                },
+            }
+        });
+
+        // Monthly Returns Chart
+        const monthlyCtx = document.getElementById('monthlyChart').getContext('2d');
+        monthlyChartInstance = new Chart(monthlyCtx, {
+            type: 'bar',
+            data: {
+                labels: [],
+                datasets: [{
+                    label: 'Monthly Return',
+                    data: [],
+                    backgroundColor: [],
+                    borderColor: [],
+                    borderWidth: 1,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: 'rgba(0,0,0,0.8)',
+                        titleFont: { size: 12 },
+                        bodyFont: { size: 12 },
+                        cornerRadius: 8,
+                        padding: 12,
+                        callbacks: {
+                            label: function(context) {
+                                return context.parsed.y >= 0 ? '+' + context.parsed.y.toFixed(2) + '%' : context.parsed.y.toFixed(2) + '%';
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: { display: false },
+                        ticks: { color: '#8B949E', font: { size: 10 } }
+                    },
+                    y: {
+                        grid: { color: 'rgba(255,255,255,0.05)' },
+                        ticks: { 
+                            color: '#8B949E', 
+                            font: { size: 11 },
+                            callback: function(value) { return value + '%'; }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Drawdown Chart
+        const drawdownCtx = document.getElementById('drawdownChart').getContext('2d');
+        drawdownChartInstance = new Chart(drawdownCtx, {
+            type: 'line',
+            data: {
+                labels: [],
+                datasets: [{
+                    label: 'Drawdown',
+                    data: [],
+                    borderColor: '#FF6B6B',
+                    backgroundColor: 'rgba(255, 107, 107, 0.1)',
+                    fill: true,
+                    tension: 0.3,
+                    pointRadius: 0,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: 'rgba(0,0,0,0.8)',
+                        titleFont: { size: 12 },
+                        bodyFont: { size: 12 },
+                        cornerRadius: 8,
+                        padding: 12,
+                        callbacks: {
+                            label: function(context) {
+                                return context.parsed.y.toFixed(2) + '%';
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: { display: false },
+                        ticks: { color: '#8B949E', font: { size: 9 } }
+                    },
+                    y: {
+                        grid: { color: 'rgba(255,255,255,0.05)' },
+                        ticks: { 
+                            color: '#8B949E', 
+                            font: { size: 10 },
+                            callback: function(value) { return value + '%'; }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Strategy Distribution Chart
+        const distCtx = document.getElementById('strategyDistChart').getContext('2d');
+        strategyDistChartInstance = new Chart(distCtx, {
+            type: 'doughnut',
+            data: {
+                labels: [],
+                datasets: [{
+                    data: [],
+                    backgroundColor: [
+                        '#6C63FF',
+                        '#00D4FF',
+                        '#FFD93D',
+                        '#FF6B6B',
+                        '#A78BFA',
+                        '#34D399',
+                        '#FB923C',
+                        '#F472B6',
+                    ],
+                    borderWidth: 0,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            color: '#8B949E',
+                            padding: 12,
+                            usePointStyle: true,
+                            pointStyleWidth: 8,
+                            font: { size: 10 }
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(0,0,0,0.8)',
+                        titleFont: { size: 12 },
+                        bodyFont: { size: 12 },
+                        cornerRadius: 8,
+                        padding: 12,
+                        callbacks: {
+                            label: function(context) {
+                                const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                const percentage = total > 0 ? ((context.parsed / total) * 100).toFixed(1) : 0;
+                                return context.label + ': ' + context.parsed + ' trades (' + percentage + '%)';
+                            }
+                        }
+                    }
+                },
+                cutout: '60%',
+            }
+        });
+    }
+
+    function updateCharts(data) {
+        // Update Equity Chart
+        if (equityChartInstance && data.equity) {
+            equityChartInstance.data.labels = data.equity.labels || [];
+            equityChartInstance.data.datasets[0].data = data.equity.values || [];
+            equityChartInstance.update();
+        }
+
+        // Update Monthly Chart
+        if (monthlyChartInstance && data.monthly) {
+            monthlyChartInstance.data.labels = data.monthly.labels || [];
+            monthlyChartInstance.data.datasets[0].data = data.monthly.values || [];
+            monthlyChartInstance.data.datasets[0].backgroundColor = data.monthly.values.map(function(v) {
+                return v >= 0 ? 'rgba(0, 212, 255, 0.6)' : 'rgba(255, 107, 107, 0.6)';
+            });
+            monthlyChartInstance.data.datasets[0].borderColor = data.monthly.values.map(function(v) {
+                return v >= 0 ? '#00D4FF' : '#FF6B6B';
+            });
+            monthlyChartInstance.update();
+        }
+
+        // Update Drawdown Chart
+        if (drawdownChartInstance && data.drawdown) {
+            drawdownChartInstance.data.labels = data.drawdown.labels || [];
+            drawdownChartInstance.data.datasets[0].data = data.drawdown.values || [];
+            drawdownChartInstance.update();
+        }
+
+        // Update Strategy Distribution Chart
+        if (strategyDistChartInstance && data.strategy_dist) {
+            strategyDistChartInstance.data.labels = data.strategy_dist.labels || [];
+            strategyDistChartInstance.data.datasets[0].data = data.strategy_dist.values || [];
+            strategyDistChartInstance.update();
+        }
+    }
+
+    // ============================================================
+    // CHART INTERVAL BUTTONS
+    // ============================================================
+    function setupChartButtons() {
+        document.querySelectorAll('.chart-btn[data-chart="equity"]').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                const parent = this.closest('.chart-header');
+                parent.querySelectorAll('.chart-btn[data-chart="equity"]').forEach(function(b) {
+                    b.style.background = 'none';
+                    b.style.color = 'var(--text-secondary)';
+                });
+                this.style.background = 'rgba(108,99,255,0.15)';
+                this.style.color = 'var(--primary)';
+                
+                state.equityChartType = this.dataset.type;
+                // Re-render equity chart with new scale type
+                if (equityChartInstance && state.data.equity) {
+                    // Update y-axis scale type
+                    equityChartInstance.options.scales.y.type = state.equityChartType === 'log' ? 'logarithmic' : 'linear';
+                    equityChartInstance.update();
+                }
+            });
+        });
+    }
+
+    // ============================================================
+    // DATE/TIME UPDATE
+    // ============================================================
+    function updateDateTime() {
+        const now = new Date();
+        DOM.currentDateTime.textContent = now.toLocaleString('en-US', {
+            weekday: 'short',
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: false
+        });
+    }
+
+    // ============================================================
+    // SIDEBAR TOGGLE
+    // ============================================================
+    function setupSidebar() {
+        DOM.sidebarToggle.addEventListener('click', function() {
+            DOM.sidebar.classList.toggle('open');
+            DOM.sidebarOverlay.classList.toggle('active');
+        });
+        
+        DOM.sidebarOverlay.addEventListener('click', function() {
+            DOM.sidebar.classList.remove('open');
+            DOM.sidebarOverlay.classList.remove('active');
+        });
+    }
+
+    // ============================================================
+    // API CALLS - REAL ENDPOINTS
+    // ============================================================
+    async function fetchPerformanceData() {
+        try {
+            const token = localStorage.getItem('access_token') || '';
+            const params = new URLSearchParams({
+                period: state.period,
+                start: state.startDate || '',
+                end: state.endDate || '',
+            });
+            
+            const response = await fetch(API.endpoints.performance + '?' + params.toString(), {
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                    'Content-Type': 'application/json',
+                }
+            });
+            
+            if (!response.ok) {
+                if (response.status === 401) {
+                    window.location.href = '/login';
+                    return null;
+                }
+                throw new Error('Failed to fetch performance data: ' + response.status);
+            }
+            
+            const data = await response.json();
+            state.data = data;
+            
+            updateMetrics(data.metrics);
+            updateCharts(data.charts);
+            updateTable(data.strategies);
+            
+            return data;
+        } catch (error) {
+            console.error('Performance data fetch failed:', error);
+            return null;
+        }
+    }
+
+    async function fetchStrategyPerformance() {
+        try {
+            const token = localStorage.getItem('access_token') || '';
+            const response = await fetch(API.endpoints.strategies, {
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                    'Content-Type': 'application/json',
+                }
+            });
+            
+            if (!response.ok) throw new Error('Failed to fetch strategy performance: ' + response.status);
+            
+            const data = await response.json();
+            updateTable(data.strategies || []);
+            return data;
+        } catch (error) {
+            console.error('Strategy performance fetch failed:', error);
+            return null;
+        }
+    }
+
+    // ============================================================
+    // UPDATE METRICS
+    // ============================================================
+    function updateMetrics(metrics) {
+        if (!metrics) return;
+        
+        DOM.metricReturn.textContent = (metrics.total_return >= 0 ? '+' : '') + metrics.total_return.toFixed(2) + '%';
+        DOM.metricReturn.className = 'metric-value ' + (metrics.total_return >= 0 ? 'positive' : 'negative');
+        DOM.metricReturnChange.textContent = (metrics.total_return_change >= 0 ? '+' : '') + metrics.total_return_change.toFixed(2) + '%';
+        DOM.metricReturnChange.className = 'metric-change ' + (metrics.total_return_change >= 0 ? 'positive' : 'negative');
+        
+        DOM.metricSharpe.textContent = metrics.sharpe_ratio.toFixed(2);
+        DOM.metricSharpe.className = 'metric-value primary';
+        
+        DOM.metricDrawdown.textContent = (metrics.max_drawdown >= 0 ? '+' : '') + metrics.max_drawdown.toFixed(2) + '%';
+        DOM.metricDrawdown.className = 'metric-value negative';
+        DOM.metricDrawdownChange.textContent = (metrics.max_drawdown_change >= 0 ? '+' : '') + metrics.max_drawdown_change.toFixed(2) + '%';
+        DOM.metricDrawdownChange.className = 'metric-change negative';
+        
+        DOM.metricWinRate.textContent = metrics.win_rate.toFixed(1) + '%';
+        DOM.metricWinRate.className = 'metric-value primary';
+        DOM.metricWinRateChange.textContent = (metrics.win_rate_change >= 0 ? '+' : '') + metrics.win_rate_change.toFixed(1) + '%';
+        DOM.metricWinRateChange.className = 'metric-change ' + (metrics.win_rate_change >= 0 ? 'positive' : 'negative');
+        
+        DOM.metricProfitFactor.textContent = metrics.profit_factor.toFixed(2);
+        DOM.metricProfitFactor.className = 'metric-value primary';
+        
+        DOM.metricTrades.textContent = metrics.total_trades;
+        DOM.metricTrades.className = 'metric-value';
+        DOM.metricTrades.style.color = 'var(--text-primary)';
+    }
+
+    // ============================================================
+    // UPDATE TABLE
+    // ============================================================
+    function updateTable(strategies) {
+        if (!strategies || strategies.length === 0) {
+            DOM.tableBody.innerHTML = `
+                <tr>
+                    <td colspan="9" style="text-align:center;padding:30px;color:var(--text-secondary);">
+                        <i class="fas fa-inbox"></i> No strategy data available
+                    </td>
+                </tr>
+            `;
+            return;
+        }
+        
+        DOM.tableBody.innerHTML = strategies.map(function(s) {
+            return `
+                <tr>
+                    <td><span class="strategy-badge">${s.name || '--'}</span></td>
+                    <td>${s.trades || 0}</td>
+                    <td class="${s.win_rate >= 50 ? 'positive' : 'negative'}">${s.win_rate ? s.win_rate.toFixed(1) + '%' : '--'}</td>
+                    <td class="${s.profit >= 0 ? 'positive' : 'negative'}">${s.profit ? '$' + s.profit.toFixed(2) : '--'}</td>
+                    <td class="positive">${s.avg_win ? '$' + s.avg_win.toFixed(2) : '--'}</td>
+                    <td class="negative">${s.avg_loss ? '$' + s.avg_loss.toFixed(2) : '--'}</td>
+                    <td>${s.profit_factor ? s.profit_factor.toFixed(2) : '--'}</td>
+                    <td>${s.sharpe ? s.sharpe.toFixed(2) : '--'}</td>
+                    <td class="negative">${s.max_drawdown ? s.max_drawdown.toFixed(2) + '%' : '--'}</td>
+                </tr>
+            `;
+        }).join('');
+    }
+
+    // ============================================================
+    // PERIOD SELECTOR
+    // ============================================================
+    function setupPeriodSelector() {
+        DOM.periodButtons.forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                DOM.periodButtons.forEach(function(b) { b.classList.remove('active'); });
+                this.classList.add('active');
+                state.period = this.dataset.period;
+                state.startDate = null;
+                state.endDate = null;
+                fetchPerformanceData();
+            });
+        });
+        
+        DOM.applyCustom.addEventListener('click', function() {
+            state.startDate = DOM.startDate.value;
+            state.endDate = DOM.endDate.value;
+            if (state.startDate && state.endDate) {
+                state.period = 'custom';
+                DOM.periodButtons.forEach(function(b) { b.classList.remove('active'); });
+                fetchPerformanceData();
+            }
+        });
+        
+        // Set default dates
+        const today = new Date();
+        const weekAgo = new Date(today);
+        weekAgo.setDate(weekAgo.getDate() - 7);
+        DOM.endDate.value = today.toISOString().split('T')[0];
+        DOM.startDate.value = weekAgo.toISOString().split('T')[0];
+    }
+
+    // ============================================================
+    // EXPORT CSV
+    // ============================================================
+    async function exportCSV() {
+        try {
+            const token = localStorage.getItem('access_token') || '';
+            const params = new URLSearchParams({
+                period: state.period,
+                start: state.startDate || '',
+                end: state.endDate || '',
+                format: 'csv',
+            });
+            
+            const response = await fetch(API.endpoints.export + '?' + params.toString(), {
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                    'Content-Type': 'application/json',
+                }
+            });
+            
+            if (!response.ok) throw new Error('Failed to export data: ' + response.status);
+            
+            const blob = await response.blob();
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'performance_export_' + new Date().toISOString().slice(0, 10) + '.csv';
+            a.click();
+            URL.revokeObjectURL(url);
+        } catch (error) {
+            console.error('Export failed:', error);
+            alert('Failed to export data: ' + error.message);
+        }
+    }
+
+    // ============================================================
+    // WEBSOCKET CONNECTION - REAL-TIME PERFORMANCE
+    // ============================================================
+    function connectWebSocket() {
+        try {
+            const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const host = window.location.host;
+            const token = localStorage.getItem('access_token') || '';
+            const wsUrl = protocol + '//' + host + API.ws.performance + '?token=' + encodeURIComponent(token);
+            
+            state.ws = new WebSocket(wsUrl);
+            
+            state.ws.onopen = function() {
+                console.log('Performance WebSocket connected');
+                state.reconnectAttempts = 0;
+            };
+            
+            state.ws.onmessage = function(event) {
+                try {
+                    const data = JSON.parse(event.data);
+                    handleWebSocketMessage(data);
+                } catch (error) {
+                    console.error('WebSocket message parse error:', error);
+                }
+            };
+            
+            state.ws.onclose = function() {
+                console.log('Performance WebSocket disconnected');
+                reconnectWebSocket();
+            };
+            
+            state.ws.onerror = function(error) {
+                console.error('Performance WebSocket error:', error);
+            };
+        } catch (error) {
+            console.error('WebSocket connection failed:', error);
+        }
+    }
+
+    function reconnectWebSocket() {
+        if (state.reconnectAttempts >= state.maxReconnectAttempts) {
+            console.log('Max reconnect attempts reached for performance WebSocket');
+            return;
+        }
+        
+        state.reconnectAttempts++;
+        const delay = Math.min(1000 * Math.pow(2, state.reconnectAttempts), 30000);
+        setTimeout(function() {
+            console.log('Reconnecting performance WebSocket (attempt ' + state.reconnectAttempts + ')');
+            connectWebSocket();
+        }, delay);
+    }
+
+    function handleWebSocketMessage(data) {
+        switch (data.type) {
+            case 'metrics':
+                updateMetrics(data.metrics);
+                break;
+            case 'equity_update':
+                if (equityChartInstance && data.equity) {
+                    equityChartInstance.data.labels = data.equity.labels || [];
+                    equityChartInstance.data.datasets[0].data = data.equity.values || [];
+                    equityChartInstance.update();
+                }
+                break;
+            case 'strategy_update':
+                updateTable(data.strategies || []);
+                break;
+            case 'ping':
+                if (state.ws && state.ws.readyState === WebSocket.OPEN) {
+                    state.ws.send(JSON.stringify({ type: 'pong' }));
+                }
+                break;
+            default:
+                console.log('Unknown WebSocket message type:', data.type);
+        }
+    }
+
+    // ============================================================
+    // AUTO REFRESH
+    // ============================================================
+    function startAutoRefresh() {
+        if (state.updateInterval) {
+            clearInterval(state.updateInterval);
+        }
+        state.updateInterval = setInterval(function() {
+            fetchPerformanceData();
+        }, 30000); // 30 seconds
+    }
+
+    // ============================================================
+    // EVENT LISTENERS
+    // ============================================================
+    function setupEventListeners() {
+        DOM.refreshTable.addEventListener('click', function() {
+            const icon = this.querySelector('i');
+            icon.classList.add('fa-spin');
+            fetchStrategyPerformance().finally(function() {
+                icon.classList.remove('fa-spin');
+            });
+        });
+        
+        DOM.exportCSV.addEventListener('click', exportCSV);
+        
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            // Ctrl+Shift+R to refresh
+            if (e.ctrlKey && e.shiftKey && e.key === 'r') {
+                e.preventDefault();
+                fetchPerformanceData();
+            }
+        });
+    }
+
+    // ============================================================
+    // INITIALIZATION
+    // ============================================================
+    function init() {
+        // Update date/time
+        updateDateTime();
+        setInterval(updateDateTime, 1000);
+        
+        // Setup sidebar
+        setupSidebar();
+        
+        // Setup period selector
+        setupPeriodSelector();
+        
+        // Setup chart buttons
+        setupChartButtons();
+        
+        // Setup event listeners
+        setupEventListeners();
+        
+        // Init charts
+        initCharts();
+        
+        // Connect WebSocket
+        connectWebSocket();
+        
+        // Fetch initial data
+        fetchPerformanceData().then(function() {
+            console.log('Performance page initialized successfully');
+        }).catch(function(error) {
+            console.error('Performance page initialization error:', error);
+        });
+        
+        // Start auto refresh
+        startAutoRefresh();
+    }
+
+    // Start when DOM is ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+
+})();
+</script>
+
+</body>
+</html>
