@@ -1,0 +1,1708 @@
+<!-- trading/bots/arbitrage_bot/templates/dashboard.html -->
+<!-- NEXUS AI TRADING SYSTEM -->
+<!-- Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved -->
+<!-- Version: 4.2.0 - Complete Dashboard Template with Real API Integration -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - NEXUS Trading IA</title>
+    
+    <!-- Meta Tags -->
+    <meta name="description" content="NEXUS AI Trading System Dashboard - Real-time arbitrage monitoring and analytics">
+    <meta name="theme-color" content="#6C63FF">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.0.0/dist/chart.umd.min.js"></script>
+    
+    <style>
+        /* ============================================
+           DASHBOARD - COMPLETE STYLES
+           ============================================ */
+        
+        :root {
+            --primary: #6C63FF;
+            --primary-dark: #5a52d9;
+            --secondary: #00D4FF;
+            --success: #00D4FF;
+            --danger: #FF6B6B;
+            --warning: #FFD93D;
+            --bg-primary: #0D1117;
+            --bg-secondary: #161B22;
+            --bg-card: #1C2333;
+            --text-primary: #E0E0E0;
+            --text-secondary: #8B949E;
+            --text-muted: #484F58;
+            --border-color: rgba(255, 255, 255, 0.05);
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            --radius: 16px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        /* Reset & Base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* ============================================
+           LAYOUT
+           ============================================ */
+        .dashboard-wrapper {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border-color);
+            padding: 20px 0;
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            z-index: 100;
+            transition: var(--transition);
+            overflow-y: auto;
+        }
+        
+        .sidebar-brand {
+            padding: 0 20px 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .sidebar-brand img {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+        }
+        
+        .sidebar-brand span {
+            font-size: 18px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .sidebar-nav {
+            flex: 1;
+            padding: 16px 12px;
+        }
+        
+        .sidebar-nav .nav-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            padding: 8px 12px 4px;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+        
+        .sidebar-nav a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 16px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 10px;
+            transition: var(--transition);
+            font-size: 14px;
+            font-weight: 500;
+            margin: 2px 0;
+        }
+        
+        .sidebar-nav a i {
+            width: 20px;
+            text-align: center;
+            font-size: 16px;
+        }
+        
+        .sidebar-nav a:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-primary);
+        }
+        
+        .sidebar-nav a.active {
+            background: rgba(108, 99, 255, 0.15);
+            color: var(--primary);
+        }
+        
+        .sidebar-nav a .badge {
+            margin-left: auto;
+            background: var(--danger);
+            color: #fff;
+            font-size: 10px;
+            padding: 1px 8px;
+            border-radius: 10px;
+            font-weight: 600;
+        }
+        
+        /* Main Content */
+        .main-content {
+            margin-left: 260px;
+            flex: 1;
+            padding: 24px 32px 32px;
+        }
+        
+        /* ============================================
+           HEADER
+           ============================================ */
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 24px;
+            border-bottom: 1px solid var(--border-color);
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+        
+        .header-left h1 {
+            font-size: 24px;
+            font-weight: 700;
+        }
+        
+        .header-left p {
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-top: 4px;
+        }
+        
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        
+        .header-right .date-time {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+        
+        .header-right .status-badge {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            border-radius: 20px;
+            background: rgba(0, 212, 255, 0.1);
+            color: var(--success);
+            font-size: 13px;
+            font-weight: 500;
+        }
+        
+        .header-right .status-badge .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--success);
+            animation: pulse-dot 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+        
+        /* ============================================
+           METRICS GRID
+           ============================================ */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin: 24px 0;
+        }
+        
+        .metric-card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            transition: var(--transition);
+        }
+        
+        .metric-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+        
+        .metric-card .metric-label {
+            color: var(--text-secondary);
+            font-size: 13px;
+            font-weight: 500;
+        }
+        
+        .metric-card .metric-value {
+            font-size: 28px;
+            font-weight: 700;
+            margin: 4px 0 2px;
+        }
+        
+        .metric-card .metric-change {
+            font-size: 13px;
+            font-weight: 500;
+        }
+        
+        .metric-card .metric-change.positive {
+            color: var(--success);
+        }
+        
+        .metric-card .metric-change.negative {
+            color: var(--danger);
+        }
+        
+        .metric-card .metric-icon {
+            float: right;
+            font-size: 32px;
+            opacity: 0.2;
+        }
+        
+        /* ============================================
+           CHARTS SECTION
+           ============================================ */
+        .charts-section {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .chart-card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 20px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .chart-card .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        
+        .chart-card .chart-title {
+            font-size: 16px;
+            font-weight: 600;
+        }
+        
+        .chart-card .chart-container {
+            height: 280px;
+            position: relative;
+        }
+        
+        /* ============================================
+           ACTIVITY & TRADES
+           ============================================ */
+        .activity-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .activity-card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 20px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .activity-card .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        
+        .activity-card .card-title {
+            font-size: 16px;
+            font-weight: 600;
+        }
+        
+        .activity-card .view-all {
+            color: var(--secondary);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+        }
+        
+        .activity-card .view-all:hover {
+            text-decoration: underline;
+        }
+        
+        /* Trade List */
+        .trade-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .trade-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 12px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 8px;
+            transition: var(--transition);
+        }
+        
+        .trade-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .trade-item .trade-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .trade-item .trade-symbol {
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .trade-item .trade-side {
+            font-size: 12px;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-weight: 500;
+        }
+        
+        .trade-item .trade-side.buy {
+            background: rgba(0, 212, 255, 0.15);
+            color: var(--success);
+        }
+        
+        .trade-item .trade-side.sell {
+            background: rgba(255, 107, 107, 0.15);
+            color: var(--danger);
+        }
+        
+        .trade-item .trade-price {
+            color: var(--text-secondary);
+            font-size: 13px;
+        }
+        
+        .trade-item .trade-profit {
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .trade-item .trade-profit.positive {
+            color: var(--success);
+        }
+        
+        .trade-item .trade-profit.negative {
+            color: var(--danger);
+        }
+        
+        /* Opportunity List */
+        .opportunity-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .opportunity-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 12px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 8px;
+            transition: var(--transition);
+        }
+        
+        .opportunity-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .opportunity-item .opp-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .opportunity-item .opp-type {
+            font-size: 11px;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-weight: 500;
+            background: rgba(108, 99, 255, 0.15);
+            color: var(--primary);
+        }
+        
+        .opportunity-item .opp-symbol {
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .opportunity-item .opp-profit {
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--success);
+        }
+        
+        .opportunity-item .opp-confidence {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+        
+        .opportunity-item .opp-confidence .bar {
+            width: 60px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        
+        .opportunity-item .opp-confidence .bar .fill {
+            height: 100%;
+            border-radius: 2px;
+            background: var(--primary);
+        }
+        
+        /* ============================================
+           SYSTEM STATUS
+           ============================================ */
+        .system-status {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 12px;
+            margin: 20px 0;
+            padding: 16px 20px;
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            border: 1px solid var(--border-color);
+        }
+        
+        .system-status .status-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .system-status .status-item .status-icon {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+        
+        .system-status .status-item .status-icon.online {
+            background: var(--success);
+            box-shadow: 0 0 12px rgba(0, 212, 255, 0.3);
+        }
+        
+        .system-status .status-item .status-icon.warning {
+            background: var(--warning);
+        }
+        
+        .system-status .status-item .status-icon.offline {
+            background: var(--danger);
+        }
+        
+        .system-status .status-item .status-label {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+        
+        .system-status .status-item .status-value {
+            font-size: 13px;
+            font-weight: 500;
+        }
+        
+        /* ============================================
+           RESPONSIVE
+           ============================================ */
+        @media (max-width: 1200px) {
+            .charts-section {
+                grid-template-columns: 1fr;
+            }
+            
+            .activity-section {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .sidebar {
+                transform: translateX(-100%);
+                width: 280px;
+            }
+            
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            
+            .main-content {
+                margin-left: 0;
+                padding: 16px;
+            }
+            
+            .metrics-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .dashboard-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .header-right {
+                width: 100%;
+                justify-content: space-between;
+                flex-wrap: wrap;
+            }
+            
+            .metrics-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 12px;
+            }
+            
+            .metric-card .metric-value {
+                font-size: 22px;
+            }
+            
+            .system-status {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .system-status {
+                grid-template-columns: 1fr;
+            }
+            
+            .trade-item {
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+            
+            .opportunity-item {
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+        }
+        
+        /* ============================================
+           SCROLLBAR
+           ============================================ */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--bg-card);
+            border-radius: 3px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary);
+        }
+        
+        /* ============================================
+           TOGGLE SIDEBAR BUTTON
+           ============================================ */
+        .sidebar-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 24px;
+            cursor: pointer;
+            padding: 8px;
+        }
+        
+        @media (max-width: 992px) {
+            .sidebar-toggle {
+                display: block;
+            }
+        }
+        
+        /* ============================================
+           OVERLAY
+           ============================================ */
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 99;
+        }
+        
+        .sidebar-overlay.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+<!-- ============================================ -->
+<!-- SIDEBAR OVERLAY -->
+<!-- ============================================ -->
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<!-- ============================================ -->
+<!-- DASHBOARD WRAPPER -->
+<!-- ============================================ -->
+<div class="dashboard-wrapper">
+    
+    <!-- ============================================ -->
+    <!-- SIDEBAR -->
+    <!-- ============================================ -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-brand">
+            <img src="/static/images/nexus-logo.svg" alt="NEXUS" onerror="this.src='/static/images/logo.png'">
+            <span>NEXUS Trading</span>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <div class="nav-label">Main</div>
+            <a href="/dashboard" class="active">
+                <i class="fas fa-chart-line"></i> Dashboard
+            </a>
+            <a href="/exchanges">
+                <i class="fas fa-exchange-alt"></i> Exchanges
+            </a>
+            <a href="/opportunities">
+                <i class="fas fa-bolt"></i> Opportunities
+                <span class="badge" id="oppBadge">0</span>
+            </a>
+            <a href="/strategies">
+                <i class="fas fa-chess-queen"></i> Strategies
+            </a>
+            
+            <div class="nav-label" style="margin-top: 16px;">Analytics</div>
+            <a href="/performance">
+                <i class="fas fa-chart-bar"></i> Performance
+            </a>
+            <a href="/portfolio">
+                <i class="fas fa-briefcase"></i> Portfolio
+            </a>
+            <a href="/reports">
+                <i class="fas fa-file-alt"></i> Reports
+            </a>
+            <a href="/signals">
+                <i class="fas fa-signal"></i> Signals
+            </a>
+            
+            <div class="nav-label" style="margin-top: 16px;">System</div>
+            <a href="/logs">
+                <i class="fas fa-terminal"></i> Logs
+            </a>
+            <a href="/settings">
+                <i class="fas fa-cog"></i> Settings
+            </a>
+            <a href="/support">
+                <i class="fas fa-life-ring"></i> Support
+            </a>
+        </nav>
+    </aside>
+    
+    <!-- ============================================ -->
+    <!-- MAIN CONTENT -->
+    <!-- ============================================ -->
+    <main class="main-content">
+        
+        <!-- ============================================ -->
+        <!-- HEADER -->
+        <!-- ============================================ -->
+        <header class="dashboard-header">
+            <div class="header-left">
+                <button class="sidebar-toggle" id="sidebarToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h1>Dashboard</h1>
+                <p>Real-time overview of your arbitrage operations</p>
+            </div>
+            <div class="header-right">
+                <span class="date-time" id="currentDateTime"></span>
+                <span class="status-badge">
+                    <span class="dot"></span>
+                    <span id="systemStatusText">Operational</span>
+                </span>
+            </div>
+        </header>
+        
+        <!-- ============================================ -->
+        <!-- METRICS GRID -->
+        <!-- ============================================ -->
+        <div class="metrics-grid" id="metricsGrid">
+            <div class="metric-card">
+                <div class="metric-icon"><i class="fas fa-dollar-sign"></i></div>
+                <div class="metric-label">Total Profit (24h)</div>
+                <div class="metric-value" id="metricProfit">$0.00</div>
+                <div class="metric-change positive" id="metricProfitChange">+0.00%</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-icon"><i class="fas fa-exchange-alt"></i></div>
+                <div class="metric-label">Total Trades</div>
+                <div class="metric-value" id="metricTrades">0</div>
+                <div class="metric-change positive" id="metricTradesChange">+0</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-icon"><i class="fas fa-percent"></i></div>
+                <div class="metric-label">Win Rate</div>
+                <div class="metric-value" id="metricWinRate">0%</div>
+                <div class="metric-change positive" id="metricWinRateChange">+0.0%</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-icon"><i class="fas fa-bolt"></i></div>
+                <div class="metric-label">Active Opportunities</div>
+                <div class="metric-value" id="metricOpportunities">0</div>
+                <div class="metric-change" id="metricOppChange" style="color: var(--text-secondary);">Scanning...</div>
+            </div>
+        </div>
+        
+        <!-- ============================================ -->
+        <!-- CHARTS SECTION -->
+        <!-- ============================================ -->
+        <div class="charts-section">
+            <div class="chart-card">
+                <div class="chart-header">
+                    <span class="chart-title">Profit &amp; Loss Over Time</span>
+                    <div>
+                        <button class="chart-btn" data-interval="1d" style="background:none;border:none;color:var(--text-secondary);cursor:pointer;padding:4px 8px;font-size:12px;border-radius:4px;">1D</button>
+                        <button class="chart-btn active" data-interval="7d" style="background:rgba(108,99,255,0.15);border:none;color:var(--primary);cursor:pointer;padding:4px 8px;font-size:12px;border-radius:4px;">7D</button>
+                        <button class="chart-btn" data-interval="30d" style="background:none;border:none;color:var(--text-secondary);cursor:pointer;padding:4px 8px;font-size:12px;border-radius:4px;">30D</button>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="pnlChart"></canvas>
+                </div>
+            </div>
+            <div class="chart-card">
+                <div class="chart-header">
+                    <span class="chart-title">Performance by Strategy</span>
+                </div>
+                <div class="chart-container">
+                    <canvas id="strategyChart"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <!-- ============================================ -->
+        <!-- SYSTEM STATUS -->
+        <!-- ============================================ -->
+        <div class="system-status" id="systemStatus">
+            <div class="status-item">
+                <span class="status-icon online"></span>
+                <span class="status-label">API</span>
+                <span class="status-value" id="statusAPI">Online</span>
+            </div>
+            <div class="status-item">
+                <span class="status-icon online"></span>
+                <span class="status-label">WebSocket</span>
+                <span class="status-value" id="statusWS">Connected</span>
+            </div>
+            <div class="status-item">
+                <span class="status-icon online"></span>
+                <span class="status-label">Database</span>
+                <span class="status-value" id="statusDB">Online</span>
+            </div>
+            <div class="status-item">
+                <span class="status-icon online"></span>
+                <span class="status-label">Exchanges</span>
+                <span class="status-value" id="statusExchanges">0/0</span>
+            </div>
+            <div class="status-item">
+                <span class="status-icon online"></span>
+                <span class="status-label">Strategies</span>
+                <span class="status-value" id="statusStrategies">0 Active</span>
+            </div>
+            <div class="status-item">
+                <span class="status-icon online"></span>
+                <span class="status-label">Uptime</span>
+                <span class="status-value" id="statusUptime">00:00:00</span>
+            </div>
+        </div>
+        
+        <!-- ============================================ -->
+        <!-- ACTIVITY SECTION -->
+        <!-- ============================================ -->
+        <div class="activity-section">
+            <!-- Recent Trades -->
+            <div class="activity-card">
+                <div class="card-header">
+                    <span class="card-title"><i class="fas fa-clock" style="margin-right:8px;color:var(--secondary);"></i>Recent Trades</span>
+                    <a href="/performance" class="view-all">View All →</a>
+                </div>
+                <div class="trade-list" id="recentTrades">
+                    <div style="text-align:center;padding:20px;color:var(--text-secondary);font-size:14px;">
+                        <i class="fas fa-spinner fa-spin"></i> Loading trades...
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Active Opportunities -->
+            <div class="activity-card">
+                <div class="card-header">
+                    <span class="card-title"><i class="fas fa-bolt" style="margin-right:8px;color:var(--warning);"></i>Active Opportunities</span>
+                    <a href="/opportunities" class="view-all">View All →</a>
+                </div>
+                <div class="opportunity-list" id="activeOpportunities">
+                    <div style="text-align:center;padding:20px;color:var(--text-secondary);font-size:14px;">
+                        <i class="fas fa-spinner fa-spin"></i> Loading opportunities...
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- ============================================ -->
+        <!-- FOOTER (Partial) -->
+        <!-- ============================================ -->
+        {% include 'partials/footer.html' %}
+        
+    </main>
+</div>
+
+<!-- ============================================ -->
+<!-- SCRIPTS - COMPLETE IMPLEMENTATION WITH REAL API -->
+<!-- ============================================ -->
+<script>
+// ================================================================
+// DASHBOARD - COMPLETE JAVASCRIPT IMPLEMENTATION WITH REAL API
+// ================================================================
+
+(function() {
+    'use strict';
+
+    // ============================================================
+    // API CONFIGURATION
+    // ============================================================
+    const API = {
+        base: '/api',
+        endpoints: {
+            dashboard: '/api/dashboard',
+            metrics: '/api/metrics',
+            trades: '/api/trades/recent',
+            opportunities: '/api/opportunities/active',
+            pnl: '/api/charts/pnl',
+            strategies: '/api/charts/strategies',
+            status: '/api/system/status',
+            exchanges: '/api/exchanges/status',
+        },
+        ws: {
+            dashboard: '/ws/dashboard',
+            status: '/ws/status',
+        }
+    };
+
+    // ============================================================
+    // STATE
+    // ============================================================
+    const state = {
+        startTime: Date.now(),
+        metrics: {
+            profit: 0,
+            profitChange: 0,
+            trades: 0,
+            tradesChange: 0,
+            winRate: 0,
+            winRateChange: 0,
+            opportunities: 0,
+        },
+        isRunning: true,
+        updateInterval: null,
+        ws: null,
+        reconnectAttempts: 0,
+        maxReconnectAttempts: 5,
+    };
+
+    // ============================================================
+    // DOM REFERENCES
+    // ============================================================
+    const DOM = {
+        sidebar: document.getElementById('sidebar'),
+        sidebarOverlay: document.getElementById('sidebarOverlay'),
+        sidebarToggle: document.getElementById('sidebarToggle'),
+        currentDateTime: document.getElementById('currentDateTime'),
+        systemStatusText: document.getElementById('systemStatusText'),
+        oppBadge: document.getElementById('oppBadge'),
+        
+        metricProfit: document.getElementById('metricProfit'),
+        metricProfitChange: document.getElementById('metricProfitChange'),
+        metricTrades: document.getElementById('metricTrades'),
+        metricTradesChange: document.getElementById('metricTradesChange'),
+        metricWinRate: document.getElementById('metricWinRate'),
+        metricWinRateChange: document.getElementById('metricWinRateChange'),
+        metricOpportunities: document.getElementById('metricOpportunities'),
+        metricOppChange: document.getElementById('metricOppChange'),
+        
+        statusAPI: document.getElementById('statusAPI'),
+        statusWS: document.getElementById('statusWS'),
+        statusDB: document.getElementById('statusDB'),
+        statusExchanges: document.getElementById('statusExchanges'),
+        statusStrategies: document.getElementById('statusStrategies'),
+        statusUptime: document.getElementById('statusUptime'),
+        
+        recentTrades: document.getElementById('recentTrades'),
+        activeOpportunities: document.getElementById('activeOpportunities'),
+    };
+
+    // ============================================================
+    // CHARTS
+    // ============================================================
+    let pnlChartInstance = null;
+    let strategyChartInstance = null;
+
+    function initCharts() {
+        // PnL Chart
+        const pnlCtx = document.getElementById('pnlChart').getContext('2d');
+        pnlChartInstance = new Chart(pnlCtx, {
+            type: 'line',
+            data: {
+                labels: [],
+                datasets: [{
+                    label: 'Profit / Loss',
+                    data: [],
+                    borderColor: '#6C63FF',
+                    backgroundColor: 'rgba(108, 99, 255, 0.1)',
+                    fill: true,
+                    tension: 0.4,
+                    pointRadius: 3,
+                    pointBackgroundColor: '#6C63FF',
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: 'rgba(0,0,0,0.8)',
+                        titleFont: { size: 12 },
+                        bodyFont: { size: 12 },
+                        cornerRadius: 8,
+                        padding: 12,
+                        callbacks: {
+                            label: function(context) {
+                                return '$' + context.parsed.y.toFixed(2);
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: { color: 'rgba(255,255,255,0.05)' },
+                        ticks: { color: '#8B949E', font: { size: 11 } }
+                    },
+                    y: {
+                        grid: { color: 'rgba(255,255,255,0.05)' },
+                        ticks: { 
+                            color: '#8B949E', 
+                            font: { size: 11 },
+                            callback: function(value) { return '$' + value; }
+                        }
+                    }
+                },
+                interaction: {
+                    intersect: false,
+                    mode: 'index',
+                },
+            }
+        });
+
+        // Strategy Chart
+        const strategyCtx = document.getElementById('strategyChart').getContext('2d');
+        strategyChartInstance = new Chart(strategyCtx, {
+            type: 'doughnut',
+            data: {
+                labels: [],
+                datasets: [{
+                    data: [],
+                    backgroundColor: [
+                        '#6C63FF',
+                        '#00D4FF',
+                        '#FFD93D',
+                        '#FF6B6B',
+                        '#A78BFA',
+                        '#34D399',
+                        '#FB923C',
+                        '#F472B6',
+                    ],
+                    borderWidth: 0,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            color: '#8B949E',
+                            padding: 16,
+                            usePointStyle: true,
+                            pointStyleWidth: 8,
+                            font: { size: 11 }
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(0,0,0,0.8)',
+                        titleFont: { size: 12 },
+                        bodyFont: { size: 12 },
+                        cornerRadius: 8,
+                        padding: 12,
+                        callbacks: {
+                            label: function(context) {
+                                const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                const percentage = total > 0 ? ((context.parsed / total) * 100).toFixed(1) : 0;
+                                return context.label + ': ' + context.parsed + ' trades (' + percentage + '%)';
+                            }
+                        }
+                    }
+                },
+                cutout: '65%',
+            }
+        });
+    }
+
+    function updateCharts(pnlData, strategyData) {
+        if (pnlChartInstance && pnlData) {
+            if (pnlData.labels) {
+                pnlChartInstance.data.labels = pnlData.labels;
+            }
+            if (pnlData.values) {
+                pnlChartInstance.data.datasets[0].data = pnlData.values;
+            }
+            pnlChartInstance.update();
+        }
+        if (strategyChartInstance && strategyData) {
+            if (strategyData.labels) {
+                strategyChartInstance.data.labels = strategyData.labels;
+            }
+            if (strategyData.values) {
+                strategyChartInstance.data.datasets[0].data = strategyData.values;
+            }
+            strategyChartInstance.update();
+        }
+    }
+
+    // ============================================================
+    // CHART INTERVAL BUTTONS
+    // ============================================================
+    function setupChartButtons() {
+        document.querySelectorAll('.chart-btn').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                const parent = this.closest('.chart-header');
+                parent.querySelectorAll('.chart-btn').forEach(function(b) {
+                    b.style.background = 'none';
+                    b.style.color = 'var(--text-secondary)';
+                });
+                this.style.background = 'rgba(108,99,255,0.15)';
+                this.style.color = 'var(--primary)';
+                
+                const interval = this.dataset.interval;
+                fetchChartData(interval);
+            });
+        });
+    }
+
+    async function fetchChartData(interval) {
+        try {
+            const response = await fetch(API.endpoints.pnl + '?interval=' + interval, {
+                headers: {
+                    'Authorization': 'Bearer ' + (localStorage.getItem('access_token') || ''),
+                    'Content-Type': 'application/json',
+                }
+            });
+            
+            if (!response.ok) throw new Error('Failed to fetch chart data: ' + response.status);
+            
+            const data = await response.json();
+            if (data) {
+                updateCharts(data, null);
+            }
+        } catch (error) {
+            console.error('Chart data fetch failed:', error);
+        }
+    }
+
+    // ============================================================
+    // SIDEBAR TOGGLE
+    // ============================================================
+    function setupSidebar() {
+        DOM.sidebarToggle.addEventListener('click', function() {
+            DOM.sidebar.classList.toggle('open');
+            DOM.sidebarOverlay.classList.toggle('active');
+        });
+        
+        DOM.sidebarOverlay.addEventListener('click', function() {
+            DOM.sidebar.classList.remove('open');
+            DOM.sidebarOverlay.classList.remove('active');
+        });
+    }
+
+    // ============================================================
+    // DATE/TIME UPDATE
+    // ============================================================
+    function updateDateTime() {
+        const now = new Date();
+        DOM.currentDateTime.textContent = now.toLocaleString('en-US', {
+            weekday: 'short',
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: false
+        });
+    }
+
+    // ============================================================
+    // UPTIME COUNTER
+    // ============================================================
+    function updateUptime() {
+        const elapsed = Math.floor((Date.now() - state.startTime) / 1000);
+        const hours = String(Math.floor(elapsed / 3600)).padStart(2, '0');
+        const minutes = String(Math.floor((elapsed % 3600) / 60)).padStart(2, '0');
+        const seconds = String(elapsed % 60).padStart(2, '0');
+        DOM.statusUptime.textContent = hours + ':' + minutes + ':' + seconds;
+    }
+
+    // ============================================================
+    // METRICS UPDATE
+    // ============================================================
+    function updateMetrics(metrics) {
+        if (!metrics) return;
+        
+        state.metrics = metrics;
+        
+        DOM.metricProfit.textContent = '$' + metrics.profit.toFixed(2);
+        DOM.metricProfitChange.textContent = (metrics.profitChange >= 0 ? '+' : '') + metrics.profitChange.toFixed(2) + '%';
+        DOM.metricProfitChange.className = 'metric-change ' + (metrics.profitChange >= 0 ? 'positive' : 'negative');
+        
+        DOM.metricTrades.textContent = metrics.trades;
+        DOM.metricTradesChange.textContent = (metrics.tradesChange >= 0 ? '+' : '') + metrics.tradesChange;
+        DOM.metricTradesChange.className = 'metric-change ' + (metrics.tradesChange >= 0 ? 'positive' : 'negative');
+        
+        DOM.metricWinRate.textContent = metrics.winRate.toFixed(1) + '%';
+        DOM.metricWinRateChange.textContent = (metrics.winRateChange >= 0 ? '+' : '') + metrics.winRateChange.toFixed(1) + '%';
+        DOM.metricWinRateChange.className = 'metric-change ' + (metrics.winRateChange >= 0 ? 'positive' : 'negative');
+        
+        DOM.metricOpportunities.textContent = metrics.opportunities;
+        
+        if (DOM.oppBadge) {
+            DOM.oppBadge.textContent = metrics.opportunities;
+        }
+    }
+
+    // ============================================================
+    // SYSTEM STATUS UPDATE
+    // ============================================================
+    function updateSystemStatus(status) {
+        if (!status) return;
+        
+        const statusMap = {
+            online: { icon: 'online', text: 'Online' },
+            connected: { icon: 'online', text: 'Connected' },
+            operational: { icon: 'online', text: 'Operational' },
+            degraded: { icon: 'warning', text: 'Degraded' },
+            offline: { icon: 'offline', text: 'Offline' },
+            disconnected: { icon: 'offline', text: 'Disconnected' },
+        };
+        
+        const updateStatusItem = function(element, statusKey, label) {
+            if (!element) return;
+            const s = statusMap[statusKey] || statusMap.online;
+            const statusItem = element.closest('.status-item');
+            if (statusItem) {
+                const icon = statusItem.querySelector('.status-icon');
+                if (icon) {
+                    icon.className = 'status-icon ' + s.icon;
+                }
+            }
+            element.textContent = s.text;
+        };
+        
+        if (status.api) updateStatusItem(DOM.statusAPI, status.api);
+        if (status.websocket) updateStatusItem(DOM.statusWS, status.websocket);
+        if (status.database) updateStatusItem(DOM.statusDB, status.database);
+        if (status.exchanges) {
+            DOM.statusExchanges.textContent = status.exchanges;
+        }
+        if (status.strategies) {
+            DOM.statusStrategies.textContent = status.strategies + ' Active';
+        }
+        if (status.system) {
+            DOM.systemStatusText.textContent = status.system === 'operational' ? 'Operational' : 'Degraded';
+        }
+    }
+
+    // ============================================================
+    // API CALLS - REAL ENDPOINTS
+    // ============================================================
+    async function fetchDashboardData() {
+        try {
+            const token = localStorage.getItem('access_token') || '';
+            const response = await fetch(API.endpoints.dashboard, {
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                    'Content-Type': 'application/json',
+                }
+            });
+            
+            if (!response.ok) {
+                if (response.status === 401) {
+                    // Redirect to login if unauthorized
+                    window.location.href = '/login';
+                    return null;
+                }
+                throw new Error('Failed to fetch dashboard data: ' + response.status);
+            }
+            
+            const data = await response.json();
+            
+            if (data.metrics) {
+                updateMetrics(data.metrics);
+                // Update state metrics for badge
+                if (data.metrics.opportunities !== undefined) {
+                    state.metrics.opportunities = data.metrics.opportunities;
+                }
+            }
+            if (data.status) updateSystemStatus(data.status);
+            if (data.trades) renderTrades(data.trades);
+            if (data.opportunities) renderOpportunities(data.opportunities);
+            if (data.pnl) updateCharts(data.pnl, null);
+            if (data.strategies) updateCharts(null, data.strategies);
+            
+            return data;
+        } catch (error) {
+            console.error('Dashboard data fetch failed:', error);
+            // Fallback - show error state
+            DOM.recentTrades.innerHTML = `
+                <div style="text-align:center;padding:20px;color:var(--danger);font-size:14px;">
+                    <i class="fas fa-exclamation-triangle"></i> Failed to load trades
+                </div>
+            `;
+            DOM.activeOpportunities.innerHTML = `
+                <div style="text-align:center;padding:20px;color:var(--danger);font-size:14px;">
+                    <i class="fas fa-exclamation-triangle"></i> Failed to load opportunities
+                </div>
+            `;
+            return null;
+        }
+    }
+
+    async function fetchTrades() {
+        try {
+            const token = localStorage.getItem('access_token') || '';
+            const response = await fetch(API.endpoints.trades, {
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                    'Content-Type': 'application/json',
+                }
+            });
+            
+            if (!response.ok) throw new Error('Failed to fetch trades: ' + response.status);
+            
+            const data = await response.json();
+            if (data.trades) {
+                renderTrades(data.trades);
+            }
+        } catch (error) {
+            console.error('Trades fetch failed:', error);
+        }
+    }
+
+    async function fetchOpportunities() {
+        try {
+            const token = localStorage.getItem('access_token') || '';
+            const response = await fetch(API.endpoints.opportunities, {
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                    'Content-Type': 'application/json',
+                }
+            });
+            
+            if (!response.ok) throw new Error('Failed to fetch opportunities: ' + response.status);
+            
+            const data = await response.json();
+            if (data.opportunities) {
+                renderOpportunities(data.opportunities);
+            }
+        } catch (error) {
+            console.error('Opportunities fetch failed:', error);
+        }
+    }
+
+    async function fetchSystemStatus() {
+        try {
+            const token = localStorage.getItem('access_token') || '';
+            const response = await fetch(API.endpoints.status, {
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                    'Content-Type': 'application/json',
+                }
+            });
+            
+            if (!response.ok) throw new Error('Failed to fetch system status: ' + response.status);
+            
+            const data = await response.json();
+            if (data) {
+                updateSystemStatus(data);
+            }
+        } catch (error) {
+            console.error('System status fetch failed:', error);
+        }
+    }
+
+    async function fetchExchangesStatus() {
+        try {
+            const token = localStorage.getItem('access_token') || '';
+            const response = await fetch(API.endpoints.exchanges, {
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                    'Content-Type': 'application/json',
+                }
+            });
+            
+            if (!response.ok) throw new Error('Failed to fetch exchanges status: ' + response.status);
+            
+            const data = await response.json();
+            if (data) {
+                const total = data.total || 0;
+                const connected = data.connected || 0;
+                DOM.statusExchanges.textContent = connected + '/' + total;
+            }
+        } catch (error) {
+            console.error('Exchanges status fetch failed:', error);
+        }
+    }
+
+    // ============================================================
+    // RENDER TRADES
+    // ============================================================
+    function renderTrades(trades) {
+        if (!trades || trades.length === 0) {
+            DOM.recentTrades.innerHTML = `
+                <div style="text-align:center;padding:20px;color:var(--text-secondary);font-size:14px;">
+                    <i class="fas fa-inbox"></i> No recent trades
+                </div>
+            `;
+            return;
+        }
+        
+        DOM.recentTrades.innerHTML = trades.slice(0, 5).map(function(trade) {
+            const sideClass = trade.side ? trade.side.toLowerCase() : 'buy';
+            const profitClass = trade.profit && trade.profit >= 0 ? 'positive' : 'negative';
+            const profitSign = trade.profit && trade.profit >= 0 ? '+' : '';
+            const profitDisplay = trade.profit !== undefined ? profitSign + '$' + trade.profit.toFixed(2) : '--';
+            return `
+                <div class="trade-item">
+                    <div class="trade-info">
+                        <span class="trade-symbol">${trade.symbol || '--'}</span>
+                        <span class="trade-side ${sideClass}">${(trade.side || 'BUY').toUpperCase()}</span>
+                        <span class="trade-price">${trade.price ? '$' + trade.price.toFixed(2) : '--'}</span>
+                    </div>
+                    <span class="trade-profit ${profitClass}">${profitDisplay}</span>
+                </div>
+            `;
+        }).join('');
+    }
+
+    // ============================================================
+    // RENDER OPPORTUNITIES
+    // ============================================================
+    function renderOpportunities(opportunities) {
+        if (!opportunities || opportunities.length === 0) {
+            DOM.activeOpportunities.innerHTML = `
+                <div style="text-align:center;padding:20px;color:var(--text-secondary);font-size:14px;">
+                    <i class="fas fa-inbox"></i> No active opportunities
+                </div>
+            `;
+            return;
+        }
+        
+        DOM.activeOpportunities.innerHTML = opportunities.slice(0, 5).map(function(opp) {
+            const confidenceWidth = opp.confidence ? (opp.confidence * 100).toFixed(0) : 0;
+            return `
+                <div class="opportunity-item">
+                    <div class="opp-info">
+                        <span class="opp-type">${opp.type || 'Arbitrage'}</span>
+                        <span class="opp-symbol">${opp.symbol || '--'}</span>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:12px;">
+                        <span class="opp-profit">${opp.profit ? '+$' + opp.profit.toFixed(2) : '--'}</span>
+                        <span class="opp-confidence">
+                            <span class="bar"><span class="fill" style="width:${confidenceWidth}%;"></span></span>
+                            ${confidenceWidth}%
+                        </span>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
+
+    // ============================================================
+    // WEBSOCKET CONNECTION - REAL-TIME DATA
+    // ============================================================
+    function connectWebSocket() {
+        try {
+            const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const host = window.location.host;
+            const token = localStorage.getItem('access_token') || '';
+            const wsUrl = protocol + '//' + host + API.ws.dashboard + '?token=' + encodeURIComponent(token);
+            
+            state.ws = new WebSocket(wsUrl);
+            
+            state.ws.onopen = function() {
+                console.log('Dashboard WebSocket connected');
+                state.reconnectAttempts = 0;
+                updateSystemStatus({ 
+                    websocket: 'connected', 
+                    api: 'online', 
+                    database: 'online', 
+                    system: 'operational' 
+                });
+            };
+            
+            state.ws.onmessage = function(event) {
+                try {
+                    const data = JSON.parse(event.data);
+                    handleWebSocketMessage(data);
+                } catch (error) {
+                    console.error('WebSocket message parse error:', error);
+                }
+            };
+            
+            state.ws.onclose = function() {
+                console.log('Dashboard WebSocket disconnected');
+                updateSystemStatus({ websocket: 'disconnected' });
+                reconnectWebSocket();
+            };
+            
+            state.ws.onerror = function(error) {
+                console.error('Dashboard WebSocket error:', error);
+            };
+        } catch (error) {
+            console.error('WebSocket connection failed:', error);
+        }
+    }
+
+    function reconnectWebSocket() {
+        if (state.reconnectAttempts >= state.maxReconnectAttempts) {
+            console.log('Max reconnect attempts reached for dashboard WebSocket');
+            return;
+        }
+        
+        state.reconnectAttempts++;
+        const delay = Math.min(1000 * Math.pow(2, state.reconnectAttempts), 30000);
+        setTimeout(function() {
+            console.log('Reconnecting dashboard WebSocket (attempt ' + state.reconnectAttempts + ')');
+            connectWebSocket();
+        }, delay);
+    }
+
+    function handleWebSocketMessage(data) {
+        switch (data.type) {
+            case 'metrics':
+                updateMetrics(data.metrics);
+                // Update badge count
+                if (data.metrics && data.metrics.opportunities !== undefined) {
+                    state.metrics.opportunities = data.metrics.opportunities;
+                    if (DOM.oppBadge) {
+                        DOM.oppBadge.textContent = data.metrics.opportunities;
+                    }
+                }
+                break;
+            case 'status':
+                updateSystemStatus(data.status);
+                break;
+            case 'trade':
+                addTrade(data.trade);
+                break;
+            case 'opportunity':
+                addOpportunity(data.opportunity);
+                break;
+            case 'pnl_update':
+                updateCharts(data.pnl, null);
+                break;
+            case 'strategy_update':
+                updateCharts(null, data.strategies);
+                break;
+            case 'ping':
+                if (state.ws && state.ws.readyState === WebSocket.OPEN) {
+                    state.ws.send(JSON.stringify({ type: 'pong' }));
+                }
+                break;
+            default:
+                console.log('Unknown WebSocket message type:', data.type);
+        }
+    }
+
+    function addTrade(trade) {
+        // Add trade to recent trades list
+        const tradeItem = document.createElement('div');
+        tradeItem.className = 'trade-item';
+        const sideClass = trade.side ? trade.side.toLowerCase() : 'buy';
+        const profitClass = trade.profit && trade.profit >= 0 ? 'positive' : 'negative';
+        const profitSign = trade.profit && trade.profit >= 0 ? '+' : '';
+        const profitDisplay = trade.profit !== undefined ? profitSign + '$' + trade.profit.toFixed(2) : '--';
+        
+        tradeItem.innerHTML = `
+            <div class="trade-info">
+                <span class="trade-symbol">${trade.symbol || '--'}</span>
+                <span class="trade-side ${sideClass}">${(trade.side || 'BUY').toUpperCase()}</span>
+                <span class="trade-price">${trade.price ? '$' + trade.price.toFixed(2) : '--'}</span>
+            </div>
+            <span class="trade-profit ${profitClass}">${profitDisplay}</span>
+        `;
+        DOM.recentTrades.insertBefore(tradeItem, DOM.recentTrades.firstChild);
+        
+        // Remove last item if more than 10
+        while (DOM.recentTrades.children.length > 10) {
+            DOM.recentTrades.removeChild(DOM.recentTrades.lastChild);
+        }
+    }
+
+    function addOpportunity(opportunity) {
+        // Add opportunity to list
+        const oppItem = document.createElement('div');
+        oppItem.className = 'opportunity-item';
+        const confidenceWidth = opportunity.confidence ? (opportunity.confidence * 100).toFixed(0) : 0;
+        
+        oppItem.innerHTML = `
+            <div class="opp-info">
+                <span class="opp-type">${opportunity.type || 'Arbitrage'}</span>
+                <span class="opp-symbol">${opportunity.symbol || '--'}</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px;">
+                <span class="opp-profit">${opportunity.profit ? '+$' + opportunity.profit.toFixed(2) : '--'}</span>
+                <span class="opp-confidence">
+                    <span class="bar"><span class="fill" style="width:${confidenceWidth}%;"></span></span>
+                    ${confidenceWidth}%
+                </span>
+            </div>
+        `;
+        DOM.activeOpportunities.insertBefore(oppItem, DOM.activeOpportunities.firstChild);
+        
+        // Remove last item if more than 10
+        while (DOM.activeOpportunities.children.length > 10) {
+            DOM.activeOpportunities.removeChild(DOM.activeOpportunities.lastChild);
+        }
+        
+        // Update badge
+        if (DOM.oppBadge) {
+            const current = parseInt(DOM.oppBadge.textContent) || 0;
+            DOM.oppBadge.textContent = current + 1;
+        }
+    }
+
+    // ============================================================
+    // AUTO REFRESH
+    // ============================================================
+    function startAutoRefresh() {
+        if (state.updateInterval) {
+            clearInterval(state.updateInterval);
+        }
+        state.updateInterval = setInterval(function() {
+            fetchDashboardData();
+            fetchTrades();
+            fetchOpportunities();
+            fetchSystemStatus();
+            fetchExchangesStatus();
+        }, 30000); // 30 seconds
+    }
+
+    // ============================================================
+    // INITIALIZATION
+    // ============================================================
+    function init() {
+        // Update date/time
+        updateDateTime();
+        setInterval(updateDateTime, 1000);
+        
+        // Update uptime
+        updateUptime();
+        setInterval(updateUptime, 1000);
+        
+        // Init charts
+        initCharts();
+        setupChartButtons();
+        
+        // Setup sidebar
+        setupSidebar();
+        
+        // Connect WebSocket
+        connectWebSocket();
+        
+        // Fetch initial data from all endpoints
+        Promise.all([
+            fetchDashboardData(),
+            fetchTrades(),
+            fetchOpportunities(),
+            fetchSystemStatus(),
+            fetchExchangesStatus()
+        ]).then(function() {
+            console.log('Dashboard initialized successfully');
+        }).catch(function(error) {
+            console.error('Dashboard initialization error:', error);
+        });
+        
+        // Start auto refresh
+        startAutoRefresh();
+    }
+
+    // Start when DOM is ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+
+})();
+</script>
+
+</body>
+</html>
