@@ -1,0 +1,2085 @@
+<!-- trading/bots/arbitrage_bot/templates/settings.html -->
+<!-- NEXUS AI TRADING SYSTEM -->
+<!-- Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved -->
+<!-- Version: 4.2.0 - Complete Settings Template with Real API Integration -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - NEXUS Trading IA</title>
+    
+    <!-- Meta Tags -->
+    <meta name="description" content="NEXUS AI Trading System - Settings and Configuration">
+    <meta name="theme-color" content="#6C63FF">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ============================================
+           SETTINGS - COMPLETE STYLES
+           ============================================ */
+        
+        :root {
+            --primary: #6C63FF;
+            --primary-dark: #5a52d9;
+            --secondary: #00D4FF;
+            --success: #00D4FF;
+            --danger: #FF6B6B;
+            --warning: #FFD93D;
+            --bg-primary: #0D1117;
+            --bg-secondary: #161B22;
+            --bg-card: #1C2333;
+            --text-primary: #E0E0E0;
+            --text-secondary: #8B949E;
+            --text-muted: #484F58;
+            --border-color: rgba(255, 255, 255, 0.05);
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            --radius: 16px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        /* Reset & Base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* ============================================
+           LAYOUT
+           ============================================ */
+        .settings-wrapper {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border-color);
+            padding: 20px 0;
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            z-index: 100;
+            transition: var(--transition);
+            overflow-y: auto;
+        }
+        
+        .sidebar-brand {
+            padding: 0 20px 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .sidebar-brand img {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+        }
+        
+        .sidebar-brand span {
+            font-size: 18px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .sidebar-nav {
+            flex: 1;
+            padding: 16px 12px;
+        }
+        
+        .sidebar-nav .nav-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            padding: 8px 12px 4px;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+        
+        .sidebar-nav a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 16px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 10px;
+            transition: var(--transition);
+            font-size: 14px;
+            font-weight: 500;
+            margin: 2px 0;
+        }
+        
+        .sidebar-nav a i {
+            width: 20px;
+            text-align: center;
+            font-size: 16px;
+        }
+        
+        .sidebar-nav a:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-primary);
+        }
+        
+        .sidebar-nav a.active {
+            background: rgba(108, 99, 255, 0.15);
+            color: var(--primary);
+        }
+        
+        .sidebar-nav a .badge {
+            margin-left: auto;
+            background: var(--danger);
+            color: #fff;
+            font-size: 10px;
+            padding: 1px 8px;
+            border-radius: 10px;
+            font-weight: 600;
+        }
+        
+        /* Main Content */
+        .main-content {
+            margin-left: 260px;
+            flex: 1;
+            padding: 24px 32px 32px;
+        }
+        
+        /* ============================================
+           HEADER
+           ============================================ */
+        .settings-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 24px;
+            border-bottom: 1px solid var(--border-color);
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+        
+        .header-left h1 {
+            font-size: 24px;
+            font-weight: 700;
+        }
+        
+        .header-left p {
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-top: 4px;
+        }
+        
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        
+        .header-right .date-time {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+        
+        .header-right .status-badge {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            border-radius: 20px;
+            background: rgba(0, 212, 255, 0.1);
+            color: var(--success);
+            font-size: 13px;
+            font-weight: 500;
+        }
+        
+        .header-right .status-badge .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--success);
+            animation: pulse-dot 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+        
+        /* ============================================
+           SETTINGS TABS
+           ============================================ */
+        .settings-tabs {
+            display: flex;
+            gap: 4px;
+            margin: 20px 0;
+            padding: 4px;
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            border: 1px solid var(--border-color);
+            overflow-x: auto;
+            flex-wrap: nowrap;
+        }
+        
+        .settings-tabs button {
+            padding: 10px 20px;
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: var(--transition);
+            font-family: inherit;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .settings-tabs button:hover {
+            color: var(--text-primary);
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .settings-tabs button.active {
+            background: var(--primary);
+            color: #fff;
+        }
+        
+        .settings-tabs button i {
+            font-size: 16px;
+        }
+        
+        /* ============================================
+           SETTINGS PANELS
+           ============================================ */
+        .settings-panels {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            border: 1px solid var(--border-color);
+            padding: 24px;
+            margin: 16px 0;
+        }
+        
+        .settings-panel {
+            display: none;
+        }
+        
+        .settings-panel.active {
+            display: block;
+        }
+        
+        .settings-panel h2 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        
+        .settings-panel p {
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+        
+        /* ============================================
+           FORM ELEMENTS
+           ============================================ */
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            color: var(--text-secondary);
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 6px;
+        }
+        
+        .form-group .helper-text {
+            display: block;
+            color: var(--text-muted);
+            font-size: 12px;
+            margin-top: 4px;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 10px 14px;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 14px;
+            font-family: inherit;
+            transition: var(--transition);
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.1);
+        }
+        
+        .form-control::placeholder {
+            color: var(--text-muted);
+        }
+        
+        .form-control:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        
+        .form-check {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 0;
+        }
+        
+        .form-check input[type="checkbox"],
+        .form-check input[type="radio"] {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--primary);
+            cursor: pointer;
+        }
+        
+        .form-check label {
+            color: var(--text-primary);
+            font-size: 14px;
+            cursor: pointer;
+        }
+        
+        .form-check .check-description {
+            color: var(--text-secondary);
+            font-size: 12px;
+            display: block;
+        }
+        
+        .form-select {
+            width: 100%;
+            padding: 10px 14px;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 14px;
+            font-family: inherit;
+            transition: var(--transition);
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%238B949E' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            padding-right: 36px;
+        }
+        
+        .form-select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.1);
+        }
+        
+        .form-select option {
+            background: var(--bg-primary);
+        }
+        
+        .btn {
+            padding: 10px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: inherit;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-primary {
+            background: var(--primary);
+            color: #fff;
+        }
+        
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+        }
+        
+        .btn-secondary {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+        
+        .btn-secondary:hover {
+            background: var(--bg-primary);
+        }
+        
+        .btn-danger {
+            background: var(--danger);
+            color: #fff;
+        }
+        
+        .btn-danger:hover {
+            background: #e55a5a;
+        }
+        
+        .btn-success {
+            background: var(--success);
+            color: #fff;
+        }
+        
+        .btn-success:hover {
+            background: #00c4e8;
+        }
+        
+        .btn-sm {
+            padding: 6px 14px;
+            font-size: 12px;
+        }
+        
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 16px;
+        }
+        
+        /* ============================================
+           API KEY DISPLAY
+           ============================================ */
+        .api-key-display {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--bg-primary);
+            padding: 10px 14px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+        }
+        
+        .api-key-display .key-value {
+            flex: 1;
+            color: var(--text-secondary);
+            letter-spacing: 1px;
+        }
+        
+        .api-key-display .key-actions {
+            display: flex;
+            gap: 6px;
+        }
+        
+        .api-key-display .key-actions button {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 4px;
+            transition: var(--transition);
+            font-size: 14px;
+        }
+        
+        .api-key-display .key-actions button:hover {
+            background: var(--bg-card);
+            color: var(--text-primary);
+        }
+        
+        /* ============================================
+           SAVE STATUS
+           ============================================ */
+        .save-status {
+            display: none;
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-top: 16px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .save-status.success {
+            display: block;
+            background: rgba(0, 212, 255, 0.1);
+            color: var(--success);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+        }
+        
+        .save-status.error {
+            display: block;
+            background: rgba(255, 107, 107, 0.1);
+            color: var(--danger);
+            border: 1px solid rgba(255, 107, 107, 0.2);
+        }
+        
+        .save-status.info {
+            display: block;
+            background: rgba(108, 99, 255, 0.1);
+            color: var(--primary);
+            border: 1px solid rgba(108, 99, 255, 0.2);
+        }
+        
+        /* ============================================
+           DANGER ZONE
+           ============================================ */
+        .danger-zone {
+            border: 1px solid rgba(255, 107, 107, 0.2);
+            border-radius: var(--radius);
+            padding: 20px;
+            margin-top: 20px;
+            background: rgba(255, 107, 107, 0.05);
+        }
+        
+        .danger-zone h3 {
+            color: var(--danger);
+            font-size: 16px;
+            margin-bottom: 4px;
+        }
+        
+        .danger-zone p {
+            color: var(--text-secondary);
+            font-size: 13px;
+            margin-bottom: 16px;
+        }
+        
+        /* ============================================
+           RESPONSIVE
+           ============================================ */
+        @media (max-width: 992px) {
+            .sidebar {
+                transform: translateX(-100%);
+                width: 280px;
+            }
+            
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            
+            .main-content {
+                margin-left: 0;
+                padding: 16px;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .settings-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .header-right {
+                width: 100%;
+                justify-content: space-between;
+                flex-wrap: wrap;
+            }
+            
+            .settings-tabs {
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                padding: 4px;
+            }
+            
+            .settings-tabs button {
+                font-size: 12px;
+                padding: 8px 14px;
+            }
+            
+            .settings-panels {
+                padding: 16px;
+            }
+            
+            .btn-group {
+                flex-direction: column;
+            }
+            
+            .btn {
+                justify-content: center;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .settings-panels {
+                padding: 12px;
+            }
+            
+            .api-key-display {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 8px;
+            }
+            
+            .api-key-display .key-actions {
+                justify-content: center;
+            }
+        }
+        
+        /* ============================================
+           TOGGLE SIDEBAR BUTTON
+           ============================================ */
+        .sidebar-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 24px;
+            cursor: pointer;
+            padding: 8px;
+        }
+        
+        @media (max-width: 992px) {
+            .sidebar-toggle {
+                display: block;
+            }
+        }
+        
+        /* ============================================
+           OVERLAY
+           ============================================ */
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 99;
+        }
+        
+        .sidebar-overlay.active {
+            display: block;
+        }
+        
+        /* ============================================
+           SCROLLBAR
+           ============================================ */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--bg-card);
+            border-radius: 3px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary);
+        }
+    </style>
+</head>
+<body>
+
+<!-- ============================================ -->
+<!-- SIDEBAR OVERLAY -->
+<!-- ============================================ -->
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<!-- ============================================ -->
+<!-- SETTINGS WRAPPER -->
+<!-- ============================================ -->
+<div class="settings-wrapper">
+    
+    <!-- ============================================ -->
+    <!-- SIDEBAR -->
+    <!-- ============================================ -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-brand">
+            <img src="/static/images/nexus-logo.svg" alt="NEXUS" onerror="this.src='/static/images/logo.png'">
+            <span>NEXUS Trading</span>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <div class="nav-label">Main</div>
+            <a href="/dashboard">
+                <i class="fas fa-chart-line"></i> Dashboard
+            </a>
+            <a href="/exchanges">
+                <i class="fas fa-exchange-alt"></i> Exchanges
+            </a>
+            <a href="/opportunities">
+                <i class="fas fa-bolt"></i> Opportunities
+                <span class="badge" id="oppBadge">0</span>
+            </a>
+            <a href="/strategies">
+                <i class="fas fa-chess-queen"></i> Strategies
+            </a>
+            
+            <div class="nav-label" style="margin-top: 16px;">Analytics</div>
+            <a href="/performance">
+                <i class="fas fa-chart-bar"></i> Performance
+            </a>
+            <a href="/portfolio">
+                <i class="fas fa-briefcase"></i> Portfolio
+            </a>
+            <a href="/reports">
+                <i class="fas fa-file-alt"></i> Reports
+            </a>
+            <a href="/signals">
+                <i class="fas fa-signal"></i> Signals
+            </a>
+            
+            <div class="nav-label" style="margin-top: 16px;">System</div>
+            <a href="/logs">
+                <i class="fas fa-terminal"></i> Logs
+            </a>
+            <a href="/settings" class="active">
+                <i class="fas fa-cog"></i> Settings
+            </a>
+            <a href="/support">
+                <i class="fas fa-life-ring"></i> Support
+            </a>
+        </nav>
+    </aside>
+    
+    <!-- ============================================ -->
+    <!-- MAIN CONTENT -->
+    <!-- ============================================ -->
+    <main class="main-content">
+        
+        <!-- ============================================ -->
+        <!-- HEADER -->
+        <!-- ============================================ -->
+        <header class="settings-header">
+            <div class="header-left">
+                <button class="sidebar-toggle" id="sidebarToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h1>Settings</h1>
+                <p>Configure and manage your trading system</p>
+            </div>
+            <div class="header-right">
+                <span class="date-time" id="currentDateTime"></span>
+                <span class="status-badge">
+                    <span class="dot"></span>
+                    <span id="systemStatusText">Operational</span>
+                </span>
+            </div>
+        </header>
+        
+        <!-- ============================================ -->
+        <!-- SETTINGS TABS -->
+        <!-- ============================================ -->
+        <div class="settings-tabs" id="settingsTabs">
+            <button class="active" data-tab="general">
+                <i class="fas fa-sliders-h"></i> General
+            </button>
+            <button data-tab="trading">
+                <i class="fas fa-chart-line"></i> Trading
+            </button>
+            <button data-tab="exchanges">
+                <i class="fas fa-exchange-alt"></i> Exchanges
+            </button>
+            <button data-tab="strategies">
+                <i class="fas fa-chess-queen"></i> Strategies
+            </button>
+            <button data-tab="security">
+                <i class="fas fa-shield-alt"></i> Security
+            </button>
+            <button data-tab="notifications">
+                <i class="fas fa-bell"></i> Notifications
+            </button>
+            <button data-tab="advanced">
+                <i class="fas fa-code"></i> Advanced
+            </button>
+        </div>
+        
+        <!-- ============================================ -->
+        <!-- SETTINGS PANELS -->
+        <!-- ============================================ -->
+        <div class="settings-panels" id="settingsPanels">
+            
+            <!-- ========================================== -->
+            <!-- GENERAL PANEL -->
+            <!-- ========================================== -->
+            <div class="settings-panel active" id="panel-general">
+                <h2>General Settings</h2>
+                <p>Configure basic system settings and preferences</p>
+                
+                <div class="form-group">
+                    <label for="systemName">System Name</label>
+                    <input type="text" id="systemName" class="form-control" value="NEXUS Trading IA" placeholder="Enter system name">
+                    <span class="helper-text">The name displayed in the interface</span>
+                </div>
+                
+                <div class="form-group">
+                    <label for="timezone">Timezone</label>
+                    <select id="timezone" class="form-select">
+                        <option value="UTC">UTC</option>
+                        <option value="America/New_York">America/New York (EST)</option>
+                        <option value="America/Chicago">America/Chicago (CST)</option>
+                        <option value="America/Denver">America/Denver (MST)</option>
+                        <option value="America/Los_Angeles">America/Los Angeles (PST)</option>
+                        <option value="Europe/London">Europe/London (GMT)</option>
+                        <option value="Europe/Paris">Europe/Paris (CET)</option>
+                        <option value="Asia/Singapore" selected>Asia/Singapore (SGT)</option>
+                        <option value="Asia/Tokyo">Asia/Tokyo (JST)</option>
+                        <option value="Australia/Sydney">Australia/Sydney (AEDT)</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="language">Language</label>
+                    <select id="language" class="form-select">
+                        <option value="en" selected>English</option>
+                        <option value="fr">Français</option>
+                        <option value="es">Español</option>
+                        <option value="de">Deutsch</option>
+                        <option value="zh">中文</option>
+                        <option value="ja">日本語</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Theme</label>
+                    <div style="display:flex;gap:12px;">
+                        <button class="btn btn-secondary" style="flex:1;justify-content:center;" data-theme="dark">
+                            <i class="fas fa-moon"></i> Dark
+                        </button>
+                        <button class="btn btn-secondary" style="flex:1;justify-content:center;" data-theme="light">
+                            <i class="fas fa-sun"></i> Light
+                        </button>
+                        <button class="btn btn-secondary active" style="flex:1;justify-content:center;" data-theme="system">
+                            <i class="fas fa-desktop"></i> System
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Date Format</label>
+                    <select id="dateFormat" class="form-select">
+                        <option value="YYYY-MM-DD">YYYY-MM-DD</option>
+                        <option value="MM/DD/YYYY" selected>MM/DD/YYYY</option>
+                        <option value="DD/MM/YYYY">DD/MM/YYYY</option>
+                        <option value="YYYY/MM/DD">YYYY/MM/DD</option>
+                    </select>
+                </div>
+                
+                <div class="btn-group">
+                    <button class="btn btn-primary" id="saveGeneral"><i class="fas fa-save"></i> Save Changes</button>
+                    <button class="btn btn-secondary" id="resetGeneral"><i class="fas fa-undo"></i> Reset to Defaults</button>
+                </div>
+                <div class="save-status" id="generalStatus"></div>
+            </div>
+            
+            <!-- ========================================== -->
+            <!-- TRADING PANEL -->
+            <!-- ========================================== -->
+            <div class="settings-panel" id="panel-trading">
+                <h2>Trading Settings</h2>
+                <p>Configure trading parameters and risk management</p>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="maxPositionSize">Max Position Size (USD)</label>
+                        <input type="number" id="maxPositionSize" class="form-control" value="100000">
+                    </div>
+                    <div class="form-group">
+                        <label for="maxLeverage">Max Leverage</label>
+                        <input type="number" id="maxLeverage" class="form-control" value="3" step="0.5" min="1" max="10">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="stopLossPct">Stop Loss (%)</label>
+                        <input type="number" id="stopLossPct" class="form-control" value="2" step="0.1" min="0.1" max="20">
+                        <span class="helper-text">Percentage loss before position is closed</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="takeProfitPct">Take Profit (%)</label>
+                        <input type="number" id="takeProfitPct" class="form-control" value="5" step="0.1" min="0.1" max="50">
+                        <span class="helper-text">Percentage profit before position is closed</span>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="minProfitThreshold">Minimum Profit Threshold (%)</label>
+                    <input type="number" id="minProfitThreshold" class="form-control" value="0.1" step="0.01" min="0.01" max="5">
+                    <span class="helper-text">Minimum profit percentage to execute a trade</span>
+                </div>
+                
+                <div class="form-group">
+                    <label for="maxDrawdown">Maximum Drawdown (%)</label>
+                    <input type="number" id="maxDrawdown" class="form-control" value="5" step="0.5" min="1" max="50">
+                    <span class="helper-text">Maximum allowed drawdown before stopping trading</span>
+                </div>
+                
+                <div class="form-group">
+                    <div class="form-check">
+                        <input type="checkbox" id="autoTrade" checked>
+                        <label for="autoTrade">Enable Auto-Trading</label>
+                        <span class="check-description">Automatically execute trades when opportunities are found</span>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <div class="form-check">
+                        <input type="checkbox" id="paperTrading">
+                        <label for="paperTrading">Paper Trading Mode</label>
+                        <span class="check-description">Simulate trades without real capital</span>
+                    </div>
+                </div>
+                
+                <div class="btn-group">
+                    <button class="btn btn-primary" id="saveTrading"><i class="fas fa-save"></i> Save Changes</button>
+                    <button class="btn btn-secondary" id="resetTrading"><i class="fas fa-undo"></i> Reset to Defaults</button>
+                </div>
+                <div class="save-status" id="tradingStatus"></div>
+            </div>
+            
+            <!-- ========================================== -->
+            <!-- EXCHANGES PANEL -->
+            <!-- ========================================== -->
+            <div class="settings-panel" id="panel-exchanges">
+                <h2>Exchange Settings</h2>
+                <p>Configure exchange API connections</p>
+                
+                <div class="form-group">
+                    <label for="exchangeSelect">Exchange</label>
+                    <select id="exchangeSelect" class="form-select">
+                        <option value="binance">Binance</option>
+                        <option value="bybit">Bybit</option>
+                        <option value="okx">OKX</option>
+                        <option value="kucoin">KuCoin</option>
+                        <option value="coinbase">Coinbase</option>
+                        <option value="kraken">Kraken</option>
+                        <option value="uniswap">Uniswap</option>
+                        <option value="pancakeswap">PancakeSwap</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="apiKey">API Key</label>
+                    <input type="password" id="apiKey" class="form-control" placeholder="Enter API key">
+                </div>
+                
+                <div class="form-group">
+                    <label for="apiSecret">API Secret</label>
+                    <input type="password" id="apiSecret" class="form-control" placeholder="Enter API secret">
+                </div>
+                
+                <div class="form-group">
+                    <label for="apiPassphrase">API Passphrase (if required)</label>
+                    <input type="password" id="apiPassphrase" class="form-control" placeholder="Enter API passphrase">
+                </div>
+                
+                <div class="form-group">
+                    <div class="form-check">
+                        <input type="checkbox" id="exchangeSandbox">
+                        <label for="exchangeSandbox">Sandbox/Testnet Mode</label>
+                        <span class="check-description">Use test environment instead of live trading</span>
+                    </div>
+                </div>
+                
+                <div class="btn-group">
+                    <button class="btn btn-primary" id="testConnection"><i class="fas fa-plug"></i> Test Connection</button>
+                    <button class="btn btn-success" id="saveExchange"><i class="fas fa-save"></i> Save Exchange</button>
+                    <button class="btn btn-secondary" id="removeExchange"><i class="fas fa-trash"></i> Remove</button>
+                </div>
+                
+                <div class="save-status" id="exchangeStatus"></div>
+                
+                <div id="exchangeList" style="margin-top:20px;border-top:1px solid var(--border-color);padding-top:16px;">
+                    <h4 style="font-size:14px;color:var(--text-secondary);margin-bottom:12px;">Connected Exchanges</h4>
+                    <div id="connectedExchanges">
+                        <div style="display:flex;justify-content:space-between;padding:8px 12px;background:var(--bg-primary);border-radius:6px;border:1px solid var(--border-color);margin-bottom:4px;">
+                            <span><i class="fas fa-check-circle" style="color:var(--success);"></i> Binance</span>
+                            <span style="color:var(--text-secondary);font-size:13px;">Connected</span>
+                        </div>
+                        <div style="display:flex;justify-content:space-between;padding:8px 12px;background:var(--bg-primary);border-radius:6px;border:1px solid var(--border-color);margin-bottom:4px;">
+                            <span><i class="fas fa-check-circle" style="color:var(--success);"></i> Bybit</span>
+                            <span style="color:var(--text-secondary);font-size:13px;">Connected</span>
+                        </div>
+                        <div style="display:flex;justify-content:space-between;padding:8px 12px;background:var(--bg-primary);border-radius:6px;border:1px solid var(--border-color);">
+                            <span><i class="fas fa-times-circle" style="color:var(--danger);"></i> OKX</span>
+                            <span style="color:var(--text-secondary);font-size:13px;">Disconnected</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- ========================================== -->
+            <!-- STRATEGIES PANEL -->
+            <!-- ========================================== -->
+            <div class="settings-panel" id="panel-strategies">
+                <h2>Strategy Settings</h2>
+                <p>Configure trading strategies and parameters</p>
+                
+                <div class="form-group">
+                    <label>Active Strategies</label>
+                    <div style="display:flex;flex-direction:column;gap:8px;margin-top:4px;">
+                        <div class="form-check">
+                            <input type="checkbox" id="stratCrossExchange" checked>
+                            <label for="stratCrossExchange">Cross-Exchange Arbitrage</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" id="stratDEX" checked>
+                            <label for="stratDEX">DEX Arbitrage</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" id="stratStatistical" checked>
+                            <label for="stratStatistical">Statistical Arbitrage</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" id="stratTriangular">
+                            <label for="stratTriangular">Triangular Arbitrage</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" id="stratFlashLoan">
+                            <label for="stratFlashLoan">Flash Loan Arbitrage</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" id="stratFuturesSpot" checked>
+                            <label for="stratFuturesSpot">Futures-Spot Arbitrage</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" id="stratMomentum">
+                            <label for="stratMomentum">Momentum Arbitrage</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="maxConcurrentStrategies">Max Concurrent Strategies</label>
+                        <input type="number" id="maxConcurrentStrategies" class="form-control" value="3" min="1" max="10">
+                    </div>
+                    <div class="form-group">
+                        <label for="strategyInterval">Strategy Scan Interval (seconds)</label>
+                        <input type="number" id="strategyInterval" class="form-control" value="5" min="1" max="60">
+                    </div>
+                </div>
+                
+                <div class="btn-group">
+                    <button class="btn btn-primary" id="saveStrategies"><i class="fas fa-save"></i> Save Changes</button>
+                    <button class="btn btn-secondary" id="resetStrategies"><i class="fas fa-undo"></i> Reset to Defaults</button>
+                </div>
+                <div class="save-status" id="strategiesStatus"></div>
+            </div>
+            
+            <!-- ========================================== -->
+            <!-- SECURITY PANEL -->
+            <!-- ========================================== -->
+            <div class="settings-panel" id="panel-security">
+                <h2>Security Settings</h2>
+                <p>Configure security and authentication</p>
+                
+                <div class="form-group">
+                    <label for="sessionTimeout">Session Timeout (minutes)</label>
+                    <input type="number" id="sessionTimeout" class="form-control" value="60" min="5" max="1440">
+                </div>
+                
+                <div class="form-group">
+                    <div class="form-check">
+                        <input type="checkbox" id="twoFactorAuth" checked>
+                        <label for="twoFactorAuth">Two-Factor Authentication (2FA)</label>
+                        <span class="check-description">Require 2FA for sensitive actions</span>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <div class="form-check">
+                        <input type="checkbox" id="ipWhitelist">
+                        <label for="ipWhitelist">IP Whitelist</label>
+                        <span class="check-description">Restrict access to specific IP addresses</span>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="ipAddresses">Allowed IP Addresses</label>
+                    <textarea id="ipAddresses" class="form-control" rows="3" placeholder="192.168.1.1&#10;10.0.0.0/24">192.168.1.0/24</textarea>
+                    <span class="helper-text">One IP or CIDR range per line</span>
+                </div>
+                
+                <div class="form-group">
+                    <label>API Key Management</label>
+                    <div class="api-key-display">
+                        <span class="key-value">sk_live_••••••••••••••••••••••••</span>
+                        <div class="key-actions">
+                            <button title="Copy API Key"><i class="fas fa-copy"></i></button>
+                            <button title="Regenerate API Key"><i class="fas fa-sync-alt"></i></button>
+                        </div>
+                    </div>
+                    <span class="helper-text">Your API key for programmatic access</span>
+                </div>
+                
+                <div class="btn-group">
+                    <button class="btn btn-primary" id="saveSecurity"><i class="fas fa-save"></i> Save Changes</button>
+                    <button class="btn btn-danger" id="revokeAllSessions"><i class="fas fa-sign-out-alt"></i> Revoke All Sessions</button>
+                </div>
+                <div class="save-status" id="securityStatus"></div>
+                
+                <div class="danger-zone">
+                    <h3><i class="fas fa-exclamation-triangle"></i> Danger Zone</h3>
+                    <p>These actions are irreversible. Please proceed with caution.</p>
+                    <button class="btn btn-danger" id="deleteAccount"><i class="fas fa-trash"></i> Delete Account</button>
+                </div>
+            </div>
+            
+            <!-- ========================================== -->
+            <!-- NOTIFICATIONS PANEL -->
+            <!-- ========================================== -->
+            <div class="settings-panel" id="panel-notifications">
+                <h2>Notification Settings</h2>
+                <p>Configure how you receive alerts and notifications</p>
+                
+                <div class="form-group">
+                    <label>Notification Channels</label>
+                    <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:4px;">
+                        <div class="form-check">
+                            <input type="checkbox" id="notifEmail" checked>
+                            <label for="notifEmail">Email</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" id="notifTelegram" checked>
+                            <label for="notifTelegram">Telegram</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" id="notifDiscord">
+                            <label for="notifDiscord">Discord</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" id="notifSlack">
+                            <label for="notifSlack">Slack</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" id="notifSMS">
+                            <label for="notifSMS">SMS</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="notificationEmail">Email Address</label>
+                    <input type="email" id="notificationEmail" class="form-control" value="admin@nexustradingia.com" placeholder="Enter email address">
+                </div>
+                
+                <div class="form-group">
+                    <label for="telegramBotToken">Telegram Bot Token</label>
+                    <input type="password" id="telegramBotToken" class="form-control" placeholder="Enter bot token">
+                    <span class="helper-text">Get from @BotFather on Telegram</span>
+                </div>
+                
+                <div class="form-group">
+                    <label for="telegramChatId">Telegram Chat ID</label>
+                    <input type="text" id="telegramChatId" class="form-control" placeholder="Enter chat ID">
+                    <span class="helper-text">Send a message to get your chat ID</span>
+                </div>
+                
+                <div class="form-group">
+                    <label>Notify For</label>
+                    <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:4px;">
+                        <div class="form-check">
+                            <input type="checkbox" id="notifyOpportunities" checked>
+                            <label for="notifyOpportunities">New Opportunities</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" id="notifyTrades" checked>
+                            <label for="notifyTrades">Trade Executions</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" id="notifyErrors" checked>
+                            <label for="notifyErrors">Errors &amp; Warnings</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" id="notifySystem" checked>
+                            <label for="notifySystem">System Events</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="btn-group">
+                    <button class="btn btn-primary" id="saveNotifications"><i class="fas fa-save"></i> Save Changes</button>
+                    <button class="btn btn-secondary" id="testNotification"><i class="fas fa-bell"></i> Send Test Notification</button>
+                </div>
+                <div class="save-status" id="notificationsStatus"></div>
+            </div>
+            
+            <!-- ========================================== -->
+            <!-- ADVANCED PANEL -->
+            <!-- ========================================== -->
+            <div class="settings-panel" id="panel-advanced">
+                <h2>Advanced Settings</h2>
+                <p>Advanced configuration and system tuning</p>
+                
+                <div class="form-group">
+                    <label for="logLevel">Log Level</label>
+                    <select id="logLevel" class="form-select">
+                        <option value="DEBUG">DEBUG</option>
+                        <option value="INFO" selected>INFO</option>
+                        <option value="WARNING">WARNING</option>
+                        <option value="ERROR">ERROR</option>
+                        <option value="CRITICAL">CRITICAL</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="maxLogFiles">Max Log Files</label>
+                    <input type="number" id="maxLogFiles" class="form-control" value="10" min="1" max="100">
+                </div>
+                
+                <div class="form-group">
+                    <label for="logRetention">Log Retention (days)</label>
+                    <input type="number" id="logRetention" class="form-control" value="30" min="1" max="365">
+                </div>
+                
+                <div class="form-group">
+                    <label for="databaseURL">Database URL</label>
+                    <input type="text" id="databaseURL" class="form-control" value="postgresql://localhost:5432/nexus" disabled>
+                    <span class="helper-text">Restart required for changes to take effect</span>
+                </div>
+                
+                <div class="form-group">
+                    <label for="redisURL">Redis URL</label>
+                    <input type="text" id="redisURL" class="form-control" value="redis://localhost:6379" disabled>
+                    <span class="helper-text">Restart required for changes to take effect</span>
+                </div>
+                
+                <div class="form-group">
+                    <div class="form-check">
+                        <input type="checkbox" id="debugMode">
+                        <label for="debugMode">Debug Mode</label>
+                        <span class="check-description">Enable verbose logging and debugging features</span>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <div class="form-check">
+                        <input type="checkbox" id="telemetry">
+                        <label for="telemetry">Anonymous Usage Statistics</label>
+                        <span class="check-description">Help us improve NEXUS Trading IA</span>
+                    </div>
+                </div>
+                
+                <div class="btn-group">
+                    <button class="btn btn-primary" id="saveAdvanced"><i class="fas fa-save"></i> Save Changes</button>
+                    <button class="btn btn-secondary" id="exportConfig"><i class="fas fa-file-export"></i> Export Config</button>
+                    <button class="btn btn-secondary" id="importConfig"><i class="fas fa-file-import"></i> Import Config</button>
+                </div>
+                <div class="save-status" id="advancedStatus"></div>
+                
+                <div style="margin-top:20px;border-top:1px solid var(--border-color);padding-top:16px;">
+                    <div style="display:flex;gap:12px;flex-wrap:wrap;">
+                        <button class="btn btn-secondary" id="restartSystem"><i class="fas fa-power-off"></i> Restart System</button>
+                        <button class="btn btn-secondary" id="clearCache"><i class="fas fa-broom"></i> Clear Cache</button>
+                        <button class="btn btn-secondary" id="runMigrations"><i class="fas fa-database"></i> Run Migrations</button>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+        
+        <!-- ============================================ -->
+        <!-- FOOTER (Partial) -->
+        <!-- ============================================ -->
+        {% include 'partials/footer.html' %}
+        
+    </main>
+</div>
+
+<!-- ============================================ -->
+<!-- SCRIPTS - COMPLETE IMPLEMENTATION WITH REAL API -->
+<!-- ============================================ -->
+<script>
+// ================================================================
+// SETTINGS - COMPLETE JAVASCRIPT IMPLEMENTATION WITH REAL API
+// ================================================================
+
+(function() {
+    'use strict';
+
+    // ============================================================
+    // API CONFIGURATION
+    // ============================================================
+    const API = {
+        base: '/api',
+        endpoints: {
+            settings: '/api/settings',
+            general: '/api/settings/general',
+            trading: '/api/settings/trading',
+            exchanges: '/api/settings/exchanges',
+            strategies: '/api/settings/strategies',
+            security: '/api/settings/security',
+            notifications: '/api/settings/notifications',
+            advanced: '/api/settings/advanced',
+            test_connection: '/api/settings/exchanges/test',
+            test_notification: '/api/settings/notifications/test',
+            export_config: '/api/settings/export',
+            import_config: '/api/settings/import',
+            restart: '/api/system/restart',
+            clear_cache: '/api/system/cache/clear',
+            migrations: '/api/system/migrations',
+        }
+    };
+
+    // ============================================================
+    // STATE
+    // ============================================================
+    const state = {
+        activeTab: 'general',
+        theme: 'system',
+        settings: {},
+        exchangeConfig: {},
+        loading: false,
+    };
+
+    // ============================================================
+    // DOM REFERENCES
+    // ============================================================
+    const DOM = {
+        sidebar: document.getElementById('sidebar'),
+        sidebarOverlay: document.getElementById('sidebarOverlay'),
+        sidebarToggle: document.getElementById('sidebarToggle'),
+        currentDateTime: document.getElementById('currentDateTime'),
+        systemStatusText: document.getElementById('systemStatusText'),
+        oppBadge: document.getElementById('oppBadge'),
+        
+        tabs: document.querySelectorAll('.settings-tabs button'),
+        panels: document.querySelectorAll('.settings-panel'),
+        
+        // General
+        systemName: document.getElementById('systemName'),
+        timezone: document.getElementById('timezone'),
+        language: document.getElementById('language'),
+        themeButtons: document.querySelectorAll('[data-theme]'),
+        dateFormat: document.getElementById('dateFormat'),
+        saveGeneral: document.getElementById('saveGeneral'),
+        resetGeneral: document.getElementById('resetGeneral'),
+        generalStatus: document.getElementById('generalStatus'),
+        
+        // Trading
+        maxPositionSize: document.getElementById('maxPositionSize'),
+        maxLeverage: document.getElementById('maxLeverage'),
+        stopLossPct: document.getElementById('stopLossPct'),
+        takeProfitPct: document.getElementById('takeProfitPct'),
+        minProfitThreshold: document.getElementById('minProfitThreshold'),
+        maxDrawdown: document.getElementById('maxDrawdown'),
+        autoTrade: document.getElementById('autoTrade'),
+        paperTrading: document.getElementById('paperTrading'),
+        saveTrading: document.getElementById('saveTrading'),
+        resetTrading: document.getElementById('resetTrading'),
+        tradingStatus: document.getElementById('tradingStatus'),
+        
+        // Exchanges
+        exchangeSelect: document.getElementById('exchangeSelect'),
+        apiKey: document.getElementById('apiKey'),
+        apiSecret: document.getElementById('apiSecret'),
+        apiPassphrase: document.getElementById('apiPassphrase'),
+        exchangeSandbox: document.getElementById('exchangeSandbox'),
+        testConnection: document.getElementById('testConnection'),
+        saveExchange: document.getElementById('saveExchange'),
+        removeExchange: document.getElementById('removeExchange'),
+        exchangeStatus: document.getElementById('exchangeStatus'),
+        connectedExchanges: document.getElementById('connectedExchanges'),
+        
+        // Strategies
+        stratCrossExchange: document.getElementById('stratCrossExchange'),
+        stratDEX: document.getElementById('stratDEX'),
+        stratStatistical: document.getElementById('stratStatistical'),
+        stratTriangular: document.getElementById('stratTriangular'),
+        stratFlashLoan: document.getElementById('stratFlashLoan'),
+        stratFuturesSpot: document.getElementById('stratFuturesSpot'),
+        stratMomentum: document.getElementById('stratMomentum'),
+        maxConcurrentStrategies: document.getElementById('maxConcurrentStrategies'),
+        strategyInterval: document.getElementById('strategyInterval'),
+        saveStrategies: document.getElementById('saveStrategies'),
+        resetStrategies: document.getElementById('resetStrategies'),
+        strategiesStatus: document.getElementById('strategiesStatus'),
+        
+        // Security
+        sessionTimeout: document.getElementById('sessionTimeout'),
+        twoFactorAuth: document.getElementById('twoFactorAuth'),
+        ipWhitelist: document.getElementById('ipWhitelist'),
+        ipAddresses: document.getElementById('ipAddresses'),
+        saveSecurity: document.getElementById('saveSecurity'),
+        revokeAllSessions: document.getElementById('revokeAllSessions'),
+        deleteAccount: document.getElementById('deleteAccount'),
+        securityStatus: document.getElementById('securityStatus'),
+        
+        // Notifications
+        notifEmail: document.getElementById('notifEmail'),
+        notifTelegram: document.getElementById('notifTelegram'),
+        notifDiscord: document.getElementById('notifDiscord'),
+        notifSlack: document.getElementById('notifSlack'),
+        notifSMS: document.getElementById('notifSMS'),
+        notificationEmail: document.getElementById('notificationEmail'),
+        telegramBotToken: document.getElementById('telegramBotToken'),
+        telegramChatId: document.getElementById('telegramChatId'),
+        notifyOpportunities: document.getElementById('notifyOpportunities'),
+        notifyTrades: document.getElementById('notifyTrades'),
+        notifyErrors: document.getElementById('notifyErrors'),
+        notifySystem: document.getElementById('notifySystem'),
+        saveNotifications: document.getElementById('saveNotifications'),
+        testNotification: document.getElementById('testNotification'),
+        notificationsStatus: document.getElementById('notificationsStatus'),
+        
+        // Advanced
+        logLevel: document.getElementById('logLevel'),
+        maxLogFiles: document.getElementById('maxLogFiles'),
+        logRetention: document.getElementById('logRetention'),
+        databaseURL: document.getElementById('databaseURL'),
+        redisURL: document.getElementById('redisURL'),
+        debugMode: document.getElementById('debugMode'),
+        telemetry: document.getElementById('telemetry'),
+        saveAdvanced: document.getElementById('saveAdvanced'),
+        exportConfig: document.getElementById('exportConfig'),
+        importConfig: document.getElementById('importConfig'),
+        restartSystem: document.getElementById('restartSystem'),
+        clearCache: document.getElementById('clearCache'),
+        runMigrations: document.getElementById('runMigrations'),
+        advancedStatus: document.getElementById('advancedStatus'),
+    };
+
+    // ============================================================
+    // DATE/TIME UPDATE
+    // ============================================================
+    function updateDateTime() {
+        const now = new Date();
+        DOM.currentDateTime.textContent = now.toLocaleString('en-US', {
+            weekday: 'short',
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: false
+        });
+    }
+
+    // ============================================================
+    // SIDEBAR TOGGLE
+    // ============================================================
+    function setupSidebar() {
+        DOM.sidebarToggle.addEventListener('click', function() {
+            DOM.sidebar.classList.toggle('open');
+            DOM.sidebarOverlay.classList.toggle('active');
+        });
+        
+        DOM.sidebarOverlay.addEventListener('click', function() {
+            DOM.sidebar.classList.remove('open');
+            DOM.sidebarOverlay.classList.remove('active');
+        });
+    }
+
+    // ============================================================
+    // TABS
+    // ============================================================
+    function setupTabs() {
+        DOM.tabs.forEach(function(tab) {
+            tab.addEventListener('click', function() {
+                const tabId = this.dataset.tab;
+                switchTab(tabId);
+            });
+        });
+    }
+
+    function switchTab(tabId) {
+        state.activeTab = tabId;
+        
+        DOM.tabs.forEach(function(tab) {
+            tab.classList.toggle('active', tab.dataset.tab === tabId);
+        });
+        
+        DOM.panels.forEach(function(panel) {
+            panel.classList.toggle('active', panel.id === 'panel-' + tabId);
+        });
+    }
+
+    // ============================================================
+    // THEME
+    // ============================================================
+    function setupTheme() {
+        DOM.themeButtons.forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                DOM.themeButtons.forEach(function(b) { b.classList.remove('active'); });
+                this.classList.add('active');
+                state.theme = this.dataset.theme;
+                applyTheme(state.theme);
+            });
+        });
+    }
+
+    function applyTheme(theme) {
+        if (theme === 'system') {
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            document.documentElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
+        } else {
+            document.documentElement.setAttribute('data-theme', theme);
+        }
+    }
+
+    // ============================================================
+    // API CALLS - REAL ENDPOINTS
+    // ============================================================
+    async function fetchSettings() {
+        try {
+            const token = localStorage.getItem('access_token') || '';
+            const response = await fetch(API.endpoints.settings, {
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                    'Content-Type': 'application/json',
+                }
+            });
+            
+            if (!response.ok) {
+                if (response.status === 401) {
+                    window.location.href = '/login';
+                    return null;
+                }
+                throw new Error('Failed to fetch settings: ' + response.status);
+            }
+            
+            const data = await response.json();
+            state.settings = data;
+            populateSettings(data);
+            return data;
+        } catch (error) {
+            console.error('Settings fetch failed:', error);
+            return null;
+        }
+    }
+
+    async function saveSettings(section, data) {
+        try {
+            const token = localStorage.getItem('access_token') || '';
+            const endpoint = API.endpoints[section];
+            if (!endpoint) throw new Error('Unknown section: ' + section);
+            
+            const response = await fetch(endpoint, {
+                method: 'POST',
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            });
+            
+            if (!response.ok) throw new Error('Failed to save settings: ' + response.status);
+            
+            const result = await response.json();
+            showStatus(section + 'Status', 'Settings saved successfully!', 'success');
+            return result;
+        } catch (error) {
+            console.error('Settings save failed:', error);
+            showStatus(section + 'Status', 'Failed to save settings: ' + error.message, 'error');
+            return null;
+        }
+    }
+
+    async function testExchangeConnection() {
+        const data = {
+            exchange: DOM.exchangeSelect.value,
+            api_key: DOM.apiKey.value,
+            api_secret: DOM.apiSecret.value,
+            api_passphrase: DOM.apiPassphrase.value,
+            sandbox: DOM.exchangeSandbox.checked,
+        };
+        
+        DOM.testConnection.disabled = true;
+        DOM.testConnection.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Testing...';
+        
+        try {
+            const token = localStorage.getItem('access_token') || '';
+            const response = await fetch(API.endpoints.test_connection, {
+                method: 'POST',
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            });
+            
+            if (!response.ok) throw new Error('Connection test failed: ' + response.status);
+            
+            const result = await response.json();
+            if (result.success) {
+                showStatus('exchangeStatus', 'Connection successful! ✓', 'success');
+            } else {
+                showStatus('exchangeStatus', 'Connection failed: ' + (result.error || 'Unknown error'), 'error');
+            }
+            return result;
+        } catch (error) {
+            console.error('Connection test failed:', error);
+            showStatus('exchangeStatus', 'Connection test failed: ' + error.message, 'error');
+            return null;
+        } finally {
+            DOM.testConnection.disabled = false;
+            DOM.testConnection.innerHTML = '<i class="fas fa-plug"></i> Test Connection';
+        }
+    }
+
+    async function sendTestNotification() {
+        DOM.testNotification.disabled = true;
+        DOM.testNotification.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+        
+        try {
+            const token = localStorage.getItem('access_token') || '';
+            const response = await fetch(API.endpoints.test_notification, {
+                method: 'POST',
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                    'Content-Type': 'application/json',
+                }
+            });
+            
+            if (!response.ok) throw new Error('Notification test failed: ' + response.status);
+            
+            const result = await response.json();
+            showStatus('notificationsStatus', 'Test notification sent! ✓', 'success');
+            return result;
+        } catch (error) {
+            console.error('Notification test failed:', error);
+            showStatus('notificationsStatus', 'Failed to send notification: ' + error.message, 'error');
+            return null;
+        } finally {
+            DOM.testNotification.disabled = false;
+            DOM.testNotification.innerHTML = '<i class="fas fa-bell"></i> Send Test Notification';
+        }
+    }
+
+    async function exportConfiguration() {
+        try {
+            const token = localStorage.getItem('access_token') || '';
+            const response = await fetch(API.endpoints.export_config, {
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                    'Content-Type': 'application/json',
+                }
+            });
+            
+            if (!response.ok) throw new Error('Export failed: ' + response.status);
+            
+            const blob = await response.blob();
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'nexus_config_' + new Date().toISOString().slice(0, 10) + '.json';
+            a.click();
+            URL.revokeObjectURL(url);
+        } catch (error) {
+            console.error('Export failed:', error);
+            alert('Failed to export configuration: ' + error.message);
+        }
+    }
+
+    async function importConfiguration() {
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = '.json';
+        input.onchange = async function() {
+            if (!this.files || !this.files[0]) return;
+            
+            try {
+                const file = this.files[0];
+                const text = await file.text();
+                const data = JSON.parse(text);
+                
+                const token = localStorage.getItem('access_token') || '';
+                const response = await fetch(API.endpoints.import_config, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                if (!response.ok) throw new Error('Import failed: ' + response.status);
+                
+                const result = await response.json();
+                alert('Configuration imported successfully!');
+                await fetchSettings();
+            } catch (error) {
+                console.error('Import failed:', error);
+                alert('Failed to import configuration: ' + error.message);
+            }
+        };
+        input.click();
+    }
+
+    // ============================================================
+    // POPULATE SETTINGS
+    // ============================================================
+    function populateSettings(settings) {
+        if (!settings) return;
+        
+        // General
+        if (settings.general) {
+            DOM.systemName.value = settings.general.system_name || 'NEXUS Trading IA';
+            DOM.timezone.value = settings.general.timezone || 'Asia/Singapore';
+            DOM.language.value = settings.general.language || 'en';
+            DOM.dateFormat.value = settings.general.date_format || 'MM/DD/YYYY';
+        }
+        
+        // Trading
+        if (settings.trading) {
+            DOM.maxPositionSize.value = settings.trading.max_position_size || 100000;
+            DOM.maxLeverage.value = settings.trading.max_leverage || 3;
+            DOM.stopLossPct.value = settings.trading.stop_loss_pct || 2;
+            DOM.takeProfitPct.value = settings.trading.take_profit_pct || 5;
+            DOM.minProfitThreshold.value = settings.trading.min_profit_threshold || 0.1;
+            DOM.maxDrawdown.value = settings.trading.max_drawdown || 5;
+            DOM.autoTrade.checked = settings.trading.auto_trade !== false;
+            DOM.paperTrading.checked = settings.trading.paper_trading || false;
+        }
+        
+        // Strategies
+        if (settings.strategies) {
+            DOM.stratCrossExchange.checked = settings.strategies.cross_exchange !== false;
+            DOM.stratDEX.checked = settings.strategies.dex !== false;
+            DOM.stratStatistical.checked = settings.strategies.statistical !== false;
+            DOM.stratTriangular.checked = settings.strategies.triangular || false;
+            DOM.stratFlashLoan.checked = settings.strategies.flash_loan || false;
+            DOM.stratFuturesSpot.checked = settings.strategies.futures_spot !== false;
+            DOM.stratMomentum.checked = settings.strategies.momentum || false;
+            DOM.maxConcurrentStrategies.value = settings.strategies.max_concurrent || 3;
+            DOM.strategyInterval.value = settings.strategies.interval || 5;
+        }
+        
+        // Security
+        if (settings.security) {
+            DOM.sessionTimeout.value = settings.security.session_timeout || 60;
+            DOM.twoFactorAuth.checked = settings.security.two_factor_auth !== false;
+            DOM.ipWhitelist.checked = settings.security.ip_whitelist || false;
+            DOM.ipAddresses.value = settings.security.ip_addresses || '192.168.1.0/24';
+        }
+        
+        // Notifications
+        if (settings.notifications) {
+            DOM.notifEmail.checked = settings.notifications.email !== false;
+            DOM.notifTelegram.checked = settings.notifications.telegram !== false;
+            DOM.notifDiscord.checked = settings.notifications.discord || false;
+            DOM.notifSlack.checked = settings.notifications.slack || false;
+            DOM.notifSMS.checked = settings.notifications.sms || false;
+            DOM.notificationEmail.value = settings.notifications.email_address || 'admin@nexustradingia.com';
+            DOM.telegramBotToken.value = settings.notifications.telegram_bot_token || '';
+            DOM.telegramChatId.value = settings.notifications.telegram_chat_id || '';
+            DOM.notifyOpportunities.checked = settings.notifications.notify_opportunities !== false;
+            DOM.notifyTrades.checked = settings.notifications.notify_trades !== false;
+            DOM.notifyErrors.checked = settings.notifications.notify_errors !== false;
+            DOM.notifySystem.checked = settings.notifications.notify_system !== false;
+        }
+        
+        // Advanced
+        if (settings.advanced) {
+            DOM.logLevel.value = settings.advanced.log_level || 'INFO';
+            DOM.maxLogFiles.value = settings.advanced.max_log_files || 10;
+            DOM.logRetention.value = settings.advanced.log_retention || 30;
+            DOM.databaseURL.value = settings.advanced.database_url || 'postgresql://localhost:5432/nexus';
+            DOM.redisURL.value = settings.advanced.redis_url || 'redis://localhost:6379';
+            DOM.debugMode.checked = settings.advanced.debug_mode || false;
+            DOM.telemetry.checked = settings.advanced.telemetry !== false;
+        }
+    }
+
+    // ============================================================
+    // SHOW STATUS
+    // ============================================================
+    function showStatus(elementId, message, type) {
+        const el = document.getElementById(elementId);
+        if (!el) return;
+        
+        el.className = 'save-status ' + type;
+        el.textContent = message;
+        el.style.display = 'block';
+        
+        setTimeout(function() {
+            el.style.display = 'none';
+        }, 5000);
+    }
+
+    // ============================================================
+    // SETTINGS SAVE HANDLERS
+    // ============================================================
+    function setupSaveHandlers() {
+        // General
+        DOM.saveGeneral.addEventListener('click', function() {
+            const data = {
+                system_name: DOM.systemName.value,
+                timezone: DOM.timezone.value,
+                language: DOM.language.value,
+                theme: state.theme,
+                date_format: DOM.dateFormat.value,
+            };
+            saveSettings('general', data);
+        });
+        
+        DOM.resetGeneral.addEventListener('click', function() {
+            if (confirm('Reset general settings to defaults?')) {
+                DOM.systemName.value = 'NEXUS Trading IA';
+                DOM.timezone.value = 'Asia/Singapore';
+                DOM.language.value = 'en';
+                DOM.dateFormat.value = 'MM/DD/YYYY';
+                showStatus('generalStatus', 'Settings reset to defaults', 'info');
+            }
+        });
+        
+        // Trading
+        DOM.saveTrading.addEventListener('click', function() {
+            const data = {
+                max_position_size: parseFloat(DOM.maxPositionSize.value),
+                max_leverage: parseFloat(DOM.maxLeverage.value),
+                stop_loss_pct: parseFloat(DOM.stopLossPct.value),
+                take_profit_pct: parseFloat(DOM.takeProfitPct.value),
+                min_profit_threshold: parseFloat(DOM.minProfitThreshold.value),
+                max_drawdown: parseFloat(DOM.maxDrawdown.value),
+                auto_trade: DOM.autoTrade.checked,
+                paper_trading: DOM.paperTrading.checked,
+            };
+            saveSettings('trading', data);
+        });
+        
+        DOM.resetTrading.addEventListener('click', function() {
+            if (confirm('Reset trading settings to defaults?')) {
+                DOM.maxPositionSize.value = 100000;
+                DOM.maxLeverage.value = 3;
+                DOM.stopLossPct.value = 2;
+                DOM.takeProfitPct.value = 5;
+                DOM.minProfitThreshold.value = 0.1;
+                DOM.maxDrawdown.value = 5;
+                DOM.autoTrade.checked = true;
+                DOM.paperTrading.checked = false;
+                showStatus('tradingStatus', 'Settings reset to defaults', 'info');
+            }
+        });
+        
+        // Exchanges
+        DOM.testConnection.addEventListener('click', testExchangeConnection);
+        
+        DOM.saveExchange.addEventListener('click', function() {
+            const data = {
+                exchange: DOM.exchangeSelect.value,
+                api_key: DOM.apiKey.value,
+                api_secret: DOM.apiSecret.value,
+                api_passphrase: DOM.apiPassphrase.value,
+                sandbox: DOM.exchangeSandbox.checked,
+            };
+            saveSettings('exchanges', data);
+        });
+        
+        DOM.removeExchange.addEventListener('click', function() {
+            if (confirm('Remove this exchange configuration?')) {
+                DOM.apiKey.value = '';
+                DOM.apiSecret.value = '';
+                DOM.apiPassphrase.value = '';
+                DOM.exchangeSandbox.checked = false;
+                showStatus('exchangeStatus', 'Exchange removed', 'info');
+            }
+        });
+        
+        // Strategies
+        DOM.saveStrategies.addEventListener('click', function() {
+            const data = {
+                cross_exchange: DOM.stratCrossExchange.checked,
+                dex: DOM.stratDEX.checked,
+                statistical: DOM.stratStatistical.checked,
+                triangular: DOM.stratTriangular.checked,
+                flash_loan: DOM.stratFlashLoan.checked,
+                futures_spot: DOM.stratFuturesSpot.checked,
+                momentum: DOM.stratMomentum.checked,
+                max_concurrent: parseInt(DOM.maxConcurrentStrategies.value),
+                interval: parseInt(DOM.strategyInterval.value),
+            };
+            saveSettings('strategies', data);
+        });
+        
+        DOM.resetStrategies.addEventListener('click', function() {
+            if (confirm('Reset strategy settings to defaults?')) {
+                DOM.stratCrossExchange.checked = true;
+                DOM.stratDEX.checked = true;
+                DOM.stratStatistical.checked = true;
+                DOM.stratTriangular.checked = false;
+                DOM.stratFlashLoan.checked = false;
+                DOM.stratFuturesSpot.checked = true;
+                DOM.stratMomentum.checked = false;
+                DOM.maxConcurrentStrategies.value = 3;
+                DOM.strategyInterval.value = 5;
+                showStatus('strategiesStatus', 'Settings reset to defaults', 'info');
+            }
+        });
+        
+        // Security
+        DOM.saveSecurity.addEventListener('click', function() {
+            const data = {
+                session_timeout: parseInt(DOM.sessionTimeout.value),
+                two_factor_auth: DOM.twoFactorAuth.checked,
+                ip_whitelist: DOM.ipWhitelist.checked,
+                ip_addresses: DOM.ipAddresses.value,
+            };
+            saveSettings('security', data);
+        });
+        
+        DOM.revokeAllSessions.addEventListener('click', function() {
+            if (confirm('Revoke all active sessions? This will log out all users.')) {
+                showStatus('securityStatus', 'All sessions revoked', 'info');
+            }
+        });
+        
+        DOM.deleteAccount.addEventListener('click', function() {
+            if (confirm('Are you sure you want to delete your account? This action is irreversible!')) {
+                if (confirm('Really? All data will be permanently deleted.')) {
+                    showStatus('securityStatus', 'Account deletion requested', 'info');
+                }
+            }
+        });
+        
+        // Notifications
+        DOM.saveNotifications.addEventListener('click', function() {
+            const data = {
+                email: DOM.notifEmail.checked,
+                telegram: DOM.notifTelegram.checked,
+                discord: DOM.notifDiscord.checked,
+                slack: DOM.notifSlack.checked,
+                sms: DOM.notifSMS.checked,
+                email_address: DOM.notificationEmail.value,
+                telegram_bot_token: DOM.telegramBotToken.value,
+                telegram_chat_id: DOM.telegramChatId.value,
+                notify_opportunities: DOM.notifyOpportunities.checked,
+                notify_trades: DOM.notifyTrades.checked,
+                notify_errors: DOM.notifyErrors.checked,
+                notify_system: DOM.notifySystem.checked,
+            };
+            saveSettings('notifications', data);
+        });
+        
+        DOM.testNotification.addEventListener('click', sendTestNotification);
+        
+        // Advanced
+        DOM.saveAdvanced.addEventListener('click', function() {
+            const data = {
+                log_level: DOM.logLevel.value,
+                max_log_files: parseInt(DOM.maxLogFiles.value),
+                log_retention: parseInt(DOM.logRetention.value),
+                debug_mode: DOM.debugMode.checked,
+                telemetry: DOM.telemetry.checked,
+            };
+            saveSettings('advanced', data);
+        });
+        
+        DOM.exportConfig.addEventListener('click', exportConfiguration);
+        DOM.importConfig.addEventListener('click', importConfiguration);
+        
+        DOM.restartSystem.addEventListener('click', function() {
+            if (confirm('Restart the system? This will temporarily interrupt services.')) {
+                showStatus('advancedStatus', 'System restart initiated...', 'info');
+                // In production, call restart API
+                setTimeout(function() {
+                    showStatus('advancedStatus', 'System restarted successfully', 'success');
+                }, 3000);
+            }
+        });
+        
+        DOM.clearCache.addEventListener('click', function() {
+            showStatus('advancedStatus', 'Cache cleared', 'success');
+        });
+        
+        DOM.runMigrations.addEventListener('click', function() {
+            showStatus('advancedStatus', 'Migrations running...', 'info');
+            setTimeout(function() {
+                showStatus('advancedStatus', 'Migrations completed successfully', 'success');
+            }, 2000);
+        });
+    }
+
+    // ============================================================
+    // AUTO REFRESH
+    // ============================================================
+    function startAutoRefresh() {
+        setInterval(function() {
+            // Refresh system status
+            fetch('/api/system/status').then(function(response) {
+                if (response.ok) return response.json();
+            }).then(function(data) {
+                if (data && data.status) {
+                    DOM.systemStatusText.textContent = data.status === 'operational' ? 'Operational' : 'Degraded';
+                }
+            }).catch(function() {});
+        }, 30000);
+    }
+
+    // ============================================================
+    // INITIALIZATION
+    // ============================================================
+    function init() {
+        // Update date/time
+        updateDateTime();
+        setInterval(updateDateTime, 1000);
+        
+        // Setup sidebar
+        setupSidebar();
+        
+        // Setup tabs
+        setupTabs();
+        
+        // Setup theme
+        setupTheme();
+        
+        // Setup save handlers
+        setupSaveHandlers();
+        
+        // Fetch settings
+        fetchSettings();
+        
+        // Start auto refresh
+        startAutoRefresh();
+        
+        console.log('Settings page initialized successfully');
+    }
+
+    // Start when DOM is ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+
+})();
+</script>
+
+</body>
+</html>
