@@ -1,0 +1,1212 @@
+# ============================================================
+# NEXUS AI TRADING SYSTEM - Arbitrage Bot Test Configuration
+# Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+# ============================================================
+# @version 2.0.0
+# @author NEXUS QUANTUM TEAM
+# @description Configuration de test pour le bot d'arbitrage
+# @usage Utilisé pour les tests unitaires et d'intégration
+# ============================================================
+
+# ============================================================
+# BOT IDENTITY - TEST
+# ============================================================
+bot:
+  id: "arbitrage-bot-test-001"
+  name: "NEXUS Arbitrage Bot (Test)"
+  version: "2.0.0-test"
+  description: "Bot d'arbitrage algorithmique - Environnement de test"
+  environment: "testing"
+  instance: "test-001"
+  deployment: "standalone"
+  region: "us-east-1"
+  cluster: "nexus-test"
+
+# ============================================================
+# GENERAL SETTINGS - TEST
+# ============================================================
+general:
+  enabled: true
+  debug: true
+  log_level: "debug"
+  timezone: "UTC"
+  locale: "en_US"
+  max_concurrent_operations: 5
+  operation_timeout: 10
+  retry_attempts: 3
+  retry_delay: 1
+  shutdown_timeout: 5
+  startup_timeout: 10
+  health_check_interval: 5
+  enable_profiling: true
+  enable_metrics: true
+  enable_tracing: true
+  graceful_shutdown: true
+  emergency_stop: true
+
+# ============================================================
+# EXCHANGE CONFIGURATIONS - TEST (MOCK/SANDBOX)
+# ============================================================
+exchanges:
+  # --- Mock Exchange for Testing ---
+  mock_exchange:
+    enabled: true
+    name: "Mock Exchange"
+    type: "cex"
+    website: "https://mock.exchange.com"
+    description: "Exchange simulé pour les tests"
+    priority: 1
+    tier: "test"
+    production_ready: false
+    
+    api:
+      key: "${MOCK_API_KEY:-mock-key-123}"
+      secret: "${MOCK_API_SECRET:-mock-secret-456}"
+      passphrase: ""
+      
+    endpoints:
+      rest: "https://api.mock.exchange/v1"
+      websocket: "wss://ws.mock.exchange/v1"
+      futures: "https://api.mock.exchange/futures"
+      
+    rate_limits:
+      requests_per_second: 100
+      orders_per_second: 50
+      websocket_connections: 10
+      websocket_subscriptions: 100
+      
+    options:
+      use_spot: true
+      use_futures: true
+      use_margin: false
+      use_options: false
+      use_swap: false
+      use_linear: true
+      use_inverse: false
+      
+    trading_pairs:
+      spot:
+        - "BTC/USDT"
+        - "ETH/USDT"
+        - "SOL/USDT"
+        - "ADA/USDT"
+        - "DOT/USDT"
+      futures:
+        - "BTC/USDT"
+        - "ETH/USDT"
+        - "SOL/USDT"
+        
+    fee:
+      maker: 0.001
+      taker: 0.001
+      futures_maker: 0.0002
+      futures_taker: 0.0004
+      discount: 0.0
+      
+    min_order_size:
+      BTC_USDT: 0.0001
+      ETH_USDT: 0.001
+      default: 0.001
+      
+    lot_size:
+      BTC_USDT: 0.00001
+      ETH_USDT: 0.0001
+      default: 0.0001
+      
+    quote_precision:
+      BTC_USDT: 2
+      ETH_USDT: 2
+      default: 2
+      
+    base_precision:
+      BTC_USDT: 8
+      ETH_USDT: 8
+      default: 8
+      
+    security:
+      withdraw_whitelist: false
+      ip_whitelist: false
+      api_key_permissions:
+        - "spot"
+        - "futures"
+        
+    markets:
+      - "spot"
+      - "futures"
+      
+    features:
+      - "limit_orders"
+      - "market_orders"
+      - "stop_orders"
+      - "stop_limit_orders"
+      - "trailing_stop_orders"
+      - "oco_orders"
+      - "post_only"
+      - "reduce_only"
+      - "close_position"
+      
+    websocket_streams:
+      - "depth"
+      - "trade"
+      - "kline"
+      - "ticker"
+      - "bookTicker"
+      
+    klines:
+      intervals:
+        - "1m"
+        - "5m"
+        - "15m"
+        - "30m"
+        - "1h"
+        - "4h"
+        - "1d"
+      max_limit: 100
+      
+    maintenance:
+      scheduled_downtime: false
+      notification_channels: []
+
+  # --- Mock Exchange 2 for Cross-Exchange Tests ---
+  mock_exchange_2:
+    enabled: true
+    name: "Mock Exchange 2"
+    type: "cex"
+    website: "https://mock2.exchange.com"
+    description: "Exchange simulé pour les tests cross-exchange"
+    priority: 2
+    tier: "test"
+    production_ready: false
+    
+    api:
+      key: "${MOCK_API_KEY_2:-mock-key-789}"
+      secret: "${MOCK_API_SECRET_2:-mock-secret-012}"
+      passphrase: ""
+      
+    endpoints:
+      rest: "https://api.mock2.exchange/v1"
+      websocket: "wss://ws.mock2.exchange/v1"
+      
+    rate_limits:
+      requests_per_second: 100
+      orders_per_second: 50
+      websocket_connections: 10
+      websocket_subscriptions: 100
+      
+    options:
+      use_spot: true
+      use_futures: false
+      use_margin: false
+      use_options: false
+      use_swap: false
+      
+    trading_pairs:
+      spot:
+        - "BTC/USDT"
+        - "ETH/USDT"
+        - "SOL/USDT"
+        
+    fee:
+      maker: 0.001
+      taker: 0.001
+      
+    min_order_size:
+      BTC_USDT: 0.0001
+      ETH_USDT: 0.001
+      default: 0.001
+      
+    lot_size:
+      BTC_USDT: 0.00001
+      ETH_USDT: 0.0001
+      default: 0.0001
+      
+    quote_precision:
+      BTC_USDT: 2
+      ETH_USDT: 2
+      default: 2
+      
+    base_precision:
+      BTC_USDT: 8
+      ETH_USDT: 8
+      default: 8
+      
+    security:
+      withdraw_whitelist: false
+      ip_whitelist: false
+      
+    markets:
+      - "spot"
+      
+    features:
+      - "limit_orders"
+      - "market_orders"
+      - "stop_orders"
+      
+    websocket_streams:
+      - "depth"
+      - "trade"
+      - "kline"
+      - "ticker"
+      
+    klines:
+      intervals:
+        - "1m"
+        - "5m"
+        - "15m"
+        - "1h"
+      max_limit: 100
+      
+    maintenance:
+      scheduled_downtime: false
+
+  # --- Mock DEX for Testing ---
+  mock_dex:
+    enabled: true
+    name: "Mock DEX"
+    type: "dex"
+    website: "https://mock.dex.com"
+    description: "DEX simulé pour les tests"
+    priority: 3
+    tier: "test"
+    production_ready: false
+    
+    blockchain: "ethereum"
+    chains:
+      - "ethereum"
+      - "polygon"
+      
+    api:
+      key: "${MOCK_DEX_API_KEY:-mock-dex-key-123}"
+      
+    endpoints:
+      rest: "https://api.mock.dex/v1"
+      websocket: "wss://ws.mock.dex/v1"
+      
+    options:
+      use_v2: true
+      use_v3: true
+      use_optimism: false
+      use_arbitrum: false
+      use_polygon: false
+      
+    trading_pairs:
+      - "WETH/USDT"
+      - "WBTC/USDT"
+      - "USDC/USDT"
+      
+    fee:
+      maker: 0.003
+      taker: 0.003
+      
+    min_order_size:
+      WETH_USDT: 0.001
+      WBTC_USDT: 0.0001
+      default: 0.001
+      
+    liquidity:
+      min_liquidity: 10000
+      max_slippage: 0.01
+      deadline: 600
+      
+    gas:
+      max_gas_price: 50
+      gas_limit: 500000
+      priority_fee: 1
+      
+    security:
+      withdraw_whitelist: false
+      ip_whitelist: false
+      
+    features:
+      - "flash_swaps"
+      - "limit_orders"
+      
+    websocket_streams:
+      - "ticker"
+      - "depth"
+      - "trade"
+      
+    maintenance:
+      scheduled_downtime: false
+
+# ============================================================
+# ARBITRAGE STRATEGIES - TEST
+# ============================================================
+strategies:
+  # --- Cross-Exchange Arbitrage ---
+  cross_exchange:
+    enabled: true
+    name: "Cross-Exchange Arbitrage (Test)"
+    description: "Exploite les différences de prix entre les exchanges - Mode test"
+    type: "arbitrage"
+    priority: 1
+    
+    parameters:
+      min_profit_threshold: 0.001  # 0.1% - Très bas pour les tests
+      max_spread_percentage: 0.50  # 50% - Très large pour les tests
+      min_volume_threshold: 10  # USD - Très bas pour les tests
+      max_position_size: 1000  # USD - Limité pour les tests
+      execution_timeout: 10
+      max_execution_attempts: 2
+      min_time_between_trades: 1
+      max_trades_per_minute: 10
+      slippage_tolerance: 0.01
+      
+    profit_optimization:
+      enabled: false
+      type: "fixed"
+      
+    pairs:
+      - pair: "BTC/USDT"
+        min_profit: 0.001
+        max_spread: 0.50
+        min_volume: 10
+        max_position: 1000
+        priority: 1
+        exchanges:
+          - "mock_exchange"
+          - "mock_exchange_2"
+          
+      - pair: "ETH/USDT"
+        min_profit: 0.001
+        max_spread: 0.50
+        min_volume: 10
+        max_position: 1000
+        priority: 2
+        exchanges:
+          - "mock_exchange"
+          - "mock_exchange_2"
+          
+      - pair: "SOL/USDT"
+        min_profit: 0.001
+        max_spread: 0.50
+        min_volume: 10
+        max_position: 1000
+        priority: 3
+        exchanges:
+          - "mock_exchange"
+          - "mock_exchange_2"
+          
+    exchanges:
+      mock_exchange:
+        enabled: true
+        priority: 1
+        max_concurrent_trades: 3
+        
+      mock_exchange_2:
+        enabled: true
+        priority: 2
+        max_concurrent_trades: 3
+        
+    risk:
+      max_drawdown: 0.20
+      max_loss_per_trade: 0.05
+      max_loss_per_day: 0.10
+      max_consecutive_losses: 5
+      stop_loss: 0.05
+      take_profit: 0.10
+      
+    execution:
+      order_type: "market"
+      order_timeout: 10
+      fill_or_kill: false
+      post_only: false
+      reduce_only: false
+      
+    filters:
+      min_liquidity: 100
+      max_slippage: 0.01
+      min_order_book_depth: 5
+      max_order_book_spread: 0.005
+      
+    monitoring:
+      enabled: true
+      alert_on_trade: false
+      alert_on_error: true
+      log_trades: true
+      log_errors: true
+
+  # --- Triangular Arbitrage ---
+  triangular:
+    enabled: true
+    name: "Triangular Arbitrage (Test)"
+    description: "Exploite les inefficacités entre 3 paires de trading - Mode test"
+    type: "arbitrage"
+    priority: 2
+    
+    parameters:
+      min_profit_threshold: 0.001
+      max_position_size: 500
+      execution_timeout: 10
+      max_execution_attempts: 2
+      min_time_between_trades: 1
+      slippage_tolerance: 0.01
+      
+    profit_optimization:
+      enabled: false
+      type: "fixed"
+      
+    cycles:
+      - name: "BTC-ETH-USDT"
+        pairs:
+          - "BTC/USDT"
+          - "ETH/BTC"
+          - "ETH/USDT"
+        min_profit: 0.001
+        max_position: 500
+        priority: 1
+        exchanges:
+          - "mock_exchange"
+          
+      - name: "SOL-BTC-USDT"
+        pairs:
+          - "SOL/USDT"
+          - "BTC/SOL"
+          - "BTC/USDT"
+        min_profit: 0.001
+        max_position: 500
+        priority: 2
+        exchanges:
+          - "mock_exchange"
+          
+    exchanges:
+      mock_exchange:
+        enabled: true
+        priority: 1
+        max_concurrent_cycles: 2
+        
+    risk:
+      max_drawdown: 0.20
+      max_loss_per_trade: 0.05
+      max_loss_per_day: 0.10
+      max_consecutive_losses: 5
+      stop_loss: 0.05
+      take_profit: 0.10
+      
+    execution:
+      order_type: "market"
+      order_timeout: 10
+      fill_or_kill: false
+      post_only: false
+      reduce_only: false
+      
+    monitoring:
+      enabled: true
+      alert_on_trade: false
+      alert_on_error: true
+      log_trades: true
+      log_errors: true
+
+  # --- Statistical Arbitrage ---
+  statistical:
+    enabled: true
+    name: "Statistical Arbitrage (Test)"
+    description: "Utilise des modèles statistiques - Mode test"
+    type: "statistical_arbitrage"
+    priority: 3
+    
+    parameters:
+      min_profit_threshold: 0.001
+      lookback_period: 20
+      cointegration_confidence: 0.80
+      z_score_threshold: 1.5
+      half_life: 10
+      max_position_size: 500
+      min_time_between_trades: 5
+      max_trades_per_day: 50
+      
+    model:
+      type: "cointegration"
+      methods:
+        - "engle_granger"
+      update_frequency: 60
+      retrain_frequency: 300
+      
+    indicators:
+      - name: "z_score"
+        period: 20
+        threshold: 1.5
+      - name: "moving_average"
+        period: 20
+        type: "sma"
+        
+    pairs:
+      - pair1: "BTC/USDT"
+        pair2: "ETH/USDT"
+        hedge_ratio: 0.5
+        min_profit: 0.001
+        max_position: 500
+        priority: 1
+        exchanges:
+          - "mock_exchange"
+          
+      - pair1: "SOL/USDT"
+        pair2: "ADA/USDT"
+        hedge_ratio: 0.8
+        min_profit: 0.001
+        max_position: 500
+        priority: 2
+        exchanges:
+          - "mock_exchange"
+          
+    risk:
+      max_drawdown: 0.20
+      max_loss_per_trade: 0.05
+      max_loss_per_day: 0.10
+      max_consecutive_losses: 5
+      stop_loss: 0.05
+      take_profit: 0.10
+      
+    execution:
+      order_type: "market"
+      order_timeout: 10
+      fill_or_kill: false
+      post_only: false
+      reduce_only: false
+      
+    monitoring:
+      enabled: true
+      alert_on_trade: false
+      alert_on_error: true
+      log_trades: true
+      log_errors: true
+      log_model_updates: true
+
+# ============================================================
+# RISK MANAGEMENT - TEST
+# ============================================================
+risk_management:
+  enabled: true
+  max_drawdown: 0.30
+  daily_loss_limit: 0.15
+  weekly_loss_limit: 0.25
+  max_positions: 5
+  max_positions_per_pair: 2
+  max_positions_per_exchange: 3
+  
+  position_sizing:
+    strategy: "fixed"
+    fixed_size: 100
+    max_position_size: 500
+    min_position_size: 10
+    kelly_fraction: 0.25
+    volatility_factor: 0.5
+    adaptive_factor: 0.3
+    
+  stop_loss:
+    enabled: true
+    type: "fixed"
+    percentage: 0.05
+    trailing_offset: 0.02
+    min_trailing: 0.01
+    max_trailing: 0.08
+    dynamic_factor: 0.5
+    
+  take_profit:
+    enabled: true
+    type: "single"
+    targets:
+      - 0.05
+    allocation:
+      - 1.0
+    trailing_activation: 0.03
+    
+  circuit_breaker:
+    enabled: true
+    consecutive_failures: 3
+    failure_window: 30
+    cooldown_period: 30
+    max_failures_per_hour: 10
+    max_failures_per_day: 50
+    
+  drawdown_protection:
+    enabled: true
+    max_drawdown_daily: 0.10
+    max_drawdown_weekly: 0.20
+    max_drawdown_monthly: 0.30
+    action: "alert"
+    reduce_factor: 0.5
+    recovery_threshold: 0.05
+
+# ============================================================
+# EXECUTION ENGINE - TEST
+# ============================================================
+execution:
+  enabled: true
+  mode: "simple"
+  order_types:
+    - "market"
+    - "limit"
+    
+  order_routing:
+    enabled: false
+    strategy: "best_price"
+    max_slippage: 0.01
+    min_liquidity: 100
+    max_route_depth: 2
+    
+  batch_execution:
+    enabled: false
+    max_batch_size: 3
+    batch_timeout: 3
+    batch_delay: 1
+    
+  timeout:
+    order: 10
+    execution: 20
+    settlement: 30
+    broadcast: 5
+    
+  retry:
+    enabled: true
+    max_attempts: 2
+    delay: 1
+    backoff: 1.5
+    max_delay: 5
+    
+  validation:
+    enabled: true
+    check_balance: true
+    check_limits: true
+    check_risk: true
+    check_market: true
+
+# ============================================================
+# MARKET DATA - TEST
+# ============================================================
+market_data:
+  enabled: true
+  source: "single"
+  providers:
+    - "mock_exchange"
+    
+  tickers:
+    update_interval: 1
+    batch_size: 20
+    cache_ttl: 2
+    
+  order_book:
+    update_interval: 5
+    depth: 10
+    cache_ttl: 5
+    
+  candles:
+    enabled: true
+    intervals:
+      - "1m"
+      - "5m"
+      - "15m"
+      - "1h"
+    retention: 50
+    cache_ttl: 30
+    
+  websocket:
+    enabled: false
+    reconnect_attempts: 3
+    reconnect_delay: 2
+    heartbeat_interval: 15
+    ping_timeout: 5
+    max_retries: 5
+    
+  quality:
+    min_volume: 0
+    min_trades: 0
+    max_age: 60
+    require_websocket: false
+
+# ============================================================
+# PERFORMANCE METRICS - TEST
+# ============================================================
+metrics:
+  enabled: true
+  collection_interval: 5
+  retention: 300
+  aggregation_interval: 30
+  
+  metrics:
+    - "pnl"
+    - "trades"
+    - "volume"
+    - "win_rate"
+    - "sharpe_ratio"
+    - "max_drawdown"
+    - "profit_factor"
+    - "avg_profit"
+    - "avg_loss"
+    
+  reporting:
+    enabled: true
+    interval: 60
+    format: "json"
+    output: "console"
+    
+  alerts:
+    enabled: false
+    channels: []
+    min_interval: 30
+
+# ============================================================
+# LOGGING CONFIGURATION - TEST
+# ============================================================
+logging:
+  enabled: true
+  level: "debug"
+  format: "text"
+  colorize: true
+  
+  outputs:
+    - type: "console"
+      enabled: true
+      colorize: true
+      format: "text"
+      
+    - type: "file"
+      enabled: true
+      path: "/tmp/nexus-arbitrage-test.log"
+      max_size: 1048576
+      max_files: 3
+      format: "json"
+      compress: false
+      
+  fields:
+    service: "arbitrage-bot"
+    environment: "testing"
+    version: "2.0.0-test"
+    
+  filters:
+    - "trace_id"
+
+# ============================================================
+# DATABASE CONFIGURATION - TEST
+# ============================================================
+database:
+  enabled: true
+  type: "postgres"
+  host: "localhost"
+  port: 5432
+  name: "nexus_arbitrage_test"
+  user: "test_user"
+  password: "test_password"
+  
+  pool_size: 5
+  max_overflow: 10
+  timeout: 10
+  pool_recycle: 3600
+  pool_pre_ping: true
+  
+  ssl:
+    enabled: false
+    mode: "disable"
+    
+  backups:
+    enabled: false
+    
+  migrations:
+    enabled: true
+    auto_run: true
+    path: "./migrations/test"
+    table: "schema_migrations"
+    
+  queries:
+    timeout: 10
+    max_rows: 1000
+    
+  timescaledb:
+    enabled: false
+
+# ============================================================
+# CACHE CONFIGURATION - TEST
+# ============================================================
+cache:
+  enabled: true
+  type: "memory"
+  host: "localhost"
+  port: 6379
+  password: ""
+  db: 0
+  
+  pool:
+    max_connections: 5
+    min_connections: 1
+    
+  ttl:
+    tickers: 10
+    order_books: 5
+    candles: 30
+    opportunities: 2
+    metrics: 30
+    config: 60
+    
+  compression:
+    enabled: false
+    
+  invalidation:
+    strategy: "time"
+    max_size: 50
+
+# ============================================================
+# NOTIFICATIONS - TEST
+# ============================================================
+notifications:
+  enabled: true
+  default_channel: "console"
+  timezone: "UTC"
+  locale: "en_US"
+  max_retry: 2
+  retry_delay: 2
+  queue_size: 100
+  batch_size: 5
+  flush_interval: 2
+  
+  deduplication:
+    enabled: false
+    
+  channels:
+    console:
+      enabled: true
+      name: "Console"
+      type: "console"
+      priority: 1
+      config:
+        format: "text"
+        colorize: true
+      templates: {}
+      
+  events:
+    opportunity:
+      enabled: true
+      channels:
+        - "console"
+      severity: "info"
+      min_interval: 1
+      max_per_minute: 10
+      
+    execution:
+      enabled: true
+      channels:
+        - "console"
+      severity: "info"
+      min_interval: 1
+      max_per_minute: 10
+      
+    alert:
+      enabled: true
+      channels:
+        - "console"
+      severity: "warning"
+      min_interval: 1
+      
+    error:
+      enabled: true
+      channels:
+        - "console"
+      severity: "critical"
+      min_interval: 0
+      
+  rules:
+    severity:
+      critical:
+        channels:
+          - "console"
+        retry: true
+        retry_attempts: 3
+        retry_delay: 2
+        escalate: false
+      warning:
+        channels:
+          - "console"
+        retry: true
+        retry_attempts: 2
+        retry_delay: 3
+        escalate: false
+      info:
+        channels:
+          - "console"
+        retry: false
+        escalate: false
+
+# ============================================================
+# API CONFIGURATION - TEST
+# ============================================================
+api:
+  enabled: true
+  host: "127.0.0.1"
+  port: 8000
+  prefix: "/api/v1"
+  workers: 1
+  reload: true
+  
+  cors:
+    enabled: true
+    origins:
+      - "*"
+    methods:
+      - "GET"
+      - "POST"
+      - "PUT"
+      - "DELETE"
+      - "OPTIONS"
+    headers:
+      - "Authorization"
+      - "Content-Type"
+    credentials: true
+    max_age: 86400
+    
+  rate_limit:
+    enabled: false
+    
+  authentication:
+    enabled: false
+    type: "jwt"
+    jwt_secret: "test-jwt-secret-1234567890"
+    token_expiry: 3600
+    refresh_token_expiry: 86400
+    api_key_header: "X-API-Key"
+    
+  documentation:
+    enabled: true
+    path: "/docs"
+    title: "NEXUS Arbitrage Bot API (Test)"
+    version: "2.0.0-test"
+    description: "API pour le bot d'arbitrage - Environnement de test"
+    
+  debug_endpoints:
+    enabled: true
+    path: "/debug"
+    features:
+      - "status"
+      - "metrics"
+      - "config"
+
+# ============================================================
+# WEBSOCKET CONFIGURATION - TEST
+# ============================================================
+websocket:
+  enabled: true
+  host: "127.0.0.1"
+  port: 8001
+  path: "/ws"
+  
+  max_connections: 50
+  max_message_size: 1048576
+  ping_interval: 15
+  ping_timeout: 5
+  max_pong_latency: 10
+  
+  authentication:
+    enabled: false
+    type: "jwt"
+    header: "Authorization"
+    query_param: "token"
+    
+  channels:
+    - "opportunities"
+    - "executions"
+    - "metrics"
+    - "alerts"
+    - "status"
+    - "logs"
+    - "debug"
+    
+  compression:
+    enabled: false
+    
+  monitoring:
+    enabled: true
+    connection_log: true
+    message_log: true
+
+# ============================================================
+# MONITORING - TEST
+# ============================================================
+monitoring:
+  enabled: true
+  
+  prometheus:
+    enabled: true
+    port: 9090
+    path: "/metrics"
+    namespace: "nexus"
+    subsystem: "arbitrage"
+    labels:
+      environment: "testing"
+      version: "2.0.0-test"
+      
+  grafana:
+    enabled: false
+    
+  health_check:
+    enabled: true
+    interval: 10
+    path: "/health"
+    timeout: 5
+    checks:
+      - "database"
+      - "cache"
+      - "exchanges"
+      - "websocket"
+      - "api"
+      
+  alerts:
+    enabled: true
+    rules:
+      - name: "high_latency"
+        condition: "execution_latency > 500ms"
+        severity: "warning"
+        duration: "10s"
+        action: "notify"
+      - name: "high_error_rate"
+        condition: "error_rate > 0.10"
+        severity: "warning"
+        duration: "10s"
+        action: "notify"
+      - name: "connection_lost"
+        condition: "is_connected == false"
+        severity: "critical"
+        duration: "5s"
+        action: "notify,reconnect"
+    cooldown: 10
+
+# ============================================================
+# SCHEDULER CONFIGURATION - TEST
+# ============================================================
+scheduler:
+  enabled: true
+  timezone: "UTC"
+  max_workers: 2
+  thread_pool: 3
+  
+  jobs:
+    - name: "opportunity_scanner"
+      enabled: true
+      interval: 1
+      timeout: 5
+      max_retries: 2
+      priority: 1
+      description: "Scanne les opportunités d'arbitrage"
+      
+    - name: "health_check"
+      enabled: true
+      interval: 10
+      timeout: 5
+      max_retries: 2
+      priority: 1
+      description: "Vérifie la santé du système"
+      
+    - name: "performance_reporter"
+      enabled: true
+      schedule: "0 */1 * * *"  # every hour
+      timeout: 30
+      max_retries: 2
+      priority: 2
+      description: "Génère les rapports de performance"
+
+# ============================================================
+# SECURITY CONFIGURATION - TEST
+# ============================================================
+security:
+  enabled: false
+  
+  encryption:
+    enabled: false
+    algorithm: "AES-256-GCM"
+    key: "test-encryption-key-32-bytes-long!!"
+    salt: "test-salt-16-bytes"
+    
+  api_keys:
+    encryption: false
+    rotation: 30
+    min_length: 16
+    max_length: 32
+    
+  ip_whitelist:
+    enabled: false
+    ips:
+      - "127.0.0.1/32"
+      - "192.168.0.0/16"
+      
+  user_agent:
+    enabled: false
+    required: false
+    
+  rate_limiting:
+    enabled: false
+    
+  ssl:
+    enabled: false
+    
+  audit:
+    enabled: true
+    log_level: "debug"
+    retention: 7
+    path: "/tmp/nexus-audit-test.log"
+    encryption: false
+
+# ============================================================
+# COMPLIANCE CONFIGURATION - TEST
+# ============================================================
+compliance:
+  enabled: false
+  
+  regulations: []
+  
+  reporting:
+    enabled: false
+    
+  audit:
+    enabled: false
+    
+  limits:
+    max_trade_size: 1000
+    max_daily_trades: 50
+    max_position_size: 2000
+    max_daily_volume: 10000
+    max_leverage: 3
+
+# ============================================================
+# DEVELOPMENT FEATURES - TEST
+# ============================================================
+development:
+  enabled: true
+  
+  mock_data: true
+  simulate_latency: true
+  simulate_errors: true
+  simulate_market_conditions: true
+  error_rate: 0.05
+  latency_min: 5
+  latency_max: 50
+  
+  hot_reload: true
+  debug_endpoints: true
+  verbose_logging: true
+  trace_logging: true
+  profile_code: true
+  
+  test_mode: true
+  fake_orders: true
+  fake_balances: true
+  fake_market_data: true
+  
+  profiling:
+    enabled: true
+    port: 6060
+    endpoint: "/debug/pprof"
+    
+  testing:
+    mode: "unit"
+    coverage: true
+    coverage_threshold: 80
+    report_path: "./reports/coverage"
+    
+  sandbox:
+    enabled: true
+    mode: "simulation"
+    limits:
+      max_balance: 10000
+      max_trade_size: 1000
+      max_positions: 3
+
+# ============================================================
+# END OF TEST CONFIGURATION
+# ============================================================
