@@ -1,0 +1,1938 @@
+<!-- trading/bots/arbitrage_bot/templates/opportunities.html -->
+<!-- NEXUS AI TRADING SYSTEM -->
+<!-- Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved -->
+<!-- Version: 4.2.0 - Complete Opportunities Template with Real API Integration -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Opportunities - NEXUS Trading IA</title>
+    
+    <!-- Meta Tags -->
+    <meta name="description" content="NEXUS AI Trading System - Real-time Arbitrage Opportunities">
+    <meta name="theme-color" content="#6C63FF">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ============================================
+           OPPORTUNITIES - COMPLETE STYLES
+           ============================================ */
+        
+        :root {
+            --primary: #6C63FF;
+            --primary-dark: #5a52d9;
+            --secondary: #00D4FF;
+            --success: #00D4FF;
+            --danger: #FF6B6B;
+            --warning: #FFD93D;
+            --bg-primary: #0D1117;
+            --bg-secondary: #161B22;
+            --bg-card: #1C2333;
+            --text-primary: #E0E0E0;
+            --text-secondary: #8B949E;
+            --text-muted: #484F58;
+            --border-color: rgba(255, 255, 255, 0.05);
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            --radius: 16px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        /* Reset & Base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* ============================================
+           LAYOUT
+           ============================================ */
+        .opportunities-wrapper {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border-color);
+            padding: 20px 0;
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            z-index: 100;
+            transition: var(--transition);
+            overflow-y: auto;
+        }
+        
+        .sidebar-brand {
+            padding: 0 20px 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .sidebar-brand img {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+        }
+        
+        .sidebar-brand span {
+            font-size: 18px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .sidebar-nav {
+            flex: 1;
+            padding: 16px 12px;
+        }
+        
+        .sidebar-nav .nav-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            padding: 8px 12px 4px;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+        
+        .sidebar-nav a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 16px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 10px;
+            transition: var(--transition);
+            font-size: 14px;
+            font-weight: 500;
+            margin: 2px 0;
+        }
+        
+        .sidebar-nav a i {
+            width: 20px;
+            text-align: center;
+            font-size: 16px;
+        }
+        
+        .sidebar-nav a:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-primary);
+        }
+        
+        .sidebar-nav a.active {
+            background: rgba(108, 99, 255, 0.15);
+            color: var(--primary);
+        }
+        
+        .sidebar-nav a .badge {
+            margin-left: auto;
+            background: var(--danger);
+            color: #fff;
+            font-size: 10px;
+            padding: 1px 8px;
+            border-radius: 10px;
+            font-weight: 600;
+        }
+        
+        /* Main Content */
+        .main-content {
+            margin-left: 260px;
+            flex: 1;
+            padding: 24px 32px 32px;
+        }
+        
+        /* ============================================
+           HEADER
+           ============================================ */
+        .opportunities-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 24px;
+            border-bottom: 1px solid var(--border-color);
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+        
+        .header-left h1 {
+            font-size: 24px;
+            font-weight: 700;
+        }
+        
+        .header-left p {
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-top: 4px;
+        }
+        
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        
+        .header-right .date-time {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+        
+        .header-right .status-badge {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            border-radius: 20px;
+            background: rgba(0, 212, 255, 0.1);
+            color: var(--success);
+            font-size: 13px;
+            font-weight: 500;
+        }
+        
+        .header-right .status-badge .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--success);
+            animation: pulse-dot 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+        
+        /* ============================================
+           OPPORTUNITY STATS
+           ============================================ */
+        .opportunity-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 14px;
+            margin: 20px 0;
+        }
+        
+        .stat-card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 16px 20px;
+            border: 1px solid var(--border-color);
+            transition: var(--transition);
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+        
+        .stat-card .stat-label {
+            color: var(--text-secondary);
+            font-size: 12px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .stat-card .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            margin-top: 4px;
+        }
+        
+        .stat-card .stat-icon {
+            float: right;
+            font-size: 28px;
+            opacity: 0.2;
+        }
+        
+        .stat-card .stat-value.pending { color: var(--warning); }
+        .stat-card .stat-value.executed { color: var(--success); }
+        .stat-card .stat-value.failed { color: var(--danger); }
+        .stat-card .stat-value.total { color: var(--primary); }
+        
+        /* ============================================
+           OPPORTUNITY CONTROLS
+           ============================================ */
+        .opportunity-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin: 16px 0 20px;
+            padding: 16px 20px;
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            border: 1px solid var(--border-color);
+        }
+        
+        .opportunity-controls-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        
+        .opportunity-controls-left select,
+        .opportunity-controls-left input {
+            padding: 8px 14px;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 13px;
+            font-family: inherit;
+            transition: var(--transition);
+            min-width: 120px;
+        }
+        
+        .opportunity-controls-left select:focus,
+        .opportunity-controls-left input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.1);
+        }
+        
+        .opportunity-controls-left select option {
+            background: var(--bg-primary);
+        }
+        
+        .opportunity-controls-left .search-input {
+            position: relative;
+        }
+        
+        .opportunity-controls-left .search-input input {
+            padding-left: 36px;
+            width: 240px;
+        }
+        
+        .opportunity-controls-left .search-input i {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
+        
+        .opportunity-controls-right {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .opportunity-controls-right button {
+            padding: 8px 16px;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            transition: var(--transition);
+            font-family: inherit;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .opportunity-controls-right button:hover {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+        
+        .opportunity-controls-right button.primary {
+            background: var(--primary);
+            color: #fff;
+            border-color: var(--primary);
+        }
+        
+        .opportunity-controls-right button.primary:hover {
+            background: var(--primary-dark);
+        }
+        
+        .opportunity-controls-right button .badge {
+            background: var(--danger);
+            color: #fff;
+            font-size: 10px;
+            padding: 1px 6px;
+            border-radius: 10px;
+        }
+        
+        /* ============================================
+           OPPORTUNITY GRID
+           ============================================ */
+        .opportunity-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin: 16px 0;
+        }
+        
+        .opportunity-card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 18px 20px;
+            border: 1px solid var(--border-color);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .opportunity-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            opacity: 0.5;
+            transition: opacity 0.3s ease;
+        }
+        
+        .opportunity-card.pending::before { background: var(--warning); }
+        .opportunity-card.executed::before { background: var(--success); }
+        .opportunity-card.failed::before { background: var(--danger); }
+        .opportunity-card.expired::before { background: var(--text-muted); }
+        
+        .opportunity-card:hover {
+            transform: translateX(4px);
+            box-shadow: var(--shadow);
+        }
+        
+        .opportunity-card:hover::before {
+            opacity: 1;
+        }
+        
+        .opportunity-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        
+        .opportunity-card-info {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+        
+        .opportunity-type-badge {
+            font-size: 11px;
+            font-weight: 600;
+            padding: 4px 12px;
+            border-radius: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .opportunity-type-badge.type-cross_exchange {
+            background: rgba(108, 99, 255, 0.2);
+            color: #6C63FF;
+        }
+        
+        .opportunity-type-badge.type-dex {
+            background: rgba(0, 212, 255, 0.2);
+            color: #00D4FF;
+        }
+        
+        .opportunity-type-badge.type-statistical {
+            background: rgba(255, 217, 61, 0.2);
+            color: #FFD93D;
+        }
+        
+        .opportunity-type-badge.type-triangular {
+            background: rgba(255, 107, 107, 0.2);
+            color: #FF6B6B;
+        }
+        
+        .opportunity-type-badge.type-flash_loan {
+            background: rgba(108, 99, 255, 0.3);
+            color: #fff;
+        }
+        
+        .opportunity-type-badge.type-futures_spot {
+            background: rgba(0, 212, 255, 0.3);
+            color: #fff;
+        }
+        
+        .opportunity-type-badge.type-mixed {
+            background: rgba(255, 107, 107, 0.3);
+            color: #fff;
+        }
+        
+        .opportunity-symbol {
+            font-weight: 700;
+            font-size: 16px;
+        }
+        
+        .opportunity-exchange {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+        
+        .opportunity-status {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            padding: 4px 12px;
+            border-radius: 12px;
+        }
+        
+        .opportunity-status.pending {
+            background: rgba(255, 217, 61, 0.1);
+            color: var(--warning);
+        }
+        
+        .opportunity-status.executed {
+            background: rgba(0, 212, 255, 0.1);
+            color: var(--success);
+        }
+        
+        .opportunity-status.failed {
+            background: rgba(255, 107, 107, 0.1);
+            color: var(--danger);
+        }
+        
+        .opportunity-status.expired {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-muted);
+        }
+        
+        .opportunity-status .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        
+        .opportunity-status.pending .dot { background: var(--warning); }
+        .opportunity-status.executed .dot { background: var(--success); }
+        .opportunity-status.failed .dot { background: var(--danger); }
+        .opportunity-status.expired .dot { background: var(--text-muted); }
+        
+        .opportunity-card-body {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 12px;
+            margin: 12px 0;
+            padding: 12px 0;
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .opportunity-metric {
+            text-align: center;
+        }
+        
+        .opportunity-metric .metric-label {
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+        
+        .opportunity-metric .metric-value {
+            font-size: 16px;
+            font-weight: 600;
+            margin-top: 2px;
+        }
+        
+        .opportunity-metric .metric-value.positive { color: var(--success); }
+        .opportunity-metric .metric-value.negative { color: var(--danger); }
+        .opportunity-metric .metric-value.high-confidence { color: var(--primary); }
+        
+        .opportunity-card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        
+        .opportunity-card-path {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 12px;
+            color: var(--text-secondary);
+            flex-wrap: wrap;
+        }
+        
+        .opportunity-card-path .path-step {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .opportunity-card-path .path-token {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .opportunity-card-path .path-arrow {
+            color: var(--text-muted);
+        }
+        
+        .opportunity-card-actions {
+            display: flex;
+            gap: 6px;
+        }
+        
+        .opportunity-card-actions button {
+            padding: 4px 12px;
+            background: transparent;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 12px;
+            transition: var(--transition);
+            font-family: inherit;
+        }
+        
+        .opportunity-card-actions button:hover {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+        
+        .opportunity-card-actions button.execute {
+            background: var(--primary);
+            color: #fff;
+            border-color: var(--primary);
+        }
+        
+        .opportunity-card-actions button.execute:hover {
+            background: var(--primary-dark);
+        }
+        
+        .opportunity-card-actions button.execute:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .opportunity-card-actions button.dismiss:hover {
+            color: var(--danger);
+            border-color: var(--danger);
+        }
+        
+        /* ============================================
+           LOADING STATE
+           ============================================ */
+        .loading-spinner {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            color: var(--text-secondary);
+        }
+        
+        .loading-spinner i {
+            font-size: 32px;
+            animation: spin 1s linear infinite;
+        }
+        
+        .loading-spinner span {
+            margin-left: 12px;
+            font-size: 14px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* ============================================
+           EMPTY STATE
+           ============================================ */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-secondary);
+        }
+        
+        .empty-state i {
+            font-size: 48px;
+            opacity: 0.3;
+            margin-bottom: 16px;
+        }
+        
+        .empty-state h3 {
+            font-size: 18px;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+        
+        .empty-state p {
+            font-size: 14px;
+        }
+        
+        /* ============================================
+           OPPORTUNITY DETAIL MODAL
+           ============================================ */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-overlay.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: var(--bg-secondary);
+            border-radius: var(--radius);
+            padding: 32px;
+            max-width: 700px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            border: 1px solid var(--border-color);
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .modal-header h2 {
+            font-size: 20px;
+            font-weight: 700;
+        }
+        
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 24px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .modal-close:hover {
+            color: var(--text-primary);
+        }
+        
+        .modal-body {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+        
+        .modal-detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .modal-detail-row .label {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+        
+        .modal-detail-row .value {
+            font-weight: 500;
+            font-size: 14px;
+        }
+        
+        /* ============================================
+           RESPONSIVE
+           ============================================ */
+        @media (max-width: 992px) {
+            .sidebar {
+                transform: translateX(-100%);
+                width: 280px;
+            }
+            
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            
+            .main-content {
+                margin-left: 0;
+                padding: 16px;
+            }
+            
+            .opportunity-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .opportunities-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .header-right {
+                width: 100%;
+                justify-content: space-between;
+                flex-wrap: wrap;
+            }
+            
+            .opportunity-controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .opportunity-controls-left {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .opportunity-controls-left .search-input input {
+                width: 100%;
+            }
+            
+            .opportunity-controls-left select,
+            .opportunity-controls-left input {
+                width: 100%;
+            }
+            
+            .opportunity-controls-right {
+                justify-content: center;
+            }
+            
+            .opportunity-card-body {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .opportunity-stats {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+            
+            .opportunity-card-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .opportunity-stats {
+                grid-template-columns: 1fr;
+            }
+            
+            .opportunity-card-body {
+                grid-template-columns: 1fr;
+            }
+            
+            .opportunity-card-footer {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 8px;
+            }
+            
+            .opportunity-card-actions {
+                justify-content: center;
+            }
+        }
+        
+        /* ============================================
+           TOGGLE SIDEBAR BUTTON
+           ============================================ */
+        .sidebar-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 24px;
+            cursor: pointer;
+            padding: 8px;
+        }
+        
+        @media (max-width: 992px) {
+            .sidebar-toggle {
+                display: block;
+            }
+        }
+        
+        /* ============================================
+           OVERLAY
+           ============================================ */
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 99;
+        }
+        
+        .sidebar-overlay.active {
+            display: block;
+        }
+        
+        /* ============================================
+           SCROLLBAR
+           ============================================ */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--bg-card);
+            border-radius: 3px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary);
+        }
+    </style>
+</head>
+<body>
+
+<!-- ============================================ -->
+<!-- SIDEBAR OVERLAY -->
+<!-- ============================================ -->
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<!-- ============================================ -->
+<!-- OPPORTUNITIES WRAPPER -->
+<!-- ============================================ -->
+<div class="opportunities-wrapper">
+    
+    <!-- ============================================ -->
+    <!-- SIDEBAR -->
+    <!-- ============================================ -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-brand">
+            <img src="/static/images/nexus-logo.svg" alt="NEXUS" onerror="this.src='/static/images/logo.png'">
+            <span>NEXUS Trading</span>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <div class="nav-label">Main</div>
+            <a href="/dashboard">
+                <i class="fas fa-chart-line"></i> Dashboard
+            </a>
+            <a href="/exchanges">
+                <i class="fas fa-exchange-alt"></i> Exchanges
+            </a>
+            <a href="/opportunities" class="active">
+                <i class="fas fa-bolt"></i> Opportunities
+                <span class="badge" id="oppBadge">0</span>
+            </a>
+            <a href="/strategies">
+                <i class="fas fa-chess-queen"></i> Strategies
+            </a>
+            
+            <div class="nav-label" style="margin-top: 16px;">Analytics</div>
+            <a href="/performance">
+                <i class="fas fa-chart-bar"></i> Performance
+            </a>
+            <a href="/portfolio">
+                <i class="fas fa-briefcase"></i> Portfolio
+            </a>
+            <a href="/reports">
+                <i class="fas fa-file-alt"></i> Reports
+            </a>
+            <a href="/signals">
+                <i class="fas fa-signal"></i> Signals
+            </a>
+            
+            <div class="nav-label" style="margin-top: 16px;">System</div>
+            <a href="/logs">
+                <i class="fas fa-terminal"></i> Logs
+            </a>
+            <a href="/settings">
+                <i class="fas fa-cog"></i> Settings
+            </a>
+            <a href="/support">
+                <i class="fas fa-life-ring"></i> Support
+            </a>
+        </nav>
+    </aside>
+    
+    <!-- ============================================ -->
+    <!-- MAIN CONTENT -->
+    <!-- ============================================ -->
+    <main class="main-content">
+        
+        <!-- ============================================ -->
+        <!-- HEADER -->
+        <!-- ============================================ -->
+        <header class="opportunities-header">
+            <div class="header-left">
+                <button class="sidebar-toggle" id="sidebarToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h1>Arbitrage Opportunities</h1>
+                <p>Real-time arbitrage opportunities detected across all markets</p>
+            </div>
+            <div class="header-right">
+                <span class="date-time" id="currentDateTime"></span>
+                <span class="status-badge">
+                    <span class="dot"></span>
+                    <span id="systemStatusText">Scanning...</span>
+                </span>
+            </div>
+        </header>
+        
+        <!-- ============================================ -->
+        <!-- OPPORTUNITY STATS -->
+        <!-- ============================================ -->
+        <div class="opportunity-stats" id="opportunityStats">
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-bolt"></i></div>
+                <div class="stat-label">Total Opportunities</div>
+                <div class="stat-value total" id="statTotal">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-clock" style="color:var(--warning);"></i></div>
+                <div class="stat-label">Pending</div>
+                <div class="stat-value pending" id="statPending">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-check-circle" style="color:var(--success);"></i></div>
+                <div class="stat-label">Executed</div>
+                <div class="stat-value executed" id="statExecuted">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-times-circle" style="color:var(--danger);"></i></div>
+                <div class="stat-label">Failed</div>
+                <div class="stat-value failed" id="statFailed">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-dollar-sign" style="color:var(--success);"></i></div>
+                <div class="stat-label">Total Profit</div>
+                <div class="stat-value" id="statProfit" style="color:var(--success);">$0.00</div>
+            </div>
+        </div>
+        
+        <!-- ============================================ -->
+        <!-- OPPORTUNITY CONTROLS -->
+        <!-- ============================================ -->
+        <div class="opportunity-controls">
+            <div class="opportunity-controls-left">
+                <select id="oppType">
+                    <option value="all">All Types</option>
+                    <option value="cross_exchange">Cross-Exchange</option>
+                    <option value="dex">DEX</option>
+                    <option value="statistical">Statistical</option>
+                    <option value="triangular">Triangular</option>
+                    <option value="flash_loan">Flash Loan</option>
+                    <option value="futures_spot">Futures-Spot</option>
+                    <option value="mixed">Mixed</option>
+                </select>
+                <select id="oppStatus">
+                    <option value="all">All Status</option>
+                    <option value="pending">Pending</option>
+                    <option value="executed">Executed</option>
+                    <option value="failed">Failed</option>
+                    <option value="expired">Expired</option>
+                </select>
+                <div class="search-input">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="oppSearch" placeholder="Search opportunities..." />
+                </div>
+            </div>
+            <div class="opportunity-controls-right">
+                <button id="refreshOpps">
+                    <i class="fas fa-sync-alt"></i> Refresh
+                </button>
+                <button id="clearAll" class="primary">
+                    <i class="fas fa-trash"></i> Clear All
+                </button>
+                <button id="autoExecute">
+                    <i class="fas fa-play"></i> Auto-Execute
+                    <span class="badge" id="autoExecuteBadge">Off</span>
+                </button>
+            </div>
+        </div>
+        
+        <!-- ============================================ -->
+        <!-- OPPORTUNITY GRID -->
+        <!-- ============================================ -->
+        <div class="opportunity-grid" id="opportunityGrid">
+            <div class="loading-spinner">
+                <i class="fas fa-spinner"></i>
+                <span>Scanning for opportunities...</span>
+            </div>
+        </div>
+        
+        <!-- ============================================ -->
+        <!-- FOOTER (Partial) -->
+        <!-- ============================================ -->
+        {% include 'partials/footer.html' %}
+        
+    </main>
+</div>
+
+<!-- ============================================ -->
+<!-- OPPORTUNITY DETAIL MODAL -->
+<!-- ============================================ -->
+<div class="modal-overlay" id="oppModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 id="modalTitle">Opportunity Details</h2>
+            <button class="modal-close" id="modalClose">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="modal-body" id="modalBody">
+            <div class="modal-detail-row">
+                <span class="label">Type</span>
+                <span class="value" id="modalType">--</span>
+            </div>
+            <div class="modal-detail-row">
+                <span class="label">Symbol</span>
+                <span class="value" id="modalSymbol">--</span>
+            </div>
+            <div class="modal-detail-row">
+                <span class="label">Status</span>
+                <span class="value" id="modalStatus">--</span>
+            </div>
+            <div class="modal-detail-row">
+                <span class="label">Expected Profit</span>
+                <span class="value" id="modalProfit">--</span>
+            </div>
+            <div class="modal-detail-row">
+                <span class="label">Confidence</span>
+                <span class="value" id="modalConfidence">--</span>
+            </div>
+            <div class="modal-detail-row">
+                <span class="label">Risk Score</span>
+                <span class="value" id="modalRisk">--</span>
+            </div>
+            <div class="modal-detail-row">
+                <span class="label">Exchange</span>
+                <span class="value" id="modalExchange">--</span>
+            </div>
+            <div class="modal-detail-row">
+                <span class="label">Detected At</span>
+                <span class="value" id="modalDetected">--</span>
+            </div>
+            <div class="modal-detail-row">
+                <span class="label">Path</span>
+                <span class="value" id="modalPath">--</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================ -->
+<!-- SCRIPTS - COMPLETE IMPLEMENTATION WITH REAL API -->
+<!-- ============================================ -->
+<script>
+// ================================================================
+// OPPORTUNITIES - COMPLETE JAVASCRIPT IMPLEMENTATION WITH REAL API
+// ================================================================
+
+(function() {
+    'use strict';
+
+    // ============================================================
+    // API CONFIGURATION
+    // ============================================================
+    const API = {
+        base: '/api',
+        endpoints: {
+            opportunities: '/api/opportunities',
+            opportunity: '/api/opportunities/:id',
+            execute: '/api/opportunities/:id/execute',
+            dismiss: '/api/opportunities/:id/dismiss',
+            clear: '/api/opportunities/clear',
+            stats: '/api/opportunities/stats',
+            auto_execute: '/api/opportunities/auto-execute',
+        },
+        ws: {
+            opportunities: '/ws/opportunities',
+        }
+    };
+
+    // ============================================================
+    // STATE
+    // ============================================================
+    const state = {
+        opportunities: [],
+        filteredOpps: [],
+        type: 'all',
+        status: 'all',
+        search: '',
+        autoExecute: false,
+        startTime: Date.now(),
+        ws: null,
+        reconnectAttempts: 0,
+        maxReconnectAttempts: 5,
+        updateInterval: null,
+        page: 1,
+        pageSize: 50,
+    };
+
+    // ============================================================
+    // DOM REFERENCES
+    // ============================================================
+    const DOM = {
+        sidebar: document.getElementById('sidebar'),
+        sidebarOverlay: document.getElementById('sidebarOverlay'),
+        sidebarToggle: document.getElementById('sidebarToggle'),
+        currentDateTime: document.getElementById('currentDateTime'),
+        systemStatusText: document.getElementById('systemStatusText'),
+        oppBadge: document.getElementById('oppBadge'),
+        
+        statTotal: document.getElementById('statTotal'),
+        statPending: document.getElementById('statPending'),
+        statExecuted: document.getElementById('statExecuted'),
+        statFailed: document.getElementById('statFailed'),
+        statProfit: document.getElementById('statProfit'),
+        
+        oppGrid: document.getElementById('opportunityGrid'),
+        oppType: document.getElementById('oppType'),
+        oppStatus: document.getElementById('oppStatus'),
+        oppSearch: document.getElementById('oppSearch'),
+        
+        refreshBtn: document.getElementById('refreshOpps'),
+        clearBtn: document.getElementById('clearAll'),
+        autoExecuteBtn: document.getElementById('autoExecute'),
+        autoExecuteBadge: document.getElementById('autoExecuteBadge'),
+        
+        modal: document.getElementById('oppModal'),
+        modalClose: document.getElementById('modalClose'),
+        modalTitle: document.getElementById('modalTitle'),
+        modalType: document.getElementById('modalType'),
+        modalSymbol: document.getElementById('modalSymbol'),
+        modalStatus: document.getElementById('modalStatus'),
+        modalProfit: document.getElementById('modalProfit'),
+        modalConfidence: document.getElementById('modalConfidence'),
+        modalRisk: document.getElementById('modalRisk'),
+        modalExchange: document.getElementById('modalExchange'),
+        modalDetected: document.getElementById('modalDetected'),
+        modalPath: document.getElementById('modalPath'),
+    };
+
+    // ============================================================
+    // DATE/TIME UPDATE
+    // ============================================================
+    function updateDateTime() {
+        const now = new Date();
+        DOM.currentDateTime.textContent = now.toLocaleString('en-US', {
+            weekday: 'short',
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: false
+        });
+    }
+
+    // ============================================================
+    // SIDEBAR TOGGLE
+    // ============================================================
+    function setupSidebar() {
+        DOM.sidebarToggle.addEventListener('click', function() {
+            DOM.sidebar.classList.toggle('open');
+            DOM.sidebarOverlay.classList.toggle('active');
+        });
+        
+        DOM.sidebarOverlay.addEventListener('click', function() {
+            DOM.sidebar.classList.remove('open');
+            DOM.sidebarOverlay.classList.remove('active');
+        });
+    }
+
+    // ============================================================
+    // API CALLS - REAL ENDPOINTS
+    // ============================================================
+    async function fetchOpportunities() {
+        try {
+            const token = localStorage.getItem('access_token') || '';
+            const params = new URLSearchParams({
+                type: state.type,
+                status: state.status,
+                search: state.search,
+                page: state.page,
+                limit: state.pageSize,
+            });
+            
+            const response = await fetch(API.endpoints.opportunities + '?' + params.toString(), {
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                    'Content-Type': 'application/json',
+                }
+            });
+            
+            if (!response.ok) {
+                if (response.status === 401) {
+                    window.location.href = '/login';
+                    return null;
+                }
+                throw new Error('Failed to fetch opportunities: ' + response.status);
+            }
+            
+            const data = await response.json();
+            state.opportunities = data.opportunities || [];
+            state.filteredOpps = state.opportunities;
+            renderOpportunities(state.filteredOpps);
+            updateStats(state.opportunities);
+            
+            // Update badge
+            const pending = state.opportunities.filter(function(o) { return o.status === 'pending'; }).length;
+            if (DOM.oppBadge) {
+                DOM.oppBadge.textContent = pending;
+            }
+            
+            return data;
+        } catch (error) {
+            console.error('Opportunities fetch failed:', error);
+            DOM.oppGrid.innerHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <h3>Failed to Load Opportunities</h3>
+                    <p>${error.message || 'Please try again later.'}</p>
+                </div>
+            `;
+            return null;
+        }
+    }
+
+    async function fetchOpportunityStats() {
+        try {
+            const token = localStorage.getItem('access_token') || '';
+            const response = await fetch(API.endpoints.stats, {
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                    'Content-Type': 'application/json',
+                }
+            });
+            
+            if (!response.ok) throw new Error('Failed to fetch opportunity stats: ' + response.status);
+            
+            const data = await response.json();
+            if (data) {
+                updateStats(data);
+            }
+            return data;
+        } catch (error) {
+            console.error('Opportunity stats fetch failed:', error);
+            return null;
+        }
+    }
+
+    async function executeOpportunity(oppId) {
+        try {
+            const token = localStorage.getItem('access_token') || '';
+            const url = API.endpoints.execute.replace(':id', oppId);
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                    'Content-Type': 'application/json',
+                }
+            });
+            
+            if (!response.ok) throw new Error('Failed to execute opportunity: ' + response.status);
+            
+            const data = await response.json();
+            await fetchOpportunities();
+            await fetchOpportunityStats();
+            return data;
+        } catch (error) {
+            console.error('Opportunity execution failed:', error);
+            alert('Failed to execute opportunity: ' + error.message);
+            return null;
+        }
+    }
+
+    async function dismissOpportunity(oppId) {
+        try {
+            const token = localStorage.getItem('access_token') || '';
+            const url = API.endpoints.dismiss.replace(':id', oppId);
+            const response = await fetch(url, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                    'Content-Type': 'application/json',
+                }
+            });
+            
+            if (!response.ok) throw new Error('Failed to dismiss opportunity: ' + response.status);
+            
+            const data = await response.json();
+            await fetchOpportunities();
+            await fetchOpportunityStats();
+            return data;
+        } catch (error) {
+            console.error('Opportunity dismissal failed:', error);
+            alert('Failed to dismiss opportunity: ' + error.message);
+            return null;
+        }
+    }
+
+    async function clearAllOpportunities() {
+        if (!confirm('Are you sure you want to clear all completed opportunities?')) {
+            return;
+        }
+        
+        try {
+            const token = localStorage.getItem('access_token') || '';
+            const response = await fetch(API.endpoints.clear, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                    'Content-Type': 'application/json',
+                }
+            });
+            
+            if (!response.ok) throw new Error('Failed to clear opportunities: ' + response.status);
+            
+            await fetchOpportunities();
+            await fetchOpportunityStats();
+        } catch (error) {
+            console.error('Clear opportunities failed:', error);
+            alert('Failed to clear opportunities: ' + error.message);
+        }
+    }
+
+    async function toggleAutoExecute() {
+        try {
+            const token = localStorage.getItem('access_token') || '';
+            state.autoExecute = !state.autoExecute;
+            
+            const response = await fetch(API.endpoints.auto_execute, {
+                method: 'POST',
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ enabled: state.autoExecute })
+            });
+            
+            if (!response.ok) throw new Error('Failed to toggle auto-execute: ' + response.status);
+            
+            updateAutoExecuteUI();
+        } catch (error) {
+            console.error('Auto-execute toggle failed:', error);
+            state.autoExecute = !state.autoExecute;
+            alert('Failed to toggle auto-execute: ' + error.message);
+        }
+    }
+
+    // ============================================================
+    // RENDER OPPORTUNITIES
+    // ============================================================
+    function renderOpportunities(opportunities) {
+        if (!opportunities || opportunities.length === 0) {
+            DOM.oppGrid.innerHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-bolt"></i>
+                    <h3>No Opportunities Found</h3>
+                    <p>${state.search ? 'No opportunities match your search criteria.' : 'No arbitrage opportunities are currently available.'}</p>
+                </div>
+            `;
+            return;
+        }
+        
+        DOM.oppGrid.innerHTML = opportunities.map(function(opp) {
+            return renderOpportunityCard(opp);
+        }).join('');
+        
+        // Attach event listeners to cards
+        document.querySelectorAll('.opportunity-card-actions button').forEach(function(btn) {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const action = this.dataset.action;
+                const oppId = this.dataset.oppId;
+                handleOpportunityAction(action, oppId);
+            });
+        });
+        
+        document.querySelectorAll('.opportunity-card').forEach(function(card) {
+            card.addEventListener('click', function() {
+                const oppId = this.dataset.oppId;
+                openOpportunityModal(oppId);
+            });
+        });
+    }
+
+    function renderOpportunityCard(opp) {
+        const statusClass = opp.status || 'pending';
+        const statusText = opp.status ? opp.status.charAt(0).toUpperCase() + opp.status.slice(1) : 'Pending';
+        const typeClass = opp.type || 'cross_exchange';
+        const typeDisplay = opp.type ? opp.type.replace('_', ' ').toUpperCase() : 'Arbitrage';
+        
+        const profit = opp.expected_profit || 0;
+        const profitClass = profit >= 0 ? 'positive' : 'negative';
+        const profitDisplay = (profit >= 0 ? '+' : '') + '$' + profit.toFixed(2);
+        
+        const confidence = opp.confidence || 0;
+        const confidenceDisplay = (confidence * 100).toFixed(0) + '%';
+        const confidenceClass = confidence > 0.8 ? 'high-confidence' : '';
+        
+        const risk = opp.risk_score || 0;
+        const riskDisplay = (risk * 100).toFixed(0) + '%';
+        
+        const path = opp.path || [];
+        const pathDisplay = path.length > 0 ? path.join(' → ') : '--';
+        
+        const exchange = opp.exchange || 'Multiple';
+        const detected = opp.detected_at ? new Date(opp.detected_at).toLocaleString() : '--';
+        
+        return `
+            <div class="opportunity-card ${statusClass}" data-opp-id="${opp.id || ''}">
+                <div class="opportunity-card-header">
+                    <div class="opportunity-card-info">
+                        <span class="opportunity-type-badge type-${typeClass}">${typeDisplay}</span>
+                        <span class="opportunity-symbol">${opp.symbol || '--'}</span>
+                        <span class="opportunity-exchange"><i class="fas fa-exchange-alt"></i> ${exchange}</span>
+                    </div>
+                    <span class="opportunity-status ${statusClass}">
+                        <span class="dot"></span>
+                        ${statusText}
+                    </span>
+                </div>
+                
+                <div class="opportunity-card-body">
+                    <div class="opportunity-metric">
+                        <div class="metric-label">Expected Profit</div>
+                        <div class="metric-value ${profitClass}">${profitDisplay}</div>
+                    </div>
+                    <div class="opportunity-metric">
+                        <div class="metric-label">Confidence</div>
+                        <div class="metric-value ${confidenceClass}">${confidenceDisplay}</div>
+                    </div>
+                    <div class="opportunity-metric">
+                        <div class="metric-label">Risk Score</div>
+                        <div class="metric-value">${riskDisplay}</div>
+                    </div>
+                    <div class="opportunity-metric">
+                        <div class="metric-label">Detected</div>
+                        <div class="metric-value" style="font-size:13px;">${detected}</div>
+                    </div>
+                </div>
+                
+                <div class="opportunity-card-footer">
+                    <div class="opportunity-card-path">
+                        <i class="fas fa-route"></i>
+                        <span class="path-step">
+                            ${pathDisplay}
+                        </span>
+                    </div>
+                    <div class="opportunity-card-actions">
+                        ${statusClass === 'pending' ? 
+                            `<button class="execute" data-action="execute" data-opp-id="${opp.id}"><i class="fas fa-play"></i> Execute</button>` :
+                            ''
+                        }
+                        ${statusClass === 'pending' ? 
+                            `<button class="dismiss" data-action="dismiss" data-opp-id="${opp.id}"><i class="fas fa-times"></i></button>` :
+                            ''
+                        }
+                        <button data-action="details" data-opp-id="${opp.id}"><i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    // ============================================================
+    // FILTER OPPORTUNITIES
+    // ============================================================
+    function filterOpportunities() {
+        let filtered = state.opportunities;
+        
+        if (state.type !== 'all') {
+            filtered = filtered.filter(function(o) { return o.type === state.type; });
+        }
+        
+        if (state.status !== 'all') {
+            filtered = filtered.filter(function(o) { return o.status === state.status; });
+        }
+        
+        if (state.search) {
+            const searchLower = state.search.toLowerCase();
+            filtered = filtered.filter(function(o) {
+                return (o.symbol && o.symbol.toLowerCase().includes(searchLower)) ||
+                       (o.type && o.type.toLowerCase().includes(searchLower)) ||
+                       (o.exchange && o.exchange.toLowerCase().includes(searchLower));
+            });
+        }
+        
+        state.filteredOpps = filtered;
+        renderOpportunities(filtered);
+    }
+
+    // ============================================================
+    // UPDATE STATS
+    // ============================================================
+    function updateStats(opps) {
+        // If opps is an array, calculate stats
+        if (Array.isArray(opps)) {
+            const total = opps.length;
+            const pending = opps.filter(function(o) { return o.status === 'pending'; }).length;
+            const executed = opps.filter(function(o) { return o.status === 'executed'; }).length;
+            const failed = opps.filter(function(o) { return o.status === 'failed'; }).length;
+            const totalProfit = opps.reduce(function(sum, o) { 
+                return sum + (o.executed_profit || o.expected_profit || 0); 
+            }, 0);
+            
+            DOM.statTotal.textContent = total;
+            DOM.statPending.textContent = pending;
+            DOM.statExecuted.textContent = executed;
+            DOM.statFailed.textContent = failed;
+            DOM.statProfit.textContent = '$' + totalProfit.toFixed(2);
+            return;
+        }
+        
+        // If opps is a stats object
+        if (opps && typeof opps === 'object') {
+            DOM.statTotal.textContent = opps.total || 0;
+            DOM.statPending.textContent = opps.pending || 0;
+            DOM.statExecuted.textContent = opps.executed || 0;
+            DOM.statFailed.textContent = opps.failed || 0;
+            DOM.statProfit.textContent = '$' + (opps.total_profit || 0).toFixed(2);
+        }
+    }
+
+    // ============================================================
+    // OPPORTUNITY ACTIONS
+    // ============================================================
+    function handleOpportunityAction(action, oppId) {
+        switch (action) {
+            case 'execute':
+                executeOpportunity(oppId);
+                break;
+            case 'dismiss':
+                dismissOpportunity(oppId);
+                break;
+            case 'details':
+                openOpportunityModal(oppId);
+                break;
+            default:
+                console.warn('Unknown action:', action);
+        }
+    }
+
+    // ============================================================
+    // OPPORTUNITY DETAIL MODAL
+    // ============================================================
+    function openOpportunityModal(oppId) {
+        const opp = state.opportunities.find(function(o) { return o.id === oppId; });
+        if (!opp) return;
+        
+        DOM.modalTitle.textContent = (opp.symbol || 'Opportunity') + ' Details';
+        DOM.modalType.textContent = opp.type ? opp.type.replace('_', ' ').toUpperCase() : '--';
+        DOM.modalSymbol.textContent = opp.symbol || '--';
+        DOM.modalStatus.textContent = opp.status ? opp.status.charAt(0).toUpperCase() + opp.status.slice(1) : '--';
+        DOM.modalProfit.textContent = (opp.expected_profit >= 0 ? '+' : '') + '$' + (opp.expected_profit || 0).toFixed(2);
+        DOM.modalConfidence.textContent = ((opp.confidence || 0) * 100).toFixed(0) + '%';
+        DOM.modalRisk.textContent = ((opp.risk_score || 0) * 100).toFixed(0) + '%';
+        DOM.modalExchange.textContent = opp.exchange || 'Multiple';
+        DOM.modalDetected.textContent = opp.detected_at ? new Date(opp.detected_at).toLocaleString() : '--';
+        
+        const path = opp.path || [];
+        DOM.modalPath.textContent = path.length > 0 ? path.join(' → ') : '--';
+        
+        DOM.modal.classList.add('active');
+    }
+
+    function closeOpportunityModal() {
+        DOM.modal.classList.remove('active');
+    }
+
+    // ============================================================
+    // AUTO-EXECUTE UI
+    // ============================================================
+    function updateAutoExecuteUI() {
+        if (state.autoExecute) {
+            DOM.autoExecuteBtn.classList.add('primary');
+            DOM.autoExecuteBadge.textContent = 'On';
+            DOM.autoExecuteBadge.style.background = 'var(--success)';
+            DOM.systemStatusText.textContent = 'Auto-Execute Active';
+        } else {
+            DOM.autoExecuteBtn.classList.remove('primary');
+            DOM.autoExecuteBadge.textContent = 'Off';
+            DOM.autoExecuteBadge.style.background = 'var(--danger)';
+            DOM.systemStatusText.textContent = 'Scanning';
+        }
+    }
+
+    // ============================================================
+    // WEBSOCKET CONNECTION - REAL-TIME OPPORTUNITIES
+    // ============================================================
+    function connectWebSocket() {
+        try {
+            const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const host = window.location.host;
+            const token = localStorage.getItem('access_token') || '';
+            const wsUrl = protocol + '//' + host + API.ws.opportunities + '?token=' + encodeURIComponent(token);
+            
+            state.ws = new WebSocket(wsUrl);
+            
+            state.ws.onopen = function() {
+                console.log('Opportunities WebSocket connected');
+                state.reconnectAttempts = 0;
+            };
+            
+            state.ws.onmessage = function(event) {
+                try {
+                    const data = JSON.parse(event.data);
+                    handleWebSocketMessage(data);
+                } catch (error) {
+                    console.error('WebSocket message parse error:', error);
+                }
+            };
+            
+            state.ws.onclose = function() {
+                console.log('Opportunities WebSocket disconnected');
+                reconnectWebSocket();
+            };
+            
+            state.ws.onerror = function(error) {
+                console.error('Opportunities WebSocket error:', error);
+            };
+        } catch (error) {
+            console.error('WebSocket connection failed:', error);
+        }
+    }
+
+    function reconnectWebSocket() {
+        if (state.reconnectAttempts >= state.maxReconnectAttempts) {
+            console.log('Max reconnect attempts reached for opportunities WebSocket');
+            return;
+        }
+        
+        state.reconnectAttempts++;
+        const delay = Math.min(1000 * Math.pow(2, state.reconnectAttempts), 30000);
+        setTimeout(function() {
+            console.log('Reconnecting opportunities WebSocket (attempt ' + state.reconnectAttempts + ')');
+            connectWebSocket();
+        }, delay);
+    }
+
+    function handleWebSocketMessage(data) {
+        switch (data.type) {
+            case 'opportunity':
+                addOpportunity(data.opportunity);
+                break;
+            case 'update':
+                updateOpportunity(data.opportunity);
+                break;
+            case 'remove':
+                removeOpportunity(data.opportunityId);
+                break;
+            case 'stats':
+                updateStats(data.stats);
+                break;
+            case 'auto_execute':
+                state.autoExecute = data.enabled;
+                updateAutoExecuteUI();
+                break;
+            case 'ping':
+                if (state.ws && state.ws.readyState === WebSocket.OPEN) {
+                    state.ws.send(JSON.stringify({ type: 'pong' }));
+                }
+                break;
+            default:
+                console.log('Unknown WebSocket message type:', data.type);
+        }
+    }
+
+    function addOpportunity(opp) {
+        // Check if already exists
+        const existing = state.opportunities.findIndex(function(o) { return o.id === opp.id; });
+        if (existing !== -1) {
+            state.opportunities[existing] = opp;
+        } else {
+            state.opportunities.unshift(opp);
+        }
+        
+        // Keep only last 500
+        if (state.opportunities.length > 500) {
+            state.opportunities = state.opportunities.slice(0, 500);
+        }
+        
+        // Re-filter and render
+        filterOpportunities();
+        updateStats(state.opportunities);
+        
+        // Update badge
+        const pending = state.opportunities.filter(function(o) { return o.status === 'pending'; }).length;
+        if (DOM.oppBadge) {
+            DOM.oppBadge.textContent = pending;
+        }
+    }
+
+    function updateOpportunity(opp) {
+        const index = state.opportunities.findIndex(function(o) { return o.id === opp.id; });
+        if (index !== -1) {
+            state.opportunities[index] = opp;
+            filterOpportunities();
+            updateStats(state.opportunities);
+        }
+    }
+
+    function removeOpportunity(oppId) {
+        state.opportunities = state.opportunities.filter(function(o) { return o.id !== oppId; });
+        filterOpportunities();
+        updateStats(state.opportunities);
+    }
+
+    // ============================================================
+    // AUTO REFRESH
+    // ============================================================
+    function startAutoRefresh() {
+        if (state.updateInterval) {
+            clearInterval(state.updateInterval);
+        }
+        state.updateInterval = setInterval(function() {
+            fetchOpportunities();
+            fetchOpportunityStats();
+        }, 15000); // 15 seconds
+    }
+
+    // ============================================================
+    // EVENT LISTENERS
+    // ============================================================
+    function setupEventListeners() {
+        // Type filter
+        DOM.oppType.addEventListener('change', function() {
+            state.type = this.value;
+            filterOpportunities();
+        });
+        
+        // Status filter
+        DOM.oppStatus.addEventListener('change', function() {
+            state.status = this.value;
+            filterOpportunities();
+        });
+        
+        // Search
+        DOM.oppSearch.addEventListener('input', function() {
+            state.search = this.value;
+            filterOpportunities();
+        });
+        
+        // Refresh button
+        DOM.refreshBtn.addEventListener('click', function() {
+            const icon = this.querySelector('i');
+            icon.classList.add('fa-spin');
+            Promise.all([fetchOpportunities(), fetchOpportunityStats()]).finally(function() {
+                icon.classList.remove('fa-spin');
+            });
+        });
+        
+        // Clear button
+        DOM.clearBtn.addEventListener('click', clearAllOpportunities);
+        
+        // Auto-execute button
+        DOM.autoExecuteBtn.addEventListener('click', toggleAutoExecute);
+        
+        // Modal close
+        DOM.modalClose.addEventListener('click', closeOpportunityModal);
+        DOM.modal.addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeOpportunityModal();
+            }
+        });
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeOpportunityModal();
+            }
+        });
+        
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            // Ctrl+Shift+R to refresh
+            if (e.ctrlKey && e.shiftKey && e.key === 'r') {
+                e.preventDefault();
+                DOM.refreshBtn.click();
+            }
+            // Ctrl+Shift+E to toggle auto-execute
+            if (e.ctrlKey && e.shiftKey && e.key === 'e') {
+                e.preventDefault();
+                DOM.autoExecuteBtn.click();
+            }
+        });
+    }
+
+    // ============================================================
+    // INITIALIZATION
+    // ============================================================
+    function init() {
+        // Update date/time
+        updateDateTime();
+        setInterval(updateDateTime, 1000);
+        
+        // Setup sidebar
+        setupSidebar();
+        
+        // Setup event listeners
+        setupEventListeners();
+        
+        // Connect WebSocket
+        connectWebSocket();
+        
+        // Fetch initial data
+        Promise.all([
+            fetchOpportunities(),
+            fetchOpportunityStats()
+        ]).then(function() {
+            console.log('Opportunities page initialized successfully');
+        }).catch(function(error) {
+            console.error('Opportunities page initialization error:', error);
+        });
+        
+        // Start auto refresh
+        startAutoRefresh();
+    }
+
+    // Start when DOM is ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+
+})();
+</script>
+
+</body>
+</html>
