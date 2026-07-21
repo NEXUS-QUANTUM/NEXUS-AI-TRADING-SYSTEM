@@ -1,0 +1,1756 @@
+<!-- trading/bots/arbitrage_bot/templates/reports.html -->
+<!-- NEXUS AI TRADING SYSTEM -->
+<!-- Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved -->
+<!-- Version: 4.2.0 - Complete Reports Template with Real API Integration -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports - NEXUS Trading IA</title>
+    
+    <!-- Meta Tags -->
+    <meta name="description" content="NEXUS AI Trading System - Reports and Analytics">
+    <meta name="theme-color" content="#6C63FF">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.0.0/dist/chart.umd.min.js"></script>
+    
+    <style>
+        /* ============================================
+           REPORTS - COMPLETE STYLES
+           ============================================ */
+        
+        :root {
+            --primary: #6C63FF;
+            --primary-dark: #5a52d9;
+            --secondary: #00D4FF;
+            --success: #00D4FF;
+            --danger: #FF6B6B;
+            --warning: #FFD93D;
+            --bg-primary: #0D1117;
+            --bg-secondary: #161B22;
+            --bg-card: #1C2333;
+            --text-primary: #E0E0E0;
+            --text-secondary: #8B949E;
+            --text-muted: #484F58;
+            --border-color: rgba(255, 255, 255, 0.05);
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            --radius: 16px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        /* Reset & Base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* ============================================
+           LAYOUT
+           ============================================ */
+        .reports-wrapper {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border-color);
+            padding: 20px 0;
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            z-index: 100;
+            transition: var(--transition);
+            overflow-y: auto;
+        }
+        
+        .sidebar-brand {
+            padding: 0 20px 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .sidebar-brand img {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+        }
+        
+        .sidebar-brand span {
+            font-size: 18px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .sidebar-nav {
+            flex: 1;
+            padding: 16px 12px;
+        }
+        
+        .sidebar-nav .nav-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            padding: 8px 12px 4px;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+        
+        .sidebar-nav a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 16px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 10px;
+            transition: var(--transition);
+            font-size: 14px;
+            font-weight: 500;
+            margin: 2px 0;
+        }
+        
+        .sidebar-nav a i {
+            width: 20px;
+            text-align: center;
+            font-size: 16px;
+        }
+        
+        .sidebar-nav a:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-primary);
+        }
+        
+        .sidebar-nav a.active {
+            background: rgba(108, 99, 255, 0.15);
+            color: var(--primary);
+        }
+        
+        .sidebar-nav a .badge {
+            margin-left: auto;
+            background: var(--danger);
+            color: #fff;
+            font-size: 10px;
+            padding: 1px 8px;
+            border-radius: 10px;
+            font-weight: 600;
+        }
+        
+        /* Main Content */
+        .main-content {
+            margin-left: 260px;
+            flex: 1;
+            padding: 24px 32px 32px;
+        }
+        
+        /* ============================================
+           HEADER
+           ============================================ */
+        .reports-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 24px;
+            border-bottom: 1px solid var(--border-color);
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+        
+        .header-left h1 {
+            font-size: 24px;
+            font-weight: 700;
+        }
+        
+        .header-left p {
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-top: 4px;
+        }
+        
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        
+        .header-right .date-time {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+        
+        .header-right .status-badge {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            border-radius: 20px;
+            background: rgba(0, 212, 255, 0.1);
+            color: var(--success);
+            font-size: 13px;
+            font-weight: 500;
+        }
+        
+        .header-right .status-badge .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--success);
+            animation: pulse-dot 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+        
+        /* ============================================
+           REPORT STATS
+           ============================================ */
+        .report-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 14px;
+            margin: 20px 0;
+        }
+        
+        .stat-card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 16px 18px;
+            border: 1px solid var(--border-color);
+            transition: var(--transition);
+            text-align: center;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+        
+        .stat-card .stat-label {
+            color: var(--text-secondary);
+            font-size: 11px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .stat-card .stat-value {
+            font-size: 22px;
+            font-weight: 700;
+            margin-top: 4px;
+        }
+        
+        .stat-card .stat-value.primary { color: var(--primary); }
+        .stat-card .stat-value.success { color: var(--success); }
+        .stat-card .stat-value.warning { color: var(--warning); }
+        
+        /* ============================================
+           REPORT CONTROLS
+           ============================================ */
+        .report-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin: 16px 0 20px;
+            padding: 16px 20px;
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            border: 1px solid var(--border-color);
+        }
+        
+        .report-controls-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        
+        .report-controls-left select,
+        .report-controls-left input {
+            padding: 8px 14px;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 13px;
+            font-family: inherit;
+            transition: var(--transition);
+            min-width: 140px;
+        }
+        
+        .report-controls-left select:focus,
+        .report-controls-left input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.1);
+        }
+        
+        .report-controls-left select option {
+            background: var(--bg-primary);
+        }
+        
+        .report-controls-right {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .report-controls-right button {
+            padding: 8px 16px;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            transition: var(--transition);
+            font-family: inherit;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .report-controls-right button:hover {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+        
+        .report-controls-right button.primary {
+            background: var(--primary);
+            color: #fff;
+            border-color: var(--primary);
+        }
+        
+        .report-controls-right button.primary:hover {
+            background: var(--primary-dark);
+        }
+        
+        /* ============================================
+           REPORT GRID
+           ============================================ */
+        .report-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 20px;
+            margin: 16px 0;
+        }
+        
+        .report-card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+        
+        .report-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow);
+            border-color: var(--primary);
+        }
+        
+        .report-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+        
+        .report-card-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            background: rgba(108, 99, 255, 0.1);
+            color: var(--primary);
+        }
+        
+        .report-card-icon.daily { background: rgba(0, 212, 255, 0.1); color: #00D4FF; }
+        .report-card-icon.weekly { background: rgba(108, 99, 255, 0.1); color: #6C63FF; }
+        .report-card-icon.monthly { background: rgba(255, 217, 61, 0.1); color: #FFD93D; }
+        .report-card-icon.performance { background: rgba(0, 212, 255, 0.1); color: #00D4FF; }
+        .report-card-icon.risk { background: rgba(255, 107, 107, 0.1); color: #FF6B6B; }
+        .report-card-icon.custom { background: rgba(255, 255, 255, 0.05); color: #8B949E; }
+        
+        .report-card-status {
+            font-size: 11px;
+            font-weight: 500;
+            padding: 3px 12px;
+            border-radius: 12px;
+        }
+        
+        .report-card-status.generated {
+            background: rgba(0, 212, 255, 0.1);
+            color: var(--success);
+        }
+        
+        .report-card-status.pending {
+            background: rgba(255, 217, 61, 0.1);
+            color: var(--warning);
+        }
+        
+        .report-card-status.failed {
+            background: rgba(255, 107, 107, 0.1);
+            color: var(--danger);
+        }
+        
+        .report-card-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        
+        .report-card-meta {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            flex-wrap: wrap;
+            margin-top: 8px;
+        }
+        
+        .report-card-meta .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .report-card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 14px;
+            padding-top: 12px;
+            border-top: 1px solid var(--border-color);
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        
+        .report-card-actions {
+            display: flex;
+            gap: 6px;
+        }
+        
+        .report-card-actions button {
+            padding: 4px 12px;
+            background: transparent;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 12px;
+            transition: var(--transition);
+            font-family: inherit;
+        }
+        
+        .report-card-actions button:hover {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+        
+        .report-card-actions button.download:hover {
+            color: var(--success);
+            border-color: var(--success);
+        }
+        
+        .report-card-actions button.delete:hover {
+            color: var(--danger);
+            border-color: var(--danger);
+        }
+        
+        .report-card-size {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+        
+        /* ============================================
+           LOADING STATE
+           ============================================ */
+        .loading-spinner {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            color: var(--text-secondary);
+        }
+        
+        .loading-spinner i {
+            font-size: 32px;
+            animation: spin 1s linear infinite;
+        }
+        
+        .loading-spinner span {
+            margin-left: 12px;
+            font-size: 14px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* ============================================
+           EMPTY STATE
+           ============================================ */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-secondary);
+            grid-column: 1 / -1;
+        }
+        
+        .empty-state i {
+            font-size: 48px;
+            opacity: 0.3;
+            margin-bottom: 16px;
+        }
+        
+        .empty-state h3 {
+            font-size: 18px;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+        
+        .empty-state p {
+            font-size: 14px;
+        }
+        
+        /* ============================================
+           REPORT DETAIL MODAL
+           ============================================ */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-overlay.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: var(--bg-secondary);
+            border-radius: var(--radius);
+            padding: 32px;
+            max-width: 700px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            border: 1px solid var(--border-color);
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .modal-header h2 {
+            font-size: 20px;
+            font-weight: 700;
+        }
+        
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 24px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .modal-close:hover {
+            color: var(--text-primary);
+        }
+        
+        .modal-body {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+        
+        .modal-detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .modal-detail-row .label {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+        
+        .modal-detail-row .value {
+            font-weight: 500;
+            font-size: 14px;
+        }
+        
+        /* ============================================
+           RESPONSIVE
+           ============================================ */
+        @media (max-width: 992px) {
+            .sidebar {
+                transform: translateX(-100%);
+                width: 280px;
+            }
+            
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            
+            .main-content {
+                margin-left: 0;
+                padding: 16px;
+            }
+            
+            .report-grid {
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .reports-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .header-right {
+                width: 100%;
+                justify-content: space-between;
+                flex-wrap: wrap;
+            }
+            
+            .report-controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .report-controls-left {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .report-controls-left select,
+            .report-controls-left input {
+                width: 100%;
+            }
+            
+            .report-controls-right {
+                justify-content: center;
+            }
+            
+            .report-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .report-stats {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .report-stats {
+                grid-template-columns: 1fr;
+            }
+            
+            .report-card-footer {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 8px;
+            }
+            
+            .report-card-actions {
+                justify-content: center;
+            }
+        }
+        
+        /* ============================================
+           TOGGLE SIDEBAR BUTTON
+           ============================================ */
+        .sidebar-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 24px;
+            cursor: pointer;
+            padding: 8px;
+        }
+        
+        @media (max-width: 992px) {
+            .sidebar-toggle {
+                display: block;
+            }
+        }
+        
+        /* ============================================
+           OVERLAY
+           ============================================ */
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 99;
+        }
+        
+        .sidebar-overlay.active {
+            display: block;
+        }
+        
+        /* ============================================
+           SCROLLBAR
+           ============================================ */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--bg-card);
+            border-radius: 3px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary);
+        }
+    </style>
+</head>
+<body>
+
+<!-- ============================================ -->
+<!-- SIDEBAR OVERLAY -->
+<!-- ============================================ -->
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<!-- ============================================ -->
+<!-- REPORTS WRAPPER -->
+<!-- ============================================ -->
+<div class="reports-wrapper">
+    
+    <!-- ============================================ -->
+    <!-- SIDEBAR -->
+    <!-- ============================================ -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-brand">
+            <img src="/static/images/nexus-logo.svg" alt="NEXUS" onerror="this.src='/static/images/logo.png'">
+            <span>NEXUS Trading</span>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <div class="nav-label">Main</div>
+            <a href="/dashboard">
+                <i class="fas fa-chart-line"></i> Dashboard
+            </a>
+            <a href="/exchanges">
+                <i class="fas fa-exchange-alt"></i> Exchanges
+            </a>
+            <a href="/opportunities">
+                <i class="fas fa-bolt"></i> Opportunities
+                <span class="badge" id="oppBadge">0</span>
+            </a>
+            <a href="/strategies">
+                <i class="fas fa-chess-queen"></i> Strategies
+            </a>
+            
+            <div class="nav-label" style="margin-top: 16px;">Analytics</div>
+            <a href="/performance">
+                <i class="fas fa-chart-bar"></i> Performance
+            </a>
+            <a href="/portfolio">
+                <i class="fas fa-briefcase"></i> Portfolio
+            </a>
+            <a href="/reports" class="active">
+                <i class="fas fa-file-alt"></i> Reports
+            </a>
+            <a href="/signals">
+                <i class="fas fa-signal"></i> Signals
+            </a>
+            
+            <div class="nav-label" style="margin-top: 16px;">System</div>
+            <a href="/logs">
+                <i class="fas fa-terminal"></i> Logs
+            </a>
+            <a href="/settings">
+                <i class="fas fa-cog"></i> Settings
+            </a>
+            <a href="/support">
+                <i class="fas fa-life-ring"></i> Support
+            </a>
+        </nav>
+    </aside>
+    
+    <!-- ============================================ -->
+    <!-- MAIN CONTENT -->
+    <!-- ============================================ -->
+    <main class="main-content">
+        
+        <!-- ============================================ -->
+        <!-- HEADER -->
+        <!-- ============================================ -->
+        <header class="reports-header">
+            <div class="header-left">
+                <button class="sidebar-toggle" id="sidebarToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h1>Reports</h1>
+                <p>Generate and manage comprehensive trading reports</p>
+            </div>
+            <div class="header-right">
+                <span class="date-time" id="currentDateTime"></span>
+                <span class="status-badge">
+                    <span class="dot"></span>
+                    <span id="systemStatusText">Operational</span>
+                </span>
+            </div>
+        </header>
+        
+        <!-- ============================================ -->
+        <!-- REPORT STATS -->
+        <!-- ============================================ -->
+        <div class="report-stats" id="reportStats">
+            <div class="stat-card">
+                <div class="stat-label">Total Reports</div>
+                <div class="stat-value primary" id="statTotal">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Generated</div>
+                <div class="stat-value success" id="statGenerated">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Pending</div>
+                <div class="stat-value warning" id="statPending">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Total Size</div>
+                <div class="stat-value primary" id="statSize">0 MB</div>
+            </div>
+        </div>
+        
+        <!-- ============================================ -->
+        <!-- REPORT CONTROLS -->
+        <!-- ============================================ -->
+        <div class="report-controls">
+            <div class="report-controls-left">
+                <select id="reportType">
+                    <option value="all">All Types</option>
+                    <option value="daily">Daily</option>
+                    <option value="weekly">Weekly</option>
+                    <option value="monthly">Monthly</option>
+                    <option value="performance">Performance</option>
+                    <option value="risk">Risk</option>
+                    <option value="custom">Custom</option>
+                </select>
+                <select id="reportStatus">
+                    <option value="all">All Status</option>
+                    <option value="generated">Generated</option>
+                    <option value="pending">Pending</option>
+                    <option value="failed">Failed</option>
+                </select>
+                <input type="date" id="reportDateFrom" placeholder="From">
+                <input type="date" id="reportDateTo" placeholder="To">
+            </div>
+            <div class="report-controls-right">
+                <button id="generateReport" class="primary">
+                    <i class="fas fa-plus"></i> Generate Report
+                </button>
+                <button id="refreshReports">
+                    <i class="fas fa-sync-alt"></i> Refresh
+                </button>
+            </div>
+        </div>
+        
+        <!-- ============================================ -->
+        <!-- REPORT GRID -->
+        <!-- ============================================ -->
+        <div class="report-grid" id="reportGrid">
+            <div class="loading-spinner">
+                <i class="fas fa-spinner"></i>
+                <span>Loading reports...</span>
+            </div>
+        </div>
+        
+        <!-- ============================================ -->
+        <!-- FOOTER (Partial) -->
+        <!-- ============================================ -->
+        {% include 'partials/footer.html' %}
+        
+    </main>
+</div>
+
+<!-- ============================================ -->
+<!-- REPORT DETAIL MODAL -->
+<!-- ============================================ -->
+<div class="modal-overlay" id="reportModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 id="modalTitle">Report Details</h2>
+            <button class="modal-close" id="modalClose">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="modal-body" id="modalBody">
+            <div class="modal-detail-row">
+                <span class="label">Name</span>
+                <span class="value" id="modalName">--</span>
+            </div>
+            <div class="modal-detail-row">
+                <span class="label">Type</span>
+                <span class="value" id="modalType">--</span>
+            </div>
+            <div class="modal-detail-row">
+                <span class="label">Status</span>
+                <span class="value" id="modalStatus">--</span>
+            </div>
+            <div class="modal-detail-row">
+                <span class="label">Date</span>
+                <span class="value" id="modalDate">--</span>
+            </div>
+            <div class="modal-detail-row">
+                <span class="label">Format</span>
+                <span class="value" id="modalFormat">--</span>
+            </div>
+            <div class="modal-detail-row">
+                <span class="label">Size</span>
+                <span class="value" id="modalSize">--</span>
+            </div>
+            <div class="modal-detail-row">
+                <span class="label">Pages</span>
+                <span class="value" id="modalPages">--</span>
+            </div>
+            <div class="modal-detail-row">
+                <span class="label">Generated At</span>
+                <span class="value" id="modalGenerated">--</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================ -->
+<!-- GENERATE REPORT MODAL -->
+<!-- ============================================ -->
+<div class="modal-overlay" id="generateModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Generate Report</h2>
+            <button class="modal-close" id="generateModalClose">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div style="display:flex;flex-direction:column;gap:16px;">
+                <div>
+                    <label style="color:var(--text-secondary);font-size:13px;font-weight:500;">Report Type</label>
+                    <select id="genReportType" style="width:100%;padding:10px 14px;background:var(--bg-primary);border:1px solid var(--border-color);border-radius:8px;color:var(--text-primary);font-size:14px;font-family:inherit;margin-top:4px;">
+                        <option value="daily">Daily Report</option>
+                        <option value="weekly">Weekly Report</option>
+                        <option value="monthly">Monthly Report</option>
+                        <option value="performance">Performance Report</option>
+                        <option value="risk">Risk Report</option>
+                        <option value="custom">Custom Report</option>
+                    </select>
+                </div>
+                <div>
+                    <label style="color:var(--text-secondary);font-size:13px;font-weight:500;">Format</label>
+                    <select id="genFormat" style="width:100%;padding:10px 14px;background:var(--bg-primary);border:1px solid var(--border-color);border-radius:8px;color:var(--text-primary);font-size:14px;font-family:inherit;margin-top:4px;">
+                        <option value="json">JSON</option>
+                        <option value="html">HTML</option>
+                        <option value="pdf">PDF</option>
+                        <option value="csv">CSV</option>
+                    </select>
+                </div>
+                <div>
+                    <label style="color:var(--text-secondary);font-size:13px;font-weight:500;">Date Range</label>
+                    <div style="display:flex;gap:8px;margin-top:4px;">
+                        <input type="date" id="genStartDate" style="flex:1;padding:10px 14px;background:var(--bg-primary);border:1px solid var(--border-color);border-radius:8px;color:var(--text-primary);font-size:14px;font-family:inherit;">
+                        <input type="date" id="genEndDate" style="flex:1;padding:10px 14px;background:var(--bg-primary);border:1px solid var(--border-color);border-radius:8px;color:var(--text-primary);font-size:14px;font-family:inherit;">
+                    </div>
+                </div>
+                <div>
+                    <label style="color:var(--text-secondary);font-size:13px;font-weight:500;">Include Sections</label>
+                    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:4px;">
+                        <label style="display:flex;align-items:center;gap:6px;font-size:13px;color:var(--text-secondary);cursor:pointer;">
+                            <input type="checkbox" checked> Summary
+                        </label>
+                        <label style="display:flex;align-items:center;gap:6px;font-size:13px;color:var(--text-secondary);cursor:pointer;">
+                            <input type="checkbox" checked> Trades
+                        </label>
+                        <label style="display:flex;align-items:center;gap:6px;font-size:13px;color:var(--text-secondary);cursor:pointer;">
+                            <input type="checkbox" checked> Performance
+                        </label>
+                        <label style="display:flex;align-items:center;gap:6px;font-size:13px;color:var(--text-secondary);cursor:pointer;">
+                            <input type="checkbox" checked> Risk Metrics
+                        </label>
+                        <label style="display:flex;align-items:center;gap:6px;font-size:13px;color:var(--text-secondary);cursor:pointer;">
+                            <input type="checkbox"> Charts
+                        </label>
+                    </div>
+                </div>
+                <button id="generateConfirm" style="padding:12px;background:var(--primary);border:none;border-radius:8px;color:#fff;font-size:15px;font-weight:600;cursor:pointer;transition:var(--transition);font-family:inherit;">
+                    <i class="fas fa-file-alt"></i> Generate Report
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================ -->
+<!-- SCRIPTS - COMPLETE IMPLEMENTATION WITH REAL API -->
+<!-- ============================================ -->
+<script>
+// ================================================================
+// REPORTS - COMPLETE JAVASCRIPT IMPLEMENTATION WITH REAL API
+// ================================================================
+
+(function() {
+    'use strict';
+
+    // ============================================================
+    // API CONFIGURATION
+    // ============================================================
+    const API = {
+        base: '/api',
+        endpoints: {
+            reports: '/api/reports',
+            report: '/api/reports/:id',
+            generate: '/api/reports/generate',
+            download: '/api/reports/:id/download',
+            delete: '/api/reports/:id',
+            stats: '/api/reports/stats',
+        },
+        ws: {
+            reports: '/ws/reports',
+        }
+    };
+
+    // ============================================================
+    // STATE
+    // ============================================================
+    const state = {
+        reports: [],
+        filteredReports: [],
+        type: 'all',
+        status: 'all',
+        dateFrom: '',
+        dateTo: '',
+        ws: null,
+        reconnectAttempts: 0,
+        maxReconnectAttempts: 5,
+        updateInterval: null,
+    };
+
+    // ============================================================
+    // DOM REFERENCES
+    // ============================================================
+    const DOM = {
+        sidebar: document.getElementById('sidebar'),
+        sidebarOverlay: document.getElementById('sidebarOverlay'),
+        sidebarToggle: document.getElementById('sidebarToggle'),
+        currentDateTime: document.getElementById('currentDateTime'),
+        systemStatusText: document.getElementById('systemStatusText'),
+        oppBadge: document.getElementById('oppBadge'),
+        
+        statTotal: document.getElementById('statTotal'),
+        statGenerated: document.getElementById('statGenerated'),
+        statPending: document.getElementById('statPending'),
+        statSize: document.getElementById('statSize'),
+        
+        reportGrid: document.getElementById('reportGrid'),
+        reportType: document.getElementById('reportType'),
+        reportStatus: document.getElementById('reportStatus'),
+        reportDateFrom: document.getElementById('reportDateFrom'),
+        reportDateTo: document.getElementById('reportDateTo'),
+        
+        refreshBtn: document.getElementById('refreshReports'),
+        generateBtn: document.getElementById('generateReport'),
+        
+        modal: document.getElementById('reportModal'),
+        modalClose: document.getElementById('modalClose'),
+        modalTitle: document.getElementById('modalTitle'),
+        modalName: document.getElementById('modalName'),
+        modalType: document.getElementById('modalType'),
+        modalStatus: document.getElementById('modalStatus'),
+        modalDate: document.getElementById('modalDate'),
+        modalFormat: document.getElementById('modalFormat'),
+        modalSize: document.getElementById('modalSize'),
+        modalPages: document.getElementById('modalPages'),
+        modalGenerated: document.getElementById('modalGenerated'),
+        
+        genModal: document.getElementById('generateModal'),
+        genModalClose: document.getElementById('generateModalClose'),
+        genReportType: document.getElementById('genReportType'),
+        genFormat: document.getElementById('genFormat'),
+        genStartDate: document.getElementById('genStartDate'),
+        genEndDate: document.getElementById('genEndDate'),
+        genConfirm: document.getElementById('generateConfirm'),
+    };
+
+    // ============================================================
+    // DATE/TIME UPDATE
+    // ============================================================
+    function updateDateTime() {
+        const now = new Date();
+        DOM.currentDateTime.textContent = now.toLocaleString('en-US', {
+            weekday: 'short',
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: false
+        });
+    }
+
+    // ============================================================
+    // SIDEBAR TOGGLE
+    // ============================================================
+    function setupSidebar() {
+        DOM.sidebarToggle.addEventListener('click', function() {
+            DOM.sidebar.classList.toggle('open');
+            DOM.sidebarOverlay.classList.toggle('active');
+        });
+        
+        DOM.sidebarOverlay.addEventListener('click', function() {
+            DOM.sidebar.classList.remove('open');
+            DOM.sidebarOverlay.classList.remove('active');
+        });
+    }
+
+    // ============================================================
+    // API CALLS - REAL ENDPOINTS
+    // ============================================================
+    async function fetchReports() {
+        try {
+            const token = localStorage.getItem('access_token') || '';
+            const params = new URLSearchParams({
+                type: state.type,
+                status: state.status,
+                from: state.dateFrom,
+                to: state.dateTo,
+            });
+            
+            const response = await fetch(API.endpoints.reports + '?' + params.toString(), {
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                    'Content-Type': 'application/json',
+                }
+            });
+            
+            if (!response.ok) {
+                if (response.status === 401) {
+                    window.location.href = '/login';
+                    return null;
+                }
+                throw new Error('Failed to fetch reports: ' + response.status);
+            }
+            
+            const data = await response.json();
+            state.reports = data.reports || [];
+            filterReports();
+            updateStats(data.stats);
+            return data;
+        } catch (error) {
+            console.error('Reports fetch failed:', error);
+            DOM.reportGrid.innerHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <h3>Failed to Load Reports</h3>
+                    <p>${error.message || 'Please try again later.'}</p>
+                </div>
+            `;
+            return null;
+        }
+    }
+
+    async function fetchReportStats() {
+        try {
+            const token = localStorage.getItem('access_token') || '';
+            const response = await fetch(API.endpoints.stats, {
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                    'Content-Type': 'application/json',
+                }
+            });
+            
+            if (!response.ok) throw new Error('Failed to fetch report stats: ' + response.status);
+            
+            const data = await response.json();
+            updateStats(data);
+            return data;
+        } catch (error) {
+            console.error('Report stats fetch failed:', error);
+            return null;
+        }
+    }
+
+    async function generateReport(data) {
+        try {
+            const token = localStorage.getItem('access_token') || '';
+            const response = await fetch(API.endpoints.generate, {
+                method: 'POST',
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            });
+            
+            if (!response.ok) throw new Error('Failed to generate report: ' + response.status);
+            
+            const result = await response.json();
+            await fetchReports();
+            await fetchReportStats();
+            return result;
+        } catch (error) {
+            console.error('Report generation failed:', error);
+            alert('Failed to generate report: ' + error.message);
+            return null;
+        }
+    }
+
+    async function downloadReport(reportId) {
+        try {
+            const token = localStorage.getItem('access_token') || '';
+            const url = API.endpoints.download.replace(':id', reportId);
+            const response = await fetch(url, {
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                    'Content-Type': 'application/json',
+                }
+            });
+            
+            if (!response.ok) throw new Error('Failed to download report: ' + response.status);
+            
+            const blob = await response.blob();
+            const contentDisposition = response.headers.get('Content-Disposition');
+            let filename = 'report_' + reportId + '.pdf';
+            if (contentDisposition) {
+                const match = contentDisposition.match(/filename="?([^"]+)"?/);
+                if (match) filename = match[1];
+            }
+            
+            const urlBlob = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = urlBlob;
+            a.download = filename;
+            a.click();
+            URL.revokeObjectURL(urlBlob);
+        } catch (error) {
+            console.error('Report download failed:', error);
+            alert('Failed to download report: ' + error.message);
+        }
+    }
+
+    async function deleteReport(reportId) {
+        if (!confirm('Are you sure you want to delete this report?')) return;
+        
+        try {
+            const token = localStorage.getItem('access_token') || '';
+            const url = API.endpoints.delete.replace(':id', reportId);
+            const response = await fetch(url, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                    'Content-Type': 'application/json',
+                }
+            });
+            
+            if (!response.ok) throw new Error('Failed to delete report: ' + response.status);
+            
+            await fetchReports();
+            await fetchReportStats();
+        } catch (error) {
+            console.error('Report deletion failed:', error);
+            alert('Failed to delete report: ' + error.message);
+        }
+    }
+
+    // ============================================================
+    // RENDER REPORTS
+    // ============================================================
+    function renderReports(reports) {
+        if (!reports || reports.length === 0) {
+            DOM.reportGrid.innerHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-file-alt"></i>
+                    <h3>No Reports Found</h3>
+                    <p>${state.type !== 'all' || state.status !== 'all' ? 'No reports match your filters.' : 'Generate your first report to get started.'}</p>
+                </div>
+            `;
+            return;
+        }
+        
+        DOM.reportGrid.innerHTML = reports.map(function(report) {
+            return renderReportCard(report);
+        }).join('');
+        
+        // Attach event listeners
+        document.querySelectorAll('.report-card-actions button').forEach(function(btn) {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const action = this.dataset.action;
+                const reportId = this.dataset.reportId;
+                handleReportAction(action, reportId);
+            });
+        });
+        
+        document.querySelectorAll('.report-card').forEach(function(card) {
+            card.addEventListener('click', function() {
+                const reportId = this.dataset.reportId;
+                openReportModal(reportId);
+            });
+        });
+    }
+
+    function renderReportCard(report) {
+        const typeClass = report.type || 'custom';
+        const statusClass = report.status || 'pending';
+        const statusText = report.status ? report.status.charAt(0).toUpperCase() + report.status.slice(1) : 'Pending';
+        
+        const iconMap = {
+            daily: 'fa-calendar-day',
+            weekly: 'fa-calendar-week',
+            monthly: 'fa-calendar-alt',
+            performance: 'fa-chart-line',
+            risk: 'fa-shield-alt',
+            custom: 'fa-file-alt',
+        };
+        const icon = iconMap[report.type] || 'fa-file-alt';
+        
+        const format = report.format || 'json';
+        const size = report.size ? (report.size / 1024 / 1024).toFixed(2) + ' MB' : '--';
+        const date = report.date ? new Date(report.date).toLocaleDateString() : '--';
+        const generatedAt = report.generated_at ? new Date(report.generated_at).toLocaleString() : '--';
+        
+        return `
+            <div class="report-card" data-report-id="${report.id || ''}">
+                <div class="report-card-header">
+                    <div class="report-card-icon ${typeClass}">
+                        <i class="fas ${icon}"></i>
+                    </div>
+                    <span class="report-card-status ${statusClass}">${statusText}</span>
+                </div>
+                <div class="report-card-title">${report.name || 'Untitled Report'}</div>
+                <div class="report-card-meta">
+                    <span class="meta-item"><i class="fas fa-tag"></i> ${typeClass.charAt(0).toUpperCase() + typeClass.slice(1)}</span>
+                    <span class="meta-item"><i class="fas fa-file"></i> ${format.toUpperCase()}</span>
+                    <span class="meta-item"><i class="fas fa-calendar"></i> ${date}</span>
+                </div>
+                <div class="report-card-footer">
+                    <span class="report-card-size"><i class="fas fa-database"></i> ${size}</span>
+                    <div class="report-card-actions">
+                        ${statusClass === 'generated' ? 
+                            `<button class="download" data-action="download" data-report-id="${report.id}"><i class="fas fa-download"></i> Download</button>` :
+                            statusClass === 'pending' ? 
+                            `<button style="color:var(--warning);" disabled><i class="fas fa-spinner fa-spin"></i> Generating...</button>` :
+                            `<button style="color:var(--danger);" disabled><i class="fas fa-exclamation-triangle"></i> Failed</button>`
+                        }
+                        <button class="delete" data-action="delete" data-report-id="${report.id}"><i class="fas fa-trash"></i></button>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    // ============================================================
+    // FILTER REPORTS
+    // ============================================================
+    function filterReports() {
+        let filtered = state.reports;
+        
+        if (state.type !== 'all') {
+            filtered = filtered.filter(function(r) { return r.type === state.type; });
+        }
+        
+        if (state.status !== 'all') {
+            filtered = filtered.filter(function(r) { return r.status === state.status; });
+        }
+        
+        if (state.dateFrom) {
+            const from = new Date(state.dateFrom);
+            filtered = filtered.filter(function(r) {
+                return r.date && new Date(r.date) >= from;
+            });
+        }
+        
+        if (state.dateTo) {
+            const to = new Date(state.dateTo);
+            to.setHours(23, 59, 59);
+            filtered = filtered.filter(function(r) {
+                return r.date && new Date(r.date) <= to;
+            });
+        }
+        
+        state.filteredReports = filtered;
+        renderReports(filtered);
+    }
+
+    // ============================================================
+    // UPDATE STATS
+    // ============================================================
+    function updateStats(stats) {
+        if (!stats) return;
+        
+        DOM.statTotal.textContent = stats.total || 0;
+        DOM.statGenerated.textContent = stats.generated || 0;
+        DOM.statPending.textContent = stats.pending || 0;
+        DOM.statSize.textContent = stats.total_size ? (stats.total_size / 1024 / 1024).toFixed(1) + ' MB' : '0 MB';
+    }
+
+    // ============================================================
+    // REPORT ACTIONS
+    // ============================================================
+    function handleReportAction(action, reportId) {
+        switch (action) {
+            case 'download':
+                downloadReport(reportId);
+                break;
+            case 'delete':
+                deleteReport(reportId);
+                break;
+            default:
+                console.warn('Unknown action:', action);
+        }
+    }
+
+    // ============================================================
+    // REPORT DETAIL MODAL
+    // ============================================================
+    function openReportModal(reportId) {
+        const report = state.reports.find(function(r) { return r.id === reportId; });
+        if (!report) return;
+        
+        DOM.modalTitle.textContent = report.name || 'Report Details';
+        DOM.modalName.textContent = report.name || '--';
+        DOM.modalType.textContent = report.type ? report.type.charAt(0).toUpperCase() + report.type.slice(1) : '--';
+        DOM.modalStatus.textContent = report.status ? report.status.charAt(0).toUpperCase() + report.status.slice(1) : '--';
+        DOM.modalDate.textContent = report.date ? new Date(report.date).toLocaleDateString() : '--';
+        DOM.modalFormat.textContent = report.format ? report.format.toUpperCase() : '--';
+        DOM.modalSize.textContent = report.size ? (report.size / 1024 / 1024).toFixed(2) + ' MB' : '--';
+        DOM.modalPages.textContent = report.pages || '--';
+        DOM.modalGenerated.textContent = report.generated_at ? new Date(report.generated_at).toLocaleString() : '--';
+        
+        DOM.modal.classList.add('active');
+    }
+
+    function closeReportModal() {
+        DOM.modal.classList.remove('active');
+    }
+
+    // ============================================================
+    // GENERATE REPORT MODAL
+    // ============================================================
+    function openGenerateModal() {
+        // Set default dates
+        const today = new Date();
+        const monthAgo = new Date(today);
+        monthAgo.setMonth(monthAgo.getMonth() - 1);
+        DOM.genStartDate.value = monthAgo.toISOString().split('T')[0];
+        DOM.genEndDate.value = today.toISOString().split('T')[0];
+        DOM.genModal.classList.add('active');
+    }
+
+    function closeGenerateModal() {
+        DOM.genModal.classList.remove('active');
+    }
+
+    async function handleGenerateReport() {
+        const data = {
+            type: DOM.genReportType.value,
+            format: DOM.genFormat.value,
+            start_date: DOM.genStartDate.value,
+            end_date: DOM.genEndDate.value,
+            sections: {
+                summary: true,
+                trades: true,
+                performance: true,
+                risk: true,
+                charts: document.querySelector('#generateModal input[type="checkbox"]:last-child').checked,
+            },
+        };
+        
+        DOM.genConfirm.disabled = true;
+        DOM.genConfirm.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating...';
+        
+        try {
+            await generateReport(data);
+            closeGenerateModal();
+        } finally {
+            DOM.genConfirm.disabled = false;
+            DOM.genConfirm.innerHTML = '<i class="fas fa-file-alt"></i> Generate Report';
+        }
+    }
+
+    // ============================================================
+    // WEBSOCKET CONNECTION - REAL-TIME REPORTS
+    // ============================================================
+    function connectWebSocket() {
+        try {
+            const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const host = window.location.host;
+            const token = localStorage.getItem('access_token') || '';
+            const wsUrl = protocol + '//' + host + API.ws.reports + '?token=' + encodeURIComponent(token);
+            
+            state.ws = new WebSocket(wsUrl);
+            
+            state.ws.onopen = function() {
+                console.log('Reports WebSocket connected');
+                state.reconnectAttempts = 0;
+            };
+            
+            state.ws.onmessage = function(event) {
+                try {
+                    const data = JSON.parse(event.data);
+                    handleWebSocketMessage(data);
+                } catch (error) {
+                    console.error('WebSocket message parse error:', error);
+                }
+            };
+            
+            state.ws.onclose = function() {
+                console.log('Reports WebSocket disconnected');
+                reconnectWebSocket();
+            };
+            
+            state.ws.onerror = function(error) {
+                console.error('Reports WebSocket error:', error);
+            };
+        } catch (error) {
+            console.error('WebSocket connection failed:', error);
+        }
+    }
+
+    function reconnectWebSocket() {
+        if (state.reconnectAttempts >= state.maxReconnectAttempts) {
+            console.log('Max reconnect attempts reached for reports WebSocket');
+            return;
+        }
+        
+        state.reconnectAttempts++;
+        const delay = Math.min(1000 * Math.pow(2, state.reconnectAttempts), 30000);
+        setTimeout(function() {
+            console.log('Reconnecting reports WebSocket (attempt ' + state.reconnectAttempts + ')');
+            connectWebSocket();
+        }, delay);
+    }
+
+    function handleWebSocketMessage(data) {
+        switch (data.type) {
+            case 'report_generated':
+                // Add new report to list
+                if (data.report) {
+                    state.reports.unshift(data.report);
+                    filterReports();
+                    updateStats(data.stats);
+                }
+                break;
+            case 'report_updated':
+                // Update existing report
+                const index = state.reports.findIndex(function(r) { return r.id === data.report.id; });
+                if (index !== -1) {
+                    state.reports[index] = data.report;
+                    filterReports();
+                    updateStats(data.stats);
+                }
+                break;
+            case 'report_deleted':
+                state.reports = state.reports.filter(function(r) { return r.id !== data.reportId; });
+                filterReports();
+                updateStats(data.stats);
+                break;
+            case 'stats':
+                updateStats(data.stats);
+                break;
+            case 'ping':
+                if (state.ws && state.ws.readyState === WebSocket.OPEN) {
+                    state.ws.send(JSON.stringify({ type: 'pong' }));
+                }
+                break;
+            default:
+                console.log('Unknown WebSocket message type:', data.type);
+        }
+    }
+
+    // ============================================================
+    // AUTO REFRESH
+    // ============================================================
+    function startAutoRefresh() {
+        if (state.updateInterval) {
+            clearInterval(state.updateInterval);
+        }
+        state.updateInterval = setInterval(function() {
+            fetchReports();
+            fetchReportStats();
+        }, 30000); // 30 seconds
+    }
+
+    // ============================================================
+    // EVENT LISTENERS
+    // ============================================================
+    function setupEventListeners() {
+        // Type filter
+        DOM.reportType.addEventListener('change', function() {
+            state.type = this.value;
+            filterReports();
+        });
+        
+        // Status filter
+        DOM.reportStatus.addEventListener('change', function() {
+            state.status = this.value;
+            filterReports();
+        });
+        
+        // Date filters
+        DOM.reportDateFrom.addEventListener('change', function() {
+            state.dateFrom = this.value;
+            filterReports();
+        });
+        
+        DOM.reportDateTo.addEventListener('change', function() {
+            state.dateTo = this.value;
+            filterReports();
+        });
+        
+        // Refresh button
+        DOM.refreshBtn.addEventListener('click', function() {
+            const icon = this.querySelector('i');
+            icon.classList.add('fa-spin');
+            Promise.all([fetchReports(), fetchReportStats()]).finally(function() {
+                icon.classList.remove('fa-spin');
+            });
+        });
+        
+        // Generate button
+        DOM.generateBtn.addEventListener('click', openGenerateModal);
+        
+        // Modal close - Report detail
+        DOM.modalClose.addEventListener('click', closeReportModal);
+        DOM.modal.addEventListener('click', function(e) {
+            if (e.target === this) closeReportModal();
+        });
+        
+        // Modal close - Generate
+        DOM.genModalClose.addEventListener('click', closeGenerateModal);
+        DOM.genModal.addEventListener('click', function(e) {
+            if (e.target === this) closeGenerateModal();
+        });
+        
+        // Generate confirm
+        DOM.genConfirm.addEventListener('click', handleGenerateReport);
+        
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeReportModal();
+                closeGenerateModal();
+            }
+            // Ctrl+Shift+R to refresh
+            if (e.ctrlKey && e.shiftKey && e.key === 'r') {
+                e.preventDefault();
+                DOM.refreshBtn.click();
+            }
+            // Ctrl+Shift+G to generate
+            if (e.ctrlKey && e.shiftKey && e.key === 'g') {
+                e.preventDefault();
+                DOM.generateBtn.click();
+            }
+        });
+    }
+
+    // ============================================================
+    // INITIALIZATION
+    // ============================================================
+    function init() {
+        // Update date/time
+        updateDateTime();
+        setInterval(updateDateTime, 1000);
+        
+        // Setup sidebar
+        setupSidebar();
+        
+        // Setup event listeners
+        setupEventListeners();
+        
+        // Connect WebSocket
+        connectWebSocket();
+        
+        // Fetch initial data
+        Promise.all([
+            fetchReports(),
+            fetchReportStats()
+        ]).then(function() {
+            console.log('Reports page initialized successfully');
+        }).catch(function(error) {
+            console.error('Reports page initialization error:', error);
+        });
+        
+        // Start auto refresh
+        startAutoRefresh();
+    }
+
+    // Start when DOM is ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+
+})();
+</script>
+
+</body>
+</html>
