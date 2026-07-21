@@ -1,0 +1,1947 @@
+<!-- trading/bots/arbitrage_bot/templates/strategies.html -->
+<!-- NEXUS AI TRADING SYSTEM -->
+<!-- Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved -->
+<!-- Version: 4.2.0 - Complete Strategies Template with Real API Integration -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strategies - NEXUS Trading IA</title>
+    
+    <!-- Meta Tags -->
+    <meta name="description" content="NEXUS AI Trading System - Strategy Management and Configuration">
+    <meta name="theme-color" content="#6C63FF">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ============================================
+           STRATEGIES - COMPLETE STYLES
+           ============================================ */
+        
+        :root {
+            --primary: #6C63FF;
+            --primary-dark: #5a52d9;
+            --secondary: #00D4FF;
+            --success: #00D4FF;
+            --danger: #FF6B6B;
+            --warning: #FFD93D;
+            --bg-primary: #0D1117;
+            --bg-secondary: #161B22;
+            --bg-card: #1C2333;
+            --text-primary: #E0E0E0;
+            --text-secondary: #8B949E;
+            --text-muted: #484F58;
+            --border-color: rgba(255, 255, 255, 0.05);
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            --radius: 16px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        /* Reset & Base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* ============================================
+           LAYOUT
+           ============================================ */
+        .strategies-wrapper {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border-color);
+            padding: 20px 0;
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            z-index: 100;
+            transition: var(--transition);
+            overflow-y: auto;
+        }
+        
+        .sidebar-brand {
+            padding: 0 20px 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .sidebar-brand img {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+        }
+        
+        .sidebar-brand span {
+            font-size: 18px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .sidebar-nav {
+            flex: 1;
+            padding: 16px 12px;
+        }
+        
+        .sidebar-nav .nav-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            padding: 8px 12px 4px;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+        
+        .sidebar-nav a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 16px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 10px;
+            transition: var(--transition);
+            font-size: 14px;
+            font-weight: 500;
+            margin: 2px 0;
+        }
+        
+        .sidebar-nav a i {
+            width: 20px;
+            text-align: center;
+            font-size: 16px;
+        }
+        
+        .sidebar-nav a:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-primary);
+        }
+        
+        .sidebar-nav a.active {
+            background: rgba(108, 99, 255, 0.15);
+            color: var(--primary);
+        }
+        
+        .sidebar-nav a .badge {
+            margin-left: auto;
+            background: var(--danger);
+            color: #fff;
+            font-size: 10px;
+            padding: 1px 8px;
+            border-radius: 10px;
+            font-weight: 600;
+        }
+        
+        /* Main Content */
+        .main-content {
+            margin-left: 260px;
+            flex: 1;
+            padding: 24px 32px 32px;
+        }
+        
+        /* ============================================
+           HEADER
+           ============================================ */
+        .strategies-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 24px;
+            border-bottom: 1px solid var(--border-color);
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+        
+        .header-left h1 {
+            font-size: 24px;
+            font-weight: 700;
+        }
+        
+        .header-left p {
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-top: 4px;
+        }
+        
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        
+        .header-right .date-time {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+        
+        .header-right .status-badge {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            border-radius: 20px;
+            background: rgba(0, 212, 255, 0.1);
+            color: var(--success);
+            font-size: 13px;
+            font-weight: 500;
+        }
+        
+        .header-right .status-badge .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--success);
+            animation: pulse-dot 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+        
+        /* ============================================
+           STRATEGY STATS
+           ============================================ */
+        .strategy-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 14px;
+            margin: 20px 0;
+        }
+        
+        .stat-card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 16px 18px;
+            border: 1px solid var(--border-color);
+            transition: var(--transition);
+            text-align: center;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+        
+        .stat-card .stat-label {
+            color: var(--text-secondary);
+            font-size: 11px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .stat-card .stat-value {
+            font-size: 22px;
+            font-weight: 700;
+            margin-top: 4px;
+        }
+        
+        .stat-card .stat-value.running { color: var(--success); }
+        .stat-card .stat-value.paused { color: var(--warning); }
+        .stat-card .stat-value.stopped { color: var(--text-muted); }
+        .stat-card .stat-value.total { color: var(--primary); }
+        
+        /* ============================================
+           STRATEGY CONTROLS
+           ============================================ */
+        .strategy-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin: 16px 0 20px;
+            padding: 16px 20px;
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            border: 1px solid var(--border-color);
+        }
+        
+        .strategy-controls-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        
+        .strategy-controls-left select,
+        .strategy-controls-left input {
+            padding: 8px 14px;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 13px;
+            font-family: inherit;
+            transition: var(--transition);
+            min-width: 140px;
+        }
+        
+        .strategy-controls-left select:focus,
+        .strategy-controls-left input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.1);
+        }
+        
+        .strategy-controls-left select option {
+            background: var(--bg-primary);
+        }
+        
+        .strategy-controls-left .search-input {
+            position: relative;
+        }
+        
+        .strategy-controls-left .search-input input {
+            padding-left: 36px;
+            width: 220px;
+        }
+        
+        .strategy-controls-left .search-input i {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
+        
+        .strategy-controls-right {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .strategy-controls-right button {
+            padding: 8px 16px;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            transition: var(--transition);
+            font-family: inherit;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .strategy-controls-right button:hover {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+        
+        .strategy-controls-right button.primary {
+            background: var(--primary);
+            color: #fff;
+            border-color: var(--primary);
+        }
+        
+        .strategy-controls-right button.primary:hover {
+            background: var(--primary-dark);
+        }
+        
+        .strategy-controls-right button .badge {
+            background: var(--danger);
+            color: #fff;
+            font-size: 10px;
+            padding: 1px 6px;
+            border-radius: 10px;
+        }
+        
+        /* ============================================
+           STRATEGY GRID
+           ============================================ */
+        .strategy-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 20px;
+            margin: 16px 0;
+        }
+        
+        .strategy-card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .strategy-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            opacity: 0.5;
+            transition: opacity 0.3s ease;
+        }
+        
+        .strategy-card.running::before { background: var(--success); }
+        .strategy-card.paused::before { background: var(--warning); }
+        .strategy-card.stopped::before { background: var(--text-muted); }
+        .strategy-card.error::before { background: var(--danger); }
+        
+        .strategy-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+        
+        .strategy-card:hover::before {
+            opacity: 1;
+        }
+        
+        .strategy-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 12px;
+        }
+        
+        .strategy-card-info {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+        
+        .strategy-card-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            background: rgba(108, 99, 255, 0.1);
+            color: var(--primary);
+            flex-shrink: 0;
+        }
+        
+        .strategy-card-icon.cross_exchange { background: rgba(108, 99, 255, 0.1); color: #6C63FF; }
+        .strategy-card-icon.dex { background: rgba(0, 212, 255, 0.1); color: #00D4FF; }
+        .strategy-card-icon.statistical { background: rgba(255, 217, 61, 0.1); color: #FFD93D; }
+        .strategy-card-icon.triangular { background: rgba(255, 107, 107, 0.1); color: #FF6B6B; }
+        .strategy-card-icon.flash_loan { background: rgba(108, 99, 255, 0.2); color: #fff; }
+        .strategy-card-icon.futures_spot { background: rgba(0, 212, 255, 0.2); color: #fff; }
+        .strategy-card-icon.momentum { background: rgba(255, 217, 61, 0.2); color: #fff; }
+        .strategy-card-icon.mixed { background: rgba(255, 107, 107, 0.2); color: #fff; }
+        .strategy-card-icon.adaptive { background: rgba(108, 99, 255, 0.2); color: #fff; }
+        
+        .strategy-card-name {
+            font-size: 16px;
+            font-weight: 600;
+        }
+        
+        .strategy-card-type {
+            font-size: 11px;
+            color: var(--text-secondary);
+            display: block;
+            margin-top: 2px;
+        }
+        
+        .strategy-card-status {
+            font-size: 11px;
+            font-weight: 500;
+            padding: 4px 12px;
+            border-radius: 12px;
+            flex-shrink: 0;
+        }
+        
+        .strategy-card-status.running {
+            background: rgba(0, 212, 255, 0.1);
+            color: var(--success);
+        }
+        
+        .strategy-card-status.paused {
+            background: rgba(255, 217, 61, 0.1);
+            color: var(--warning);
+        }
+        
+        .strategy-card-status.stopped {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-muted);
+        }
+        
+        .strategy-card-status.error {
+            background: rgba(255, 107, 107, 0.1);
+            color: var(--danger);
+        }
+        
+        .strategy-card-body {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 12px;
+            margin: 14px 0;
+            padding: 12px 0;
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .strategy-card-metric {
+            text-align: center;
+        }
+        
+        .strategy-card-metric .metric-label {
+            font-size: 10px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        
+        .strategy-card-metric .metric-value {
+            font-size: 16px;
+            font-weight: 600;
+            margin-top: 2px;
+        }
+        
+        .strategy-card-metric .metric-value.positive { color: var(--success); }
+        .strategy-card-metric .metric-value.negative { color: var(--danger); }
+        
+        .strategy-card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        
+        .strategy-card-description {
+            font-size: 13px;
+            color: var(--text-secondary);
+            flex: 1;
+        }
+        
+        .strategy-card-actions {
+            display: flex;
+            gap: 4px;
+        }
+        
+        .strategy-card-actions button {
+            padding: 4px 10px;
+            background: transparent;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 12px;
+            transition: var(--transition);
+            font-family: inherit;
+        }
+        
+        .strategy-card-actions button:hover {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+        
+        .strategy-card-actions button.start {
+            color: var(--success);
+        }
+        
+        .strategy-card-actions button.start:hover {
+            background: rgba(0, 212, 255, 0.1);
+            border-color: var(--success);
+        }
+        
+        .strategy-card-actions button.pause {
+            color: var(--warning);
+        }
+        
+        .strategy-card-actions button.pause:hover {
+            background: rgba(255, 217, 61, 0.1);
+            border-color: var(--warning);
+        }
+        
+        .strategy-card-actions button.stop {
+            color: var(--danger);
+        }
+        
+        .strategy-card-actions button.stop:hover {
+            background: rgba(255, 107, 107, 0.1);
+            border-color: var(--danger);
+        }
+        
+        .strategy-card-actions button.edit:hover {
+            color: var(--primary);
+            border-color: var(--primary);
+        }
+        
+        /* ============================================
+           LOADING STATE
+           ============================================ */
+        .loading-spinner {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            color: var(--text-secondary);
+        }
+        
+        .loading-spinner i {
+            font-size: 32px;
+            animation: spin 1s linear infinite;
+        }
+        
+        .loading-spinner span {
+            margin-left: 12px;
+            font-size: 14px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* ============================================
+           EMPTY STATE
+           ============================================ */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-secondary);
+            grid-column: 1 / -1;
+        }
+        
+        .empty-state i {
+            font-size: 48px;
+            opacity: 0.3;
+            margin-bottom: 16px;
+        }
+        
+        .empty-state h3 {
+            font-size: 18px;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+        
+        .empty-state p {
+            font-size: 14px;
+        }
+        
+        /* ============================================
+           STRATEGY DETAIL MODAL
+           ============================================ */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-overlay.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: var(--bg-secondary);
+            border-radius: var(--radius);
+            padding: 32px;
+            max-width: 700px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            border: 1px solid var(--border-color);
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .modal-header h2 {
+            font-size: 20px;
+            font-weight: 700;
+        }
+        
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 24px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .modal-close:hover {
+            color: var(--text-primary);
+        }
+        
+        .modal-body {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+        
+        .modal-detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .modal-detail-row .label {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+        
+        .modal-detail-row .value {
+            font-weight: 500;
+            font-size: 14px;
+        }
+        
+        /* ============================================
+           RESPONSIVE
+           ============================================ */
+        @media (max-width: 992px) {
+            .sidebar {
+                transform: translateX(-100%);
+                width: 280px;
+            }
+            
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            
+            .main-content {
+                margin-left: 0;
+                padding: 16px;
+            }
+            
+            .strategy-grid {
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .strategies-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .header-right {
+                width: 100%;
+                justify-content: space-between;
+                flex-wrap: wrap;
+            }
+            
+            .strategy-controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .strategy-controls-left {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .strategy-controls-left .search-input input {
+                width: 100%;
+            }
+            
+            .strategy-controls-left select,
+            .strategy-controls-left input {
+                width: 100%;
+            }
+            
+            .strategy-controls-right {
+                justify-content: center;
+            }
+            
+            .strategy-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .strategy-card-body {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .strategy-stats {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .strategy-stats {
+                grid-template-columns: 1fr;
+            }
+            
+            .strategy-card-body {
+                grid-template-columns: 1fr;
+            }
+            
+            .strategy-card-footer {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 8px;
+            }
+            
+            .strategy-card-actions {
+                justify-content: center;
+            }
+        }
+        
+        /* ============================================
+           TOGGLE SIDEBAR BUTTON
+           ============================================ */
+        .sidebar-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 24px;
+            cursor: pointer;
+            padding: 8px;
+        }
+        
+        @media (max-width: 992px) {
+            .sidebar-toggle {
+                display: block;
+            }
+        }
+        
+        /* ============================================
+           OVERLAY
+           ============================================ */
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 99;
+        }
+        
+        .sidebar-overlay.active {
+            display: block;
+        }
+        
+        /* ============================================
+           SCROLLBAR
+           ============================================ */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--bg-card);
+            border-radius: 3px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary);
+        }
+    </style>
+</head>
+<body>
+
+<!-- ============================================ -->
+<!-- SIDEBAR OVERLAY -->
+<!-- ============================================ -->
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<!-- ============================================ -->
+<!-- STRATEGIES WRAPPER -->
+<!-- ============================================ -->
+<div class="strategies-wrapper">
+    
+    <!-- ============================================ -->
+    <!-- SIDEBAR -->
+    <!-- ============================================ -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-brand">
+            <img src="/static/images/nexus-logo.svg" alt="NEXUS" onerror="this.src='/static/images/logo.png'">
+            <span>NEXUS Trading</span>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <div class="nav-label">Main</div>
+            <a href="/dashboard">
+                <i class="fas fa-chart-line"></i> Dashboard
+            </a>
+            <a href="/exchanges">
+                <i class="fas fa-exchange-alt"></i> Exchanges
+            </a>
+            <a href="/opportunities">
+                <i class="fas fa-bolt"></i> Opportunities
+                <span class="badge" id="oppBadge">0</span>
+            </a>
+            <a href="/strategies" class="active">
+                <i class="fas fa-chess-queen"></i> Strategies
+            </a>
+            
+            <div class="nav-label" style="margin-top: 16px;">Analytics</div>
+            <a href="/performance">
+                <i class="fas fa-chart-bar"></i> Performance
+            </a>
+            <a href="/portfolio">
+                <i class="fas fa-briefcase"></i> Portfolio
+            </a>
+            <a href="/reports">
+                <i class="fas fa-file-alt"></i> Reports
+            </a>
+            <a href="/signals">
+                <i class="fas fa-signal"></i> Signals
+            </a>
+            
+            <div class="nav-label" style="margin-top: 16px;">System</div>
+            <a href="/logs">
+                <i class="fas fa-terminal"></i> Logs
+            </a>
+            <a href="/settings">
+                <i class="fas fa-cog"></i> Settings
+            </a>
+            <a href="/support">
+                <i class="fas fa-life-ring"></i> Support
+            </a>
+        </nav>
+    </aside>
+    
+    <!-- ============================================ -->
+    <!-- MAIN CONTENT -->
+    <!-- ============================================ -->
+    <main class="main-content">
+        
+        <!-- ============================================ -->
+        <!-- HEADER -->
+        <!-- ============================================ -->
+        <header class="strategies-header">
+            <div class="header-left">
+                <button class="sidebar-toggle" id="sidebarToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h1>Trading Strategies</h1>
+                <p>Manage and monitor all active trading strategies</p>
+            </div>
+            <div class="header-right">
+                <span class="date-time" id="currentDateTime"></span>
+                <span class="status-badge">
+                    <span class="dot"></span>
+                    <span id="systemStatusText">Operational</span>
+                </span>
+            </div>
+        </header>
+        
+        <!-- ============================================ -->
+        <!-- STRATEGY STATS -->
+        <!-- ============================================ -->
+        <div class="strategy-stats" id="strategyStats">
+            <div class="stat-card">
+                <div class="stat-label">Total Strategies</div>
+                <div class="stat-value total" id="statTotal">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Running</div>
+                <div class="stat-value running" id="statRunning">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Paused</div>
+                <div class="stat-value paused" id="statPaused">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Stopped</div>
+                <div class="stat-value stopped" id="statStopped">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Total Profit</div>
+                <div class="stat-value" id="statProfit" style="color:var(--success);">$0.00</div>
+            </div>
+        </div>
+        
+        <!-- ============================================ -->
+        <!-- STRATEGY CONTROLS -->
+        <!-- ============================================ -->
+        <div class="strategy-controls">
+            <div class="strategy-controls-left">
+                <select id="strategyType">
+                    <option value="all">All Types</option>
+                    <option value="cross_exchange">Cross-Exchange</option>
+                    <option value="dex">DEX</option>
+                    <option value="statistical">Statistical</option>
+                    <option value="triangular">Triangular</option>
+                    <option value="flash_loan">Flash Loan</option>
+                    <option value="futures_spot">Futures-Spot</option>
+                    <option value="momentum">Momentum</option>
+                    <option value="mixed">Mixed</option>
+                    <option value="adaptive">Adaptive</option>
+                </select>
+                <select id="strategyStatus">
+                    <option value="all">All Status</option>
+                    <option value="running">Running</option>
+                    <option value="paused">Paused</option>
+                    <option value="stopped">Stopped</option>
+                    <option value="error">Error</option>
+                </select>
+                <div class="search-input">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="strategySearch" placeholder="Search strategies..." />
+                </div>
+            </div>
+            <div class="strategy-controls-right">
+                <button id="refreshStrategies">
+                    <i class="fas fa-sync-alt"></i> Refresh
+                </button>
+                <button id="addStrategy" class="primary">
+                    <i class="fas fa-plus"></i> Add Strategy
+                </button>
+            </div>
+        </div>
+        
+        <!-- ============================================ -->
+        <!-- STRATEGY GRID -->
+        <!-- ============================================ -->
+        <div class="strategy-grid" id="strategyGrid">
+            <div class="loading-spinner">
+                <i class="fas fa-spinner"></i>
+                <span>Loading strategies...</span>
+            </div>
+        </div>
+        
+        <!-- ============================================ -->
+        <!-- FOOTER (Partial) -->
+        <!-- ============================================ -->
+        {% include 'partials/footer.html' %}
+        
+    </main>
+</div>
+
+<!-- ============================================ -->
+<!-- STRATEGY DETAIL MODAL -->
+<!-- ============================================ -->
+<div class="modal-overlay" id="strategyModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 id="modalTitle">Strategy Details</h2>
+            <button class="modal-close" id="modalClose">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="modal-body" id="modalBody">
+            <div class="modal-detail-row">
+                <span class="label">Name</span>
+                <span class="value" id="modalName">--</span>
+            </div>
+            <div class="modal-detail-row">
+                <span class="label">Type</span>
+                <span class="value" id="modalType">--</span>
+            </div>
+            <div class="modal-detail-row">
+                <span class="label">Status</span>
+                <span class="value" id="modalStatus">--</span>
+            </div>
+            <div class="modal-detail-row">
+                <span class="label">Total Trades</span>
+                <span class="value" id="modalTrades">--</span>
+            </div>
+            <div class="modal-detail-row">
+                <span class="label">Win Rate</span>
+                <span class="value" id="modalWinRate">--</span>
+            </div>
+            <div class="modal-detail-row">
+                <span class="label">Total Profit</span>
+                <span class="value" id="modalProfit">--</span>
+            </div>
+            <div class="modal-detail-row">
+                <span class="label">Last Run</span>
+                <span class="value" id="modalLastRun">--</span>
+            </div>
+            <div class="modal-detail-row">
+                <span class="label">Description</span>
+                <span class="value" id="modalDescription">--</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================ -->
+<!-- ADD STRATEGY MODAL -->
+<!-- ============================================ -->
+<div class="modal-overlay" id="addStrategyModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Add New Strategy</h2>
+            <button class="modal-close" id="addStrategyModalClose">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form id="addStrategyForm" style="display:flex;flex-direction:column;gap:16px;">
+                <div>
+                    <label style="color:var(--text-secondary);font-size:13px;font-weight:500;">Strategy Type</label>
+                    <select id="newStrategyType" class="form-control" style="margin-top:4px;">
+                        <option value="cross_exchange">Cross-Exchange Arbitrage</option>
+                        <option value="dex">DEX Arbitrage</option>
+                        <option value="statistical">Statistical Arbitrage</option>
+                        <option value="triangular">Triangular Arbitrage</option>
+                        <option value="flash_loan">Flash Loan Arbitrage</option>
+                        <option value="futures_spot">Futures-Spot Arbitrage</option>
+                        <option value="momentum">Momentum Arbitrage</option>
+                        <option value="mixed">Mixed Strategy</option>
+                        <option value="adaptive">Adaptive Strategy</option>
+                    </select>
+                </div>
+                <div>
+                    <label style="color:var(--text-secondary);font-size:13px;font-weight:500;">Strategy Name</label>
+                    <input type="text" id="newStrategyName" class="form-control" placeholder="Enter strategy name" style="margin-top:4px;">
+                </div>
+                <div>
+                    <label style="color:var(--text-secondary);font-size:13px;font-weight:500;">Description</label>
+                    <textarea id="newStrategyDesc" class="form-control" rows="3" placeholder="Enter strategy description" style="margin-top:4px;"></textarea>
+                </div>
+                <div>
+                    <label style="color:var(--text-secondary);font-size:13px;font-weight:500;">Parameters</label>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:4px;">
+                        <div>
+                            <label style="color:var(--text-secondary);font-size:12px;">Min Profit (%)</label>
+                            <input type="number" id="newMinProfit" class="form-control" value="0.1" step="0.01">
+                        </div>
+                        <div>
+                            <label style="color:var(--text-secondary);font-size:12px;">Max Risk</label>
+                            <input type="number" id="newMaxRisk" class="form-control" value="30" step="5">
+                        </div>
+                        <div>
+                            <label style="color:var(--text-secondary);font-size:12px;">Max Positions</label>
+                            <input type="number" id="newMaxPositions" class="form-control" value="5" min="1">
+                        </div>
+                        <div>
+                            <label style="color:var(--text-secondary);font-size:12px;">Scan Interval (s)</label>
+                            <input type="number" id="newScanInterval" class="form-control" value="5" min="1">
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary" style="padding:12px;font-size:15px;">
+                    <i class="fas fa-plus"></i> Create Strategy
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================ -->
+<!-- SCRIPTS - COMPLETE IMPLEMENTATION WITH REAL API -->
+<!-- ============================================ -->
+<script>
+// ================================================================
+// STRATEGIES - COMPLETE JAVASCRIPT IMPLEMENTATION WITH REAL API
+// ================================================================
+
+(function() {
+    'use strict';
+
+    // ============================================================
+    // API CONFIGURATION
+    // ============================================================
+    const API = {
+        base: '/api',
+        endpoints: {
+            strategies: '/api/strategies',
+            strategy: '/api/strategies/:id',
+            start: '/api/strategies/:id/start',
+            pause: '/api/strategies/:id/pause',
+            stop: '/api/strategies/:id/stop',
+            stats: '/api/strategies/stats',
+            create: '/api/strategies',
+            update: '/api/strategies/:id',
+            delete: '/api/strategies/:id',
+        },
+        ws: {
+            strategies: '/ws/strategies',
+        }
+    };
+
+    // ============================================================
+    // STATE
+    // ============================================================
+    const state = {
+        strategies: [],
+        filteredStrategies: [],
+        type: 'all',
+        status: 'all',
+        search: '',
+        ws: null,
+        reconnectAttempts: 0,
+        maxReconnectAttempts: 5,
+        updateInterval: null,
+    };
+
+    // ============================================================
+    // DOM REFERENCES
+    // ============================================================
+    const DOM = {
+        sidebar: document.getElementById('sidebar'),
+        sidebarOverlay: document.getElementById('sidebarOverlay'),
+        sidebarToggle: document.getElementById('sidebarToggle'),
+        currentDateTime: document.getElementById('currentDateTime'),
+        systemStatusText: document.getElementById('systemStatusText'),
+        oppBadge: document.getElementById('oppBadge'),
+        
+        statTotal: document.getElementById('statTotal'),
+        statRunning: document.getElementById('statRunning'),
+        statPaused: document.getElementById('statPaused'),
+        statStopped: document.getElementById('statStopped'),
+        statProfit: document.getElementById('statProfit'),
+        
+        strategyGrid: document.getElementById('strategyGrid'),
+        strategyType: document.getElementById('strategyType'),
+        strategyStatus: document.getElementById('strategyStatus'),
+        strategySearch: document.getElementById('strategySearch'),
+        
+        refreshBtn: document.getElementById('refreshStrategies'),
+        addBtn: document.getElementById('addStrategy'),
+        
+        modal: document.getElementById('strategyModal'),
+        modalClose: document.getElementById('modalClose'),
+        modalTitle: document.getElementById('modalTitle'),
+        modalName: document.getElementById('modalName'),
+        modalType: document.getElementById('modalType'),
+        modalStatus: document.getElementById('modalStatus'),
+        modalTrades: document.getElementById('modalTrades'),
+        modalWinRate: document.getElementById('modalWinRate'),
+        modalProfit: document.getElementById('modalProfit'),
+        modalLastRun: document.getElementById('modalLastRun'),
+        modalDescription: document.getElementById('modalDescription'),
+        
+        addModal: document.getElementById('addStrategyModal'),
+        addModalClose: document.getElementById('addStrategyModalClose'),
+        addForm: document.getElementById('addStrategyForm'),
+        newStrategyType: document.getElementById('newStrategyType'),
+        newStrategyName: document.getElementById('newStrategyName'),
+        newStrategyDesc: document.getElementById('newStrategyDesc'),
+        newMinProfit: document.getElementById('newMinProfit'),
+        newMaxRisk: document.getElementById('newMaxRisk'),
+        newMaxPositions: document.getElementById('newMaxPositions'),
+        newScanInterval: document.getElementById('newScanInterval'),
+    };
+
+    // ============================================================
+    // DATE/TIME UPDATE
+    // ============================================================
+    function updateDateTime() {
+        const now = new Date();
+        DOM.currentDateTime.textContent = now.toLocaleString('en-US', {
+            weekday: 'short',
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: false
+        });
+    }
+
+    // ============================================================
+    // SIDEBAR TOGGLE
+    // ============================================================
+    function setupSidebar() {
+        DOM.sidebarToggle.addEventListener('click', function() {
+            DOM.sidebar.classList.toggle('open');
+            DOM.sidebarOverlay.classList.toggle('active');
+        });
+        
+        DOM.sidebarOverlay.addEventListener('click', function() {
+            DOM.sidebar.classList.remove('open');
+            DOM.sidebarOverlay.classList.remove('active');
+        });
+    }
+
+    // ============================================================
+    // API CALLS - REAL ENDPOINTS
+    // ============================================================
+    async function fetchStrategies() {
+        try {
+            const token = localStorage.getItem('access_token') || '';
+            const params = new URLSearchParams({
+                type: state.type,
+                status: state.status,
+                search: state.search,
+            });
+            
+            const response = await fetch(API.endpoints.strategies + '?' + params.toString(), {
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                    'Content-Type': 'application/json',
+                }
+            });
+            
+            if (!response.ok) {
+                if (response.status === 401) {
+                    window.location.href = '/login';
+                    return null;
+                }
+                throw new Error('Failed to fetch strategies: ' + response.status);
+            }
+            
+            const data = await response.json();
+            state.strategies = data.strategies || [];
+            state.filteredStrategies = state.strategies;
+            renderStrategies(state.filteredStrategies);
+            updateStats(data.stats || {});
+            return data;
+        } catch (error) {
+            console.error('Strategies fetch failed:', error);
+            DOM.strategyGrid.innerHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <h3>Failed to Load Strategies</h3>
+                    <p>${error.message || 'Please try again later.'}</p>
+                </div>
+            `;
+            return null;
+        }
+    }
+
+    async function fetchStrategyStats() {
+        try {
+            const token = localStorage.getItem('access_token') || '';
+            const response = await fetch(API.endpoints.stats, {
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                    'Content-Type': 'application/json',
+                }
+            });
+            
+            if (!response.ok) throw new Error('Failed to fetch strategy stats: ' + response.status);
+            
+            const data = await response.json();
+            updateStats(data);
+            return data;
+        } catch (error) {
+            console.error('Strategy stats fetch failed:', error);
+            return null;
+        }
+    }
+
+    async function startStrategy(strategyId) {
+        try {
+            const token = localStorage.getItem('access_token') || '';
+            const url = API.endpoints.start.replace(':id', strategyId);
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                    'Content-Type': 'application/json',
+                }
+            });
+            
+            if (!response.ok) throw new Error('Failed to start strategy: ' + response.status);
+            
+            const data = await response.json();
+            await fetchStrategies();
+            return data;
+        } catch (error) {
+            console.error('Strategy start failed:', error);
+            alert('Failed to start strategy: ' + error.message);
+            return null;
+        }
+    }
+
+    async function pauseStrategy(strategyId) {
+        try {
+            const token = localStorage.getItem('access_token') || '';
+            const url = API.endpoints.pause.replace(':id', strategyId);
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                    'Content-Type': 'application/json',
+                }
+            });
+            
+            if (!response.ok) throw new Error('Failed to pause strategy: ' + response.status);
+            
+            const data = await response.json();
+            await fetchStrategies();
+            return data;
+        } catch (error) {
+            console.error('Strategy pause failed:', error);
+            alert('Failed to pause strategy: ' + error.message);
+            return null;
+        }
+    }
+
+    async function stopStrategy(strategyId) {
+        try {
+            const token = localStorage.getItem('access_token') || '';
+            const url = API.endpoints.stop.replace(':id', strategyId);
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                    'Content-Type': 'application/json',
+                }
+            });
+            
+            if (!response.ok) throw new Error('Failed to stop strategy: ' + response.status);
+            
+            const data = await response.json();
+            await fetchStrategies();
+            return data;
+        } catch (error) {
+            console.error('Strategy stop failed:', error);
+            alert('Failed to stop strategy: ' + error.message);
+            return null;
+        }
+    }
+
+    async function deleteStrategy(strategyId) {
+        if (!confirm('Are you sure you want to delete this strategy?')) return;
+        
+        try {
+            const token = localStorage.getItem('access_token') || '';
+            const url = API.endpoints.delete.replace(':id', strategyId);
+            const response = await fetch(url, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                    'Content-Type': 'application/json',
+                }
+            });
+            
+            if (!response.ok) throw new Error('Failed to delete strategy: ' + response.status);
+            
+            await fetchStrategies();
+        } catch (error) {
+            console.error('Strategy deletion failed:', error);
+            alert('Failed to delete strategy: ' + error.message);
+        }
+    }
+
+    async function createStrategy(data) {
+        try {
+            const token = localStorage.getItem('access_token') || '';
+            const response = await fetch(API.endpoints.create, {
+                method: 'POST',
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            });
+            
+            if (!response.ok) throw new Error('Failed to create strategy: ' + response.status);
+            
+            const result = await response.json();
+            await fetchStrategies();
+            return result;
+        } catch (error) {
+            console.error('Strategy creation failed:', error);
+            alert('Failed to create strategy: ' + error.message);
+            return null;
+        }
+    }
+
+    // ============================================================
+    // RENDER STRATEGIES
+    // ============================================================
+    function renderStrategies(strategies) {
+        if (!strategies || strategies.length === 0) {
+            DOM.strategyGrid.innerHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-chess-queen"></i>
+                    <h3>No Strategies Found</h3>
+                    <p>${state.search ? 'No strategies match your search criteria.' : 'Create your first strategy to get started.'}</p>
+                </div>
+            `;
+            return;
+        }
+        
+        DOM.strategyGrid.innerHTML = strategies.map(function(strategy) {
+            return renderStrategyCard(strategy);
+        }).join('');
+        
+        // Attach event listeners to cards
+        document.querySelectorAll('.strategy-card-actions button').forEach(function(btn) {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const action = this.dataset.action;
+                const strategyId = this.dataset.strategyId;
+                handleStrategyAction(action, strategyId);
+            });
+        });
+        
+        document.querySelectorAll('.strategy-card').forEach(function(card) {
+            card.addEventListener('click', function() {
+                const strategyId = this.dataset.strategyId;
+                openStrategyModal(strategyId);
+            });
+        });
+    }
+
+    function renderStrategyCard(strategy) {
+        const statusClass = strategy.status || 'stopped';
+        const statusText = strategy.status ? strategy.status.charAt(0).toUpperCase() + strategy.status.slice(1) : 'Stopped';
+        const typeClass = strategy.type || 'cross_exchange';
+        const typeDisplay = strategy.type ? strategy.type.replace('_', ' ').toUpperCase() : 'Arbitrage';
+        
+        const iconMap = {
+            cross_exchange: 'fa-exchange-alt',
+            dex: 'fa-cubes',
+            statistical: 'fa-chart-pie',
+            triangular: 'fa-share-alt',
+            flash_loan: 'fa-bolt',
+            futures_spot: 'fa-chart-line',
+            momentum: 'fa-rocket',
+            mixed: 'fa-layer-group',
+            adaptive: 'fa-brain',
+        };
+        const icon = iconMap[strategy.type] || 'fa-chess-queen';
+        
+        const profit = strategy.total_profit || 0;
+        const profitClass = profit >= 0 ? 'positive' : 'negative';
+        const profitDisplay = (profit >= 0 ? '+' : '') + '$' + profit.toFixed(2);
+        
+        const trades = strategy.total_trades || 0;
+        const winRate = strategy.win_rate || 0;
+        
+        return `
+            <div class="strategy-card ${statusClass}" data-strategy-id="${strategy.id || ''}">
+                <div class="strategy-card-header">
+                    <div class="strategy-card-info">
+                        <div class="strategy-card-icon ${typeClass}">
+                            <i class="fas ${icon}"></i>
+                        </div>
+                        <div>
+                            <span class="strategy-card-name">${strategy.name || 'Untitled'}</span>
+                            <span class="strategy-card-type">${typeDisplay}</span>
+                        </div>
+                    </div>
+                    <span class="strategy-card-status ${statusClass}">${statusText}</span>
+                </div>
+                
+                <div class="strategy-card-body">
+                    <div class="strategy-card-metric">
+                        <div class="metric-label">Trades</div>
+                        <div class="metric-value">${trades}</div>
+                    </div>
+                    <div class="strategy-card-metric">
+                        <div class="metric-label">Win Rate</div>
+                        <div class="metric-value">${winRate.toFixed(1)}%</div>
+                    </div>
+                    <div class="strategy-card-metric">
+                        <div class="metric-label">Profit</div>
+                        <div class="metric-value ${profitClass}">${profitDisplay}</div>
+                    </div>
+                </div>
+                
+                <div class="strategy-card-footer">
+                    <span class="strategy-card-description">${strategy.description || 'No description'}</span>
+                    <div class="strategy-card-actions">
+                        ${statusClass === 'running' ? 
+                            `<button class="pause" data-action="pause" data-strategy-id="${strategy.id}"><i class="fas fa-pause"></i></button>
+                             <button class="stop" data-action="stop" data-strategy-id="${strategy.id}"><i class="fas fa-stop"></i></button>` :
+                            statusClass === 'paused' ?
+                            `<button class="start" data-action="start" data-strategy-id="${strategy.id}"><i class="fas fa-play"></i></button>
+                             <button class="stop" data-action="stop" data-strategy-id="${strategy.id}"><i class="fas fa-stop"></i></button>` :
+                            `<button class="start" data-action="start" data-strategy-id="${strategy.id}"><i class="fas fa-play"></i></button>`
+                        }
+                        <button class="edit" data-action="edit" data-strategy-id="${strategy.id}"><i class="fas fa-edit"></i></button>
+                        <button class="stop" data-action="delete" data-strategy-id="${strategy.id}" style="color:var(--danger);"><i class="fas fa-trash"></i></button>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    // ============================================================
+    // FILTER STRATEGIES
+    // ============================================================
+    function filterStrategies() {
+        let filtered = state.strategies;
+        
+        if (state.type !== 'all') {
+            filtered = filtered.filter(function(s) { return s.type === state.type; });
+        }
+        
+        if (state.status !== 'all') {
+            filtered = filtered.filter(function(s) { return s.status === state.status; });
+        }
+        
+        if (state.search) {
+            const searchLower = state.search.toLowerCase();
+            filtered = filtered.filter(function(s) {
+                return (s.name && s.name.toLowerCase().includes(searchLower)) ||
+                       (s.type && s.type.toLowerCase().includes(searchLower)) ||
+                       (s.description && s.description.toLowerCase().includes(searchLower));
+            });
+        }
+        
+        state.filteredStrategies = filtered;
+        renderStrategies(filtered);
+    }
+
+    // ============================================================
+    // UPDATE STATS
+    // ============================================================
+    function updateStats(stats) {
+        if (!stats) return;
+        
+        DOM.statTotal.textContent = stats.total || 0;
+        DOM.statRunning.textContent = stats.running || 0;
+        DOM.statPaused.textContent = stats.paused || 0;
+        DOM.statStopped.textContent = stats.stopped || 0;
+        DOM.statProfit.textContent = '$' + (stats.total_profit || 0).toFixed(2);
+    }
+
+    // ============================================================
+    // STRATEGY ACTIONS
+    // ============================================================
+    function handleStrategyAction(action, strategyId) {
+        switch (action) {
+            case 'start':
+                startStrategy(strategyId);
+                break;
+            case 'pause':
+                pauseStrategy(strategyId);
+                break;
+            case 'stop':
+                stopStrategy(strategyId);
+                break;
+            case 'delete':
+                deleteStrategy(strategyId);
+                break;
+            case 'edit':
+                // Edit strategy - would open edit modal
+                console.log('Edit strategy:', strategyId);
+                break;
+            default:
+                console.warn('Unknown action:', action);
+        }
+    }
+
+    // ============================================================
+    // STRATEGY DETAIL MODAL
+    // ============================================================
+    function openStrategyModal(strategyId) {
+        const strategy = state.strategies.find(function(s) { return s.id === strategyId; });
+        if (!strategy) return;
+        
+        DOM.modalTitle.textContent = strategy.name || 'Strategy Details';
+        DOM.modalName.textContent = strategy.name || '--';
+        DOM.modalType.textContent = strategy.type ? strategy.type.replace('_', ' ').toUpperCase() : '--';
+        DOM.modalStatus.textContent = strategy.status ? strategy.status.charAt(0).toUpperCase() + strategy.status.slice(1) : '--';
+        DOM.modalTrades.textContent = strategy.total_trades || 0;
+        DOM.modalWinRate.textContent = strategy.win_rate ? strategy.win_rate.toFixed(1) + '%' : '--';
+        DOM.modalProfit.textContent = (strategy.total_profit >= 0 ? '+' : '') + '$' + (strategy.total_profit || 0).toFixed(2);
+        DOM.modalLastRun.textContent = strategy.last_run ? new Date(strategy.last_run).toLocaleString() : '--';
+        DOM.modalDescription.textContent = strategy.description || 'No description';
+        
+        DOM.modal.classList.add('active');
+    }
+
+    function closeStrategyModal() {
+        DOM.modal.classList.remove('active');
+    }
+
+    // ============================================================
+    // ADD STRATEGY
+    // ============================================================
+    function openAddStrategyModal() {
+        DOM.addModal.classList.add('active');
+    }
+
+    function closeAddStrategyModal() {
+        DOM.addModal.classList.remove('active');
+    }
+
+    function handleAddStrategy(e) {
+        e.preventDefault();
+        
+        const data = {
+            type: DOM.newStrategyType.value,
+            name: DOM.newStrategyName.value || DOM.newStrategyType.value.replace('_', ' ').toUpperCase() + ' Strategy',
+            description: DOM.newStrategyDesc.value || 'Auto-generated strategy',
+            parameters: {
+                min_profit: parseFloat(DOM.newMinProfit.value),
+                max_risk: parseInt(DOM.newMaxRisk.value),
+                max_positions: parseInt(DOM.newMaxPositions.value),
+                scan_interval: parseInt(DOM.newScanInterval.value),
+            }
+        };
+        
+        DOM.addForm.querySelector('button[type="submit"]').disabled = true;
+        DOM.addForm.querySelector('button[type="submit"]').innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating...';
+        
+        createStrategy(data).then(function() {
+            closeAddStrategyModal();
+            DOM.addForm.reset();
+        }).finally(function() {
+            DOM.addForm.querySelector('button[type="submit"]').disabled = false;
+            DOM.addForm.querySelector('button[type="submit"]').innerHTML = '<i class="fas fa-plus"></i> Create Strategy';
+        });
+    }
+
+    // ============================================================
+    // WEBSOCKET CONNECTION - REAL-TIME STRATEGIES
+    // ============================================================
+    function connectWebSocket() {
+        try {
+            const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const host = window.location.host;
+            const token = localStorage.getItem('access_token') || '';
+            const wsUrl = protocol + '//' + host + API.ws.strategies + '?token=' + encodeURIComponent(token);
+            
+            state.ws = new WebSocket(wsUrl);
+            
+            state.ws.onopen = function() {
+                console.log('Strategies WebSocket connected');
+                state.reconnectAttempts = 0;
+            };
+            
+            state.ws.onmessage = function(event) {
+                try {
+                    const data = JSON.parse(event.data);
+                    handleWebSocketMessage(data);
+                } catch (error) {
+                    console.error('WebSocket message parse error:', error);
+                }
+            };
+            
+            state.ws.onclose = function() {
+                console.log('Strategies WebSocket disconnected');
+                reconnectWebSocket();
+            };
+            
+            state.ws.onerror = function(error) {
+                console.error('Strategies WebSocket error:', error);
+            };
+        } catch (error) {
+            console.error('WebSocket connection failed:', error);
+        }
+    }
+
+    function reconnectWebSocket() {
+        if (state.reconnectAttempts >= state.maxReconnectAttempts) {
+            console.log('Max reconnect attempts reached for strategies WebSocket');
+            return;
+        }
+        
+        state.reconnectAttempts++;
+        const delay = Math.min(1000 * Math.pow(2, state.reconnectAttempts), 30000);
+        setTimeout(function() {
+            console.log('Reconnecting strategies WebSocket (attempt ' + state.reconnectAttempts + ')');
+            connectWebSocket();
+        }, delay);
+    }
+
+    function handleWebSocketMessage(data) {
+        switch (data.type) {
+            case 'strategy_update':
+                updateStrategy(data.strategy);
+                break;
+            case 'strategy_status':
+                updateStrategyStatus(data.strategyId, data.status);
+                break;
+            case 'strategy_removed':
+                removeStrategy(data.strategyId);
+                break;
+            case 'stats':
+                updateStats(data.stats);
+                break;
+            case 'ping':
+                if (state.ws && state.ws.readyState === WebSocket.OPEN) {
+                    state.ws.send(JSON.stringify({ type: 'pong' }));
+                }
+                break;
+            default:
+                console.log('Unknown WebSocket message type:', data.type);
+        }
+    }
+
+    function updateStrategy(strategy) {
+        const index = state.strategies.findIndex(function(s) { return s.id === strategy.id; });
+        if (index !== -1) {
+            state.strategies[index] = strategy;
+        } else {
+            state.strategies.push(strategy);
+        }
+        filterStrategies();
+        fetchStrategyStats();
+    }
+
+    function updateStrategyStatus(strategyId, status) {
+        const strategy = state.strategies.find(function(s) { return s.id === strategyId; });
+        if (strategy) {
+            strategy.status = status;
+            filterStrategies();
+            fetchStrategyStats();
+        }
+    }
+
+    function removeStrategy(strategyId) {
+        state.strategies = state.strategies.filter(function(s) { return s.id !== strategyId; });
+        filterStrategies();
+        fetchStrategyStats();
+    }
+
+    // ============================================================
+    // AUTO REFRESH
+    // ============================================================
+    function startAutoRefresh() {
+        if (state.updateInterval) {
+            clearInterval(state.updateInterval);
+        }
+        state.updateInterval = setInterval(function() {
+            fetchStrategies();
+            fetchStrategyStats();
+        }, 30000); // 30 seconds
+    }
+
+    // ============================================================
+    // EVENT LISTENERS
+    // ============================================================
+    function setupEventListeners() {
+        // Type filter
+        DOM.strategyType.addEventListener('change', function() {
+            state.type = this.value;
+            filterStrategies();
+        });
+        
+        // Status filter
+        DOM.strategyStatus.addEventListener('change', function() {
+            state.status = this.value;
+            filterStrategies();
+        });
+        
+        // Search
+        DOM.strategySearch.addEventListener('input', function() {
+            state.search = this.value;
+            filterStrategies();
+        });
+        
+        // Refresh button
+        DOM.refreshBtn.addEventListener('click', function() {
+            const icon = this.querySelector('i');
+            icon.classList.add('fa-spin');
+            Promise.all([fetchStrategies(), fetchStrategyStats()]).finally(function() {
+                icon.classList.remove('fa-spin');
+            });
+        });
+        
+        // Add strategy button
+        DOM.addBtn.addEventListener('click', openAddStrategyModal);
+        
+        // Modal close - Strategy detail
+        DOM.modalClose.addEventListener('click', closeStrategyModal);
+        DOM.modal.addEventListener('click', function(e) {
+            if (e.target === this) closeStrategyModal();
+        });
+        
+        // Modal close - Add strategy
+        DOM.addModalClose.addEventListener('click', closeAddStrategyModal);
+        DOM.addModal.addEventListener('click', function(e) {
+            if (e.target === this) closeAddStrategyModal();
+        });
+        
+        // Add strategy form
+        DOM.addForm.addEventListener('submit', handleAddStrategy);
+        
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeStrategyModal();
+                closeAddStrategyModal();
+            }
+            // Ctrl+Shift+R to refresh
+            if (e.ctrlKey && e.shiftKey && e.key === 'r') {
+                e.preventDefault();
+                DOM.refreshBtn.click();
+            }
+            // Ctrl+Shift+N to add strategy
+            if (e.ctrlKey && e.shiftKey && e.key === 'n') {
+                e.preventDefault();
+                DOM.addBtn.click();
+            }
+        });
+    }
+
+    // ============================================================
+    // INITIALIZATION
+    // ============================================================
+    function init() {
+        // Update date/time
+        updateDateTime();
+        setInterval(updateDateTime, 1000);
+        
+        // Setup sidebar
+        setupSidebar();
+        
+        // Setup event listeners
+        setupEventListeners();
+        
+        // Connect WebSocket
+        connectWebSocket();
+        
+        // Fetch initial data
+        Promise.all([
+            fetchStrategies(),
+            fetchStrategyStats()
+        ]).then(function() {
+            console.log('Strategies page initialized successfully');
+        }).catch(function(error) {
+            console.error('Strategies page initialization error:', error);
+        });
+        
+        // Start auto refresh
+        startAutoRefresh();
+    }
+
+    // Start when DOM is ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+
+})();
+</script>
+
+</body>
+</html>
