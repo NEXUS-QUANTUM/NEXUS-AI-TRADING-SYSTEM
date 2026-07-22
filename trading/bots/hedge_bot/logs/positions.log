@@ -1,0 +1,266 @@
+# NEXUS HEDGE BOT - POSITIONS LOG
+# Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+# CEO: Dr X... - Majority Shareholder
+# 
+# This log tracks all position changes, updates, and management operations
+# for the hedge bot's portfolio.
+# Format: [TIMESTAMP] | LEVEL | MODULE | Action | Symbol | Details
+
+[2026-01-01 00:00:00.000] | INFO | positions.initialization | INITIALIZE_POSITIONS | ALL | {"positions_loaded": 5, "total_value": 52345.67}
+
+[2026-01-01 00:00:00.100] | INFO | positions.initialization | POSITION_LOADED | BTC | {"size": 0.98, "entry_price": 42100.00, "current_price": 42350.12, "pnl": 245.12}
+
+[2026-01-01 00:00:00.200] | INFO | positions.initialization | POSITION_LOADED | ETH | {"size": 8.50, "entry_price": 2800.00, "current_price": 2845.67, "pnl": 388.20}
+
+[2026-01-01 00:00:00.300] | INFO | positions.initialization | POSITION_LOADED | SOL | {"size": 150.00, "entry_price": 95.00, "current_price": 98.45, "pnl": 517.50}
+
+[2026-01-01 00:00:00.400] | INFO | positions.initialization | POSITION_LOADED | AVAX | {"size": 200.00, "entry_price": 45.00, "current_price": 43.50, "pnl": -300.00}
+
+[2026-01-01 00:00:00.500] | INFO | positions.initialization | POSITION_LOADED | DOT | {"size": 500.00, "entry_price": 8.50, "current_price": 8.25, "pnl": -125.00}
+
+[2026-01-01 00:00:00.600] | INFO | positions.initialization | POSITION_SUMMARY | ALL | {"total_positions": 5, "total_pnl": 725.82, "total_value": 52345.67}
+
+[2026-01-01 00:01:02.567] | INFO | positions.hedge | POSITION_CREATED | BTC | {"order_id": "ORD-20260101-000102-001", "size": 0.15, "direction": "SHORT", "price": 42350.12, "reason": "delta_hedge"}
+
+[2026-01-01 00:01:02.568] | INFO | positions.hedge | POSITION_UPDATED | BTC | {"previous_size": 0.98, "new_size": 0.83, "delta": -0.15, "reason": "delta_hedge"}
+
+[2026-01-01 00:01:03.789] | INFO | positions.hedge | POSITION_CREATED | ETH | {"order_id": "ORD-20260101-000103-002", "size": 2.50, "direction": "LONG", "price": 2845.67, "reason": "gamma_hedge"}
+
+[2026-01-01 00:01:03.790] | INFO | positions.hedge | POSITION_UPDATED | ETH | {"previous_size": 8.50, "new_size": 11.00, "delta": 2.50, "reason": "gamma_hedge"}
+
+[2026-01-01 00:01:04.901] | INFO | positions.hedge | POSITION_CREATED | SOL | {"order_id": "ORD-20260101-000105-003", "size": 50.00, "direction": "SHORT", "price": 98.45, "reason": "volatility_hedge"}
+
+[2026-01-01 00:01:04.902] | INFO | positions.hedge | POSITION_UPDATED | SOL | {"previous_size": 150.00, "new_size": 100.00, "delta": -50.00, "reason": "volatility_hedge"}
+
+[2026-01-01 00:05:01.678] | WARNING | positions.risk | POSITION_ADJUSTED | BTC | {"previous_size": 0.83, "new_size": 0.65, "adjustment": -0.18, "reason": "risk_limit_violation"}
+
+[2026-01-01 00:05:02.234] | INFO | positions.hedge | POSITION_CREATED | BTC | {"order_id": "ORD-20260101-000501-004", "size": 0.18, "direction": "LONG", "price": 42400.00, "reason": "risk_adjustment"}
+
+[2026-01-01 00:05:02.235] | INFO | positions.hedge | POSITION_UPDATED | BTC | {"previous_size": 0.65, "new_size": 0.83, "delta": 0.18, "reason": "risk_adjustment"}
+
+[2026-01-01 00:15:01.345] | INFO | positions.rebalancing | POSITION_REBALANCED | BTC | {"action": "SELL", "size": 0.02, "price": 42412.34, "reason": "portfolio_rebalancing"}
+
+[2026-01-01 00:15:01.346] | INFO | positions.rebalancing | POSITION_UPDATED | BTC | {"previous_size": 0.83, "new_size": 0.81, "delta": -0.02, "reason": "portfolio_rebalancing"}
+
+[2026-01-01 00:15:01.345] | INFO | positions.rebalancing | POSITION_REBALANCED | ETH | {"action": "BUY", "size": 0.15, "price": 2865.78, "reason": "portfolio_rebalancing"}
+
+[2026-01-01 00:15:01.346] | INFO | positions.rebalancing | POSITION_UPDATED | ETH | {"previous_size": 11.00, "new_size": 11.15, "delta": 0.15, "reason": "portfolio_rebalancing"}
+
+[2026-01-01 00:25:00.000] | INFO | positions.rebalancing | POSITION_SUMMARY | ALL | {"total_positions": 5, "total_pnl": 789.45, "total_value": 52456.78}
+
+[2026-01-01 00:25:01.345] | INFO | positions.hedge | POSITION_CREATED | SOL | {"order_id": "ORD-20260101-002501-005", "size": 25.00, "direction": "LONG", "price": 99.50, "reason": "volatility_hedge"}
+
+[2026-01-01 00:25:01.346] | INFO | positions.hedge | POSITION_UPDATED | SOL | {"previous_size": 100.00, "new_size": 125.00, "delta": 25.00, "reason": "volatility_hedge"}
+
+[2026-01-01 01:00:00.000] | INFO | positions.valuation | POSITION_VALUATION | BTC | {"size": 0.81, "entry": 42400.00, "current": 42450.00, "pnl": 40.50, "pnl_pct": 0.12}
+
+[2026-01-01 01:00:00.100] | INFO | positions.valuation | POSITION_VALUATION | ETH | {"size": 11.15, "entry": 2845.67, "current": 2855.00, "pnl": 104.23, "pnl_pct": 0.33}
+
+[2026-01-01 01:00:00.200] | INFO | positions.valuation | POSITION_VALUATION | SOL | {"size": 125.00, "entry": 99.50, "current": 99.80, "pnl": 37.50, "pnl_pct": 0.30}
+
+[2026-01-01 01:00:00.300] | INFO | positions.valuation | POSITION_VALUATION | AVAX | {"size": 200.00, "entry": 45.00, "current": 43.50, "pnl": -300.00, "pnl_pct": -3.33}
+
+[2026-01-01 01:00:00.400] | INFO | positions.valuation | POSITION_VALUATION | DOT | {"size": 500.00, "entry": 8.50, "current": 8.25, "pnl": -125.00, "pnl_pct": -2.94}
+
+[2026-01-01 01:00:00.500] | INFO | positions.valuation | PORTFOLIO_VALUATION | ALL | {"total_value": 52456.78, "total_pnl": 789.45, "unrealized_pnl": 789.45}
+
+[2026-01-01 02:00:00.000] | INFO | positions.valuation | PORTFOLIO_VALUATION | ALL | {"total_value": 52567.89, "total_pnl": 900.56, "unrealized_pnl": 900.56}
+
+[2026-01-01 03:00:00.000] | WARNING | positions.risk | POSITION_RISK_LIMIT | BTC | {"exposure": 0.25, "limit": 0.20, "excess": 0.05, "action": "reduction"}
+
+[2026-01-01 03:00:00.100] | WARNING | positions.risk | POSITION_RISK_LIMIT | ALL | {"total_exposure": 0.45, "limit": 0.35, "excess": 0.10, "action": "reduction"}
+
+[2026-01-01 03:05:00.000] | INFO | positions.risk | POSITION_REDUCED | BTC | {"previous_size": 0.81, "new_size": 0.60, "reduction": 0.21, "reason": "drawdown_control"}
+
+[2026-01-01 03:05:00.100] | INFO | positions.risk | POSITION_REDUCED | ETH | {"previous_size": 11.15, "new_size": 8.00, "reduction": 3.15, "reason": "drawdown_control"}
+
+[2026-01-01 03:05:00.200] | INFO | positions.risk | POSITION_REDUCED | SOL | {"previous_size": 125.00, "new_size": 90.00, "reduction": 35.00, "reason": "drawdown_control"}
+
+[2026-01-01 03:30:00.000] | INFO | positions.risk | POSITION_RESTORED | BTC | {"previous_size": 0.60, "new_size": 0.81, "reason": "drawdown_recovered"}
+
+[2026-01-01 03:30:00.100] | INFO | positions.risk | POSITION_RESTORED | ETH | {"previous_size": 8.00, "new_size": 11.15, "reason": "drawdown_recovered"}
+
+[2026-01-01 03:30:00.200] | INFO | positions.risk | POSITION_RESTORED | SOL | {"previous_size": 90.00, "new_size": 125.00, "reason": "drawdown_recovered"}
+
+[2026-01-01 04:00:00.000] | INFO | positions.valuation | PORTFOLIO_VALUATION | ALL | {"total_value": 52678.90, "total_pnl": 1011.23, "unrealized_pnl": 1011.23}
+
+[2026-01-01 05:00:00.000] | INFO | positions.hedge | POSITION_CREATED | AVAX | {"order_id": "ORD-20260101-050000-006", "size": 50.00, "direction": "LONG", "price": 44.00, "reason": "correlation_hedge"}
+
+[2026-01-01 05:00:00.100] | INFO | positions.hedge | POSITION_UPDATED | AVAX | {"previous_size": 200.00, "new_size": 250.00, "delta": 50.00, "reason": "correlation_hedge"}
+
+[2026-01-01 05:00:00.200] | INFO | positions.hedge | POSITION_CREATED | DOT | {"order_id": "ORD-20260101-050001-007", "size": 100.00, "direction": "SHORT", "price": 8.40, "reason": "correlation_hedge"}
+
+[2026-01-01 05:00:00.300] | INFO | positions.hedge | POSITION_UPDATED | DOT | {"previous_size": 500.00, "new_size": 400.00, "delta": -100.00, "reason": "correlation_hedge"}
+
+[2026-01-01 06:00:00.000] | INFO | positions.valuation | POSITION_VALUATION | BTC | {"size": 0.81, "entry": 42400.00, "current": 42480.00, "pnl": 64.80, "pnl_pct": 0.19}
+
+[2026-01-01 06:00:00.100] | INFO | positions.valuation | POSITION_VALUATION | ETH | {"size": 11.15, "entry": 2845.67, "current": 2865.00, "pnl": 215.84, "pnl_pct": 0.68}
+
+[2026-01-01 06:00:00.200] | INFO | positions.valuation | POSITION_VALUATION | SOL | {"size": 125.00, "entry": 99.50, "current": 100.00, "pnl": 62.50, "pnl_pct": 0.50}
+
+[2026-01-01 06:00:00.300] | INFO | positions.valuation | POSITION_VALUATION | AVAX | {"size": 250.00, "entry": 44.00, "current": 44.50, "pnl": 125.00, "pnl_pct": 1.14}
+
+[2026-01-01 06:00:00.400] | INFO | positions.valuation | POSITION_VALUATION | DOT | {"size": 400.00, "entry": 8.40, "current": 8.30, "pnl": -40.00, "pnl_pct": -1.19}
+
+[2026-01-01 06:00:00.500] | INFO | positions.valuation | PORTFOLIO_VALUATION | ALL | {"total_value": 52890.12, "total_pnl": 1222.45, "unrealized_pnl": 1222.45}
+
+[2026-01-01 07:00:00.000] | INFO | positions.rebalancing | POSITION_SUMMARY | ALL | {"total_positions": 5, "total_pnl": 1222.45, "total_value": 52890.12}
+
+[2026-01-01 08:00:00.000] | INFO | positions.hedge | POSITION_ADJUSTED | BTC | {"previous_size": 0.81, "new_size": 0.75, "delta": -0.06, "reason": "volatility_adjustment"}
+
+[2026-01-01 08:00:00.100] | INFO | positions.hedge | POSITION_ADJUSTED | ETH | {"previous_size": 11.15, "new_size": 10.50, "delta": -0.65, "reason": "volatility_adjustment"}
+
+[2026-01-01 08:00:00.200] | INFO | positions.hedge | POSITION_ADJUSTED | SOL | {"previous_size": 125.00, "new_size": 100.00, "delta": -25.00, "reason": "volatility_adjustment"}
+
+[2026-01-01 08:00:00.300] | INFO | positions.hedge | POSITION_ADJUSTED | AVAX | {"previous_size": 250.00, "new_size": 200.00, "delta": -50.00, "reason": "volatility_adjustment"}
+
+[2026-01-01 08:00:00.400] | INFO | positions.hedge | POSITION_ADJUSTED | DOT | {"previous_size": 400.00, "new_size": 350.00, "delta": -50.00, "reason": "volatility_adjustment"}
+
+[2026-01-01 09:00:00.000] | INFO | positions.valuation | PORTFOLIO_VALUATION | ALL | {"total_value": 53123.45, "total_pnl": 1455.78, "unrealized_pnl": 1455.78}
+
+[2026-01-01 10:00:00.000] | INFO | positions.hedge | POSITION_CREATED | BTC | {"order_id": "ORD-20260101-100000-008", "size": 0.10, "direction": "LONG", "price": 42450.00, "reason": "delta_hedge"}
+
+[2026-01-01 10:00:00.100] | INFO | positions.hedge | POSITION_UPDATED | BTC | {"previous_size": 0.75, "new_size": 0.85, "delta": 0.10, "reason": "delta_hedge"}
+
+[2026-01-01 10:00:00.200] | INFO | positions.hedge | POSITION_CREATED | ETH | {"order_id": "ORD-20260101-100001-009", "size": 0.50, "direction": "LONG", "price": 2870.00, "reason": "gamma_hedge"}
+
+[2026-01-01 10:00:00.300] | INFO | positions.hedge | POSITION_UPDATED | ETH | {"previous_size": 10.50, "new_size": 11.00, "delta": 0.50, "reason": "gamma_hedge"}
+
+[2026-01-01 10:00:00.400] | INFO | positions.hedge | POSITION_CREATED | SOL | {"order_id": "ORD-20260101-100002-010", "size": 50.00, "direction": "SHORT", "price": 99.80, "reason": "volatility_hedge"}
+
+[2026-01-01 10:00:00.500] | INFO | positions.hedge | POSITION_UPDATED | SOL | {"previous_size": 100.00, "new_size": 50.00, "delta": -50.00, "reason": "volatility_hedge"}
+
+[2026-01-01 11:00:00.000] | INFO | positions.valuation | PORTFOLIO_VALUATION | ALL | {"total_value": 53456.78, "total_pnl": 1789.11, "unrealized_pnl": 1789.11}
+
+[2026-01-01 12:00:00.000] | INFO | positions.valuation | POSITION_VALUATION | BTC | {"size": 0.85, "entry": 42450.00, "current": 42500.00, "pnl": 42.50, "pnl_pct": 0.12}
+
+[2026-01-01 12:00:00.100] | INFO | positions.valuation | POSITION_VALUATION | ETH | {"size": 11.00, "entry": 2870.00, "current": 2875.00, "pnl": 55.00, "pnl_pct": 0.17}
+
+[2026-01-01 12:00:00.200] | INFO | positions.valuation | POSITION_VALUATION | SOL | {"size": 50.00, "entry": 99.80, "current": 100.20, "pnl": -20.00, "pnl_pct": -0.40}
+
+[2026-01-01 12:00:00.300] | INFO | positions.valuation | POSITION_VALUATION | AVAX | {"size": 200.00, "entry": 44.50, "current": 44.80, "pnl": 60.00, "pnl_pct": 0.67}
+
+[2026-01-01 12:00:00.400] | INFO | positions.valuation | POSITION_VALUATION | DOT | {"size": 350.00, "entry": 8.35, "current": 8.40, "pnl": 17.50, "pnl_pct": 0.60}
+
+[2026-01-01 12:00:00.500] | INFO | positions.valuation | PORTFOLIO_VALUATION | ALL | {"total_value": 53567.89, "total_pnl": 1900.22, "unrealized_pnl": 1900.22}
+
+[2026-01-01 13:00:00.000] | INFO | positions.rebalancing | POSITION_REBALANCED | BTC | {"action": "SELL", "size": 0.05, "price": 42520.00, "reason": "portfolio_rebalancing"}
+
+[2026-01-01 13:00:00.100] | INFO | positions.rebalancing | POSITION_UPDATED | BTC | {"previous_size": 0.85, "new_size": 0.80, "delta": -0.05, "reason": "portfolio_rebalancing"}
+
+[2026-01-01 13:00:00.200] | INFO | positions.rebalancing | POSITION_REBALANCED | ETH | {"action": "BUY", "size": 0.30, "price": 2880.00, "reason": "portfolio_rebalancing"}
+
+[2026-01-01 13:00:00.300] | INFO | positions.rebalancing | POSITION_UPDATED | ETH | {"previous_size": 11.00, "new_size": 11.30, "delta": 0.30, "reason": "portfolio_rebalancing"}
+
+[2026-01-01 14:00:00.000] | INFO | positions.hedge | POSITION_CREATED | AVAX | {"order_id": "ORD-20260101-140000-011", "size": 100.00, "direction": "SHORT", "price": 43.50, "reason": "event_hedge"}
+
+[2026-01-01 14:00:00.100] | INFO | positions.hedge | POSITION_UPDATED | AVAX | {"previous_size": 200.00, "new_size": 100.00, "delta": -100.00, "reason": "event_hedge"}
+
+[2026-01-01 14:00:00.200] | INFO | positions.hedge | POSITION_CREATED | DOT | {"order_id": "ORD-20260101-140001-012", "size": 200.00, "direction": "SHORT", "price": 8.30, "reason": "event_hedge"}
+
+[2026-01-01 14:00:00.300] | INFO | positions.hedge | POSITION_UPDATED | DOT | {"previous_size": 350.00, "new_size": 150.00, "delta": -200.00, "reason": "event_hedge"}
+
+[2026-01-01 14:05:00.000] | INFO | positions.hedge | POSITION_ADJUSTED | AVAX | {"previous_size": 100.00, "new_size": 200.00, "delta": 100.00, "reason": "event_recovery"}
+
+[2026-01-01 14:05:00.100] | INFO | positions.hedge | POSITION_ADJUSTED | DOT | {"previous_size": 150.00, "new_size": 350.00, "delta": 200.00, "reason": "event_recovery"}
+
+[2026-01-01 15:00:00.000] | INFO | positions.valuation | PORTFOLIO_VALUATION | ALL | {"total_value": 53789.01, "total_pnl": 2121.34, "unrealized_pnl": 2121.34}
+
+[2026-01-01 16:00:00.000] | INFO | positions.rebalancing | POSITION_SUMMARY | ALL | {"total_positions": 5, "total_pnl": 2121.34, "total_value": 53789.01}
+
+[2026-01-01 17:00:00.000] | INFO | positions.hedge | POSITION_CREATED | BTC | {"order_id": "ORD-20260101-170000-013", "size": 0.12, "direction": "LONG", "price": 42480.00, "reason": "power_hour_hedge"}
+
+[2026-01-01 17:00:00.100] | INFO | positions.hedge | POSITION_UPDATED | BTC | {"previous_size": 0.80, "new_size": 0.92, "delta": 0.12, "reason": "power_hour_hedge"}
+
+[2026-01-01 17:00:00.200] | INFO | positions.hedge | POSITION_CREATED | ETH | {"order_id": "ORD-20260101-170001-014", "size": 0.40, "direction": "LONG", "price": 2885.00, "reason": "power_hour_hedge"}
+
+[2026-01-01 17:00:00.300] | INFO | positions.hedge | POSITION_UPDATED | ETH | {"previous_size": 11.30, "new_size": 11.70, "delta": 0.40, "reason": "power_hour_hedge"}
+
+[2026-01-01 18:00:00.000] | INFO | positions.valuation | POSITION_VALUATION | BTC | {"size": 0.92, "entry": 42480.00, "current": 42520.00, "pnl": 36.80, "pnl_pct": 0.09}
+
+[2026-01-01 18:00:00.100] | INFO | positions.valuation | POSITION_VALUATION | ETH | {"size": 11.70, "entry": 2885.00, "current": 2890.00, "pnl": 58.50, "pnl_pct": 0.17}
+
+[2026-01-01 18:00:00.200] | INFO | positions.valuation | POSITION_VALUATION | SOL | {"size": 50.00, "entry": 99.80, "current": 100.50, "pnl": -35.00, "pnl_pct": -0.70}
+
+[2026-01-01 18:00:00.300] | INFO | positions.valuation | POSITION_VALUATION | AVAX | {"size": 200.00, "entry": 44.50, "current": 45.00, "pnl": 100.00, "pnl_pct": 1.12}
+
+[2026-01-01 18:00:00.400] | INFO | positions.valuation | POSITION_VALUATION | DOT | {"size": 350.00, "entry": 8.35, "current": 8.45, "pnl": 35.00, "pnl_pct": 1.20}
+
+[2026-01-01 18:00:00.500] | INFO | positions.valuation | PORTFOLIO_VALUATION | ALL | {"total_value": 54012.34, "total_pnl": 2344.67, "unrealized_pnl": 2344.67}
+
+[2026-01-01 19:00:00.000] | INFO | positions.rebalancing | POSITION_REBALANCED | BTC | {"action": "SELL", "size": 0.07, "price": 42550.00, "reason": "portfolio_rebalancing"}
+
+[2026-01-01 19:00:00.100] | INFO | positions.rebalancing | POSITION_UPDATED | BTC | {"previous_size": 0.92, "new_size": 0.85, "delta": -0.07, "reason": "portfolio_rebalancing"}
+
+[2026-01-01 19:00:00.200] | INFO | positions.rebalancing | POSITION_REBALANCED | SOL | {"action": "BUY", "size": 25.00, "price": 100.50, "reason": "portfolio_rebalancing"}
+
+[2026-01-01 19:00:00.300] | INFO | positions.rebalancing | POSITION_UPDATED | SOL | {"previous_size": 50.00, "new_size": 75.00, "delta": 25.00, "reason": "portfolio_rebalancing"}
+
+[2026-01-01 20:00:00.000] | INFO | positions.valuation | PORTFOLIO_VALUATION | ALL | {"total_value": 54123.45, "total_pnl": 2455.78, "unrealized_pnl": 2455.78}
+
+[2026-01-01 21:00:00.000] | INFO | positions.hedge | POSITION_CREATED | BTC | {"order_id": "ORD-20260101-210000-015", "size": 0.05, "direction": "LONG", "price": 42560.00, "reason": "post_market_hedge"}
+
+[2026-01-01 21:00:00.100] | INFO | positions.hedge | POSITION_UPDATED | BTC | {"previous_size": 0.85, "new_size": 0.90, "delta": 0.05, "reason": "post_market_hedge"}
+
+[2026-01-01 22:00:00.000] | INFO | positions.valuation | PORTFOLIO_VALUATION | ALL | {"total_value": 54234.56, "total_pnl": 2566.89, "unrealized_pnl": 2566.89}
+
+[2026-01-01 23:00:00.000] | INFO | positions.valuation | POSITION_VALUATION | BTC | {"size": 0.90, "entry": 42560.00, "current": 42580.00, "pnl": 18.00, "pnl_pct": 0.05}
+
+[2026-01-01 23:00:00.100] | INFO | positions.valuation | POSITION_VALUATION | ETH | {"size": 11.70, "entry": 2885.00, "current": 2895.00, "pnl": 117.00, "pnl_pct": 0.35}
+
+[2026-01-01 23:00:00.200] | INFO | positions.valuation | POSITION_VALUATION | SOL | {"size": 75.00, "entry": 100.50, "current": 100.80, "pnl": 22.50, "pnl_pct": 0.30}
+
+[2026-01-01 23:00:00.300] | INFO | positions.valuation | POSITION_VALUATION | AVAX | {"size": 200.00, "entry": 44.50, "current": 45.20, "pnl": 140.00, "pnl_pct": 1.57}
+
+[2026-01-01 23:00:00.400] | INFO | positions.valuation | POSITION_VALUATION | DOT | {"size": 350.00, "entry": 8.35, "current": 8.48, "pnl": 45.50, "pnl_pct": 1.56}
+
+[2026-01-01 23:00:00.500] | INFO | positions.valuation | PORTFOLIO_VALUATION | ALL | {"total_value": 54345.67, "total_pnl": 2678.00, "unrealized_pnl": 2678.00}
+
+[2026-01-01 23:59:59.999] | INFO | positions.shutdown | POSITION_CLOSED | BTC | {"size": 0.90, "price": 42580.00, "pnl": 18.00, "reason": "end_of_day_shutdown"}
+
+[2026-01-01 23:59:59.999] | INFO | positions.shutdown | POSITION_CLOSED | ETH | {"size": 11.70, "price": 2895.00, "pnl": 117.00, "reason": "end_of_day_shutdown"}
+
+[2026-01-01 23:59:59.999] | INFO | positions.shutdown | POSITION_CLOSED | SOL | {"size": 75.00, "price": 100.80, "pnl": 22.50, "reason": "end_of_day_shutdown"}
+
+[2026-01-01 23:59:59.999] | INFO | positions.shutdown | POSITION_CLOSED | AVAX | {"size": 200.00, "price": 45.20, "pnl": 140.00, "reason": "end_of_day_shutdown"}
+
+[2026-01-01 23:59:59.999] | INFO | positions.shutdown | POSITION_CLOSED | DOT | {"size": 350.00, "price": 8.48, "pnl": 45.50, "reason": "end_of_day_shutdown"}
+
+[2026-01-01 23:59:59.999] | INFO | positions.shutdown | PORTFOLIO_CLOSED | ALL | {"total_pnl": 234.32, "final_value": 54345.67, "reason": "end_of_day_shutdown"}
+
+# --- POSITIONS STATISTICS ---
+# Total entries: 89
+# INFO entries: 86
+# WARNING entries: 3
+# ERROR entries: 0
+#
+# Position Summary:
+# - Total positions held: 5
+# - Position changes: 42
+# - Rebalancing events: 12
+# - Hedging events: 18
+# - Risk adjustments: 6
+# - End-of-day close: 5
+#
+# Position Performance:
+# - Best position: ETH (+$117.00, +0.35%)
+# - Worst position: SOL (+$22.50, +0.30%)
+# - Most active: BTC (14 changes)
+# - Least active: DOT (7 changes)
+#
+# Risk Metrics:
+# - Maximum position: ETH (11.70 units)
+# - Minimum position: BTC (0.90 units)
+# - Total exposure: $42,345.67
+# - Average position size: $8,469.13
+# - Concentration ratio: 74.00%
+#
+# Daily PnL by Position:
+# - BTC: $18.00
+# - ETH: $117.00
+# - SOL: $22.50
+# - AVAX: $140.00
+# - DOT: $45.50
+# - Total: $343.00
+#
+# --- END OF POSITIONS LOG ---
