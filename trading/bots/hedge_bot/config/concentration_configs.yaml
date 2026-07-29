@@ -1,0 +1,807 @@
+# trading/bots/hedge_bot/config/concentration_configs.yaml
+# NEXUS AI TRADING SYSTEM - Hedge Bot Concentration Configuration
+# Version: 2.0.0
+# Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+
+# ============================================================
+# CONCENTRATION GENERAL SETTINGS
+# ============================================================
+concentration:
+  # General Concentration Settings
+  general:
+    enabled: true
+    monitoring_frequency: "realtime"  # realtime, hourly, daily
+    alert_threshold: 0.75  # 75% of limit
+    critical_threshold: 0.90  # 90% of limit
+    auto_rebalancing: true
+    rebalancing_threshold: 0.85  # 85% of limit
+    diversification_target: 0.40  # Target diversification score
+    min_diversification_score: 0.30
+    
+  # Concentration Metrics
+  metrics:
+    - "herfindahl_hirschman_index"
+    - "gini_coefficient"
+    - "concentration_ratio"
+    - "diversification_score"
+    - "effective_number_bets"
+    - "entropy_index"
+    - "correlation_weighted_concentration"
+
+# ============================================================
+# ASSET CONCENTRATION LIMITS
+# ============================================================
+asset_concentration:
+  # General Asset Limits
+  general:
+    max_single_asset: 0.15  # 15% of portfolio
+    max_asset_class: 0.40  # 40% of portfolio
+    max_sector: 0.35  # 35% of portfolio
+    max_industry: 0.25  # 25% of portfolio
+    max_geographic: 0.50  # 50% of portfolio
+    
+  # Asset-Specific Limits
+  assets:
+    BTC:
+      max_concentration: 0.15
+      max_position: 0.10
+      min_position: 0.01
+      
+    ETH:
+      max_concentration: 0.12
+      max_position: 0.08
+      min_position: 0.01
+      
+    SOL:
+      max_concentration: 0.08
+      max_position: 0.05
+      min_position: 0.005
+      
+    ADA:
+      max_concentration: 0.06
+      max_position: 0.04
+      min_position: 0.005
+      
+    DOT:
+      max_concentration: 0.06
+      max_position: 0.04
+      min_position: 0.005
+      
+    AVAX:
+      max_concentration: 0.06
+      max_position: 0.04
+      min_position: 0.005
+      
+    XRP:
+      max_concentration: 0.05
+      max_position: 0.03
+      min_position: 0.005
+      
+    LINK:
+      max_concentration: 0.05
+      max_position: 0.03
+      min_position: 0.005
+      
+    UNI:
+      max_concentration: 0.04
+      max_position: 0.02
+      min_position: 0.005
+      
+    AAVE:
+      max_concentration: 0.04
+      max_position: 0.02
+      min_position: 0.005
+      
+    EURUSD:
+      max_concentration: 0.10
+      max_position: 0.05
+      min_position: 0.005
+      
+    GBPUSD:
+      max_concentration: 0.08
+      max_position: 0.04
+      min_position: 0.005
+      
+    USDJPY:
+      max_concentration: 0.08
+      max_position: 0.04
+      min_position: 0.005
+      
+    AAPL:
+      max_concentration: 0.08
+      max_position: 0.04
+      min_position: 0.005
+      
+    MSFT:
+      max_concentration: 0.08
+      max_position: 0.04
+      min_position: 0.005
+      
+    GOOGL:
+      max_concentration: 0.07
+      max_position: 0.035
+      min_position: 0.005
+      
+    AMZN:
+      max_concentration: 0.07
+      max_position: 0.035
+      min_position: 0.005
+      
+    TSLA:
+      max_concentration: 0.06
+      max_position: 0.03
+      min_position: 0.005
+      
+    GOLD:
+      max_concentration: 0.10
+      max_position: 0.05
+      min_position: 0.005
+      
+    SILVER:
+      max_concentration: 0.06
+      max_position: 0.03
+      min_position: 0.005
+      
+    OIL:
+      max_concentration: 0.06
+      max_position: 0.03
+      min_position: 0.005
+
+# ============================================================
+# SECTOR CONCENTRATION LIMITS
+# ============================================================
+sector_concentration:
+  # Sector Definitions
+  sectors:
+    cryptocurrency:
+      max_concentration: 0.40
+      assets:
+        - "BTC"
+        - "ETH"
+        - "SOL"
+        - "ADA"
+        - "DOT"
+        - "AVAX"
+        - "XRP"
+        - "LINK"
+        - "UNI"
+        - "AAVE"
+        
+    defi:
+      max_concentration: 0.20
+      assets:
+        - "UNI"
+        - "AAVE"
+        - "MKR"
+        - "COMP"
+        - "CRV"
+        - "1INCH"
+        - "SNX"
+        - "LDO"
+        
+    layer1:
+      max_concentration: 0.25
+      assets:
+        - "BTC"
+        - "ETH"
+        - "SOL"
+        - "ADA"
+        - "DOT"
+        - "AVAX"
+        - "ATOM"
+        - "NEAR"
+        
+    layer2:
+      max_concentration: 0.15
+      assets:
+        - "ARB"
+        - "OP"
+        - "MATIC"
+        - "IMX"
+        - "STRK"
+        
+    forex:
+      max_concentration: 0.30
+      assets:
+        - "EURUSD"
+        - "GBPUSD"
+        - "USDJPY"
+        - "USDCHF"
+        - "AUDUSD"
+        - "USDCAD"
+        
+    technology:
+      max_concentration: 0.25
+      assets:
+        - "AAPL"
+        - "MSFT"
+        - "GOOGL"
+        - "NVDA"
+        - "AMD"
+        - "INTC"
+        - "IBM"
+        - "ORCL"
+        
+    ecommerce:
+      max_concentration: 0.15
+      assets:
+        - "AMZN"
+        - "BABA"
+        - "EBAY"
+        - "SHOP"
+        - "MELI"
+        
+    automotive:
+      max_concentration: 0.15
+      assets:
+        - "TSLA"
+        - "F"
+        - "GM"
+        - "RIVN"
+        - "LCID"
+        
+    precious_metals:
+      max_concentration: 0.15
+      assets:
+        - "GOLD"
+        - "SILVER"
+        - "PLATINUM"
+        - "PALLADIUM"
+        
+    energy:
+      max_concentration: 0.15
+      assets:
+        - "OIL"
+        - "NATURAL_GAS"
+        - "BRENT"
+        - "XOM"
+        - "CVX"
+        - "COP"
+        - "BP"
+        
+    agriculture:
+      max_concentration: 0.10
+      assets:
+        - "CORN"
+        - "WHEAT"
+        - "SOYBEANS"
+        - "SUGAR"
+        - "COFFEE"
+        - "COTTON"
+
+# ============================================================
+# CORRELATION-BASED CONCENTRATION
+# ============================================================
+correlation_concentration:
+  # Correlation Limits
+  limits:
+    high_correlation_threshold: 0.70
+    medium_correlation_threshold: 0.40
+    low_correlation_threshold: 0.10
+    
+  # Correlation-Adjusted Limits
+  adjustments:
+    high_correlation:
+      risk_multiplier: 1.50
+      concentration_reduction: 0.40
+      
+    medium_correlation:
+      risk_multiplier: 1.00
+      concentration_reduction: 0.20
+      
+    low_correlation:
+      risk_multiplier: 0.80
+      concentration_reduction: 0.00
+      
+  # Correlation-Based Diversification
+  diversification:
+    target_correlation: 0.20
+    max_correlation: 0.50
+    min_correlation: -0.20
+    
+  # Effective Number of Bets
+  effective_bets:
+    min_effective_bets: 10
+    target_effective_bets: 20
+    max_effective_bets: 50
+
+# ============================================================
+# HERFINDAHL-HIRSCHMAN INDEX (HHI)
+# ============================================================
+hhi_configuration:
+  # HHI Settings
+  settings:
+    enabled: true
+    calculation_method: "portfolio_weight"  # portfolio_weight, risk_weight, exposure_weight
+    hhi_thresholds:
+      low_concentration: 0.10
+      medium_concentration: 0.15
+      high_concentration: 0.20
+      very_high_concentration: 0.25
+      
+  # HHI Limits
+  limits:
+    max_hhi: 0.25
+    target_hhi: 0.15
+    min_hhi: 0.05
+    
+  # HHI by Asset Class
+  asset_class_hhi:
+    cryptocurrency:
+      max_hhi: 0.20
+      target_hhi: 0.12
+      
+    forex:
+      max_hhi: 0.15
+      target_hhi: 0.08
+      
+    equity:
+      max_hhi: 0.12
+      target_hhi: 0.07
+      
+    commodity:
+      max_hhi: 0.18
+      target_hhi: 0.10
+
+# ============================================================
+# GINI COEFFICIENT
+# ============================================================
+gini_configuration:
+  # Gini Settings
+  settings:
+    enabled: true
+    calculation_method: "portfolio_weights"  # portfolio_weights, position_sizes, risk_contributions
+    gini_thresholds:
+      low_inequality: 0.30
+      medium_inequality: 0.45
+      high_inequality: 0.60
+      
+  # Gini Limits
+  limits:
+    max_gini: 0.60
+    target_gini: 0.35
+    min_gini: 0.20
+    
+  # Gini by Asset Class
+  asset_class_gini:
+    cryptocurrency:
+      max_gini: 0.55
+      target_gini: 0.35
+      
+    forex:
+      max_gini: 0.45
+      target_gini: 0.30
+      
+    equity:
+      max_gini: 0.40
+      target_gini: 0.25
+      
+    commodity:
+      max_gini: 0.50
+      target_gini: 0.35
+
+# ============================================================
+# DIVERSIFICATION SCORE
+# ============================================================
+diversification_score:
+  # Diversification Score Settings
+  settings:
+    enabled: true
+    calculation_method: "weighted"  # weighted, equal, risk_based
+    scoring_factors:
+      - asset_correlation: 0.30
+      - asset_class_distribution: 0.20
+      - sector_distribution: 0.15
+      - geographic_distribution: 0.10
+      - correlation_weights: 0.15
+      - effective_number_bets: 0.10
+      
+  # Score Thresholds
+  thresholds:
+    poor_diversification: 0.30
+    moderate_diversification: 0.50
+    good_diversification: 0.70
+    excellent_diversification: 0.85
+    
+  # Target Scores
+  targets:
+    minimum_score: 0.50
+    target_score: 0.70
+    optimal_score: 0.80
+
+# ============================================================
+# CONCENTRATION RISK METRICS
+# ============================================================
+concentration_risk:
+  # Risk Metrics Settings
+  settings:
+    enabled: true
+    calculation_frequency: "realtime"
+    risk_factor_models:
+      - "var_contribution"
+      - "cvar_contribution"
+      - "risk_parity"
+      - "marginal_risk"
+      
+  # Risk Contribution Limits
+  limits:
+    max_risk_contribution: 0.20  # 20% of total risk
+    target_risk_contribution: 0.10
+    min_risk_contribution: 0.02
+    
+  # Risk Concentration
+  risk_concentration:
+    max_asset_risk: 0.25
+    max_sector_risk: 0.35
+    max_asset_class_risk: 0.45
+    
+  # Stress Risk
+  stress_risk:
+    scenario: "market_shock"
+    multiplier: 2.0
+    concentration_impact: 1.5
+
+# ============================================================
+# CONCENTRATION MONITORING
+# ============================================================
+concentration_monitoring:
+  # Monitoring Settings
+  settings:
+    enabled: true
+    monitoring_frequency: "realtime"
+    alert_threshold: 0.75
+    critical_threshold: 0.90
+    reporting_frequency: "daily"
+    
+  # Alert Conditions
+  alerts:
+    high_concentration_alert:
+      enabled: true
+      level: "warning"
+      threshold: 0.75
+      message: "High concentration detected in {asset}"
+      
+    critical_concentration_alert:
+      enabled: true
+      level: "critical"
+      threshold: 0.90
+      message: "Critical concentration in {asset}"
+      
+    low_diversification_alert:
+      enabled: true
+      level: "warning"
+      threshold: 0.40
+      message: "Portfolio diversification score low"
+      
+    sector_concentration_alert:
+      enabled: true
+      level: "warning"
+      threshold: 0.80
+      message: "Sector concentration in {sector}"
+      
+  # Monitoring Metrics
+  metrics:
+    - "asset_concentration"
+    - "sector_concentration"
+    - "asset_class_concentration"
+    - "hhi_score"
+    - "gini_coefficient"
+    - "diversification_score"
+    - "effective_number_bets"
+    - "risk_concentration"
+    - "correlation_concentration"
+
+# ============================================================
+# CONCENTRATION REBALANCING
+# ============================================================
+concentration_rebalancing:
+  # Rebalancing Settings
+  settings:
+    enabled: true
+    rebalancing_frequency: "daily"  # realtime, hourly, daily, weekly
+    rebalancing_method: "threshold"  # threshold, periodic, dynamic
+    threshold_value: 0.85
+    rebalancing_tolerance: 0.02  # 2% tolerance
+    
+  # Rebalancing Strategies
+  strategies:
+    reduce_concentration:
+      enabled: true
+      method: "sell_excess"
+      target_level: 0.70
+      
+    increase_diversification:
+      enabled: true
+      method: "add_new_assets"
+      target_diversification: 0.70
+      
+    rebalance_to_target:
+      enabled: true
+      method: "portfolio_optimization"
+      target_hhi: 0.15
+      target_gini: 0.35
+      
+  # Rebalancing Costs
+  costs:
+    estimated_slippage: 0.001
+    estimated_commission: 0.001
+    market_impact: 0.0005
+
+# ============================================================
+# CONCENTRATION REPORTING
+# ============================================================
+concentration_reporting:
+  # Report Settings
+  settings:
+    enabled: true
+    report_frequency: "daily"
+    report_format: "json"  # json, csv, pdf, html
+    include_analytics: true
+    include_recommendations: true
+    
+  # Report Sections
+  sections:
+    concentration_summary:
+      enabled: true
+      include_hhi: true
+      include_gini: true
+      include_diversification_score: true
+      
+    asset_concentration:
+      enabled: true
+      include_top_10_assets: true
+      include_bottom_10_assets: true
+      
+    sector_concentration:
+      enabled: true
+      include_all_sectors: true
+      include_sector_limits: true
+      
+    risk_concentration:
+      enabled: true
+      include_risk_contributions: true
+      include_correlation_analysis: true
+      
+    rebalancing_recommendations:
+      enabled: true
+      include_action_items: true
+      include_trade_suggestions: true
+
+# ============================================================
+# CONCENTRATION DASHBOARD
+# ============================================================
+concentration_dashboard:
+  # Dashboard Settings
+  settings:
+    enabled: true
+    refresh_interval: 5
+    default_view: "summary"  # summary, details, analytics
+    
+  # Dashboard Widgets
+  widgets:
+    concentration_summary:
+      enabled: true
+      position: 1
+      size: "large"
+      
+    hhi_chart:
+      enabled: true
+      position: 2
+      size: "medium"
+      
+    diversification_score:
+      enabled: true
+      position: 3
+      size: "small"
+      
+    asset_distribution:
+      enabled: true
+      position: 4
+      size: "large"
+      
+    sector_distribution:
+      enabled: true
+      position: 5
+      size: "medium"
+      
+    correlation_heatmap:
+      enabled: true
+      position: 6
+      size: "large"
+      
+    risk_contribution:
+      enabled: true
+      position: 7
+      size: "medium"
+      
+    alert_status:
+      enabled: true
+      position: 8
+      size: "small"
+
+# ============================================================
+# CONCENTRATION SCENARIOS
+# ============================================================
+concentration_scenarios:
+  # Scenario 1: Diversified Portfolio
+  diversified_portfolio:
+    description: "Well-diversified portfolio"
+    hhi: 0.08
+    gini: 0.30
+    diversification_score: 0.80
+    effective_bets: 25
+    risk_concentration: 0.05
+    
+  # Scenario 2: Concentrated Portfolio
+  concentrated_portfolio:
+    description: "Highly concentrated portfolio"
+    hhi: 0.25
+    gini: 0.55
+    diversification_score: 0.25
+    effective_bets: 5
+    risk_concentration: 0.25
+    
+  # Scenario 3: Sector-Concentrated
+  sector_concentrated:
+    description: "Sector-concentrated portfolio"
+    hhi: 0.18
+    gini: 0.40
+    diversification_score: 0.35
+    effective_bets: 10
+    sector_concentration: 0.50
+    
+  # Scenario 4: Balanced Portfolio
+  balanced_portfolio:
+    description: "Balanced portfolio"
+    hhi: 0.12
+    gini: 0.35
+    diversification_score: 0.65
+    effective_bets: 18
+    risk_concentration: 0.12
+
+# ============================================================
+# CONCENTRATION EXAMPLES
+# ============================================================
+concentration_examples:
+  # Example 1: HHI Calculation
+  hhi_calculation:
+    description: "HHI Calculation Example"
+    positions:
+      - asset: "BTC"
+        weight: 0.40
+      - asset: "ETH"
+        weight: 0.30
+      - asset: "SOL"
+        weight: 0.15
+      - asset: "ADA"
+        weight: 0.10
+      - asset: "DOT"
+        weight: 0.05
+    hhi: 0.305  # 0.4^2 + 0.3^2 + 0.15^2 + 0.1^2 + 0.05^2 = 0.305
+    
+  # Example 2: Gini Coefficient
+  gini_calculation:
+    description: "Gini Coefficient Calculation"
+    positions:
+      - asset: "BTC"
+        value: 100000
+      - asset: "ETH"
+        value: 50000
+      - asset: "SOL"
+        value: 30000
+      - asset: "ADA"
+        value: 15000
+      - asset: "DOT"
+        value: 5000
+    gini: 0.45  # Calculated from sorted values
+    
+  # Example 3: Diversification Score
+  diversification_calculation:
+    description: "Diversification Score Calculation"
+    factors:
+      asset_correlation: 0.70
+      asset_class_distribution: 0.80
+      sector_distribution: 0.60
+      geographic_distribution: 0.50
+      correlation_weights: 0.65
+      effective_number_bets: 0.55
+    weighted_score: 0.66  # 0.7*0.3 + 0.8*0.2 + 0.6*0.15 + 0.5*0.1 + 0.65*0.15 + 0.55*0.1
+
+# ============================================================
+# ENVIRONMENT-SPECIFIC CONFIGURATIONS
+# ============================================================
+environments:
+  # Development Environment
+  development:
+    concentration:
+      general:
+        enabled: true
+        monitoring_frequency: "hourly"
+        auto_rebalancing: false
+        
+    asset_concentration:
+      general:
+        max_single_asset: 0.30
+        max_asset_class: 0.60
+        
+    concentration_monitoring:
+      alerts:
+        high_concentration_alert:
+          enabled: false
+        critical_concentration_alert:
+          enabled: false
+          
+  # Staging Environment
+  staging:
+    concentration:
+      general:
+        enabled: true
+        monitoring_frequency: "realtime"
+        auto_rebalancing: true
+        rebalancing_threshold: 0.80
+        
+    asset_concentration:
+      general:
+        max_single_asset: 0.20
+        max_asset_class: 0.50
+        
+    concentration_monitoring:
+      alerts:
+        high_concentration_alert:
+          enabled: true
+        critical_concentration_alert:
+          enabled: true
+        low_diversification_alert:
+          enabled: true
+          
+  # Production Environment
+  production:
+    concentration:
+      general:
+        enabled: true
+        monitoring_frequency: "realtime"
+        auto_rebalancing: true
+        rebalancing_threshold: 0.85
+        
+    asset_concentration:
+      general:
+        max_single_asset: 0.15
+        max_asset_class: 0.40
+        max_sector: 0.35
+        max_industry: 0.25
+        max_geographic: 0.50
+        
+    concentration_monitoring:
+      alerts:
+        high_concentration_alert:
+          enabled: true
+        critical_concentration_alert:
+          enabled: true
+        low_diversification_alert:
+          enabled: true
+        sector_concentration_alert:
+          enabled: true
+          
+  # Demo Environment
+  demo:
+    concentration:
+      general:
+        enabled: true
+        monitoring_frequency: "hourly"
+        auto_rebalancing: false
+        
+    asset_concentration:
+      general:
+        max_single_asset: 0.25
+        max_asset_class: 0.55
+        
+    concentration_monitoring:
+      alerts:
+        high_concentration_alert:
+          enabled: false
+        critical_concentration_alert:
+          enabled: false
+
+# ============================================================
+# END OF CONFIGURATION
+# ============================================================
