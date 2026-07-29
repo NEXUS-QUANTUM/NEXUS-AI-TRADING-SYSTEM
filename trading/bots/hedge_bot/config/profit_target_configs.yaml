@@ -1,0 +1,556 @@
+# trading/bots/hedge_bot/config/profit_target_configs.yaml
+# NEXUS AI TRADING SYSTEM - Hedge Bot Profit Target Configuration
+# Version: 2.0.0
+# Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+
+# ============================================================
+# PROFIT TARGET GENERAL SETTINGS
+# ============================================================
+profit_target:
+  # General Profit Target Settings
+  general:
+    enabled: true
+    target_type: "dynamic"  # dynamic, fixed, adaptive, risk_based
+    target_multiplier: 2.0  # Target = Risk * Multiplier
+    min_target: 0.01  # 1% minimum target
+    max_target: 0.20  # 20% maximum target
+    default_target: 0.05  # 5% default target
+    update_frequency: "realtime"
+    use_trailing_target: true
+    use_dynamic_adjustment: true
+    use_volatility_adjustment: true
+    
+  # Target Types
+  types:
+    fixed_target:
+      enabled: true
+      description: "Fixed percentage profit target"
+      percentage: 0.05
+      
+    risk_based_target:
+      enabled: true
+      description: "Risk-based profit target"
+      risk_multiplier: 2.0
+      
+    volatility_based_target:
+      enabled: true
+      description: "Volatility-based profit target"
+      volatility_multiplier: 1.5
+      
+    dynamic_target:
+      enabled: true
+      description: "Dynamic profit target based on market conditions"
+      adjustment_factor: 0.1
+      
+    adaptive_target:
+      enabled: true
+      description: "Adaptive profit target learning from market patterns"
+      learning_rate: 0.1
+
+# ============================================================
+# PROFIT TARGET BY ASSET CLASS
+# ============================================================
+profit_target_by_asset:
+  # Cryptocurrency
+  cryptocurrency:
+    target_multiplier: 2.5
+    min_target: 0.02
+    max_target: 0.25
+    default_target: 0.08
+    volatility_adjustment: true
+    risk_reward_ratio: 2.0
+    
+    assets:
+      BTC:
+        target_multiplier: 2.0
+        min_target: 0.02
+        max_target: 0.20
+        default_target: 0.06
+      ETH:
+        target_multiplier: 2.2
+        min_target: 0.02
+        max_target: 0.22
+        default_target: 0.07
+      SOL:
+        target_multiplier: 2.5
+        min_target: 0.03
+        max_target: 0.25
+        default_target: 0.09
+      ADA:
+        target_multiplier: 2.5
+        min_target: 0.03
+        max_target: 0.25
+        default_target: 0.09
+      DOT:
+        target_multiplier: 2.5
+        min_target: 0.03
+        max_target: 0.25
+        default_target: 0.09
+      AVAX:
+        target_multiplier: 2.8
+        min_target: 0.03
+        max_target: 0.28
+        default_target: 0.10
+      XRP:
+        target_multiplier: 2.3
+        min_target: 0.02
+        max_target: 0.23
+        default_target: 0.07
+      LINK:
+        target_multiplier: 2.3
+        min_target: 0.02
+        max_target: 0.23
+        default_target: 0.07
+      UNI:
+        target_multiplier: 2.5
+        min_target: 0.03
+        max_target: 0.25
+        default_target: 0.08
+      AAVE:
+        target_multiplier: 2.5
+        min_target: 0.03
+        max_target: 0.25
+        default_target: 0.08
+        
+  # Forex
+  forex:
+    target_multiplier: 2.0
+    min_target: 0.005
+    max_target: 0.10
+    default_target: 0.03
+    volatility_adjustment: true
+    risk_reward_ratio: 2.0
+    
+    assets:
+      EURUSD:
+        target_multiplier: 2.0
+        min_target: 0.005
+        max_target: 0.08
+        default_target: 0.02
+      GBPUSD:
+        target_multiplier: 2.0
+        min_target: 0.005
+        max_target: 0.08
+        default_target: 0.02
+      USDJPY:
+        target_multiplier: 2.0
+        min_target: 0.005
+        max_target: 0.08
+        default_target: 0.02
+      USDCHF:
+        target_multiplier: 2.0
+        min_target: 0.005
+        max_target: 0.08
+        default_target: 0.02
+      AUDUSD:
+        target_multiplier: 2.0
+        min_target: 0.005
+        max_target: 0.08
+        default_target: 0.02
+      USDCAD:
+        target_multiplier: 2.0
+        min_target: 0.005
+        max_target: 0.08
+        default_target: 0.02
+        
+  # Equity
+  equity:
+    target_multiplier: 2.0
+    min_target: 0.01
+    max_target: 0.15
+    default_target: 0.04
+    volatility_adjustment: true
+    risk_reward_ratio: 2.0
+    
+    assets:
+      SPY:
+        target_multiplier: 2.0
+        min_target: 0.01
+        max_target: 0.10
+        default_target: 0.03
+      AAPL:
+        target_multiplier: 2.0
+        min_target: 0.01
+        max_target: 0.12
+        default_target: 0.04
+      MSFT:
+        target_multiplier: 2.0
+        min_target: 0.01
+        max_target: 0.12
+        default_target: 0.04
+      GOOGL:
+        target_multiplier: 2.0
+        min_target: 0.01
+        max_target: 0.12
+        default_target: 0.04
+      AMZN:
+        target_multiplier: 2.2
+        min_target: 0.01
+        max_target: 0.14
+        default_target: 0.05
+      TSLA:
+        target_multiplier: 2.5
+        min_target: 0.02
+        max_target: 0.18
+        default_target: 0.06
+      NVDA:
+        target_multiplier: 2.3
+        min_target: 0.02
+        max_target: 0.15
+        default_target: 0.05
+        
+  # Commodity
+  commodity:
+    target_multiplier: 2.0
+    min_target: 0.01
+    max_target: 0.15
+    default_target: 0.04
+    volatility_adjustment: true
+    risk_reward_ratio: 2.0
+    
+    assets:
+      GOLD:
+        target_multiplier: 2.0
+        min_target: 0.01
+        max_target: 0.10
+        default_target: 0.03
+      SILVER:
+        target_multiplier: 2.2
+        min_target: 0.01
+        max_target: 0.15
+        default_target: 0.05
+      OIL:
+        target_multiplier: 2.5
+        min_target: 0.02
+        max_target: 0.20
+        default_target: 0.06
+      NATURAL_GAS:
+        target_multiplier: 2.5
+        min_target: 0.02
+        max_target: 0.20
+        default_target: 0.06
+
+# ============================================================
+# TRAILING PROFIT TARGET
+# ============================================================
+trailing_target:
+  # Trailing Target Settings
+  settings:
+    enabled: true
+    trailing_type: "dynamic"  # dynamic, fixed, step
+    activation_threshold: 0.02  # 2% profit activates trailing
+    trailing_distance: 0.02  # 2% trailing distance
+    trailing_step: 0.01  # 1% step
+    min_trailing_distance: 0.01
+    max_trailing_distance: 0.05
+    
+  # Trailing Types
+  types:
+    fixed_trailing:
+      enabled: true
+      description: "Fixed trailing distance"
+      distance: 0.02
+      
+    dynamic_trailing:
+      enabled: true
+      description: "Dynamic trailing based on volatility"
+      volatility_multiplier: 0.5
+      
+    step_trailing:
+      enabled: true
+      description: "Step-based trailing"
+      step_size: 0.01
+      step_activation: 0.02
+      
+  # Trailing Rules
+  rules:
+    activate_on_profit: true
+    deactivate_on_loss: true
+    lock_in_profit: true
+    lock_in_threshold: 0.03
+    reset_on_new_high: true
+    reset_on_new_low: false
+
+# ============================================================
+# PROFIT TARGET MONITORING
+# ============================================================
+profit_target_monitoring:
+  # Monitoring Settings
+  settings:
+    enabled: true
+    monitoring_frequency: "realtime"
+    alert_threshold: 0.75  # 75% of target
+    critical_threshold: 0.90  # 90% of target
+    reporting_frequency: "daily"
+    
+  # Alert Conditions
+  alerts:
+    target_approaching:
+      enabled: true
+      level: "info"
+      threshold: 0.80
+      message: "Profit target approaching: {target}%"
+      
+    target_reached:
+      enabled: true
+      level: "success"
+      message: "Profit target reached: {target}%"
+      
+    target_exceeded:
+      enabled: true
+      level: "warning"
+      message: "Profit target exceeded: {target}%"
+      
+    target_adjustment:
+      enabled: true
+      level: "info"
+      message: "Profit target adjusted: {old}% -> {new}%"
+      
+  # Monitoring Metrics
+  metrics:
+    - "current_target"
+    - "current_profit"
+    - "target_progress"
+    - "target_distance"
+    - "trailing_distance"
+    - "target_adjustments"
+    - "target_achievement_rate"
+
+# ============================================================
+# PROFIT TARGET REPORTING
+# ============================================================
+profit_target_reporting:
+  # Report Settings
+  settings:
+    enabled: true
+    report_frequency: "daily"
+    report_format: "json"  # json, csv, pdf, html
+    include_analytics: true
+    include_visualizations: true
+    include_recommendations: true
+    
+  # Report Sections
+  sections:
+    target_summary:
+      enabled: true
+      include_current_targets: true
+      include_achievement_rate: true
+      include_distribution: true
+      
+    asset_targets:
+      enabled: true
+      include_by_asset_class: true
+      include_by_asset: true
+      include_target_comparison: true
+      
+    trailing_analysis:
+      enabled: true
+      include_trailing_performance: true
+      include_trailing_efficiency: true
+      
+    recommendations:
+      enabled: true
+      include_target_optimization: true
+      include_trailing_adjustment: true
+      include_risk_reward_optimization: true
+
+# ============================================================
+# PROFIT TARGET DASHBOARD
+# ============================================================
+profit_target_dashboard:
+  # Dashboard Settings
+  settings:
+    enabled: true
+    refresh_interval: 5
+    default_view: "summary"  # summary, details, analytics
+    
+  # Dashboard Widgets
+  widgets:
+    target_summary:
+      enabled: true
+      position: 1
+      size: "large"
+      
+    target_chart:
+      enabled: true
+      position: 2
+      size: "large"
+      
+    asset_targets:
+      enabled: true
+      position: 3
+      size: "medium"
+      
+    trailing_status:
+      enabled: true
+      position: 4
+      size: "medium"
+      
+    achievement_rate:
+      enabled: true
+      position: 5
+      size: "small"
+      
+    alert_status:
+      enabled: true
+      position: 6
+      size: "small"
+
+# ============================================================
+# PROFIT TARGET SCENARIOS
+# ============================================================
+profit_target_scenarios:
+  # Scenario 1: Conservative Target
+  conservative:
+    description: "Conservative profit target"
+    target_multiplier: 1.5
+    target_percentage: 0.03  # 3%
+    trailing_distance: 0.02
+    risk_reward_ratio: 1.5
+    
+  # Scenario 2: Moderate Target
+  moderate:
+    description: "Moderate profit target"
+    target_multiplier: 2.0
+    target_percentage: 0.05  # 5%
+    trailing_distance: 0.03
+    risk_reward_ratio: 2.0
+    
+  # Scenario 3: Aggressive Target
+  aggressive:
+    description: "Aggressive profit target"
+    target_multiplier: 3.0
+    target_percentage: 0.08  # 8%
+    trailing_distance: 0.04
+    risk_reward_ratio: 3.0
+    
+  # Scenario 4: Dynamic Target
+  dynamic:
+    description: "Dynamic profit target"
+    target_multiplier: "variable"
+    target_percentage: "adaptive"
+    trailing_distance: "dynamic"
+    risk_reward_ratio: "adaptive"
+
+# ============================================================
+# PROFIT TARGET EXAMPLES
+# ============================================================
+profit_target_examples:
+  # Example 1: Fixed Target
+  fixed_target_example:
+    description: "Fixed Profit Target Example"
+    entry_price: 100
+    target_percentage: 0.05  # 5%
+    target_price: 105
+    stop_loss: 0.03  # 3%
+    risk_reward_ratio: 1.67
+    
+  # Example 2: Risk-Based Target
+  risk_based_example:
+    description: "Risk-Based Profit Target Example"
+    entry_price: 100
+    risk_per_trade: 0.02  # 2%
+    risk_multiplier: 2.0
+    target_percentage: 0.04  # 4%
+    target_price: 104
+    stop_loss: 0.02  # 2%
+    risk_reward_ratio: 2.0
+    
+  # Example 3: Trailing Target
+  trailing_target_example:
+    description: "Trailing Profit Target Example"
+    entry_price: 100
+    activation_threshold: 0.02  # 2%
+    trailing_distance: 0.02  # 2%
+    target_price: 102
+    trailing_stop: 100  # Initial trailing stop
+    
+    # Scenario: Price moves to 105
+    new_price: 105
+    trailing_stop_new: 103  # 105 - 2%
+    lock_in_profit: 3%  # (103 - 100) / 100
+
+# ============================================================
+# ENVIRONMENT-SPECIFIC CONFIGURATIONS
+# ============================================================
+environments:
+  # Development Environment
+  development:
+    profit_target:
+      general:
+        enabled: true
+        target_type: "fixed"
+        default_target: 0.10
+        update_frequency: "hourly"
+        
+    profit_target_monitoring:
+      alerts:
+        target_approaching:
+          enabled: false
+        target_reached:
+          enabled: true
+          
+  # Staging Environment
+  staging:
+    profit_target:
+      general:
+        enabled: true
+        target_type: "dynamic"
+        default_target: 0.05
+        update_frequency: "realtime"
+        
+    profit_target_monitoring:
+      alerts:
+        target_approaching:
+          enabled: true
+        target_reached:
+          enabled: true
+        target_exceeded:
+          enabled: true
+          
+  # Production Environment
+  production:
+    profit_target:
+      general:
+        enabled: true
+        target_type: "dynamic"
+        default_target: 0.05
+        update_frequency: "realtime"
+        use_trailing_target: true
+        use_dynamic_adjustment: true
+        use_volatility_adjustment: true
+        
+    profit_target_monitoring:
+      alerts:
+        target_approaching:
+          enabled: true
+          level: "info"
+        target_reached:
+          enabled: true
+          level: "success"
+        target_exceeded:
+          enabled: true
+          level: "warning"
+        target_adjustment:
+          enabled: true
+          level: "info"
+          
+  # Demo Environment
+  demo:
+    profit_target:
+      general:
+        enabled: true
+        target_type: "fixed"
+        default_target: 0.08
+        update_frequency: "hourly"
+        
+    profit_target_monitoring:
+      alerts:
+        target_approaching:
+          enabled: false
+        target_reached:
+          enabled: true
+
+# ============================================================
+# END OF CONFIGURATION
+# ============================================================
