@@ -1,0 +1,946 @@
+# trading/bots/hedge_bot/config/backup_configs.yaml
+# NEXUS AI TRADING SYSTEM - Hedge Bot Backup Configuration
+# Version: 2.0.0
+# Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+
+# ============================================================
+# BACKUP GENERAL SETTINGS
+# ============================================================
+backup:
+  # General Backup Settings
+  general:
+    enabled: true
+    backup_level: "full"  # full, incremental, differential, all
+    backup_schedule: "daily"  # hourly, daily, weekly, monthly, custom
+    backup_time: "00:00"  # UTC time for scheduled backups
+    backup_retention_days: 30
+    max_backup_size_gb: 100
+    compression_enabled: true
+    compression_algorithm: "zstd"  # gzip, zstd, lz4, snappy, brotli
+    compression_level: 3  # 1-9 (higher = better compression but slower)
+    encryption_enabled: true
+    encryption_algorithm: "AES-256-GCM"
+    checksum_verification: true
+    backup_notifications: true
+    
+  # Backup Scope
+  scope:
+    database_backup: true
+    file_backup: true
+    configuration_backup: true
+    logs_backup: true
+    models_backup: true
+    cache_backup: false
+    temp_data_backup: false
+    
+  # Backup Types
+  types:
+    full_backup:
+      enabled: true
+      frequency: "weekly"
+      day: "sunday"
+      time: "00:00"
+      retention_days: 90
+      
+    incremental_backup:
+      enabled: true
+      frequency: "daily"
+      time: "00:00"
+      retention_days: 30
+      base_backup: "full"
+      
+    differential_backup:
+      enabled: false
+      frequency: "daily"
+      time: "00:00"
+      retention_days: 14
+      base_backup: "full"
+      
+    transaction_log_backup:
+      enabled: true
+      frequency: "hourly"
+      retention_days: 7
+      
+    snapshot_backup:
+      enabled: true
+      frequency: "daily"
+      time: "00:00"
+      retention_days: 7
+
+# ============================================================
+# DATABASE BACKUP
+# ============================================================
+database_backup:
+  # PostgreSQL Settings
+  postgresql:
+    enabled: true
+    host: "${POSTGRES_HOST}"
+    port: 5432
+    database: "nexus_trading"
+    username: "${POSTGRES_USER}"
+    password: "${POSTGRES_PASSWORD}"
+    backup_method: "pg_dump"  # pg_dump, pg_basebackup, custom
+    backup_format: "custom"  # custom, plain, directory, tar
+    compression: true
+    compression_level: 6
+    use_parallel: true
+    parallel_jobs: 4
+    include_blobs: true
+    include_indexes: true
+    include_constraints: true
+    include_rules: true
+    include_triggers: true
+    include_functions: true
+    include_procedures: true
+    include_views: true
+    include_extensions: true
+    include_roles: false
+    
+  # TimescaleDB Settings
+  timescaledb:
+    enabled: true
+    compression: true
+    chunk_interval: "7d"
+    retention_policy: "90d"
+    backup_hypertables: true
+    backup_chunks: true
+    backup_continuous_aggregates: true
+    backup_policies: true
+    
+  # Redis Settings
+  redis:
+    enabled: true
+    host: "${REDIS_HOST}"
+    port: 6379
+    password: "${REDIS_PASSWORD}"
+    backup_method: "rdb"  # rdb, aof, custom
+    rdb_filename: "dump.rdb"
+    aof_filename: "appendonly.aof"
+    compression: true
+    include_all_databases: true
+    include_keys: true
+    include_streams: true
+    include_pubsub: false
+    include_scripts: false
+    
+  # MongoDB Settings
+  mongodb:
+    enabled: false
+    host: "${MONGODB_HOST}"
+    port: 27017
+    database: "nexus_trading"
+    username: "${MONGODB_USER}"
+    password: "${MONGODB_PASSWORD}"
+    backup_method: "mongodump"  # mongodump, custom
+    compression: true
+    include_collections: true
+    include_indexes: true
+    include_views: true
+    include_users: false
+
+# ============================================================
+# FILE BACKUP
+# ============================================================
+file_backup:
+  # Directories to Backup
+  directories:
+    config_dir:
+      enabled: true
+      path: "/etc/nexus-trading"
+      include_subdirectories: true
+      exclude_patterns:
+        - "*.tmp"
+        - "*.log"
+        - "*.pid"
+      include_patterns:
+        - "*.yaml"
+        - "*.yml"
+        - "*.json"
+        - "*.conf"
+        - "*.cfg"
+        - "*.ini"
+        
+    data_dir:
+      enabled: true
+      path: "/var/lib/nexus-trading"
+      include_subdirectories: true
+      exclude_patterns:
+        - "*.tmp"
+        - "cache/*"
+        - "temp/*"
+      include_patterns:
+        - "*.db"
+        - "*.sqlite"
+        - "*.parquet"
+        - "*.csv"
+        - "*.json"
+        
+    logs_dir:
+      enabled: true
+      path: "/var/log/nexus-trading"
+      include_subdirectories: true
+      exclude_patterns:
+        - "*.gz"
+        - "*.zip"
+      include_patterns:
+        - "*.log"
+        - "*.txt"
+        
+    models_dir:
+      enabled: true
+      path: "/opt/nexus-trading/models"
+      include_subdirectories: true
+      exclude_patterns:
+        - "tmp/*"
+        - "*.tmp"
+      include_patterns:
+        - "*.pkl"
+        - "*.joblib"
+        - "*.onnx"
+        - "*.pt"
+        - "*.pth"
+        - "*.h5"
+        - "*.pb"
+        
+    uploads_dir:
+      enabled: true
+      path: "/opt/nexus-trading/uploads"
+      include_subdirectories: true
+      exclude_patterns:
+        - "temp/*"
+        - "*.tmp"
+      include_patterns:
+        - "*.jpg"
+        - "*.jpeg"
+        - "*.png"
+        - "*.pdf"
+        - "*.doc"
+        - "*.docx"
+        
+    scripts_dir:
+      enabled: true
+      path: "/opt/nexus-trading/scripts"
+      include_subdirectories: true
+      exclude_patterns:
+        - "*.pyc"
+        - "__pycache__/*"
+      include_patterns:
+        - "*.py"
+        - "*.sh"
+        - "*.bash"
+        - "*.js"
+        - "*.rb"
+        
+  # File Backup Settings
+  settings:
+    preserve_permissions: true
+    preserve_ownership: false
+    preserve_timestamps: true
+    follow_symlinks: false
+    dereference_symlinks: true
+    backup_hard_links: true
+    backup_attributes: true
+    
+  # Large File Handling
+  large_files:
+    threshold_mb: 100
+    split_files: true
+    split_size_mb: 1000
+    exclude_patterns:
+      - "*.mp4"
+      - "*.mkv"
+      - "*.iso"
+      - "*.dmg"
+
+# ============================================================
+# CONFIGURATION BACKUP
+# ============================================================
+config_backup:
+  # Configuration Files
+  files:
+    application_config:
+      enabled: true
+      path: "/opt/nexus-trading/config/application.yaml"
+      version_control: true
+      encrypt: true
+      
+    environment_config:
+      enabled: true
+      path: "/opt/nexus-trading/config/.env"
+      version_control: false
+      encrypt: true
+      
+    trading_config:
+      enabled: true
+      path: "/opt/nexus-trading/config/trading_config.yaml"
+      version_control: true
+      encrypt: false
+      
+    risk_config:
+      enabled: true
+      path: "/opt/nexus-trading/config/risk_config.yaml"
+      version_control: true
+      encrypt: false
+      
+    broker_config:
+      enabled: true
+      path: "/opt/nexus-trading/config/broker_config.yaml"
+      version_control: true
+      encrypt: true
+      
+    audit_config:
+      enabled: true
+      path: "/opt/nexus-trading/config/audit_config.yaml"
+      version_control: true
+      encrypt: false
+      
+  # Configuration Versioning
+  versioning:
+    enabled: true
+    max_versions: 10
+    version_format: "config_{date}_{version}.yaml"
+    compress_old_versions: true
+    keep_last_n_versions: 5
+
+# ============================================================
+# LOGS BACKUP
+# ============================================================
+logs_backup:
+  # Log Files
+  files:
+    application_logs:
+      enabled: true
+      path: "/var/log/nexus-trading/application.log"
+      rotate_before_backup: true
+      compress: true
+      
+    audit_logs:
+      enabled: true
+      path: "/var/log/nexus-trading/audit.log"
+      rotate_before_backup: true
+      compress: true
+      
+    error_logs:
+      enabled: true
+      path: "/var/log/nexus-trading/error.log"
+      rotate_before_backup: true
+      compress: true
+      
+    access_logs:
+      enabled: true
+      path: "/var/log/nexus-trading/access.log"
+      rotate_before_backup: true
+      compress: true
+      
+    trade_logs:
+      enabled: true
+      path: "/var/log/nexus-trading/trades.log"
+      rotate_before_backup: true
+      compress: true
+      
+  # Log Rotation
+  rotation:
+    enabled: true
+    max_size_mb: 100
+    max_files: 10
+    compress_rotated: true
+    rotate_on_startup: true
+    rotation_interval: "daily"
+
+# ============================================================
+# BACKUP STORAGE
+# ============================================================
+backup_storage:
+  # Local Storage
+  local:
+    enabled: true
+    path: "/backups/nexus-trading"
+    structure: "year/month/day/type"
+    max_storage_gb: 500
+    retention_policy: "auto"  # auto, manual, age_based
+    age_based_retention:
+      daily_backups: 30
+      weekly_backups: 90
+      monthly_backups: 365
+      yearly_backups: 730
+      
+  # Network Storage (NAS/SAN)
+  network:
+    enabled: false
+    mount_point: "/mnt/backup"
+    protocol: "nfs"  # nfs, cifs, iscsi
+    server: "192.168.1.100"
+    share: "/backups/nexus-trading"
+    username: "${NAS_USERNAME}"
+    password: "${NAS_PASSWORD}"
+    
+  # Cloud Storage
+  cloud:
+    enabled: true
+    provider: "aws"  # aws, gcp, azure, digitalocean, backblaze
+    
+    # AWS S3
+    aws:
+      bucket_name: "nexus-trading-backups"
+      region: "us-east-1"
+      access_key: "${AWS_ACCESS_KEY}"
+      secret_key: "${AWS_SECRET_KEY}"
+      storage_class: "STANDARD"  # STANDARD, INTELLIGENT_TIERING, GLACIER
+      lifecycle_rules:
+        - prefix: "daily/"
+          transition_to: "STANDARD_IA"
+          transition_days: 30
+        - prefix: "weekly/"
+          transition_to: "GLACIER"
+          transition_days: 90
+        - prefix: "monthly/"
+          transition_to: "GLACIER"
+          transition_days: 180
+        - prefix: "yearly/"
+          transition_to: "DEEP_ARCHIVE"
+          transition_days: 365
+          
+    # Google Cloud Storage
+    gcp:
+      bucket_name: "nexus-trading-backups"
+      location: "us-central1"
+      project_id: "${GCP_PROJECT_ID}"
+      credentials: "${GCP_CREDENTIALS}"
+      storage_class: "STANDARD"  # STANDARD, NEARLINE, COLDLINE, ARCHIVE
+      
+    # Azure Blob Storage
+    azure:
+      container_name: "nexus-trading-backups"
+      account_name: "${AZURE_ACCOUNT_NAME}"
+      account_key: "${AZURE_ACCOUNT_KEY}"
+      storage_tier: "Hot"  # Hot, Cool, Archive
+      
+  # Backup Replication
+  replication:
+    enabled: true
+    replicate_to:
+      - "cloud"
+      - "secondary_location"
+    replication_method: "async"  # async, sync
+    replication_compression: true
+    replication_encryption: true
+
+# ============================================================
+# BACKUP SCHEDULING
+# ============================================================
+backup_scheduling:
+  # Schedule Definitions
+  schedules:
+    full_backup:
+      enabled: true
+      frequency: "weekly"
+      day_of_week: 0  # 0=Sunday
+      time: "00:00"
+      timezone: "UTC"
+      
+    incremental_backup:
+      enabled: true
+      frequency: "daily"
+      time: "00:00"
+      timezone: "UTC"
+      
+    hourly_backup:
+      enabled: false
+      frequency: "hourly"
+      minute: 0
+      
+    realtime_backup:
+      enabled: true
+      frequency: "realtime"
+      batch_size: 100
+      batch_interval: 60
+      
+  # Backup Windows
+  windows:
+    maintenance_window:
+      start: "00:00"
+      end: "06:00"
+      days: [0, 1, 2, 3, 4, 5, 6]
+      
+    peak_hours:
+      start: "09:00"
+      end: "17:00"
+      days: [1, 2, 3, 4, 5]
+      skip_backups: true
+      
+  # Calendar Exceptions
+  exceptions:
+    holidays:
+      - "2026-01-01"
+      - "2026-12-25"
+      - "2026-12-26"
+    skip_dates: []
+    force_dates: []
+
+# ============================================================
+# BACKUP RETENTION
+# ============================================================
+backup_retention:
+  # Retention Policies
+  policies:
+    daily_backups:
+      retention_days: 30
+      max_count: 30
+      
+    weekly_backups:
+      retention_weeks: 13
+      max_count: 13
+      
+    monthly_backups:
+      retention_months: 12
+      max_count: 12
+      
+    yearly_backups:
+      retention_years: 3
+      max_count: 3
+      
+  # Cleanup
+  cleanup:
+    enabled: true
+    cleanup_schedule: "daily"
+    cleanup_time: "01:00"
+    cleanup_method: "age_based"  # age_based, count_based, space_based
+    minimum_free_space_gb: 50
+    preserve_last_backup: true
+    preserve_monthly_last: true
+    preserve_weekly_last: true
+    preserve_daily_last: true
+    
+  # Archive
+  archive:
+    enabled: true
+    archive_after_days: 90
+    archive_location: "cloud"  # cloud, tape, secondary
+    archive_format: "tar.gz"
+    archive_encryption: true
+    archive_checksum: true
+
+# ============================================================
+# BACKUP VERIFICATION
+# ============================================================
+backup_verification:
+  # Verification Settings
+  settings:
+    enabled: true
+    verify_after_backup: true
+    verify_after_restore: true
+    verify_checksums: true
+    verify_integrity: true
+    verify_completeness: true
+    
+  # Verification Methods
+  methods:
+    checksum_verification:
+      enabled: true
+      algorithm: "SHA-256"
+      store_checksums: true
+      
+    integrity_verification:
+      enabled: true
+      validate_structure: true
+      validate_metadata: true
+      validate_schema: true
+      
+    restore_testing:
+      enabled: true
+      test_restore_frequency: "weekly"
+      test_restore_location: "/tmp/restore_test"
+      test_restore_validation: true
+      
+  # Verification Reports
+  reports:
+    enabled: true
+    generate_verification_report: true
+    email_report: true
+    report_format: "json"  # json, html, pdf
+    include_verification_logs: true
+
+# ============================================================
+# BACKUP RESTORATION
+# ============================================================
+backup_restoration:
+  # Restoration Settings
+  settings:
+    restore_point_creation: true
+    restore_point_retention_days: 7
+    restore_validation: true
+    restore_audit_log: true
+    restore_notifications: true
+    
+  # Restoration Types
+  types:
+    full_restore:
+      enabled: true
+      restore_all_data: true
+      restore_all_configs: true
+      
+    partial_restore:
+      enabled: true
+      restore_by_timestamp: true
+      restore_by_backup_id: true
+      restore_by_object: true
+      
+    point_in_time_restore:
+      enabled: true
+      maximum_lag: "24h"
+      granularity: "1m"
+      
+  # Restoration Procedures
+  procedures:
+    database_restore:
+      enabled: true
+      restore_method: "postgres_restore"
+      verify_after_restore: true
+      reindex_after_restore: true
+      
+    file_restore:
+      enabled: true
+      restore_method: "rsync"
+      verify_after_restore: true
+      check_permissions: true
+      
+    configuration_restore:
+      enabled: true
+      restore_method: "copy"
+      verify_after_restore: true
+      restart_services: true
+
+# ============================================================
+# BACKUP MONITORING
+# ============================================================
+backup_monitoring:
+  # Monitoring Settings
+  settings:
+    enabled: true
+    monitoring_interval: 60
+    realtime_alerts: true
+    performance_monitoring: true
+    
+  # Metrics
+  metrics:
+    backup_status:
+      enabled: true
+      collect_interval: 60
+      
+    backup_size:
+      enabled: true
+      collect_interval: 60
+      
+    backup_duration:
+      enabled: true
+      collect_interval: 60
+      
+    backup_success_rate:
+      enabled: true
+      collect_interval: 300
+      
+    backup_storage_used:
+      enabled: true
+      collect_interval: 300
+      
+  # Alerts
+  alerts:
+    backup_failed_alert:
+      enabled: true
+      level: "critical"
+      notification_channels:
+        - "email"
+        - "telegram"
+        - "slack"
+        
+    backup_size_alert:
+      enabled: true
+      threshold: "80%"  # of max size
+      level: "warning"
+      notification_channels:
+        - "email"
+        - "slack"
+        
+    backup_retention_alert:
+      enabled: true
+      threshold: "90%"  # of max retention
+      level: "warning"
+      notification_channels:
+        - "email"
+        
+    backup_storage_alert:
+      enabled: true
+      threshold: "90%"  # of max storage
+      level: "warning"
+      notification_channels:
+        - "email"
+        - "slack"
+
+# ============================================================
+# BACKUP SECURITY
+# ============================================================
+backup_security:
+  # Security Settings
+  settings:
+    encryption: true
+    encryption_algorithm: "AES-256-GCM"
+    key_management: "kms"  # kms, file, vault
+    key_rotation_days: 90
+    secure_transfer: true
+    
+  # Key Management
+  key_management:
+    aws_kms:
+      enabled: true
+      key_id: "${AWS_KMS_KEY_ID}"
+      region: "us-east-1"
+      
+    hashicorp_vault:
+      enabled: false
+      vault_address: "${VAULT_ADDRESS}"
+      vault_token: "${VAULT_TOKEN}"
+      secret_path: "secret/backup"
+      
+    local_keystore:
+      enabled: false
+      keystore_path: "/opt/nexus-trading/keys/backup.keystore"
+      password: "${KEYSTORE_PASSWORD}"
+      
+  # Access Control
+  access_control:
+    restrict_backup_operations: true
+    require_authorization: true
+    audit_backup_access: true
+    access_log_retention_days: 365
+    
+  # Secure Transfer
+  secure_transfer:
+    use_ssh: true
+    use_tls: true
+    tls_version: "1.3"
+    verify_certificate: true
+    use_sftp: true
+    use_https: true
+
+# ============================================================
+# BACKUP DISASTER RECOVERY
+# ============================================================
+disaster_recovery:
+  # DR Settings
+  settings:
+    enabled: true
+    dr_plan_version: "1.0"
+    dr_coordinator: "${DR_COORDINATOR}"
+    dr_contact: "dr@nexusquantum.com"
+    
+  # DR Site
+  dr_site:
+    primary: "aws-us-east-1"
+    secondary: "aws-us-west-2"
+    failover_automatic: true
+    failover_timeout: 300
+    recovery_time_objective: "4h"
+    recovery_point_objective: "1h"
+    
+  # DR Procedures
+  procedures:
+    data_recovery:
+      enabled: true
+      recovery_method: "restore_from_backup"
+      verification: true
+      
+    system_recovery:
+      enabled: true
+      recovery_method: "infrastructure_as_code"
+      verification: true
+      
+    application_recovery:
+      enabled: true
+      recovery_method: "blue_green_deployment"
+      verification: true
+      
+  # DR Testing
+  testing:
+    enabled: true
+    test_frequency: "quarterly"
+    test_scenarios:
+      - "full_failover"
+      - "partial_failover"
+      - "data_corruption"
+      - "ransomware_attack"
+    test_reporting: true
+
+# ============================================================
+# BACKUP PERFORMANCE TUNING
+# ============================================================
+backup_performance:
+  # Performance Settings
+  settings:
+    parallel_backup: true
+    max_parallel_jobs: 4
+    network_throttle: false
+    network_bandwidth_mbps: 100
+    cpu_limit_percent: 50
+    memory_limit_mb: 1024
+    
+  # Optimization
+  optimization:
+    use_delta_backup: true
+    use_block_level_backup: true
+    use_deduplication: true
+    use_compression: true
+    use_caching: true
+    cache_size_mb: 256
+    
+  # Throttling
+  throttling:
+    enabled: true
+    io_throttle_mbps: 50
+    network_throttle_mbps: 10
+    cpu_throttle_percent: 70
+    during_peak_hours:
+      enabled: true
+      io_throttle_mbps: 25
+      network_throttle_mbps: 5
+      cpu_throttle_percent: 40
+
+# ============================================================
+# ENVIRONMENT-SPECIFIC CONFIGURATIONS
+# ============================================================
+environments:
+  # Development Environment
+  development:
+    backup:
+      general:
+        enabled: true
+        backup_retention_days: 7
+        compression_enabled: true
+        encryption_enabled: false
+        
+      schedule:
+        full_backup:
+          enabled: false
+        incremental_backup:
+          enabled: true
+          frequency: "daily"
+          
+    storage:
+      local:
+        enabled: true
+        max_storage_gb: 50
+      cloud:
+        enabled: false
+        
+  # Staging Environment
+  staging:
+    backup:
+      general:
+        enabled: true
+        backup_retention_days: 14
+        compression_enabled: true
+        encryption_enabled: true
+        
+      schedule:
+        full_backup:
+          enabled: true
+          frequency: "weekly"
+        incremental_backup:
+          enabled: true
+          frequency: "daily"
+          
+    storage:
+      local:
+        enabled: true
+        max_storage_gb: 200
+      cloud:
+        enabled: true
+        provider: "aws"
+        
+  # Production Environment
+  production:
+    backup:
+      general:
+        enabled: true
+        backup_retention_days: 30
+        compression_enabled: true
+        encryption_enabled: true
+        
+      schedule:
+        full_backup:
+          enabled: true
+          frequency: "weekly"
+        incremental_backup:
+          enabled: true
+          frequency: "daily"
+        hourly_backup:
+          enabled: true
+          frequency: "hourly"
+        realtime_backup:
+          enabled: true
+          
+    storage:
+      local:
+        enabled: true
+        max_storage_gb: 500
+      cloud:
+        enabled: true
+        provider: "aws"
+        replication: true
+        
+  # Demo Environment
+  demo:
+    backup:
+      general:
+        enabled: true
+        backup_retention_days: 7
+        compression_enabled: true
+        encryption_enabled: false
+        
+      schedule:
+        full_backup:
+          enabled: false
+        incremental_backup:
+          enabled: true
+          frequency: "daily"
+          
+    storage:
+      local:
+        enabled: true
+        max_storage_gb: 50
+      cloud:
+        enabled: false
+
+# ============================================================
+# BACKUP TEMPLATES
+# ============================================================
+templates:
+  # Backup Plan Template
+  backup_plan:
+    name: "Standard_Backup_Plan"
+    type: "full"
+    schedule: "daily"
+    retention: 30
+    encryption: true
+    compression: true
+    verification: true
+    
+  # Recovery Plan Template
+  recovery_plan:
+    name: "Standard_Recovery_Plan"
+    type: "full"
+    priority: "normal"
+    timeout: 3600
+    verification: true
+    notification: true
+    
+  # Backup Policy Template
+  backup_policy:
+    name: "Standard_Backup_Policy"
+    retention_days: 30
+    backup_window: "00:00-06:00"
+    max_backups: 10
+    min_free_space: "20%"
+
+# ============================================================
+# END OF CONFIGURATION
+# ============================================================
