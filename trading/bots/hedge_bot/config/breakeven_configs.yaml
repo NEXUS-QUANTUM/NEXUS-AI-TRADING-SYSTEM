@@ -1,0 +1,693 @@
+# trading/bots/hedge_bot/config/breakeven_configs.yaml
+# NEXUS AI TRADING SYSTEM - Hedge Bot Breakeven Configuration
+# Version: 2.0.0
+# Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+
+# ============================================================
+# BREAKEVEN GENERAL SETTINGS
+# ============================================================
+breakeven:
+  # General Breakeven Settings
+  general:
+    enabled: true
+    calculation_method: "dynamic"  # dynamic, static, adaptive
+    include_commissions: true
+    include_fees: true
+    include_slippage: true
+    include_financing_costs: true
+    include_operational_costs: true
+    update_frequency: "realtime"  # realtime, hourly, daily
+    minimum_profit_threshold: 0.0001  # 0.01% minimum profit
+    
+  # Breakeven Types
+  types:
+    trade_breakeven:
+      enabled: true
+      include_entry_cost: true
+      include_exit_cost: true
+      include_holding_cost: true
+      
+    position_breakeven:
+      enabled: true
+      include_average_price: true
+      include_adjustment_costs: true
+      include_margin_costs: true
+      
+    portfolio_breakeven:
+      enabled: true
+      include_all_positions: true
+      include_net_exposure: true
+      include_hedging_costs: true
+      
+    strategy_breakeven:
+      enabled: true
+      include_strategy_costs: true
+      include_infrastructure_costs: true
+      include_data_costs: true
+
+# ============================================================
+# COST COMPONENTS
+# ============================================================
+cost_components:
+  # Transaction Costs
+  transaction_costs:
+    commission:
+      enabled: true
+      type: "tiered"  # flat, tiered, percentage
+      maker_fee: 0.001  # 0.1%
+      taker_fee: 0.001  # 0.1%
+      volume_discounts:
+        - volume: 1000000
+          discount: 0.20  # 20% discount
+        - volume: 5000000
+          discount: 0.30
+        - volume: 10000000
+          discount: 0.40
+          
+    spread:
+      enabled: true
+      calculation: "bid_ask"  # bid_ask, vwap, mid
+      average_spread: 0.0005  # 0.05%
+      spread_multiplier: 1.0
+      
+    slippage:
+      enabled: true
+      calculation: "estimated"  # estimated, historical, market_impact
+      estimated_slippage: 0.0001  # 0.01%
+      slippage_multiplier: 1.0
+      
+    exchange_fees:
+      enabled: true
+      withdrawal_fee: 0.0001
+      deposit_fee: 0.0000
+      transfer_fee: 0.0001
+      
+  # Holding Costs
+  holding_costs:
+    financing:
+      enabled: true
+      funding_rate: 0.0001  # 0.01% per day
+      margin_interest: 0.00005  # 0.005% per day
+      
+    carry_cost:
+      enabled: true
+      storage_cost: 0.0001  # For commodities
+      insurance_cost: 0.00005
+      
+    opportunity_cost:
+      enabled: true
+      risk_free_rate: 0.0001  # 0.01% per day
+      alternative_returns: 0.0002  # 0.02% per day
+      
+  # Operational Costs
+  operational_costs:
+    infrastructure:
+      enabled: true
+      monthly_cost: 1000  # USD
+      allocated_per_trade: 0.0001
+      
+    data:
+      enabled: true
+      monthly_cost: 500  # USD
+      allocated_per_trade: 0.00005
+      
+    support:
+      enabled: true
+      monthly_cost: 200  # USD
+      allocated_per_trade: 0.00002
+
+# ============================================================
+# BREAKEVEN CALCULATION METHODS
+# ============================================================
+calculation_methods:
+  # Method 1: Simple Breakeven
+  simple:
+    enabled: true
+    formula: "entry_price + costs"
+    components:
+      - "entry_cost"
+      - "exit_cost"
+      - "transaction_costs"
+      
+  # Method 2: Full Cost Breakeven
+  full_cost:
+    enabled: true
+    formula: "entry_price + all_costs + (holding_days * daily_cost)"
+    components:
+      - "entry_cost"
+      - "exit_cost"
+      - "transaction_costs"
+      - "holding_costs"
+      - "operational_costs"
+      - "opportunity_cost"
+      
+  # Method 3: Dynamic Breakeven
+  dynamic:
+    enabled: true
+    formula: "entry_price + sum(all_costs) + volatility_adjustment"
+    components:
+      - "entry_cost"
+      - "exit_cost"
+      - "transaction_costs"
+      - "holding_costs"
+      - "operational_costs"
+      - "opportunity_cost"
+      - "volatility_adjustment"
+    volatility_factor: 0.5
+    confidence_level: 0.95
+    
+  # Method 4: Adaptive Breakeven
+  adaptive:
+    enabled: true
+    formula: "entry_price + adaptive_costs + risk_premium"
+    components:
+      - "adaptive_entry_cost"
+      - "adaptive_exit_cost"
+      - "adaptive_transaction_costs"
+      - "adaptive_holding_costs"
+      - "risk_premium"
+    learning_rate: 0.1
+    lookback_period: 30
+
+# ============================================================
+# BREAKEVEN BY ASSET CLASS
+# ============================================================
+asset_class_breakeven:
+  # Cryptocurrencies
+  cryptocurrency:
+    transaction_costs:
+      commission: 0.001
+      spread: 0.0005
+      slippage: 0.0002
+      withdrawal_fee: 0.0005
+      
+    holding_costs:
+      funding_rate: 0.0001
+      margin_interest: 0.0001
+      
+    operational_costs:
+      infrastructure: 0.0001
+      data: 0.00005
+      
+    minimum_profit: 0.0005  # 0.05%
+    
+  # Forex
+  forex:
+    transaction_costs:
+      commission: 0.00005
+      spread: 0.0001
+      slippage: 0.00005
+      
+    holding_costs:
+      funding_rate: 0.00002
+      margin_interest: 0.00005
+      
+    operational_costs:
+      infrastructure: 0.00002
+      data: 0.00001
+      
+    minimum_profit: 0.0001  # 0.01%
+    
+  # Equities
+  equity:
+    transaction_costs:
+      commission: 0.0005
+      spread: 0.0002
+      slippage: 0.0001
+      
+    holding_costs:
+      funding_rate: 0.00005
+      margin_interest: 0.00005
+      
+    operational_costs:
+      infrastructure: 0.00005
+      data: 0.00002
+      
+    minimum_profit: 0.0002  # 0.02%
+    
+  # Commodities
+  commodity:
+    transaction_costs:
+      commission: 0.0003
+      spread: 0.0003
+      slippage: 0.0002
+      
+    holding_costs:
+      funding_rate: 0.00008
+      margin_interest: 0.00006
+      storage_cost: 0.0001
+      
+    operational_costs:
+      infrastructure: 0.00003
+      data: 0.00001
+      
+    minimum_profit: 0.0003  # 0.03%
+
+# ============================================================
+# BREAKEVEN SCENARIOS
+# ============================================================
+breakeven_scenarios:
+  # Scenario 1: Normal Market
+  normal:
+    description: "Normal market conditions"
+    volatility_multiplier: 1.0
+    liquidity_multiplier: 1.0
+    spread_multiplier: 1.0
+    slippage_multiplier: 1.0
+    confidence_level: 0.95
+    
+  # Scenario 2: High Volatility
+  high_volatility:
+    description: "High volatility market conditions"
+    volatility_multiplier: 2.0
+    liquidity_multiplier: 0.8
+    spread_multiplier: 1.5
+    slippage_multiplier: 2.0
+    confidence_level: 0.99
+    
+  # Scenario 3: Low Liquidity
+  low_liquidity:
+    description: "Low liquidity market conditions"
+    volatility_multiplier: 1.0
+    liquidity_multiplier: 0.5
+    spread_multiplier: 2.0
+    slippage_multiplier: 2.5
+    confidence_level: 0.95
+    
+  # Scenario 4: Crisis Mode
+  crisis:
+    description: "Market crisis conditions"
+    volatility_multiplier: 3.0
+    liquidity_multiplier: 0.3
+    spread_multiplier: 3.0
+    slippage_multiplier: 4.0
+    confidence_level: 0.999
+    
+  # Scenario 5: Best Case
+  best_case:
+    description: "Best case conditions"
+    volatility_multiplier: 0.5
+    liquidity_multiplier: 1.5
+    spread_multiplier: 0.5
+    slippage_multiplier: 0.5
+    confidence_level: 0.90
+
+# ============================================================
+# RISK ADJUSTMENTS
+# ============================================================
+risk_adjustments:
+  # Breakeven Risk Factors
+  risk_factors:
+    market_risk:
+      enabled: true
+      factor: 0.1
+      calculation: "var_based"
+      
+    liquidity_risk:
+      enabled: true
+      factor: 0.05
+      calculation: "spread_based"
+      
+    credit_risk:
+      enabled: true
+      factor: 0.03
+      calculation: "counterparty_based"
+      
+    operational_risk:
+      enabled: true
+      factor: 0.02
+      calculation: "historical_based"
+      
+  # Risk Premium
+  risk_premium:
+    base_premium: 0.0001  # 0.01%
+    volatility_premium: 0.00005
+    liquidity_premium: 0.00003
+    market_stress_premium: 0.0001
+    counterparty_premium: 0.00002
+    
+  # Confidence Intervals
+  confidence_intervals:
+    - level: 0.90
+      multiplier: 1.645
+    - level: 0.95
+      multiplier: 1.960
+    - level: 0.99
+      multiplier: 2.576
+    - level: 0.999
+      multiplier: 3.291
+
+# ============================================================
+# BREAKEVEN MONITORING
+# ============================================================
+breakeven_monitoring:
+  # Monitoring Settings
+  settings:
+    enabled: true
+    monitoring_frequency: "realtime"
+    alert_threshold: 0.001  # 0.1% deviation
+    reporting_frequency: "daily"
+    
+  # Alert Conditions
+  alerts:
+    breached_breakeven:
+      enabled: true
+      level: "warning"
+      message: "Position price has breached breakeven level"
+      
+    approaching_breakeven:
+      enabled: true
+      threshold: 0.0005  # 0.05% from breakeven
+      level: "info"
+      message: "Position approaching breakeven level"
+      
+    breakeven_moved:
+      enabled: true
+      threshold: 0.001  # 0.1% change
+      level: "warning"
+      message: "Breakeven level has moved significantly"
+      
+    below_breakeven:
+      enabled: true
+      level: "critical"
+      message: "Position is below breakeven level"
+      
+  # Breakeven Metrics
+  metrics:
+    - "current_breakeven"
+    - "breakeven_distance"
+    - "breakeven_percentage"
+    - "breakeven_deviation"
+    - "breakeven_history"
+    - "breakeven_volatility"
+
+# ============================================================
+# BREAKEVEN OPTIMIZATION
+# ============================================================
+breakeven_optimization:
+  # Optimization Settings
+  settings:
+    enabled: true
+    optimization_method: "dynamic"  # static, dynamic, adaptive
+    optimization_frequency: "realtime"
+    lookback_period: 30
+    
+  # Optimization Strategies
+  strategies:
+    minimize_costs:
+      enabled: true
+      target: "cost_minimization"
+      constraints:
+        - "maintain_profitability"
+        - "maintain_risk_limits"
+        
+    maximize_profit:
+      enabled: true
+      target: "profit_maximization"
+      constraints:
+        - "maintain_breakeven_levels"
+        - "maintain_risk_limits"
+        
+    adaptive_optimization:
+      enabled: true
+      target: "adaptive_optimization"
+      learning_rate: 0.1
+      exploration_rate: 0.05
+      
+  # Optimization Variables
+  variables:
+    - "entry_price_levels"
+    - "exit_price_levels"
+    - "position_sizing"
+    - "stop_loss_levels"
+    - "take_profit_levels"
+
+# ============================================================
+# BREAKEVEN REPORTING
+# ============================================================
+breakeven_reporting:
+  # Report Settings
+  settings:
+    enabled: true
+    report_frequency: "daily"
+    report_format: "json"  # json, csv, pdf, html
+    include_analytics: true
+    include_metrics: true
+    include_recommendations: true
+    
+  # Report Sections
+  sections:
+    breakeven_summary:
+      enabled: true
+      include_all_positions: true
+      include_weighted_average: true
+      
+    breakeven_analysis:
+      enabled: true
+      include_by_asset_class: true
+      include_by_strategy: true
+      include_by_position: true
+      
+    cost_analysis:
+      enabled: true
+      include_transaction_costs: true
+      include_holding_costs: true
+      include_operational_costs: true
+      
+    risk_analysis:
+      enabled: true
+      include_risk_premium: true
+      include_confidence_intervals: true
+      include_scenario_analysis: true
+      
+    optimization_recommendations:
+      enabled: true
+      include_cost_reductions: true
+      include_profit_improvements: true
+      include_risk_adjustments: true
+
+# ============================================================
+# BREAKEVEN DASHBOARD
+# ============================================================
+breakeven_dashboard:
+  # Dashboard Settings
+  settings:
+    enabled: true
+    refresh_interval: 5
+    default_view: "summary"  # summary, details, analytics
+    
+  # Dashboard Widgets
+  widgets:
+    breakeven_summary:
+      enabled: true
+      position: 1
+      size: "large"
+      
+    cost_breakdown:
+      enabled: true
+      position: 2
+      size: "medium"
+      
+    breakeven_chart:
+      enabled: true
+      position: 3
+      size: "large"
+      
+    breakeven_deviation:
+      enabled: true
+      position: 4
+      size: "medium"
+      
+    alert_status:
+      enabled: true
+      position: 5
+      size: "small"
+      
+    optimization_status:
+      enabled: true
+      position: 6
+      size: "medium"
+
+# ============================================================
+# BREAKEVEN INTEGRATION
+# ============================================================
+breakeven_integration:
+  # Integration Settings
+  settings:
+    enabled: true
+    integration_type: "api"  # api, webhook, websocket, file
+    
+  # External Systems
+  systems:
+    trading_system:
+      enabled: true
+      endpoint: "/api/trading/breakeven"
+      update_frequency: "realtime"
+      
+    risk_system:
+      enabled: true
+      endpoint: "/api/risk/breakeven"
+      update_frequency: "realtime"
+      
+    analytics_system:
+      enabled: true
+      endpoint: "/api/analytics/breakeven"
+      update_frequency: "hourly"
+      
+    reporting_system:
+      enabled: true
+      endpoint: "/api/reporting/breakeven"
+      update_frequency: "daily"
+
+# ============================================================
+# BREAKEVEN EXAMPLES
+# ============================================================
+breakeven_examples:
+  # Example 1: Simple Long Position
+  long_position:
+    scenario: "BTC/USD Long Position"
+    entry_price: 50000
+    position_size: 1.0
+    costs:
+      commission: 0.001  # 0.1%
+      spread: 0.0005
+      slippage: 0.0002
+    holding_cost: 0.0001  # per day
+    holding_days: 30
+    breakeven_price: 50175  # Example calculation
+    
+  # Example 2: Hedged Position
+  hedged_position:
+    scenario: "BTC/USD Hedged Position"
+    entry_price: 50000
+    hedge_price: 50100
+    position_size: 1.0
+    hedge_size: 1.0
+    costs:
+      commission: 0.001
+      spread: 0.0005
+      slippage: 0.0002
+      hedge_cost: 0.001
+    holding_cost: 0.0001
+    holding_days: 30
+    breakeven_price: 50175
+    
+  # Example 3: Leveraged Position
+  leveraged_position:
+    scenario: "BTC/USD Leveraged Position"
+    entry_price: 50000
+    leverage: 3.0
+    position_size: 1.0
+    costs:
+      commission: 0.001
+      spread: 0.0005
+      slippage: 0.0002
+      borrowing_cost: 0.0002
+    holding_cost: 0.0001
+    holding_days: 30
+    breakeven_price: 50200
+
+# ============================================================
+# ENVIRONMENT-SPECIFIC CONFIGURATIONS
+# ============================================================
+environments:
+  # Development Environment
+  development:
+    breakeven:
+      general:
+        enabled: true
+        update_frequency: "hourly"
+        
+      calculation_methods:
+        simple:
+          enabled: true
+        full_cost:
+          enabled: false
+        dynamic:
+          enabled: false
+          
+    breakeven_monitoring:
+      alerts:
+        breached_breakeven:
+          enabled: false
+          
+  # Staging Environment
+  staging:
+    breakeven:
+      general:
+        enabled: true
+        update_frequency: "realtime"
+        
+      calculation_methods:
+        simple:
+          enabled: true
+        full_cost:
+          enabled: true
+        dynamic:
+          enabled: true
+        adaptive:
+          enabled: false
+          
+    breakeven_monitoring:
+      alerts:
+        breached_breakeven:
+          enabled: true
+        approaching_breakeven:
+          enabled: true
+          
+  # Production Environment
+  production:
+    breakeven:
+      general:
+        enabled: true
+        update_frequency: "realtime"
+        
+      calculation_methods:
+        simple:
+          enabled: true
+        full_cost:
+          enabled: true
+        dynamic:
+          enabled: true
+        adaptive:
+          enabled: true
+          
+    breakeven_monitoring:
+      alerts:
+        breached_breakeven:
+          enabled: true
+          level: "critical"
+        approaching_breakeven:
+          enabled: true
+        breakeven_moved:
+          enabled: true
+        below_breakeven:
+          enabled: true
+          
+  # Demo Environment
+  demo:
+    breakeven:
+      general:
+        enabled: true
+        update_frequency: "hourly"
+        
+      calculation_methods:
+        simple:
+          enabled: true
+        full_cost:
+          enabled: true
+        dynamic:
+          enabled: false
+        adaptive:
+          enabled: false
+          
+    breakeven_monitoring:
+      alerts:
+        breached_breakeven:
+          enabled: true
+        approaching_breakeven:
+          enabled: false
+
+# ============================================================
+# END OF CONFIGURATION
+# ============================================================
