@@ -1,0 +1,564 @@
+# trading/bots/hedge_bot/config/take_profit_configs.yaml
+# NEXUS AI TRADING SYSTEM - Hedge Bot Take Profit Configuration
+# Version: 2.0.0
+# Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+
+# ============================================================
+# TAKE PROFIT GENERAL SETTINGS
+# ============================================================
+take_profit:
+  # General Take Profit Settings
+  general:
+    enabled: true
+    take_profit_type: "dynamic"  # dynamic, fixed, trailing, adaptive
+    default_take_profit: 0.10  # 10% default
+    min_take_profit: 0.01  # 1% minimum
+    max_take_profit: 0.30  # 30% maximum
+    take_profit_activation: "immediate"  # immediate, threshold, conditional
+    update_frequency: "realtime"
+    use_volatility_adjustment: true
+    use_market_regime_adjustment: true
+    use_asset_specific_targets: true
+    risk_reward_ratio: 2.0  # Default risk/reward ratio
+    
+  # Take Profit Types
+  types:
+    fixed_take_profit:
+      enabled: true
+      description: "Fixed percentage take profit"
+      percentage: 0.10
+      
+    trailing_take_profit:
+      enabled: true
+      description: "Trailing take profit"
+      trailing_distance: 0.05  # 5%
+      activation_threshold: 0.02  # 2%
+      
+    dynamic_take_profit:
+      enabled: true
+      description: "Dynamic take profit based on volatility"
+      volatility_multiplier: 1.5
+      
+    adaptive_take_profit:
+      enabled: true
+      description: "Adaptive take profit learning from market patterns"
+      learning_rate: 0.1
+      
+    atr_take_profit:
+      enabled: true
+      description: "ATR-based take profit"
+      atr_multiplier: 3.0
+      atr_period: 14
+
+# ============================================================
+# TAKE PROFIT BY ASSET CLASS
+# ============================================================
+take_profit_by_asset:
+  # Cryptocurrency
+  cryptocurrency:
+    fixed_target: 0.10  # 10%
+    trailing_target: 0.05  # 5%
+    atr_multiplier: 3.0
+    min_target: 0.03
+    max_target: 0.25
+    volatility_adjustment: true
+    risk_reward_ratio: 2.0
+    
+    assets:
+      BTC:
+        fixed_target: 0.08
+        trailing_target: 0.04
+        atr_multiplier: 2.5
+        volatility_adjustment: 0.8
+        risk_reward_ratio: 2.0
+      ETH:
+        fixed_target: 0.10
+        trailing_target: 0.05
+        atr_multiplier: 3.0
+        volatility_adjustment: 0.9
+        risk_reward_ratio: 2.0
+      SOL:
+        fixed_target: 0.12
+        trailing_target: 0.06
+        atr_multiplier: 3.5
+        volatility_adjustment: 1.2
+        risk_reward_ratio: 2.5
+      ADA:
+        fixed_target: 0.12
+        trailing_target: 0.06
+        atr_multiplier: 3.5
+        volatility_adjustment: 1.2
+        risk_reward_ratio: 2.5
+      DOT:
+        fixed_target: 0.11
+        trailing_target: 0.055
+        atr_multiplier: 3.2
+        volatility_adjustment: 1.1
+        risk_reward_ratio: 2.2
+      AVAX:
+        fixed_target: 0.15
+        trailing_target: 0.07
+        atr_multiplier: 4.0
+        volatility_adjustment: 1.3
+        risk_reward_ratio: 2.8
+      XRP:
+        fixed_target: 0.09
+        trailing_target: 0.045
+        atr_multiplier: 2.8
+        volatility_adjustment: 1.0
+        risk_reward_ratio: 2.0
+      LINK:
+        fixed_target: 0.10
+        trailing_target: 0.05
+        atr_multiplier: 3.0
+        volatility_adjustment: 1.1
+        risk_reward_ratio: 2.2
+      UNI:
+        fixed_target: 0.12
+        trailing_target: 0.06
+        atr_multiplier: 3.5
+        volatility_adjustment: 1.2
+        risk_reward_ratio: 2.5
+      AAVE:
+        fixed_target: 0.12
+        trailing_target: 0.06
+        atr_multiplier: 3.5
+        volatility_adjustment: 1.2
+        risk_reward_ratio: 2.5
+        
+  # Forex
+  forex:
+    fixed_target: 0.03  # 3%
+    trailing_target: 0.015  # 1.5%
+    atr_multiplier: 2.0
+    min_target: 0.01
+    max_target: 0.08
+    volatility_adjustment: true
+    risk_reward_ratio: 1.5
+    
+    assets:
+      EURUSD:
+        fixed_target: 0.03
+        trailing_target: 0.015
+        atr_multiplier: 2.0
+        risk_reward_ratio: 1.5
+      GBPUSD:
+        fixed_target: 0.03
+        trailing_target: 0.015
+        atr_multiplier: 2.0
+        risk_reward_ratio: 1.5
+      USDJPY:
+        fixed_target: 0.03
+        trailing_target: 0.015
+        atr_multiplier: 2.0
+        risk_reward_ratio: 1.5
+      USDCHF:
+        fixed_target: 0.03
+        trailing_target: 0.015
+        atr_multiplier: 2.0
+        risk_reward_ratio: 1.5
+      AUDUSD:
+        fixed_target: 0.035
+        trailing_target: 0.018
+        atr_multiplier: 2.2
+        risk_reward_ratio: 1.6
+      USDCAD:
+        fixed_target: 0.035
+        trailing_target: 0.018
+        atr_multiplier: 2.2
+        risk_reward_ratio: 1.6
+        
+  # Equity
+  equity:
+    fixed_target: 0.06  # 6%
+    trailing_target: 0.03  # 3%
+    atr_multiplier: 2.5
+    min_target: 0.02
+    max_target: 0.15
+    volatility_adjustment: true
+    risk_reward_ratio: 1.8
+    
+    assets:
+      SPY:
+        fixed_target: 0.05
+        trailing_target: 0.025
+        atr_multiplier: 2.0
+        risk_reward_ratio: 1.5
+      AAPL:
+        fixed_target: 0.06
+        trailing_target: 0.03
+        atr_multiplier: 2.5
+        risk_reward_ratio: 1.8
+      MSFT:
+        fixed_target: 0.06
+        trailing_target: 0.03
+        atr_multiplier: 2.5
+        risk_reward_ratio: 1.8
+      GOOGL:
+        fixed_target: 0.06
+        trailing_target: 0.03
+        atr_multiplier: 2.5
+        risk_reward_ratio: 1.8
+      AMZN:
+        fixed_target: 0.07
+        trailing_target: 0.035
+        atr_multiplier: 3.0
+        risk_reward_ratio: 2.0
+      TSLA:
+        fixed_target: 0.10
+        trailing_target: 0.05
+        atr_multiplier: 3.5
+        risk_reward_ratio: 2.5
+      NVDA:
+        fixed_target: 0.08
+        trailing_target: 0.04
+        atr_multiplier: 3.0
+        risk_reward_ratio: 2.0
+        
+  # Commodity
+  commodity:
+    fixed_target: 0.06  # 6%
+    trailing_target: 0.03  # 3%
+    atr_multiplier: 2.5
+    min_target: 0.02
+    max_target: 0.15
+    volatility_adjustment: true
+    risk_reward_ratio: 1.8
+    
+    assets:
+      GOLD:
+        fixed_target: 0.05
+        trailing_target: 0.025
+        atr_multiplier: 2.0
+        risk_reward_ratio: 1.5
+      SILVER:
+        fixed_target: 0.07
+        trailing_target: 0.035
+        atr_multiplier: 2.8
+        risk_reward_ratio: 2.0
+      OIL:
+        fixed_target: 0.08
+        trailing_target: 0.04
+        atr_multiplier: 3.0
+        risk_reward_ratio: 2.2
+      NATURAL_GAS:
+        fixed_target: 0.10
+        trailing_target: 0.05
+        atr_multiplier: 3.5
+        risk_reward_ratio: 2.5
+
+# ============================================================
+# TAKE PROFIT ADJUSTMENTS
+# ============================================================
+take_profit_adjustments:
+  # Market Regime Adjustments
+  market_regime:
+    bull_market:
+      target_multiplier: 1.2
+      description: "Higher targets in bull markets"
+      
+    bear_market:
+      target_multiplier: 0.8
+      description: "Lower targets in bear markets"
+      
+    sideways_market:
+      target_multiplier: 1.0
+      description: "Neutral targets in sideways markets"
+      
+    high_volatility:
+      target_multiplier: 1.3
+      description: "Higher targets in high volatility"
+      
+    low_volatility:
+      target_multiplier: 0.7
+      description: "Lower targets in low volatility"
+      
+  # Risk Profile Adjustments
+  risk_profile:
+    conservative:
+      target_multiplier: 0.7
+      target_percentage: 0.05
+      
+    moderate:
+      target_multiplier: 1.0
+      target_percentage: 0.10
+      
+    aggressive:
+      target_multiplier: 1.3
+      target_percentage: 0.15
+
+# ============================================================
+# TAKE PROFIT MONITORING
+# ============================================================
+take_profit_monitoring:
+  # Monitoring Settings
+  settings:
+    enabled: true
+    monitoring_frequency: "realtime"
+    alert_threshold: 0.75  # 75% of target
+    critical_threshold: 0.90  # 90% of target
+    reporting_frequency: "daily"
+    
+  # Alert Conditions
+  alerts:
+    take_profit_approaching:
+      enabled: true
+      level: "info"
+      threshold: 0.80
+      message: "Take profit approaching: {distance}%"
+      
+    take_profit_hit:
+      enabled: true
+      level: "success"
+      message: "Take profit hit for {asset}"
+      
+    take_profit_adjustment:
+      enabled: true
+      level: "info"
+      message: "Take profit adjusted: {old} -> {new}"
+      
+  # Monitoring Metrics
+  metrics:
+    - "current_take_profit"
+    - "take_profit_distance"
+    - "take_profit_hit_count"
+    - "take_profit_adjustment_count"
+    - "take_profit_effectiveness"
+
+# ============================================================
+# TAKE PROFIT REPORTING
+# ============================================================
+take_profit_reporting:
+  # Report Settings
+  settings:
+    enabled: true
+    report_frequency: "daily"
+    report_format: "json"  # json, csv, pdf, html
+    include_analytics: true
+    include_visualizations: true
+    include_recommendations: true
+    
+  # Report Sections
+  sections:
+    take_profit_summary:
+      enabled: true
+      include_current_targets: true
+      include_hit_count: true
+      include_effectiveness: true
+      
+    asset_targets:
+      enabled: true
+      include_by_asset_class: true
+      include_by_asset: true
+      
+    adjustments:
+      enabled: true
+      include_adjustment_count: true
+      include_adjustment_reasons: true
+      
+    recommendations:
+      enabled: true
+      include_target_optimization: true
+      include_risk_reward_optimization: true
+
+# ============================================================
+# TAKE PROFIT DASHBOARD
+# ============================================================
+take_profit_dashboard:
+  # Dashboard Settings
+  settings:
+    enabled: true
+    refresh_interval: 5
+    default_view: "summary"  # summary, details, analytics
+    
+  # Dashboard Widgets
+  widgets:
+    take_profit_summary:
+      enabled: true
+      position: 1
+      size: "large"
+      
+    take_profit_chart:
+      enabled: true
+      position: 2
+      size: "large"
+      
+    asset_targets:
+      enabled: true
+      position: 3
+      size: "medium"
+      
+    hit_analysis:
+      enabled: true
+      position: 4
+      size: "medium"
+      
+    alert_status:
+      enabled: true
+      position: 5
+      size: "small"
+
+# ============================================================
+# TAKE PROFIT SCENARIOS
+# ============================================================
+take_profit_scenarios:
+  # Scenario 1: Fixed Target
+  fixed_target_scenario:
+    description: "Fixed take profit scenario"
+    entry_price: 100
+    target_price: 110  # 10% target
+    reward: 10
+    reward_percentage: 0.10
+    
+  # Scenario 2: Trailing Target
+  trailing_target_scenario:
+    description: "Trailing take profit scenario"
+    entry_price: 100
+    trailing_distance: 5  # 5%
+    activation_threshold: 2  # 2%
+    
+    # Price moves to 105
+    new_price: 105
+    trailing_target: 100  # 105 - 5 = 100
+    
+    # Price moves to 110
+    new_price: 110
+    trailing_target: 105  # 110 - 5 = 105
+    
+  # Scenario 3: Dynamic Target
+  dynamic_target_scenario:
+    description: "Dynamic take profit scenario"
+    entry_price: 100
+    volatility: 0.20
+    volatility_multiplier: 1.5
+    target_percentage: 0.06  # 6%
+    target_price: 106
+
+# ============================================================
+# TAKE PROFIT EXAMPLES
+# ============================================================
+take_profit_examples:
+  # Example 1: Take Profit Calculation
+  take_profit_calculation:
+    description: "Take Profit Calculation Example"
+    entry_price: 100
+    take_profit_percentage: 0.10  # 10%
+    take_profit_price: 110
+    reward_per_share: 10
+    position_size: 100
+    total_reward: 1000
+    
+  # Example 2: Risk/Reward Ratio
+  risk_reward_calculation:
+    description: "Risk/Reward Ratio Example"
+    entry_price: 100
+    stop_loss: 95  # 5% risk
+    take_profit: 110  # 10% reward
+    risk: 5
+    reward: 10
+    risk_reward_ratio: 2.0  # 10/5 = 2.0
+    
+  # Example 3: Trailing Target
+  trailing_target_calculation:
+    description: "Trailing Target Calculation Example"
+    entry_price: 100
+    trailing_distance: 0.05  # 5%
+    activation_threshold: 0.02  # 2%
+    
+    # Initial
+    current_price: 101
+    trailing_target: 100  # Not activated yet
+    
+    # After activation (price > 102)
+    current_price: 103
+    trailing_target: 98  # 103 - 5 = 98
+    
+    # After further move
+    current_price: 108
+    trailing_target: 103  # 108 - 5 = 103
+
+# ============================================================
+# ENVIRONMENT-SPECIFIC CONFIGURATIONS
+# ============================================================
+environments:
+  # Development Environment
+  development:
+    take_profit:
+      general:
+        enabled: true
+        take_profit_type: "fixed"
+        default_take_profit: 0.12
+        update_frequency: "hourly"
+        
+    take_profit_monitoring:
+      alerts:
+        take_profit_approaching:
+          enabled: false
+        take_profit_hit:
+          enabled: true
+          
+  # Staging Environment
+  staging:
+    take_profit:
+      general:
+        enabled: true
+        take_profit_type: "dynamic"
+        default_take_profit: 0.10
+        update_frequency: "realtime"
+        
+    take_profit_monitoring:
+      alerts:
+        take_profit_approaching:
+          enabled: true
+        take_profit_hit:
+          enabled: true
+        take_profit_adjustment:
+          enabled: true
+          
+  # Production Environment
+  production:
+    take_profit:
+      general:
+        enabled: true
+        take_profit_type: "dynamic"
+        default_take_profit: 0.10
+        min_take_profit: 0.01
+        max_take_profit: 0.30
+        take_profit_activation: "immediate"
+        update_frequency: "realtime"
+        use_volatility_adjustment: true
+        use_market_regime_adjustment: true
+        use_asset_specific_targets: true
+        risk_reward_ratio: 2.0
+        
+    take_profit_monitoring:
+      alerts:
+        take_profit_approaching:
+          enabled: true
+          level: "info"
+        take_profit_hit:
+          enabled: true
+          level: "success"
+        take_profit_adjustment:
+          enabled: true
+          level: "info"
+          
+  # Demo Environment
+  demo:
+    take_profit:
+      general:
+        enabled: true
+        take_profit_type: "fixed"
+        default_take_profit: 0.08
+        update_frequency: "hourly"
+        
+    take_profit_monitoring:
+      alerts:
+        take_profit_approaching:
+          enabled: false
+        take_profit_hit:
+          enabled: true
+
+# ============================================================
+# END OF CONFIGURATION
+# ============================================================
