@@ -1,0 +1,522 @@
+# trading/bots/hedge_bot/config/futures_configs.yaml
+# NEXUS AI TRADING SYSTEM - Hedge Bot Futures Configuration
+# Version: 2.0.0
+# Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+
+# ============================================================
+# FUTURES GENERAL SETTINGS
+# ============================================================
+futures:
+  # General Futures Settings
+  general:
+    enabled: true
+    trading_enabled: true
+    exchange: "binance"  # binance, bybit, okx, deribit, cme
+    contract_type: "perpetual"  # perpetual, quarterly, monthly, weekly
+    leverage: 1.0
+    max_leverage: 3.0
+    margin_type: "isolated"  # isolated, cross, portfolio
+    position_mode: "one_way"  # one_way, hedge_mode
+    update_frequency: "realtime"
+    use_testnet: true
+    
+  # Futures Types
+  types:
+    perpetual:
+      enabled: true
+      description: "Perpetual futures contracts"
+      funding_rate_interval: 8  # hours
+      max_leverage: 3.0
+      
+    quarterly:
+      enabled: true
+      description: "Quarterly futures contracts"
+      expiry_cycle: 3  # months
+      max_leverage: 2.0
+      
+    monthly:
+      enabled: true
+      description: "Monthly futures contracts"
+      expiry_cycle: 1  # months
+      max_leverage: 2.0
+      
+    weekly:
+      enabled: true
+      description: "Weekly futures contracts"
+      expiry_cycle: 1  # weeks
+      max_leverage: 1.5
+
+# ============================================================
+# CONTRACT SPECIFICATIONS
+# ============================================================
+contract_specifications:
+  # Cryptocurrency Futures
+  crypto:
+    BTC:
+      contract_size: 1  # BTC
+      tick_size: 0.1
+      min_order_size: 0.001
+      max_order_size: 100
+      leverage_max: 3.0
+      margin_initial: 0.10
+      margin_maintenance: 0.05
+      funding_rate: 0.0001
+      settlement_currency: "USDT"
+      
+    ETH:
+      contract_size: 1  # ETH
+      tick_size: 0.01
+      min_order_size: 0.01
+      max_order_size: 1000
+      leverage_max: 3.0
+      margin_initial: 0.12
+      margin_maintenance: 0.06
+      funding_rate: 0.0001
+      settlement_currency: "USDT"
+      
+    SOL:
+      contract_size: 1  # SOL
+      tick_size: 0.001
+      min_order_size: 0.1
+      max_order_size: 10000
+      leverage_max: 2.0
+      margin_initial: 0.15
+      margin_maintenance: 0.08
+      funding_rate: 0.0001
+      settlement_currency: "USDT"
+      
+    ADA:
+      contract_size: 1  # ADA
+      tick_size: 0.0001
+      min_order_size: 1
+      max_order_size: 100000
+      leverage_max: 2.0
+      margin_initial: 0.15
+      margin_maintenance: 0.08
+      funding_rate: 0.0001
+      settlement_currency: "USDT"
+      
+  # Forex Futures
+  forex:
+    EURUSD:
+      contract_size: 100000  # 100k units
+      tick_size: 0.00001
+      min_order_size: 0.01
+      max_order_size: 1000
+      leverage_max: 10.0
+      margin_initial: 0.02
+      margin_maintenance: 0.01
+      settlement_currency: "USD"
+      
+    GBPUSD:
+      contract_size: 100000
+      tick_size: 0.00001
+      min_order_size: 0.01
+      max_order_size: 1000
+      leverage_max: 10.0
+      margin_initial: 0.02
+      margin_maintenance: 0.01
+      settlement_currency: "USD"
+      
+    USDJPY:
+      contract_size: 100000
+      tick_size: 0.001
+      min_order_size: 0.01
+      max_order_size: 1000
+      leverage_max: 10.0
+      margin_initial: 0.02
+      margin_maintenance: 0.01
+      settlement_currency: "USD"
+      
+  # Equity Index Futures
+  equity:
+    SP500:
+      contract_size: 50  # USD per index point
+      tick_size: 0.25
+      min_order_size: 1
+      max_order_size: 100
+      leverage_max: 5.0
+      margin_initial: 0.05
+      margin_maintenance: 0.03
+      settlement_currency: "USD"
+      
+    NASDAQ:
+      contract_size: 20  # USD per index point
+      tick_size: 0.25
+      min_order_size: 1
+      max_order_size: 100
+      leverage_max: 5.0
+      margin_initial: 0.05
+      margin_maintenance: 0.03
+      settlement_currency: "USD"
+      
+    DOW:
+      contract_size: 5  # USD per index point
+      tick_size: 1
+      min_order_size: 1
+      max_order_size: 100
+      leverage_max: 5.0
+      margin_initial: 0.05
+      margin_maintenance: 0.03
+      settlement_currency: "USD"
+
+# ============================================================
+# FUTURES TRADING SETTINGS
+# ============================================================
+futures_trading:
+  # Order Settings
+  order:
+    type: "limit"  # limit, market, stop_limit, trailing_stop
+    time_in_force: "GTC"  # GTC, IOC, FOK, DAY
+    max_order_size: 10000  # USD
+    min_order_size: 100
+    slippage_tolerance: 0.001
+    use_post_only: false
+    reduce_only: false
+    close_position: false
+    
+  # Position Settings
+  position:
+    max_positions: 10
+    max_leverage: 3.0
+    min_margin_ratio: 0.10
+    max_margin_ratio: 0.80
+    auto_close: false
+    auto_hedge: true
+    hedge_ratio: 0.50
+    
+  # Risk Settings
+  risk:
+    max_position_size: 100000
+    max_risk_per_trade: 0.02  # 2% of portfolio
+    max_risk_per_day: 0.05  # 5% of portfolio
+    stop_loss: 0.05  # 5%
+    take_profit: 0.10  # 10%
+    trailing_stop: 0.03  # 3%
+
+# ============================================================
+# FUNDING RATE CONFIGURATION
+# ============================================================
+funding_rate:
+  # Funding Rate Settings
+  settings:
+    enabled: true
+    monitor_funding_rate: true
+    funding_rate_threshold: 0.001  # 0.1%
+    funding_rate_alert: true
+    funding_rate_trading: true
+    funding_rate_arbitrage: true
+    
+  # Funding Rate Strategies
+  strategies:
+    arbitrage:
+      enabled: true
+      description: "Funding rate arbitrage"
+      min_rate: 0.0005  # 0.05%
+      max_rate: 0.005  # 0.5%
+      position_size: 0.10  # 10% of portfolio
+      
+    directional:
+      enabled: true
+      description: "Directional funding rate trading"
+      long_threshold: -0.001  # Negative funding (longs get paid)
+      short_threshold: 0.001  # Positive funding (shorts get paid)
+      position_size: 0.05  # 5% of portfolio
+      
+  # Funding Rate Metrics
+  metrics:
+    - "current_funding_rate"
+    - "average_funding_rate"
+    - "funding_rate_volatility"
+    - "funding_rate_percentile"
+    - "funding_rate_trend"
+
+# ============================================================
+# FUTURES MONITORING
+# ============================================================
+futures_monitoring:
+  # Monitoring Settings
+  settings:
+    enabled: true
+    monitoring_frequency: "realtime"
+    alert_threshold: 0.75  # 75% of limit
+    critical_threshold: 0.90  # 90% of limit
+    reporting_frequency: "daily"
+    
+  # Alert Conditions
+  alerts:
+    margin_alert:
+      enabled: true
+      level: "warning"
+      threshold: 0.70
+      message: "Margin utilization high: {value}%"
+      
+    liquidation_alert:
+      enabled: true
+      level: "critical"
+      threshold: 0.90
+      message: "Liquidation risk: {value}%"
+      
+    funding_rate_alert:
+      enabled: true
+      level: "warning"
+      threshold: 0.001
+      message: "Funding rate extreme: {value}"
+      
+    expiry_alert:
+      enabled: true
+      level: "warning"
+      threshold: 7  # days
+      message: "Contract expiring: {contract} in {days} days"
+      
+  # Monitoring Metrics
+  metrics:
+    - "margin_utilization"
+    - "liquidation_price"
+    - "funding_rate"
+    - "open_interest"
+    - "volume"
+    - "basis_spread"
+    - "roll_yield"
+
+# ============================================================
+# FUTURES REPORTING
+# ============================================================
+futures_reporting:
+  # Report Settings
+  settings:
+    enabled: true
+    report_frequency: "daily"
+    report_format: "json"  # json, csv, pdf, html
+    include_analytics: true
+    include_visualizations: true
+    
+  # Report Sections
+  sections:
+    futures_summary:
+      enabled: true
+      include_total_position: true
+      include_margin_utilization: true
+      include_funding_rate: true
+      include_open_interest: true
+      
+    position_breakdown:
+      enabled: true
+      include_all_positions: true
+      include_pnl: true
+      include_margin: true
+      include_liquidation_price: true
+      
+    funding_analysis:
+      enabled: true
+      include_current_funding: true
+      include_historical_funding: true
+      include_funding_statistics: true
+      
+    risk_analysis:
+      enabled: true
+      include_margin_risk: true
+      include_liquidation_risk: true
+      include_basis_risk: true
+      include_roll_risk: true
+
+# ============================================================
+# FUTURES DASHBOARD
+# ============================================================
+futures_dashboard:
+  # Dashboard Settings
+  settings:
+    enabled: true
+    refresh_interval: 5
+    default_view: "summary"  # summary, details, analytics
+    
+  # Dashboard Widgets
+  widgets:
+    futures_summary:
+      enabled: true
+      position: 1
+      size: "large"
+      
+    position_summary:
+      enabled: true
+      position: 2
+      size: "medium"
+      
+    margin_status:
+      enabled: true
+      position: 3
+      size: "medium"
+      
+    funding_rate:
+      enabled: true
+      position: 4
+      size: "medium"
+      
+    liquidation_risk:
+      enabled: true
+      position: 5
+      size: "small"
+      
+    expiry_schedule:
+      enabled: true
+      position: 6
+      size: "medium"
+
+# ============================================================
+# FUTURES INTEGRATION
+# ============================================================
+futures_integration:
+  # Integration Settings
+  settings:
+    enabled: true
+    integration_type: "api"  # api, webhook, websocket, file
+    
+  # External Systems
+  systems:
+    exchange:
+      enabled: true
+      endpoint: "/api/futures"
+      update_frequency: "realtime"
+      
+    risk_system:
+      enabled: true
+      endpoint: "/api/risk/futures"
+      update_frequency: "realtime"
+      
+    analytics_system:
+      enabled: true
+      endpoint: "/api/analytics/futures"
+      update_frequency: "hourly"
+
+# ============================================================
+# FUTURES SCENARIOS
+# ============================================================
+futures_scenarios:
+  # Scenario 1: Long Position
+  long_position:
+    description: "Long futures position"
+    asset: "BTC"
+    size: 1.0
+    entry_price: 50000
+    current_price: 52000
+    pnl: 2000
+    pnl_percentage: 0.04
+    margin: 5000
+    margin_utilization: 0.20
+    
+  # Scenario 2: Short Position
+  short_position:
+    description: "Short futures position"
+    asset: "ETH"
+    size: 10.0
+    entry_price: 3000
+    current_price: 2800
+    pnl: 2000
+    pnl_percentage: 0.067
+    margin: 3000
+    margin_utilization: 0.15
+    
+  # Scenario 3: Hedged Position
+  hedged_position:
+    description: "Hedged futures position"
+    long_asset: "BTC"
+    long_size: 1.0
+    long_price: 50000
+    short_asset: "BTC"
+    short_size: 1.0
+    short_price: 50500
+    net_exposure: 0
+    basis: 500
+    basis_percentage: 0.01
+
+# ============================================================
+# FUTURES EXAMPLES
+# ============================================================
+futures_examples:
+  # Example 1: Margin Calculation
+  margin_calculation:
+    description: "Margin Calculation Example"
+    asset: "BTC"
+    position_size: 1.0
+    price: 50000
+    leverage: 2.0
+    initial_margin: 0.10  # 10%
+    margin_required: 2500  # (1.0 * 50000) / 2.0 * 0.10
+    
+  # Example 2: Funding Rate Calculation
+  funding_rate_calculation:
+    description: "Funding Rate Calculation Example"
+    funding_rate: 0.0001  # 0.01%
+    position_size: 100000
+    funding_payment: 10  # 100000 * 0.0001
+    
+  # Example 3: Liquidation Price
+  liquidation_calculation:
+    description: "Liquidation Price Calculation"
+    entry_price: 50000
+    position_size: 1.0
+    leverage: 2.0
+    margin: 2500
+    maintenance_margin: 0.05
+    liquidation_price: 47500  # 5% from entry
+
+# ============================================================
+# ENVIRONMENT-SPECIFIC CONFIGURATIONS
+# ============================================================
+environments:
+  # Development Environment
+  development:
+    futures:
+      general:
+        enabled: true
+        use_testnet: true
+        max_leverage: 5.0
+        
+    futures_trading:
+      risk:
+        max_position_size: 10000
+        max_risk_per_trade: 0.05
+        
+  # Staging Environment
+  staging:
+    futures:
+      general:
+        enabled: true
+        use_testnet: true
+        max_leverage: 3.0
+        
+    futures_trading:
+      risk:
+        max_position_size: 50000
+        max_risk_per_trade: 0.03
+        
+  # Production Environment
+  production:
+    futures:
+      general:
+        enabled: true
+        use_testnet: false
+        max_leverage: 3.0
+        
+    futures_trading:
+      risk:
+        max_position_size: 100000
+        max_risk_per_trade: 0.02
+        max_risk_per_day: 0.05
+        
+  # Demo Environment
+  demo:
+    futures:
+      general:
+        enabled: true
+        use_testnet: true
+        max_leverage: 3.0
+        
+    futures_trading:
+      risk:
+        max_position_size: 25000
+        max_risk_per_trade: 0.04
+
+# ============================================================
+# END OF CONFIGURATION
+# ============================================================
