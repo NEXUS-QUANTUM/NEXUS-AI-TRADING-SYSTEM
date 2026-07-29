@@ -1,0 +1,494 @@
+# trading/bots/hedge_bot/config/theta_configs.yaml
+# NEXUS AI TRADING SYSTEM - Hedge Bot Theta Configuration
+# Version: 2.0.0
+# Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+
+# ============================================================
+# THETA GENERAL SETTINGS
+# ============================================================
+theta:
+  # General Theta Settings
+  general:
+    enabled: true
+    calculation_method: "black_scholes"  # black_scholes, binomial, finite_difference
+    theta_threshold: 0.001  # Theta threshold for alerts
+    theta_tolerance: 0.01  # 1% tolerance
+    update_frequency: "realtime"  # realtime, hourly, daily
+    use_theta_hedging: true
+    use_theta_management: true
+    use_theta_monitoring: true
+    use_theta_optimization: true
+    time_decay_monitoring: true
+    
+  # Theta Types
+  types:
+    theta_hedging:
+      enabled: true
+      description: "Theta hedging to manage time decay"
+      
+    theta_management:
+      enabled: true
+      description: "Theta risk management"
+      
+    theta_monitoring:
+      enabled: true
+      description: "Theta monitoring and alerts"
+      
+    theta_optimization:
+      enabled: true
+      description: "Theta optimization for options"
+      
+    time_decay:
+      enabled: true
+      description: "Time decay analysis"
+
+# ============================================================
+# THETA CALCULATION METHODS
+# ============================================================
+theta_methods:
+  # Black-Scholes Theta
+  black_scholes:
+    enabled: true
+    description: "Black-Scholes theta calculation"
+    formula: "-S * N'(d1) * σ / (2 * √T) - r * K * e^(-rT) * N(d2)"
+    parameters:
+      use_volatility_surface: true
+      use_interest_rate_curve: true
+      use_dividend_forecast: true
+      
+  # Binomial Theta
+  binomial:
+    enabled: true
+    description: "Binomial tree theta calculation"
+    steps: 100
+    method: "crr"  # crr, jr, trigeorgis
+    american: true
+    early_exercise: true
+    
+  # Finite Difference Theta
+  finite_difference:
+    enabled: true
+    description: "Finite difference theta calculation"
+    method: "central"  # central, forward, backward
+    step_size: 0.001
+    accuracy: "high"
+    
+  # Monte Carlo Theta
+  monte_carlo:
+    enabled: true
+    description: "Monte Carlo theta calculation"
+    simulations: 10000
+    steps: 252
+    variance_reduction: true
+    antithetic_variates: true
+
+# ============================================================
+# THETA HEDGING STRATEGIES
+# ============================================================
+theta_hedging:
+  # Strategy Settings
+  settings:
+    enabled: true
+    strategy_type: "dynamic"  # dynamic, static, adaptive
+    rebalancing_frequency: "daily"  # daily, weekly, monthly
+    rebalancing_threshold: 0.01  # 1% deviation
+    hedging_instrument: "options"  # options, futures, swaps
+    hedging_cost_limit: 0.001  # 0.1% of position
+    
+  # Strategy Types
+  strategies:
+    continuous_hedging:
+      enabled: true
+      description: "Continuous theta hedging"
+      rebalancing: "continuous"
+      
+    discrete_hedging:
+      enabled: true
+      description: "Discrete theta hedging"
+      rebalancing: "periodic"
+      interval: 1440  # minutes (daily)
+      
+    threshold_hedging:
+      enabled: true
+      description: "Threshold-based theta hedging"
+      rebalancing: "threshold"
+      theta_threshold: 0.02  # 2%
+      
+    adaptive_hedging:
+      enabled: true
+      description: "Adaptive theta hedging"
+      rebalancing: "adaptive"
+      learning_rate: 0.1
+      volatility_regime_aware: true
+      
+  # Hedging Costs
+  costs:
+    transaction_cost: 0.001
+    bid_ask_spread: 0.0005
+    slippage: 0.0001
+    market_impact: 0.0002
+    financing_cost: 0.0001
+
+# ============================================================
+# THETA LIMITS
+# ============================================================
+theta_limits:
+  # General Theta Limits
+  general:
+    max_theta_exposure: 1000  # USD per day
+    max_theta_per_position: 0.25  # 25% of position
+    max_net_theta: 0.10  # 10% of portfolio
+    
+  # Theta Limits by Asset Class
+  asset_class:
+    cryptocurrency:
+      max_theta_exposure: 500
+      max_theta_per_position: 0.30
+      max_net_theta: 0.15
+      
+    forex:
+      max_theta_exposure: 1000
+      max_theta_per_position: 0.20
+      max_net_theta: 0.10
+      
+    equity:
+      max_theta_exposure: 2000
+      max_theta_per_position: 0.15
+      max_net_theta: 0.08
+      
+    commodity:
+      max_theta_exposure: 500
+      max_theta_per_position: 0.25
+      max_net_theta: 0.12
+      
+  # Theta Alert Thresholds
+  alerts:
+    theta_deviation: 0.02  # 2% deviation
+    theta_change: 0.05  # 5% change
+    theta_breach: 0.10  # 10% breach
+
+# ============================================================
+# THETA MONITORING
+# ============================================================
+theta_monitoring:
+  # Monitoring Settings
+  settings:
+    enabled: true
+    monitoring_frequency: "daily"
+    reporting_frequency: "daily"
+    alert_threshold: 0.75  # 75% of limit
+    critical_threshold: 0.90  # 90% of limit
+    
+  # Monitoring Metrics
+  metrics:
+    - "current_theta"
+    - "target_theta"
+    - "theta_deviation"
+    - "theta_exposure"
+    - "theta_percentage"
+    - "daily_time_decay"
+    - "theta_cost"
+    - "rebalancing_frequency"
+    
+  # Alerts
+  alerts:
+    theta_limit_breach:
+      enabled: true
+      level: "critical"
+      message: "Theta limit breached for {asset}"
+      
+    theta_deviation_alert:
+      enabled: true
+      level: "warning"
+      message: "Theta deviation exceeds threshold for {asset}"
+      
+    theta_cost_alert:
+      enabled: true
+      level: "warning"
+      message: "Theta hedging cost exceeds threshold for {asset}"
+      
+    time_decay_alert:
+      enabled: true
+      level: "info"
+      message: "Significant time decay detected for {asset}"
+
+# ============================================================
+# THETA REPORTING
+# ============================================================
+theta_reporting:
+  # Report Settings
+  settings:
+    enabled: true
+    report_frequency: "daily"
+    report_format: "json"  # json, csv, pdf, html
+    include_analytics: true
+    include_visualizations: true
+    
+  # Report Sections
+  sections:
+    theta_summary:
+      enabled: true
+      include_total_theta: true
+      include_net_theta: true
+      include_theta_percentage: true
+      
+    position_theta:
+      enabled: true
+      include_all_positions: true
+      include_theta_breakdown: true
+      
+    hedging_summary:
+      enabled: true
+      include_hedging_costs: true
+      include_rebalancing: true
+      include_hedging_effectiveness: true
+      
+    time_decay_analysis:
+      enabled: true
+      include_daily_decay: true
+      include_decay_forecast: true
+      include_decay_impact: true
+      
+    risk_analysis:
+      enabled: true
+      include_theta_risk: true
+      include_time_decay_risk: true
+      include_volatility_risk: true
+
+# ============================================================
+# THETA DASHBOARD
+# ============================================================
+theta_dashboard:
+  # Dashboard Settings
+  settings:
+    enabled: true
+    refresh_interval: 60
+    default_view: "summary"  # summary, details, analytics
+    
+  # Dashboard Widgets
+  widgets:
+    theta_summary:
+      enabled: true
+      position: 1
+      size: "large"
+      
+    theta_chart:
+      enabled: true
+      position: 2
+      size: "large"
+      
+    position_theta:
+      enabled: true
+      position: 3
+      size: "medium"
+      
+    hedging_status:
+      enabled: true
+      position: 4
+      size: "medium"
+      
+    time_decay:
+      enabled: true
+      position: 5
+      size: "medium"
+      
+    risk_status:
+      enabled: true
+      position: 6
+      size: "small"
+      
+    alert_status:
+      enabled: true
+      position: 7
+      size: "small"
+
+# ============================================================
+# THETA INTEGRATION
+# ============================================================
+theta_integration:
+  # Integration Settings
+  settings:
+    enabled: true
+    integration_type: "api"  # api, webhook, websocket, file
+    
+  # External Systems
+  systems:
+    risk_system:
+      enabled: true
+      endpoint: "/api/risk/theta"
+      update_frequency: "daily"
+      
+    trading_system:
+      enabled: true
+      endpoint: "/api/trading/theta"
+      update_frequency: "realtime"
+      
+    portfolio_system:
+      enabled: true
+      endpoint: "/api/portfolio/theta"
+      update_frequency: "daily"
+      
+    analytics_system:
+      enabled: true
+      endpoint: "/api/analytics/theta"
+      update_frequency: "daily"
+
+# ============================================================
+# THETA SCENARIOS
+# ============================================================
+theta_scenarios:
+  # Scenario 1: Positive Theta (Short Options)
+  positive_theta:
+    description: "Positive theta position (short options)"
+    total_theta: 0.05
+    net_theta: 0.05
+    theta_exposure: 50  # USD per day
+    time_decay: "positive"
+    characteristics:
+      - "Profits from time decay"
+      - "Short options"
+      - "Positive theta"
+      
+  # Scenario 2: Negative Theta (Long Options)
+  negative_theta:
+    description: "Negative theta position (long options)"
+    total_theta: -0.05
+    net_theta: -0.05
+    theta_exposure: -50  # USD per day
+    time_decay: "negative"
+    characteristics:
+      - "Losses from time decay"
+      - "Long options"
+      - "Negative theta"
+      
+  # Scenario 3: Theta Neutral
+  theta_neutral:
+    description: "Theta neutral position"
+    total_theta: 0.0
+    net_theta: 0.0
+    theta_exposure: 0  # USD per day
+    time_decay: "neutral"
+    characteristics:
+      - "No time decay exposure"
+      - "Hedged position"
+      - "Theta neutral"
+
+# ============================================================
+# THETA EXAMPLES
+# ============================================================
+theta_examples:
+  # Example 1: Call Option Theta
+  call_option_theta:
+    description: "Call option theta calculation"
+    parameters:
+      underlying_price: 100
+      strike_price: 100
+      time_to_expiry: 30  # days
+      volatility: 0.20
+      risk_free_rate: 0.04
+      dividend_yield: 0.01
+    theta: -0.02  # -$0.02 per day
+    
+  # Example 2: Put Option Theta
+  put_option_theta:
+    description: "Put option theta calculation"
+    parameters:
+      underlying_price: 100
+      strike_price: 100
+      time_to_expiry: 30  # days
+      volatility: 0.20
+      risk_free_rate: 0.04
+      dividend_yield: 0.01
+    theta: -0.015  # -$0.015 per day
+    
+  # Example 3: Theta Decay
+  theta_decay_example:
+    description: "Theta decay example"
+    option_price: 5.00
+    theta: -0.02
+    days: 10
+    decay: 0.20  # 5.00 * 0.02 * 10
+    new_price: 4.80  # 5.00 - 0.20
+
+# ============================================================
+# ENVIRONMENT-SPECIFIC CONFIGURATIONS
+# ============================================================
+environments:
+  # Development Environment
+  development:
+    theta:
+      general:
+        enabled: true
+        calculation_method: "black_scholes"
+        update_frequency: "hourly"
+        
+    theta_monitoring:
+      alerts:
+        theta_limit_breach:
+          enabled: false
+        theta_deviation_alert:
+          enabled: false
+          
+  # Staging Environment
+  staging:
+    theta:
+      general:
+        enabled: true
+        calculation_method: "black_scholes"
+        update_frequency: "realtime"
+        
+    theta_monitoring:
+      alerts:
+        theta_limit_breach:
+          enabled: true
+        theta_deviation_alert:
+          enabled: true
+        theta_cost_alert:
+          enabled: true
+          
+  # Production Environment
+  production:
+    theta:
+      general:
+        enabled: true
+        calculation_method: "black_scholes"
+        update_frequency: "realtime"
+        use_theta_hedging: true
+        use_theta_management: true
+        use_theta_monitoring: true
+        use_theta_optimization: true
+        time_decay_monitoring: true
+        
+    theta_monitoring:
+      alerts:
+        theta_limit_breach:
+          enabled: true
+          level: "critical"
+        theta_deviation_alert:
+          enabled: true
+          level: "warning"
+        theta_cost_alert:
+          enabled: true
+          level: "warning"
+        time_decay_alert:
+          enabled: true
+          level: "info"
+          
+  # Demo Environment
+  demo:
+    theta:
+      general:
+        enabled: true
+        calculation_method: "black_scholes"
+        update_frequency: "hourly"
+        
+    theta_monitoring:
+      alerts:
+        theta_limit_breach:
+          enabled: false
+        theta_deviation_alert:
+          enabled: true
+
+# ============================================================
+# END OF CONFIGURATION
+# ============================================================
