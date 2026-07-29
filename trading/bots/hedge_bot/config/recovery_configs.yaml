@@ -1,0 +1,470 @@
+# trading/bots/hedge_bot/config/recovery_configs.yaml
+# NEXUS AI TRADING SYSTEM - Hedge Bot Recovery Configuration
+# Version: 2.0.0
+# Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+
+# ============================================================
+# RECOVERY GENERAL SETTINGS
+# ============================================================
+recovery:
+  # General Recovery Settings
+  general:
+    enabled: true
+    recovery_method: "adaptive"  # adaptive, aggressive, moderate, conservative
+    recovery_activation: 0.05  # 5% loss triggers recovery
+    recovery_deactivation: 0.02  # 2% profit deactivates recovery
+    recovery_phase: "moderate"  # aggressive, moderate, conservative
+    max_recovery_duration: 90  # days
+    recovery_risk_multiplier: 1.0
+    recovery_capital_allocation: 0.50  # 50% of capital for recovery
+    update_frequency: "realtime"
+    auto_hedging: true
+    position_sizing_adjustment: true
+    
+  # Recovery Types
+  types:
+    aggressive_recovery:
+      enabled: true
+      description: "Aggressive recovery strategy"
+      risk_multiplier: 1.5
+      position_sizing: 1.5
+      target_returns: 0.20
+      
+    moderate_recovery:
+      enabled: true
+      description: "Moderate recovery strategy"
+      risk_multiplier: 1.0
+      position_sizing: 1.0
+      target_returns: 0.10
+      
+    conservative_recovery:
+      enabled: true
+      description: "Conservative recovery strategy"
+      risk_multiplier: 0.5
+      position_sizing: 0.5
+      target_returns: 0.05
+      
+    adaptive_recovery:
+      enabled: true
+      description: "Adaptive recovery strategy"
+      risk_multiplier: "dynamic"
+      position_sizing: "dynamic"
+      target_returns: "adaptive"
+
+# ============================================================
+# RECOVERY STRATEGIES
+# ============================================================
+recovery_strategies:
+  # Strategy Settings
+  settings:
+    enabled: true
+    primary_strategy: "adaptive"
+    backup_strategy: "moderate"
+    emergency_strategy: "conservative"
+    strategy_switch_condition: "performance_degradation"
+    
+  # Strategy Types
+  strategies:
+    scalping_recovery:
+      enabled: true
+      description: "Scalping-based recovery"
+      trade_frequency: "high"
+      target_per_trade: 0.005  # 0.5%
+      max_trades_per_day: 20
+      
+    swing_recovery:
+      enabled: true
+      description: "Swing trading recovery"
+      trade_frequency: "medium"
+      target_per_trade: 0.02  # 2%
+      max_trades_per_week: 5
+      
+    trend_recovery:
+      enabled: true
+      description: "Trend following recovery"
+      trade_frequency: "low"
+      target_per_trade: 0.05  # 5%
+      max_trades_per_month: 3
+      
+    arbitrage_recovery:
+      enabled: true
+      description: "Arbitrage-based recovery"
+      trade_frequency: "high"
+      target_per_trade: 0.01  # 1%
+      max_trades_per_day: 10
+      
+    hedging_recovery:
+      enabled: true
+      description: "Hedging-based recovery"
+      trade_frequency: "medium"
+      target_per_trade: 0.02
+      max_trades_per_week: 5
+
+# ============================================================
+# RECOVERY PARAMETERS
+# ============================================================
+recovery_parameters:
+  # Risk Parameters
+  risk:
+    max_loss_per_trade: 0.01  # 1%
+    max_loss_per_day: 0.03  # 3%
+    max_loss_per_week: 0.05  # 5%
+    max_loss_per_month: 0.10  # 10%
+    risk_reward_ratio: 2.0
+    stop_loss_multiplier: 1.0
+    take_profit_multiplier: 2.0
+    
+  # Position Sizing
+  position_sizing:
+    base_size: 1000
+    max_size: 5000
+    min_size: 100
+    size_multiplier: 1.0
+    kelly_fraction: 0.25
+    volatility_adjustment: true
+    
+  # Timing Parameters
+  timing:
+    recovery_duration: 30  # days
+    trade_frequency: "moderate"
+    holding_period: 1  # days
+    cooldown_period: 0.5  # hours
+    max_concurrent_trades: 3
+
+# ============================================================
+# RECOVERY MONITORING
+# ============================================================
+recovery_monitoring:
+  # Monitoring Settings
+  settings:
+    enabled: true
+    monitoring_frequency: "realtime"
+    alert_threshold: 0.75  # 75% of target
+    critical_threshold: 0.90  # 90% of target
+    reporting_frequency: "daily"
+    
+  # Alert Conditions
+  alerts:
+    recovery_progress:
+      enabled: true
+      level: "info"
+      threshold: 0.50
+      message: "Recovery progress: {progress}%"
+      
+    recovery_stalled:
+      enabled: true
+      level: "warning"
+      threshold: 0.10
+      message: "Recovery stalled at {progress}%"
+      
+    recovery_reversal:
+      enabled: true
+      level: "critical"
+      threshold: 0.05
+      message: "Recovery reversing: {reversal}%"
+      
+    recovery_completed:
+      enabled: true
+      level: "success"
+      message: "Recovery completed successfully"
+      
+  # Monitoring Metrics
+  metrics:
+    - "recovery_progress"
+    - "recovery_speed"
+    - "recovery_efficiency"
+    - "recovery_sustainability"
+    - "reversal_risk"
+    - "drawdown_recovery"
+    - "profit_recovery"
+
+# ============================================================
+# RECOVERY REPORTING
+# ============================================================
+recovery_reporting:
+  # Report Settings
+  settings:
+    enabled: true
+    report_frequency: "daily"
+    report_format: "json"  # json, csv, pdf, html
+    include_analytics: true
+    include_visualizations: true
+    include_recommendations: true
+    
+  # Report Sections
+  sections:
+    recovery_summary:
+      enabled: true
+      include_current_progress: true
+      include_target_progress: true
+      include_time_remaining: true
+      
+    recovery_strategy:
+      enabled: true
+      include_current_strategy: true
+      include_strategy_performance: true
+      include_strategy_adjustments: true
+      
+    recovery_risk:
+      enabled: true
+      include_risk_metrics: true
+      include_drawdown_risk: true
+      include_reversal_risk: true
+      
+    recovery_forecast:
+      enabled: true
+      include_forecasted_completion: true
+      include_confidence_interval: true
+      include_recommendations: true
+
+# ============================================================
+# RECOVERY DASHBOARD
+# ============================================================
+recovery_dashboard:
+  # Dashboard Settings
+  settings:
+    enabled: true
+    refresh_interval: 5
+    default_view: "summary"  # summary, details, analytics
+    
+  # Dashboard Widgets
+  widgets:
+    recovery_summary:
+      enabled: true
+      position: 1
+      size: "large"
+      
+    recovery_chart:
+      enabled: true
+      position: 2
+      size: "large"
+      
+    strategy_performance:
+      enabled: true
+      position: 3
+      size: "medium"
+      
+    risk_metrics:
+      enabled: true
+      position: 4
+      size: "medium"
+      
+    forecast:
+      enabled: true
+      position: 5
+      size: "medium"
+      
+    alert_status:
+      enabled: true
+      position: 6
+      size: "small"
+
+# ============================================================
+# RECOVERY INTEGRATION
+# ============================================================
+recovery_integration:
+  # Integration Settings
+  settings:
+    enabled: true
+    integration_type: "api"  # api, webhook, websocket, file
+    
+  # External Systems
+  systems:
+    risk_system:
+      enabled: true
+      endpoint: "/api/risk/recovery"
+      update_frequency: "realtime"
+      
+    trading_system:
+      enabled: true
+      endpoint: "/api/trading/recovery"
+      update_frequency: "realtime"
+      
+    analytics_system:
+      enabled: true
+      endpoint: "/api/analytics/recovery"
+      update_frequency: "hourly"
+      
+    monitoring_system:
+      enabled: true
+      endpoint: "/api/monitoring/recovery"
+      update_frequency: "realtime"
+
+# ============================================================
+# RECOVERY SCENARIOS
+# ============================================================
+recovery_scenarios:
+  # Scenario 1: Small Drawdown
+  small_drawdown:
+    description: "Small drawdown recovery"
+    drawdown_percentage: 0.05  # 5%
+    recovery_time: 15  # days
+    recovery_effort: "low"
+    strategy: "moderate"
+    
+  # Scenario 2: Medium Drawdown
+  medium_drawdown:
+    description: "Medium drawdown recovery"
+    drawdown_percentage: 0.10  # 10%
+    recovery_time: 30  # days
+    recovery_effort: "medium"
+    strategy: "adaptive"
+    
+  # Scenario 3: Large Drawdown
+  large_drawdown:
+    description: "Large drawdown recovery"
+    drawdown_percentage: 0.15  # 15%
+    recovery_time: 60  # days
+    recovery_effort: "high"
+    strategy: "aggressive"
+    
+  # Scenario 4: Extreme Drawdown
+  extreme_drawdown:
+    description: "Extreme drawdown recovery"
+    drawdown_percentage: 0.25  # 25%
+    recovery_time: 90  # days
+    recovery_effort: "extreme"
+    strategy: "adaptive+aggressive"
+
+# ============================================================
+# RECOVERY EXAMPLES
+# ============================================================
+recovery_examples:
+  # Example 1: Simple Recovery
+  simple_recovery:
+    description: "Simple Recovery Example"
+    initial_capital: 100000
+    current_capital: 95000
+    drawdown: 0.05  # 5%
+    target: 100000
+    recovery_needed: 5000
+    target_return: 0.053  # 5.3%
+    recovery_time: 30  # days
+    daily_target: 0.0018  # 0.18% daily
+    
+  # Example 2: Complex Recovery
+  complex_recovery:
+    description: "Complex Recovery Example"
+    initial_capital: 100000
+    current_capital: 90000
+    drawdown: 0.10  # 10%
+    target: 100000
+    recovery_needed: 10000
+    target_return: 0.111  # 11.1%
+    recovery_time: 45  # days
+    daily_target: 0.0025  # 0.25% daily
+    strategy: "adaptive"
+    risk_multiplier: 1.2
+    position_sizing: 1.2
+    
+  # Example 3: Recovery with Multiple Positions
+  multi_position_recovery:
+    description: "Recovery with Multiple Positions"
+    total_drawdown: 0.12  # 12%
+    positions:
+      - asset: "BTC"
+        drawdown: 0.08
+        recovery_needed: 0.08
+        strategy: "swing"
+      - asset: "ETH"
+        drawdown: 0.15
+        recovery_needed: 0.15
+        strategy: "scalping"
+      - asset: "SOL"
+        drawdown: 0.05
+        recovery_needed: 0.05
+        strategy: "trend"
+    weighted_recovery: 0.12
+    recovery_time: 60  # days
+
+# ============================================================
+# ENVIRONMENT-SPECIFIC CONFIGURATIONS
+# ============================================================
+environments:
+  # Development Environment
+  development:
+    recovery:
+      general:
+        enabled: true
+        recovery_method: "moderate"
+        recovery_activation: 0.10
+        max_recovery_duration: 30
+        
+    recovery_monitoring:
+      alerts:
+        recovery_progress:
+          enabled: false
+        recovery_stalled:
+          enabled: false
+        recovery_reversal:
+          enabled: false
+          
+  # Staging Environment
+  staging:
+    recovery:
+      general:
+        enabled: true
+        recovery_method: "adaptive"
+        recovery_activation: 0.05
+        max_recovery_duration: 60
+        
+    recovery_monitoring:
+      alerts:
+        recovery_progress:
+          enabled: true
+        recovery_stalled:
+          enabled: true
+        recovery_reversal:
+          enabled: true
+          
+  # Production Environment
+  production:
+    recovery:
+      general:
+        enabled: true
+        recovery_method: "adaptive"
+        recovery_activation: 0.05
+        recovery_deactivation: 0.02
+        recovery_phase: "moderate"
+        max_recovery_duration: 90
+        recovery_risk_multiplier: 1.0
+        recovery_capital_allocation: 0.50
+        auto_hedging: true
+        position_sizing_adjustment: true
+        
+    recovery_monitoring:
+      alerts:
+        recovery_progress:
+          enabled: true
+          level: "info"
+        recovery_stalled:
+          enabled: true
+          level: "warning"
+        recovery_reversal:
+          enabled: true
+          level: "critical"
+        recovery_completed:
+          enabled: true
+          level: "success"
+          
+  # Demo Environment
+  demo:
+    recovery:
+      general:
+        enabled: true
+        recovery_method: "moderate"
+        recovery_activation: 0.08
+        max_recovery_duration: 45
+        
+    recovery_monitoring:
+      alerts:
+        recovery_progress:
+          enabled: false
+        recovery_stalled:
+          enabled: true
+        recovery_reversal:
+          enabled: false
+
+# ============================================================
+# END OF CONFIGURATION
+# ============================================================
