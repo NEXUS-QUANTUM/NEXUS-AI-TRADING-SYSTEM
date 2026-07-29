@@ -1,0 +1,888 @@
+# trading/bots/hedge_bot/config/billing_configs.yaml
+# NEXUS AI TRADING SYSTEM - Hedge Bot Billing Configuration
+# Version: 2.0.0
+# Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+
+# ============================================================
+# BILLING GENERAL SETTINGS
+# ============================================================
+billing:
+  # General Billing Settings
+  general:
+    enabled: true
+    billing_currency: "USD"
+    billing_cycle: "monthly"  # monthly, quarterly, annual, custom
+    billing_day: 1  # Day of month for billing
+    billing_time: "00:00:00"  # UTC time
+    proration_enabled: true
+    tax_inclusive: true
+    decimal_places: 2
+    min_billing_amount: 0.01
+    
+  # Billing Methods
+  methods:
+    - "subscription"
+    - "usage_based"
+    - "one_time"
+    - "hybrid"
+    
+  # Payment Methods
+  payment_methods:
+    - "credit_card"
+    - "debit_card"
+    - "bank_transfer"
+    - "cryptocurrency"
+    - "paypal"
+    - "stripe"
+    - "coinbase_commerce"
+    
+  # Currency Support
+  currencies:
+    - "USD"
+    - "EUR"
+    - "GBP"
+    - "SGD"
+    - "JPY"
+    - "CHF"
+    - "AUD"
+    - "CAD"
+    - "BTC"
+    - "ETH"
+    - "USDC"
+    - "USDT"
+
+# ============================================================
+# SUBSCRIPTION PLANS
+# ============================================================
+subscription_plans:
+  # Plan Definitions
+  plans:
+    free:
+      id: "free"
+      name: "Free Plan"
+      description: "Basic trading features for beginners"
+      price: 0.00
+      currency: "USD"
+      billing_cycle: "monthly"
+      features:
+        - "paper_trading"
+        - "basic_charts"
+        - "daily_signals"
+        - "1_bot_limit"
+        - "10_trades_per_day"
+        - "basic_support"
+      limits:
+        max_bots: 1
+        max_trades_per_day: 10
+        max_positions: 5
+        max_portfolio_value: 10000
+        data_refresh_seconds: 60
+        api_calls_per_minute: 30
+        
+    starter:
+      id: "starter"
+      name: "Starter Plan"
+      description: "Essential trading tools for active traders"
+      price: 49.00
+      currency: "USD"
+      billing_cycle: "monthly"
+      features:
+        - "paper_trading"
+        - "advanced_charts"
+        - "realtime_signals"
+        - "3_bot_limit"
+        - "50_trades_per_day"
+        - "email_support"
+        - "basic_analytics"
+        - "telegram_alerts"
+      limits:
+        max_bots: 3
+        max_trades_per_day: 50
+        max_positions: 20
+        max_portfolio_value: 50000
+        data_refresh_seconds: 30
+        api_calls_per_minute: 60
+        
+    professional:
+      id: "professional"
+      name: "Professional Plan"
+      description: "Professional trading platform for serious traders"
+      price: 149.00
+      currency: "USD"
+      billing_cycle: "monthly"
+      features:
+        - "paper_trading"
+        - "premium_charts"
+        - "realtime_signals"
+        - "10_bot_limit"
+        - "200_trades_per_day"
+        - "priority_support"
+        - "advanced_analytics"
+        - "telegram_alerts"
+        - "slack_integration"
+        - "webhook_integration"
+        - "api_access"
+      limits:
+        max_bots: 10
+        max_trades_per_day: 200
+        max_positions: 50
+        max_portfolio_value: 250000
+        data_refresh_seconds: 10
+        api_calls_per_minute: 120
+        
+    enterprise:
+      id: "enterprise"
+      name: "Enterprise Plan"
+      description: "Enterprise-grade trading solution for institutions"
+      price: 499.00
+      currency: "USD"
+      billing_cycle: "monthly"
+      features:
+        - "paper_trading"
+        - "premium_charts"
+        - "realtime_signals"
+        - "unlimited_bots"
+        - "unlimited_trades"
+        - "24_7_support"
+        - "enterprise_analytics"
+        - "telegram_alerts"
+        - "slack_integration"
+        - "webhook_integration"
+        - "api_access"
+        - "white_label"
+        - "dedicated_infrastructure"
+        - "custom_development"
+        - "sla_guarantee"
+      limits:
+        max_bots: 999
+        max_trades_per_day: 9999
+        max_positions: 999
+        max_portfolio_value: 9999999
+        data_refresh_seconds: 1
+        api_calls_per_minute: 600
+        
+  # Annual Discounts
+  annual_discounts:
+    starter:
+      discount_percent: 15
+      annual_price: 499.80
+      
+    professional:
+      discount_percent: 20
+      annual_price: 1430.40
+      
+    enterprise:
+      discount_percent: 25
+      annual_price: 4491.00
+
+# ============================================================
+# USAGE-BASED PRICING
+# ============================================================
+usage_pricing:
+  # Usage Metrics
+  metrics:
+    - "api_calls"
+    - "trades_executed"
+    - "bots_active"
+    - "positions_held"
+    - "data_consumed"
+    - "storage_used"
+    - "computing_power"
+    
+  # Usage Tiers
+  tiers:
+    api_calls:
+      free_tier: 1000
+      pay_per_call: 0.001
+      volume_discounts:
+        - volume: 10000
+          price: 0.0008
+        - volume: 100000
+          price: 0.0005
+        - volume: 1000000
+          price: 0.0002
+          
+    trades:
+      free_tier: 100
+      pay_per_trade: 0.01
+      volume_discounts:
+        - volume: 1000
+          price: 0.008
+        - volume: 10000
+          price: 0.005
+        - volume: 100000
+          price: 0.003
+          
+    data_consumption:
+      free_tier_gb: 1
+      pay_per_gb: 0.50
+      volume_discounts:
+        - volume: 10
+          price: 0.40
+        - volume: 100
+          price: 0.30
+        - volume: 1000
+          price: 0.20
+
+# ============================================================
+# BILLING PERIODS
+# ============================================================
+billing_periods:
+  # Period Definitions
+  periods:
+    monthly:
+      duration_days: 30
+      billing_day: 1
+      proration: true
+      
+    quarterly:
+      duration_days: 90
+      billing_day: 1
+      proration: true
+      
+    semi_annual:
+      duration_days: 180
+      billing_day: 1
+      proration: true
+      
+    annual:
+      duration_days: 365
+      billing_day: 1
+      proration: true
+      
+  # Trial Periods
+  trial_periods:
+    free_trial_days: 14
+    professional_trial_days: 7
+    enterprise_trial_days: 30
+    
+  # Grace Periods
+  grace_periods:
+    payment_grace_days: 3
+    subscription_grace_days: 5
+    cancellation_grace_days: 7
+
+# ============================================================
+# INVOICE CONFIGURATION
+# ============================================================
+invoice_configuration:
+  # Invoice Settings
+  settings:
+    enabled: true
+    generate_automatically: true
+    invoice_format: "pdf"  # pdf, html, json
+    invoice_currency: "USD"
+    invoice_prefix: "INV-"
+    invoice_number_format: "{prefix}{year}{month}{sequence:06d}"
+    include_tax: true
+    include_discounts: true
+    include_balance: true
+    
+  # Invoice Details
+  details:
+    company_name: "NEXUS QUANTUM LTD"
+    company_address: "Suite 1001, 10th Floor, One Commercial Centre, 54 Jermyn Street, London SW1Y 6LX, United Kingdom"
+    company_vat: "GB 123 4567 89"
+    company_registration: "14567890"
+    company_email: "billing@nexusquantum.com"
+    company_phone: "+44 20 7946 0958"
+    
+  # Invoice Templates
+  templates:
+    standard:
+      header: "Invoice"
+      include_logo: true
+      include_company_info: true
+      include_customer_info: true
+      include_items: true
+      include_tax: true
+      include_total: true
+      include_payment_terms: true
+      
+    proforma:
+      header: "Proforma Invoice"
+      include_logo: true
+      include_company_info: true
+      include_customer_info: true
+      include_items: true
+      include_tax: true
+      include_total: true
+      include_validity: true
+      
+    receipt:
+      header: "Payment Receipt"
+      include_logo: true
+      include_company_info: true
+      include_customer_info: true
+      include_payment_details: true
+      include_total_paid: true
+
+# ============================================================
+# TAX CONFIGURATION
+# ============================================================
+tax_configuration:
+  # Tax Settings
+  settings:
+    enabled: true
+    tax_calculation: "automatic"  # automatic, manual
+    tax_inclusive: false
+    tax_exclusive: true
+    calculate_tax_on: "subscription"  # subscription, usage, both
+    
+  # Tax Rates
+  rates:
+    # UK VAT
+    uk_vat:
+      rate: 0.20
+      country: "UK"
+      region: "Europe"
+      type: "vat"
+      
+    # EU VAT
+    eu_vat:
+      rate: 0.20
+      country: "EU"
+      region: "Europe"
+      type: "vat"
+      
+    # US Sales Tax
+    us_sales_tax:
+      rate: 0.00  # Varies by state
+      country: "US"
+      region: "North America"
+      type: "sales_tax"
+      
+    # Singapore GST
+    singapore_gst:
+      rate: 0.08
+      country: "SG"
+      region: "Asia"
+      type: "gst"
+      
+  # Tax Exemptions
+  exemptions:
+    - "non_profit_organizations"
+    - "educational_institutions"
+    - "government_agencies"
+    - "international_organizations"
+
+# ============================================================
+# DISCOUNT CONFIGURATION
+# ============================================================
+discount_configuration:
+  # Discount Types
+  types:
+    - "percentage"
+    - "fixed_amount"
+    - "tiered"
+    - "coupon"
+    - "referral"
+    - "volume"
+    - "loyalty"
+    
+  # Coupon Codes
+  coupons:
+    # Seasonal/Launch Coupons
+    launch_discount:
+      code: "NEXUS2026"
+      type: "percentage"
+      value: 20
+      valid_from: "2026-01-01"
+      valid_until: "2026-12-31"
+      applies_to: "all_plans"
+      max_uses: 1000
+      
+    referral_discount:
+      code: "REFERFRIEND"
+      type: "percentage"
+      value: 15
+      applies_to: "all_plans"
+      max_uses: 999
+      per_user_limit: 10
+      
+    annual_discount:
+      code: "ANNUAL2026"
+      type: "percentage"
+      value: 25
+      applies_to: "annual_plans"
+      max_uses: 999
+      
+  # Loyalty Discounts
+  loyalty:
+    duration_6_months:
+      type: "percentage"
+      value: 5
+      min_duration_months: 6
+      
+    duration_12_months:
+      type: "percentage"
+      value: 10
+      min_duration_months: 12
+      
+    duration_24_months:
+      type: "percentage"
+      value: 15
+      min_duration_months: 24
+      
+  # Volume Discounts
+  volume:
+    bots_5:
+      type: "percentage"
+      value: 5
+      min_bots: 5
+      
+    bots_10:
+      type: "percentage"
+      value: 10
+      min_bots: 10
+      
+    bots_25:
+      type: "percentage"
+      value: 15
+      min_bots: 25
+
+# ============================================================
+# PAYMENT PROCESSING
+# ============================================================
+payment_processing:
+  # Payment Gateway Settings
+  gateways:
+    stripe:
+      enabled: true
+      api_key: "${STRIPE_API_KEY}"
+      webhook_secret: "${STRIPE_WEBHOOK_SECRET}"
+      supported_methods:
+        - "credit_card"
+        - "debit_card"
+        - "bank_transfer"
+      supported_currencies:
+        - "USD"
+        - "EUR"
+        - "GBP"
+        - "SGD"
+        
+    paypal:
+      enabled: true
+      client_id: "${PAYPAL_CLIENT_ID}"
+      client_secret: "${PAYPAL_CLIENT_SECRET}"
+      webhook_id: "${PAYPAL_WEBHOOK_ID}"
+      supported_methods:
+        - "paypal"
+        - "credit_card"
+      supported_currencies:
+        - "USD"
+        - "EUR"
+        - "GBP"
+        
+    coinbase_commerce:
+      enabled: false
+      api_key: "${COINBASE_API_KEY}"
+      webhook_secret: "${COINBASE_WEBHOOK_SECRET}"
+      supported_methods:
+        - "cryptocurrency"
+      supported_currencies:
+        - "BTC"
+        - "ETH"
+        - "USDC"
+        - "USDT"
+        - "SOL"
+        - "ADA"
+        
+  # Payment Retry
+  retry:
+    enabled: true
+    max_attempts: 3
+    retry_delay_hours: [24, 48, 72]
+    
+  # Payment Failure
+  failure_handling:
+    suspend_after_retries: true
+    notification_on_failure: true
+    auto_cancel_after_days: 7
+
+# ============================================================
+# BILLING NOTIFICATIONS
+# ============================================================
+billing_notifications:
+  # Notification Types
+  types:
+    payment_success:
+      enabled: true
+      channels: ["email", "in_app"]
+      
+    payment_failure:
+      enabled: true
+      channels: ["email", "sms", "in_app"]
+      
+    invoice_generated:
+      enabled: true
+      channels: ["email"]
+      
+    subscription_renewal:
+      enabled: true
+      channels: ["email", "in_app"]
+      send_before_days: [30, 15, 7, 3, 1]
+      
+    subscription_expiry:
+      enabled: true
+      channels: ["email", "sms", "in_app"]
+      send_before_days: [7, 3, 1, 0]
+      
+    plan_change:
+      enabled: true
+      channels: ["email"]
+      
+    credit_limit_reached:
+      enabled: true
+      channels: ["email", "in_app"]
+      threshold: 0.85  # 85% of limit
+      
+    billing_error:
+      enabled: true
+      channels: ["email", "slack"]
+      level: "critical"
+
+# ============================================================
+# CREDIT MANAGEMENT
+# ============================================================
+credit_management:
+  # Credit Settings
+  settings:
+    enabled: true
+    credit_currency: "USD"
+    min_credit_amount: 1.00
+    max_credit_amount: 10000.00
+    credit_expiry_days: 365
+    
+  # Credit Sources
+  sources:
+    - "manual_add"
+    - "auto_recharge"
+    - "refund"
+    - "bonus"
+    - "referral"
+    
+  # Auto-Recharge
+  auto_recharge:
+    enabled: true
+    threshold: 10.00  # USD
+    amount: 50.00  # USD
+    method: "payment_method"
+    
+  # Credit Usage
+  usage:
+    priority: "credit_first"  # credit_first, payment_first
+    apply_to: "all_charges"
+    include_taxes: true
+
+# ============================================================
+# REFUND CONFIGURATION
+# ============================================================
+refund_configuration:
+  # Refund Settings
+  settings:
+    enabled: true
+    refund_window_days: 30
+    restocking_fee_percent: 0
+    refund_method: "original_payment"  # original_payment, credit, bank_transfer
+    
+  # Refund Policies
+  policies:
+    full_refund:
+      condition: "within_14_days"
+      fee_percent: 0
+      
+    partial_refund:
+      condition: "between_15_to_30_days"
+      fee_percent: 10
+      
+    pro_rata_refund:
+      condition: "annual_subscription"
+      calculation: "prorated_days"
+      
+  # Refund Reasons
+  reasons:
+    - "customer_request"
+    - "service_issue"
+    - "billing_error"
+    - "fraud"
+    - "duplicate_charge"
+    - "unsatisfied"
+
+# ============================================================
+# REPORTING & ANALYTICS
+# ============================================================
+reporting_analytics:
+  # Revenue Reports
+  revenue_reports:
+    enabled: true
+    frequency: "monthly"
+    metrics:
+      - "total_revenue"
+      - "recurring_revenue"
+      - "one_time_revenue"
+      - "growth_rate"
+      - "average_revenue_per_user"
+      - "revenue_by_plan"
+      - "revenue_by_region"
+      
+  # Churn Reports
+  churn_reports:
+    enabled: true
+    frequency: "monthly"
+    metrics:
+      - "customer_churn_rate"
+      - "revenue_churn_rate"
+      - "retention_rate"
+      - "average_customer_lifetime"
+      - "churn_by_plan"
+      - "churn_by_region"
+      
+  # Usage Reports
+  usage_reports:
+    enabled: true
+    frequency: "weekly"
+    metrics:
+      - "api_usage"
+      - "trade_volume"
+      - "bot_activity"
+      - "data_consumption"
+      - "peak_usage"
+      - "usage_by_plan"
+      
+  # Financial Reports
+  financial_reports:
+    enabled: true
+    frequency: "quarterly"
+    metrics:
+      - "profit_and_loss"
+      - "balance_sheet"
+      - "cash_flow"
+      - "revenue_forecast"
+      - "financial_projections"
+
+# ============================================================
+# REGULATORY COMPLIANCE
+# ============================================================
+regulatory_compliance:
+  # Compliance Settings
+  settings:
+    enabled: true
+    framework: "GDPR"  # GDPR, CCPA, PCI-DSS
+    data_retention_days: 730  # 2 years
+    audit_trail: true
+    
+  # Data Privacy
+  data_privacy:
+    encrypt_pii: true
+    anonymize_data: true
+    data_minimization: true
+    consent_management: true
+    
+  # Tax Compliance
+  tax_compliance:
+    calculate_tax: true
+    provide_tax_invoices: true
+    handle_tax_exemptions: true
+    report_to_tax_authority: true
+    
+  # Payment Compliance
+  payment_compliance:
+    pci_dss_compliant: true
+    secure_payment_processing: true
+    fraud_detection: true
+    chargeback_handling: true
+
+# ============================================================
+# INTEGRATION
+# ============================================================
+integration:
+  # CRM Integration
+  crm:
+    enabled: false
+    provider: "salesforce"  # salesforce, hubspot, custom
+    api_endpoint: "${CRM_API_ENDPOINT}"
+    api_key: "${CRM_API_KEY}"
+    sync_customers: true
+    sync_subscriptions: true
+    sync_invoices: true
+    
+  # Accounting Integration
+  accounting:
+    enabled: false
+    provider: "xero"  # xero, quickbooks, custom
+    api_endpoint: "${ACCOUNTING_API_ENDPOINT}"
+    api_key: "${ACCOUNTING_API_KEY}"
+    sync_invoices: true
+    sync_payments: true
+    sync_customers: true
+    
+  # Analytics Integration
+  analytics:
+    enabled: true
+    provider: "google_analytics"  # google_analytics, mixpanel, amplitude
+    tracking_id: "${ANALYTICS_TRACKING_ID}"
+    track_events: true
+    track_revenue: true
+    track_usage: true
+
+# ============================================================
+# BILLING DASHBOARD
+# ============================================================
+billing_dashboard:
+  # Dashboard Settings
+  settings:
+    enabled: true
+    refresh_interval: 60
+    default_view: "summary"  # summary, details, analytics
+    
+  # Dashboard Widgets
+  widgets:
+    revenue_summary:
+      enabled: true
+      position: 1
+      size: "large"
+      
+    subscription_summary:
+      enabled: true
+      position: 2
+      size: "medium"
+      
+    usage_summary:
+      enabled: true
+      position: 3
+      size: "medium"
+      
+    pending_invoices:
+      enabled: true
+      position: 4
+      size: "small"
+      
+    payment_history:
+      enabled: true
+      position: 5
+      size: "medium"
+      
+    churn_analysis:
+      enabled: true
+      position: 6
+      size: "large"
+      
+    revenue_chart:
+      enabled: true
+      position: 7
+      size: "large"
+      
+    plan_distribution:
+      enabled: true
+      position: 8
+      size: "medium"
+
+# ============================================================
+# ENVIRONMENT-SPECIFIC CONFIGURATIONS
+# ============================================================
+environments:
+  # Development Environment
+  development:
+    billing:
+      general:
+        enabled: true
+        billing_cycle: "monthly"
+        
+    subscription_plans:
+      plans:
+        free:
+          price: 0.00
+        starter:
+          price: 0.00  # Free in dev
+        professional:
+          price: 0.00  # Free in dev
+        enterprise:
+          price: 0.00  # Free in dev
+          
+    payment_processing:
+      gateways:
+        stripe:
+          enabled: false
+          
+    billing_notifications:
+      payment_success:
+        enabled: false
+      payment_failure:
+        enabled: true
+        
+  # Staging Environment
+  staging:
+    billing:
+      general:
+        enabled: true
+        billing_cycle: "monthly"
+        
+    subscription_plans:
+      plans:
+        free:
+          price: 0.00
+        starter:
+          price: 0.00
+        professional:
+          price: 49.00
+        enterprise:
+          price: 99.00
+          
+    payment_processing:
+      gateways:
+        stripe:
+          enabled: true
+          api_key: "${STRIPE_TEST_API_KEY}"
+          
+  # Production Environment
+  production:
+    billing:
+      general:
+        enabled: true
+        billing_cycle: "monthly"
+        
+    subscription_plans:
+      plans:
+        free:
+          price: 0.00
+        starter:
+          price: 49.00
+        professional:
+          price: 149.00
+        enterprise:
+          price: 499.00
+          
+    payment_processing:
+      gateways:
+        stripe:
+          enabled: true
+          api_key: "${STRIPE_LIVE_API_KEY}"
+        paypal:
+          enabled: true
+          
+  # Demo Environment
+  demo:
+    billing:
+      general:
+        enabled: false  # No billing in demo
+        
+    subscription_plans:
+      plans:
+        free:
+          price: 0.00
+        starter:
+          price: 0.00
+        professional:
+          price: 0.00
+        enterprise:
+          price: 0.00
+          
+    payment_processing:
+      gateways:
+        stripe:
+          enabled: false
+
+# ============================================================
+# END OF CONFIGURATION
+# ============================================================
