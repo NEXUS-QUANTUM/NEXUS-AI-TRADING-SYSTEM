@@ -1,0 +1,740 @@
+# trading/bots/hedge_bot/config/collateral_configs.yaml
+# NEXUS AI TRADING SYSTEM - Hedge Bot Collateral Configuration
+# Version: 2.0.0
+# Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+
+# ============================================================
+# COLLATERAL GENERAL SETTINGS
+# ============================================================
+collateral:
+  # General Collateral Settings
+  general:
+    enabled: true
+    base_currency: "USD"
+    collateral_currency: "USD"
+    collateral_management: "dynamic"  # dynamic, static, adaptive
+    valuation_method: "mark_to_market"  # mark_to_market, cost, weighted
+    update_frequency: "realtime"  # realtime, hourly, daily
+    min_collateral_ratio: 1.0
+    max_collateral_ratio: 2.0
+    collateral_buffer: 0.10  # 10% buffer above minimum
+    
+  # Collateral Types
+  types:
+    cash_collateral:
+      enabled: true
+      accepted_currencies:
+        - "USD"
+        - "EUR"
+        - "GBP"
+        - "SGD"
+        - "JPY"
+        - "CHF"
+        - "AUD"
+        - "CAD"
+        
+    crypto_collateral:
+      enabled: true
+      accepted_assets:
+        - "BTC"
+        - "ETH"
+        - "USDC"
+        - "USDT"
+        - "DAI"
+        - "BUSD"
+        - "SOL"
+        - "ADA"
+        - "DOT"
+        - "AVAX"
+        
+    equity_collateral:
+      enabled: false
+      accepted_assets:
+        - "SPY"
+        - "QQQ"
+        - "AAPL"
+        - "MSFT"
+        - "GOOGL"
+        - "AMZN"
+        
+    commodity_collateral:
+      enabled: false
+      accepted_assets:
+        - "GOLD"
+        - "SILVER"
+
+# ============================================================
+# HAIRCUT RATES
+# ============================================================
+haircut_rates:
+  # Haircut Settings
+  settings:
+    enabled: true
+    calculation_method: "risk_based"  # risk_based, fixed, dynamic
+    update_frequency: "daily"
+    min_haircut: 0.0
+    max_haircut: 0.50
+    
+  # Asset Class Haircuts
+  asset_class:
+    cash:
+      haircut: 0.0
+      description: "No haircut for cash"
+      
+    stablecoin:
+      haircut: 0.02
+      description: "2% haircut for stablecoins"
+      
+    cryptocurrency_major:
+      haircut: 0.10
+      description: "10% haircut for major cryptocurrencies"
+      assets:
+        - "BTC"
+        - "ETH"
+        
+    cryptocurrency_minor:
+      haircut: 0.20
+      description: "20% haircut for minor cryptocurrencies"
+      assets:
+        - "SOL"
+        - "ADA"
+        - "DOT"
+        - "AVAX"
+        - "XRP"
+        - "LINK"
+        - "UNI"
+        - "AAVE"
+        
+    cryptocurrency_alt:
+      haircut: 0.35
+      description: "35% haircut for alt coins"
+      assets:
+        - "MATIC"
+        - "ATOM"
+        - "NEAR"
+        - "FTM"
+        
+    equity_large_cap:
+      haircut: 0.15
+      description: "15% haircut for large cap equities"
+      
+    equity_mid_cap:
+      haircut: 0.25
+      description: "25% haircut for mid cap equities"
+      
+    equity_small_cap:
+      haircut: 0.35
+      description: "35% haircut for small cap equities"
+      
+    commodity:
+      haircut: 0.20
+      description: "20% haircut for commodities"
+      
+  # Asset-Specific Haircuts
+  assets:
+    BTC:
+      haircut: 0.10
+      volatility_adjustment: true
+      
+    ETH:
+      haircut: 0.12
+      volatility_adjustment: true
+      
+    USDC:
+      haircut: 0.02
+      volatility_adjustment: false
+      
+    USDT:
+      haircut: 0.03
+      volatility_adjustment: false
+      
+    DAI:
+      haircut: 0.04
+      volatility_adjustment: false
+      
+    SOL:
+      haircut: 0.20
+      volatility_adjustment: true
+      
+    ADA:
+      haircut: 0.20
+      volatility_adjustment: true
+      
+    DOT:
+      haircut: 0.20
+      volatility_adjustment: true
+      
+    AVAX:
+      haircut: 0.22
+      volatility_adjustment: true
+      
+    XRP:
+      haircut: 0.18
+      volatility_adjustment: true
+      
+    LINK:
+      haircut: 0.20
+      volatility_adjustment: true
+      
+    UNI:
+      haircut: 0.22
+      volatility_adjustment: true
+      
+    AAVE:
+      haircut: 0.22
+      volatility_adjustment: true
+      
+    MATIC:
+      haircut: 0.28
+      volatility_adjustment: true
+      
+    ATOM:
+      haircut: 0.30
+      volatility_adjustment: true
+      
+    NEAR:
+      haircut: 0.32
+      volatility_adjustment: true
+      
+    FTM:
+      haircut: 0.35
+      volatility_adjustment: true
+
+# ============================================================
+# COLLATERAL RATIOS
+# ============================================================
+collateral_ratios:
+  # Ratio Settings
+  settings:
+    enabled: true
+    min_ratio: 1.0
+    max_ratio: 2.0
+    optimal_ratio: 1.5
+    margin_call_ratio: 1.2
+    liquidation_ratio: 1.05
+    
+  # Ratio by Position Type
+  position_type:
+    spot:
+      min_ratio: 1.0
+      optimal_ratio: 1.3
+      margin_call: 1.1
+      liquidation: 1.02
+      
+    futures:
+      min_ratio: 1.2
+      optimal_ratio: 1.5
+      margin_call: 1.3
+      liquidation: 1.1
+      
+    perpetual:
+      min_ratio: 1.2
+      optimal_ratio: 1.5
+      margin_call: 1.3
+      liquidation: 1.1
+      
+    options:
+      min_ratio: 1.1
+      optimal_ratio: 1.4
+      margin_call: 1.2
+      liquidation: 1.05
+      
+  # Ratio by Asset Class
+  asset_class:
+    cryptocurrency:
+      min_ratio: 1.2
+      optimal_ratio: 1.5
+      margin_call: 1.3
+      liquidation: 1.1
+      
+    forex:
+      min_ratio: 1.0
+      optimal_ratio: 1.2
+      margin_call: 1.1
+      liquidation: 1.02
+      
+    equity:
+      min_ratio: 1.1
+      optimal_ratio: 1.4
+      margin_call: 1.2
+      liquidation: 1.05
+      
+    commodity:
+      min_ratio: 1.1
+      optimal_ratio: 1.3
+      margin_call: 1.2
+      liquidation: 1.05
+
+# ============================================================
+# COLLATERAL VALUATION
+# ============================================================
+collateral_valuation:
+  # Valuation Settings
+  settings:
+    enabled: true
+    method: "mark_to_market"  # mark_to_market, weighted, moving_average
+    pricing_source: "exchange"  # exchange, oracle, weighted
+    update_frequency: "realtime"
+    use_oracle_prices: true
+    oracle_price_weight: 0.3
+    
+  # Valuation Methods
+  methods:
+    mark_to_market:
+      enabled: true
+      use_mid_price: true
+      use_bid_ask_spread: true
+      include_fees: false
+      
+    weighted_average:
+      enabled: true
+      sources:
+        - exchange_weight: 0.5
+        - oracle_weight: 0.3
+        - vwap_weight: 0.2
+      lookback_period: 24  # hours
+      
+    moving_average:
+      enabled: true
+      periods: 7
+      weighting: "exponential"  # simple, exponential, weighted
+      
+  # Price Sources
+  price_sources:
+    exchange:
+      enabled: true
+      priority: 1
+      timeout: 5
+      
+    oracle:
+      enabled: true
+      priority: 2
+      providers:
+        - "chainlink"
+        - "pyth"
+        - "twap"
+        
+    vwap:
+      enabled: true
+      priority: 3
+      lookback: 24  # hours
+
+# ============================================================
+# COLLATERAL MONITORING
+# ============================================================
+collateral_monitoring:
+  # Monitoring Settings
+  settings:
+    enabled: true
+    monitoring_frequency: "realtime"
+    alert_threshold: 0.05  # 5% deviation
+    reporting_frequency: "daily"
+    
+  # Alert Conditions
+  alerts:
+    margin_call:
+      enabled: true
+      level: "critical"
+      threshold: 1.2
+      action: "reduce_position"
+      
+    liquidation_warning:
+      enabled: true
+      level: "critical"
+      threshold: 1.05
+      action: "emergency_reduce"
+      
+    collateral_deficiency:
+      enabled: true
+      level: "warning"
+      threshold: 1.3
+      action: "add_collateral"
+      
+    collateral_excess:
+      enabled: true
+      level: "info"
+      threshold: 1.8
+      action: "optimize"
+      
+    haircut_change:
+      enabled: true
+      level: "warning"
+      threshold: 0.05  # 5% change
+      
+  # Monitoring Metrics
+  metrics:
+    - "collateral_ratio"
+    - "collateral_value"
+    - "excess_collateral"
+    - "deficiency_collateral"
+    - "haircut_exposure"
+    - "concentration_risk"
+    - "liquidity_risk"
+
+# ============================================================
+# COLLATERAL OPTIMIZATION
+# ============================================================
+collateral_optimization:
+  # Optimization Settings
+  settings:
+    enabled: true
+    optimization_method: "dynamic"  # static, dynamic, adaptive
+    optimization_frequency: "daily"
+    target_ratio: 1.5
+    optimization_range: [1.3, 1.8]
+    
+  # Optimization Strategies
+  strategies:
+    minimize_collateral:
+      enabled: true
+      target: "minimize_cost"
+      constraints:
+        - maintain_min_ratio: true
+        - maintain_risk_limits: true
+        
+    maximize_efficiency:
+      enabled: true
+      target: "maximize_utilization"
+      constraints:
+        - maintain_risk_limits: true
+        - maintain_liquidity: true
+        
+    balanced:
+      enabled: true
+      target: "balance_cost_and_risk"
+      weight_cost: 0.5
+      weight_risk: 0.5
+      
+  # Optimization Variables
+  variables:
+    - "asset_allocation"
+    - "haircut_management"
+    - "position_sizing"
+    - "leverage_utilization"
+
+# ============================================================
+# COLLATERAL REPORTING
+# ============================================================
+collateral_reporting:
+  # Report Settings
+  settings:
+    enabled: true
+    report_frequency: "daily"
+    report_format: "json"  # json, csv, pdf, html
+    include_analytics: true
+    include_metrics: true
+    
+  # Report Sections
+  sections:
+    collateral_summary:
+      enabled: true
+      include_total_collateral: true
+      include_collateral_ratio: true
+      include_excess_collateral: true
+      
+    haircut_summary:
+      enabled: true
+      include_by_asset_class: true
+      include_by_asset: true
+      include_weighted_average: true
+      
+    margin_summary:
+      enabled: true
+      include_initial_margin: true
+      include_maintenance_margin: true
+      include_variation_margin: true
+      
+    risk_summary:
+      enabled: true
+      include_margin_call_risk: true
+      include_liquidation_risk: true
+      include_concentration_risk: true
+      
+    optimization_summary:
+      enabled: true
+      include_recommendations: true
+      include_action_items: true
+
+# ============================================================
+# COLLATERAL DASHBOARD
+# ============================================================
+collateral_dashboard:
+  # Dashboard Settings
+  settings:
+    enabled: true
+    refresh_interval: 5
+    default_view: "summary"  # summary, details, analytics
+    
+  # Dashboard Widgets
+  widgets:
+    collateral_summary:
+      enabled: true
+      position: 1
+      size: "large"
+      
+    ratio_chart:
+      enabled: true
+      position: 2
+      size: "large"
+      
+    asset_distribution:
+      enabled: true
+      position: 3
+      size: "medium"
+      
+    haircut_summary:
+      enabled: true
+      position: 4
+      size: "medium"
+      
+    margin_status:
+      enabled: true
+      position: 5
+      size: "small"
+      
+    alert_status:
+      enabled: true
+      position: 6
+      size: "small"
+
+# ============================================================
+# COLLATERAL INTEGRATION
+# ============================================================
+collateral_integration:
+  # Integration Settings
+  settings:
+    enabled: true
+    integration_type: "api"  # api, webhook, websocket, file
+    
+  # External Systems
+  systems:
+    risk_system:
+      enabled: true
+      endpoint: "/api/risk/collateral"
+      update_frequency: "realtime"
+      
+    trading_system:
+      enabled: true
+      endpoint: "/api/trading/collateral"
+      update_frequency: "realtime"
+      
+    accounting_system:
+      enabled: true
+      endpoint: "/api/accounting/collateral"
+      update_frequency: "daily"
+      
+    reporting_system:
+      enabled: true
+      endpoint: "/api/reporting/collateral"
+      update_frequency: "daily"
+
+# ============================================================
+# COLLATERAL SCENARIOS
+# ============================================================
+collateral_scenarios:
+  # Scenario 1: Normal Market
+  normal_market:
+    description: "Normal market conditions"
+    volatility_multiplier: 1.0
+    haircut_multiplier: 1.0
+    ratio_multiplier: 1.0
+    margin_call_ratio: 1.2
+    liquidation_ratio: 1.05
+    
+  # Scenario 2: High Volatility
+  high_volatility:
+    description: "High volatility market conditions"
+    volatility_multiplier: 2.0
+    haircut_multiplier: 1.5
+    ratio_multiplier: 1.2
+    margin_call_ratio: 1.3
+    liquidation_ratio: 1.1
+    
+  # Scenario 3: Market Crash
+  market_crash:
+    description: "Market crash scenario"
+    volatility_multiplier: 3.0
+    haircut_multiplier: 2.0
+    ratio_multiplier: 1.5
+    margin_call_ratio: 1.4
+    liquidation_ratio: 1.15
+    
+  # Scenario 4: Liquidity Crisis
+  liquidity_crisis:
+    description: "Liquidity crisis scenario"
+    volatility_multiplier: 2.0
+    haircut_multiplier: 2.5
+    ratio_multiplier: 1.3
+    margin_call_ratio: 1.35
+    liquidation_ratio: 1.12
+
+# ============================================================
+# COLLATERAL EXAMPLES
+# ============================================================
+collateral_examples:
+  # Example 1: Basic Collateral Management
+  basic_collateral:
+    scenario: "Basic Collateral Management"
+    total_collateral: 100000
+    positions_value: 150000
+    collateral_ratio: 1.5
+    haircut_applied: 0.10
+    effective_collateral: 90000
+    excess_deficiency: -60000
+    
+  # Example 2: Multi-Asset Collateral
+  multi_asset_collateral:
+    scenario: "Multi-Asset Collateral"
+    assets:
+      - asset: "USD"
+        value: 50000
+        haircut: 0.0
+        effective: 50000
+      - asset: "BTC"
+        value: 30000
+        haircut: 0.10
+        effective: 27000
+      - asset: "ETH"
+        value: 20000
+        haircut: 0.12
+        effective: 17600
+    total_collateral: 100000
+    effective_collateral: 94600
+    positions_value: 142000
+    collateral_ratio: 1.5
+    
+  # Example 3: Leveraged Collateral
+  leveraged_collateral:
+    scenario: "Leveraged Collateral"
+    total_collateral: 50000
+    leverage: 3.0
+    positions_value: 150000
+    collateral_ratio: 3.0
+    margin_call_ratio: 1.2
+    liquidation_ratio: 1.05
+    safety_margin: 0.15
+
+# ============================================================
+# ENVIRONMENT-SPECIFIC CONFIGURATIONS
+# ============================================================
+environments:
+  # Development Environment
+  development:
+    collateral:
+      general:
+        enabled: true
+        update_frequency: "hourly"
+        
+      types:
+        cash_collateral:
+          enabled: true
+        crypto_collateral:
+          enabled: true
+        equity_collateral:
+          enabled: false
+          
+    haircut_rates:
+      settings:
+        update_frequency: "manual"
+        
+    collateral_monitoring:
+      alerts:
+        margin_call:
+          enabled: false
+        liquidation_warning:
+          enabled: false
+          
+  # Staging Environment
+  staging:
+    collateral:
+      general:
+        enabled: true
+        update_frequency: "realtime"
+        
+      types:
+        cash_collateral:
+          enabled: true
+        crypto_collateral:
+          enabled: true
+        equity_collateral:
+          enabled: true
+          
+    haircut_rates:
+      settings:
+        update_frequency: "daily"
+        
+    collateral_monitoring:
+      alerts:
+        margin_call:
+          enabled: true
+        liquidation_warning:
+          enabled: true
+        collateral_deficiency:
+          enabled: true
+          
+  # Production Environment
+  production:
+    collateral:
+      general:
+        enabled: true
+        update_frequency: "realtime"
+        
+      types:
+        cash_collateral:
+          enabled: true
+        crypto_collateral:
+          enabled: true
+        equity_collateral:
+          enabled: true
+        commodity_collateral:
+          enabled: true
+          
+    haircut_rates:
+      settings:
+        update_frequency: "realtime"
+        
+    collateral_monitoring:
+      alerts:
+        margin_call:
+          enabled: true
+          level: "critical"
+        liquidation_warning:
+          enabled: true
+          level: "critical"
+        collateral_deficiency:
+          enabled: true
+          level: "high"
+        collateral_excess:
+          enabled: true
+        haircut_change:
+          enabled: true
+          
+  # Demo Environment
+  demo:
+    collateral:
+      general:
+        enabled: true
+        update_frequency: "hourly"
+        
+      types:
+        cash_collateral:
+          enabled: true
+        crypto_collateral:
+          enabled: true
+        equity_collateral:
+          enabled: false
+          
+    haircut_rates:
+      settings:
+        update_frequency: "manual"
+        
+    collateral_monitoring:
+      alerts:
+        margin_call:
+          enabled: true
+        liquidation_warning:
+          enabled: false
+
+# ============================================================
+# END OF CONFIGURATION
+# ============================================================
