@@ -1,0 +1,779 @@
+# trading/bots/hedge_bot/config/invoicing_configs.yaml
+# NEXUS AI TRADING SYSTEM - Hedge Bot Invoicing Configuration
+# Version: 2.0.0
+# Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+
+# ============================================================
+# INVOICING GENERAL SETTINGS
+# ============================================================
+invoicing:
+  # General Invoicing Settings
+  general:
+    enabled: true
+    invoice_currency: "USD"
+    invoice_format: "pdf"  # pdf, html, json, xml
+    invoice_prefix: "INV-"
+    invoice_number_format: "{prefix}{year}{month}{sequence:06d}"
+    invoice_language: "en"
+    invoice_timezone: "UTC"
+    decimal_places: 2
+    min_invoice_amount: 0.01
+    auto_generate: true
+    auto_send: true
+    auto_reminder: true
+    
+  # Invoice Types
+  types:
+    standard_invoice:
+      enabled: true
+      description: "Standard invoice for services"
+      template: "standard"
+      
+    proforma_invoice:
+      enabled: true
+      description: "Proforma invoice for advance payment"
+      template: "proforma"
+      
+    credit_note:
+      enabled: true
+      description: "Credit note for refunds or adjustments"
+      template: "credit_note"
+      
+    recurring_invoice:
+      enabled: true
+      description: "Recurring invoice for subscriptions"
+      template: "recurring"
+      
+    final_invoice:
+      enabled: true
+      description: "Final invoice for completed services"
+      template: "final"
+
+# ============================================================
+# INVOICE COMPANY INFORMATION
+# ============================================================
+company_info:
+  # Company Details
+  details:
+    name: "NEXUS QUANTUM LTD"
+    legal_name: "NEXUS QUANTUM LTD"
+    registration_number: "14567890"
+    vat_number: "GB 123 4567 89"
+    tax_id: "123-45-6789"
+    duns_number: "123456789"
+    
+  # Address
+  address:
+    street: "Suite 1001, 10th Floor, One Commercial Centre"
+    street2: "54 Jermyn Street"
+    city: "London"
+    state: "Greater London"
+    postal_code: "SW1Y 6LX"
+    country: "United Kingdom"
+    country_code: "GB"
+    
+  # Contact
+  contact:
+    email: "billing@nexusquantum.com"
+    phone: "+44 20 7946 0958"
+    fax: "+44 20 7946 0959"
+    website: "www.nexusquantum.com"
+    
+  # Banking
+  banking:
+    bank_name: "Barclays Bank PLC"
+    bank_address: "1 Churchill Place, London E14 5HP"
+    account_name: "NEXUS QUANTUM LTD"
+    account_number: "12345678"
+    sort_code: "20-00-00"
+    iban: "GB12BARC20200012345678"
+    swift_bic: "BARCGB22"
+    currency: "GBP"
+    
+  # Crypto Payments
+  crypto:
+    bitcoin: "1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa"
+    ethereum: "0x742d35Cc6634C0532925a3b844Bc454e4438f44e"
+    usdc_erc20: "0x742d35Cc6634C0532925a3b844Bc454e4438f44e"
+    usdt_erc20: "0x742d35Cc6634C0532925a3b844Bc454e4438f44e"
+
+# ============================================================
+# INVOICE TEMPLATES
+# ============================================================
+invoice_templates:
+  # Standard Template
+  standard:
+    header:
+      logo: "/assets/logo.png"
+      company_name: true
+      invoice_title: "INVOICE"
+      invoice_number: true
+      invoice_date: true
+      due_date: true
+      
+    sections:
+      - "company_info"
+      - "customer_info"
+      - "invoice_items"
+      - "subtotal"
+      - "tax"
+      - "total"
+      - "payment_terms"
+      - "notes"
+      
+    footer:
+      thank_you: true
+      payment_instructions: true
+      terms_conditions: true
+      
+  # Proforma Template
+  proforma:
+    header:
+      logo: true
+      company_name: true
+      invoice_title: "PROFORMA INVOICE"
+      invoice_number: true
+      invoice_date: true
+      validity_date: true
+      
+    sections:
+      - "company_info"
+      - "customer_info"
+      - "invoice_items"
+      - "subtotal"
+      - "tax"
+      - "total"
+      - "validity"
+      - "payment_terms"
+      
+    footer:
+      thank_you: true
+      payment_instructions: true
+      
+  # Credit Note Template
+  credit_note:
+    header:
+      logo: true
+      company_name: true
+      invoice_title: "CREDIT NOTE"
+      invoice_number: true
+      invoice_date: true
+      original_invoice: true
+      
+    sections:
+      - "company_info"
+      - "customer_info"
+      - "credit_items"
+      - "subtotal"
+      - "tax"
+      - "total_credit"
+      - "reason"
+      
+    footer:
+      thank_you: true
+
+# ============================================================
+# INVOICE ITEMS
+# ============================================================
+invoice_items:
+  # Service Items
+  services:
+    subscription_fee:
+      code: "SUB-001"
+      description: "Monthly Subscription Fee"
+      category: "subscription"
+      tax_rate: 0.20
+      
+    setup_fee:
+      code: "SET-001"
+      description: "Account Setup Fee"
+      category: "setup"
+      tax_rate: 0.20
+      
+    trading_fee:
+      code: "TRD-001"
+      description: "Trading Commission"
+      category: "trading"
+      tax_rate: 0.20
+      
+    consulting_fee:
+      code: "CON-001"
+      description: "Consulting Services"
+      category: "consulting"
+      tax_rate: 0.20
+      
+    training_fee:
+      code: "TRN-001"
+      description: "Training Services"
+      category: "training"
+      tax_rate: 0.20
+      
+    support_fee:
+      code: "SUP-001"
+      description: "Premium Support"
+      category: "support"
+      tax_rate: 0.20
+      
+  # Product Items
+  products:
+    software_license:
+      code: "SW-001"
+      description: "Software License"
+      category: "software"
+      tax_rate: 0.20
+      
+    data_subscription:
+      code: "DATA-001"
+      description: "Data Subscription"
+      category: "data"
+      tax_rate: 0.20
+      
+  # Discount Items
+  discounts:
+    early_payment:
+      code: "DISC-001"
+      description: "Early Payment Discount"
+      category: "discount"
+      tax_rate: 0.00
+      
+    volume_discount:
+      code: "DISC-002"
+      description: "Volume Discount"
+      category: "discount"
+      tax_rate: 0.00
+      
+    referral_discount:
+      code: "DISC-003"
+      description: "Referral Discount"
+      category: "discount"
+      tax_rate: 0.00
+
+# ============================================================
+# TAX CONFIGURATION
+# ============================================================
+tax_configuration:
+  # Tax Settings
+  settings:
+    enabled: true
+    tax_calculation: "automatic"  # automatic, manual
+    tax_inclusive: false
+    tax_exclusive: true
+    calculate_tax_on: "subtotal"  # subtotal, total, items
+    
+  # Tax Rates
+  rates:
+    # UK VAT
+    uk_vat:
+      rate: 0.20
+      country: "UK"
+      region: "Europe"
+      type: "vat"
+      code: "VAT-20"
+      
+    # EU VAT
+    eu_vat:
+      rate: 0.20
+      country: "EU"
+      region: "Europe"
+      type: "vat"
+      code: "VAT-20"
+      
+    # US Sales Tax
+    us_sales_tax:
+      rate: 0.00  # Varies by state
+      country: "US"
+      region: "North America"
+      type: "sales_tax"
+      code: "SALES-TAX"
+      
+    # Singapore GST
+    singapore_gst:
+      rate: 0.08
+      country: "SG"
+      region: "Asia"
+      type: "gst"
+      code: "GST-8"
+      
+  # Tax Exemptions
+  exemptions:
+    non_profit:
+      enabled: true
+      requires_documentation: true
+      documentation_type: "tax_exempt_certificate"
+      
+    educational:
+      enabled: true
+      requires_documentation: true
+      documentation_type: "educational_institution_certificate"
+      
+    government:
+      enabled: true
+      requires_documentation: true
+      documentation_type: "government_agency_certificate"
+      
+    international:
+      enabled: true
+      requires_documentation: true
+      documentation_type: "international_organization_certificate"
+
+# ============================================================
+# PAYMENT TERMS
+# ============================================================
+payment_terms:
+  # General Payment Terms
+  general:
+    due_days: 30
+    grace_days: 5
+    late_fee_percent: 0.02  # 2% per month
+    late_fee_fixed: 10.00  # USD
+    early_payment_discount_percent: 0.02  # 2%
+    early_payment_days: 10
+    
+  # Payment Methods
+  methods:
+    bank_transfer:
+      enabled: true
+      description: "Bank Transfer"
+      processing_time: "1-3 business days"
+      
+    credit_card:
+      enabled: true
+      description: "Credit Card (Stripe)"
+      processing_time: "Instant"
+      
+    cryptocurrency:
+      enabled: true
+      description: "Cryptocurrency"
+      processing_time: "10-30 minutes"
+      
+    paypal:
+      enabled: true
+      description: "PayPal"
+      processing_time: "Instant"
+      
+  # Payment Reminders
+  reminders:
+    enabled: true
+    reminders:
+      - days_before: 7
+        type: "email"
+        template: "reminder_7_days"
+      - days_before: 3
+        type: "email"
+        template: "reminder_3_days"
+      - days_before: 1
+        type: "email"
+        template: "reminder_1_day"
+      - days_after: 1
+        type: "email"
+        template: "overdue_1_day"
+      - days_after: 7
+        type: "email"
+        template: "overdue_7_days"
+      - days_after: 14
+        type: "email"
+        template: "overdue_14_days"
+
+# ============================================================
+# INVOICE AUTOMATION
+# ============================================================
+invoice_automation:
+  # Automation Settings
+  settings:
+    enabled: true
+    auto_generate: true
+    auto_send: true
+    auto_remind: true
+    auto_reconcile: true
+    auto_archive: true
+    
+  # Generation Rules
+  rules:
+    subscription:
+      trigger: "subscription_cycle"
+      timing: "1_day_before"
+      
+    one_time:
+      trigger: "service_completion"
+      timing: "immediate"
+      
+    recurring:
+      trigger: "billing_cycle"
+      timing: "1_day_before"
+      
+    proforma:
+      trigger: "order_confirmation"
+      timing: "immediate"
+      
+  # Approval Workflow
+  workflow:
+    enabled: true
+    approvers:
+      - role: "billing_manager"
+        level: 1
+      - role: "finance_director"
+        level: 2
+    auto_approve_threshold: 10000
+    escalation_timeout: 24  # hours
+
+# ============================================================
+# INVOICE REPORTING
+# ============================================================
+invoice_reporting:
+  # Report Settings
+  settings:
+    enabled: true
+    report_frequency: "monthly"
+    report_format: "json"  # json, csv, pdf, excel
+    include_analytics: true
+    include_visualizations: true
+    
+  # Report Sections
+  sections:
+    invoice_summary:
+      enabled: true
+      include_total_invoices: true
+      include_total_amount: true
+      include_paid_amount: true
+      include_outstanding_amount: true
+      
+    aging_report:
+      enabled: true
+      include_0_30_days: true
+      include_31_60_days: true
+      include_61_90_days: true
+      include_91_plus_days: true
+      
+    revenue_analysis:
+      enabled: true
+      include_by_customer: true
+      include_by_service: true
+      include_by_region: true
+      include_by_currency: true
+      
+    payment_analysis:
+      enabled: true
+      include_payment_methods: true
+      include_payment_timeline: true
+      include_payment_trends: true
+      
+    tax_summary:
+      enabled: true
+      include_tax_collected: true
+      include_tax_rates: true
+      include_tax_jurisdictions: true
+
+# ============================================================
+# INVOICE INTEGRATION
+# ============================================================
+invoice_integration:
+  # Integration Settings
+  settings:
+    enabled: true
+    integration_type: "api"  # api, webhook, websocket, file
+    
+  # External Systems
+  systems:
+    accounting_system:
+      enabled: true
+      provider: "xero"  # xero, quickbooks, custom
+      api_endpoint: "${ACCOUNTING_API_ENDPOINT}"
+      api_key: "${ACCOUNTING_API_KEY}"
+      sync_invoices: true
+      sync_payments: true
+      sync_customers: true
+      
+    payment_gateway:
+      enabled: true
+      provider: "stripe"  # stripe, paypal, coinbase
+      api_key: "${PAYMENT_GATEWAY_API_KEY}"
+      webhook_secret: "${PAYMENT_WEBHOOK_SECRET}"
+      
+    crm_system:
+      enabled: true
+      provider: "salesforce"  # salesforce, hubspot, custom
+      api_endpoint: "${CRM_API_ENDPOINT}"
+      api_key: "${CRM_API_KEY}"
+      sync_customers: true
+      sync_invoices: true
+      
+    email_system:
+      enabled: true
+      provider: "sendgrid"  # sendgrid, mailchimp, custom
+      api_key: "${EMAIL_API_KEY}"
+      send_invoices: true
+      send_reminders: true
+
+# ============================================================
+# INVOICE DASHBOARD
+# ============================================================
+invoice_dashboard:
+  # Dashboard Settings
+  settings:
+    enabled: true
+    refresh_interval: 60
+    default_view: "summary"  # summary, details, analytics
+    
+  # Dashboard Widgets
+  widgets:
+    invoice_summary:
+      enabled: true
+      position: 1
+      size: "large"
+      
+    aging_summary:
+      enabled: true
+      position: 2
+      size: "medium"
+      
+    revenue_chart:
+      enabled: true
+      position: 3
+      size: "large"
+      
+    payment_timeline:
+      enabled:  true
+      position: 4
+      size: "medium"
+      
+    outstanding_invoices:
+      enabled: true
+      position: 5
+      size: "medium"
+      
+    payment_methods:
+      enabled: true
+      position: 6
+      size: "small"
+      
+    tax_summary:
+      enabled: true
+      position: 7
+      size: "small"
+
+# ============================================================
+# INVOICE SECURITY
+# ============================================================
+invoice_security:
+  # Security Settings
+  settings:
+    enabled: true
+    invoice_encryption: true
+    invoice_signing: true
+    invoice_watermark: true
+    invoice_audit_trail: true
+    invoice_retention_days: 2190  # 6 years
+    
+  # Access Control
+  access_control:
+    restrict_invoice_access: true
+    require_authorization: true
+    audit_invoice_access: true
+    ip_whitelist: []
+    
+  # Secure Payment
+  secure_payment:
+    pci_dss_compliant: true
+    tokenize_payment_data: true
+    secure_payment_gateway: true
+    payment_data_encryption: true
+
+# ============================================================
+# INVOICE SCENARIOS
+# ============================================================
+invoice_scenarios:
+  # Scenario 1: Monthly Subscription
+  monthly_subscription:
+    description: "Monthly subscription invoice"
+    customer_type: "individual"
+    items:
+      - service: "subscription_fee"
+        quantity: 1
+        unit_price: 149.00
+    tax_rate: 0.20
+    total: 178.80
+    
+  # Scenario 2: Annual Subscription
+  annual_subscription:
+    description: "Annual subscription invoice"
+    customer_type: "business"
+    items:
+      - service: "subscription_fee"
+        quantity: 12
+        unit_price: 149.00
+        discount: 0.15  # 15% annual discount
+    tax_rate: 0.20
+    total: 1821.48
+    
+  # Scenario 3: Enterprise Package
+  enterprise_package:
+    description: "Enterprise package invoice"
+    customer_type: "enterprise"
+    items:
+      - service: "subscription_fee"
+        quantity: 1
+        unit_price: 499.00
+      - service: "setup_fee"
+        quantity: 1
+        unit_price: 1000.00
+      - service: "consulting_fee"
+        quantity: 5
+        unit_price: 250.00
+    tax_rate: 0.20
+    total: 2382.60
+
+# ============================================================
+# INVOICE EXAMPLES
+# ============================================================
+invoice_examples:
+  # Example 1: Standard Invoice
+  standard_invoice_example:
+    invoice_number: "INV-2026-01-000001"
+    invoice_date: "2026-01-15"
+    due_date: "2026-02-14"
+    customer:
+      name: "ABC Trading Ltd"
+      email: "trading@abc.com"
+      address: "123 Trading Street, London, UK"
+    items:
+      - description: "NEXUS Hedge Bot - Monthly Subscription"
+        quantity: 1
+        unit_price: 149.00
+        total: 149.00
+      - description: "Premium Data Feed"
+        quantity: 1
+        unit_price: 50.00
+        total: 50.00
+    subtotal: 199.00
+    tax: 39.80
+    total: 238.80
+    
+  # Example 2: Proforma Invoice
+  proforma_invoice_example:
+    invoice_number: "PRO-2026-01-000001"
+    invoice_date: "2026-01-15"
+    validity_date: "2026-02-14"
+    customer:
+      name: "XYZ Capital Partners"
+      email: "capital@xyz.com"
+      address: "456 Investment Ave, New York, USA"
+    items:
+      - description: "NEXUS Hedge Bot - Enterprise Package"
+        quantity: 1
+        unit_price: 1499.00
+        total: 1499.00
+      - description: "Implementation Services"
+        quantity: 1
+        unit_price: 2000.00
+        total: 2000.00
+    subtotal: 3499.00
+    tax: 699.80
+    total: 4198.80
+
+# ============================================================
+# ENVIRONMENT-SPECIFIC CONFIGURATIONS
+# ============================================================
+environments:
+  # Development Environment
+  development:
+    invoicing:
+      general:
+        enabled: true
+        auto_generate: false
+        auto_send: false
+        auto_reminder: false
+        
+    invoice_automation:
+      settings:
+        auto_generate: false
+        auto_send: false
+        auto_remind: false
+        
+    invoice_integration:
+      systems:
+        accounting_system:
+          enabled: false
+        payment_gateway:
+          enabled: false
+          
+  # Staging Environment
+  staging:
+    invoicing:
+      general:
+        enabled: true
+        auto_generate: true
+        auto_send: false
+        auto_reminder: false
+        
+    invoice_automation:
+      settings:
+        auto_generate: true
+        auto_send: false
+        auto_remind: false
+        
+    invoice_integration:
+      systems:
+        accounting_system:
+          enabled: true
+          provider: "xero"
+        payment_gateway:
+          enabled: true
+          provider: "stripe"
+          
+  # Production Environment
+  production:
+    invoicing:
+      general:
+        enabled: true
+        auto_generate: true
+        auto_send: true
+        auto_reminder: true
+        
+    invoice_automation:
+      settings:
+        auto_generate: true
+        auto_send: true
+        auto_remind: true
+        auto_reconcile: true
+        auto_archive: true
+        
+    invoice_integration:
+      systems:
+        accounting_system:
+          enabled: true
+          provider: "xero"
+        payment_gateway:
+          enabled: true
+          provider: "stripe"
+        crm_system:
+          enabled: true
+          provider: "salesforce"
+        email_system:
+          enabled: true
+          provider: "sendgrid"
+          
+  # Demo Environment
+  demo:
+    invoicing:
+      general:
+        enabled: true
+        auto_generate: false
+        auto_send: false
+        auto_reminder: false
+        
+    invoice_automation:
+      settings:
+        auto_generate: false
+        auto_send: false
+        auto_remind: false
+        
+    invoice_integration:
+      systems:
+        accounting_system:
+          enabled: false
+        payment_gateway:
+          enabled: false
+
+# ============================================================
+# END OF CONFIGURATION
+# ============================================================
