@@ -1,0 +1,749 @@
+# trading/bots/hedge_bot/config/beta_configs.yaml
+# NEXUS AI TRADING SYSTEM - Hedge Bot Beta/Volatility Configuration
+# Version: 2.0.0
+# Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+
+# ============================================================
+# BETA CALCULATION CONFIGURATION
+# ============================================================
+beta_calculation:
+  # General Beta Settings
+  general:
+    enabled: true
+    calculation_method: "regression"  # regression, covariance, rolling, ewma
+    benchmark: "SPY"  # SPY, BTC, Custom
+    lookback_period: 252  # trading days
+    min_data_points: 60
+    risk_free_rate: 0.04  # 4% annual
+    frequency: "daily"  # daily, weekly, monthly, tick
+    
+  # Beta Types
+  types:
+    historical_beta:
+      enabled: true
+      calculation: "ols"  # ols, theil_sen, huber
+      use_intercept: true
+      
+    forward_beta:
+      enabled: true
+      calculation: "ewma"
+      span: 60  # days
+      min_periods: 30
+      
+    downside_beta:
+      enabled: true
+      threshold: 0.0  # only consider returns below this
+      calculation: "ols"
+      
+    upside_beta:
+      enabled: true
+      threshold: 0.0  # only consider returns above this
+      calculation: "ols"
+      
+    conditional_beta:
+      enabled: true
+      condition: "market_state"
+      states:
+        - "bull"
+        - "bear"
+        - "neutral"
+        
+    rolling_beta:
+      enabled: true
+      window: 60
+      step: 1
+      min_periods: 30
+      
+  # Beta Adjustment
+  adjustments:
+    blume_adjustment:
+      enabled: true
+      target_beta: 1.0
+      weight: 0.67
+      
+    vasicek_adjustment:
+      enabled: true
+      prior_beta: 1.0
+      prior_variance: 0.04
+      
+    bayesian_adjustment:
+      enabled: true
+      prior_confidence: 0.5
+      shrinkage: 0.5
+      
+  # Beta Smoothing
+  smoothing:
+    enabled: true
+    method: "exponential"  # exponential, moving_average, kernel
+    smoothing_factor: 0.1
+    window: 20
+
+# ============================================================
+# VOLATILITY CALCULATION
+# ============================================================
+volatility_calculation:
+  # General Volatility Settings
+  general:
+    enabled: true
+    calculation_method: "historical"  # historical, implied, realized, ewma, garch
+    lookback_period: 30
+    annualization_factor: 252
+    min_data_points: 20
+    frequency: "daily"
+    
+  # Historical Volatility
+  historical:
+    calculation: "standard_deviation"  # standard_deviation, mean_absolute_deviation, range
+    use_log_returns: true
+    remove_outliers: true
+    outlier_threshold: 3.0  # standard deviations
+    
+  # Implied Volatility
+  implied:
+    enabled: true
+    model: "black_scholes"  # black_scholes, binomial, monte_carlo
+    use_iv_rank: true
+    use_iv_percentile: true
+    iv_rank_lookback: 252
+    iv_rank_percentiles: [10, 25, 50, 75, 90]
+    
+  # Realized Volatility
+  realized:
+    enabled: true
+    calculation: "parkinson"  # parkinson, garman_klass, rogers_satchell, yang_zhang
+    use_high_low: true
+    use_open_close: true
+    use_overnight: false
+    
+  # EWMA Volatility
+  ewma:
+    enabled: true
+    lambda: 0.94  # decay factor
+    initial_volatility: 0.2
+    min_periods: 10
+    
+  # GARCH Volatility
+  garch:
+    enabled: true
+    model: "garch"  # garch, egarch, igarch, gjr
+    order: [1, 1]  # p, q
+    distribution: "normal"  # normal, t, ged
+    max_iterations: 1000
+    tolerance: 1e-6
+
+# ============================================================
+# VOLATILITY REGIMES
+# ============================================================
+volatility_regimes:
+  # Regime Definitions
+  regimes:
+    extreme_low:
+      threshold: 0.05  # 5% annualized volatility
+      description: "Extremely Low Volatility"
+      color: "#00FF00"
+      
+    low:
+      threshold: 0.10
+      description: "Low Volatility"
+      color: "#33CC33"
+      
+    normal:
+      threshold: 0.20
+      description: "Normal Volatility"
+      color: "#FFCC00"
+      
+    high:
+      threshold: 0.30
+      description: "High Volatility"
+      color: "#FF6600"
+      
+    extreme_high:
+      threshold: 0.50
+      description: "Extremely High Volatility"
+      color: "#FF0000"
+      
+  # Regime Detection
+  detection:
+    method: "threshold"  # threshold, clustering, hmm
+    lookback_period: 60
+    min_duration: 5
+    use_volatility_of_volatility: true
+    
+  # Regime Transitions
+  transitions:
+    enabled: true
+    transition_probability: 0.05
+    smooth_transitions: true
+    transition_window: 5
+
+# ============================================================
+# ASSET VOLATILITY SPECIFIC
+# ============================================================
+asset_volatility:
+  # Asset-Specific Volatility Settings
+  assets:
+    # Cryptocurrencies
+    BTC:
+      volatility_factor: 1.0
+      vol_regime_thresholds:
+        low: 0.15
+        normal: 0.30
+        high: 0.50
+        extreme: 0.80
+        
+    ETH:
+      volatility_factor: 1.3
+      vol_regime_thresholds:
+        low: 0.20
+        normal: 0.40
+        high: 0.60
+        extreme: 1.00
+        
+    SOL:
+      volatility_factor: 1.8
+      vol_regime_thresholds:
+        low: 0.30
+        normal: 0.60
+        high: 0.90
+        extreme: 1.50
+        
+    ADA:
+      volatility_factor: 1.6
+      vol_regime_thresholds:
+        low: 0.25
+        normal: 0.50
+        high: 0.80
+        extreme: 1.30
+        
+    # Forex
+    EURUSD:
+      volatility_factor: 0.5
+      vol_regime_thresholds:
+        low: 0.03
+        normal: 0.06
+        high: 0.10
+        extreme: 0.15
+        
+    GBPUSD:
+      volatility_factor: 0.6
+      vol_regime_thresholds:
+        low: 0.04
+        normal: 0.08
+        high: 0.12
+        extreme: 0.20
+        
+    USDJPY:
+      volatility_factor: 0.4
+      vol_regime_thresholds:
+        low: 0.03
+        normal: 0.05
+        high: 0.08
+        extreme: 0.12
+        
+    # Equities
+    SPY:
+      volatility_factor: 0.8
+      vol_regime_thresholds:
+        low: 0.05
+        normal: 0.10
+        high: 0.20
+        extreme: 0.30
+        
+    AAPL:
+      volatility_factor: 0.9
+      vol_regime_thresholds:
+        low: 0.06
+        normal: 0.12
+        high: 0.22
+        extreme: 0.35
+        
+    TSLA:
+      volatility_factor: 1.5
+      vol_regime_thresholds:
+        low: 0.10
+        normal: 0.20
+        high: 0.40
+        extreme: 0.60
+        
+    # Commodities
+    GOLD:
+      volatility_factor: 0.6
+      vol_regime_thresholds:
+        low: 0.04
+        normal: 0.08
+        high: 0.15
+        extreme: 0.25
+        
+    OIL:
+      volatility_factor: 1.2
+      vol_regime_thresholds:
+        low: 0.08
+        normal: 0.16
+        high: 0.30
+        extreme: 0.50
+
+# ============================================================
+# VOLATILITY FORECASTING
+# ============================================================
+volatility_forecasting:
+  # Forecasting Methods
+  methods:
+    historical_forecast:
+      enabled: true
+      lookback: 30
+      weighting: "equal"  # equal, exponential, volatility_weighted
+      
+    ewma_forecast:
+      enabled: true
+      lambda: 0.94
+      min_periods: 20
+      
+    garch_forecast:
+      enabled: true
+      model: "garch"
+      order: [1, 1]
+      forecast_horizon: 10
+      
+    model_ensemble:
+      enabled: true
+      models:
+        - "historical"
+        - "ewma"
+        - "garch"
+      weighting: "dynamic"  # dynamic, equal, performance_based
+      performance_lookback: 30
+      
+  # Volatility Surface
+  surface:
+    enabled: true
+    tenors:
+      - "1M"
+      - "2M"
+      - "3M"
+      - "6M"
+      - "1Y"
+    strikes:
+      - 0.8
+      - 0.9
+      - 1.0
+      - 1.1
+      - 1.2
+    interpolation: "spline"  # spline, linear, cubic
+    
+  # Volatility Term Structure
+  term_structure:
+    enabled: true
+    plot_tenors: true
+    calculate_forward_vol: true
+    calculate_roll_yield: true
+    
+  # Volatility Skew
+  skew:
+    enabled: true
+    calculation: "put_call_skew"
+    tenors:
+      - "1M"
+      - "3M"
+      - "6M"
+    skew_threshold: 0.05
+    skew_alert: true
+
+# ============================================================
+# BETA ADJUSTMENTS
+# ============================================================
+beta_adjustments:
+  # Market Adjustments
+  market:
+    bull_market:
+      beta_multiplier: 1.2
+      condition: "market_return > 20%"
+      
+    bear_market:
+      beta_multiplier: 0.8
+      condition: "market_return < -20%"
+      
+    normal_market:
+      beta_multiplier: 1.0
+      condition: "-20% <= market_return <= 20%"
+      
+  # Sector Adjustments
+  sector:
+    technology:
+      beta_multiplier: 1.3
+    finance:
+      beta_multiplier: 0.9
+    healthcare:
+      beta_multiplier: 0.8
+    energy:
+      beta_multiplier: 1.1
+    consumer:
+      beta_multiplier: 0.7
+      
+  # Size Adjustments
+  size:
+    large_cap:
+      beta_multiplier: 1.0
+      market_cap_threshold: 10000000000
+      
+    mid_cap:
+      beta_multiplier: 1.2
+      market_cap_threshold: 2000000000
+      
+    small_cap:
+      beta_multiplier: 1.5
+      market_cap_threshold: 300000000
+
+# ============================================================
+# CORRELATION CONFIGURATION
+# ============================================================
+correlation_configuration:
+  # Correlation Methods
+  methods:
+    pearson:
+      enabled: true
+      use_log_returns: true
+      
+    spearman:
+      enabled: true
+      use_rank: true
+      
+    kendall:
+      enabled: true
+      use_tau: true
+      
+    partial_correlation:
+      enabled: true
+      control_variables:
+        - "market"
+        - "sector"
+        - "volatility"
+        
+  # Correlation Matrix
+  matrix:
+    enabled: true
+    calculation: "pearson"
+    lookback: 252
+    min_periods: 60
+    use_shrinkage: true
+    shrinkage_method: "ledoit_wolf"  # ledoit_wolf, oracle, constant
+    
+  # Dynamic Correlation
+  dynamic:
+    enabled: true
+    model: "dcc"  # dcc, garch_dcc, ewma
+    dcc_lag: 1
+    garch_order: [1, 1]
+    forecast_horizon: 10
+    
+  # Correlation Regimes
+  regimes:
+    high_correlation:
+      threshold: 0.7
+      description: "High Correlation"
+      
+    normal_correlation:
+      threshold: 0.3
+      description: "Normal Correlation"
+      
+    low_correlation:
+      threshold: 0.1
+      description: "Low Correlation"
+      
+    negative_correlation:
+      threshold: -0.3
+      description: "Negative Correlation"
+
+# ============================================================
+# STRESS TESTING
+# ============================================================
+stress_testing:
+  # Stress Scenarios
+  scenarios:
+    market_crash:
+      description: "Global Market Crash"
+      market_move: -0.25
+      volatility_multiplier: 3.0
+      correlation_multiplier: 1.5
+      
+    flash_crash:
+      description: "Flash Crash"
+      market_move: -0.15
+      volatility_multiplier: 4.0
+      correlation_multiplier: 2.0
+      
+    black_swan:
+      description: "Black Swan Event"
+      market_move: -0.40
+      volatility_multiplier: 5.0
+      correlation_multiplier: 2.5
+      
+    vix_shock:
+      description: "VIX Shock"
+      vix_move: 15.0
+      volatility_multiplier: 2.0
+      correlation_multiplier: 1.2
+      
+  # Historical Scenarios
+  historical:
+    - "2020_03_COVID"
+    - "2008_Financial_Crisis"
+    - "2000_Dot_Com_Bubble"
+    - "1987_Black_Monday"
+    - "2011_European_Debt"
+    - "2015_China_Slowdown"
+    - "2022_Inflation_Shock"
+    
+  # Custom Scenarios
+  custom:
+    - name: "Crypto_Winter"
+      description: "Extended Crypto Bear Market"
+      market_move: -0.30
+      volatility_multiplier: 2.5
+      correlation_multiplier: 1.3
+      duration_days: 365
+      
+    - name: "Liquidity_Crisis"
+      description: "Liquidity Drying Up"
+      market_move: -0.20
+      volatility_multiplier: 3.5
+      correlation_multiplier: 1.8
+      liquidity_multiplier: 0.3
+
+# ============================================================
+# VOLATILITY INDICATORS
+# ============================================================
+volatility_indicators:
+  # VIX Indicators
+  vix:
+    enabled: true
+    current_vix: 15.0
+    vix_thresholds:
+      low: 12
+      normal: 20
+      high: 30
+      extreme: 40
+      
+  # VIX Derivatives
+  vix_derivatives:
+    vix_futures: true
+    vix_options: true
+    vix_etf: true
+    vix_term_structure: true
+    
+  # Other Volatility Indicators
+  other:
+    - "skew_index"
+    - "volatility_index"
+    - "correlation_index"
+    - "liquidity_index"
+    - "stress_index"
+    
+  # Custom Indicators
+  custom:
+    - name: "NEXUS_Volatility_Score"
+      formula: "weighted_average(vix, realized_vol, implied_vol)"
+      weights: [0.3, 0.4, 0.3]
+      
+    - name: "NEXUS_Risk_Index"
+      formula: "normalized(volatility_score * correlation_score * liquidity_score)"
+      components: ["volatility", "correlation", "liquidity"]
+
+# ============================================================
+# MONITORING & ALERTS
+# ============================================================
+monitoring_alerts:
+  # Beta Alerts
+  beta_alerts:
+    beta_change_alert:
+      enabled: true
+      threshold: 0.3  # beta change > 0.3
+      window: 30  # days
+      
+    beta_deviation_alert:
+      enabled: true
+      threshold: 0.5  # beta > 1.5 or < 0.5
+      
+    beta_regime_change:
+      enabled: true
+      threshold: 0.2  # regime change threshold
+      
+  # Volatility Alerts
+  volatility_alerts:
+    vol_spike_alert:
+      enabled: true
+      threshold: 2.0  # multiplier of average
+      window: 5  # days
+      
+    vol_regime_change:
+      enabled: true
+      min_duration: 3  # days
+      
+    vol_forecast_alert:
+      enabled: true
+      deviation_threshold: 0.10  # 10% deviation from forecast
+      
+  # Correlation Alerts
+  correlation_alerts:
+    corr_break_alert:
+      enabled: true
+      threshold: 0.3  # correlation change > 0.3
+      
+    corr_regime_change:
+      enabled: true
+      min_duration: 5  # days
+
+# ============================================================
+# RISK METRICS
+# ============================================================
+risk_metrics:
+  # Value at Risk (VaR)
+  var:
+    confidence_levels: [0.95, 0.99]
+    methods:
+      - "historical"
+      - "parametric"
+      - "monte_carlo"
+    horizon: [1, 5, 10]
+    
+  # Expected Shortfall (CVaR)
+  cvar:
+    confidence_levels: [0.95, 0.99]
+    methods:
+      - "historical"
+      - "monte_carlo"
+    horizon: [1, 5, 10]
+    
+  # Tail Risk
+  tail_risk:
+    methods:
+      - "extreme_value"
+      - "peak_over_threshold"
+      - "block_maxima"
+    threshold: 0.05  # 5% tail
+    
+  # Stress VaR
+  stress_var:
+    scenarios:
+      - "2008_crisis"
+      - "2020_covid"
+      - "2022_inflation"
+    horizon: 10
+
+# ============================================================
+# REPORTING
+# ============================================================
+reporting:
+  # Beta Reports
+  beta_reports:
+    enabled: true
+    frequency: "monthly"
+    include:
+      - "asset_betas"
+      - "sector_betas"
+      - "portfolio_beta"
+      - "beta_adjustments"
+      - "beta_regimes"
+      
+  # Volatility Reports
+  volatility_reports:
+    enabled: true
+    frequency: "daily"
+    include:
+      - "asset_volatilities"
+      - "volatility_regimes"
+      - "volatility_forecast"
+      - "volatility_surface"
+      - "volatility_skew"
+      
+  # Correlation Reports
+  correlation_reports:
+    enabled: true
+    frequency: "weekly"
+    include:
+      - "correlation_matrix"
+      - "correlation_regimes"
+      - "dynamic_correlation"
+      - "partial_correlations"
+      
+  # Risk Reports
+  risk_reports:
+    enabled: true
+    frequency: "weekly"
+    include:
+      - "var_metrics"
+      - "cvar_metrics"
+      - "tail_risk"
+      - "stress_testing"
+      - "risk_dashboard"
+
+# ============================================================
+# ENVIRONMENT-SPECIFIC CONFIGURATIONS
+# ============================================================
+environments:
+  # Development Environment
+  development:
+    beta_calculation:
+      general:
+        lookback_period: 30
+        min_data_points: 15
+        
+    volatility_calculation:
+      general:
+        lookback_period: 15
+        min_data_points: 10
+        
+    monitoring_alerts:
+      enabled: true
+      alert_channels: ["console", "file"]
+      
+  # Staging Environment
+  staging:
+    beta_calculation:
+      general:
+        lookback_period: 90
+        min_data_points: 30
+        
+    volatility_calculation:
+      general:
+        lookback_period: 30
+        min_data_points: 20
+        
+    monitoring_alerts:
+      enabled: true
+      alert_channels: ["console", "file", "slack"]
+      
+  # Production Environment
+  production:
+    beta_calculation:
+      general:
+        lookback_period: 252
+        min_data_points: 60
+        
+    volatility_calculation:
+      general:
+        lookback_period: 30
+        min_data_points: 20
+        
+    monitoring_alerts:
+      enabled: true
+      alert_channels: ["email", "slack", "telegram", "pagerduty"]
+      
+  # Demo Environment
+  demo:
+    beta_calculation:
+      general:
+        lookback_period: 60
+        min_data_points: 20
+        
+    volatility_calculation:
+      general:
+        lookback_period: 20
+        min_data_points: 10
+        
+    monitoring_alerts:
+      enabled: true
+      alert_channels: ["console", "file"]
+
+# ============================================================
+# END OF CONFIGURATION
+# ============================================================
