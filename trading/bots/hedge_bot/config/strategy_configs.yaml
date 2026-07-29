@@ -1,0 +1,665 @@
+# trading/bots/hedge_bot/config/strategy_configs.yaml
+# NEXUS AI TRADING SYSTEM - Hedge Bot Strategy Configuration
+# Version: 2.0.0
+# Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+
+# ============================================================
+# STRATEGY GENERAL SETTINGS
+# ============================================================
+strategy:
+  # General Strategy Settings
+  general:
+    enabled: true
+    active_strategy: "delta_hedging"  # delta_hedging, gamma_hedging, cross_hedging, basis_hedging
+    strategy_mode: "automatic"  # automatic, manual, hybrid
+    strategy_priority: "balanced"  # conservative, balanced, aggressive
+    strategy_selection: "adaptive"  # fixed, adaptive, hybrid
+    update_frequency: "realtime"
+    performance_monitoring: true
+    strategy_optimization: true
+    backtesting_enabled: true
+    paper_trading_enabled: false
+    
+  # Strategy Categories
+  categories:
+    hedging_strategies:
+      enabled: true
+      description: "Hedging-based strategies"
+      strategies:
+        - "delta_hedging"
+        - "gamma_hedging"
+        - "vega_hedging"
+        - "cross_hedging"
+        - "basis_hedging"
+        
+    directional_strategies:
+      enabled: true
+      description: "Directional trading strategies"
+      strategies:
+        - "trend_following"
+        - "mean_reversion"
+        - "momentum"
+        - "breakout"
+        
+    arbitrage_strategies:
+      enabled: true
+      description: "Arbitrage trading strategies"
+      strategies:
+        - "funding_arbitrage"
+        - "basis_arbitrage"
+        - "cross_exchange_arbitrage"
+        
+    risk_management_strategies:
+      enabled: true
+      description: "Risk management strategies"
+      strategies:
+        - "stop_loss"
+        - "take_profit"
+        - "trailing_stop"
+        - "position_sizing"
+
+# ============================================================
+# HEDGING STRATEGIES
+# ============================================================
+hedging_strategies:
+  # Delta Hedging
+  delta_hedging:
+    enabled: true
+    description: "Delta hedging strategy"
+    parameters:
+      target_delta: 0.0
+      delta_tolerance: 0.01
+      rebalancing_frequency: "realtime"
+      hedging_instrument: "futures"
+      
+  # Gamma Hedging
+  gamma_hedging:
+    enabled: true
+    description: "Gamma hedging strategy"
+    parameters:
+      gamma_threshold: 0.0001
+      gamma_tolerance: 0.01
+      rebalancing_frequency: "realtime"
+      gamma_scalping: true
+      
+  # Vega Hedging
+  vega_hedging:
+    enabled: true
+    description: "Vega hedging strategy"
+    parameters:
+      vega_threshold: 0.001
+      vega_tolerance: 0.01
+      volatility_lookback: 30
+      
+  # Cross Hedging
+  cross_hedging:
+    enabled: true
+    description: "Cross-hedging strategy"
+    parameters:
+      correlation_threshold: 0.70
+      hedge_ratio: 0.50
+      hedging_assets:
+        - "BTC/ETH"
+        - "BTC/SOL"
+        - "ETH/SOL"
+        
+  # Basis Hedging
+  basis_hedging:
+    enabled: true
+    description: "Basis hedging strategy"
+    parameters:
+      basis_threshold: 0.005  # 0.5%
+      basis_tolerance: 0.002
+      hedging_instrument: "perpetual"
+
+# ============================================================
+# DIRECTIONAL STRATEGIES
+# ============================================================
+directional_strategies:
+  # Trend Following
+  trend_following:
+    enabled: true
+    description: "Trend following strategy"
+    parameters:
+      trend_period: 20
+      signal_threshold: 0.01
+      entry_signal: "crossover"
+      exit_signal: "crossunder"
+      indicators:
+        - "sma_20"
+        - "sma_50"
+        - "sma_200"
+        
+  # Mean Reversion
+  mean_reversion:
+    enabled: true
+    description: "Mean reversion strategy"
+    parameters:
+      lookback_period: 20
+      deviation_threshold: 2.0  # standard deviations
+      entry_signal: "oversold"
+      exit_signal: "overbought"
+      indicators:
+        - "bollinger_bands"
+        - "rsi"
+        - "stochastic"
+        
+  # Momentum
+  momentum:
+    enabled: true
+    description: "Momentum strategy"
+    parameters:
+      momentum_period: 14
+      signal_threshold: 0.02
+      entry_signal: "momentum_high"
+      exit_signal: "momentum_low"
+      indicators:
+        - "rsi"
+        - "macd"
+        - "momentum"
+        
+  # Breakout
+  breakout:
+    enabled: true
+    description: "Breakout strategy"
+    parameters:
+      lookback_period: 20
+      breakout_threshold: 0.02
+      entry_signal: "breakout_high"
+      exit_signal: "breakout_low"
+      indicators:
+        - "support_resistance"
+        - "volume"
+
+# ============================================================
+# ARBITRAGE STRATEGIES
+# ============================================================
+arbitrage_strategies:
+  # Funding Arbitrage
+  funding_arbitrage:
+    enabled: true
+    description: "Funding rate arbitrage strategy"
+    parameters:
+      min_funding_rate: 0.0005
+      max_funding_rate: 0.005
+      position_size: 0.10  # 10% of portfolio
+      arbitrage_window: 8  # hours
+      
+  # Basis Arbitrage
+  basis_arbitrage:
+    enabled: true
+    description: "Basis arbitrage strategy"
+    parameters:
+      min_basis: 0.002
+      max_basis: 0.01
+      position_size: 0.05
+      arbitrage_window: 24  # hours
+      
+  # Cross-Exchange Arbitrage
+  cross_exchange_arbitrage:
+    enabled: true
+    description: "Cross-exchange arbitrage strategy"
+    parameters:
+      min_spread: 0.001
+      max_spread: 0.005
+      position_size: 0.05
+      execution_timeout: 5  # seconds
+      exchanges:
+        - "binance"
+        - "bybit"
+        - "coinbase"
+
+# ============================================================
+# RISK MANAGEMENT STRATEGIES
+# ============================================================
+risk_management_strategies:
+  # Stop Loss
+  stop_loss_strategy:
+    enabled: true
+    description: "Stop loss risk management"
+    parameters:
+      stop_loss_type: "dynamic"  # fixed, trailing, dynamic
+      stop_loss_percentage: 0.05
+      trailing_distance: 0.03
+      activation_threshold: 0.02
+      
+  # Take Profit
+  take_profit_strategy:
+    enabled: true
+    description: "Take profit risk management"
+    parameters:
+      take_profit_type: "fixed"  # fixed, trailing, dynamic
+      take_profit_percentage: 0.10
+      trailing_distance: 0.05
+      
+  # Position Sizing
+  position_sizing_strategy:
+    enabled: true
+    description: "Position sizing risk management"
+    parameters:
+      sizing_method: "risk_based"  # risk_based, fixed, kelly
+      risk_per_trade: 0.01
+      max_position_size: 10000
+      min_position_size: 100
+      
+  # Diversification
+  diversification_strategy:
+    enabled: true
+    description: "Diversification risk management"
+    parameters:
+      max_single_asset: 0.15
+      max_asset_class: 0.40
+      max_sector: 0.35
+      min_assets: 10
+      target_assets: 20
+
+# ============================================================
+# STRATEGY EXECUTION
+# ============================================================
+strategy_execution:
+  # Execution Settings
+  settings:
+    enabled: true
+    execution_mode: "automatic"  # automatic, manual, hybrid
+    execution_delay: 0  # seconds
+    order_type: "limit"  # limit, market, twap, vwap
+    time_in_force: "GTC"  # GTC, IOC, FOK, DAY
+    max_slippage: 0.001
+    use_smart_routing: true
+    use_iceberg_orders: false
+    
+  # Execution Parameters
+  parameters:
+    max_order_size: 10000
+    min_order_size: 100
+    order_timeout: 30  # seconds
+    retry_attempts: 3
+    retry_delay: 5  # seconds
+    
+  # Execution Monitoring
+  monitoring:
+    execution_metrics: true
+    execution_alerts: true
+    execution_reporting: true
+
+# ============================================================
+# STRATEGY OPTIMIZATION
+# ============================================================
+strategy_optimization:
+  # Optimization Settings
+  settings:
+    enabled: true
+    optimization_frequency: "weekly"
+    optimization_method: "bayesian"  # bayesian, grid, genetic, hyperopt
+    optimization_metric: "sharpe_ratio"
+    optimization_iterations: 100
+    cross_validation_folds: 5
+    
+  # Optimization Parameters
+  parameters:
+    hedge_ratio_range: [0.20, 0.80]
+    stop_loss_range: [0.02, 0.10]
+    take_profit_range: [0.05, 0.20]
+    position_size_range: [100, 10000]
+    leverage_range: [1.0, 3.0]
+    
+  # Optimization Constraints
+  constraints:
+    max_drawdown: 0.15
+    max_leverage: 3.0
+    min_sharpe_ratio: 0.5
+    max_correlation: 0.70
+
+# ============================================================
+# STRATEGY PERFORMANCE
+# ============================================================
+strategy_performance:
+  # Performance Metrics
+  metrics:
+    - "sharpe_ratio"
+    - "sortino_ratio"
+    - "calmar_ratio"
+    - "win_rate"
+    - "profit_factor"
+    - "average_win"
+    - "average_loss"
+    - "max_drawdown"
+    - "recovery_factor"
+    - "expectancy"
+    
+  # Performance Benchmarks
+  benchmarks:
+    - "SPY"
+    - "BTC/USD"
+    - "ETH/USD"
+    - "GOLD/USD"
+    
+  # Performance Tracking
+  tracking:
+    daily_tracking: true
+    weekly_tracking: true
+    monthly_tracking: true
+    performance_alerts: true
+    performance_reporting: true
+
+# ============================================================
+# STRATEGY MONITORING
+# ============================================================
+strategy_monitoring:
+  # Monitoring Settings
+  settings:
+    enabled: true
+    monitoring_frequency: "realtime"
+    alert_threshold: 0.75  # 75% of target
+    critical_threshold: 0.90  # 90% of target
+    reporting_frequency: "daily"
+    
+  # Alert Conditions
+  alerts:
+    strategy_deviation:
+      enabled: true
+      level: "warning"
+      threshold: 0.10
+      message: "Strategy deviation: {deviation}%"
+      
+    strategy_performance:
+      enabled: true
+      level: "warning"
+      threshold: 0.80
+      message: "Strategy performance below target: {performance}"
+      
+    strategy_error:
+      enabled: true
+      level: "critical"
+      message: "Strategy error: {error}"
+      
+    strategy_switch:
+      enabled: true
+      level: "info"
+      message: "Strategy switched: {old} -> {new}"
+      
+  # Monitoring Metrics
+  metrics:
+    - "strategy_performance"
+    - "strategy_deviation"
+    - "strategy_utilization"
+    - "strategy_switches"
+    - "strategy_errors"
+
+# ============================================================
+# STRATEGY REPORTING
+# ============================================================
+strategy_reporting:
+  # Report Settings
+  settings:
+    enabled: true
+    report_frequency: "daily"
+    report_format: "json"  # json, csv, pdf, html
+    include_analytics: true
+    include_visualizations: true
+    include_recommendations: true
+    
+  # Report Sections
+  sections:
+    strategy_summary:
+      enabled: true
+      include_active_strategies: true
+      include_performance: true
+      include_deviation: true
+      
+    strategy_performance:
+      enabled: true
+      include_metrics: true
+      include_benchmarks: true
+      include_comparisons: true
+      
+    strategy_optimization:
+      enabled: true
+      include_optimization_results: true
+      include_recommendations: true
+      
+    risk_analysis:
+      enabled: true
+      include_risk_metrics: true
+      include_drawdown_analysis: true
+      include_risk_adjustments: true
+
+# ============================================================
+# STRATEGY DASHBOARD
+# ============================================================
+strategy_dashboard:
+  # Dashboard Settings
+  settings:
+    enabled: true
+    refresh_interval: 5
+    default_view: "summary"  # summary, details, analytics
+    
+  # Dashboard Widgets
+  widgets:
+    strategy_summary:
+      enabled: true
+      position: 1
+      size: "large"
+      
+    strategy_performance:
+      enabled: true
+      position: 2
+      size: "large"
+      
+    strategy_distribution:
+      enabled: true
+      position: 3
+      size: "medium"
+      
+    optimization_status:
+      enabled: true
+      position: 4
+      size: "medium"
+      
+    alert_status:
+      enabled: true
+      position: 5
+      size: "small"
+
+# ============================================================
+# STRATEGY SCENARIOS
+# ============================================================
+strategy_scenarios:
+  # Scenario 1: Conservative Hedging
+  conservative_hedging:
+    description: "Conservative hedging strategy"
+    active_strategy: "delta_hedging"
+    hedge_ratio: 0.30
+    stop_loss: 0.03
+    take_profit: 0.06
+    risk_profile: "conservative"
+    
+  # Scenario 2: Balanced Hedging
+  balanced_hedging:
+    description: "Balanced hedging strategy"
+    active_strategy: "delta_hedging"
+    hedge_ratio: 0.50
+    stop_loss: 0.05
+    take_profit: 0.10
+    risk_profile: "moderate"
+    
+  # Scenario 3: Aggressive Hedging
+  aggressive_hedging:
+    description: "Aggressive hedging strategy"
+    active_strategy: "delta_hedging"
+    hedge_ratio: 0.70
+    stop_loss: 0.07
+    take_profit: 0.15
+    risk_profile: "aggressive"
+    
+  # Scenario 4: Multi-Strategy
+  multi_strategy:
+    description: "Multi-strategy hedging"
+    active_strategies:
+      - "delta_hedging"
+      - "gamma_hedging"
+      - "cross_hedging"
+    hedge_ratio: 0.50
+    risk_profile: "balanced"
+
+# ============================================================
+# STRATEGY EXAMPLES
+# ============================================================
+strategy_examples:
+  # Example 1: Delta Hedging
+  delta_hedging_example:
+    description: "Delta Hedging Example"
+    position:
+      asset: "BTC"
+      quantity: 1
+      price: 50000
+      delta: 0.85
+    hedge:
+      asset: "BTC Futures"
+      quantity: 0.85
+      price: 50500
+      delta: 1.0
+    net_delta: 0.0
+    hedge_effectiveness: 0.95
+    
+  # Example 2: Cross Hedging
+  cross_hedging_example:
+    description: "Cross Hedging Example"
+    position:
+      asset: "ETH"
+      quantity: 10
+      price: 3000
+      value: 30000
+    hedge:
+      asset: "BTC Futures"
+      quantity: 0.6  # Based on correlation
+      price: 50000
+      value: 30000
+    correlation: 0.75
+    hedge_effectiveness: 0.85
+    
+  # Example 3: Basis Hedging
+  basis_hedging_example:
+    description: "Basis Hedging Example"
+    spot_price: 50000
+    futures_price: 50200
+    basis: 200
+    basis_percentage: 0.004  # 0.4%
+    hedge_action: "buy_spot_sell_futures"
+    position_size: 0.05  # 5% of portfolio
+
+# ============================================================
+# ENVIRONMENT-SPECIFIC CONFIGURATIONS
+# ============================================================
+environments:
+  # Development Environment
+  development:
+    strategy:
+      general:
+        enabled: true
+        active_strategy: "delta_hedging"
+        strategy_mode: "manual"
+        update_frequency: "hourly"
+        backtesting_enabled: true
+        paper_trading_enabled: true
+        
+    strategy_execution:
+      settings:
+        execution_mode: "manual"
+        
+    strategy_monitoring:
+      alerts:
+        strategy_deviation:
+          enabled: false
+        strategy_performance:
+          enabled: false
+          
+  # Staging Environment
+  staging:
+    strategy:
+      general:
+        enabled: true
+        active_strategy: "delta_hedging"
+        strategy_mode: "automatic"
+        update_frequency: "realtime"
+        backtesting_enabled: true
+        paper_trading_enabled: true
+        
+    strategy_execution:
+      settings:
+        execution_mode: "automatic"
+        
+    strategy_monitoring:
+      alerts:
+        strategy_deviation:
+          enabled: true
+        strategy_performance:
+          enabled: true
+        strategy_error:
+          enabled: true
+          
+  # Production Environment
+  production:
+    strategy:
+      general:
+        enabled: true
+        active_strategy: "delta_hedging"
+        strategy_mode: "automatic"
+        strategy_priority: "balanced"
+        strategy_selection: "adaptive"
+        update_frequency: "realtime"
+        performance_monitoring: true
+        strategy_optimization: true
+        backtesting_enabled: true
+        paper_trading_enabled: false
+        
+    strategy_execution:
+      settings:
+        execution_mode: "automatic"
+        execution_delay: 0
+        order_type: "limit"
+        time_in_force: "GTC"
+        max_slippage: 0.001
+        use_smart_routing: true
+        use_iceberg_orders: false
+        
+    strategy_monitoring:
+      alerts:
+        strategy_deviation:
+          enabled: true
+          level: "warning"
+        strategy_performance:
+          enabled: true
+          level: "warning"
+        strategy_error:
+          enabled: true
+          level: "critical"
+        strategy_switch:
+          enabled: true
+          level: "info"
+          
+  # Demo Environment
+  demo:
+    strategy:
+      general:
+        enabled: true
+        active_strategy: "delta_hedging"
+        strategy_mode: "automatic"
+        update_frequency: "hourly"
+        backtesting_enabled: true
+        paper_trading_enabled: true
+        
+    strategy_execution:
+      settings:
+        execution_mode: "automatic"
+        
+    strategy_monitoring:
+      alerts:
+        strategy_deviation:
+          enabled: false
+        strategy_performance:
+          enabled: true
+
+# ============================================================
+# END OF CONFIGURATION
+# ============================================================
