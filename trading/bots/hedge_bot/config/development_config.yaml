@@ -1,0 +1,521 @@
+# trading/bots/hedge_bot/config/development_config.yaml
+# NEXUS AI TRADING SYSTEM - Hedge Bot Development Configuration
+# Version: 2.0.0
+# Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+
+# ============================================================
+# BOT IDENTITY - DEVELOPMENT OVERRIDES
+# ============================================================
+bot:
+  id: "hedge_bot_dev"
+  name: "NEXUS Hedge Bot - Development"
+  version: "2.0.0-dev"
+  description: "Development instance of NEXUS Hedge Bot"
+  
+  # Development-Specific Settings
+  environment: "development"
+  enabled: true
+  active: true
+  debug_mode: true
+  verbose_logging: true
+  simulate_latency: true
+  latency_ms: 50
+  
+  # Development Features
+  features:
+    paper_trading: true
+    mock_exchange: true
+    synthetic_data: true
+    fast_forward: true
+    skip_validation: false
+    bypass_risk_checks: false
+
+# ============================================================
+# EXCHANGE CONFIGURATION - DEVELOPMENT
+# ============================================================
+exchange:
+  name: "binance"
+  type: "spot"
+  sandbox: true
+  testnet: true
+  
+  # Development Exchange Settings
+  settings:
+    use_mock_data: true
+    mock_volume: 1000000
+    mock_latency: 100
+    mock_spread: 0.001
+    mock_slippage: 0.0005
+    simulate_order_failures: true
+    failure_rate: 0.05  # 5% failure rate
+    
+  # API Configuration
+  api:
+    key: "${DEV_EXCHANGE_API_KEY}"
+    secret: "${DEV_EXCHANGE_API_SECRET}"
+    passphrase: "${DEV_EXCHANGE_API_PASSPHRASE}"
+    timeout: 30
+    retry_attempts: 3
+    rate_limit: 1000  # requests per minute
+    
+  # Trading Pairs - Development
+  pairs:
+    - "BTC/USDT"
+    - "ETH/USDT"
+    - "SOL/USDT"
+    - "ADA/USDT"
+    - "DOT/USDT"
+    - "AVAX/USDT"
+    - "MATIC/USDT"
+    - "LINK/USDT"
+    - "UNI/USDT"
+    - "AAVE/USDT"
+
+# ============================================================
+# TRADING CONFIGURATION - DEVELOPMENT
+# ============================================================
+trading:
+  # Order Settings
+  order:
+    type: "limit"
+    time_in_force: "GTC"
+    max_order_size: 10000
+    min_order_size: 100
+    slippage_tolerance: 0.002  # 0.2% (higher tolerance in dev)
+    
+  # Position Settings
+  position:
+    max_positions: 20
+    max_leverage: 5.0
+    target_hedge_ratio: 0.50
+    min_hedge_ratio: 0.20
+    max_hedge_ratio: 0.80
+    
+  # Execution Settings
+  execution:
+    simulate_execution: true
+    execution_delay: 500  # milliseconds
+    fill_probability: 0.95
+    partial_fill_probability: 0.10
+
+# ============================================================
+# HEDGE STRATEGY - DEVELOPMENT
+# ============================================================
+hedge_strategy:
+  # Strategy Configuration
+  config:
+    hedge_ratio: 0.50
+    hedge_threshold: 0.02  # 2% (higher threshold in dev)
+    max_hedge_position: 0.80
+    min_hedge_position: 0.20
+    dynamic_hedge_ratio: true
+    rebalance_interval: 15  # minutes
+    volatility_lookback: 30
+    correlation_lookback: 30
+    
+  # Strategy Execution
+  execution:
+    order_type: "limit"
+    time_in_force: "GTC"
+    max_order_size: 10000
+    min_order_size: 100
+    slippage_tolerance: 0.002
+    iceberg_order: false
+    smart_routing: false  # Disabled in dev
+    
+  # Strategy Risk
+  risk:
+    max_drawdown: 0.20  # Higher tolerance in dev
+    daily_loss_limit: 0.10  # Higher tolerance in dev
+    max_leverage: 5.0
+    stop_loss: 0.15  # Higher tolerance in dev
+    take_profit: 0.25
+
+# ============================================================
+# RISK MANAGEMENT - DEVELOPMENT
+# ============================================================
+risk_management:
+  # General Risk
+  general:
+    enabled: true
+    risk_level: "aggressive"  # More aggressive in dev
+    max_risk_per_trade: 0.05  # 5% of portfolio
+    max_risk_per_day: 0.10  # 10% of portfolio
+    max_risk_per_month: 0.25  # 25% of portfolio
+    
+  # Position Sizing
+  position_sizing:
+    method: "fixed"  # Fixed sizing in dev
+    fixed_size: 1000
+    max_position_size: 10000
+    min_position_size: 100
+    use_correlation_adj: false
+    
+  # Risk Limits
+  limits:
+    daily_loss_limit: 0.10
+    weekly_loss_limit: 0.20
+    monthly_loss_limit: 0.30
+    max_drawdown: 0.25
+    max_correlation: 0.80  # Higher tolerance in dev
+
+# ============================================================
+# DATA CONFIGURATION - DEVELOPMENT
+# ============================================================
+data:
+  # Data Sources
+  sources:
+    market_data:
+      provider: "mock"  # Use mock data in dev
+      update_frequency: "realtime"
+      cache: true
+      
+    historical_data:
+      provider: "file"  # Use file data in dev
+      lookback_period: 90
+      granularity: "1h"
+      data_path: "/data/historical"
+      
+    sentiment_data:
+      provider: "mock"
+      update_frequency: "hourly"
+      
+  # Data Generation
+  generation:
+    enabled: true
+    synthetic_data: true
+    seed: 42
+    volatility: 0.30
+    trend: 0.10
+    noise: 0.05
+    volume_range: [100, 10000]
+    
+  # Data Storage
+  storage:
+    database: "sqlite"  # SQLite for dev
+    cache: "memory"  # In-memory cache for dev
+    retention_days: 30
+    compression: false
+
+# ============================================================
+# AI & ML - DEVELOPMENT
+# ============================================================
+ai_ml:
+  # AI Configuration
+  config:
+    enabled: true
+    model_type: "ensemble"
+    model_path: "/models/dev_hedge_model.pkl"
+    inference_batch_size: 50
+    prediction_horizon: 60
+    
+  # ML Features
+  features:
+    - "price_momentum"
+    - "volatility"
+    - "correlation"
+    - "volume"
+    - "sentiment"
+    
+  # Training
+  training:
+    enabled: true
+    frequency: "hourly"  # More frequent in dev
+    lookback_period: 30
+    validation_split: 0.20
+    epochs: 50  # Fewer epochs in dev
+    early_stopping: true
+    
+  # Prediction
+  prediction:
+    enabled: true
+    confidence_threshold: 0.50  # Lower threshold in dev
+    prediction_models:
+      - "market_direction"
+      - "price_change"
+      - "volatility_forecast"
+
+# ============================================================
+# PERFORMANCE - DEVELOPMENT
+# ============================================================
+performance:
+  # Performance Optimization
+  optimization:
+    enabled: false  # Disabled in dev for debugging
+    max_workers: 2
+    batch_size: 50
+    queue_size: 100
+    use_async: false
+    use_caching: false
+    
+  # Resource Management
+  resources:
+    max_memory_mb: 512
+    max_cpu_cores: 2
+    max_concurrent_trades: 3
+    max_order_rate: 5  # orders per second
+
+# ============================================================
+# LOGGING - DEVELOPMENT
+# ============================================================
+logging:
+  # Log Configuration
+  config:
+    enabled: true
+    log_level: "DEBUG"  # DEBUG level in dev
+    log_format: "text"  # Text format for easier reading
+    log_rotation: "hourly"
+    log_compression: false
+    
+  # Log Files
+  files:
+    main_log: "/logs/hedge_bot_dev.log"
+    trade_log: "/logs/trades_dev.log"
+    error_log: "/logs/errors_dev.log"
+    audit_log: "/logs/audit_dev.log"
+    debug_log: "/logs/debug_dev.log"
+    
+  # Log Retention
+  retention:
+    days: 7
+    max_size_mb: 50
+    max_files: 5
+
+# ============================================================
+# MONITORING - DEVELOPMENT
+# ============================================================
+monitoring:
+  # Monitoring Configuration
+  config:
+    enabled: true
+    monitoring_frequency: "realtime"
+    alert_channels:
+      - "console"
+      - "file"
+      - "slack"  # Optional in dev
+      
+  # Health Checks
+  health:
+    check_interval: 30
+    auto_recovery: true
+    max_failures: 5
+    
+  # Alerts
+  alerts:
+    trade_execution: true
+    position_changes: true
+    risk_breaches: false  # Disabled in dev
+    system_errors: true
+    performance_issues: true
+
+# ============================================================
+# SECURITY - DEVELOPMENT
+# ============================================================
+security:
+  # Security Configuration
+  config:
+    enabled: true
+    encryption: false  # Disabled in dev
+    encryption_method: "AES-256-GCM"
+    
+  # Authentication
+  auth:
+    enabled: false  # Disabled in dev
+    method: "jwt"
+    token_expiry: 86400  # 24 hours
+    
+  # Authorization
+  authorization:
+    enabled: false  # Disabled in dev
+    rbac: false
+    permission_level: "admin"
+    
+  # API Security
+  api:
+    rate_limiting: false  # Disabled in dev
+    max_requests_per_minute: 1000
+    ip_whitelist: []
+    api_key_rotation: 30
+
+# ============================================================
+# COMPLIANCE - DEVELOPMENT
+# ============================================================
+compliance:
+  # Compliance Configuration
+  config:
+    enabled: false  # Disabled in dev
+    regulatory_framework: "none"
+    compliance_level: "basic"
+    
+  # AML/KYC
+  aml_kyc:
+    enabled: false
+    screening: false
+    reporting: false
+    
+  # Position Limits
+  position_limits:
+    enabled: false
+    
+  # Record Keeping
+  record_keeping:
+    enabled: true
+    retention_days: 7
+    immutable: false
+
+# ============================================================
+# NOTIFICATIONS - DEVELOPMENT
+# ============================================================
+notifications:
+  # Notification Channels
+  channels:
+    email:
+      enabled: false
+      recipients:
+        - "dev@nexusquantum.com"
+        
+    slack:
+      enabled: true
+      webhook_url: "${DEV_SLACK_WEBHOOK_URL}"
+      channel: "#nexus-dev"
+      
+    telegram:
+      enabled: false
+      
+    push:
+      enabled: false
+      
+  # Notification Types
+  types:
+    trade_execution: true
+    position_update: true
+    risk_alert: false
+    system_error: true
+    performance_report: true
+    daily_summary: true
+
+# ============================================================
+# BACKUP - DEVELOPMENT
+# ============================================================
+backup:
+  # Backup Configuration
+  config:
+    enabled: false  # Disabled in dev
+    schedule: "daily"
+    time: "00:00:00"
+    retention_days: 7
+    
+  # Backup Types
+  types:
+    database: false
+    configuration: true
+    logs: false
+    models: false
+
+# ============================================================
+# TESTING CONFIGURATION
+# ============================================================
+testing:
+  # Test Settings
+  settings:
+    enabled: true
+    test_mode: true
+    unit_testing: true
+    integration_testing: true
+    performance_testing: true
+    
+  # Test Data
+  test_data:
+    use_fixtures: true
+    fixture_path: "/tests/fixtures"
+    data_volume: 1000  # Number of test data points
+    
+  # Test Execution
+  execution:
+    parallel_tests: true
+    test_timeout: 30
+    retry_failed_tests: true
+    max_retries: 3
+
+# ============================================================
+# DEBUG CONFIGURATION
+# ============================================================
+debug:
+  # Debug Settings
+  settings:
+    enabled: true
+    debug_level: "verbose"  # verbose, detailed, minimal
+    trace_calls: true
+    profile_performance: true
+    memory_profiling: true
+    
+  # Debug Features
+  features:
+    print_stack_traces: true
+    log_function_calls: true
+    log_object_creations: true
+    log_api_calls: true
+    log_database_queries: true
+    log_trade_decisions: true
+    
+  # Debug Storage
+  storage:
+    save_debug_info: true
+    debug_folder: "/debug"
+    max_debug_files: 100
+    compress_debug_files: true
+
+# ============================================================
+# PERFORMANCE TESTING
+# ============================================================
+performance_testing:
+  # Load Testing
+  load_testing:
+    enabled: true
+    concurrent_users: 10
+    requests_per_second: 50
+    test_duration: 300  # seconds
+    
+  # Stress Testing
+  stress_testing:
+    enabled: true
+    max_concurrent_users: 50
+    max_requests_per_second: 200
+    test_duration: 600  # seconds
+    
+  # Latency Testing
+  latency_testing:
+    enabled: true
+    target_latency_ms: 100
+    max_latency_ms: 500
+    latency_percentiles: [50, 90, 95, 99]
+
+# ============================================================
+# DEVELOPMENT TOOLS
+# ============================================================
+dev_tools:
+  # Interactive Tools
+  tools:
+    interactive_shell: true
+    jupyter_notebooks: true
+    api_explorer: true
+    graphql_playground: true
+    
+  # Visualization
+  visualization:
+    enable_dashboards: true
+    enable_charts: true
+    enable_real_time: true
+    chart_library: "plotly"
+    
+  # Profiling
+  profiling:
+    enable_profiling: true
+    profile_cpu: true
+    profile_memory: true
+    profile_io: true
+    save_profiles: true
+
+# ============================================================
+# END OF DEVELOPMENT CONFIGURATION
+# ============================================================
