@@ -1,0 +1,726 @@
+# trading/bots/hedge_bot/config/correlation_configs.yaml
+# NEXUS AI TRADING SYSTEM - Hedge Bot Correlation Configuration
+# Version: 2.0.0
+# Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+
+# ============================================================
+# CORRELATION GENERAL SETTINGS
+# ============================================================
+correlation:
+  # General Correlation Settings
+  general:
+    enabled: true
+    calculation_method: "pearson"  # pearson, spearman, kendall, distance
+    lookback_period: 60  # days
+    min_data_points: 30
+    update_frequency: "daily"  # realtime, hourly, daily, weekly
+    use_log_returns: true
+    remove_outliers: true
+    outlier_threshold: 3.0  # standard deviations
+    use_shrinkage: true
+    shrinkage_method: "ledoit_wolf"  # ledoit_wolf, oracle, constant
+    
+  # Correlation Types
+  types:
+    historical_correlation:
+      enabled: true
+      calculation: "rolling"
+      window: 60
+      min_periods: 30
+      
+    dynamic_correlation:
+      enabled: true
+      model: "dcc"  # dcc, garch_dcc, ewma
+      dcc_lag: 1
+      garch_order: [1, 1]
+      forecast_horizon: 10
+      
+    partial_correlation:
+      enabled: true
+      control_variables:
+        - "market"
+        - "sector"
+        - "volatility"
+        - "liquidity"
+        
+    rank_correlation:
+      enabled: true
+      method: "spearman"
+      use_ties: true
+      
+    distance_correlation:
+      enabled: true
+      method: "energy"
+      use_density: true
+
+# ============================================================
+# CORRELATION MATRIX
+# ============================================================
+correlation_matrix:
+  # Matrix Settings
+  settings:
+    enabled: true
+    calculation: "pearson"
+    lookback: 60
+    min_periods: 30
+    use_shrinkage: true
+    shrinkage_method: "ledoit_wolf"
+    positive_definite: true
+    regularization: 0.001
+    
+  # Matrix Features
+  features:
+    include_all_assets: true
+    include_market_indices: true
+    include_sector_indices: true
+    include_benchmarks: true
+    include_custom_assets: true
+    
+  # Matrix Storage
+  storage:
+    format: "numpy"  # numpy, pandas, json, parquet
+    compression: true
+    backup: true
+    retention: 365  # days
+    
+  # Matrix Updates
+  updates:
+    frequency: "daily"
+    full_recalc: "weekly"
+    incremental: true
+    
+  # Matrix Analysis
+  analysis:
+    eigenvalue_decomposition: true
+    principal_components: true
+    factor_analysis: true
+    clustering: true
+
+# ============================================================
+# ASSET CORRELATIONS
+# ============================================================
+asset_correlations:
+  # Cryptocurrency Correlations
+  crypto:
+    # Major Cryptocurrencies
+    BTC_ETH: 0.75
+    BTC_SOL: 0.65
+    BTC_ADA: 0.60
+    BTC_DOT: 0.55
+    BTC_AVAX: 0.55
+    BTC_XRP: 0.50
+    BTC_LINK: 0.50
+    BTC_UNI: 0.45
+    BTC_AAVE: 0.45
+    
+    ETH_SOL: 0.70
+    ETH_ADA: 0.65
+    ETH_DOT: 0.60
+    ETH_AVAX: 0.60
+    ETH_XRP: 0.55
+    ETH_LINK: 0.55
+    ETH_UNI: 0.50
+    ETH_AAVE: 0.50
+    
+    SOL_ADA: 0.75
+    SOL_DOT: 0.70
+    SOL_AVAX: 0.70
+    SOL_XRP: 0.60
+    SOL_LINK: 0.60
+    SOL_UNI: 0.55
+    SOL_AAVE: 0.55
+    
+    ADA_DOT: 0.70
+    ADA_AVAX: 0.65
+    ADA_XRP: 0.60
+    ADA_LINK: 0.55
+    ADA_UNI: 0.50
+    ADA_AAVE: 0.50
+    
+    # Altcoin Correlations
+    DOT_AVAX: 0.75
+    DOT_XRP: 0.60
+    DOT_LINK: 0.60
+    DOT_UNI: 0.55
+    DOT_AAVE: 0.50
+    
+    AVAX_XRP: 0.60
+    AVAX_LINK: 0.60
+    AVAX_UNI: 0.55
+    AVAX_AAVE: 0.55
+    
+    XRP_LINK: 0.65
+    XRP_UNI: 0.55
+    XRP_AAVE: 0.55
+    
+    LINK_UNI: 0.60
+    LINK_AAVE: 0.60
+    UNI_AAVE: 0.70
+    
+  # Forex Correlations
+  forex:
+    EURUSD_GBPUSD: 0.80
+    EURUSD_USDJPY: -0.40
+    EURUSD_USDCHF: -0.70
+    EURUSD_AUDUSD: 0.60
+    EURUSD_USDCAD: 0.50
+    
+    GBPUSD_USDJPY: -0.35
+    GBPUSD_USDCHF: -0.65
+    GBPUSD_AUDUSD: 0.55
+    GBPUSD_USDCAD: 0.45
+    
+    USDJPY_USDCHF: 0.40
+    USDJPY_AUDUSD: -0.50
+    USDJPY_USDCAD: -0.45
+    
+    USDCHF_AUDUSD: -0.55
+    USDCHF_USDCAD: -0.50
+    
+    AUDUSD_USDCAD: 0.70
+    
+  # Equity Correlations
+  equity:
+    # Technology Sector
+    AAPL_MSFT: 0.70
+    AAPL_GOOGL: 0.60
+    AAPL_NVDA: 0.55
+    AAPL_AMD: 0.50
+    
+    MSFT_GOOGL: 0.65
+    MSFT_NVDA: 0.60
+    MSFT_AMD: 0.55
+    
+    GOOGL_NVDA: 0.55
+    GOOGL_AMD: 0.50
+    
+    NVDA_AMD: 0.70
+    
+    # Cross-Sector
+    AAPL_AMZN: 0.55
+    AAPL_TSLA: 0.40
+    MSFT_AMZN: 0.60
+    MSFT_TSLA: 0.45
+    GOOGL_AMZN: 0.55
+    GOOGL_TSLA: 0.40
+    
+    # Sector Indices
+    SPY_QQQ: 0.85
+    SPY_DIA: 0.90
+    QQQ_DIA: 0.75
+    
+  # Commodity Correlations
+  commodity:
+    GOLD_SILVER: 0.80
+    GOLD_PLATINUM: 0.60
+    GOLD_PALLADIUM: 0.50
+    GOLD_OIL: 0.30
+    GOLD_NATURAL_GAS: 0.20
+    
+    SILVER_PLATINUM: 0.55
+    SILVER_PALLADIUM: 0.45
+    SILVER_OIL: 0.25
+    
+    PLATINUM_PALLADIUM: 0.70
+    PLATINUM_OIL: 0.35
+    
+    PALLADIUM_OIL: 0.30
+    OIL_NATURAL_GAS: 0.60
+    
+  # Cross-Asset Correlations
+  cross_asset:
+    BTC_SPY: 0.25
+    BTC_GOLD: 0.15
+    BTC_OIL: 0.10
+    BTC_USD: -0.10
+    
+    ETH_SPY: 0.20
+    ETH_GOLD: 0.10
+    ETH_OIL: 0.05
+    
+    GOLD_SPY: 0.05
+    GOLD_USD: -0.20
+    
+    OIL_SPY: 0.35
+    OIL_USD: -0.25
+
+# ============================================================
+# CORRELATION THRESHOLDS
+# ============================================================
+correlation_thresholds:
+  # General Thresholds
+  general:
+    very_high: 0.85
+    high: 0.70
+    moderate: 0.40
+    low: 0.20
+    very_low: 0.10
+    negative: -0.20
+    
+  # Thresholds by Asset Class
+  asset_class:
+    cryptocurrency:
+      very_high: 0.80
+      high: 0.65
+      moderate: 0.40
+      low: 0.20
+      
+    forex:
+      very_high: 0.85
+      high: 0.70
+      moderate: 0.40
+      low: 0.20
+      
+    equity:
+      very_high: 0.80
+      high: 0.65
+      moderate: 0.40
+      low: 0.20
+      
+    commodity:
+      very_high: 0.75
+      high: 0.60
+      moderate: 0.35
+      low: 0.15
+      
+  # Decision Thresholds
+  decision:
+    diversification_threshold: 0.30
+    hedging_threshold: 0.50
+    concentration_threshold: 0.70
+    risk_threshold: 0.60
+
+# ============================================================
+# CORRELATION REGIMES
+# ============================================================
+correlation_regimes:
+  # Regime Definitions
+  regimes:
+    high_correlation:
+      threshold: 0.70
+      description: "High correlation regime"
+      risk_multiplier: 1.5
+      diversification_effect: 0.3
+      
+    normal_correlation:
+      threshold: 0.40
+      description: "Normal correlation regime"
+      risk_multiplier: 1.0
+      diversification_effect: 0.5
+      
+    low_correlation:
+      threshold: 0.20
+      description: "Low correlation regime"
+      risk_multiplier: 0.7
+      diversification_effect: 0.8
+      
+    negative_correlation:
+      threshold: -0.20
+      description: "Negative correlation regime"
+      risk_multiplier: 0.5
+      diversification_effect: 1.0
+      
+  # Regime Detection
+  detection:
+    method: "rolling_window"
+    window: 30
+    min_duration: 5
+    transition_smoothing: true
+    
+  # Regime Transitions
+  transitions:
+    probability: 0.05
+    smooth_transitions: true
+    transition_window: 10
+
+# ============================================================
+# DYNAMIC CORRELATION
+# ============================================================
+dynamic_correlation:
+  # DCC Model
+  dcc:
+    enabled: true
+    model: "dcc"  # dcc, adcc, garch_dcc
+    dcc_lag: 1
+    garch_order: [1, 1]
+    distribution: "normal"  # normal, t, ged
+    forecast_horizon: 10
+    max_iterations: 1000
+    tolerance: 1e-6
+    
+  # EWMA Model
+  ewma:
+    enabled: true
+    lambda: 0.94  # decay factor
+    min_periods: 30
+    use_correlation_ewma: true
+    
+  # Rolling Window
+  rolling:
+    enabled: true
+    window: 60
+    min_periods: 30
+    step: 1
+    
+  # Forecast
+  forecast:
+    enabled: true
+    horizon: 10
+    confidence_interval: 0.95
+    method: "monte_carlo"  # monte_carlo, bootstrap, analytical
+
+# ============================================================
+# CORRELATION-BASED RISK
+# ============================================================
+correlation_risk:
+  # Risk Settings
+  settings:
+    enabled: true
+    risk_factor_models:
+      - "var_contribution"
+      - "cvar_contribution"
+      - "risk_parity"
+      - "marginal_risk"
+      
+  # Risk Metrics
+  metrics:
+    correlation_risk:
+      enabled: true
+      calculation: "weighted"
+      use_dynamic_weights: true
+      
+    diversification_ratio:
+      enabled: true
+      calculation: "risk_weighted"
+      target_ratio: 1.5
+      
+    correlation_breakdown:
+      enabled: true
+      by_asset_class: true
+      by_sector: true
+      
+  # Risk Limits
+  limits:
+    max_correlation_risk: 0.20
+    target_correlation_risk: 0.10
+    max_diversification_ratio: 2.0
+    min_diversification_ratio: 1.0
+
+# ============================================================
+# CORRELATION MONITORING
+# ============================================================
+correlation_monitoring:
+  # Monitoring Settings
+  settings:
+    enabled: true
+    monitoring_frequency: "realtime"  # realtime, hourly, daily
+    alert_threshold: 0.30  # 30% change
+    critical_threshold: 0.50  # 50% change
+    reporting_frequency: "daily"
+    
+  # Alert Conditions
+  alerts:
+    correlation_change_alert:
+      enabled: true
+      level: "warning"
+      threshold: 0.30
+      message: "Significant correlation change in {asset_pair}"
+      
+    correlation_break_alert:
+      enabled: true
+      level: "critical"
+      threshold: 0.50
+      message: "Correlation break detected in {asset_pair}"
+      
+    regime_change_alert:
+      enabled: true
+      level: "warning"
+      threshold: 0.20
+      message: "Correlation regime change detected"
+      
+    diversification_alert:
+      enabled: true
+      level: "warning"
+      threshold: 0.30
+      message: "Diversification score below threshold"
+      
+  # Monitoring Metrics
+  metrics:
+    - "current_correlation"
+    - "correlation_change"
+    - "correlation_regime"
+    - "diversification_score"
+    - "correlation_risk"
+    - "diversification_ratio"
+    - "correlation_breakdown"
+
+# ============================================================
+# CORRELATION REPORTING
+# ============================================================
+correlation_reporting:
+  # Report Settings
+  settings:
+    enabled: true
+    report_frequency: "weekly"
+    report_format: "json"  # json, csv, pdf, html
+    include_analytics: true
+    include_visualizations: true
+    include_recommendations: true
+    
+  # Report Sections
+  sections:
+    correlation_summary:
+      enabled: true
+      include_correlation_matrix: true
+      include_regime_analysis: true
+      
+    asset_correlations:
+      enabled: true
+      include_top_10: true
+      include_bottom_10: true
+      
+    sector_correlations:
+      enabled: true
+      include_all_sectors: true
+      include_correlation_heatmap: true
+      
+    dynamic_correlation:
+      enabled: true
+      include_trend_analysis: true
+      include_forecast: true
+      
+    risk_analysis:
+      enabled: true
+      include_correlation_risk: true
+      include_diversification_score: true
+      
+    recommendations:
+      enabled: true
+      include_hedging_suggestions: true
+      include_diversification_suggestions: true
+
+# ============================================================
+# CORRELATION VISUALIZATION
+# ============================================================
+correlation_visualization:
+  # Visualization Settings
+  settings:
+    enabled: true
+    interactive: true
+    color_scheme: "coolwarm"  # coolwarm, RdBu, seismic
+    threshold_display: 0.30
+    
+  # Chart Types
+  charts:
+    heatmap:
+      enabled: true
+      annotate: true
+      show_values: true
+      
+    dendrogram:
+      enabled: true
+      clustering_method: "ward"  # ward, complete, average, single
+      show_labels: true
+      
+    network:
+      enabled: true
+      node_size: "correlation"
+      edge_size: "correlation"
+      layout: "force"  # force, circular, hierarchical
+      
+    time_series:
+      enabled: true
+      show_rolling: true
+      show_regimes: true
+
+# ============================================================
+# CORRELATION INTEGRATION
+# ============================================================
+correlation_integration:
+  # Integration Settings
+  settings:
+    enabled: true
+    integration_type: "api"  # api, webhook, websocket, file
+    
+  # External Systems
+  systems:
+    risk_system:
+      enabled: true
+      endpoint: "/api/risk/correlation"
+      update_frequency: "realtime"
+      
+    portfolio_system:
+      enabled: true
+      endpoint: "/api/portfolio/correlation"
+      update_frequency: "realtime"
+      
+    trading_system:
+      enabled: true
+      endpoint: "/api/trading/correlation"
+      update_frequency: "realtime"
+      
+    analytics_system:
+      enabled: true
+      endpoint: "/api/analytics/correlation"
+      update_frequency: "daily"
+
+# ============================================================
+# CORRELATION SCENARIOS
+# ============================================================
+correlation_scenarios:
+  # Scenario 1: Normal Market
+  normal_market:
+    description: "Normal market conditions"
+    correlation_regime: "normal"
+    avg_correlation: 0.40
+    diversification_effect: 0.50
+    
+  # Scenario 2: High Correlation
+  high_correlation:
+    description: "High correlation market"
+    correlation_regime: "high"
+    avg_correlation: 0.70
+    diversification_effect: 0.30
+    
+  # Scenario 3: Low Correlation
+  low_correlation:
+    description: "Low correlation market"
+    correlation_regime: "low"
+    avg_correlation: 0.20
+    diversification_effect: 0.80
+    
+  # Scenario 4: Crisis Mode
+  crisis_mode:
+    description: "Market crisis"
+    correlation_regime: "high"
+    avg_correlation: 0.80
+    diversification_effect: 0.20
+
+# ============================================================
+# CORRELATION EXAMPLES
+# ============================================================
+correlation_examples:
+  # Example 1: Correlation Matrix
+  correlation_matrix_example:
+    assets: ["BTC", "ETH", "SOL", "ADA", "DOT"]
+    matrix:
+      - [1.00, 0.75, 0.65, 0.60, 0.55]
+      - [0.75, 1.00, 0.70, 0.65, 0.60]
+      - [0.65, 0.70, 1.00, 0.75, 0.70]
+      - [0.60, 0.65, 0.75, 1.00, 0.70]
+      - [0.55, 0.60, 0.70, 0.70, 1.00]
+      
+  # Example 2: Dynamic Correlation
+  dynamic_correlation_example:
+    asset_pair: ["BTC", "ETH"]
+    correlations:
+      - date: "2026-01-01"
+        value: 0.75
+      - date: "2026-01-15"
+        value: 0.72
+      - date: "2026-02-01"
+        value: 0.80
+      - date: "2026-02-15"
+        value: 0.68
+      - date: "2026-03-01"
+        value: 0.85
+        
+  # Example 3: Correlation Regimes
+  correlation_regimes_example:
+    periods:
+      - start: "2026-01-01"
+        end: "2026-02-15"
+        regime: "high"
+        avg_correlation: 0.75
+      - start: "2026-02-16"
+        end: "2026-03-15"
+        regime: "normal"
+        avg_correlation: 0.45
+      - start: "2026-03-16"
+        end: "2026-04-15"
+        regime: "low"
+        avg_correlation: 0.25
+
+# ============================================================
+# ENVIRONMENT-SPECIFIC CONFIGURATIONS
+# ============================================================
+environments:
+  # Development Environment
+  development:
+    correlation:
+      general:
+        enabled: true
+        calculation_method: "pearson"
+        lookback_period: 30
+        update_frequency: "hourly"
+        
+    correlation_monitoring:
+      alerts:
+        correlation_change_alert:
+          enabled: false
+        correlation_break_alert:
+          enabled: false
+          
+  # Staging Environment
+  staging:
+    correlation:
+      general:
+        enabled: true
+        calculation_method: "pearson"
+        lookback_period: 60
+        update_frequency: "hourly"
+        
+    correlation_monitoring:
+      alerts:
+        correlation_change_alert:
+          enabled: true
+        correlation_break_alert:
+          enabled: true
+        regime_change_alert:
+          enabled: true
+          
+  # Production Environment
+  production:
+    correlation:
+      general:
+        enabled: true
+        calculation_method: "pearson"
+        lookback_period: 60
+        update_frequency: "daily"
+        use_log_returns: true
+        use_shrinkage: true
+        
+    correlation_monitoring:
+      alerts:
+        correlation_change_alert:
+          enabled: true
+          level: "warning"
+        correlation_break_alert:
+          enabled: true
+          level: "critical"
+        regime_change_alert:
+          enabled: true
+          level: "warning"
+        diversification_alert:
+          enabled: true
+          level: "warning"
+          
+  # Demo Environment
+  demo:
+    correlation:
+      general:
+        enabled: true
+        calculation_method: "pearson"
+        lookback_period: 30
+        update_frequency: "daily"
+        
+    correlation_monitoring:
+      alerts:
+        correlation_change_alert:
+          enabled: true
+        correlation_break_alert:
+          enabled: false
+
+# ============================================================
+# END OF CONFIGURATION
+# ============================================================
