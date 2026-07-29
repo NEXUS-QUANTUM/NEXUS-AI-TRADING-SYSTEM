@@ -1,0 +1,566 @@
+# trading/bots/hedge_bot/config/trailing_stop_configs.yaml
+# NEXUS AI TRADING SYSTEM - Hedge Bot Trailing Stop Configuration
+# Version: 2.0.0
+# Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+
+# ============================================================
+# TRAILING STOP GENERAL SETTINGS
+# ============================================================
+trailing_stop:
+  # General Trailing Stop Settings
+  general:
+    enabled: true
+    trailing_stop_type: "dynamic"  # dynamic, fixed, adaptive, volatility_based
+    default_trailing_distance: 0.03  # 3% default
+    min_trailing_distance: 0.01  # 1% minimum
+    max_trailing_distance: 0.10  # 10% maximum
+    activation_threshold: 0.02  # 2% profit activates trailing
+    update_frequency: "realtime"
+    use_volatility_adjustment: true
+    use_market_regime_adjustment: true
+    use_asset_specific_stops: true
+    lock_in_profit: true
+    lock_in_threshold: 0.03  # 3% profit locks in
+    
+  # Trailing Stop Types
+  types:
+    fixed_trailing_stop:
+      enabled: true
+      description: "Fixed distance trailing stop"
+      distance: 0.03  # 3%
+      
+    dynamic_trailing_stop:
+      enabled: true
+      description: "Dynamic trailing stop based on volatility"
+      volatility_multiplier: 0.5
+      
+    adaptive_trailing_stop:
+      enabled: true
+      description: "Adaptive trailing stop learning from market patterns"
+      learning_rate: 0.1
+      
+    volatility_based:
+      enabled: true
+      description: "Volatility-based trailing stop"
+      atr_multiplier: 2.0
+      atr_period: 14
+      
+    step_trailing_stop:
+      enabled: true
+      description: "Step-based trailing stop"
+      step_size: 0.01  # 1%
+      step_activation: 0.02  # 2%
+
+# ============================================================
+# TRAILING STOP BY ASSET CLASS
+# ============================================================
+trailing_stop_by_asset:
+  # Cryptocurrency
+  cryptocurrency:
+    fixed_distance: 0.03  # 3%
+    volatility_multiplier: 0.5
+    atr_multiplier: 2.0
+    min_distance: 0.02
+    max_distance: 0.08
+    activation_threshold: 0.02
+    lock_in_threshold: 0.03
+    
+    assets:
+      BTC:
+        fixed_distance: 0.03
+        volatility_multiplier: 0.5
+        atr_multiplier: 2.0
+        activation_threshold: 0.02
+      ETH:
+        fixed_distance: 0.035
+        volatility_multiplier: 0.55
+        atr_multiplier: 2.2
+        activation_threshold: 0.025
+      SOL:
+        fixed_distance: 0.04
+        volatility_multiplier: 0.6
+        atr_multiplier: 2.5
+        activation_threshold: 0.03
+      ADA:
+        fixed_distance: 0.04
+        volatility_multiplier: 0.6
+        atr_multiplier: 2.5
+        activation_threshold: 0.03
+      DOT:
+        fixed_distance: 0.038
+        volatility_multiplier: 0.58
+        atr_multiplier: 2.3
+        activation_threshold: 0.028
+      AVAX:
+        fixed_distance: 0.045
+        volatility_multiplier: 0.65
+        atr_multiplier: 2.8
+        activation_threshold: 0.035
+      XRP:
+        fixed_distance: 0.035
+        volatility_multiplier: 0.55
+        atr_multiplier: 2.0
+        activation_threshold: 0.025
+      LINK:
+        fixed_distance: 0.038
+        volatility_multiplier: 0.58
+        atr_multiplier: 2.2
+        activation_threshold: 0.028
+      UNI:
+        fixed_distance: 0.04
+        volatility_multiplier: 0.6
+        atr_multiplier: 2.5
+        activation_threshold: 0.03
+      AAVE:
+        fixed_distance: 0.04
+        volatility_multiplier: 0.6
+        atr_multiplier: 2.5
+        activation_threshold: 0.03
+        
+  # Forex
+  forex:
+    fixed_distance: 0.015  # 1.5%
+    volatility_multiplier: 0.4
+    atr_multiplier: 1.5
+    min_distance: 0.005
+    max_distance: 0.03
+    activation_threshold: 0.01
+    lock_in_threshold: 0.015
+    
+    assets:
+      EURUSD:
+        fixed_distance: 0.015
+        volatility_multiplier: 0.4
+        atr_multiplier: 1.5
+      GBPUSD:
+        fixed_distance: 0.015
+        volatility_multiplier: 0.4
+        atr_multiplier: 1.5
+      USDJPY:
+        fixed_distance: 0.015
+        volatility_multiplier: 0.4
+        atr_multiplier: 1.5
+      USDCHF:
+        fixed_distance: 0.015
+        volatility_multiplier: 0.4
+        atr_multiplier: 1.5
+      AUDUSD:
+        fixed_distance: 0.018
+        volatility_multiplier: 0.45
+        atr_multiplier: 1.8
+      USDCAD:
+        fixed_distance: 0.018
+        volatility_multiplier: 0.45
+        atr_multiplier: 1.8
+        
+  # Equity
+  equity:
+    fixed_distance: 0.025  # 2.5%
+    volatility_multiplier: 0.45
+    atr_multiplier: 1.8
+    min_distance: 0.01
+    max_distance: 0.05
+    activation_threshold: 0.02
+    lock_in_threshold: 0.025
+    
+    assets:
+      SPY:
+        fixed_distance: 0.02
+        volatility_multiplier: 0.4
+        atr_multiplier: 1.5
+      AAPL:
+        fixed_distance: 0.025
+        volatility_multiplier: 0.45
+        atr_multiplier: 1.8
+      MSFT:
+        fixed_distance: 0.025
+        volatility_multiplier: 0.45
+        atr_multiplier: 1.8
+      GOOGL:
+        fixed_distance: 0.025
+        volatility_multiplier: 0.45
+        atr_multiplier: 1.8
+      AMZN:
+        fixed_distance: 0.03
+        volatility_multiplier: 0.5
+        atr_multiplier: 2.0
+      TSLA:
+        fixed_distance: 0.04
+        volatility_multiplier: 0.6
+        atr_multiplier: 2.5
+      NVDA:
+        fixed_distance: 0.03
+        volatility_multiplier: 0.5
+        atr_multiplier: 2.0
+        
+  # Commodity
+  commodity:
+    fixed_distance: 0.03  # 3%
+    volatility_multiplier: 0.5
+    atr_multiplier: 2.0
+    min_distance: 0.01
+    max_distance: 0.06
+    activation_threshold: 0.02
+    lock_in_threshold: 0.03
+    
+    assets:
+      GOLD:
+        fixed_distance: 0.025
+        volatility_multiplier: 0.45
+        atr_multiplier: 1.5
+      SILVER:
+        fixed_distance: 0.035
+        volatility_multiplier: 0.55
+        atr_multiplier: 2.0
+      OIL:
+        fixed_distance: 0.04
+        volatility_multiplier: 0.6
+        atr_multiplier: 2.5
+      NATURAL_GAS:
+        fixed_distance: 0.05
+        volatility_multiplier: 0.7
+        atr_multiplier: 3.0
+
+# ============================================================
+# TRAILING STOP ADJUSTMENTS
+# ============================================================
+trailing_stop_adjustments:
+  # Market Regime Adjustments
+  market_regime:
+    bull_market:
+      distance_multiplier: 1.2
+      activation_multiplier: 1.1
+      description: "Wider stops in bull markets"
+      
+    bear_market:
+      distance_multiplier: 0.8
+      activation_multiplier: 0.9
+      description: "Tighter stops in bear markets"
+      
+    sideways_market:
+      distance_multiplier: 1.0
+      activation_multiplier: 1.0
+      description: "Neutral stops in sideways markets"
+      
+    high_volatility:
+      distance_multiplier: 1.5
+      activation_multiplier: 1.2
+      description: "Wider stops in high volatility"
+      
+    low_volatility:
+      distance_multiplier: 0.7
+      activation_multiplier: 0.8
+      description: "Tighter stops in low volatility"
+      
+  # Risk Profile Adjustments
+  risk_profile:
+    conservative:
+      distance_multiplier: 0.7
+      activation_multiplier: 0.8
+      
+    moderate:
+      distance_multiplier: 1.0
+      activation_multiplier: 1.0
+      
+    aggressive:
+      distance_multiplier: 1.3
+      activation_multiplier: 1.2
+
+# ============================================================
+# TRAILING STOP MONITORING
+# ============================================================
+trailing_stop_monitoring:
+  # Monitoring Settings
+  settings:
+    enabled: true
+    monitoring_frequency: "realtime"
+    alert_threshold: 0.75  # 75% of stop
+    critical_threshold: 0.90  # 90% of stop
+    reporting_frequency: "daily"
+    
+  # Alert Conditions
+  alerts:
+    trailing_stop_approaching:
+      enabled: true
+      level: "warning"
+      threshold: 0.80
+      message: "Trailing stop approaching: {distance}%"
+      
+    trailing_stop_hit:
+      enabled: true
+      level: "critical"
+      message: "Trailing stop hit for {asset}"
+      
+    trailing_stop_adjustment:
+      enabled: true
+      level: "info"
+      message: "Trailing stop adjusted: {old} -> {new}"
+      
+    trailing_stop_activation:
+      enabled: true
+      level: "info"
+      message: "Trailing stop activated for {asset}"
+      
+  # Monitoring Metrics
+  metrics:
+    - "current_trailing_stop"
+    - "trailing_stop_distance"
+    - "trailing_stop_hit_count"
+    - "trailing_stop_adjustment_count"
+    - "trailing_stop_effectiveness"
+    - "lock_in_profit_count"
+
+# ============================================================
+# TRAILING STOP REPORTING
+# ============================================================
+trailing_stop_reporting:
+  # Report Settings
+  settings:
+    enabled: true
+    report_frequency: "daily"
+    report_format: "json"  # json, csv, pdf, html
+    include_analytics: true
+    include_visualizations: true
+    include_recommendations: true
+    
+  # Report Sections
+  sections:
+    trailing_stop_summary:
+      enabled: true
+      include_current_stops: true
+      include_hit_count: true
+      include_effectiveness: true
+      
+    asset_stops:
+      enabled: true
+      include_by_asset_class: true
+      include_by_asset: true
+      
+    adjustments:
+      enabled: true
+      include_adjustment_count: true
+      include_adjustment_reasons: true
+      
+    lock_in_analysis:
+      enabled: true
+      include_lock_in_count: true
+      include_lock_in_amount: true
+      
+    recommendations:
+      enabled: true
+      include_stop_optimization: true
+      include_risk_management: true
+
+# ============================================================
+# TRAILING STOP DASHBOARD
+# ============================================================
+trailing_stop_dashboard:
+  # Dashboard Settings
+  settings:
+    enabled: true
+    refresh_interval: 5
+    default_view: "summary"  # summary, details, analytics
+    
+  # Dashboard Widgets
+  widgets:
+    trailing_stop_summary:
+      enabled: true
+      position: 1
+      size: "large"
+      
+    trailing_stop_chart:
+      enabled: true
+      position: 2
+      size: "large"
+      
+    asset_stops:
+      enabled: true
+      position: 3
+      size: "medium"
+      
+    hit_analysis:
+      enabled: true
+      position: 4
+      size: "medium"
+      
+    lock_in_status:
+      enabled: true
+      position: 5
+      size: "small"
+      
+    alert_status:
+      enabled: true
+      position: 6
+      size: "small"
+
+# ============================================================
+# TRAILING STOP SCENARIOS
+# ============================================================
+trailing_stop_scenarios:
+  # Scenario 1: Fixed Trailing Stop
+  fixed_trailing_scenario:
+    description: "Fixed trailing stop scenario"
+    entry_price: 100
+    trailing_distance: 3  # 3%
+    activation_threshold: 2  # 2%
+    
+    # Price moves to 105
+    current_price: 105
+    trailing_stop: 102  # 105 - 3
+    locked_in_profit: 2  # 102 - 100
+    
+  # Scenario 2: Dynamic Trailing Stop
+  dynamic_trailing_scenario:
+    description: "Dynamic trailing stop scenario"
+    entry_price: 100
+    volatility: 0.20
+    volatility_multiplier: 0.5
+    trailing_distance: 0.03  # 3%
+    
+    # High volatility period
+    volatility: 0.30
+    adjusted_distance: 0.045  # 3% * (0.30/0.20) = 4.5%
+    
+  # Scenario 3: Step Trailing Stop
+  step_trailing_scenario:
+    description: "Step trailing stop scenario"
+    entry_price: 100
+    step_size: 1  # 1%
+    step_activation: 2  # 2%
+    
+    # Price moves to 105
+    current_price: 105
+    step_count: 1  # (105 - 100) / 5 = 1 step
+    trailing_stop: 104  # 105 - 1
+    
+    # Price moves to 110
+    current_price: 110
+    step_count: 2  # (110 - 100) / 5 = 2 steps
+    trailing_stop: 108  # 110 - 2
+
+# ============================================================
+# TRAILING STOP EXAMPLES
+# ============================================================
+trailing_stop_examples:
+  # Example 1: Trailing Stop Calculation
+  trailing_stop_calculation:
+    description: "Trailing Stop Calculation Example"
+    entry_price: 100
+    trailing_distance: 0.03  # 3%
+    current_price: 105
+    trailing_stop: 101.85  # 105 * (1 - 0.03)
+    locked_in_profit: 1.85  # 101.85 - 100
+    
+  # Example 2: ATR-Based Trailing Stop
+  atr_trailing_stop:
+    description: "ATR-Based Trailing Stop Example"
+    entry_price: 100
+    atr: 2.0
+    atr_multiplier: 2.0
+    trailing_distance: 4.0  # 2.0 * 2.0
+    current_price: 108
+    trailing_stop: 104  # 108 - 4
+    locked_in_profit: 4  # 104 - 100
+    
+  # Example 3: Volatility-Adjusted Trailing Stop
+  volatility_adjusted_trailing:
+    description: "Volatility-Adjusted Trailing Stop Example"
+    entry_price: 100
+    base_distance: 0.03
+    base_volatility: 0.20
+    current_volatility: 0.30
+    adjusted_distance: 0.045  # 0.03 * (0.30/0.20)
+    current_price: 106
+    trailing_stop: 101.23  # 106 * (1 - 0.045)
+
+# ============================================================
+# ENVIRONMENT-SPECIFIC CONFIGURATIONS
+# ============================================================
+environments:
+  # Development Environment
+  development:
+    trailing_stop:
+      general:
+        enabled: true
+        trailing_stop_type: "fixed"
+        default_trailing_distance: 0.05
+        update_frequency: "hourly"
+        
+    trailing_stop_monitoring:
+      alerts:
+        trailing_stop_approaching:
+          enabled: false
+        trailing_stop_hit:
+          enabled: true
+          
+  # Staging Environment
+  staging:
+    trailing_stop:
+      general:
+        enabled: true
+        trailing_stop_type: "dynamic"
+        default_trailing_distance: 0.03
+        update_frequency: "realtime"
+        
+    trailing_stop_monitoring:
+      alerts:
+        trailing_stop_approaching:
+          enabled: true
+        trailing_stop_hit:
+          enabled: true
+        trailing_stop_adjustment:
+          enabled: true
+        trailing_stop_activation:
+          enabled: true
+          
+  # Production Environment
+  production:
+    trailing_stop:
+      general:
+        enabled: true
+        trailing_stop_type: "dynamic"
+        default_trailing_distance: 0.03
+        min_trailing_distance: 0.01
+        max_trailing_distance: 0.10
+        activation_threshold: 0.02
+        update_frequency: "realtime"
+        use_volatility_adjustment: true
+        use_market_regime_adjustment: true
+        use_asset_specific_stops: true
+        lock_in_profit: true
+        lock_in_threshold: 0.03
+        
+    trailing_stop_monitoring:
+      alerts:
+        trailing_stop_approaching:
+          enabled: true
+          level: "warning"
+        trailing_stop_hit:
+          enabled: true
+          level: "critical"
+        trailing_stop_adjustment:
+          enabled: true
+          level: "info"
+        trailing_stop_activation:
+          enabled: true
+          level: "info"
+          
+  # Demo Environment
+  demo:
+    trailing_stop:
+      general:
+        enabled: true
+        trailing_stop_type: "fixed"
+        default_trailing_distance: 0.04
+        update_frequency: "hourly"
+        
+    trailing_stop_monitoring:
+      alerts:
+        trailing_stop_approaching:
+          enabled: false
+        trailing_stop_hit:
+          enabled: true
+
+# ============================================================
+# END OF CONFIGURATION
+# ============================================================
