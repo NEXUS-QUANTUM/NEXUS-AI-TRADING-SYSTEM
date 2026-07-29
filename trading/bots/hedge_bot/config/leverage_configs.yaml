@@ -1,0 +1,539 @@
+# trading/bots/hedge_bot/config/leverage_configs.yaml
+# NEXUS AI TRADING SYSTEM - Hedge Bot Leverage Configuration
+# Version: 2.0.0
+# Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+
+# ============================================================
+# LEVERAGE GENERAL SETTINGS
+# ============================================================
+leverage:
+  # General Leverage Settings
+  general:
+    enabled: true
+    max_leverage: 3.0
+    min_leverage: 1.0
+    default_leverage: 1.0
+    leverage_method: "dynamic"  # dynamic, fixed, adaptive
+    leverage_calculation: "risk_based"  # risk_based, volatility_based, fixed
+    update_frequency: "realtime"  # realtime, hourly, daily
+    max_leverage_per_asset: 5.0
+    max_leverage_per_position: 3.0
+    use_margin_optimization: true
+    use_collateral_optimization: true
+    
+  # Leverage Types
+  types:
+    fixed_leverage:
+      enabled: true
+      description: "Fixed leverage across all positions"
+      value: 1.0
+      
+    dynamic_leverage:
+      enabled: true
+      description: "Dynamic leverage based on market conditions"
+      calculation: "volatility_adjusted"
+      
+    risk_based_leverage:
+      enabled: true
+      description: "Leverage based on position risk"
+      calculation: "var_based"
+      
+    adaptive_leverage:
+      enabled: true
+      description: "Adaptive leverage learning from market patterns"
+      learning_rate: 0.1
+      
+    tiered_leverage:
+      enabled: true
+      description: "Leverage based on position size tiers"
+      tiers:
+        - size: 10000
+          leverage: 3.0
+        - size: 50000
+          leverage: 2.0
+        - size: 100000
+          leverage: 1.5
+        - size: 500000
+          leverage: 1.0
+
+# ============================================================
+# LEVERAGE BY ASSET CLASS
+# ============================================================
+leverage_by_asset:
+  # Cryptocurrency
+  cryptocurrency:
+    max_leverage: 3.0
+    default_leverage: 1.0
+    volatility_adjustment: true
+    margin_requirements:
+      initial: 0.33  # 3x leverage requires 33% margin
+      maintenance: 0.20  # 20% maintenance margin
+    liquidation_threshold: 0.15  # 15% move triggers liquidation
+    
+    # Asset-Specific Leverage
+    assets:
+      BTC:
+        max_leverage: 3.0
+        default_leverage: 1.5
+        volatility_adjustment: 0.8
+      ETH:
+        max_leverage: 3.0
+        default_leverage: 1.5
+        volatility_adjustment: 0.9
+      SOL:
+        max_leverage: 2.0
+        default_leverage: 1.0
+        volatility_adjustment: 1.2
+      ADA:
+        max_leverage: 2.0
+        default_leverage: 1.0
+        volatility_adjustment: 1.2
+      DOT:
+        max_leverage: 2.0
+        default_leverage: 1.0
+        volatility_adjustment: 1.1
+      AVAX:
+        max_leverage: 2.0
+        default_leverage: 1.0
+        volatility_adjustment: 1.3
+      XRP:
+        max_leverage: 2.5
+        default_leverage: 1.0
+        volatility_adjustment: 1.0
+      LINK:
+        max_leverage: 2.5
+        default_leverage: 1.0
+        volatility_adjustment: 1.1
+      UNI:
+        max_leverage: 2.0
+        default_leverage: 1.0
+        volatility_adjustment: 1.2
+      AAVE:
+        max_leverage: 2.0
+        default_leverage: 1.0
+        volatility_adjustment: 1.2
+        
+  # Forex
+  forex:
+    max_leverage: 10.0
+    default_leverage: 3.0
+    volatility_adjustment: true
+    margin_requirements:
+      initial: 0.10  # 10x leverage requires 10% margin
+      maintenance: 0.05  # 5% maintenance margin
+    liquidation_threshold: 0.03  # 3% move triggers liquidation
+    
+    assets:
+      EURUSD:
+        max_leverage: 10.0
+        default_leverage: 5.0
+        volatility_adjustment: 0.5
+      GBPUSD:
+        max_leverage: 10.0
+        default_leverage: 4.0
+        volatility_adjustment: 0.6
+      USDJPY:
+        max_leverage: 10.0
+        default_leverage: 4.0
+        volatility_adjustment: 0.5
+      USDCHF:
+        max_leverage: 10.0
+        default_leverage: 4.0
+        volatility_adjustment: 0.5
+      AUDUSD:
+        max_leverage: 8.0
+        default_leverage: 3.0
+        volatility_adjustment: 0.7
+      USDCAD:
+        max_leverage: 8.0
+        default_leverage: 3.0
+        volatility_adjustment: 0.7
+        
+  # Equity
+  equity:
+    max_leverage: 2.0
+    default_leverage: 1.0
+    volatility_adjustment: true
+    margin_requirements:
+      initial: 0.50  # 2x leverage requires 50% margin
+      maintenance: 0.30  # 30% maintenance margin
+    liquidation_threshold: 0.10  # 10% move triggers liquidation
+    
+    assets:
+      SPY:
+        max_leverage: 2.0
+        default_leverage: 1.0
+        volatility_adjustment: 0.8
+      AAPL:
+        max_leverage: 2.0
+        default_leverage: 1.0
+        volatility_adjustment: 0.9
+      MSFT:
+        max_leverage: 2.0
+        default_leverage: 1.0
+        volatility_adjustment: 0.9
+      GOOGL:
+        max_leverage: 2.0
+        default_leverage: 1.0
+        volatility_adjustment: 0.9
+      AMZN:
+        max_leverage: 2.0
+        default_leverage: 1.0
+        volatility_adjustment: 1.0
+      TSLA:
+        max_leverage: 1.5
+        default_leverage: 0.5
+        volatility_adjustment: 1.5
+        
+  # Commodity
+  commodity:
+    max_leverage: 5.0
+    default_leverage: 2.0
+    volatility_adjustment: true
+    margin_requirements:
+      initial: 0.20  # 5x leverage requires 20% margin
+      maintenance: 0.10  # 10% maintenance margin
+    liquidation_threshold: 0.05  # 5% move triggers liquidation
+    
+    assets:
+      GOLD:
+        max_leverage: 5.0
+        default_leverage: 2.0
+        volatility_adjustment: 0.7
+      SILVER:
+        max_leverage: 4.0
+        default_leverage: 1.5
+        volatility_adjustment: 1.0
+      OIL:
+        max_leverage: 3.0
+        default_leverage: 1.0
+        volatility_adjustment: 1.3
+      NATURAL_GAS:
+        max_leverage: 2.0
+        default_leverage: 0.5
+        volatility_adjustment: 1.5
+
+# ============================================================
+# LEVERAGE RISK MANAGEMENT
+# ============================================================
+leverage_risk:
+  # Risk Settings
+  settings:
+    enabled: true
+    risk_calculation: "dynamic"  # dynamic, fixed, adaptive
+    max_risk_per_trade: 0.02  # 2% of portfolio
+    max_risk_per_day: 0.05  # 5% of portfolio
+    max_risk_per_month: 0.15  # 15% of portfolio
+    risk_adjustment_factor: 0.8
+    
+  # Risk Metrics
+  metrics:
+    leverage_ratio: true
+    margin_utilization: true
+    liquidation_risk: true
+    position_risk: true
+    portfolio_risk: true
+    stress_test_risk: true
+    
+  # Risk Controls
+  controls:
+    auto_reduce_leverage: true
+    auto_liquidate: false
+    position_sizing_limits: true
+    exposure_limits: true
+    drawdown_limits: true
+
+# ============================================================
+# LEVERAGE MONITORING
+# ============================================================
+leverage_monitoring:
+  # Monitoring Settings
+  settings:
+    enabled: true
+    monitoring_frequency: "realtime"
+    alert_threshold: 0.75  # 75% of limit
+    critical_threshold: 0.90  # 90% of limit
+    reporting_frequency: "daily"
+    
+  # Alert Conditions
+  alerts:
+    leverage_limit_breach:
+      enabled: true
+      level: "critical"
+      threshold: 0.90
+      message: "Leverage limit breached: {leverage}x"
+      
+    leverage_warning:
+      enabled: true
+      level: "warning"
+      threshold: 0.75
+      message: "Leverage approaching limit: {leverage}x"
+      
+    margin_alert:
+      enabled: true
+      level: "warning"
+      threshold: 0.70
+      message: "Margin utilization high: {margin}%"
+      
+    liquidation_alert:
+      enabled: true
+      level: "critical"
+      threshold: 0.85
+      message: "Liquidation risk: {risk}%"
+      
+  # Monitoring Metrics
+  metrics:
+    - "current_leverage"
+    - "max_leverage"
+    - "average_leverage"
+    - "margin_utilization"
+    - "liquidation_risk"
+    - "position_risk"
+    - "portfolio_risk"
+
+# ============================================================
+# LEVERAGE REPORTING
+# ============================================================
+leverage_reporting:
+  # Report Settings
+  settings:
+    enabled: true
+    report_frequency: "daily"
+    report_format: "json"  # json, csv, pdf, html
+    include_analytics: true
+    include_visualizations: true
+    include_recommendations: true
+    
+  # Report Sections
+  sections:
+    leverage_summary:
+      enabled: true
+      include_current_leverage: true
+      include_max_leverage: true
+      include_average_leverage: true
+      include_leverage_distribution: true
+      
+    asset_leverage:
+      enabled: true
+      include_by_asset_class: true
+      include_by_asset: true
+      include_limits: true
+      
+    margin_summary:
+      enabled: true
+      include_margin_utilization: true
+      include_margin_limits: true
+      include_margin_distribution: true
+      
+    risk_summary:
+      enabled: true
+      include_liquidation_risk: true
+      include_position_risk: true
+      include_portfolio_risk: true
+      
+    recommendations:
+      enabled: true
+      include_leverage_optimization: true
+      include_risk_reduction: true
+      include_margin_optimization: true
+
+# ============================================================
+# LEVERAGE DASHBOARD
+# ============================================================
+leverage_dashboard:
+  # Dashboard Settings
+  settings:
+    enabled: true
+    refresh_interval: 5
+    default_view: "summary"  # summary, details, analytics
+    
+  # Dashboard Widgets
+  widgets:
+    leverage_summary:
+      enabled: true
+      position: 1
+      size: "large"
+      
+    leverage_chart:
+      enabled: true
+      position: 2
+      size: "large"
+      
+    asset_leverage:
+      enabled: true
+      position: 3
+      size: "medium"
+      
+    margin_status:
+      enabled: true
+      position: 4
+      size: "medium"
+      
+    risk_status:
+      enabled: true
+      position: 5
+      size: "medium"
+      
+    alert_status:
+      enabled: true
+      position: 6
+      size: "small"
+
+# ============================================================
+# LEVERAGE SCENARIOS
+# ============================================================
+leverage_scenarios:
+  # Scenario 1: Conservative Leverage
+  conservative:
+    description: "Conservative leverage usage"
+    leverage: 1.0
+    margin_utilization: 0.33
+    liquidation_risk: 0.05
+    risk_level: "low"
+    
+  # Scenario 2: Moderate Leverage
+  moderate:
+    description: "Moderate leverage usage"
+    leverage: 2.0
+    margin_utilization: 0.50
+    liquidation_risk: 0.15
+    risk_level: "medium"
+    
+  # Scenario 3: Aggressive Leverage
+  aggressive:
+    description: "Aggressive leverage usage"
+    leverage: 3.0
+    margin_utilization: 0.67
+    liquidation_risk: 0.30
+    risk_level: "high"
+    
+  # Scenario 4: Maximum Leverage
+  maximum:
+    description: "Maximum leverage usage"
+    leverage: 5.0
+    margin_utilization: 0.80
+    liquidation_risk: 0.50
+    risk_level: "extreme"
+
+# ============================================================
+# LEVERAGE EXAMPLES
+# ============================================================
+leverage_examples:
+  # Example 1: Leverage Calculation
+  leverage_calculation:
+    description: "Leverage Calculation Example"
+    position_size: 100000
+    equity: 50000
+    leverage: 2.0  # 100000 / 50000
+    margin_required: 50000
+    margin_utilization: 0.50
+    
+  # Example 2: Margin Call Calculation
+  margin_call_example:
+    description: "Margin Call Calculation Example"
+    position_size: 100000
+    leverage: 2.0
+    maintenance_margin: 0.20
+    equity: 50000
+    initial_margin: 50000
+    maintenance_margin_value: 20000  # 100000 * 0.20
+    margin_buffer: 30000  # 50000 - 20000
+    liquidation_price: 80000  # 20% drop
+    
+  # Example 3: Leverage Optimization
+  leverage_optimization:
+    description: "Leverage Optimization Example"
+    portfolio_value: 100000
+    volatility: 0.20
+    target_volatility: 0.15
+    optimal_leverage: 0.75  # 0.15 / 0.20
+    recommended_leverage: 1.0
+
+# ============================================================
+# ENVIRONMENT-SPECIFIC CONFIGURATIONS
+# ============================================================
+environments:
+  # Development Environment
+  development:
+    leverage:
+      general:
+        enabled: true
+        max_leverage: 5.0  # Higher tolerance in dev
+        update_frequency: "hourly"
+        
+    leverage_monitoring:
+      alerts:
+        leverage_limit_breach:
+          enabled: false
+        leverage_warning:
+          enabled: false
+        margin_alert:
+          enabled: false
+          
+  # Staging Environment
+  staging:
+    leverage:
+      general:
+        enabled: true
+        max_leverage: 3.0
+        update_frequency: "realtime"
+        
+    leverage_monitoring:
+      alerts:
+        leverage_limit_breach:
+          enabled: true
+        leverage_warning:
+          enabled: true
+        margin_alert:
+          enabled: true
+        liquidation_alert:
+          enabled: true
+          
+  # Production Environment
+  production:
+    leverage:
+      general:
+        enabled: true
+        max_leverage: 3.0
+        min_leverage: 1.0
+        default_leverage: 1.0
+        leverage_method: "dynamic"
+        update_frequency: "realtime"
+        max_leverage_per_asset: 5.0
+        max_leverage_per_position: 3.0
+        
+    leverage_monitoring:
+      alerts:
+        leverage_limit_breach:
+          enabled: true
+          level: "critical"
+        leverage_warning:
+          enabled: true
+          level: "warning"
+        margin_alert:
+          enabled: true
+          level: "warning"
+        liquidation_alert:
+          enabled: true
+          level: "critical"
+          
+  # Demo Environment
+  demo:
+    leverage:
+      general:
+        enabled: true
+        max_leverage: 3.0
+        update_frequency: "hourly"
+        
+    leverage_monitoring:
+      alerts:
+        leverage_limit_breach:
+          enabled: false
+        leverage_warning:
+          enabled: true
+        margin_alert:
+          enabled: false
+
+# ============================================================
+# END OF CONFIGURATION
+# ============================================================
