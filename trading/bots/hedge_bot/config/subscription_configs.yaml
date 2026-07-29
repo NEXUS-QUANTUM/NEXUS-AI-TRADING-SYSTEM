@@ -1,0 +1,644 @@
+# trading/bots/hedge_bot/config/subscription_configs.yaml
+# NEXUS AI TRADING SYSTEM - Hedge Bot Subscription Configuration
+# Version: 2.0.0
+# Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+
+# ============================================================
+# SUBSCRIPTION GENERAL SETTINGS
+# ============================================================
+subscription:
+  # General Subscription Settings
+  general:
+    enabled: true
+    subscription_currency: "USD"
+    billing_cycle: "monthly"  # monthly, quarterly, annual
+    billing_day: 1  # Day of month for billing
+    proration_enabled: true
+    trial_period_days: 14
+    grace_period_days: 3
+    auto_renewal: true
+    cancellation_policy: "end_of_cycle"  # end_of_cycle, immediate, prorated
+    upgrade_policy: "immediate"  # immediate, end_of_cycle, prorated
+    downgrade_policy: "end_of_cycle"  # end_of_cycle, immediate
+    
+  # Subscription Statuses
+  statuses:
+    - "active"
+    - "trialing"
+    - "past_due"
+    - "canceled"
+    - "expired"
+    - "paused"
+    
+  # Subscription Actions
+  actions:
+    - "create"
+    - "update"
+    - "cancel"
+    - "pause"
+    - "resume"
+    - "upgrade"
+    - "downgrade"
+    - "reactivate"
+
+# ============================================================
+# SUBSCRIPTION PLANS
+# ============================================================
+subscription_plans:
+  # Plan Definitions
+  plans:
+    free:
+      id: "free"
+      name: "Free Plan"
+      description: "Basic trading features for beginners"
+      price: 0.00
+      currency: "USD"
+      billing_cycle: "monthly"
+      trial_days: 0
+      features:
+        - "paper_trading"
+        - "basic_charts"
+        - "daily_signals"
+        - "1_bot_limit"
+        - "10_trades_per_day"
+        - "basic_support"
+      limits:
+        max_bots: 1
+        max_trades_per_day: 10
+        max_positions: 5
+        max_portfolio_value: 10000
+        data_refresh_seconds: 60
+        api_calls_per_minute: 30
+        
+    starter:
+      id: "starter"
+      name: "Starter Plan"
+      description: "Essential trading tools for active traders"
+      price: 49.00
+      currency: "USD"
+      billing_cycle: "monthly"
+      trial_days: 7
+      features:
+        - "paper_trading"
+        - "advanced_charts"
+        - "realtime_signals"
+        - "3_bot_limit"
+        - "50_trades_per_day"
+        - "email_support"
+        - "basic_analytics"
+        - "telegram_alerts"
+      limits:
+        max_bots: 3
+        max_trades_per_day: 50
+        max_positions: 20
+        max_portfolio_value: 50000
+        data_refresh_seconds: 30
+        api_calls_per_minute: 60
+        
+    professional:
+      id: "professional"
+      name: "Professional Plan"
+      description: "Professional trading platform for serious traders"
+      price: 149.00
+      currency: "USD"
+      billing_cycle: "monthly"
+      trial_days: 7
+      features:
+        - "paper_trading"
+        - "premium_charts"
+        - "realtime_signals"
+        - "10_bot_limit"
+        - "200_trades_per_day"
+        - "priority_support"
+        - "advanced_analytics"
+        - "telegram_alerts"
+        - "slack_integration"
+        - "webhook_integration"
+        - "api_access"
+      limits:
+        max_bots: 10
+        max_trades_per_day: 200
+        max_positions: 50
+        max_portfolio_value: 250000
+        data_refresh_seconds: 10
+        api_calls_per_minute: 120
+        
+    enterprise:
+      id: "enterprise"
+      name: "Enterprise Plan"
+      description: "Enterprise-grade trading solution for institutions"
+      price: 499.00
+      currency: "USD"
+      billing_cycle: "monthly"
+      trial_days: 14
+      features:
+        - "paper_trading"
+        - "premium_charts"
+        - "realtime_signals"
+        - "unlimited_bots"
+        - "unlimited_trades"
+        - "24_7_support"
+        - "enterprise_analytics"
+        - "telegram_alerts"
+        - "slack_integration"
+        - "webhook_integration"
+        - "api_access"
+        - "white_label"
+        - "dedicated_infrastructure"
+        - "custom_development"
+        - "sla_guarantee"
+      limits:
+        max_bots: 999
+        max_trades_per_day: 9999
+        max_positions: 999
+        max_portfolio_value: 9999999
+        data_refresh_seconds: 1
+        api_calls_per_minute: 600
+
+# ============================================================
+# SUBSCRIPTION DISCOUNTS
+# ============================================================
+subscription_discounts:
+  # Annual Discounts
+  annual:
+    starter:
+      discount_percent: 15
+      annual_price: 499.80
+      savings: 88.20
+      
+    professional:
+      discount_percent: 20
+      annual_price: 1430.40
+      savings: 357.60
+      
+    enterprise:
+      discount_percent: 25
+      annual_price: 4491.00
+      savings: 1497.00
+      
+  # Volume Discounts
+  volume:
+    bots_5:
+      type: "percentage"
+      value: 5
+      min_bots: 5
+      applies_to: ["starter", "professional"]
+      
+    bots_10:
+      type: "percentage"
+      value: 10
+      min_bots: 10
+      applies_to: ["starter", "professional"]
+      
+    bots_25:
+      type: "percentage"
+      value: 15
+      min_bots: 25
+      applies_to: ["professional", "enterprise"]
+      
+  # Loyalty Discounts
+  loyalty:
+    duration_6_months:
+      type: "percentage"
+      value: 5
+      min_duration_months: 6
+      
+    duration_12_months:
+      type: "percentage"
+      value: 10
+      min_duration_months: 12
+      
+    duration_24_months:
+      type: "percentage"
+      value: 15
+      min_duration_months: 24
+
+# ============================================================
+# SUBSCRIPTION FEATURES
+# ============================================================
+subscription_features:
+  # Feature Definitions
+  features:
+    paper_trading:
+      name: "Paper Trading"
+      description: "Simulated trading with virtual funds"
+      available_in: ["free", "starter", "professional", "enterprise"]
+      
+    basic_charts:
+      name: "Basic Charts"
+      description: "Simple price charts with basic indicators"
+      available_in: ["free", "starter", "professional", "enterprise"]
+      
+    advanced_charts:
+      name: "Advanced Charts"
+      description: "Professional charts with advanced indicators"
+      available_in: ["starter", "professional", "enterprise"]
+      
+    premium_charts:
+      name: "Premium Charts"
+      description: "Premium charts with custom indicators"
+      available_in: ["professional", "enterprise"]
+      
+    daily_signals:
+      name: "Daily Signals"
+      description: "Trading signals updated daily"
+      available_in: ["free", "starter", "professional", "enterprise"]
+      
+    realtime_signals:
+      name: "Real-Time Signals"
+      description: "Trading signals updated in real-time"
+      available_in: ["starter", "professional", "enterprise"]
+      
+    basic_support:
+      name: "Basic Support"
+      description: "Email support during business hours"
+      available_in: ["free", "starter", "professional", "enterprise"]
+      
+    email_support:
+      name: "Email Support"
+      description: "Priority email support"
+      available_in: ["starter", "professional", "enterprise"]
+      
+    priority_support:
+      name: "Priority Support"
+      description: "Priority support with faster response"
+      available_in: ["professional", "enterprise"]
+      
+    "24_7_support":
+      name: "24/7 Support"
+      description: "Round-the-clock support"
+      available_in: ["enterprise"]
+      
+    basic_analytics:
+      name: "Basic Analytics"
+      description: "Basic trading analytics and reports"
+      available_in: ["starter", "professional", "enterprise"]
+      
+    advanced_analytics:
+      name: "Advanced Analytics"
+      description: "Advanced trading analytics and reports"
+      available_in: ["professional", "enterprise"]
+      
+    enterprise_analytics:
+      name: "Enterprise Analytics"
+      description: "Enterprise-grade analytics and reporting"
+      available_in: ["enterprise"]
+      
+    telegram_alerts:
+      name: "Telegram Alerts"
+      description: "Real-time alerts via Telegram"
+      available_in: ["starter", "professional", "enterprise"]
+      
+    slack_integration:
+      name: "Slack Integration"
+      description: "Integration with Slack for alerts"
+      available_in: ["professional", "enterprise"]
+      
+    webhook_integration:
+      name: "Webhook Integration"
+      description: "Webhook integration for custom alerts"
+      available_in: ["professional", "enterprise"]
+      
+    api_access:
+      name: "API Access"
+      description: "Full API access for custom development"
+      available_in: ["professional", "enterprise"]
+      
+    white_label:
+      name: "White Label"
+      description: "White-label solution for branding"
+      available_in: ["enterprise"]
+      
+    dedicated_infrastructure:
+      name: "Dedicated Infrastructure"
+      description: "Dedicated servers and infrastructure"
+      available_in: ["enterprise"]
+      
+    custom_development:
+      name: "Custom Development"
+      description: "Custom development services"
+      available_in: ["enterprise"]
+      
+    sla_guarantee:
+      name: "SLA Guarantee"
+      description: "Service Level Agreement guarantee"
+      available_in: ["enterprise"]
+
+# ============================================================
+# SUBSCRIPTION MONITORING
+# ============================================================
+subscription_monitoring:
+  # Monitoring Settings
+  settings:
+    enabled: true
+    monitoring_frequency: "daily"
+    alert_threshold: 0.75  # 75% of limit
+    critical_threshold: 0.90  # 90% of limit
+    reporting_frequency: "daily"
+    
+  # Alert Conditions
+  alerts:
+    subscription_expiry:
+      enabled: true
+      level: "warning"
+      threshold: 7  # days
+      message: "Subscription expiring in {days} days"
+      
+    subscription_past_due:
+      enabled: true
+      level: "critical"
+      message: "Subscription payment past due"
+      
+    subscription_limit:
+      enabled: true
+      level: "warning"
+      threshold: 0.80
+      message: "Subscription limit approaching: {limit}%"
+      
+    subscription_downgrade:
+      enabled: true
+      level: "info"
+      message: "Subscription downgraded: {old} -> {new}"
+      
+  # Monitoring Metrics
+  metrics:
+    - "subscription_status"
+    - "subscription_utilization"
+    - "subscription_limits"
+    - "subscription_changes"
+    - "subscription_renewals"
+
+# ============================================================
+# SUBSCRIPTION REPORTING
+# ============================================================
+subscription_reporting:
+  # Report Settings
+  settings:
+    enabled: true
+    report_frequency: "monthly"
+    report_format: "json"  # json, csv, pdf, html
+    include_analytics: true
+    include_visualizations: true
+    include_recommendations: true
+    
+  # Report Sections
+  sections:
+    subscription_summary:
+      enabled: true
+      include_active_subscriptions: true
+      include_trials: true
+      include_churn: true
+      include_renewals: true
+      
+    plan_distribution:
+      enabled: true
+      include_by_plan: true
+      include_by_region: true
+      
+    revenue_analysis:
+      enabled: true
+      include_monthly_revenue: true
+      include_annual_revenue: true
+      include_revenue_growth: true
+      
+    churn_analysis:
+      enabled: true
+      include_churn_rate: true
+      include_churn_reasons: true
+      include_retention_rate: true
+
+# ============================================================
+# SUBSCRIPTION DASHBOARD
+# ============================================================
+subscription_dashboard:
+  # Dashboard Settings
+  settings:
+    enabled: true
+    refresh_interval: 60
+    default_view: "summary"  # summary, details, analytics
+    
+  # Dashboard Widgets
+  widgets:
+    subscription_summary:
+      enabled: true
+      position: 1
+      size: "large"
+      
+    plan_distribution:
+      enabled: true
+      position: 2
+      size: "medium"
+      
+    revenue_chart:
+      enabled: true
+      position: 3
+      size: "large"
+      
+    churn_analysis:
+      enabled: true
+      position: 4
+      size: "medium"
+      
+    alert_status:
+      enabled: true
+      position: 5
+      size: "small"
+
+# ============================================================
+# SUBSCRIPTION INTEGRATION
+# ============================================================
+subscription_integration:
+  # Integration Settings
+  settings:
+    enabled: true
+    integration_type: "api"  # api, webhook, websocket, file
+    
+  # External Systems
+  systems:
+    billing_system:
+      enabled: true
+      provider: "stripe"  # stripe, paypal, custom
+      api_key: "${BILLING_API_KEY}"
+      webhook_secret: "${BILLING_WEBHOOK_SECRET}"
+      
+    crm_system:
+      enabled: true
+      provider: "salesforce"  # salesforce, hubspot, custom
+      api_key: "${CRM_API_KEY}"
+      sync_customers: true
+      sync_subscriptions: true
+      
+    email_system:
+      enabled: true
+      provider: "sendgrid"  # sendgrid, mailchimp, custom
+      api_key: "${EMAIL_API_KEY}"
+      send_welcome_emails: true
+      send_renewal_emails: true
+
+# ============================================================
+# SUBSCRIPTION SCENARIOS
+# ============================================================
+subscription_scenarios:
+  # Scenario 1: New Subscription
+  new_subscription:
+    description: "New subscription scenario"
+    plan: "starter"
+    trial_days: 7
+    billing_cycle: "monthly"
+    auto_renewal: true
+    payment_method: "credit_card"
+    
+  # Scenario 2: Subscription Upgrade
+  subscription_upgrade:
+    description: "Subscription upgrade scenario"
+    old_plan: "starter"
+    new_plan: "professional"
+    upgrade_date: "immediate"
+    proration: true
+    new_price: 149.00
+    
+  # Scenario 3: Subscription Downgrade
+  subscription_downgrade:
+    description: "Subscription downgrade scenario"
+    old_plan: "professional"
+    new_plan: "starter"
+    downgrade_date: "end_of_cycle"
+    proration: false
+    new_price: 49.00
+    
+  # Scenario 4: Subscription Cancellation
+  subscription_cancellation:
+    description: "Subscription cancellation scenario"
+    plan: "professional"
+    cancellation_date: "end_of_cycle"
+    reason: "cost_savings"
+    reactivation: false
+
+# ============================================================
+# SUBSCRIPTION EXAMPLES
+# ============================================================
+subscription_examples:
+  # Example 1: Subscription Creation
+  subscription_creation_example:
+    description: "Subscription Creation Example"
+    customer_id: "cust_123456"
+    plan_id: "professional"
+    start_date: "2026-07-15"
+    end_date: "2026-08-15"
+    price: 149.00
+    currency: "USD"
+    status: "active"
+    auto_renewal: true
+    
+  # Example 2: Subscription Metrics
+  subscription_metrics_example:
+    description: "Subscription Metrics Example"
+    total_subscriptions: 1000
+    active_subscriptions: 850
+    trial_subscriptions: 50
+    churned_subscriptions: 100
+    churn_rate: 0.10  # 10%
+    retention_rate: 0.90  # 90%
+    monthly_revenue: 85000
+    annual_revenue: 1020000
+    arpu: 100  # Average Revenue Per User
+    
+  # Example 3: Subscription Limits
+  subscription_limits_example:
+    description: "Subscription Limits Example"
+    customer_id: "cust_123456"
+    plan: "professional"
+    limits:
+      max_bots: 10
+      used_bots: 7
+      utilization: 0.70
+      max_trades: 200
+      used_trades: 150
+      utilization: 0.75
+
+# ============================================================
+# ENVIRONMENT-SPECIFIC CONFIGURATIONS
+# ============================================================
+environments:
+  # Development Environment
+  development:
+    subscription:
+      general:
+        enabled: true
+        trial_period_days: 30
+        auto_renewal: false
+        
+    subscription_plans:
+      plans:
+        free:
+          price: 0.00
+        starter:
+          price: 0.00
+        professional:
+          price: 0.00
+        enterprise:
+          price: 0.00
+          
+  # Staging Environment
+  staging:
+    subscription:
+      general:
+        enabled: true
+        trial_period_days: 14
+        auto_renewal: false
+        
+    subscription_plans:
+      plans:
+        free:
+          price: 0.00
+        starter:
+          price: 0.00
+        professional:
+          price: 49.00
+        enterprise:
+          price: 99.00
+          
+  # Production Environment
+  production:
+    subscription:
+      general:
+        enabled: true
+        trial_period_days: 14
+        grace_period_days: 3
+        auto_renewal: true
+        proration_enabled: true
+        billing_day: 1
+        
+    subscription_plans:
+      plans:
+        free:
+          price: 0.00
+        starter:
+          price: 49.00
+        professional:
+          price: 149.00
+        enterprise:
+          price: 499.00
+          
+  # Demo Environment
+  demo:
+    subscription:
+      general:
+        enabled: true
+        trial_period_days: 30
+        auto_renewal: false
+        
+    subscription_plans:
+      plans:
+        free:
+          price: 0.00
+        starter:
+          price: 0.00
+        professional:
+          price: 0.00
+        enterprise:
+          price: 0.00
+
+# ============================================================
+# END OF CONFIGURATION
+# ============================================================
