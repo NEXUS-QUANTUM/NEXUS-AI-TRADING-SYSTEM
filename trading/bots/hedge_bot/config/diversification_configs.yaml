@@ -1,0 +1,705 @@
+# trading/bots/hedge_bot/config/diversification_configs.yaml
+# NEXUS AI TRADING SYSTEM - Hedge Bot Diversification Configuration
+# Version: 2.0.0
+# Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+
+# ============================================================
+# DIVERSIFICATION GENERAL SETTINGS
+# ============================================================
+diversification:
+  # General Diversification Settings
+  general:
+    enabled: true
+    target_diversification_score: 0.70  # Target score (0-1)
+    min_diversification_score: 0.50  # Minimum acceptable score
+    diversification_method: "risk_based"  # risk_based, equal_weight, correlation_based, factor_based
+    update_frequency: "daily"  # realtime, hourly, daily, weekly
+    rebalance_threshold: 0.02  # 2% deviation triggers rebalance
+    use_factor_analysis: true
+    use_risk_parity: true
+    use_correlation_optimization: true
+    
+  # Diversification Dimensions
+  dimensions:
+    asset_class: true
+    sector: true
+    industry: true
+    geography: true
+    currency: true
+    risk_factor: true
+    strategy: true
+    time_horizon: true
+    liquidity: true
+
+# ============================================================
+# DIVERSIFICATION BY ASSET CLASS
+# ============================================================
+asset_class_diversification:
+  # Asset Class Allocation
+  allocation:
+    # Target allocations by asset class
+    targets:
+      cryptocurrency: 0.25  # 25%
+      forex: 0.15  # 15%
+      equity: 0.25  # 25%
+      commodity: 0.15  # 15%
+      fixed_income: 0.10  # 10%
+      cash: 0.10  # 10%
+      
+    # Allocation ranges
+    ranges:
+      cryptocurrency: [0.15, 0.35]
+      forex: [0.05, 0.25]
+      equity: [0.15, 0.35]
+      commodity: [0.05, 0.25]
+      fixed_income: [0.05, 0.15]
+      cash: [0.05, 0.15]
+      
+  # Asset Class Diversification Metrics
+  metrics:
+    hhi_by_asset_class: 0.15  # Herfindahl-Hirschman Index target
+    gini_by_asset_class: 0.35  # Gini coefficient target
+    effective_assets: 6  # Effective number of asset classes
+    
+  # Asset Class Correlation
+  correlations:
+    # Cryptocurrency vs Others
+    crypto_forex: 0.20
+    crypto_equity: 0.25
+    crypto_commodity: 0.15
+    crypto_fixed_income: 0.05
+    crypto_cash: -0.05
+    
+    # Forex vs Others
+    forex_equity: 0.15
+    forex_commodity: 0.20
+    forex_fixed_income: 0.10
+    forex_cash: -0.10
+    
+    # Equity vs Others
+    equity_commodity: 0.30
+    equity_fixed_income: 0.10
+    equity_cash: -0.15
+    
+    # Commodity vs Others
+    commodity_fixed_income: 0.05
+    commodity_cash: -0.10
+    
+    # Fixed Income vs Others
+    fixed_income_cash: 0.20
+
+# ============================================================
+# SECTOR DIVERSIFICATION
+# ============================================================
+sector_diversification:
+  # Sector Allocation
+  targets:
+    cryptocurrency: 0.25
+    defi: 0.15
+    layer1: 0.10
+    layer2: 0.05
+    technology: 0.15
+    finance: 0.10
+    healthcare: 0.05
+    consumer: 0.05
+    energy: 0.05
+    materials: 0.05
+    
+  # Sector Limits
+  limits:
+    max_sector_concentration: 0.30  # 30% max per sector
+    min_sector_allocation: 0.03  # 3% min per sector
+    target_sector_count: 8  # Target number of sectors
+    
+  # Sector Correlation
+  correlations:
+    # Technology Sector
+    tech_finance: 0.40
+    tech_healthcare: 0.35
+    tech_consumer: 0.45
+    tech_energy: 0.20
+    tech_materials: 0.15
+    
+    # Finance Sector
+    finance_healthcare: 0.30
+    finance_consumer: 0.35
+    finance_energy: 0.25
+    finance_materials: 0.20
+    
+    # Healthcare Sector
+    healthcare_consumer: 0.30
+    healthcare_energy: 0.15
+    healthcare_materials: 0.10
+    
+    # Consumer Sector
+    consumer_energy: 0.20
+    consumer_materials: 0.25
+    
+    # Energy Sector
+    energy_materials: 0.50
+
+# ============================================================
+# GEOGRAPHIC DIVERSIFICATION
+# ============================================================
+geographic_diversification:
+  # Geographic Allocation
+  targets:
+    north_america: 0.35
+    europe: 0.25
+    asia: 0.20
+    latin_america: 0.05
+    middle_east: 0.05
+    africa: 0.05
+    oceania: 0.05
+    
+  # Geographic Limits
+  limits:
+    max_region_concentration: 0.45  # 45% max per region
+    min_region_allocation: 0.03  # 3% min per region
+    target_region_count: 5  # Target number of regions
+    
+  # Regional Correlation
+  correlations:
+    north_america_europe: 0.60
+    north_america_asia: 0.45
+    north_america_latin_america: 0.35
+    north_america_middle_east: 0.20
+    north_america_africa: 0.15
+    north_america_oceania: 0.40
+    
+    europe_asia: 0.40
+    europe_latin_america: 0.30
+    europe_middle_east: 0.25
+    europe_africa: 0.20
+    europe_oceania: 0.35
+    
+    asia_latin_america: 0.20
+    asia_middle_east: 0.25
+    asia_africa: 0.15
+    asia_oceania: 0.30
+
+# ============================================================
+# RISK FACTOR DIVERSIFICATION
+# ============================================================
+risk_factor_diversification:
+  # Risk Factor Allocation
+  targets:
+    market_risk: 0.30
+    volatility_risk: 0.20
+    liquidity_risk: 0.15
+    credit_risk: 0.10
+    operational_risk: 0.10
+    regulatory_risk: 0.10
+    geopolitical_risk: 0.05
+    
+  # Risk Factor Limits
+  limits:
+    max_risk_factor: 0.35
+    min_risk_factor: 0.03
+    target_risk_factors: 5
+    
+  # Risk Factor Correlation
+  correlations:
+    market_volatility: 0.60
+    market_liquidity: 0.40
+    market_credit: 0.30
+    market_operational: 0.20
+    market_regulatory: 0.15
+    market_geopolitical: 0.10
+    
+    volatility_liquidity: 0.35
+    volatility_credit: 0.25
+    volatility_operational: 0.15
+    volatility_regulatory: 0.10
+    volatility_geopolitical: 0.05
+    
+    liquidity_credit: 0.30
+    liquidity_operational: 0.20
+    liquidity_regulatory: 0.15
+    liquidity_geopolitical: 0.10
+
+# ============================================================
+# STRATEGY DIVERSIFICATION
+# ============================================================
+strategy_diversification:
+  # Strategy Allocation
+  targets:
+    trend_following: 0.25
+    mean_reversion: 0.20
+    momentum: 0.15
+    arbitrage: 0.15
+    market_making: 0.10
+    scalping: 0.05
+    swing_trading: 0.10
+    
+  # Strategy Limits
+  limits:
+    max_strategy_concentration: 0.30
+    min_strategy_allocation: 0.03
+    target_strategies: 5
+    
+  # Strategy Correlation
+  correlations:
+    trend_mean_reversion: -0.30
+    trend_momentum: 0.50
+    trend_arbitrage: 0.10
+    trend_market_making: 0.05
+    trend_scalping: 0.05
+    trend_swing: 0.40
+    
+    mean_reversion_momentum: -0.40
+    mean_reversion_arbitrage: 0.05
+    mean_reversion_market_making: 0.05
+    mean_reversion_scalping: 0.10
+    mean_reversion_swing: -0.20
+    
+    momentum_arbitrage: 0.10
+    momentum_market_making: 0.05
+    momentum_scalping: 0.10
+    momentum_swing: 0.60
+
+# ============================================================
+# DIVERSIFICATION SCORE CALCULATION
+# ============================================================
+diversification_score:
+  # Score Components
+  components:
+    asset_class_diversity: 0.25
+    sector_diversity: 0.20
+    geographic_diversity: 0.15
+    risk_factor_diversity: 0.15
+    strategy_diversity: 0.10
+    correlation_diversity: 0.10
+    concentration_risk: 0.05
+    
+  # Score Calculation
+  calculation:
+    method: "weighted_sum"  # weighted_sum, geometric_mean, harmonic_mean
+    normalization: true
+    scaling: [0, 1]
+    min_score: 0
+    max_score: 1
+    
+  # Score Interpretation
+  interpretation:
+    excellent: 0.80
+    good: 0.70
+    moderate: 0.60
+    poor: 0.50
+    very_poor: 0.40
+
+# ============================================================
+# DIVERSIFICATION MONITORING
+# ============================================================
+diversification_monitoring:
+  # Monitoring Settings
+  settings:
+    enabled: true
+    monitoring_frequency: "realtime"
+    alert_threshold: 0.75  # 75% of target
+    critical_threshold: 0.60  # 60% of target
+    reporting_frequency: "daily"
+    
+  # Alert Conditions
+  alerts:
+    low_diversification_alert:
+      enabled: true
+      level: "warning"
+      threshold: 0.60
+      message: "Diversification score below threshold: {score}"
+      
+    critical_diversification_alert:
+      enabled: true
+      level: "critical"
+      threshold: 0.50
+      message: "Critical diversification level: {score}"
+      
+    concentration_alert:
+      enabled: true
+      level: "warning"
+      threshold: 0.30
+      message: "High concentration in {dimension}: {value}"
+      
+    correlation_alert:
+      enabled: true
+      level: "warning"
+      threshold: 0.70
+      message: "High correlation detected in {asset_pair}: {correlation}"
+      
+  # Monitoring Metrics
+  metrics:
+    - "diversification_score"
+    - "asset_class_diversity"
+    - "sector_diversity"
+    - "geographic_diversity"
+    - "risk_factor_diversity"
+    - "strategy_diversity"
+    - "correlation_diversity"
+    - "concentration_risk"
+
+# ============================================================
+# DIVERSIFICATION REBALANCING
+# ============================================================
+diversification_rebalancing:
+  # Rebalancing Settings
+  settings:
+    enabled: true
+    rebalancing_frequency: "daily"  # realtime, hourly, daily, weekly
+    rebalancing_method: "threshold"  # threshold, periodic, dynamic
+    threshold_value: 0.02  # 2% deviation
+    rebalancing_tolerance: 0.01  # 1% tolerance
+    
+  # Rebalancing Strategies
+  strategies:
+    rebalance_to_target:
+      enabled: true
+      method: "portfolio_optimization"
+      target_score: 0.70
+      
+    rebalance_to_benchmark:
+      enabled: true
+      method: "benchmark_tracking"
+      benchmark: "global_60_40"
+      
+    rebalance_to_risk_parity:
+      enabled: true
+      method: "risk_parity"
+      target_risk_contribution: "equal"
+      
+  # Rebalancing Costs
+  costs:
+    estimated_slippage: 0.001
+    estimated_commission: 0.001
+    market_impact: 0.0005
+    tax_impact: 0.002
+
+# ============================================================
+# DIVERSIFICATION REPORTING
+# ============================================================
+diversification_reporting:
+  # Report Settings
+  settings:
+    enabled: true
+    report_frequency: "weekly"
+    report_format: "json"  # json, csv, pdf, html
+    include_analytics: true
+    include_visualizations: true
+    include_recommendations: true
+    
+  # Report Sections
+  sections:
+    diversification_summary:
+      enabled: true
+      include_total_score: true
+      include_component_scores: true
+      
+    asset_class_distribution:
+      enabled: true
+      include_current_allocations: true
+      include_target_allocations: true
+      include_deviation: true
+      
+    sector_distribution:
+      enabled: true
+      include_current_allocations: true
+      include_target_allocations: true
+      
+    geographic_distribution:
+      enabled: true
+      include_current_allocations: true
+      include_target_allocations: true
+      
+    risk_factor_distribution:
+      enabled: true
+      include_current_allocations: true
+      include_target_allocations: true
+      
+    correlation_analysis:
+      enabled: true
+      include_correlation_matrix: true
+      include_average_correlation: true
+      
+    rebalancing_recommendations:
+      enabled: true
+      include_suggested_trades: true
+      include_priority_actions: true
+
+# ============================================================
+# DIVERSIFICATION DASHBOARD
+# ============================================================
+diversification_dashboard:
+  # Dashboard Settings
+  settings:
+    enabled: true
+    refresh_interval: 5
+    default_view: "summary"  # summary, details, analytics
+    
+  # Dashboard Widgets
+  widgets:
+    diversification_summary:
+      enabled: true
+      position: 1
+      size: "large"
+      
+    asset_class_radar:
+      enabled: true
+      position: 2
+      size: "medium"
+      
+    sector_heatmap:
+      enabled: true
+      position: 3
+      size: "large"
+      
+    geographic_chart:
+      enabled: true
+      position: 4
+      size: "medium"
+      
+    risk_factor_chart:
+      enabled: true
+      position: 5
+      size: "medium"
+      
+    correlation_heatmap:
+      enabled: true
+      position: 6
+      size: "large"
+      
+    concentration_metrics:
+      enabled: true
+      position: 7
+      size: "small"
+      
+    rebalancing_recommendations:
+      enabled: true
+      position: 8
+      size: "medium"
+
+# ============================================================
+# DIVERSIFICATION SCENARIOS
+# ============================================================
+diversification_scenarios:
+  # Scenario 1: Well-Diversified Portfolio
+  well_diversified:
+    description: "Well-diversified portfolio"
+    score: 0.80
+    asset_classes: 6
+    sectors: 12
+    regions: 6
+    risk_factors: 6
+    strategies: 5
+    avg_correlation: 0.25
+    
+  # Scenario 2: Moderately Diversified
+  moderately_diversified:
+    description: "Moderately diversified portfolio"
+    score: 0.60
+    asset_classes: 4
+    sectors: 8
+    regions: 4
+    risk_factors: 4
+    strategies: 3
+    avg_correlation: 0.35
+    
+  # Scenario 3: Poorly Diversified
+  poorly_diversified:
+    description: "Poorly diversified portfolio"
+    score: 0.40
+    asset_classes: 2
+    sectors: 4
+    regions: 2
+    risk_factors: 2
+    strategies: 1
+    avg_correlation: 0.55
+    
+  # Scenario 4: Highly Concentrated
+  highly_concentrated:
+    description: "Highly concentrated portfolio"
+    score: 0.20
+    asset_classes: 1
+    sectors: 1
+    regions: 1
+    risk_factors: 1
+    strategies: 1
+    avg_correlation: 0.80
+
+# ============================================================
+# DIVERSIFICATION EXAMPLES
+# ============================================================
+diversification_examples:
+  # Example 1: Diversification Score Calculation
+  score_calculation:
+    description: "Diversification Score Calculation Example"
+    components:
+      asset_class_diversity: 0.80
+      sector_diversity: 0.75
+      geographic_diversity: 0.70
+      risk_factor_diversity: 0.65
+      strategy_diversity: 0.60
+      correlation_diversity: 0.70
+      concentration_risk: 0.75
+    weights:
+      asset_class_diversity: 0.25
+      sector_diversity: 0.20
+      geographic_diversity: 0.15
+      risk_factor_diversity: 0.15
+      strategy_diversity: 0.10
+      correlation_diversity: 0.10
+      concentration_risk: 0.05
+    score: 0.72  # Weighted average
+    
+  # Example 2: Portfolio Diversification
+  portfolio_diversification:
+    description: "Example Portfolio Diversification"
+    positions:
+      - asset: "BTC"
+        weight: 0.15
+        asset_class: "cryptocurrency"
+        sector: "layer1"
+        region: "global"
+      - asset: "ETH"
+        weight: 0.10
+        asset_class: "cryptocurrency"
+        sector: "layer1"
+        region: "global"
+      - asset: "SOL"
+        weight: 0.05
+        asset_class: "cryptocurrency"
+        sector: "layer1"
+        region: "global"
+      - asset: "AAPL"
+        weight: 0.08
+        asset_class: "equity"
+        sector: "technology"
+        region: "north_america"
+      - asset: "MSFT"
+        weight: 0.08
+        asset_class: "equity"
+        sector: "technology"
+        region: "north_america"
+      - asset: "GOLD"
+        weight: 0.10
+        asset_class: "commodity"
+        sector: "precious_metals"
+        region: "global"
+      - asset: "EURUSD"
+        weight: 0.10
+        asset_class: "forex"
+        sector: "forex"
+        region: "europe"
+      - asset: "SPY"
+        weight: 0.12
+        asset_class: "equity"
+        sector: "broad_market"
+        region: "north_america"
+      - asset: "QQQ"
+        weight: 0.10
+        asset_class: "equity"
+        sector: "technology"
+        region: "north_america"
+      - asset: "OIL"
+        weight: 0.05
+        asset_class: "commodity"
+        sector: "energy"
+        region: "global"
+      - asset: "US10Y"
+        weight: 0.05
+        asset_class: "fixed_income"
+        sector: "government"
+        region: "north_america"
+      - asset: "USD"
+        weight: 0.02
+        asset_class: "cash"
+        sector: "cash"
+        region: "global"
+    score: 0.72
+    asset_class_diversity: 0.80
+    sector_diversity: 0.75
+    geographic_diversity: 0.70
+    risk_factor_diversity: 0.65
+    strategy_diversity: 0.60
+    correlation_diversity: 0.70
+    concentration_risk: 0.75
+
+# ============================================================
+# ENVIRONMENT-SPECIFIC CONFIGURATIONS
+# ============================================================
+environments:
+  # Development Environment
+  development:
+    diversification:
+      general:
+        enabled: true
+        update_frequency: "hourly"
+        rebalance_threshold: 0.03  # 3%
+        
+    diversification_monitoring:
+      alerts:
+        low_diversification_alert:
+          enabled: false
+        critical_diversification_alert:
+          enabled: false
+          
+  # Staging Environment
+  staging:
+    diversification:
+      general:
+        enabled: true
+        update_frequency: "realtime"
+        rebalance_threshold: 0.02  # 2%
+        
+    diversification_monitoring:
+      alerts:
+        low_diversification_alert:
+          enabled: true
+        critical_diversification_alert:
+          enabled: true
+        concentration_alert:
+          enabled: true
+        correlation_alert:
+          enabled: true
+          
+  # Production Environment
+  production:
+    diversification:
+      general:
+        enabled: true
+        update_frequency: "realtime"
+        rebalance_threshold: 0.02
+        target_diversification_score: 0.70
+        min_diversification_score: 0.50
+        
+    diversification_monitoring:
+      alerts:
+        low_diversification_alert:
+          enabled: true
+          level: "warning"
+        critical_diversification_alert:
+          enabled: true
+          level: "critical"
+        concentration_alert:
+          enabled: true
+          level: "warning"
+        correlation_alert:
+          enabled: true
+          level: "warning"
+          
+  # Demo Environment
+  demo:
+    diversification:
+      general:
+        enabled: true
+        update_frequency: "hourly"
+        rebalance_threshold: 0.03
+        
+    diversification_monitoring:
+      alerts:
+        low_diversification_alert:
+          enabled: false
+        critical_diversification_alert:
+          enabled: false
+
+# ============================================================
+# END OF CONFIGURATION
+# ============================================================
