@@ -1,0 +1,502 @@
+# trading/bots/hedge_bot/config/exposure_configs.yaml
+# NEXUS AI TRADING SYSTEM - Hedge Bot Exposure Configuration
+# Version: 2.0.0
+# Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+
+# ============================================================
+# EXPOSURE GENERAL SETTINGS
+# ============================================================
+exposure:
+  # General Exposure Settings
+  general:
+    enabled: true
+    max_total_exposure: 1000000  # USD
+    max_net_exposure: 500000  # USD
+    max_gross_exposure: 1500000  # USD
+    max_single_asset_exposure: 0.15  # 15% of portfolio
+    max_sector_exposure: 0.40  # 40% of portfolio
+    max_asset_class_exposure: 0.50  # 50% of portfolio
+    max_geographic_exposure: 0.50  # 50% of portfolio
+    exposure_calculation_method: "mark_to_market"  # mark_to_market, cost, weighted
+    update_frequency: "realtime"  # realtime, hourly, daily
+    use_dollar_exposure: true
+    use_percentage_exposure: true
+    use_risk_weighted_exposure: true
+    
+  # Exposure Types
+  types:
+    gross_exposure:
+      enabled: true
+      description: "Total absolute value of all positions"
+      calculation: "sum(abs(position_values))"
+      
+    net_exposure:
+      enabled: true
+      description: "Net directional exposure"
+      calculation: "sum(position_values)"
+      
+    long_exposure:
+      enabled: true
+      description: "Total long position value"
+      calculation: "sum(long_position_values)"
+      
+    short_exposure:
+      enabled: true
+      description: "Total short position value"
+      calculation: "sum(short_position_values)"
+      
+    risk_weighted_exposure:
+      enabled: true
+      description: "Risk-adjusted exposure"
+      calculation: "sum(position_values * risk_weights)"
+      
+    correlation_adjusted_exposure:
+      enabled: true
+      description: "Correlation-adjusted exposure"
+      calculation: "sum(position_values * correlation_weights)"
+
+# ============================================================
+# EXPOSURE LIMITS BY ASSET CLASS
+# ============================================================
+exposure_limits:
+  # Asset Class Limits
+  asset_class:
+    cryptocurrency:
+      max_exposure: 250000  # USD
+      max_percentage: 0.25  # 25% of portfolio
+      max_net_long: 200000
+      max_net_short: 50000
+      
+    forex:
+      max_exposure: 200000
+      max_percentage: 0.20
+      max_net_long: 150000
+      max_net_short: 50000
+      
+    equity:
+      max_exposure: 300000
+      max_percentage: 0.30
+      max_net_long: 250000
+      max_net_short: 50000
+      
+    commodity:
+      max_exposure: 150000
+      max_percentage: 0.15
+      max_net_long: 100000
+      max_net_short: 50000
+      
+    fixed_income:
+      max_exposure: 100000
+      max_percentage: 0.10
+      max_net_long: 80000
+      max_net_short: 20000
+      
+  # Position Type Limits
+  position_type:
+    spot:
+      max_exposure: 500000
+      max_percentage: 0.50
+      
+    futures:
+      max_exposure: 300000
+      max_percentage: 0.30
+      
+    perpetual:
+      max_exposure: 300000
+      max_percentage: 0.30
+      
+    options:
+      max_exposure: 150000
+      max_percentage: 0.15
+
+# ============================================================
+# EXPOSURE MONITORING
+# ============================================================
+exposure_monitoring:
+  # Monitoring Settings
+  settings:
+    enabled: true
+    monitoring_frequency: "realtime"
+    alert_threshold: 0.75  # 75% of limit
+    critical_threshold: 0.90  # 90% of limit
+    reporting_frequency: "daily"
+    
+  # Alert Conditions
+  alerts:
+    exposure_limit_breach:
+      enabled: true
+      level: "critical"
+      threshold: 0.90
+      message: "Exposure limit breached: {exposure_type} at {value}"
+      
+    exposure_warning:
+      enabled: true
+      level: "warning"
+      threshold: 0.75
+      message: "Exposure approaching limit: {exposure_type} at {value}"
+      
+    concentration_alert:
+      enabled: true
+      level: "warning"
+      threshold: 0.20
+      message: "High exposure concentration in {asset}: {value}"
+      
+    net_exposure_alert:
+      enabled: true
+      level: "warning"
+      threshold: 0.30
+      message: "High net exposure: {value} ({percentage}% of portfolio)"
+      
+  # Monitoring Metrics
+  metrics:
+    - "gross_exposure"
+    - "net_exposure"
+    - "long_exposure"
+    - "short_exposure"
+    - "risk_weighted_exposure"
+    - "correlation_adjusted_exposure"
+    - "concentration_exposure"
+    - "sector_exposure"
+    - "asset_class_exposure"
+    - "geographic_exposure"
+
+# ============================================================
+# EXPOSURE CALCULATION
+# ============================================================
+exposure_calculation:
+  # Calculation Methods
+  methods:
+    mark_to_market:
+      enabled: true
+      description: "Current market value exposure"
+      calculation: "position_quantity * current_price"
+      
+    notional:
+      enabled: true
+      description: "Notional exposure for derivatives"
+      calculation: "position_quantity * notional_value"
+      
+    delta_adjusted:
+      enabled: true
+      description: "Delta-adjusted exposure"
+      calculation: "position_quantity * delta * underlying_price"
+      
+    beta_adjusted:
+      enabled: true
+      description: "Beta-adjusted exposure"
+      calculation: "position_value * asset_beta"
+      
+    risk_weighted:
+      enabled: true
+      description: "Risk-weighted exposure"
+      calculation: "position_value * risk_weight"
+      
+  # Adjustment Factors
+  adjustments:
+    correlation_adjustment:
+      enabled: true
+      method: "portfolio_correlation"
+      calculation: "position_value * (1 - avg_correlation)"
+      
+    volatility_adjustment:
+      enabled: true
+      method: "volatility_scaling"
+      calculation: "position_value * (volatility / target_volatility)"
+      
+    liquidity_adjustment:
+      enabled: true
+      method: "liquidity_scaling"
+      calculation: "position_value * liquidity_score"
+
+# ============================================================
+# EXPOSURE REPORTING
+# ============================================================
+exposure_reporting:
+  # Report Settings
+  settings:
+    enabled: true
+    report_frequency: "daily"
+    report_format: "json"  # json, csv, pdf, html
+    include_analytics: true
+    include_visualizations: true
+    include_recommendations: true
+    
+  # Report Sections
+  sections:
+    exposure_summary:
+      enabled: true
+      include_gross_exposure: true
+      include_net_exposure: true
+      include_long_short_ratio: true
+      include_exposure_utilization: true
+      
+    asset_exposure:
+      enabled: true
+      include_top_10_assets: true
+      include_bottom_10_assets: true
+      include_concentration_analysis: true
+      
+    sector_exposure:
+      enabled: true
+      include_all_sectors: true
+      include_sector_limits: true
+      include_sector_concentration: true
+      
+    asset_class_exposure:
+      enabled: true
+      include_all_asset_classes: true
+      include_asset_class_limits: true
+      include_asset_class_concentration: true
+      
+    geographic_exposure:
+      enabled: true
+      include_all_regions: true
+      include_geographic_limits: true
+      include_geographic_concentration: true
+      
+    risk_adjusted_exposure:
+      enabled: true
+      include_risk_weighted_exposure: true
+      include_correlation_adjusted_exposure: true
+      include_volatility_adjusted_exposure: true
+
+# ============================================================
+# EXPOSURE DASHBOARD
+# ============================================================
+exposure_dashboard:
+  # Dashboard Settings
+  settings:
+    enabled: true
+    refresh_interval: 5
+    default_view: "summary"  # summary, details, analytics
+    
+  # Dashboard Widgets
+  widgets:
+    exposure_summary:
+      enabled: true
+      position: 1
+      size: "large"
+      
+    exposure_chart:
+      enabled: true
+      position: 2
+      size: "large"
+      
+    asset_exposure:
+      enabled: true
+      position: 3
+      size: "medium"
+      
+    sector_exposure:
+      enabled: true
+      position: 4
+      size: "medium"
+      
+    asset_class_exposure:
+      enabled: true
+      position: 5
+      size: "medium"
+      
+    geographic_exposure:
+      enabled: true
+      position: 6
+      size: "medium"
+      
+    risk_adjusted_exposure:
+      enabled: true
+      position: 7
+      size: "medium"
+      
+    alert_status:
+      enabled: true
+      position: 8
+      size: "small"
+
+# ============================================================
+# EXPOSURE SCENARIOS
+# ============================================================
+exposure_scenarios:
+  # Scenario 1: Balanced Exposure
+  balanced_exposure:
+    description: "Balanced portfolio exposure"
+    gross_exposure: 800000
+    net_exposure: 200000
+    long_exposure: 500000
+    short_exposure: 300000
+    long_short_ratio: 1.67
+    utilization: 0.80
+    
+  # Scenario 2: Long-Biased Exposure
+  long_biased:
+    description: "Long-biased portfolio"
+    gross_exposure: 900000
+    net_exposure: 400000
+    long_exposure: 650000
+    short_exposure: 250000
+    long_short_ratio: 2.60
+    utilization: 0.90
+    
+  # Scenario 3: Short-Biased Exposure
+  short_biased:
+    description: "Short-biased portfolio"
+    gross_exposure: 700000
+    net_exposure: -200000
+    long_exposure: 250000
+    short_exposure: 450000
+    long_short_ratio: 0.56
+    utilization: 0.70
+    
+  # Scenario 4: Market Neutral
+  market_neutral:
+    description: "Market neutral portfolio"
+    gross_exposure: 600000
+    net_exposure: 0
+    long_exposure: 300000
+    short_exposure: 300000
+    long_short_ratio: 1.00
+    utilization: 0.60
+
+# ============================================================
+# EXPOSURE EXAMPLES
+# ============================================================
+exposure_examples:
+  # Example 1: Gross and Net Exposure
+  gross_net_calculation:
+    description: "Gross and Net Exposure Calculation"
+    positions:
+      - asset: "BTC"
+        value: 100000
+      - asset: "ETH"
+        value: 50000
+      - asset: "SOL"
+        value: -30000
+      - asset: "ADA"
+        value: -20000
+    gross_exposure: 200000  # 100000 + 50000 + 30000 + 20000
+    net_exposure: 100000  # 100000 + 50000 - 30000 - 20000
+    
+  # Example 2: Long/Short Ratio
+  long_short_ratio_example:
+    description: "Long/Short Ratio Calculation"
+    long_positions:
+      - asset: "BTC"
+        value: 150000
+      - asset: "ETH"
+        value: 100000
+    short_positions:
+      - asset: "SOL"
+        value: 50000
+      - asset: "ADA"
+        value: 30000
+    long_exposure: 250000
+    short_exposure: 80000
+    long_short_ratio: 3.125  # 250000 / 80000
+    
+  # Example 3: Concentration Exposure
+  concentration_exposure_example:
+    description: "Concentration Exposure Analysis"
+    portfolio_value: 1000000
+    positions:
+      - asset: "BTC"
+        value: 200000
+        concentration: 0.20
+      - asset: "ETH"
+        value: 150000
+        concentration: 0.15
+      - asset: "SOL"
+        value: 100000
+        concentration: 0.10
+    top_3_concentration: 0.45  # 45% in top 3 assets
+
+# ============================================================
+# ENVIRONMENT-SPECIFIC CONFIGURATIONS
+# ============================================================
+environments:
+  # Development Environment
+  development:
+    exposure:
+      general:
+        enabled: true
+        max_total_exposure: 100000
+        max_net_exposure: 50000
+        update_frequency: "hourly"
+        
+    exposure_monitoring:
+      alerts:
+        exposure_limit_breach:
+          enabled: false
+        exposure_warning:
+          enabled: false
+        concentration_alert:
+          enabled: false
+          
+  # Staging Environment
+  staging:
+    exposure:
+      general:
+        enabled: true
+        max_total_exposure: 500000
+        max_net_exposure: 250000
+        update_frequency: "realtime"
+        
+    exposure_monitoring:
+      alerts:
+        exposure_limit_breach:
+          enabled: true
+        exposure_warning:
+          enabled: true
+        concentration_alert:
+          enabled: true
+        net_exposure_alert:
+          enabled: true
+          
+  # Production Environment
+  production:
+    exposure:
+      general:
+        enabled: true
+        max_total_exposure: 1000000
+        max_net_exposure: 500000
+        max_gross_exposure: 1500000
+        max_single_asset_exposure: 0.15
+        max_sector_exposure: 0.40
+        max_asset_class_exposure: 0.50
+        max_geographic_exposure: 0.50
+        update_frequency: "realtime"
+        
+    exposure_monitoring:
+      alerts:
+        exposure_limit_breach:
+          enabled: true
+          level: "critical"
+        exposure_warning:
+          enabled: true
+          level: "warning"
+        concentration_alert:
+          enabled: true
+          level: "warning"
+        net_exposure_alert:
+          enabled: true
+          level: "warning"
+          
+  # Demo Environment
+  demo:
+    exposure:
+      general:
+        enabled: true
+        max_total_exposure: 200000
+        max_net_exposure: 100000
+        update_frequency: "hourly"
+        
+    exposure_monitoring:
+      alerts:
+        exposure_limit_breach:
+          enabled: false
+        exposure_warning:
+          enabled: true
+        concentration_alert:
+          enabled: false
+
+# ============================================================
+# END OF CONFIGURATION
+# ============================================================
