@@ -1,0 +1,661 @@
+# trading/bots/hedge_bot/config/payment_configs.yaml
+# NEXUS AI TRADING SYSTEM - Hedge Bot Payment Configuration
+# Version: 2.0.0
+# Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+
+# ============================================================
+# PAYMENT GENERAL SETTINGS
+# ============================================================
+payment:
+  # General Payment Settings
+  general:
+    enabled: true
+    payment_currency: "USD"
+    payment_processing: "automatic"  # automatic, manual, hybrid
+    payment_gateway: "stripe"  # stripe, paypal, coinbase, custom
+    payment_methods:
+      - "credit_card"
+      - "debit_card"
+      - "bank_transfer"
+      - "cryptocurrency"
+      - "paypal"
+    minimum_payment: 1.00
+    maximum_payment: 100000.00
+    payment_timeout: 300  # seconds
+    retry_attempts: 3
+    retry_delay: 3600  # 1 hour
+    
+  # Payment Types
+  types:
+    one_time_payment:
+      enabled: true
+      description: "One-time payment for services"
+      
+    recurring_payment:
+      enabled: true
+      description: "Recurring subscription payment"
+      
+    installment_payment:
+      enabled: true
+      description: "Installment payment plan"
+      
+    advance_payment:
+      enabled: true
+      description: "Advance payment for services"
+      
+    final_payment:
+      enabled: true
+      description: "Final settlement payment"
+
+# ============================================================
+# PAYMENT GATEWAYS
+# ============================================================
+payment_gateways:
+  # Stripe Gateway
+  stripe:
+    enabled: true
+    api_key: "${STRIPE_API_KEY}"
+    webhook_secret: "${STRIPE_WEBHOOK_SECRET}"
+    payment_methods:
+      - "credit_card"
+      - "debit_card"
+      - "bank_transfer"
+    supported_currencies:
+      - "USD"
+      - "EUR"
+      - "GBP"
+      - "SGD"
+      - "JPY"
+    processing_fee: 0.029  # 2.9% + $0.30
+    settlement_days: 2
+    sandbox: false
+    
+  # PayPal Gateway
+  paypal:
+    enabled: true
+    client_id: "${PAYPAL_CLIENT_ID}"
+    client_secret: "${PAYPAL_CLIENT_SECRET}"
+    webhook_id: "${PAYPAL_WEBHOOK_ID}"
+    payment_methods:
+      - "paypal"
+      - "credit_card"
+    supported_currencies:
+      - "USD"
+      - "EUR"
+      - "GBP"
+      - "JPY"
+    processing_fee: 0.039  # 3.9% + $0.30
+    settlement_days: 3
+    sandbox: false
+    
+  # Coinbase Commerce
+  coinbase:
+    enabled: true
+    api_key: "${COINBASE_API_KEY}"
+    webhook_secret: "${COINBASE_WEBHOOK_SECRET}"
+    payment_methods:
+      - "cryptocurrency"
+    supported_currencies:
+      - "BTC"
+      - "ETH"
+      - "USDC"
+      - "USDT"
+      - "SOL"
+      - "ADA"
+    processing_fee: 0.01  # 1%
+    settlement_days: 1
+    sandbox: false
+    
+  # Bank Transfer
+  bank_transfer:
+    enabled: true
+    bank_name: "Barclays Bank PLC"
+    account_name: "NEXUS QUANTUM LTD"
+    account_number: "12345678"
+    sort_code: "20-00-00"
+    iban: "GB12BARC20200012345678"
+    swift_bic: "BARCGB22"
+    payment_methods:
+      - "bank_transfer"
+    supported_currencies:
+      - "GBP"
+      - "USD"
+      - "EUR"
+    processing_fee: 0.005  # 0.5%
+    settlement_days: 5
+
+# ============================================================
+# SUBSCRIPTION PAYMENTS
+# ============================================================
+subscription_payments:
+  # Subscription Settings
+  settings:
+    enabled: true
+    billing_cycle: "monthly"  # monthly, quarterly, annual
+    billing_day: 1
+    proration: true
+    trial_period: 14  # days
+    grace_period: 3  # days
+    auto_renewal: true
+    cancellation_policy: "end_of_cycle"  # end_of_cycle, immediate, prorated
+    
+  # Subscription Plans
+  plans:
+    free:
+      id: "free"
+      name: "Free Plan"
+      price: 0.00
+      currency: "USD"
+      billing_cycle: "monthly"
+      features:
+        - "paper_trading"
+        - "basic_charts"
+        - "daily_signals"
+        - "1_bot_limit"
+        
+    starter:
+      id: "starter"
+      name: "Starter Plan"
+      price: 49.00
+      currency: "USD"
+      billing_cycle: "monthly"
+      features:
+        - "paper_trading"
+        - "advanced_charts"
+        - "realtime_signals"
+        - "3_bot_limit"
+        - "email_support"
+        
+    professional:
+      id: "professional"
+      name: "Professional Plan"
+      price: 149.00
+      currency: "USD"
+      billing_cycle: "monthly"
+      features:
+        - "paper_trading"
+        - "premium_charts"
+        - "realtime_signals"
+        - "10_bot_limit"
+        - "priority_support"
+        - "api_access"
+        
+    enterprise:
+      id: "enterprise"
+      name: "Enterprise Plan"
+      price: 499.00
+      currency: "USD"
+      billing_cycle: "monthly"
+      features:
+        - "paper_trading"
+        - "premium_charts"
+        - "realtime_signals"
+        - "unlimited_bots"
+        - "24_7_support"
+        - "api_access"
+        - "white_label"
+        - "dedicated_infrastructure"
+
+# ============================================================
+# PAYMENT PROCESSING
+# ============================================================
+payment_processing:
+  # Processing Settings
+  settings:
+    enabled: true
+    processing_mode: "automatic"  # automatic, manual, hybrid
+    processing_timeout: 300  # seconds
+    processing_retry: true
+    processing_retry_attempts: 3
+    processing_retry_delay: 3600  # 1 hour
+    
+  # Payment Methods
+  methods:
+    credit_card:
+      enabled: true
+      processors:
+        - "stripe"
+        - "paypal"
+      min_amount: 1.00
+      max_amount: 50000.00
+      processing_time: "instant"
+      
+    debit_card:
+      enabled: true
+      processors:
+        - "stripe"
+      min_amount: 1.00
+      max_amount: 25000.00
+      processing_time: "instant"
+      
+    bank_transfer:
+      enabled: true
+      processors:
+        - "bank_transfer"
+      min_amount: 10.00
+      max_amount: 100000.00
+      processing_time: "1-3_business_days"
+      
+    cryptocurrency:
+      enabled: true
+      processors:
+        - "coinbase"
+      min_amount: 10.00
+      max_amount: 100000.00
+      processing_time: "10-30_minutes"
+      
+    paypal:
+      enabled: true
+      processors:
+        - "paypal"
+      min_amount: 1.00
+      max_amount: 50000.00
+      processing_time: "instant"
+      
+  # Payment Verification
+  verification:
+    enabled: true
+    verify_payment: true
+    verification_method: "webhook"  # webhook, api, manual
+    verification_timeout: 600  # seconds
+    auto_confirm: true
+    manual_confirm_threshold: 10000.00
+
+# ============================================================
+# PAYMENT MONITORING
+# ============================================================
+payment_monitoring:
+  # Monitoring Settings
+  settings:
+    enabled: true
+    monitoring_frequency: "realtime"
+    alert_threshold: 0.75  # 75% of limit
+    critical_threshold: 0.90  # 90% of limit
+    reporting_frequency: "daily"
+    
+  # Alert Conditions
+  alerts:
+    payment_failure_alert:
+      enabled: true
+      level: "critical"
+      message: "Payment failed: {payment_id}"
+      
+    payment_fraud_alert:
+      enabled: true
+      level: "critical"
+      message: "Potential fraud detected: {payment_id}"
+      
+    payment_dispute_alert:
+      enabled: true
+      level: "high"
+      message: "Payment dispute: {payment_id}"
+      
+    subscription_expiry_alert:
+      enabled: true
+      level: "warning"
+      threshold: 7  # days
+      message: "Subscription expiring: {subscription} in {days} days"
+      
+  # Monitoring Metrics
+  metrics:
+    - "payment_success_rate"
+    - "payment_failure_rate"
+    - "subscription_renewal_rate"
+    - "average_payment_amount"
+    - "total_payment_volume"
+    - "payment_method_distribution"
+
+# ============================================================
+# PAYMENT REPORTING
+# ============================================================
+payment_reporting:
+  # Report Settings
+  settings:
+    enabled: true
+    report_frequency: "monthly"
+    report_format: "json"  # json, csv, pdf, excel
+    include_analytics: true
+    include_visualizations: true
+    include_recommendations: true
+    
+  # Report Sections
+  sections:
+    payment_summary:
+      enabled: true
+      include_total_payments: true
+      include_total_amount: true
+      include_payment_count: true
+      include_success_rate: true
+      
+    payment_breakdown:
+      enabled: true
+      include_by_method: true
+      include_by_currency: true
+      include_by_plan: true
+      
+    subscription_summary:
+      enabled: true
+      include_active_subscriptions: true
+      include_new_subscriptions: true
+      include_churn_rate: true
+      include_renewal_rate: true
+      
+    revenue_analysis:
+      enabled: true
+      include_monthly_revenue: true
+      include_annual_revenue: true
+      include_revenue_growth: true
+      include_revenue_forecast: true
+      
+    recommendations:
+      enabled: true
+      include_optimization_suggestions: true
+      include_fraud_prevention: true
+      include_customer_retention: true
+
+# ============================================================
+# PAYMENT DASHBOARD
+# ============================================================
+payment_dashboard:
+  # Dashboard Settings
+  settings:
+    enabled: true
+    refresh_interval: 60
+    default_view: "summary"  # summary, details, analytics
+    
+  # Dashboard Widgets
+  widgets:
+    payment_summary:
+      enabled: true
+      position: 1
+      size: "large"
+      
+    revenue_chart:
+      enabled: true
+      position: 2
+      size: "large"
+      
+    subscription_summary:
+      enabled: true
+      position: 3
+      size: "medium"
+      
+    payment_methods:
+      enabled: true
+      position: 4
+      size: "medium"
+      
+    payment_status:
+      enabled: true
+      position: 5
+      size: "small"
+      
+    alert_status:
+      enabled: true
+      position: 6
+      size: "small"
+
+# ============================================================
+# PAYMENT SECURITY
+# ============================================================
+payment_security:
+  # Security Settings
+  settings:
+    enabled: true
+    encryption: true
+    pci_dss_compliant: true
+    tokenization: true
+    fraud_detection: true
+    fraud_detection_level: "moderate"  # conservative, moderate, aggressive
+    payment_data_retention: 365  # days
+    
+  # Fraud Detection
+  fraud_detection:
+    enabled: true
+    methods:
+      - "velocity_check"
+      - "amount_check"
+      - "ip_check"
+      - "device_check"
+      - "pattern_recognition"
+    thresholds:
+      max_velocity: 5  # payments per hour
+      max_amount: 10000
+      suspicious_ip: "blacklist"
+      high_risk_countries: []
+      
+  # PCI Compliance
+  pci_compliance:
+    enabled: true
+    level: "1"  # 1-4
+    requirements:
+      - "secure_network"
+      - "cardholder_data_protection"
+      - "vulnerability_management"
+      - "access_control"
+      - "monitoring"
+      - "information_security_policy"
+
+# ============================================================
+# PAYMENT INTEGRATION
+# ============================================================
+payment_integration:
+  # Integration Settings
+  settings:
+    enabled: true
+    integration_type: "api"  # api, webhook, websocket, file
+    
+  # External Systems
+  systems:
+    accounting_system:
+      enabled: true
+      provider: "xero"  # xero, quickbooks, custom
+      api_endpoint: "${ACCOUNTING_API_ENDPOINT}"
+      api_key: "${ACCOUNTING_API_KEY}"
+      sync_payments: true
+      sync_invoices: true
+      
+    crm_system:
+      enabled: true
+      provider: "salesforce"  # salesforce, hubspot, custom
+      api_endpoint: "${CRM_API_ENDPOINT}"
+      api_key: "${CRM_API_KEY}"
+      sync_customers: true
+      sync_subscriptions: true
+      
+    analytics_system:
+      enabled: true
+      provider: "google_analytics"  # google_analytics, mixpanel, amplitude
+      tracking_id: "${ANALYTICS_TRACKING_ID}"
+      track_events: true
+      track_revenue: true
+
+# ============================================================
+# PAYMENT SCENARIOS
+# ============================================================
+payment_scenarios:
+  # Scenario 1: Successful Payment
+  successful_payment:
+    description: "Successful payment scenario"
+    amount: 149.00
+    currency: "USD"
+    method: "credit_card"
+    status: "success"
+    processing_time: 5  # seconds
+    
+  # Scenario 2: Failed Payment
+  failed_payment:
+    description: "Failed payment scenario"
+    amount: 149.00
+    currency: "USD"
+    method: "credit_card"
+    status: "failed"
+    reason: "insufficient_funds"
+    retry_attempts: 2
+    
+  # Scenario 3: Disputed Payment
+  disputed_payment:
+    description: "Disputed payment scenario"
+    amount: 149.00
+    currency: "USD"
+    method: "credit_card"
+    status: "disputed"
+    reason: "unauthorized"
+    resolution_time: 30  # days
+    
+  # Scenario 4: Subscription Renewal
+  subscription_renewal:
+    description: "Subscription renewal scenario"
+    plan: "professional"
+    amount: 149.00
+    currency: "USD"
+    billing_cycle: "monthly"
+    auto_renewal: true
+    next_billing: "2026-08-01"
+
+# ============================================================
+# PAYMENT EXAMPLES
+# ============================================================
+payment_examples:
+  # Example 1: Payment Processing
+  payment_processing_example:
+    description: "Payment Processing Example"
+    payment_id: "pay_123456789"
+    amount: 149.00
+    currency: "USD"
+    method: "credit_card"
+    gateway: "stripe"
+    status: "succeeded"
+    timestamp: "2026-07-15T10:30:00Z"
+    
+  # Example 2: Subscription Billing
+  subscription_billing_example:
+    description: "Subscription Billing Example"
+    subscription_id: "sub_987654321"
+    plan: "professional"
+    customer: "cust_123456"
+    amount: 149.00
+    currency: "USD"
+    billing_date: "2026-07-15"
+    next_billing_date: "2026-08-15"
+    status: "active"
+    
+  # Example 3: Payment Reconciliation
+  payment_reconciliation_example:
+    description: "Payment Reconciliation Example"
+    payments:
+      - id: "pay_001"
+        amount: 149.00
+        date: "2026-07-15"
+        status: "succeeded"
+      - id: "pay_002"
+        amount: 149.00
+        date: "2026-06-15"
+        status: "succeeded"
+    total_amount: 298.00
+    total_payments: 2
+    reconciliation_status: "balanced"
+
+# ============================================================
+# ENVIRONMENT-SPECIFIC CONFIGURATIONS
+# ============================================================
+environments:
+  # Development Environment
+  development:
+    payment:
+      general:
+        enabled: true
+        payment_gateway: "stripe"
+        payment_methods:
+          - "credit_card"
+          
+    payment_gateways:
+      stripe:
+        sandbox: true
+        api_key: "${STRIPE_TEST_API_KEY}"
+      paypal:
+        sandbox: true
+        client_id: "${PAYPAL_TEST_CLIENT_ID}"
+        
+    subscription_payments:
+      settings:
+        auto_renewal: false
+        
+  # Staging Environment
+  staging:
+    payment:
+      general:
+        enabled: true
+        payment_gateway: "stripe"
+        payment_methods:
+          - "credit_card"
+          - "paypal"
+          
+    payment_gateways:
+      stripe:
+        sandbox: true
+        api_key: "${STRIPE_TEST_API_KEY}"
+      paypal:
+        sandbox: true
+        client_id: "${PAYPAL_TEST_CLIENT_ID}"
+        
+    subscription_payments:
+      settings:
+        auto_renewal: false
+        
+  # Production Environment
+  production:
+    payment:
+      general:
+        enabled: true
+        payment_gateway: "stripe"
+        payment_methods:
+          - "credit_card"
+          - "debit_card"
+          - "bank_transfer"
+          - "cryptocurrency"
+          - "paypal"
+          
+    payment_gateways:
+      stripe:
+        sandbox: false
+        api_key: "${STRIPE_LIVE_API_KEY}"
+      paypal:
+        sandbox: false
+        client_id: "${PAYPAL_LIVE_CLIENT_ID}"
+      coinbase:
+        sandbox: false
+        api_key: "${COINBASE_LIVE_API_KEY}"
+        
+    subscription_payments:
+      settings:
+        auto_renewal: true
+        billing_cycle: "monthly"
+        
+    payment_security:
+      settings:
+        pci_dss_compliant: true
+        fraud_detection: true
+        fraud_detection_level: "aggressive"
+        
+  # Demo Environment
+  demo:
+    payment:
+      general:
+        enabled: true
+        payment_gateway: "stripe"
+        payment_methods:
+          - "credit_card"
+          
+    payment_gateways:
+      stripe:
+        sandbox: true
+        api_key: "${STRIPE_TEST_API_KEY}"
+        
+    subscription_payments:
+      settings:
+        auto_renewal: false
+
+# ============================================================
+# END OF CONFIGURATION
+# ============================================================
