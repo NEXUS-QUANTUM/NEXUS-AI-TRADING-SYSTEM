@@ -1,0 +1,535 @@
+# trading/bots/hedge_bot/config/pricing_configs.yaml
+# NEXUS AI TRADING SYSTEM - Hedge Bot Pricing Configuration
+# Version: 2.0.0
+# Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+
+# ============================================================
+# PRICING GENERAL SETTINGS
+# ============================================================
+pricing:
+  # General Pricing Settings
+  general:
+    enabled: true
+    pricing_model: "dynamic"  # dynamic, static, adaptive, market_based
+    price_source: "exchange"  # exchange, oracle, vwap, weighted
+    update_frequency: "realtime"  # realtime, hourly, daily
+    use_mid_price: true
+    use_bid_ask_spread: true
+    use_last_trade_price: true
+    use_volume_weighted: true
+    price_precision: 2
+    min_price_change: 0.01
+    
+  # Price Sources
+  sources:
+    exchange:
+      enabled: true
+      priority: 1
+      weight: 0.40
+      timeout: 5
+      retry_attempts: 3
+      
+    oracle:
+      enabled: true
+      priority: 2
+      weight: 0.30
+      providers:
+        - "chainlink"
+        - "pyth"
+        - "twap"
+      timeout: 10
+      retry_attempts: 2
+      
+    vwap:
+      enabled: true
+      priority: 3
+      weight: 0.20
+      lookback: 24  # hours
+      min_volume: 1000
+      
+    custom:
+      enabled: true
+      priority: 4
+      weight: 0.10
+      source: "internal_model"
+      update_frequency: "hourly"
+
+# ============================================================
+# PRICE CALCULATION METHODS
+# ============================================================
+price_calculation:
+  # Methods
+  methods:
+    weighted_average:
+      enabled: true
+      description: "Weighted average of multiple price sources"
+      sources:
+        - exchange: 0.40
+        - oracle: 0.30
+        - vwap: 0.20
+        - custom: 0.10
+        
+    median:
+      enabled: true
+      description: "Median price from multiple sources"
+      min_sources: 3
+      
+    volume_weighted:
+      enabled: true
+      description: "Volume-weighted average price"
+      lookback: 24  # hours
+      min_volume: 1000
+      
+    time_weighted:
+      enabled: true
+      description: "Time-weighted average price"
+      lookback: 24  # hours
+      
+  # Price Adjustments
+  adjustments:
+    spread_adjustment: true
+    liquidity_adjustment: true
+    volatility_adjustment: true
+    time_adjustment: true
+    fee_adjustment: true
+    
+  # Price Filters
+  filters:
+    outlier_removal: true
+    outlier_threshold: 0.05  # 5%
+    smoothing: true
+    smoothing_factor: 0.1
+    min_price: 0
+    max_price: 1000000
+
+# ============================================================
+# ASSET-SPECIFIC PRICING
+# ============================================================
+asset_pricing:
+  # Cryptocurrency
+  cryptocurrency:
+    price_source: "exchange"
+    weight_exchange: 0.50
+    weight_oracle: 0.30
+    weight_vwap: 0.20
+    spread_adjustment: 0.001
+    liquidity_threshold: 100000
+    min_trade_volume: 1000
+    
+    assets:
+      BTC:
+        price_source: "exchange"
+        weight_exchange: 0.60
+        weight_oracle: 0.25
+        weight_vwap: 0.15
+        spread_adjustment: 0.0005
+        liquidity_threshold: 1000000
+      ETH:
+        price_source: "exchange"
+        weight_exchange: 0.55
+        weight_oracle: 0.28
+        weight_vwap: 0.17
+        spread_adjustment: 0.0005
+        liquidity_threshold: 500000
+      SOL:
+        price_source: "oracle"
+        weight_exchange: 0.40
+        weight_oracle: 0.40
+        weight_vwap: 0.20
+        spread_adjustment: 0.001
+        liquidity_threshold: 100000
+      ADA:
+        price_source: "oracle"
+        weight_exchange: 0.40
+        weight_oracle: 0.40
+        weight_vwap: 0.20
+        spread_adjustment: 0.001
+        liquidity_threshold: 100000
+      DOT:
+        price_source: "oracle"
+        weight_exchange: 0.40
+        weight_oracle: 0.40
+        weight_vwap: 0.20
+        spread_adjustment: 0.001
+        liquidity_threshold: 100000
+        
+  # Forex
+  forex:
+    price_source: "exchange"
+    weight_exchange: 0.70
+    weight_oracle: 0.20
+    weight_vwap: 0.10
+    spread_adjustment: 0.0001
+    liquidity_threshold: 1000000
+    
+    assets:
+      EURUSD:
+        weight_exchange: 0.80
+        weight_oracle: 0.15
+        weight_vwap: 0.05
+        spread_adjustment: 0.00005
+      GBPUSD:
+        weight_exchange: 0.75
+        weight_oracle: 0.18
+        weight_vwap: 0.07
+        spread_adjustment: 0.00005
+      USDJPY:
+        weight_exchange: 0.75
+        weight_oracle: 0.18
+        weight_vwap: 0.07
+        spread_adjustment: 0.00005
+        
+  # Equity
+  equity:
+    price_source: "exchange"
+    weight_exchange: 0.80
+    weight_oracle: 0.10
+    weight_vwap: 0.10
+    spread_adjustment: 0.0002
+    liquidity_threshold: 1000000
+    
+    assets:
+      SPY:
+        weight_exchange: 0.85
+        weight_oracle: 0.10
+        weight_vwap: 0.05
+      AAPL:
+        weight_exchange: 0.80
+        weight_oracle: 0.15
+        weight_vwap: 0.05
+      MSFT:
+        weight_exchange: 0.80
+        weight_oracle: 0.15
+        weight_vwap: 0.05
+        
+  # Commodity
+  commodity:
+    price_source: "oracle"
+    weight_exchange: 0.30
+    weight_oracle: 0.50
+    weight_vwap: 0.20
+    spread_adjustment: 0.0005
+    liquidity_threshold: 100000
+    
+    assets:
+      GOLD:
+        weight_exchange: 0.35
+        weight_oracle: 0.50
+        weight_vwap: 0.15
+      SILVER:
+        weight_exchange: 0.30
+        weight_oracle: 0.50
+        weight_vwap: 0.20
+      OIL:
+        weight_exchange: 0.30
+        weight_oracle: 0.45
+        weight_vwap: 0.25
+
+# ============================================================
+# PRICE MONITORING
+# ============================================================
+price_monitoring:
+  # Monitoring Settings
+  settings:
+    enabled: true
+    monitoring_frequency: "realtime"
+    alert_threshold: 0.02  # 2% price change
+    critical_threshold: 0.05  # 5% price change
+    reporting_frequency: "daily"
+    
+  # Alert Conditions
+  alerts:
+    price_change_alert:
+      enabled: true
+      level: "warning"
+      threshold: 0.02
+      message: "Significant price change: {change}% for {asset}"
+      
+    price_deviation_alert:
+      enabled: true
+      level: "warning"
+      threshold: 0.01
+      message: "Price deviation: {deviation}% for {asset}"
+      
+    spread_widening_alert:
+      enabled: true
+      level: "warning"
+      threshold: 0.005
+      message: "Spread widening: {spread}% for {asset}"
+      
+    price_source_alert:
+      enabled: true
+      level: "critical"
+      message: "Price source unavailable for {asset}"
+      
+  # Monitoring Metrics
+  metrics:
+    - "current_price"
+    - "price_change"
+    - "price_deviation"
+    - "bid_ask_spread"
+    - "volume"
+    - "liquidity"
+    - "price_source_status"
+
+# ============================================================
+# PRICE REPORTING
+# ============================================================
+price_reporting:
+  # Report Settings
+  settings:
+    enabled: true
+    report_frequency: "daily"
+    report_format: "json"  # json, csv, pdf, html
+    include_analytics: true
+    include_visualizations: true
+    include_recommendations: true
+    
+  # Report Sections
+  sections:
+    price_summary:
+      enabled: true
+      include_all_assets: true
+      include_price_changes: true
+      include_spreads: true
+      
+    deviation_analysis:
+      enabled: true
+      include_source_deviations: true
+      include_correlation_analysis: true
+      
+    liquidity_analysis:
+      enabled: true
+      include_volume_analysis: true
+      include_depth_analysis: true
+      
+    recommendations:
+      enabled: true
+      include_price_optimization: true
+      include_source_adjustments: true
+
+# ============================================================
+# PRICE DASHBOARD
+# ============================================================
+price_dashboard:
+  # Dashboard Settings
+  settings:
+    enabled: true
+    refresh_interval: 5
+    default_view: "summary"  # summary, details, analytics
+    
+  # Dashboard Widgets
+  widgets:
+    price_summary:
+      enabled: true
+      position: 1
+      size: "large"
+      
+    price_chart:
+      enabled: true
+      position: 2
+      size: "large"
+      
+    spread_summary:
+      enabled: true
+      position: 3
+      size: "medium"
+      
+    deviation_analysis:
+      enabled: true
+      position: 4
+      size: "medium"
+      
+    liquidity_status:
+      enabled: true
+      position: 5
+      size: "small"
+      
+    alert_status:
+      enabled: true
+      position: 6
+      size: "small"
+
+# ============================================================
+# PRICE INTEGRATION
+# ============================================================
+price_integration:
+  # Integration Settings
+  settings:
+    enabled: true
+    integration_type: "api"  # api, webhook, websocket, file
+    
+  # External Systems
+  systems:
+    exchange_system:
+      enabled: true
+      endpoint: "/api/exchange/prices"
+      update_frequency: "realtime"
+      
+    oracle_system:
+      enabled: true
+      endpoint: "/api/oracle/prices"
+      update_frequency: "realtime"
+      
+    analytics_system:
+      enabled: true
+      endpoint: "/api/analytics/prices"
+      update_frequency: "hourly"
+      
+    trading_system:
+      enabled: true
+      endpoint: "/api/trading/prices"
+      update_frequency: "realtime"
+
+# ============================================================
+# PRICING SCENARIOS
+# ============================================================
+pricing_scenarios:
+  # Scenario 1: Normal Market
+  normal_market:
+    description: "Normal market pricing"
+    bid_ask_spread: 0.001
+    volume: 1000000
+    liquidity: "high"
+    price_stability: "stable"
+    
+  # Scenario 2: High Volatility
+  high_volatility:
+    description: "High volatility pricing"
+    bid_ask_spread: 0.003
+    volume: 2000000
+    liquidity: "medium"
+    price_stability: "volatile"
+    
+  # Scenario 3: Low Liquidity
+  low_liquidity:
+    description: "Low liquidity pricing"
+    bid_ask_spread: 0.005
+    volume: 100000
+    liquidity: "low"
+    price_stability: "unstable"
+    
+  # Scenario 4: Flash Crash
+  flash_crash:
+    description: "Flash crash pricing"
+    bid_ask_spread: 0.01
+    volume: 5000000
+    liquidity: "low"
+    price_stability: "extremely_volatile"
+
+# ============================================================
+# PRICING EXAMPLES
+# ============================================================
+pricing_examples:
+  # Example 1: Weighted Average Price
+  weighted_average_example:
+    description: "Weighted Average Price Calculation"
+    sources:
+      - source: "exchange"
+        price: 50000
+        weight: 0.50
+      - source: "oracle"
+        price: 50200
+        weight: 0.30
+      - source: "vwap"
+        price: 49900
+        weight: 0.20
+    weighted_price: 50070  # (50000*0.5 + 50200*0.3 + 49900*0.2)
+    
+  # Example 2: Spread Calculation
+  spread_calculation_example:
+    description: "Spread Calculation Example"
+    bid_price: 50000
+    ask_price: 50100
+    spread: 100
+    spread_percentage: 0.002  # 0.2%
+    
+  # Example 3: Price Deviation
+  price_deviation_example:
+    description: "Price Deviation Example"
+    reference_price: 50000
+    current_price: 50500
+    deviation: 500
+    deviation_percentage: 0.01  # 1%
+
+# ============================================================
+# ENVIRONMENT-SPECIFIC CONFIGURATIONS
+# ============================================================
+environments:
+  # Development Environment
+  development:
+    pricing:
+      general:
+        enabled: true
+        price_source: "exchange"
+        update_frequency: "hourly"
+        
+    price_monitoring:
+      alerts:
+        price_change_alert:
+          enabled: false
+        price_deviation_alert:
+          enabled: false
+          
+  # Staging Environment
+  staging:
+    pricing:
+      general:
+        enabled: true
+        price_source: "exchange"
+        update_frequency: "realtime"
+        
+    price_monitoring:
+      alerts:
+        price_change_alert:
+          enabled: true
+        price_deviation_alert:
+          enabled: true
+        spread_widening_alert:
+          enabled: true
+          
+  # Production Environment
+  production:
+    pricing:
+      general:
+        enabled: true
+        pricing_model: "dynamic"
+        price_source: "weighted"
+        update_frequency: "realtime"
+        use_mid_price: true
+        use_bid_ask_spread: true
+        use_volume_weighted: true
+        
+    price_monitoring:
+      alerts:
+        price_change_alert:
+          enabled: true
+          level: "warning"
+        price_deviation_alert:
+          enabled: true
+          level: "warning"
+        spread_widening_alert:
+          enabled: true
+          level: "warning"
+        price_source_alert:
+          enabled: true
+          level: "critical"
+          
+  # Demo Environment
+  demo:
+    pricing:
+      general:
+        enabled: true
+        price_source: "exchange"
+        update_frequency: "hourly"
+        
+    price_monitoring:
+      alerts:
+        price_change_alert:
+          enabled: true
+        price_deviation_alert:
+          enabled: false
+
+# ============================================================
+# END OF CONFIGURATION
+# ============================================================
