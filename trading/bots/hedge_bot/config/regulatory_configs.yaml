@@ -1,0 +1,752 @@
+# trading/bots/hedge_bot/config/regulatory_configs.yaml
+# NEXUS AI TRADING SYSTEM - Hedge Bot Regulatory Configuration
+# Version: 2.0.0
+# Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+
+# ============================================================
+# REGULATORY GENERAL SETTINGS
+# ============================================================
+regulatory:
+  # General Regulatory Settings
+  general:
+    enabled: true
+    regulatory_framework: "multi"  # multi, fca, sec, mas, esma, cftc, fatf
+    jurisdiction: "international"  # international, uk, us, singapore, eu
+    compliance_level: "full"  # full, standard, basic
+    auto_compliance_check: true
+    compliance_check_interval: 60  # seconds
+    regulatory_reporting: true
+    audit_trail: true
+    record_keeping: true
+    update_frequency: "daily"
+    
+  # Regulatory Frameworks
+  frameworks:
+    fca:
+      enabled: true
+      name: "Financial Conduct Authority"
+      jurisdiction: "UK"
+      requirements:
+        - "client_money_handling"
+        - "best_execution"
+        - "market_abuse_prevention"
+        - "transaction_reporting"
+        - "record_keeping"
+        - "risk_management"
+        - "compliance_oversight"
+        - "capital_requirements"
+        - "client_protection"
+        
+    sec:
+      enabled: true
+      name: "Securities and Exchange Commission"
+      jurisdiction: "USA"
+      requirements:
+        - "registration_requirements"
+        - "disclosure_requirements"
+        - "market_manipulation_prevention"
+        - "insider_trading_prevention"
+        - "record_keeping"
+        - "audit_requirements"
+        - "compliance_program"
+        - "reporting_requirements"
+        
+    mas:
+      enabled: true
+      name: "Monetary Authority of Singapore"
+      jurisdiction: "Singapore"
+      requirements:
+        - "licensing_requirements"
+        - "business_conduct"
+        - "market_conduct"
+        - "client_protection"
+        - "risk_management"
+        - "compliance_oversight"
+        - "reporting_requirements"
+        - "technology_risk_management"
+        
+    esma:
+      enabled: true
+      name: "European Securities and Markets Authority"
+      jurisdiction: "EU"
+      requirements:
+        - "miFID_II_compliance"
+        - "market_abuse_prevention"
+        - "transparency_requirements"
+        - "position_limits"
+        - "reporting_requirements"
+        - "record_keeping"
+        - "product_governance"
+        
+    cftc:
+      enabled: true
+      name: "Commodity Futures Trading Commission"
+      jurisdiction: "USA"
+      requirements:
+        - "derivatives_regulation"
+        - "position_limits"
+        - "margin_requirements"
+        - "reporting_requirements"
+        - "record_keeping"
+        - "swap_data_reporting"
+        - "clearing_requirements"
+        
+    fatf:
+      enabled: true
+      name: "Financial Action Task Force"
+      jurisdiction: "International"
+      requirements:
+        - "aml_program"
+        - "kyc_requirements"
+        - "sanctions_screening"
+        - "transaction_monitoring"
+        - "suspicious_activity_reporting"
+        - "record_keeping"
+        - "beneficial_ownership"
+
+# ============================================================
+# AML/KYC COMPLIANCE
+# ============================================================
+aml_kyc:
+  # AML/KYC Settings
+  settings:
+    enabled: true
+    aml_level: "full"  # full, standard, basic
+    kyc_level: "full"  # full, standard, basic
+    customer_due_diligence: "enhanced"  # enhanced, standard, simplified
+    sanctions_screening: true
+    pep_screening: true
+    adverse_media_screening: true
+    transaction_monitoring: true
+    reporting_to_authorities: true
+    risk_assessment: true
+    
+  # KYC Levels
+  levels:
+    basic:
+      requirements:
+        - "full_name"
+        - "date_of_birth"
+        - "nationality"
+        - "email_address"
+        - "phone_number"
+      verification_methods:
+        - "email_verification"
+        - "phone_verification"
+        
+    standard:
+      requirements:
+        - "basic_requirements"
+        - "government_id"
+        - "address_proof"
+        - "source_of_funds"
+        - "tax_identification"
+      verification_methods:
+        - "document_verification"
+        - "address_verification"
+        - "database_verification"
+        
+    full:
+      requirements:
+        - "standard_requirements"
+        - "enhanced_due_diligence"
+        - "source_of_wealth"
+        - "business_activities"
+        - "related_parties"
+        - "beneficial_owners"
+        - "control_structure"
+      verification_methods:
+        - "face_to_face_verification"
+        - "advanced_document_verification"
+        - "third_party_verification"
+        - "site_visit"
+        
+  # AML Monitoring
+  monitoring:
+    transaction_monitoring:
+      enabled: true
+      thresholds:
+        single_transaction: 10000
+        daily_aggregate: 50000
+        weekly_aggregate: 200000
+        monthly_aggregate: 500000
+      monitoring_frequency: "realtime"
+      alert_threshold: 0.75  # 75% of limit
+      critical_threshold: 0.90  # 90% of limit
+      
+    sanctions_screening:
+      enabled: true
+      screening_frequency: "realtime"
+      databases:
+        - "OFAC"
+        - "EU_Sanctions"
+        - "UN_Sanctions"
+        - "UK_Sanctions"
+        - "Singapore_Sanctions"
+        - "China_Sanctions"
+        - "Russia_Sanctions"
+        
+    pep_screening:
+      enabled: true
+      screening_frequency: "daily"
+      databases:
+        - "World_Check"
+        - "Dow_Jones"
+        - "Refinitiv"
+        - "LexisNexis"
+        
+  # AML Reporting
+  reporting:
+    suspicious_activity_report:
+      enabled: true
+      threshold: 10000
+      timeline: "immediate"
+      
+    currency_transaction_report:
+      enabled: true
+      threshold: 10000
+      timeline: "15_days"
+      
+    annual_compliance_report:
+      enabled: true
+      timeline: "annual"
+      
+    risk_assessment_report:
+      enabled: true
+      timeline: "quarterly"
+
+# ============================================================
+# TRADING COMPLIANCE
+# ============================================================
+trading_compliance:
+  # Trading Compliance Settings
+  settings:
+    enabled: true
+    prevent_market_manipulation: true
+    prevent_insider_trading: true
+    prevent_front_running: true
+    prevent_spoofing: true
+    prevent_layering: true
+    prevent_wash_trading: true
+    ensure_best_execution: true
+    maintain_market_integrity: true
+    
+  # Trading Restrictions
+  restrictions:
+    wash_trading:
+      enabled: true
+      detection_method: "pattern_recognition"
+      threshold: 0.001  # 0.1% of volume
+      
+    spoofing:
+      enabled: true
+      detection_method: "order_book_analysis"
+      threshold: 0.05  # 5% of orders
+      
+    layering:
+      enabled: true
+      detection_method: "pattern_recognition"
+      threshold: 0.001  # 0.1% of volume
+      
+    front_running:
+      enabled: true
+      detection_method: "timing_analysis"
+      threshold: 0.001  # 0.1% of volume
+      
+    insider_trading:
+      enabled: true
+      detection_method: "information_flow"
+      threshold: "significant"
+      
+    market_manipulation:
+      enabled: true
+      detection_method: "pattern_recognition"
+      threshold: 0.01  # 1% of market
+      
+  # Best Execution
+  best_execution:
+    enabled: true
+    policy: "order_aggregation"  # order_aggregation, smart_routing, vwap
+    monitoring_frequency: "realtime"
+    reporting_frequency: "daily"
+    
+    execution_quality_metrics:
+      - "price_improvement"
+      - "fill_rate"
+      - "execution_speed"
+      - "slippage"
+      - "market_impact"
+      - "venue_analysis"
+      
+    venue_analysis:
+      - venue: "primary_exchange"
+        weight: 0.5
+      - venue: "secondary_exchange"
+        weight: 0.3
+      - venue: "dark_pool"
+        weight: 0.2
+
+# ============================================================
+# POSITION LIMITS
+# ============================================================
+position_limits:
+  # General Position Limits
+  general:
+    enabled: true
+    apply_across_assets: true
+    apply_across_accounts: true
+    reporting_frequency: "daily"
+    alert_threshold: 0.80  # 80% of limit
+    critical_threshold: 0.95  # 95% of limit
+    
+  # Limits by Asset Class
+  asset_class:
+    cryptocurrency:
+      absolute_limit: 1000000  # USD
+      limit_as_percent_of_capital: 0.25  # 25%
+      concentration_limit: 0.15  # 15% per asset
+      
+    forex:
+      absolute_limit: 2000000
+      limit_as_percent_of_capital: 0.30
+      concentration_limit: 0.20
+      
+    equity:
+      absolute_limit: 3000000
+      limit_as_percent_of_capital: 0.25
+      concentration_limit: 0.10
+      
+    commodity:
+      absolute_limit: 1000000
+      limit_as_percent_of_capital: 0.15
+      concentration_limit: 0.08
+      
+  # Aggregate Limits
+  aggregate:
+    total_position_limit: 5000000
+    total_exposure_limit: 8000000
+    gross_exposure_limit: 10000000
+    net_exposure_limit: 5000000
+
+# ============================================================
+# REPORTING REQUIREMENTS
+# ============================================================
+reporting_requirements:
+  # Reporting Settings
+  settings:
+    enabled: true
+    reporting_interval: "daily"  # realtime, hourly, daily, weekly
+    report_format: "json"  # json, csv, xml, pdf
+    automate_reports: true
+    archive_reports: true
+    retention_period: 730  # days
+    
+  # Report Types
+  types:
+    trade_report:
+      enabled: true
+      frequency: "daily"
+      fields:
+        - "trade_id"
+        - "timestamp"
+        - "asset"
+        - "side"
+        - "quantity"
+        - "price"
+        - "value"
+        - "counterparty"
+        - "venue"
+        - "execution_type"
+        - "trade_status"
+        
+    order_report:
+      enabled: true
+      frequency: "daily"
+      fields:
+        - "order_id"
+        - "timestamp"
+        - "asset"
+        - "side"
+        - "order_type"
+        - "quantity"
+        - "limit_price"
+        - "stop_price"
+        - "time_in_force"
+        - "order_status"
+        
+    position_report:
+      enabled: true
+      frequency: "daily"
+      fields:
+        - "position_id"
+        - "timestamp"
+        - "asset"
+        - "quantity"
+        - "average_price"
+        - "current_price"
+        - "unrealized_pnl"
+        - "realized_pnl"
+        - "margin"
+        
+    regulatory_report:
+      enabled: true
+      frequency: "monthly"
+      fields:
+        - "reporting_period"
+        - "jurisdiction"
+        - "regulatory_body"
+        - "report_type"
+        - "data"
+        - "submission_status"
+        
+  # Distribution
+  distribution:
+    internal:
+      enabled: true
+      recipients:
+        - "compliance@nexusquantum.com"
+        - "legal@nexusquantum.com"
+        - "risk@nexusquantum.com"
+        
+    external:
+      enabled: true
+      recipients:
+        - "regulatory_authority"
+        - "auditors"
+        - "clients"
+
+# ============================================================
+# RECORD KEEPING
+# ============================================================
+record_keeping:
+  # Record Keeping Settings
+  settings:
+    enabled: true
+    retention_period: 730  # days
+    archival_period: 365  # days
+    record_format: "json"  # json, csv, xml, parquet
+    encryption_enabled: true
+    compression_enabled: true
+    immutable_records: true
+    audit_trail_enabled: true
+    
+  # Record Types
+  types:
+    trade_records:
+      enabled: true
+      retention: 730
+      include_all_trades: true
+      include_order_data: true
+      
+    position_records:
+      enabled: true
+      retention: 730
+      include_snapshots: true
+      include_pnl: true
+      
+    accounting_records:
+      enabled: true
+      retention: 730
+      include_ledger: true
+      include_balances: true
+      
+    compliance_records:
+      enabled: true
+      retention: 730
+      include_audit_trails: true
+      include_compliance_checks: true
+      
+    system_records:
+      enabled: true
+      retention: 365
+      include_system_logs: true
+      include_access_logs: true
+
+# ============================================================
+# REGULATORY MONITORING
+# ============================================================
+regulatory_monitoring:
+  # Monitoring Settings
+  settings:
+    enabled: true
+    monitoring_frequency: "realtime"
+    alert_threshold: 0.70  # 70% of limit
+    critical_threshold: 0.90  # 90% of limit
+    auto_escalation: true
+    incident_management: true
+    
+  # Monitoring Areas
+  areas:
+    trade_compliance:
+      enabled: true
+      monitor_trade_limits: true
+      monitor_position_limits: true
+      monitor_risk_limits: true
+      
+    regulatory_compliance:
+      enabled: true
+      monitor_framework_compliance: true
+      monitor_reporting_deadlines: true
+      monitor_regulatory_changes: true
+      
+    operational_compliance:
+      enabled: true
+      monitor_system_availability: true
+      monitor_data_integrity: true
+      monitor_access_controls: true
+      
+    security_compliance:
+      enabled: true
+      monitor_security_breaches: true
+      monitor_unauthorized_access: true
+      monitor_data_protection: true
+      
+  # Alerts
+  alerts:
+    compliance_breach:
+      enabled: true
+      level: "critical"
+      actions:
+        - "notify_compliance_officer"
+        - "stop_trading"
+        - "investigate"
+        
+    regulatory_change:
+      enabled: true
+      level: "high"
+      actions:
+        - "notify_compliance_officer"
+        - "review_impact"
+        - "update_policies"
+        
+    reporting_failure:
+      enabled: true
+      level: "critical"
+      actions:
+        - "notify_compliance_officer"
+        - "submit_manual_report"
+        - "investigate"
+
+# ============================================================
+# COMPLIANCE OFFICERS
+# ============================================================
+compliance_officers:
+  # Officer Roles
+  roles:
+    chief_compliance_officer:
+      name: "Chief Compliance Officer"
+      email: "cco@nexusquantum.com"
+      phone: "+44 20 7946 0958"
+      authority: "full"
+      
+    compliance_manager:
+      name: "Compliance Manager"
+      email: "compliance@nexusquantum.com"
+      phone: "+44 20 7946 0957"
+      authority: "full"
+      
+    compliance_analyst:
+      name: "Compliance Analyst"
+      email: "compliance.analyst@nexusquantum.com"
+      phone: "+44 20 7946 0956"
+      authority: "limited"
+      
+    legal_counsel:
+      name: "Legal Counsel"
+      email: "legal@nexusquantum.com"
+      phone: "+44 20 7946 0955"
+      authority: "advisory"
+
+# ============================================================
+# REGULATORY SCENARIOS
+# ============================================================
+regulatory_scenarios:
+  # Scenario 1: Normal Operations
+  normal_operations:
+    description: "Normal regulatory compliance"
+    compliance_status: "compliant"
+    risk_level: "low"
+    actions_required: "none"
+    
+  # Scenario 2: Compliance Breach
+  compliance_breach:
+    description: "Compliance breach scenario"
+    compliance_status: "non_compliant"
+    risk_level: "high"
+    actions_required: 
+      - "notify_authorities"
+      - "stop_trading"
+      - "investigate"
+      
+  # Scenario 3: Regulatory Change
+  regulatory_change:
+    description: "Regulatory change scenario"
+    compliance_status: "pending_review"
+    risk_level: "medium"
+    actions_required:
+      - "review_impact"
+      - "update_policies"
+      - "train_staff"
+      
+  # Scenario 4: Audit Triggered
+  audit_triggered:
+    description: "Audit triggered scenario"
+    compliance_status: "under_audit"
+    risk_level: "medium"
+    actions_required:
+      - "prepare_documentation"
+      - "coordinate_with_auditors"
+      - "address_findings"
+
+# ============================================================
+# REGULATORY EXAMPLES
+# ============================================================
+regulatory_examples:
+  # Example 1: Best Execution
+  best_execution_example:
+    description: "Best Execution Report Example"
+    order_id: "ORD-2026-07-15-001"
+    symbol: "BTC/USDT"
+    quantity: 1.0
+    requested_price: 50000
+    executed_price: 50010
+    price_improvement: -10
+    fill_rate: 1.0
+    execution_time: 0.5  # seconds
+    venue: "Binance"
+    
+  # Example 2: Position Limit Breach
+  position_limit_breach_example:
+    description: "Position Limit Breach Report"
+    asset: "BTC"
+    current_position: 2.5
+    position_limit: 2.0
+    breach_amount: 0.5
+    breach_percentage: 0.25  # 25% over limit
+    action_taken: "reduce_position"
+    
+  # Example 3: Regulatory Report
+  regulatory_report_example:
+    description: "Regulatory Report Example"
+    report_id: "REG-2026-07-15-001"
+    period: "2026-06-15 to 2026-07-15"
+    jurisdiction: "UK"
+    framework: "FCA"
+    submissions:
+      - "trade_report"
+      - "position_report"
+      - "compliance_report"
+    status: "submitted"
+    submission_date: "2026-07-15"
+
+# ============================================================
+# ENVIRONMENT-SPECIFIC CONFIGURATIONS
+# ============================================================
+environments:
+  # Development Environment
+  development:
+    regulatory:
+      general:
+        enabled: true
+        regulatory_framework: "none"
+        compliance_level: "basic"
+        regulatory_reporting: false
+        audit_trail: true
+        
+    aml_kyc:
+      settings:
+        enabled: false
+        sanctions_screening: false
+        transaction_monitoring: false
+        
+    trading_compliance:
+      settings:
+        enabled: false
+        prevent_market_manipulation: false
+        
+  # Staging Environment
+  staging:
+    regulatory:
+      general:
+        enabled: true
+        regulatory_framework: "fca"
+        compliance_level: "standard"
+        regulatory_reporting: true
+        audit_trail: true
+        
+    aml_kyc:
+      settings:
+        enabled: true
+        aml_level: "standard"
+        kyc_level: "standard"
+        sanctions_screening: true
+        transaction_monitoring: true
+        
+    trading_compliance:
+      settings:
+        enabled: true
+        prevent_market_manipulation: true
+        ensure_best_execution: true
+        
+  # Production Environment
+  production:
+    regulatory:
+      general:
+        enabled: true
+        regulatory_framework: "multi"
+        compliance_level: "full"
+        regulatory_reporting: true
+        audit_trail: true
+        record_keeping: true
+        
+    aml_kyc:
+      settings:
+        enabled: true
+        aml_level: "full"
+        kyc_level: "full"
+        sanctions_screening: true
+        pep_screening: true
+        transaction_monitoring: true
+        reporting_to_authorities: true
+        
+    trading_compliance:
+      settings:
+        enabled: true
+        prevent_market_manipulation: true
+        prevent_insider_trading: true
+        prevent_front_running: true
+        ensure_best_execution: true
+        
+    position_limits:
+      general:
+        enabled: true
+        apply_across_assets: true
+        
+    record_keeping:
+      settings:
+        enabled: true
+        retention_period: 730
+        encryption_enabled: true
+        immutable_records: true
+        
+  # Demo Environment
+  demo:
+    regulatory:
+      general:
+        enabled: true
+        regulatory_framework: "none"
+        compliance_level: "basic"
+        regulatory_reporting: false
+        audit_trail: true
+        
+    aml_kyc:
+      settings:
+        enabled: false
+        
+    trading_compliance:
+      settings:
+        enabled: false
+
+# ============================================================
+# END OF CONFIGURATION
+# ============================================================
