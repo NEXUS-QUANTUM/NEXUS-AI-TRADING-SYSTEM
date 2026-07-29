@@ -1,0 +1,561 @@
+# trading/bots/hedge_bot/config/options_configs.yaml
+# NEXUS AI TRADING SYSTEM - Hedge Bot Options Configuration
+# Version: 2.0.0
+# Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+
+# ============================================================
+# OPTIONS GENERAL SETTINGS
+# ============================================================
+options:
+  # General Options Settings
+  general:
+    enabled: true
+    trading_enabled: false  # Options trading disabled by default
+    exchange: "deribit"  # deribit, okx, binance, cme
+    option_type: "european"  # european, american
+    settlement_type: "cash"  # cash, physical
+    option_style: "vanilla"  # vanilla, exotic, binary
+    update_frequency: "realtime"
+    use_testnet: true
+    
+  # Option Types
+  types:
+    call_options:
+      enabled: true
+      description: "Call options for bullish strategies"
+      
+    put_options:
+      enabled: true
+      description: "Put options for bearish strategies"
+      
+    vanilla_options:
+      enabled: true
+      description: "Standard vanilla options"
+      
+    exotic_options:
+      enabled: false
+      description: "Exotic options (barrier, digital, etc.)"
+      
+    binary_options:
+      enabled: false
+      description: "Binary options (digital options)"
+
+# ============================================================
+# OPTION STRATEGIES
+# ============================================================
+option_strategies:
+  # Strategy Settings
+  settings:
+    enabled: true
+    primary_strategy: "covered_call"  # covered_call, protective_put, collar, straddle, strangle
+    max_positions: 10
+    max_exposure: 100000
+    max_leverage: 2.0
+    
+  # Strategy Types
+  strategies:
+    covered_call:
+      enabled: true
+      description: "Covered call writing"
+      risk: "moderate"
+      max_loss: "unlimited"
+      max_profit: "limited"
+      
+    protective_put:
+      enabled: true
+      description: "Protective put hedging"
+      risk: "low"
+      max_loss: "limited"
+      max_profit: "unlimited"
+      
+    collar:
+      enabled: true
+      description: "Collar strategy (protective put + covered call)"
+      risk: "low"
+      max_loss: "limited"
+      max_profit: "limited"
+      
+    straddle:
+      enabled: true
+      description: "Straddle (call + put at same strike)"
+      risk: "high"
+      max_loss: "limited"
+      max_profit: "unlimited"
+      
+    strangle:
+      enabled: true
+      description: "Strangle (call + put at different strikes)"
+      risk: "high"
+      max_loss: "limited"
+      max_profit: "unlimited"
+      
+    iron_condor:
+      enabled: true
+      description: "Iron condor (credit spread)"
+      risk: "moderate"
+      max_loss: "limited"
+      max_profit: "limited"
+      
+    butterfly:
+      enabled: true
+      description: "Butterfly spread"
+      risk: "moderate"
+      max_loss: "limited"
+      max_profit: "limited"
+      
+    calendar_spread:
+      enabled: true
+      description: "Calendar spread (different expiries)"
+      risk: "moderate"
+      max_loss: "limited"
+      max_profit: "limited"
+
+# ============================================================
+# OPTION PRICING MODELS
+# ============================================================
+option_pricing:
+  # Pricing Models
+  models:
+    black_scholes:
+      enabled: true
+      description: "Black-Scholes option pricing model"
+      parameters:
+        volatility: 0.20
+        risk_free_rate: 0.04
+        dividend_yield: 0.01
+        
+    binomial:
+      enabled: true
+      description: "Binomial tree pricing model"
+      steps: 100
+      method: "crr"  # crr, jr, trigeorgis
+      american: true
+      
+    monte_carlo:
+      enabled: true
+      description: "Monte Carlo simulation"
+      simulations: 10000
+      steps: 252
+      variance_reduction: true
+      
+    black_76:
+      enabled: true
+      description: "Black-76 model for futures options"
+      
+  # Volatility Models
+  volatility:
+    historical_volatility:
+      enabled: true
+      lookback: 30
+      calculation: "standard_deviation"
+      
+    implied_volatility:
+      enabled: true
+      calculation: "black_scholes"
+      use_iv_rank: true
+      use_iv_percentile: true
+      
+    volatility_surface:
+      enabled: true
+      tenors:
+        - "1W"
+        - "2W"
+        - "1M"
+        - "2M"
+        - "3M"
+        - "6M"
+        - "1Y"
+      strikes:
+        - 0.80
+        - 0.90
+        - 1.00
+        - 1.10
+        - 1.20
+        
+    volatility_skew:
+      enabled: true
+      calculation: "put_call_skew"
+      tenors:
+        - "1M"
+        - "3M"
+        - "6M"
+
+# ============================================================
+# OPTION GREEKS
+# ============================================================
+option_greeks:
+  # Greek Settings
+  settings:
+    enabled: true
+    calculation_method: "black_scholes"
+    update_frequency: "realtime"
+    accuracy: "high"
+    parallel_calculation: true
+    
+  # Greeks
+  delta:
+    enabled: true
+    description: "Rate of change of option price with respect to underlying"
+    calculation: "first_derivative"
+    tolerance: 0.001
+    
+  gamma:
+    enabled: true
+    description: "Rate of change of delta with respect to underlying"
+    calculation: "second_derivative"
+    tolerance: 0.0001
+    
+  vega:
+    enabled: true
+    description: "Rate of change of option price with respect to volatility"
+    calculation: "first_derivative"
+    tolerance: 0.001
+    
+  theta:
+    enabled: true
+    description: "Rate of change of option price with respect to time"
+    calculation: "first_derivative"
+    tolerance: 0.001
+    
+  rho:
+    enabled: true
+    description: "Rate of change of option price with respect to interest rate"
+    calculation: "first_derivative"
+    tolerance: 0.001
+    
+  # Higher-Order Greeks
+  higher_order:
+    vanna: true
+    charm: true
+    speed: true
+    zomma: true
+    color: true
+    ultima: true
+    veta: true
+    vera: true
+
+# ============================================================
+# OPTION POSITION MANAGEMENT
+# ============================================================
+option_position_management:
+  # Position Settings
+  settings:
+    enabled: true
+    max_positions: 10
+    max_exposure_per_position: 50000
+    max_net_delta: 0.10
+    max_net_gamma: 0.05
+    max_net_vega: 0.02
+    max_net_theta: 0.01
+    
+  # Position Limits
+  limits:
+    call_positions:
+      max_quantity: 100
+      max_notional: 100000
+      
+    put_positions:
+      max_quantity: 100
+      max_notional: 100000
+      
+    total_positions:
+      max_quantity: 200
+      max_notional: 200000
+      
+  # Position Hedging
+  hedging:
+    delta_hedging: true
+    gamma_hedging: true
+    vega_hedging: true
+    theta_hedging: false
+    dynamic_hedging: true
+    rebalancing_threshold: 0.01
+
+# ============================================================
+# OPTION MONITORING
+# ============================================================
+option_monitoring:
+  # Monitoring Settings
+  settings:
+    enabled: true
+    monitoring_frequency: "realtime"
+    alert_threshold: 0.75  # 75% of limit
+    critical_threshold: 0.90  # 90% of limit
+    reporting_frequency: "daily"
+    
+  # Alert Conditions
+  alerts:
+    option_expiry_alert:
+      enabled: true
+      level: "warning"
+      threshold: 7  # days
+      message: "Option expiring: {contract} in {days} days"
+      
+    greek_limit_breach:
+      enabled: true
+      level: "critical"
+      threshold: 0.90
+      message: "Greek limit breached: {greek} at {value}"
+      
+    volatility_alert:
+      enabled: true
+      level: "warning"
+      threshold: 0.02  # 2% change
+      message: "Significant volatility change: {change}%"
+      
+    assignment_alert:
+      enabled: true
+      level: "critical"
+      message: "Option assignment detected: {contract}"
+      
+  # Monitoring Metrics
+  metrics:
+    - "option_delta"
+    - "option_gamma"
+    - "option_vega"
+    - "option_theta"
+    - "option_rho"
+    - "implied_volatility"
+    - "volatility_skew"
+    - "option_expiry"
+
+# ============================================================
+# OPTION REPORTING
+# ============================================================
+option_reporting:
+  # Report Settings
+  settings:
+    enabled: true
+    report_frequency: "daily"
+    report_format: "json"  # json, csv, pdf, html
+    include_analytics: true
+    include_visualizations: true
+    
+  # Report Sections
+  sections:
+    option_summary:
+      enabled: true
+      include_total_positions: true
+      include_net_greeks: true
+      include_expiry_summary: true
+      
+    position_details:
+      enabled: true
+      include_all_positions: true
+      include_greeks: true
+      include_pnl: true
+      
+    volatility_analysis:
+      enabled: true
+      include_implied_volatility: true
+      include_historical_volatility: true
+      include_volatility_skew: true
+      
+    risk_analysis:
+      enabled: true
+      include_greek_risk: true
+      include_expiry_risk: true
+      include_assignment_risk: true
+
+# ============================================================
+# OPTION DASHBOARD
+# ============================================================
+option_dashboard:
+  # Dashboard Settings
+  settings:
+    enabled: true
+    refresh_interval: 5
+    default_view: "summary"  # summary, details, analytics
+    
+  # Dashboard Widgets
+  widgets:
+    option_summary:
+      enabled: true
+      position: 1
+      size: "large"
+      
+    greeks_summary:
+      enabled: true
+      position: 2
+      size: "medium"
+      
+    volatility_surface:
+      enabled: true
+      position: 3
+      size: "large"
+      
+    position_greeks:
+      enabled: true
+      position: 4
+      size: "medium"
+      
+    expiry_schedule:
+      enabled: true
+      position: 5
+      size: "medium"
+      
+    alert_status:
+      enabled: true
+      position: 6
+      size: "small"
+
+# ============================================================
+# OPTION INTEGRATION
+# ============================================================
+option_integration:
+  # Integration Settings
+  settings:
+    enabled: true
+    integration_type: "api"  # api, webhook, websocket, file
+    
+  # External Systems
+  systems:
+    exchange:
+      enabled: true
+      endpoint: "/api/options"
+      update_frequency: "realtime"
+      
+    risk_system:
+      enabled: true
+      endpoint: "/api/risk/options"
+      update_frequency: "realtime"
+      
+    analytics_system:
+      enabled: true
+      endpoint: "/api/analytics/options"
+      update_frequency: "hourly"
+
+# ============================================================
+# OPTION SCENARIOS
+# ============================================================
+option_scenarios:
+  # Scenario 1: Covered Call
+  covered_call:
+    description: "Covered call strategy"
+    underlying: "BTC"
+    position: 1.0
+    call_strike: 55000
+    call_premium: 2000
+    max_profit: 7000
+    max_loss: "unlimited"
+    
+  # Scenario 2: Protective Put
+  protective_put:
+    description: "Protective put strategy"
+    underlying: "ETH"
+    position: 10.0
+    put_strike: 2800
+    put_premium: 200
+    max_profit: "unlimited"
+    max_loss: 2000
+    
+  # Scenario 3: Straddle
+  straddle:
+    description: "Straddle strategy"
+    underlying: "SOL"
+    strike: 150
+    call_premium: 10
+    put_premium: 10
+    total_cost: 20
+    breakeven_high: 170
+    breakeven_low: 130
+
+# ============================================================
+# OPTION EXAMPLES
+# ============================================================
+option_examples:
+  # Example 1: Option Pricing
+  option_pricing_example:
+    description: "Option Pricing Example"
+    underlying_price: 100
+    strike_price: 100
+    time_to_expiry: 30  # days
+    volatility: 0.20
+    risk_free_rate: 0.04
+    dividend_yield: 0.01
+    call_price: 3.50
+    put_price: 2.80
+    
+  # Example 2: Greeks Calculation
+  greeks_calculation_example:
+    description: "Greeks Calculation Example"
+    delta: 0.52
+    gamma: 0.03
+    vega: 0.20
+    theta: -0.02
+    rho: 0.01
+    
+  # Example 3: Implied Volatility
+  implied_volatility_example:
+    description: "Implied Volatility Example"
+    option_price: 3.50
+    underlying_price: 100
+    strike_price: 100
+    time_to_expiry: 30
+    risk_free_rate: 0.04
+    dividend_yield: 0.01
+    implied_volatility: 0.22  # 22%
+
+# ============================================================
+# ENVIRONMENT-SPECIFIC CONFIGURATIONS
+# ============================================================
+environments:
+  # Development Environment
+  development:
+    options:
+      general:
+        enabled: true
+        trading_enabled: false
+        use_testnet: true
+        
+    option_strategies:
+      settings:
+        max_positions: 5
+        max_exposure: 10000
+        
+  # Staging Environment
+  staging:
+    options:
+      general:
+        enabled: true
+        trading_enabled: true
+        use_testnet: true
+        
+    option_strategies:
+      settings:
+        max_positions: 10
+        max_exposure: 50000
+        
+  # Production Environment
+  production:
+    options:
+      general:
+        enabled: true
+        trading_enabled: true
+        use_testnet: false
+        exchange: "deribit"
+        option_type: "european"
+        settlement_type: "cash"
+        
+    option_strategies:
+      settings:
+        max_positions: 10
+        max_exposure: 100000
+        max_leverage: 2.0
+        
+  # Demo Environment
+  demo:
+    options:
+      general:
+        enabled: true
+        trading_enabled: false
+        use_testnet: true
+        
+    option_strategies:
+      settings:
+        max_positions: 5
+        max_exposure: 25000
+
+# ============================================================
+# END OF CONFIGURATION
+# ============================================================
