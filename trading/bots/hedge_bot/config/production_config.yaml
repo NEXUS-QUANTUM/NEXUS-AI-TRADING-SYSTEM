@@ -1,0 +1,617 @@
+# trading/bots/hedge_bot/config/production_config.yaml
+# NEXUS AI TRADING SYSTEM - Hedge Bot Production Configuration
+# Version: 2.0.0
+# Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+
+# ============================================================
+# BOT IDENTITY - PRODUCTION
+# ============================================================
+bot:
+  id: "nexus_hedge_bot_prod"
+  name: "NEXUS Hedge Bot - Production"
+  version: "2.0.0"
+  description: "Production instance of NEXUS Hedge Bot"
+  
+  # Production-Specific Settings
+  environment: "production"
+  enabled: true
+  active: true
+  debug_mode: false
+  verbose_logging: false
+  simulate_latency: false
+  latency_ms: 0
+  
+  # Production Features
+  features:
+    paper_trading: false
+    mock_exchange: false
+    synthetic_data: false
+    fast_forward: false
+    skip_validation: false
+    bypass_risk_checks: false
+    auto_hedging: true
+    auto_rebalancing: true
+    ai_optimization: true
+
+# ============================================================
+# EXCHANGE CONFIGURATION - PRODUCTION
+# ============================================================
+exchange:
+  name: "binance"
+  type: "spot"
+  sandbox: false
+  testnet: false
+  
+  # Production Exchange Settings
+  settings:
+    use_mock_data: false
+    simulate_order_failures: false
+    failure_rate: 0.0
+    use_websocket: true
+    websocket_reconnect: true
+    websocket_timeout: 30
+    
+  # API Configuration
+  api:
+    key: "${EXCHANGE_API_KEY}"
+    secret: "${EXCHANGE_API_SECRET}"
+    passphrase: "${EXCHANGE_API_PASSPHRASE}"
+    timeout: 10
+    retry_attempts: 3
+    rate_limit: 1200  # requests per minute
+    use_hmac: true
+    use_signing: true
+    
+  # Trading Pairs - Production
+  pairs:
+    - "BTC/USDT"
+    - "ETH/USDT"
+    - "SOL/USDT"
+    - "ADA/USDT"
+    - "DOT/USDT"
+    - "AVAX/USDT"
+    - "MATIC/USDT"
+    - "LINK/USDT"
+    - "UNI/USDT"
+    - "AAVE/USDT"
+    - "ATOM/USDT"
+    - "NEAR/USDT"
+    - "FTM/USDT"
+    - "ARB/USDT"
+    - "OP/USDT"
+
+# ============================================================
+# TRADING CONFIGURATION - PRODUCTION
+# ============================================================
+trading:
+  # Order Settings
+  order:
+    type: "limit"
+    time_in_force: "GTC"
+    max_order_size: 10000
+    min_order_size: 100
+    slippage_tolerance: 0.001  # 0.1%
+    use_fill_or_kill: false
+    use_post_only: true
+    use_reduce_only: false
+    
+  # Position Settings
+  position:
+    max_positions: 15
+    max_leverage: 3.0
+    target_hedge_ratio: 0.50
+    min_hedge_ratio: 0.20
+    max_hedge_ratio: 0.80
+    position_monitoring: true
+    auto_close: false
+    
+  # Execution Settings
+  execution:
+    simulate_execution: false
+    execution_delay: 0
+    fill_probability: 1.0
+    partial_fill_probability: 0.05
+    execution_timeout: 30
+    order_retry: true
+    order_retry_attempts: 3
+
+# ============================================================
+# HEDGE STRATEGY - PRODUCTION
+# ============================================================
+hedge_strategy:
+  # Strategy Configuration
+  config:
+    hedge_ratio: 0.50
+    hedge_threshold: 0.01  # 1%
+    max_hedge_position: 0.80
+    min_hedge_position: 0.20
+    dynamic_hedge_ratio: true
+    rebalance_interval: 15  # minutes
+    volatility_lookback: 30
+    correlation_lookback: 60
+    ml_hedge_optimization: true
+    adaptive_hedging: true
+    
+  # Strategy Execution
+  execution:
+    order_type: "limit"
+    time_in_force: "GTC"
+    max_order_size: 10000
+    min_order_size: 100
+    slippage_tolerance: 0.001
+    iceberg_order: false
+    smart_routing: true
+    use_twap: false
+    use_vwap: false
+    
+  # Strategy Risk
+  risk:
+    max_drawdown: 0.15
+    daily_loss_limit: 0.05
+    max_leverage: 3.0
+    stop_loss: 0.10
+    take_profit: 0.20
+    trailing_stop: 0.03
+    circuit_breaker: true
+
+# ============================================================
+# RISK MANAGEMENT - PRODUCTION
+# ============================================================
+risk_management:
+  # General Risk
+  general:
+    enabled: true
+    risk_level: "moderate"
+    max_risk_per_trade: 0.02  # 2% of portfolio
+    max_risk_per_day: 0.05  # 5% of portfolio
+    max_risk_per_month: 0.15  # 15% of portfolio
+    risk_monitoring: true
+    risk_alerts: true
+    risk_limits: true
+    
+  # Position Sizing
+  position_sizing:
+    method: "risk_based"
+    risk_per_trade: 0.01
+    max_position_size: 10000
+    min_position_size: 100
+    use_correlation_adj: true
+    use_volatility_adj: true
+    kelly_fraction: 0.25
+    
+  # Risk Limits
+  limits:
+    daily_loss_limit: 0.05
+    weekly_loss_limit: 0.10
+    monthly_loss_limit: 0.15
+    max_drawdown: 0.20
+    max_correlation: 0.70
+    max_leverage: 3.0
+    max_exposure: 1000000
+    max_position_size: 10000
+
+# ============================================================
+# DATA CONFIGURATION - PRODUCTION
+# ============================================================
+data:
+  # Data Sources
+  sources:
+    market_data:
+      provider: "exchange"
+      update_frequency: "realtime"
+      cache: true
+      cache_ttl: 5  # seconds
+      
+    historical_data:
+      provider: "database"
+      lookback_period: 365
+      granularity: "1h"
+      min_data_points: 100
+      
+    sentiment_data:
+      provider: "api"
+      update_frequency: "hourly"
+      sources:
+        - "twitter"
+        - "news"
+        - "social_media"
+        
+    fundamental_data:
+      provider: "api"
+      update_frequency: "daily"
+      
+  # Data Storage
+  storage:
+    database: "timescaledb"
+    cache: "redis"
+    retention_days: 365
+    compression: true
+    backup: true
+    replication: true
+    
+  # Data Quality
+  quality:
+    validate_data: true
+    remove_outliers: true
+    interpolate_missing: true
+    min_data_points: 100
+    outlier_threshold: 3.0
+    data_quality_check: true
+
+# ============================================================
+# AI & ML - PRODUCTION
+# ============================================================
+ai_ml:
+  # AI Configuration
+  config:
+    enabled: true
+    model_type: "ensemble"
+    model_path: "/opt/nexus-trading/models/hedge_model_prod.pkl"
+    inference_batch_size: 100
+    prediction_horizon: 60
+    confidence_threshold: 0.60
+    use_gpu: true
+    use_cuda: true
+    
+  # ML Features
+  features:
+    - "price_momentum"
+    - "volatility"
+    - "correlation"
+    - "volume"
+    - "sentiment"
+    - "order_flow"
+    - "market_regime"
+    - "funding_rate"
+    - "open_interest"
+    - "basis_spread"
+    
+  # Training
+  training:
+    enabled: true
+    frequency: "daily"
+    lookback_period: 90
+    validation_split: 0.20
+    epochs: 100
+    early_stopping: true
+    batch_size: 32
+    model_retraining: true
+    
+  # Prediction
+  prediction:
+    enabled: true
+    confidence_threshold: 0.60
+    prediction_models:
+      - "market_direction"
+      - "price_change"
+      - "volatility_forecast"
+      - "correlation_forecast"
+      - "hedge_ratio_forecast"
+    prediction_accuracy_monitoring: true
+
+# ============================================================
+# MONITORING - PRODUCTION
+# ============================================================
+monitoring:
+  # Monitoring Configuration
+  config:
+    enabled: true
+    monitoring_frequency: "realtime"
+    alert_channels:
+      - "email"
+      - "telegram"
+      - "slack"
+      - "push"
+      - "pagerduty"
+      
+  # Health Checks
+  health:
+    check_interval: 30  # seconds
+    auto_recovery: true
+    max_failures: 3
+    recovery_timeout: 60  # seconds
+    health_endpoint: "/health"
+    readiness_endpoint: "/ready"
+    liveness_endpoint: "/live"
+    
+  # Alerts
+  alerts:
+    trade_execution: true
+    position_changes: true
+    risk_breaches: true
+    system_errors: true
+    performance_issues: true
+    drawdown_alerts: true
+    margin_alerts: true
+    exposure_alerts: true
+    exchange_disconnect: true
+    api_failure: true
+    
+  # Metrics
+  metrics:
+    - "pnl"
+    - "win_rate"
+    - "sharpe_ratio"
+    - "max_drawdown"
+    - "trade_count"
+    - "volume_traded"
+    - "response_time"
+    - "error_rate"
+    - "hedge_ratio"
+    - "exposure"
+    - "margin_utilization"
+    - "position_count"
+    - "order_flow"
+    - "latency"
+
+# ============================================================
+# LOGGING - PRODUCTION
+# ============================================================
+logging:
+  # Log Configuration
+  config:
+    enabled: true
+    log_level: "INFO"
+    log_format: "json"
+    log_rotation: "daily"
+    log_compression: true
+    log_encryption: true
+    log_retention_days: 30
+    log_audit: true
+    
+  # Log Files
+  files:
+    main_log: "/var/log/nexus-trading/hedge_bot.log"
+    trade_log: "/var/log/nexus-trading/trades.log"
+    error_log: "/var/log/nexus-trading/errors.log"
+    audit_log: "/var/log/nexus-trading/audit.log"
+    performance_log: "/var/log/nexus-trading/performance.log"
+    access_log: "/var/log/nexus-trading/access.log"
+    
+  # Log Categories
+  categories:
+    trade: true
+    position: true
+    risk: true
+    system: true
+    audit: true
+    performance: true
+    debug: false
+    access: true
+
+# ============================================================
+# SECURITY - PRODUCTION
+# ============================================================
+security:
+  # Security Settings
+  enabled: true
+  encryption: true
+  encryption_method: "AES-256-GCM"
+  key_rotation_days: 30
+  security_headers: true
+  content_security_policy: true
+  rate_limiting: true
+  ip_whitelist: []
+  ip_blacklist: []
+  
+  # Authentication
+  auth:
+    enabled: true
+    method: "jwt"
+    token_expiry: 3600  # seconds
+    refresh_token_expiry: 86400  # seconds
+    multi_factor_auth: true
+    auth_failure_limit: 5
+    
+  # Authorization
+  authorization:
+    enabled: true
+    rbac: true
+    permission_level: "admin"
+    roles:
+      - "admin"
+      - "trader"
+      - "viewer"
+      - "auditor"
+    permission_cache: true
+    
+  # API Security
+  api:
+    rate_limiting: true
+    max_requests_per_minute: 60
+    ip_whitelist: []
+    ip_blacklist: []
+    api_key_rotation: 30  # days
+    use_hmac: true
+    use_signing: true
+    
+  # Data Security
+  data:
+    encryption_at_rest: true
+    encryption_in_transit: true
+    pii_masking: true
+    audit_trail: true
+    data_retention: 730  # days
+
+# ============================================================
+# COMPLIANCE - PRODUCTION
+# ============================================================
+compliance:
+  # Compliance Settings
+  enabled: true
+  regulatory_framework: "multi"
+  compliance_level: "full"
+  auto_remediation: true
+  audit_trail: true
+  compliance_reporting: true
+  regulatory_reporting: true
+  
+  # AML/KYC
+  aml_kyc:
+    enabled: true
+    screening: true
+    reporting: true
+    retention_days: 730
+    aml_level: "full"
+    kyc_level: "full"
+    
+  # Position Limits
+  position_limits:
+    enabled: true
+    max_single_asset: 0.15
+    max_asset_class: 0.40
+    max_sector: 0.35
+    max_industry: 0.25
+    max_geographic: 0.50
+    
+  # Transaction Reporting
+  reporting:
+    enabled: true
+    frequency: "daily"
+    format: "json"
+    retention_days: 730
+    regulatory_submission: true
+    
+  # Record Keeping
+  record_keeping:
+    enabled: true
+    retention_days: 730
+    immutable: true
+    encryption: true
+    backup: true
+
+# ============================================================
+# NOTIFICATIONS - PRODUCTION
+# ============================================================
+notifications:
+  # Notification Channels
+  channels:
+    email:
+      enabled: true
+      smtp_server: "smtp.gmail.com"
+      smtp_port: 587
+      username: "${EMAIL_USERNAME}"
+      password: "${EMAIL_PASSWORD}"
+      recipients:
+        - "alerts@nexusquantum.com"
+        - "risk@nexusquantum.com"
+        - "trading@nexusquantum.com"
+      priority: "high"
+      
+    telegram:
+      enabled: true
+      bot_token: "${TELEGRAM_BOT_TOKEN}"
+      chat_id: "${TELEGRAM_CHAT_ID}"
+      priority: "high"
+      
+    slack:
+      enabled: true
+      webhook_url: "${SLACK_WEBHOOK_URL}"
+      channel: "#nexus-alerts"
+      priority: "medium"
+      
+    push:
+      enabled: true
+      app_id: "${PUSH_APP_ID}"
+      api_key: "${PUSH_API_KEY}"
+      priority: "medium"
+      
+    pagerduty:
+      enabled: true
+      integration_key: "${PAGERDUTY_INTEGRATION_KEY}"
+      priority: "critical"
+      
+  # Notification Types
+  types:
+    trade_execution: true
+    position_update: true
+    risk_alert: true
+    system_error: true
+    performance_report: true
+    daily_summary: true
+    weekly_summary: true
+    monthly_summary: true
+    compliance_alerts: true
+    security_alerts: true
+
+# ============================================================
+# BACKUP - PRODUCTION
+# ============================================================
+backup:
+  # Backup Settings
+  enabled: true
+  schedule: "daily"
+  time: "00:00:00"
+  retention_days: 30
+  compression: true
+  encryption: true
+  verification: true
+  replication: true
+  
+  # Backup Types
+  types:
+    database: true
+    configuration: true
+    logs: true
+    models: true
+    trading_data: true
+    audit_logs: true
+    
+  # Backup Storage
+  storage:
+    local: true
+    cloud: true
+    provider: "aws"
+    bucket: "nexus-backups-prod"
+    region: "us-east-1"
+    storage_class: "STANDARD_IA"
+    replication: true
+    
+  # Backup Verification
+  verification:
+    enabled: true
+    verify_after_backup: true
+    test_restore: false
+    verify_checksums: true
+    verify_integrity: true
+
+# ============================================================
+# PERFORMANCE OPTIMIZATION - PRODUCTION
+# ============================================================
+performance:
+  # Optimization Settings
+  enabled: true
+  max_workers: 10
+  batch_size: 100
+  queue_size: 1000
+  use_async: true
+  use_caching: true
+  cache_ttl: 60  # seconds
+  use_connection_pooling: true
+  use_parallel_processing: true
+  
+  # Resource Management
+  resources:
+    max_memory_mb: 2048
+    max_cpu_cores: 8
+    max_concurrent_trades: 10
+    max_order_rate: 20  # orders per second
+    max_websocket_connections: 50
+    
+  # Latency
+  latency:
+    target_latency_ms: 50
+    max_latency_ms: 200
+    latency_alert_threshold: 100  # milliseconds
+    latency_monitoring: true
+    
+  # Throughput
+  throughput:
+    target_tps: 100
+    max_tps: 500
+    throughput_alert_threshold: 400
+    throughput_monitoring: true
+
+# ============================================================
+# END OF PRODUCTION CONFIGURATION
+# ============================================================
