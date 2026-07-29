@@ -1,0 +1,1084 @@
+# trading/bots/hedge_bot/config/asset_configs.yaml
+# NEXUS AI TRADING SYSTEM - Hedge Bot Asset Configuration
+# Version: 2.0.0
+# Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+
+# ============================================================
+# ASSET CLASS DEFINITIONS
+# ============================================================
+asset_classes:
+  # Cryptocurrency Assets
+  cryptocurrency:
+    description: "Digital and Crypto Assets"
+    enabled: true
+    priority: 1
+    trading_pairs:
+      - "BTC/USD"
+      - "BTC/USDT"
+      - "BTC/BUSD"
+      - "BTC/USDC"
+      - "ETH/USD"
+      - "ETH/USDT"
+      - "ETH/BTC"
+      - "ETH/BUSD"
+      - "ETH/USDC"
+      - "SOL/USD"
+      - "SOL/USDT"
+      - "SOL/BTC"
+      - "ADA/USD"
+      - "ADA/USDT"
+      - "DOT/USD"
+      - "DOT/USDT"
+      - "AVAX/USD"
+      - "AVAX/USDT"
+      - "XRP/USD"
+      - "XRP/USDT"
+      - "LINK/USD"
+      - "LINK/USDT"
+      - "UNI/USD"
+      - "UNI/USDT"
+      - "AAVE/USD"
+      - "AAVE/USDT"
+      - "MATIC/USD"
+      - "MATIC/USDT"
+      - "ATOM/USD"
+      - "ATOM/USDT"
+      - "NEAR/USD"
+      - "NEAR/USDT"
+      - "FTM/USD"
+      - "FTM/USDT"
+      - "ARB/USD"
+      - "ARB/USDT"
+      - "OP/USD"
+      - "OP/USDT"
+      - "SUI/USD"
+      - "SUI/USDT"
+      - "APT/USD"
+      - "APT/USDT"
+      
+    spot_markets:
+      enabled: true
+      exchanges:
+        - binance
+        - bybit
+        - coinbase
+        - kraken
+        - okx
+        - kucoin
+        
+    futures_markets:
+      enabled: true
+      exchanges:
+        - binance
+        - bybit
+        - okx
+        - bitget
+        
+    perpetual_markets:
+      enabled: true
+      exchanges:
+        - binance
+        - bybit
+        - okx
+        
+    margin_markets:
+      enabled: true
+      exchanges:
+        - binance
+        - bybit
+        
+    options_markets:
+      enabled: false
+      exchanges:
+        - deribit
+        - okx
+        
+    staking:
+      enabled: true
+      platforms:
+        - binance
+        - bybit
+        - kraken
+        
+    lending:
+      enabled: true
+      platforms:
+        - aave
+        - compound
+        - binance
+        
+  # Forex Assets
+  forex:
+    description: "Foreign Exchange Assets"
+    enabled: true
+    priority: 2
+    trading_pairs:
+      - "EUR/USD"
+      - "GBP/USD"
+      - "USD/JPY"
+      - "USD/CHF"
+      - "AUD/USD"
+      - "USD/CAD"
+      - "NZD/USD"
+      - "EUR/GBP"
+      - "EUR/JPY"
+      - "GBP/JPY"
+      - "AUD/JPY"
+      - "NZD/JPY"
+      - "USD/SGD"
+      - "USD/HKD"
+      - "USD/CNH"
+      - "USD/MXN"
+      - "USD/TRY"
+      
+    spot_markets:
+      enabled: true
+      exchanges:
+        - oanda
+        - forexcom
+        - interactive_brokers
+        - fxcm
+        
+    futures_markets:
+      enabled: true
+      exchanges:
+        - interactive_brokers
+        - oanda
+        
+    forward_markets:
+      enabled: false
+      exchanges:
+        - interactive_brokers
+        
+    options_markets:
+      enabled: false
+      exchanges:
+        - interactive_brokers
+        
+  # Equity Assets
+  equity:
+    description: "Equity and Stock Assets"
+    enabled: true
+    priority: 3
+    trading_pairs:
+      # US Equities
+      - "AAPL/USD"
+      - "MSFT/USD"
+      - "GOOGL/USD"
+      - "AMZN/USD"
+      - "TSLA/USD"
+      - "NVDA/USD"
+      - "META/USD"
+      - "JPM/USD"
+      - "VTI/USD"
+      - "SPY/USD"
+      - "QQQ/USD"
+      - "ARKK/USD"
+      - "BABA/USD"
+      - "NFLX/USD"
+      - "ADBE/USD"
+      - "CRM/USD"
+      - "ORCL/USD"
+      - "IBM/USD"
+      - "INTC/USD"
+      - "CSCO/USD"
+      - "PFE/USD"
+      - "JNJ/USD"
+      - "WMT/USD"
+      - "PG/USD"
+      - "KO/USD"
+      - "PEP/USD"
+      - "CVX/USD"
+      - "XOM/USD"
+      - "VZ/USD"
+      - "T/USD"
+      
+      # UK Equities
+      - "UK/GPRO"
+      - "UK/BA"
+      - "UK/HSBA"
+      - "UK/ULVR"
+      - "UK/RB"
+      
+      # European Equities
+      - "EU/SAP"
+      - "EU/NOVO"
+      - "EU/ASML"
+      - "EU/ROG"
+      - "EU/SAN"
+      
+      # Asian Equities
+      - "JP/7974"
+      - "JP/9984"
+      - "JP/9983"
+      - "JP/9432"
+      - "CN/600036"
+      - "CN/000858"
+      
+    spot_markets:
+      enabled: true
+      exchanges:
+        - interactive_brokers
+        - alpaca
+        - tradestation
+        
+    futures_markets:
+      enabled: true
+      exchanges:
+        - interactive_brokers
+        - cme
+        - eurex
+        
+    options_markets:
+      enabled: false
+      exchanges:
+        - interactive_brokers
+        
+  # Commodity Assets
+  commodity:
+    description: "Commodity and Raw Material Assets"
+    enabled: true
+    priority: 4
+    trading_pairs:
+      # Precious Metals
+      - "GOLD/USD"
+      - "SILVER/USD"
+      - "PLATINUM/USD"
+      - "PALLADIUM/USD"
+      
+      # Energy
+      - "OIL/USD"
+      - "NATURAL_GAS/USD"
+      - "BRENT/USD"
+      - "GASOLINE/USD"
+      
+      # Agriculture
+      - "CORN/USD"
+      - "WHEAT/USD"
+      - "SOYBEANS/USD"
+      - "SUGAR/USD"
+      - "COFFEE/USD"
+      - "COTTON/USD"
+      - "COCOA/USD"
+      
+      # Metals
+      - "COPPER/USD"
+      - "ALUMINUM/USD"
+      - "ZINC/USD"
+      - "NICKEL/USD"
+      - "LEAD/USD"
+      
+      # Livestock
+      - "LIVE_CATTLE/USD"
+      - "FEEDER_CATTLE/USD"
+      - "LEAN_HOGS/USD"
+      
+    spot_markets:
+      enabled: false
+      exchanges:
+        - interactive_brokers
+        
+    futures_markets:
+      enabled: true
+      exchanges:
+        - cme
+        - ice
+        - lme
+        - eurex
+        
+  # Fixed Income
+  fixed_income:
+    description: "Fixed Income and Bond Assets"
+    enabled: true
+    priority: 5
+    trading_pairs:
+      - "US10Y/USD"
+      - "US30Y/USD"
+      - "US5Y/USD"
+      - "US2Y/USD"
+      - "EU10Y/USD"
+      - "UK10Y/USD"
+      - "JP10Y/USD"
+      - "AU10Y/USD"
+      
+    futures_markets:
+      enabled: true
+      exchanges:
+        - cme
+        - eurex
+        - interactive_brokers
+        
+    bonds:
+      enabled: true
+      exchanges:
+        - interactive_brokers
+        - tradeweb
+        
+  # Crypto Derivatives
+  crypto_derivatives:
+    description: "Crypto Derivatives and Structured Products"
+    enabled: true
+    priority: 1
+    trading_pairs:
+      # Perpetual Futures
+      - "BTC-PERP/USD"
+      - "ETH-PERP/USD"
+      - "SOL-PERP/USD"
+      - "ADA-PERP/USD"
+      - "DOT-PERP/USD"
+      - "AVAX-PERP/USD"
+      - "XRP-PERP/USD"
+      - "LINK-PERP/USD"
+      - "UNI-PERP/USD"
+      - "AAVE-PERP/USD"
+      
+      # Quarterly Futures
+      - "BTC-QUARTERLY/USD"
+      - "ETH-QUARTERLY/USD"
+      - "SOL-QUARTERLY/USD"
+      - "ADA-QUARTERLY/USD"
+      
+      # Options
+      - "BTC-OPTIONS/USD"
+      - "ETH-OPTIONS/USD"
+      
+    perpetual_futures:
+      enabled: true
+      exchanges:
+        - binance
+        - bybit
+        - okx
+        
+    quarterly_futures:
+      enabled: true
+      exchanges:
+        - binance
+        - bybit
+        - okx
+        - deribit
+        
+    options:
+      enabled: true
+      exchanges:
+        - deribit
+        - okx
+
+# ============================================================
+# ASSET METADATA
+# ============================================================
+asset_metadata:
+  # Cryptocurrency Metadata
+  cryptocurrency:
+    BTC:
+      name: "Bitcoin"
+      symbol: "BTC"
+      decimals: 8
+      min_order_size: 0.001
+      max_order_size: 100
+      tick_size: 0.01
+      min_price_change: 0.01
+      market_cap: 2000000000000
+      volume_24h: 50000000000
+      circulating_supply: 21000000
+      max_supply: 21000000
+      consensus: "Proof of Work"
+      network: "Bitcoin"
+      block_time: 600
+      halving_event: "2028-03-15"
+      
+    ETH:
+      name: "Ethereum"
+      symbol: "ETH"
+      decimals: 18
+      min_order_size: 0.01
+      max_order_size: 1000
+      tick_size: 0.01
+      min_price_change: 0.01
+      market_cap: 500000000000
+      volume_24h: 20000000000
+      circulating_supply: 120000000
+      max_supply: null
+      consensus: "Proof of Stake"
+      network: "Ethereum"
+      block_time: 12
+      
+    SOL:
+      name: "Solana"
+      symbol: "SOL"
+      decimals: 9
+      min_order_size: 0.1
+      max_order_size: 10000
+      tick_size: 0.01
+      min_price_change: 0.001
+      market_cap: 50000000000
+      volume_24h: 3000000000
+      circulating_supply: 400000000
+      max_supply: null
+      consensus: "Proof of History"
+      network: "Solana"
+      block_time: 0.4
+      
+    ADA:
+      name: "Cardano"
+      symbol: "ADA"
+      decimals: 6
+      min_order_size: 1
+      max_order_size: 100000
+      tick_size: 0.001
+      min_price_change: 0.0001
+      market_cap: 20000000000
+      volume_24h: 1000000000
+      circulating_supply: 35000000000
+      max_supply: 45000000000
+      consensus: "Proof of Stake"
+      network: "Cardano"
+      block_time: 20
+      
+    DOT:
+      name: "Polkadot"
+      symbol: "DOT"
+      decimals: 10
+      min_order_size: 0.1
+      max_order_size: 10000
+      tick_size: 0.01
+      min_price_change: 0.001
+      market_cap: 10000000000
+      volume_24h: 500000000
+      circulating_supply: 1200000000
+      max_supply: null
+      consensus: "Proof of Stake"
+      network: "Polkadot"
+      block_time: 6
+      
+    XRP:
+      name: "Ripple"
+      symbol: "XRP"
+      decimals: 6
+      min_order_size: 1
+      max_order_size: 100000
+      tick_size: 0.001
+      min_price_change: 0.0001
+      market_cap: 30000000000
+      volume_24h: 2000000000
+      circulating_supply: 50000000000
+      max_supply: 100000000000
+      consensus: "Consensus Protocol"
+      network: "XRP Ledger"
+      block_time: 4
+      
+    LINK:
+      name: "Chainlink"
+      symbol: "LINK"
+      decimals: 18
+      min_order_size: 0.1
+      max_order_size: 10000
+      tick_size: 0.01
+      min_price_change: 0.001
+      market_cap: 8000000000
+      volume_24h: 500000000
+      circulating_supply: 500000000
+      max_supply: 1000000000
+      consensus: "Oracle Network"
+      network: "Ethereum"
+      block_time: 12
+      
+    UNI:
+      name: "Uniswap"
+      symbol: "UNI"
+      decimals: 18
+      min_order_size: 0.1
+      max_order_size: 10000
+      tick_size: 0.01
+      min_price_change: 0.001
+      market_cap: 5000000000
+      volume_24h: 300000000
+      circulating_supply: 600000000
+      max_supply: 1000000000
+      consensus: "DeFi"
+      network: "Ethereum"
+      block_time: 12
+      
+    AAVE:
+      name: "Aave"
+      symbol: "AAVE"
+      decimals: 18
+      min_order_size: 0.1
+      max_order_size: 10000
+      tick_size: 0.01
+      min_price_change: 0.001
+      market_cap: 3000000000
+      volume_24h: 200000000
+      circulating_supply: 15000000
+      max_supply: 16000000
+      consensus: "DeFi"
+      network: "Ethereum"
+      block_time: 12
+      
+  # Forex Metadata
+  forex:
+    EUR:
+      name: "Euro"
+      symbol: "EUR"
+      decimals: 5
+      min_order_size: 0.01
+      max_order_size: 1000
+      tick_size: 0.00001
+      min_price_change: 0.00001
+      currency_type: "Fiat"
+      central_bank: "ECB"
+      interest_rate: 0.04
+      
+    GBP:
+      name: "British Pound"
+      symbol: "GBP"
+      decimals: 5
+      min_order_size: 0.01
+      max_order_size: 1000
+      tick_size: 0.00001
+      min_price_change: 0.00001
+      currency_type: "Fiat"
+      central_bank: "BOE"
+      interest_rate: 0.0525
+      
+    JPY:
+      name: "Japanese Yen"
+      symbol: "JPY"
+      decimals: 3
+      min_order_size: 1
+      max_order_size: 100000
+      tick_size: 0.001
+      min_price_change: 0.001
+      currency_type: "Fiat"
+      central_bank: "BOJ"
+      interest_rate: -0.001
+      
+    CHF:
+      name: "Swiss Franc"
+      symbol: "CHF"
+      decimals: 5
+      min_order_size: 0.01
+      max_order_size: 1000
+      tick_size: 0.00001
+      min_price_change: 0.00001
+      currency_type: "Fiat"
+      central_bank: "SNB"
+      interest_rate: 0.01
+      
+    AUD:
+      name: "Australian Dollar"
+      symbol: "AUD"
+      decimals: 5
+      min_order_size: 0.01
+      max_order_size: 1000
+      tick_size: 0.00001
+      min_price_change: 0.00001
+      currency_type: "Fiat"
+      central_bank: "RBA"
+      interest_rate: 0.041
+      
+    CAD:
+      name: "Canadian Dollar"
+      symbol: "CAD"
+      decimals: 5
+      min_order_size: 0.01
+      max_order_size: 1000
+      tick_size: 0.00001
+      min_price_change: 0.00001
+      currency_type: "Fiat"
+      central_bank: "BOC"
+      interest_rate: 0.05
+      
+    NZD:
+      name: "New Zealand Dollar"
+      symbol: "NZD"
+      decimals: 5
+      min_order_size: 0.01
+      max_order_size: 1000
+      tick_size: 0.00001
+      min_price_change: 0.00001
+      currency_type: "Fiat"
+      central_bank: "RBNZ"
+      interest_rate: 0.055
+      
+  # Equity Metadata
+  equity:
+    AAPL:
+      name: "Apple Inc."
+      symbol: "AAPL"
+      decimals: 2
+      min_order_size: 1
+      max_order_size: 10000
+      tick_size: 0.01
+      min_price_change: 0.01
+      sector: "Technology"
+      industry: "Consumer Electronics"
+      market_cap: 3000000000000
+      volume_avg: 80000000
+      pe_ratio: 30
+      dividend_yield: 0.005
+      exchange: "NASDAQ"
+      country: "US"
+      
+    MSFT:
+      name: "Microsoft Corporation"
+      symbol: "MSFT"
+      decimals: 2
+      min_order_size: 1
+      max_order_size: 10000
+      tick_size: 0.01
+      min_price_change: 0.01
+      sector: "Technology"
+      industry: "Software"
+      market_cap: 2800000000000
+      volume_avg: 25000000
+      pe_ratio: 35
+      dividend_yield: 0.01
+      exchange: "NASDAQ"
+      country: "US"
+      
+    GOOGL:
+      name: "Alphabet Inc."
+      symbol: "GOOGL"
+      decimals: 2
+      min_order_size: 1
+      max_order_size: 10000
+      tick_size: 0.01
+      min_price_change: 0.01
+      sector: "Technology"
+      industry: "Internet Services"
+      market_cap: 2000000000000
+      volume_avg: 20000000
+      pe_ratio: 28
+      dividend_yield: 0.0
+      exchange: "NASDAQ"
+      country: "US"
+      
+    AMZN:
+      name: "Amazon.com Inc."
+      symbol: "AMZN"
+      decimals: 2
+      min_order_size: 1
+      max_order_size: 10000
+      tick_size: 0.01
+      min_price_change: 0.01
+      sector: "Consumer Cyclical"
+      industry: "E-commerce"
+      market_cap: 1800000000000
+      volume_avg: 50000000
+      pe_ratio: 45
+      dividend_yield: 0.0
+      exchange: "NASDAQ"
+      country: "US"
+      
+    TSLA:
+      name: "Tesla Inc."
+      symbol: "TSLA"
+      decimals: 2
+      min_order_size: 1
+      max_order_size: 10000
+      tick_size: 0.01
+      min_price_change: 0.01
+      sector: "Consumer Cyclical"
+      industry: "Automotive"
+      market_cap: 1000000000000
+      volume_avg: 100000000
+      pe_ratio: 70
+      dividend_yield: 0.0
+      exchange: "NASDAQ"
+      country: "US"
+      
+  # Commodity Metadata
+  commodity:
+    GOLD:
+      name: "Gold"
+      symbol: "GOLD"
+      decimals: 2
+      min_order_size: 0.1
+      max_order_size: 1000
+      tick_size: 0.01
+      min_price_change: 0.01
+      commodity_type: "Precious Metal"
+      unit: "troy ounce"
+      market_cap: 15000000000000
+      volume_avg: 10000000
+      
+    SILVER:
+      name: "Silver"
+      symbol: "SILVER"
+      decimals: 3
+      min_order_size: 1
+      max_order_size: 10000
+      tick_size: 0.001
+      min_price_change: 0.001
+      commodity_type: "Precious Metal"
+      unit: "troy ounce"
+      market_cap: 1500000000000
+      volume_avg: 5000000
+      
+    OIL:
+      name: "Crude Oil"
+      symbol: "OIL"
+      decimals: 3
+      min_order_size: 1
+      max_order_size: 1000
+      tick_size: 0.001
+      min_price_change: 0.01
+      commodity_type: "Energy"
+      unit: "barrel"
+      market_cap: 5000000000000
+      volume_avg: 10000000
+      
+    NATURAL_GAS:
+      name: "Natural Gas"
+      symbol: "NATURAL_GAS"
+      decimals: 3
+      min_order_size: 1
+      max_order_size: 1000
+      tick_size: 0.001
+      min_price_change: 0.001
+      commodity_type: "Energy"
+      unit: "MMBtu"
+      volume_avg: 5000000
+
+# ============================================================
+# EXCHANGE-SPECIFIC CONFIGURATIONS
+# ============================================================
+exchange_configs:
+  binance:
+    spot:
+      fee_maker: 0.001
+      fee_taker: 0.001
+      min_order_value: 10
+      max_order_value: 1000000
+      
+    futures:
+      fee_maker: 0.0002
+      fee_taker: 0.0004
+      min_order_value: 10
+      max_order_value: 1000000
+      leverage_max: 125
+      
+    perpetual:
+      fee_maker: 0.0002
+      fee_taker: 0.0004
+      min_order_value: 10
+      max_order_value: 1000000
+      leverage_max: 125
+      funding_rate_interval: 8
+      
+  bybit:
+    spot:
+      fee_maker: 0.001
+      fee_taker: 0.001
+      min_order_value: 10
+      max_order_value: 1000000
+      
+    futures:
+      fee_maker: 0.0001
+      fee_taker: 0.0006
+      min_order_value: 10
+      max_order_value: 1000000
+      leverage_max: 100
+      
+  coinbase:
+    spot:
+      fee_maker: 0.004
+      fee_taker: 0.006
+      min_order_value: 10
+      max_order_value: 1000000
+      
+  kraken:
+    spot:
+      fee_maker: 0.0016
+      fee_taker: 0.0026
+      min_order_value: 10
+      max_order_value: 1000000
+      
+  okx:
+    spot:
+      fee_maker: 0.0008
+      fee_taker: 0.001
+      min_order_value: 10
+      max_order_value: 1000000
+      
+    futures:
+      fee_maker: 0.0002
+      fee_taker: 0.0005
+      min_order_value: 10
+      max_order_value: 1000000
+      leverage_max: 100
+      
+  interactive_brokers:
+    spot:
+      fee_maker: 0.00005
+      fee_taker: 0.0001
+      min_order_value: 100
+      max_order_value: 10000000
+      
+    futures:
+      fee_maker: 0.00005
+      fee_taker: 0.0001
+      min_order_value: 100
+      max_order_value: 10000000
+      leverage_max: 50
+
+# ============================================================
+# VOLATILITY CONFIGURATIONS
+# ============================================================
+volatility_configs:
+  # Historical Volatility
+  historical:
+    lookback_days: 30
+    calculation_method: "standard_deviation"
+    annualization_factor: 252
+    min_data_points: 20
+    
+  # Implied Volatility
+  implied:
+    calculation_method: "black_scholes"
+    use_iv_rank: true
+    use_iv_percentile: true
+    lookback_days: 30
+    
+  # Volatility Surface
+  surface:
+    enabled: true
+    tenors:
+      - "1W"
+      - "2W"
+      - "1M"
+      - "2M"
+      - "3M"
+      - "6M"
+      - "1Y"
+    strikes:
+      - 0.8
+      - 0.9
+      - 1.0
+      - 1.1
+      - 1.2
+      
+  # Volatility Skew
+  skew:
+    enabled: true
+    calculation_method: "put_call_skew"
+    tenors:
+      - "1M"
+      - "3M"
+      - "6M"
+      
+  # Volatility Regimes
+  regimes:
+    low_vol: 0.1
+    medium_vol: 0.2
+    high_vol: 0.3
+    extreme_vol: 0.5
+
+# ============================================================
+# LIQUIDITY CONFIGURATIONS
+# ============================================================
+liquidity_configs:
+  # Liquidity Requirements
+  requirements:
+    min_liquidity_score: 0.5
+    min_trading_volume: 1000000
+    min_market_depth: 100000
+    max_spread_percent: 0.02
+    
+  # Liquidity Scoring
+  scoring:
+    weight_volume: 0.3
+    weight_depth: 0.3
+    weight_spread: 0.2
+    weight_volume_ratio: 0.1
+    weight_orders: 0.1
+    
+  # Liquidity Providers
+  providers:
+    tier1:
+      - binance
+      - bybit
+      - coinbase
+      - kraken
+    tier2:
+      - okx
+      - kucoin
+      - bitget
+    tier3:
+      - gateio
+      - mexc
+
+# ============================================================
+# CORRELATION CONFIGURATIONS
+# ============================================================
+correlation_configs:
+  # Correlation Matrix
+  matrix:
+    enabled: true
+    lookback_days: 60
+    calculation_method: "pearson"
+    min_data_points: 30
+    
+  # Asset Correlations
+  correlations:
+    # Strong Positive Correlations
+    strong_positive:
+      - ["BTC", "ETH"]
+      - ["SOL", "ADA"]
+      - ["DOT", "AVAX"]
+      - ["AAPL", "MSFT"]
+      - ["GOOGL", "AMZN"]
+      - ["GOLD", "SILVER"]
+      
+    # Strong Negative Correlations
+    strong_negative:
+      - ["BTC", "USD"]
+      - ["GOLD", "USD"]
+      - ["OIL", "USD"]
+      - ["BTC", "OIL"]
+      - ["GOLD", "BTC"]
+      
+    # Industry Correlations
+    industry:
+      technology:
+        - ["AAPL", "MSFT"]
+        - ["GOOGL", "AMZN"]
+        - ["NVDA", "AMD"]
+      finance:
+        - ["JPM", "GS"]
+        - ["BAC", "C"]
+      energy:
+        - ["XOM", "CVX"]
+        - ["OIL", "NATURAL_GAS"]
+        
+  # Correlation Thresholds
+  thresholds:
+    very_high: 0.8
+    high: 0.6
+    moderate: 0.4
+    low: 0.2
+    very_low: 0.0
+
+# ============================================================
+# PRICE CONFIGURATIONS
+# ============================================================
+price_configs:
+  # Price Sources
+  sources:
+    primary: "exchange"
+    secondary: "oracle"
+    fallback: "vwap"
+    
+  # Price Aggregation
+  aggregation:
+    method: "volume_weighted"
+    sources_count: 3
+    outlier_removal: true
+    outlier_threshold: 0.03
+    
+  # Price Feeds
+  feeds:
+    exchange:
+      enabled: true
+      priority: 1
+      update_interval: 1
+      
+    oracle:
+      enabled: true
+      priority: 2
+      update_interval: 5
+      providers:
+        - chainlink
+        - pyth
+        - twap
+        - uniswap
+        
+    vwap:
+      enabled: true
+      priority: 3
+      update_interval: 10
+      
+  # Price Alerts
+  alerts:
+    enabled: true
+    thresholds:
+      price_change_percent: 0.05
+      volume_spike_multiplier: 3.0
+      spread_widening_percent: 0.01
+
+# ============================================================
+# RISK CONFIGURATIONS PER ASSET
+# ============================================================
+risk_configs_per_asset:
+  cryptocurrency:
+    max_position_size_percent: 0.05
+    max_leverage: 3.0
+    daily_loss_limit_percent: 0.05
+    max_drawdown_percent: 0.15
+    correlation_risk_factor: 0.7
+    
+  forex:
+    max_position_size_percent: 0.10
+    max_leverage: 10.0
+    daily_loss_limit_percent: 0.03
+    max_drawdown_percent: 0.10
+    correlation_risk_factor: 0.8
+    
+  equity:
+    max_position_size_percent: 0.05
+    max_leverage: 2.0
+    daily_loss_limit_percent: 0.04
+    max_drawdown_percent: 0.12
+    correlation_risk_factor: 0.6
+    
+  commodity:
+    max_position_size_percent: 0.08
+    max_leverage: 5.0
+    daily_loss_limit_percent: 0.04
+    max_drawdown_percent: 0.12
+    correlation_risk_factor: 0.5
+
+# ============================================================
+# ASSET MONITORING
+# ============================================================
+asset_monitoring:
+  # Monitoring Settings
+  settings:
+    enabled: true
+    monitoring_interval: 60
+    realtime_updates: true
+    
+  # Metrics
+  metrics:
+    - "price"
+    - "volume"
+    - "liquidity"
+    - "spread"
+    - "volatility"
+    - "correlation"
+    - "open_interest"
+    - "funding_rate"
+    
+  # Alerts
+  alerts:
+    enabled: true
+    channels:
+      - "telegram"
+      - "slack"
+      - "email"
+      - "push"
+      
+  # Dashboards
+  dashboards:
+    enabled: true
+    update_interval: 5
+    widgets:
+      - "price_chart"
+      - "volume_chart"
+      - "correlation_matrix"
+      - "risk_metrics"
+      - "position_summary"
+
+# ============================================================
+# END OF CONFIGURATION
+# ============================================================
