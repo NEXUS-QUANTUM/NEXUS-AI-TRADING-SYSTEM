@@ -1,0 +1,596 @@
+# trading/bots/hedge_bot/config/drawdown_configs.yaml
+# NEXUS AI TRADING SYSTEM - Hedge Bot Drawdown Configuration
+# Version: 2.0.0
+# Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+
+# ============================================================
+# DRAWDOWN GENERAL SETTINGS
+# ============================================================
+drawdown:
+  # General Drawdown Settings
+  general:
+    enabled: true
+    max_drawdown_limit: 0.15  # 15% maximum drawdown
+    drawdown_warning_threshold: 0.10  # 10% warning threshold
+    drawdown_critical_threshold: 0.12  # 12% critical threshold
+    drawdown_emergency_threshold: 0.14  # 14% emergency threshold
+    calculation_method: "peak_to_trough"  # peak_to_trough, peak_to_current, rolling
+    lookback_period: 252  # trading days
+    update_frequency: "realtime"  # realtime, hourly, daily
+    use_dollar_drawdown: true
+    use_percentage_drawdown: true
+    use_maximum_drawdown: true
+    use_average_drawdown: true
+    
+  # Drawdown Types
+  types:
+    equity_drawdown:
+      enabled: true
+      description: "Drawdown based on total equity"
+      
+    portfolio_drawdown:
+      enabled: true
+      description: "Drawdown based on portfolio value"
+      
+    position_drawdown:
+      enabled: true
+      description: "Drawdown based on individual positions"
+      
+    strategy_drawdown:
+      enabled: true
+      description: "Drawdown based on strategy performance"
+      
+    asset_drawdown:
+      enabled: true
+      description: "Drawdown based on asset performance"
+      
+  # Drawdown Metrics
+  metrics:
+    - "current_drawdown"
+    - "max_drawdown"
+    - "average_drawdown"
+    - "drawdown_duration"
+    - "recovery_time"
+    - "drawdown_frequency"
+    - "drawdown_severity"
+
+# ============================================================
+# DRAWDOWN LIMITS BY ASSET CLASS
+# ============================================================
+drawdown_limits:
+  # Asset Class Limits
+  asset_class:
+    cryptocurrency:
+      max_drawdown: 0.25  # 25%
+      warning_threshold: 0.18
+      critical_threshold: 0.22
+      emergency_threshold: 0.24
+      
+    forex:
+      max_drawdown: 0.12
+      warning_threshold: 0.08
+      critical_threshold: 0.10
+      emergency_threshold: 0.11
+      
+    equity:
+      max_drawdown: 0.18
+      warning_threshold: 0.12
+      critical_threshold: 0.15
+      emergency_threshold: 0.17
+      
+    commodity:
+      max_drawdown: 0.15
+      warning_threshold: 0.10
+      critical_threshold: 0.12
+      emergency_threshold: 0.14
+      
+    fixed_income:
+      max_drawdown: 0.08
+      warning_threshold: 0.05
+      critical_threshold: 0.06
+      emergency_threshold: 0.07
+      
+  # Position Type Limits
+  position_type:
+    spot:
+      max_drawdown: 0.15
+      warning_threshold: 0.10
+      critical_threshold: 0.12
+      emergency_threshold: 0.14
+      
+    futures:
+      max_drawdown: 0.20
+      warning_threshold: 0.14
+      critical_threshold: 0.17
+      emergency_threshold: 0.19
+      
+    perpetual:
+      max_drawdown: 0.20
+      warning_threshold: 0.14
+      critical_threshold: 0.17
+      emergency_threshold: 0.19
+      
+    options:
+      max_drawdown: 0.12
+      warning_threshold: 0.08
+      critical_threshold: 0.10
+      emergency_threshold: 0.11
+
+# ============================================================
+# DRAWDOWN ANALYSIS
+# ============================================================
+drawdown_analysis:
+  # Analysis Settings
+  settings:
+    enabled: true
+    analysis_frequency: "daily"  # realtime, hourly, daily, weekly
+    analysis_depth: "full"  # full, summary, basic
+    include_historical_analysis: true
+    include_statistical_analysis: true
+    include_probabilistic_analysis: true
+    
+  # Statistical Analysis
+  statistical:
+    mean_drawdown: 0.05
+    median_drawdown: 0.04
+    std_drawdown: 0.03
+    skewness: 1.5
+    kurtosis: 4.0
+    confidence_intervals:
+      - level: 0.90
+        value: 0.08
+      - level: 0.95
+        value: 0.10
+      - level: 0.99
+        value: 0.12
+        
+  # Probabilistic Analysis
+  probabilistic:
+    drawdown_distribution: "lognormal"  # lognormal, weibull, gamma
+    probability_exceed_10: 0.25  # 25% chance of exceeding 10%
+    probability_exceed_15: 0.10  # 10% chance of exceeding 15%
+    probability_exceed_20: 0.05  # 5% chance of exceeding 20%
+    
+  # Time-Based Analysis
+  time_based:
+    average_drawdown_duration: 30  # days
+    max_drawdown_duration: 90  # days
+    recovery_time_distribution: "normal"  # normal, exponential, weibull
+    average_recovery_time: 45  # days
+
+# ============================================================
+# DRAWDOWN MONITORING
+# ============================================================
+drawdown_monitoring:
+  # Monitoring Settings
+  settings:
+    enabled: true
+    monitoring_frequency: "realtime"
+    alert_threshold: 0.75  # 75% of limit
+    critical_threshold: 0.90  # 90% of limit
+    emergency_threshold: 0.95  # 95% of limit
+    reporting_frequency: "daily"
+    
+  # Alert Conditions
+  alerts:
+    drawdown_warning:
+      enabled: true
+      level: "warning"
+      threshold: 0.10
+      message: "Drawdown approaching limit: {drawdown}%"
+      
+    drawdown_critical:
+      enabled: true
+      level: "critical"
+      threshold: 0.12
+      message: "Drawdown at critical level: {drawdown}%"
+      
+    drawdown_emergency:
+      enabled: true
+      level: "emergency"
+      threshold: 0.14
+      message: "Drawdown at emergency level: {drawdown}%"
+      
+    drawdown_breach:
+      enabled: true
+      level: "critical"
+      threshold: 0.15
+      message: "Drawdown limit breached: {drawdown}%"
+      action: "stop_trading"
+      
+    drawdown_recovery:
+      enabled: true
+      level: "info"
+      threshold: 0.05
+      message: "Drawdown recovering: {drawdown}%"
+      
+  # Monitoring Metrics
+  metrics:
+    - "current_drawdown"
+    - "max_drawdown"
+    - "drawdown_duration"
+    - "recovery_time"
+    - "drawdown_frequency"
+    - "drawdown_severity"
+    - "drawdown_speed"
+    - "drawdown_acceleration"
+
+# ============================================================
+# DRAWDOWN PROTECTION
+# ============================================================
+drawdown_protection:
+  # Protection Settings
+  settings:
+    enabled: true
+    protection_method: "dynamic"  # dynamic, static, adaptive
+    activation_threshold: 0.08  # 8% drawdown triggers protection
+    deactivation_threshold: 0.05  # 5% drawdown deactivates protection
+    protection_level: "moderate"  # conservative, moderate, aggressive
+    
+  # Protection Strategies
+  strategies:
+    position_reduction:
+      enabled: true
+      reduction_factor: 0.50  # Reduce positions by 50%
+      reduction_schedule:
+        - drawdown: 0.08
+          factor: 0.75
+        - drawdown: 0.10
+          factor: 0.50
+        - drawdown: 0.12
+          factor: 0.25
+          
+    hedging:
+      enabled: true
+      hedge_ratio: 0.30  # 30% hedge
+      hedge_instrument: "futures"
+      hedge_adjustment: "dynamic"
+      
+    stop_trading:
+      enabled: true
+      stop_threshold: 0.15
+      resume_threshold: 0.10
+      resume_delay: 3600  # 1 hour
+      
+    risk_reduction:
+      enabled: true
+      risk_reduction_factor: 0.50
+      risk_limits_adjustment: "proportional"
+      
+  # Protection Actions
+  actions:
+    immediate_actions:
+      - "reduce_position_sizes"
+      - "increase_hedging"
+      - "tighten_stop_losses"
+      
+    gradual_actions:
+      - "reduce_leverage"
+      - "diversify_positions"
+      - "increase_cash_holdings"
+      
+    emergency_actions:
+      - "close_positions"
+      - "stop_trading"
+      - "initiate_recovery"
+
+# ============================================================
+# DRAWDOWN RECOVERY
+# ============================================================
+drawdown_recovery:
+  # Recovery Settings
+  settings:
+    enabled: true
+    recovery_method: "adaptive"  # adaptive, aggressive, conservative
+    recovery_activation: 0.08
+    recovery_deactivation: 0.05
+    recovery_phase: "aggressive"  # aggressive, moderate, conservative
+    
+  # Recovery Strategies
+  strategies:
+    aggressive_recovery:
+      enabled: true
+      leverage_multiplier: 1.5
+      position_sizing: "aggressive"
+      risk_tolerance: "high"
+      target_recovery_time: 30  # days
+      
+    moderate_recovery:
+      enabled: true
+      leverage_multiplier: 1.2
+      position_sizing: "moderate"
+      risk_tolerance: "medium"
+      target_recovery_time: 60  # days
+      
+    conservative_recovery:
+      enabled: true
+      leverage_multiplier: 1.0
+      position_sizing: "conservative"
+      risk_tolerance: "low"
+      target_recovery_time: 90  # days
+      
+  # Recovery Monitoring
+  monitoring:
+    track_recovery_progress: true
+    recovery_metrics:
+      - "recovery_progress"
+      - "recovery_speed"
+      - "recovery_efficiency"
+      - "recovery_sustainability"
+    recovery_alerts:
+      - "stalled_recovery"
+      - "reverse_recovery"
+      - "recovery_completion"
+
+# ============================================================
+# DRAWDOWN REPORTING
+# ============================================================
+drawdown_reporting:
+  # Report Settings
+  settings:
+    enabled: true
+    report_frequency: "daily"
+    report_format: "json"  # json, csv, pdf, html
+    include_analytics: true
+    include_visualizations: true
+    include_recommendations: true
+    
+  # Report Sections
+  sections:
+    drawdown_summary:
+      enabled: true
+      include_current_drawdown: true
+      include_max_drawdown: true
+      include_average_drawdown: true
+      
+    drawdown_analysis:
+      enabled: true
+      include_statistical_analysis: true
+      include_probabilistic_analysis: true
+      include_temporal_analysis: true
+      
+    drawdown_breakdown:
+      enabled: true
+      include_by_asset_class: true
+      include_by_position_type: true
+      include_by_strategy: true
+      
+    drawdown_protection:
+      enabled: true
+      include_protection_status: true
+      include_protection_actions: true
+      include_protection_effectiveness: true
+      
+    drawdown_recovery:
+      enabled: true
+      include_recovery_status: true
+      include_recovery_progress: true
+      include_recovery_forecast: true
+      
+    recommendations:
+      enabled: true
+      include_protection_recommendations: true
+      include_recovery_recommendations: true
+      include_risk_management_recommendations: true
+
+# ============================================================
+# DRAWDOWN DASHBOARD
+# ============================================================
+drawdown_dashboard:
+  # Dashboard Settings
+  settings:
+    enabled: true
+    refresh_interval: 5
+    default_view: "summary"  # summary, details, analytics
+    
+  # Dashboard Widgets
+  widgets:
+    drawdown_summary:
+      enabled: true
+      position: 1
+      size: "large"
+      
+    drawdown_chart:
+      enabled: true
+      position: 2
+      size: "large"
+      
+    drawdown_breakdown:
+      enabled: true
+      position: 3
+      size: "medium"
+      
+    protection_status:
+      enabled: true
+      position: 4
+      size: "medium"
+      
+    recovery_status:
+      enabled: true
+      position: 5
+      size: "medium"
+      
+    statistical_analysis:
+      enabled: true
+      position: 6
+      size: "medium"
+      
+    alert_status:
+      enabled: true
+      position: 7
+      size: "small"
+
+# ============================================================
+# DRAWDOWN SCENARIOS
+# ============================================================
+drawdown_scenarios:
+  # Scenario 1: Normal Drawdown
+  normal_drawdown:
+    description: "Normal market drawdown"
+    current_drawdown: 0.05
+    max_drawdown: 0.10
+    average_drawdown: 0.04
+    duration: 15  # days
+    severity: "low"
+    
+  # Scenario 2: Significant Drawdown
+  significant_drawdown:
+    description: "Significant market drawdown"
+    current_drawdown: 0.10
+    max_drawdown: 0.15
+    average_drawdown: 0.08
+    duration: 30  # days
+    severity: "moderate"
+    
+  # Scenario 3: Severe Drawdown
+  severe_drawdown:
+    description: "Severe market drawdown"
+    current_drawdown: 0.15
+    max_drawdown: 0.20
+    average_drawdown: 0.12
+    duration: 60  # days
+    severity: "high"
+    
+  # Scenario 4: Extreme Drawdown
+  extreme_drawdown:
+    description: "Extreme market drawdown"
+    current_drawdown: 0.20
+    max_drawdown: 0.30
+    average_drawdown: 0.18
+    duration: 90  # days
+    severity: "extreme"
+
+# ============================================================
+# DRAWDOWN EXAMPLES
+# ============================================================
+drawdown_examples:
+  # Example 1: Drawdown Calculation
+  drawdown_calculation:
+    description: "Drawdown Calculation Example"
+    peak_value: 100000
+    current_value: 85000
+    drawdown: 0.15  # (100000 - 85000) / 100000 = 15%
+    
+  # Example 2: Maximum Drawdown
+  max_drawdown_example:
+    description: "Maximum Drawdown Example"
+    historical_peaks: [100000, 105000, 110000, 108000, 105000]
+    current_value: 95000
+    peak_before: 110000
+    max_drawdown: 0.136  # (110000 - 95000) / 110000 = 13.6%
+    
+  # Example 3: Drawdown Duration
+  drawdown_duration_example:
+    description: "Drawdown Duration Example"
+    start_date: "2026-01-15"
+    end_date: "2026-02-28"
+    duration: 44  # days
+    peak_value: 100000
+    trough_value: 85000
+    recovery_value: 100000
+
+# ============================================================
+# ENVIRONMENT-SPECIFIC CONFIGURATIONS
+# ============================================================
+environments:
+  # Development Environment
+  development:
+    drawdown:
+      general:
+        enabled: true
+        max_drawdown_limit: 0.25  # Higher tolerance in dev
+        update_frequency: "hourly"
+        
+    drawdown_monitoring:
+      alerts:
+        drawdown_warning:
+          enabled: false
+        drawdown_critical:
+          enabled: false
+        drawdown_emergency:
+          enabled: false
+          
+    drawdown_protection:
+      settings:
+        enabled: false  # Disabled in dev
+          
+  # Staging Environment
+  staging:
+    drawdown:
+      general:
+        enabled: true
+        max_drawdown_limit: 0.20
+        update_frequency: "realtime"
+        
+    drawdown_monitoring:
+      alerts:
+        drawdown_warning:
+          enabled: true
+        drawdown_critical:
+          enabled: true
+        drawdown_emergency:
+          enabled: true
+          
+    drawdown_protection:
+      settings:
+        enabled: true
+        protection_level: "moderate"
+        
+  # Production Environment
+  production:
+    drawdown:
+      general:
+        enabled: true
+        max_drawdown_limit: 0.15
+        update_frequency: "realtime"
+        use_dollar_drawdown: true
+        use_percentage_drawdown: true
+        
+    drawdown_monitoring:
+      alerts:
+        drawdown_warning:
+          enabled: true
+          level: "warning"
+        drawdown_critical:
+          enabled: true
+          level: "critical"
+        drawdown_emergency:
+          enabled: true
+          level: "emergency"
+        drawdown_breach:
+          enabled: true
+          level: "critical"
+        drawdown_recovery:
+          enabled: true
+          level: "info"
+          
+    drawdown_protection:
+      settings:
+        enabled: true
+        protection_method: "dynamic"
+        protection_level: "aggressive"
+        
+  # Demo Environment
+  demo:
+    drawdown:
+      general:
+        enabled: true
+        max_drawdown_limit: 0.20
+        update_frequency: "hourly"
+        
+    drawdown_monitoring:
+      alerts:
+        drawdown_warning:
+          enabled: false
+        drawdown_critical:
+          enabled: false
+        drawdown_emergency:
+          enabled: false
+          
+    drawdown_protection:
+      settings:
+        enabled: false
+
+# ============================================================
+# END OF CONFIGURATION
+# ============================================================
