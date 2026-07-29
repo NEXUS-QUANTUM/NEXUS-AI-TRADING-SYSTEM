@@ -1,0 +1,503 @@
+# trading/bots/hedge_bot/config/liquidation_configs.yaml
+# NEXUS AI TRADING SYSTEM - Hedge Bot Liquidation Configuration
+# Version: 2.0.0
+# Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+
+# ============================================================
+# LIQUIDATION GENERAL SETTINGS
+# ============================================================
+liquidation:
+  # General Liquidation Settings
+  general:
+    enabled: true
+    liquidation_threshold: 0.80  # 80% margin utilization triggers warning
+    critical_liquidation_threshold: 0.90  # 90% margin utilization triggers critical
+    emergency_liquidation_threshold: 0.95  # 95% margin utilization triggers emergency
+    auto_liquidation: true
+    liquidation_method: "market"  # market, limit, twap, vwap
+    liquidation_timeout: 60  # seconds
+    liquidation_retry_attempts: 3
+    liquidation_slippage_tolerance: 0.01  # 1%
+    max_liquidation_size: 100000
+    min_liquidation_size: 100
+    
+  # Liquidation Types
+  types:
+    partial_liquidation:
+      enabled: true
+      description: "Partial liquidation to reduce position"
+      reduction_factor: 0.50  # Reduce by 50%
+      
+    full_liquidation:
+      enabled: true
+      description: "Full liquidation of all positions"
+      
+    auto_liquidation:
+      enabled: true
+      description: "Automatic liquidation based on triggers"
+      
+    manual_liquidation:
+      enabled: true
+      description: "Manual liquidation by user"
+      
+    emergency_liquidation:
+      enabled: true
+      description: "Emergency liquidation in extreme scenarios"
+
+# ============================================================
+# LIQUIDATION TRIGGERS
+# ============================================================
+liquidation_triggers:
+  # Margin Triggers
+  margin:
+    margin_call:
+      enabled: true
+      threshold: 0.70  # 70% margin utilization
+      action: "warning"
+      
+    margin_warning:
+      enabled: true
+      threshold: 0.80  # 80% margin utilization
+      action: "reduce_position"
+      
+    margin_critical:
+      enabled: true
+      threshold: 0.90  # 90% margin utilization
+      action: "liquidation"
+      
+    margin_emergency:
+      enabled: true
+      threshold: 0.95  # 95% margin utilization
+      action: "emergency_liquidation"
+      
+  # Price Triggers
+  price:
+    stop_loss:
+      enabled: true
+      threshold: 0.05  # 5% loss
+      action: "liquidation"
+      
+    trailing_stop:
+      enabled: true
+      threshold: 0.03  # 3% trailing
+      action: "liquidation"
+      
+    support_break:
+      enabled: true
+      threshold: 0.02  # 2% below support
+      action: "liquidation"
+      
+    resistance_break:
+      enabled: true
+      threshold: 0.02  # 2% above resistance
+      action: "liquidation"
+      
+  # Time Triggers
+  time:
+    expiry:
+      enabled: true
+      threshold: 1  # day before expiry
+      action: "liquidation"
+      
+    holding_period:
+      enabled: false
+      threshold: 30  # days
+      action: "liquidation"
+      
+  # Volatility Triggers
+  volatility:
+    high_volatility:
+      enabled: true
+      threshold: 0.30  # 30% volatility
+      action: "reduce_position"
+      
+    extreme_volatility:
+      enabled: true
+      threshold: 0.50  # 50% volatility
+      action: "liquidation"
+      
+  # Drawdown Triggers
+  drawdown:
+    drawdown_warning:
+      enabled: true
+      threshold: 0.10  # 10% drawdown
+      action: "reduce_position"
+      
+    drawdown_critical:
+      enabled: true
+      threshold: 0.15  # 15% drawdown
+      action: "liquidation"
+      
+    drawdown_emergency:
+      enabled: true
+      threshold: 0.20  # 20% drawdown
+      action: "emergency_liquidation"
+
+# ============================================================
+# LIQUIDATION EXECUTION
+# ============================================================
+liquidation_execution:
+  # Execution Settings
+  settings:
+    enabled: true
+    execution_method: "market"  # market, limit, twap, vwap
+    order_type: "market"  # market, limit, stop_limit
+    time_in_force: "IOC"  # IOC, FOK, GTC
+    max_slippage: 0.01  # 1%
+    min_volume: 1000  # Minimum volume for liquidation
+    
+  # Execution Strategies
+  strategies:
+    market_liquidation:
+      enabled: true
+      description: "Immediate market liquidation"
+      execution: "market"
+      speed: "immediate"
+      
+    limit_liquidation:
+      enabled: true
+      description: "Limit order liquidation"
+      execution: "limit"
+      speed: "gradual"
+      
+    twap_liquidation:
+      enabled: true
+      description: "TWAP liquidation over time"
+      execution: "twap"
+      duration: 60  # minutes
+      
+    vwap_liquidation:
+      enabled: true
+      description: "VWAP liquidation"
+      execution: "vwap"
+      duration: 30  # minutes
+      
+  # Execution Limits
+  limits:
+    max_order_size: 10000
+    min_order_size: 100
+    max_slippage: 0.01
+    max_execution_time: 300  # seconds
+
+# ============================================================
+# LIQUIDATION MONITORING
+# ============================================================
+liquidation_monitoring:
+  # Monitoring Settings
+  settings:
+    enabled: true
+    monitoring_frequency: "realtime"
+    alert_threshold: 0.75  # 75% of limit
+    critical_threshold: 0.90  # 90% of limit
+    reporting_frequency: "realtime"
+    
+  # Alert Conditions
+  alerts:
+    liquidation_warning:
+      enabled: true
+      level: "warning"
+      threshold: 0.75
+      message: "Liquidation risk approaching: {risk}%"
+      
+    liquidation_critical:
+      enabled: true
+      level: "critical"
+      threshold: 0.90
+      message: "Liquidation risk critical: {risk}%"
+      
+    liquidation_emergency:
+      enabled: true
+      level: "emergency"
+      threshold: 0.95
+      message: "Emergency liquidation required: {risk}%"
+      
+    liquidation_executed:
+      enabled: true
+      level: "critical"
+      message: "Liquidation executed for {asset}: {size}"
+      
+  # Monitoring Metrics
+  metrics:
+    - "liquidation_risk"
+    - "margin_utilization"
+    - "liquidation_price"
+    - "position_size"
+    - "exposure"
+    - "drawdown"
+    - "volatility"
+
+# ============================================================
+# LIQUIDATION REPORTING
+# ============================================================
+liquidation_reporting:
+  # Report Settings
+  settings:
+    enabled: true
+    report_frequency: "realtime"
+    report_format: "json"  # json, csv, pdf, html
+    include_analytics: true
+    include_visualizations: true
+    include_actions: true
+    
+  # Report Sections
+  sections:
+    liquidation_summary:
+      enabled: true
+      include_liquidation_count: true
+      include_total_liquidated: true
+      include_average_risk: true
+      
+    liquidation_details:
+      enabled: true
+      include_asset: true
+      include_size: true
+      include_risk: true
+      include_timestamp: true
+      include_reason: true
+      
+    risk_analysis:
+      enabled: true
+      include_risk_trends: true
+      include_risk_distribution: true
+      include_risk_factors: true
+      
+    actions_taken:
+      enabled: true
+      include_liquidations: true
+      include_reductions: true
+      include_hedging: true
+
+# ============================================================
+# LIQUIDATION DASHBOARD
+# ============================================================
+liquidation_dashboard:
+  # Dashboard Settings
+  settings:
+    enabled: true
+    refresh_interval: 1  # seconds
+    default_view: "summary"  # summary, details, analytics
+    
+  # Dashboard Widgets
+  widgets:
+    liquidation_status:
+      enabled: true
+      position: 1
+      size: "large"
+      
+    risk_chart:
+      enabled: true
+      position: 2
+      size: "large"
+      
+    margin_status:
+      enabled: true
+      position: 3
+      size: "medium"
+      
+    position_risk:
+      enabled: true
+      position: 4
+      size: "medium"
+      
+    alert_status:
+      enabled: true
+      position: 5
+      size: "small"
+      
+    action_log:
+      enabled: true
+      position: 6
+      size: "medium"
+
+# ============================================================
+# LIQUIDATION INTEGRATION
+# ============================================================
+liquidation_integration:
+  # Integration Settings
+  settings:
+    enabled: true
+    integration_type: "api"  # api, webhook, websocket, file
+    
+  # External Systems
+  systems:
+    risk_system:
+      enabled: true
+      endpoint: "/api/risk/liquidation"
+      update_frequency: "realtime"
+      
+    trading_system:
+      enabled: true
+      endpoint: "/api/trading/liquidation"
+      update_frequency: "realtime"
+      
+    exchange_system:
+      enabled: true
+      endpoint: "/api/exchange/liquidation"
+      update_frequency: "realtime"
+      
+    notification_system:
+      enabled: true
+      endpoint: "/api/notifications/liquidation"
+      update_frequency: "realtime"
+
+# ============================================================
+# LIQUIDATION SCENARIOS
+# ============================================================
+liquidation_scenarios:
+  # Scenario 1: Margin Call
+  margin_call:
+    description: "Margin call scenario"
+    margin_utilization: 0.70
+    action: "warning"
+    response: "Add collateral or reduce position"
+    
+  # Scenario 2: Critical Margin
+  critical_margin:
+    description: "Critical margin scenario"
+    margin_utilization: 0.90
+    action: "liquidation"
+    response: "Partial liquidation initiated"
+    
+  # Scenario 3: Emergency Liquidation
+  emergency_liquidation:
+    description: "Emergency liquidation scenario"
+    margin_utilization: 0.95
+    action: "emergency_liquidation"
+    response: "Full liquidation initiated"
+    
+  # Scenario 4: Stop Loss Trigger
+  stop_loss_trigger:
+    description: "Stop loss trigger scenario"
+    loss_percentage: 0.05
+    action: "liquidation"
+    response: "Position liquidated at stop loss"
+
+# ============================================================
+# LIQUIDATION EXAMPLES
+# ============================================================
+liquidation_examples:
+  # Example 1: Margin Call Calculation
+  margin_call_example:
+    description: "Margin Call Calculation Example"
+    position_size: 100000
+    leverage: 2.0
+    maintenance_margin: 0.20
+    equity: 50000
+    margin_utilization: 0.40
+    liquidation_price: 80000
+    
+  # Example 2: Liquidation Price Calculation
+  liquidation_price_example:
+    description: "Liquidation Price Calculation Example"
+    entry_price: 50000
+    position_size: 1.0
+    leverage: 2.0
+    maintenance_margin: 0.05
+    liquidation_price: 47500  # 5% below entry
+    
+  # Example 3: Partial Liquidation
+  partial_liquidation_example:
+    description: "Partial Liquidation Example"
+    position_size: 1.0
+    reduction_factor: 0.50
+    new_position_size: 0.5
+    executed_size: 0.5
+    execution_price: 49000
+    
+  # Example 4: Full Liquidation
+  full_liquidation_example:
+    description: "Full Liquidation Example"
+    position_size: 1.0
+    executed_size: 1.0
+    execution_price: 48000
+    realized_pnl: -2000
+
+# ============================================================
+# ENVIRONMENT-SPECIFIC CONFIGURATIONS
+# ============================================================
+environments:
+  # Development Environment
+  development:
+    liquidation:
+      general:
+        enabled: true
+        auto_liquidation: false
+        liquidation_timeout: 300  # seconds
+        
+    liquidation_monitoring:
+      alerts:
+        liquidation_warning:
+          enabled: false
+        liquidation_critical:
+          enabled: false
+        liquidation_emergency:
+          enabled: false
+          
+  # Staging Environment
+  staging:
+    liquidation:
+      general:
+        enabled: true
+        auto_liquidation: true
+        liquidation_threshold: 0.85
+        critical_liquidation_threshold: 0.95
+        
+    liquidation_monitoring:
+      alerts:
+        liquidation_warning:
+          enabled: true
+        liquidation_critical:
+          enabled: true
+        liquidation_emergency:
+          enabled: true
+        liquidation_executed:
+          enabled: true
+          
+  # Production Environment
+  production:
+    liquidation:
+      general:
+        enabled: true
+        auto_liquidation: true
+        liquidation_threshold: 0.80
+        critical_liquidation_threshold: 0.90
+        emergency_liquidation_threshold: 0.95
+        liquidation_method: "market"
+        liquidation_timeout: 60
+        liquidation_retry_attempts: 3
+        
+    liquidation_monitoring:
+      alerts:
+        liquidation_warning:
+          enabled: true
+          level: "warning"
+        liquidation_critical:
+          enabled: true
+          level: "critical"
+        liquidation_emergency:
+          enabled: true
+          level: "emergency"
+        liquidation_executed:
+          enabled: true
+          level: "critical"
+          
+  # Demo Environment
+  demo:
+    liquidation:
+      general:
+        enabled: true
+        auto_liquidation: false
+        liquidation_threshold: 0.85
+        
+    liquidation_monitoring:
+      alerts:
+        liquidation_warning:
+          enabled: true
+        liquidation_critical:
+          enabled: false
+        liquidation_emergency:
+          enabled: false
+
+# ============================================================
+# END OF CONFIGURATION
+# ============================================================
