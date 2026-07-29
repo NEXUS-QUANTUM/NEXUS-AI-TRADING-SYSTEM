@@ -1,0 +1,597 @@
+# trading/bots/hedge_bot/config/risk_configs.yaml
+# NEXUS AI TRADING SYSTEM - Hedge Bot Risk Configuration
+# Version: 2.0.0
+# Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+
+# ============================================================
+# RISK GENERAL SETTINGS
+# ============================================================
+risk:
+  # General Risk Settings
+  general:
+    enabled: true
+    risk_level: "moderate"  # conservative, moderate, aggressive, extreme
+    risk_calculation: "dynamic"  # dynamic, static, adaptive
+    risk_metrics:
+      - "var"
+      - "cvar"
+      - "expected_shortfall"
+      - "drawdown"
+      - "sharpe_ratio"
+      - "sortino_ratio"
+      - "calmar_ratio"
+    update_frequency: "realtime"  # realtime, hourly, daily
+    use_historical_risk: true
+    use_forward_risk: true
+    use_stress_testing: true
+    use_scenario_analysis: true
+    
+  # Risk Types
+  types:
+    market_risk:
+      enabled: true
+      description: "Market risk assessment"
+      metrics: ["var", "cvar", "beta"]
+      
+    credit_risk:
+      enabled: true
+      description: "Credit risk assessment"
+      metrics: ["counterparty_risk", "default_risk"]
+      
+    liquidity_risk:
+      enabled: true
+      description: "Liquidity risk assessment"
+      metrics: ["spread_risk", "slippage_risk"]
+      
+    operational_risk:
+      enabled: true
+      description: "Operational risk assessment"
+      metrics: ["system_risk", "process_risk"]
+      
+    regulatory_risk:
+      enabled: true
+      description: "Regulatory risk assessment"
+      metrics: ["compliance_risk", "legal_risk"]
+
+# ============================================================
+# VALUE AT RISK (VaR)
+# ============================================================
+var_configuration:
+  # VaR Settings
+  settings:
+    enabled: true
+    confidence_levels:
+      - 0.95
+      - 0.99
+      - 0.999
+    horizons:
+      - 1  # day
+      - 5  # days
+      - 10  # days
+      - 30  # days
+    calculation_method: "historical"  # historical, parametric, monte_carlo
+    lookback_period: 252  # trading days
+    min_data_points: 60
+    
+  # VaR Methods
+  methods:
+    historical:
+      enabled: true
+      description: "Historical VaR"
+      percentiles: [5, 1, 0.1]
+      
+    parametric:
+      enabled: true
+      description: "Parametric VaR (variance-covariance)"
+      distribution: "normal"  # normal, t, skewed_t
+      
+    monte_carlo:
+      enabled: true
+      description: "Monte Carlo VaR"
+      simulations: 10000
+      steps: 10
+      
+  # VaR Limits
+  limits:
+    daily_var_limit: 50000  # USD
+    weekly_var_limit: 150000
+    monthly_var_limit: 300000
+    quarterly_var_limit: 500000
+
+# ============================================================
+# EXPECTED SHORTFALL (CVaR)
+# ============================================================
+cvar_configuration:
+  # CVaR Settings
+  settings:
+    enabled: true
+    confidence_levels:
+      - 0.95
+      - 0.99
+    horizons:
+      - 1  # day
+      - 5  # days
+      - 10  # days
+    calculation_method: "historical"  # historical, monte_carlo
+    lookback_period: 252
+    
+  # CVaR Methods
+  methods:
+    historical:
+      enabled: true
+      description: "Historical CVaR"
+      percentiles: [5, 1]
+      
+    monte_carlo:
+      enabled: true
+      description: "Monte Carlo CVaR"
+      simulations: 10000
+      steps: 10
+      
+  # CVaR Limits
+  limits:
+    daily_cvar_limit: 75000
+    weekly_cvar_limit: 200000
+    monthly_cvar_limit: 400000
+
+# ============================================================
+# DRAWDOWN CONFIGURATION
+# ============================================================
+drawdown_configuration:
+  # Drawdown Settings
+  settings:
+    enabled: true
+    max_drawdown_limit: 0.15  # 15%
+    drawdown_warning_threshold: 0.10  # 10%
+    drawdown_critical_threshold: 0.12  # 12%
+    drawdown_emergency_threshold: 0.14  # 14%
+    calculation_method: "peak_to_trough"
+    lookback_period: 252
+    update_frequency: "realtime"
+    
+  # Drawdown Limits
+  limits:
+    daily_drawdown_limit: 0.05  # 5%
+    weekly_drawdown_limit: 0.10  # 10%
+    monthly_drawdown_limit: 0.15  # 15%
+    max_drawdown_limit: 0.20  # 20%
+    
+  # Drawdown Monitoring
+  monitoring:
+    current_drawdown: true
+    max_drawdown: true
+    average_drawdown: true
+    drawdown_duration: true
+    recovery_time: true
+
+# ============================================================
+# STRESS TESTING
+# ============================================================
+stress_testing:
+  # Stress Testing Settings
+  settings:
+    enabled: true
+    test_frequency: "daily"
+    scenarios:
+      - "market_crash"
+      - "flash_crash"
+      - "black_swan"
+      - "vix_shock"
+      - "liquidity_crisis"
+      - "interest_rate_shock"
+    confidence_level: 0.95
+    
+  # Scenario Definitions
+  scenarios:
+    market_crash:
+      description: "Global Market Crash"
+      market_move: -0.25
+      volatility_multiplier: 3.0
+      correlation_multiplier: 1.5
+      
+    flash_crash:
+      description: "Flash Crash"
+      market_move: -0.15
+      volatility_multiplier: 4.0
+      correlation_multiplier: 2.0
+      
+    black_swan:
+      description: "Black Swan Event"
+      market_move: -0.40
+      volatility_multiplier: 5.0
+      correlation_multiplier: 2.5
+      
+    vix_shock:
+      description: "VIX Shock"
+      vix_move: 15.0
+      volatility_multiplier: 2.0
+      correlation_multiplier: 1.2
+      
+    liquidity_crisis:
+      description: "Liquidity Crisis"
+      market_move: -0.20
+      volatility_multiplier: 3.5
+      correlation_multiplier: 1.8
+      liquidity_multiplier: 0.3
+      
+  # Stress Test Limits
+  limits:
+    stress_loss_limit: 500000
+    stress_var_limit: 100000
+    stress_drawdown_limit: 0.25
+
+# ============================================================
+# RISK LIMITS
+# ============================================================
+risk_limits:
+  # General Risk Limits
+  general:
+    max_risk_per_trade: 0.02  # 2% of portfolio
+    max_risk_per_day: 0.05  # 5% of portfolio
+    max_risk_per_week: 0.10  # 10% of portfolio
+    max_risk_per_month: 0.15  # 15% of portfolio
+    max_portfolio_risk: 0.20  # 20% of portfolio
+    max_concentration_risk: 0.25  # 25% concentration
+    
+  # Position Risk Limits
+  position:
+    max_position_size: 10000
+    max_leverage: 3.0
+    max_exposure: 100000
+    max_correlation: 0.70
+    max_concentration: 0.15
+    
+  # Portfolio Risk Limits
+  portfolio:
+    max_var: 50000
+    max_cvar: 75000
+    max_drawdown: 0.15
+    max_leverage: 3.0
+    max_exposure: 1000000
+    
+  # Asset Class Risk Limits
+  asset_class:
+    cryptocurrency:
+      max_risk: 0.03
+      max_allocation: 0.25
+    forex:
+      max_risk: 0.02
+      max_allocation: 0.30
+    equity:
+      max_risk: 0.025
+      max_allocation: 0.25
+    commodity:
+      max_risk: 0.02
+      max_allocation: 0.15
+
+# ============================================================
+# RISK MONITORING
+# ============================================================
+risk_monitoring:
+  # Monitoring Settings
+  settings:
+    enabled: true
+    monitoring_frequency: "realtime"
+    alert_threshold: 0.75  # 75% of limit
+    critical_threshold: 0.90  # 90% of limit
+    reporting_frequency: "daily"
+    
+  # Alert Conditions
+  alerts:
+    var_breach:
+      enabled: true
+      level: "warning"
+      threshold: 0.80
+      message: "VaR limit approaching: {var}%"
+      
+    cvar_breach:
+      enabled: true
+      level: "warning"
+      threshold: 0.80
+      message: "CVaR limit approaching: {cvar}%"
+      
+    drawdown_breach:
+      enabled: true
+      level: "critical"
+      threshold: 0.85
+      message: "Drawdown approaching limit: {drawdown}%"
+      
+    risk_limit_breach:
+      enabled: true
+      level: "critical"
+      threshold: 0.90
+      message: "Risk limit breached: {limit} at {value}"
+      
+  # Monitoring Metrics
+  metrics:
+    - "var_95"
+    - "var_99"
+    - "cvar_95"
+    - "cvar_99"
+    - "current_drawdown"
+    - "max_drawdown"
+    - "sharpe_ratio"
+    - "sortino_ratio"
+    - "calmar_ratio"
+    - "risk_per_trade"
+    - "risk_per_day"
+    - "portfolio_risk"
+
+# ============================================================
+# RISK REPORTING
+# ============================================================
+risk_reporting:
+  # Report Settings
+  settings:
+    enabled: true
+    report_frequency: "daily"
+    report_format: "json"  # json, csv, pdf, html
+    include_analytics: true
+    include_visualizations: true
+    include_recommendations: true
+    
+  # Report Sections
+  sections:
+    risk_summary:
+      enabled: true
+      include_var: true
+      include_cvar: true
+      include_drawdown: true
+      include_risk_metrics: true
+      
+    risk_breakdown:
+      enabled: true
+      include_by_asset: true
+      include_by_asset_class: true
+      include_by_strategy: true
+      
+    stress_testing:
+      enabled: true
+      include_scenario_results: true
+      include_worst_case: true
+      include_recommendations: true
+      
+    risk_limits:
+      enabled: true
+      include_utilization: true
+      include_breaches: true
+      include_recommendations: true
+
+# ============================================================
+# RISK DASHBOARD
+# ============================================================
+risk_dashboard:
+  # Dashboard Settings
+  settings:
+    enabled: true
+    refresh_interval: 5
+    default_view: "summary"  # summary, details, analytics
+    
+  # Dashboard Widgets
+  widgets:
+    risk_summary:
+      enabled: true
+      position: 1
+      size: "large"
+      
+    var_chart:
+      enabled: true
+      position: 2
+      size: "large"
+      
+    drawdown_chart:
+      enabled: true
+      position: 3
+      size: "large"
+      
+    risk_heatmap:
+      enabled: true
+      position: 4
+      size: "medium"
+      
+    stress_testing:
+      enabled: true
+      position: 5
+      size: "medium"
+      
+    risk_limits:
+      enabled: true
+      position: 6
+      size: "medium"
+      
+    alert_status:
+      enabled: true
+      position: 7
+      size: "small"
+
+# ============================================================
+# RISK INTEGRATION
+# ============================================================
+risk_integration:
+  # Integration Settings
+  settings:
+    enabled: true
+    integration_type: "api"  # api, webhook, websocket, file
+    
+  # External Systems
+  systems:
+    trading_system:
+      enabled: true
+      endpoint: "/api/trading/risk"
+      update_frequency: "realtime"
+      
+    portfolio_system:
+      enabled: true
+      endpoint: "/api/portfolio/risk"
+      update_frequency: "realtime"
+      
+    analytics_system:
+      enabled: true
+      endpoint: "/api/analytics/risk"
+      update_frequency: "hourly"
+      
+    monitoring_system:
+      enabled: true
+      endpoint: "/api/monitoring/risk"
+      update_frequency: "realtime"
+
+# ============================================================
+# RISK SCENARIOS
+# ============================================================
+risk_scenarios:
+  # Scenario 1: Low Risk
+  low_risk:
+    description: "Low risk environment"
+    var_95: 10000
+    var_99: 15000
+    cvar_95: 15000
+    drawdown: 0.05
+    risk_level: "conservative"
+    
+  # Scenario 2: Moderate Risk
+  moderate_risk:
+    description: "Moderate risk environment"
+    var_95: 25000
+    var_99: 40000
+    cvar_95: 35000
+    drawdown: 0.10
+    risk_level: "moderate"
+    
+  # Scenario 3: High Risk
+  high_risk:
+    description: "High risk environment"
+    var_95: 50000
+    var_99: 75000
+    cvar_95: 70000
+    drawdown: 0.15
+    risk_level: "aggressive"
+    
+  # Scenario 4: Extreme Risk
+  extreme_risk:
+    description: "Extreme risk environment"
+    var_95: 100000
+    var_99: 150000
+    cvar_95: 150000
+    drawdown: 0.25
+    risk_level: "extreme"
+
+# ============================================================
+# RISK EXAMPLES
+# ============================================================
+risk_examples:
+  # Example 1: VaR Calculation
+  var_calculation:
+    description: "VaR Calculation Example"
+    portfolio_value: 100000
+    confidence: 0.95
+    historical_returns: [-0.02, -0.01, 0.01, 0.02, -0.03]
+    sorted_returns: [-0.03, -0.02, -0.01, 0.01, 0.02]
+    var_95: 0.02  # 2% VaR (5th percentile)
+    var_amount: 2000  # $2000 VaR
+    
+  # Example 2: CVaR Calculation
+  cvar_calculation:
+    description: "CVaR Calculation Example"
+    portfolio_value: 100000
+    confidence: 0.95
+    tail_returns: [-0.03, -0.02, -0.025]
+    average_tail_return: -0.025
+    cvar_95: 0.025  # 2.5% CVaR
+    cvar_amount: 2500  # $2500 CVaR
+    
+  # Example 3: Risk Limit Monitoring
+  risk_limit_monitoring:
+    description: "Risk Limit Monitoring Example"
+    portfolio_value: 100000
+    current_var: 25000
+    var_limit: 50000
+    utilization: 0.50
+    status: "within_limits"
+    alert_level: "none"
+
+# ============================================================
+# ENVIRONMENT-SPECIFIC CONFIGURATIONS
+# ============================================================
+environments:
+  # Development Environment
+  development:
+    risk:
+      general:
+        enabled: true
+        risk_level: "conservative"
+        update_frequency: "hourly"
+        
+    risk_monitoring:
+      alerts:
+        var_breach:
+          enabled: false
+        cvar_breach:
+          enabled: false
+        drawdown_breach:
+          enabled: false
+          
+  # Staging Environment
+  staging:
+    risk:
+      general:
+        enabled: true
+        risk_level: "moderate"
+        update_frequency: "realtime"
+        
+    risk_monitoring:
+      alerts:
+        var_breach:
+          enabled: true
+        cvar_breach:
+          enabled: true
+        drawdown_breach:
+          enabled: true
+          
+  # Production Environment
+  production:
+    risk:
+      general:
+        enabled: true
+        risk_level: "moderate"
+        risk_calculation: "dynamic"
+        update_frequency: "realtime"
+        use_historical_risk: true
+        use_forward_risk: true
+        use_stress_testing: true
+        use_scenario_analysis: true
+        
+    risk_monitoring:
+      alerts:
+        var_breach:
+          enabled: true
+          level: "warning"
+        cvar_breach:
+          enabled: true
+          level: "warning"
+        drawdown_breach:
+          enabled: true
+          level: "critical"
+        risk_limit_breach:
+          enabled: true
+          level: "critical"
+          
+  # Demo Environment
+  demo:
+    risk:
+      general:
+        enabled: true
+        risk_level: "conservative"
+        update_frequency: "hourly"
+        
+    risk_monitoring:
+      alerts:
+        var_breach:
+          enabled: true
+        cvar_breach:
+          enabled: false
+        drawdown_breach:
+          enabled: false
+
+# ============================================================
+# END OF CONFIGURATION
+# ============================================================
