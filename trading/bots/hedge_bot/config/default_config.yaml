@@ -1,0 +1,550 @@
+# trading/bots/hedge_bot/config/default_config.yaml
+# NEXUS AI TRADING SYSTEM - Hedge Bot Default Configuration
+# Version: 2.0.0
+# Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+
+# ============================================================
+# BOT IDENTITY
+# ============================================================
+bot:
+  # Bot Identification
+  id: "hedge_bot_default"
+  name: "NEXUS Hedge Bot"
+  version: "2.0.0"
+  description: "Advanced hedging bot for portfolio protection"
+  
+  # Bot Type
+  type: "hedge"  # hedge, arbitrage, market_making, scalping, sniper, swing
+  mode: "automatic"  # automatic, manual, hybrid
+  
+  # Bot Status
+  enabled: true
+  active: true
+  environment: "development"  # development, staging, production, demo
+  
+  # Bot Metadata
+  created_at: "2026-01-01T00:00:00Z"
+  updated_at: "2026-07-29T00:00:00Z"
+  owner: "NEXUS QUANTUM LTD"
+  team: "Trading Systems"
+
+# ============================================================
+# CORE TRADING SETTINGS
+# ============================================================
+trading:
+  # Exchange Configuration
+  exchange:
+    name: "binance"  # binance, bybit, coinbase, kraken, okx
+    type: "spot"  # spot, futures, perpetual, options
+    sandbox: true
+    api_key: "${EXCHANGE_API_KEY}"
+    api_secret: "${EXCHANGE_API_SECRET}"
+    api_passphrase: "${EXCHANGE_API_PASSPHRASE}"
+    
+  # Trading Pairs
+  pairs:
+    - "BTC/USDT"
+    - "ETH/USDT"
+    - "SOL/USDT"
+    - "ADA/USDT"
+    - "DOT/USDT"
+    
+  # Order Settings
+  order:
+    type: "limit"  # limit, market, stop_limit, trailing_stop
+    time_in_force: "GTC"  # GTC, IOC, FOK, DAY
+    max_order_size: 10000  # USD
+    min_order_size: 100  # USD
+    slippage_tolerance: 0.001  # 0.1%
+    
+  # Position Settings
+  position:
+    max_positions: 10
+    max_leverage: 3.0
+    target_hedge_ratio: 0.50
+    min_hedge_ratio: 0.20
+    max_hedge_ratio: 0.80
+
+# ============================================================
+# HEDGE STRATEGY SETTINGS
+# ============================================================
+hedge_strategy:
+  # Strategy Configuration
+  config:
+    hedge_ratio: 0.50
+    hedge_threshold: 0.01
+    max_hedge_position: 0.80
+    min_hedge_position: 0.20
+    dynamic_hedge_ratio: true
+    rebalance_interval: 15  # minutes
+    volatility_lookback: 30  # days
+    correlation_lookback: 60  # days
+    
+  # Strategy Types
+  types:
+    delta_hedging: true
+    volatility_hedging: true
+    correlation_hedging: true
+    cross_hedging: true
+    basis_hedging: false
+    funding_arbitrage: false
+    
+  # Strategy Execution
+  execution:
+    order_type: "limit"
+    time_in_force: "GTC"
+    max_order_size: 10000
+    min_order_size: 100
+    slippage_tolerance: 0.001
+    iceberg_order: false
+    smart_routing: true
+    
+  # Strategy Risk
+  risk:
+    max_drawdown: 0.15
+    daily_loss_limit: 0.05
+    max_leverage: 3.0
+    stop_loss: 0.10
+    take_profit: 0.20
+
+# ============================================================
+# RISK MANAGEMENT SETTINGS
+# ============================================================
+risk_management:
+  # General Risk
+  general:
+    enabled: true
+    risk_level: "moderate"  # conservative, moderate, aggressive
+    max_risk_per_trade: 0.02  # 2% of portfolio
+    max_risk_per_day: 0.05  # 5% of portfolio
+    max_risk_per_month: 0.15  # 15% of portfolio
+    
+  # Position Sizing
+  position_sizing:
+    method: "risk_based"  # risk_based, fixed, kelly, optimal_f
+    kelly_fraction: 0.25
+    max_position_size: 10000
+    min_position_size: 100
+    use_correlation_adj: true
+    
+  # Stop Loss
+  stop_loss:
+    enabled: true
+    type: "trailing"  # fixed, trailing, dynamic
+    fixed_stop: 0.05  # 5%
+    trailing_stop: 0.03  # 3%
+    dynamic_stop: 0.02  # 2%
+    
+  # Take Profit
+  take_profit:
+    enabled: true
+    type: "fixed"  # fixed, trailing, dynamic
+    fixed_profit: 0.10  # 10%
+    trailing_profit: 0.05  # 5%
+    dynamic_profit: 0.07  # 7%
+    
+  # Risk Limits
+  limits:
+    daily_loss_limit: 0.05
+    weekly_loss_limit: 0.10
+    monthly_loss_limit: 0.15
+    max_drawdown: 0.20
+    max_correlation: 0.70
+
+# ============================================================
+# PORTFOLIO SETTINGS
+# ============================================================
+portfolio:
+  # Portfolio Configuration
+  config:
+    base_currency: "USD"
+    total_value: 100000
+    max_positions: 20
+    max_leverage: 3.0
+    
+  # Allocation
+  allocation:
+    method: "risk_parity"  # risk_parity, equal_weight, mean_variance, black_litterman
+    target_volatility: 0.15
+    rebalance_frequency: "daily"
+    rebalance_threshold: 0.02  # 2%
+    
+  # Diversification
+  diversification:
+    max_single_asset: 0.15
+    max_sector: 0.40
+    max_asset_class: 0.50
+    min_assets: 10
+    target_assets: 20
+    
+  # Performance
+  performance:
+    track_metrics: true
+    benchmark: "SPY"
+    risk_free_rate: 0.04
+    performance_frequency: "daily"
+
+# ============================================================
+# AI & ML SETTINGS
+# ============================================================
+ai_ml:
+  # AI Configuration
+  config:
+    enabled: true
+    model_type: "ensemble"  # ensemble, random_forest, xgboost, lstm, transformer
+    model_path: "/opt/nexus-trading/models/hedge_model.pkl"
+    inference_batch_size: 100
+    prediction_horizon: 60  # minutes
+    
+  # ML Features
+  features:
+    - "price_momentum"
+    - "volatility"
+    - "correlation"
+    - "volume"
+    - "sentiment"
+    - "order_flow"
+    - "market_regime"
+    
+  # Training
+  training:
+    enabled: true
+    frequency: "daily"
+    lookback_period: 90  # days
+    validation_split: 0.20
+    epochs: 100
+    early_stopping: true
+    
+  # Prediction
+  prediction:
+    enabled: true
+    confidence_threshold: 0.60
+    prediction_models:
+      - "market_direction"
+      - "price_change"
+      - "volatility_forecast"
+      - "correlation_forecast"
+
+# ============================================================
+# DATA SETTINGS
+# ============================================================
+data:
+  # Data Sources
+  sources:
+    market_data:
+      provider: "exchange"  # exchange, webhook, file
+      update_frequency: "realtime"
+      cache: true
+      
+    historical_data:
+      provider: "database"  # database, file, api
+      lookback_period: 365  # days
+      granularity: "1h"  # 1m, 5m, 15m, 1h, 4h, 1d, 1w
+      
+    sentiment_data:
+      provider: "api"  # twitter, news, social_media
+      update_frequency: "hourly"
+      
+  # Data Storage
+  storage:
+    database: "timescaledb"
+    cache: "redis"
+    retention_days: 365
+    compression: true
+    
+  # Data Quality
+  quality:
+    validate_data: true
+    remove_outliers: true
+    interpolate_missing: true
+    min_data_points: 100
+
+# ============================================================
+# PERFORMANCE SETTINGS
+# ============================================================
+performance:
+  # Performance Optimization
+  optimization:
+    enabled: true
+    max_workers: 10
+    batch_size: 100
+    queue_size: 1000
+    use_async: true
+    use_caching: true
+    
+  # Resource Management
+  resources:
+    max_memory_mb: 1024
+    max_cpu_cores: 4
+    max_concurrent_trades: 5
+    max_order_rate: 10  # orders per second
+    
+  # Latency
+  latency:
+    target_latency_ms: 50
+    max_latency_ms: 200
+    latency_alert_threshold: 100  # milliseconds
+
+# ============================================================
+# MONITORING SETTINGS
+# ============================================================
+monitoring:
+  # Monitoring Configuration
+  config:
+    enabled: true
+    monitoring_frequency: "realtime"
+    alert_channels:
+      - "email"
+      - "telegram"
+      - "slack"
+      - "push"
+      
+  # Health Checks
+  health:
+    check_interval: 60  # seconds
+    auto_recovery: true
+    max_failures: 3
+    
+  # Alerts
+  alerts:
+    trade_execution: true
+    position_changes: true
+    risk_breaches: true
+    system_errors: true
+    performance_issues: true
+    
+  # Metrics
+  metrics:
+    - "pnl"
+    - "win_rate"
+    - "sharpe_ratio"
+    - "max_drawdown"
+    - "trade_count"
+    - "volume_traded"
+    - "response_time"
+    - "error_rate"
+
+# ============================================================
+# LOGGING SETTINGS
+# ============================================================
+logging:
+  # Log Configuration
+  config:
+    enabled: true
+    log_level: "INFO"  # DEBUG, INFO, WARNING, ERROR, CRITICAL
+    log_format: "json"  # json, text
+    log_rotation: "daily"
+    log_compression: true
+    
+  # Log Files
+  files:
+    main_log: "/var/log/nexus-trading/hedge_bot.log"
+    trade_log: "/var/log/nexus-trading/trades.log"
+    error_log: "/var/log/nexus-trading/errors.log"
+    audit_log: "/var/log/nexus-trading/audit.log"
+    
+  # Log Retention
+  retention:
+    days: 30
+    max_size_mb: 100
+    max_files: 10
+
+# ============================================================
+# SECURITY SETTINGS
+# ============================================================
+security:
+  # Security Configuration
+  config:
+    enabled: true
+    encryption: true
+    encryption_method: "AES-256-GCM"
+    
+  # Authentication
+  auth:
+    enabled: true
+    method: "jwt"  # jwt, oauth, api_key
+    token_expiry: 3600  # seconds
+    
+  # Authorization
+  authorization:
+    enabled: true
+    rbac: true
+    permission_level: "admin"  # admin, trader, viewer
+    
+  # API Security
+  api:
+    rate_limiting: true
+    max_requests_per_minute: 60
+    ip_whitelist: []
+    api_key_rotation: 30  # days
+
+# ============================================================
+# COMPLIANCE SETTINGS
+# ============================================================
+compliance:
+  # Compliance Configuration
+  config:
+    enabled: true
+    regulatory_framework: "none"  # none, fca, sec, mas, esma
+    compliance_level: "standard"  # standard, full
+    
+  # AML/KYC
+  aml_kyc:
+    enabled: false
+    screening: false
+    reporting: false
+    
+  # Position Limits
+  position_limits:
+    enabled: true
+    max_single_asset: 0.20
+    max_asset_class: 0.50
+    max_sector: 0.40
+    
+  # Transaction Reporting
+  reporting:
+    enabled: true
+    frequency: "daily"
+    format: "json"
+    
+  # Record Keeping
+  record_keeping:
+    enabled: true
+    retention_days: 730
+    immutable: true
+
+# ============================================================
+# NOTIFICATION SETTINGS
+# ============================================================
+notifications:
+  # Notification Channels
+  channels:
+    email:
+      enabled: true
+      smtp_server: "smtp.gmail.com"
+      smtp_port: 587
+      username: "${EMAIL_USERNAME}"
+      password: "${EMAIL_PASSWORD}"
+      recipients:
+        - "alerts@nexusquantum.com"
+        
+    telegram:
+      enabled: true
+      bot_token: "${TELEGRAM_BOT_TOKEN}"
+      chat_id: "${TELEGRAM_CHAT_ID}"
+      
+    slack:
+      enabled: false
+      webhook_url: "${SLACK_WEBHOOK_URL}"
+      channel: "#nexus-alerts"
+      
+    push:
+      enabled: false
+      app_id: "${PUSH_APP_ID}"
+      api_key: "${PUSH_API_KEY}"
+      
+  # Notification Types
+  types:
+    trade_execution: true
+    position_update: true
+    risk_alert: true
+    system_error: true
+    performance_report: true
+    daily_summary: true
+
+# ============================================================
+# BACKUP SETTINGS
+# ============================================================
+backup:
+  # Backup Configuration
+  config:
+    enabled: true
+    schedule: "daily"
+    time: "00:00:00"
+    retention_days: 30
+    
+  # Backup Types
+  types:
+    database: true
+    configuration: true
+    logs: true
+    models: true
+    
+  # Backup Storage
+  storage:
+    local: true
+    cloud: false
+    compression: true
+    encryption: true
+    
+  # Backup Verification
+  verification:
+    enabled: true
+    verify_after_backup: true
+    test_restore: false
+
+# ============================================================
+# ENVIRONMENT-SPECIFIC OVERRIDES
+# ============================================================
+environments:
+  # Development Overrides
+  development:
+    trading:
+      exchange:
+        sandbox: true
+    bot:
+      enabled: true
+      active: true
+    monitoring:
+      alerts:
+        trade_execution: false
+        position_changes: false
+        risk_breaches: false
+        
+  # Staging Overrides
+  staging:
+    trading:
+      exchange:
+        sandbox: true
+    bot:
+      enabled: true
+      active: true
+    monitoring:
+      alerts:
+        trade_execution: true
+        position_changes: true
+        risk_breaches: true
+        
+  # Production Overrides
+  production:
+    trading:
+      exchange:
+        sandbox: false
+    bot:
+      enabled: true
+      active: true
+    monitoring:
+      alerts:
+        trade_execution: true
+        position_changes: true
+        risk_breaches: true
+        system_errors: true
+        performance_issues: true
+        
+  # Demo Overrides
+  demo:
+    trading:
+      exchange:
+        sandbox: true
+    bot:
+      enabled: true
+      active: true
+    monitoring:
+      alerts:
+        trade_execution: false
+        position_changes: false
+        risk_breaches: false
+
+# ============================================================
+# END OF CONFIGURATION
+# ============================================================
