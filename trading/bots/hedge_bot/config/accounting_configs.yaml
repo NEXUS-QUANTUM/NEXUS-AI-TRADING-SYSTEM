@@ -1,0 +1,733 @@
+# trading/bots/hedge_bot/config/accounting_configs.yaml
+# NEXUS AI TRADING SYSTEM - Hedge Bot Accounting Configuration
+# Version: 2.0.0
+# Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+
+# ============================================================
+# ACCOUNTING CONFIGURATION
+# ============================================================
+accounting:
+  # General Accounting Settings
+  general:
+    base_currency: "USD"
+    quote_currency: "USD"
+    decimal_places: 2
+    use_decimal_for_pnl: true
+    accounting_method: "mark_to_market"  # mark_to_market, cash_basis, accrual
+    valuation_method: "mark_to_market"   # mark_to_market, cost, average_cost
+    pnl_calculation: "realized_and_unrealized"  # realized_only, unrealized_only, both
+    include_commissions: true
+    include_fees: true
+    include_slippage: true
+    include_financing_costs: true
+    include_tax: false
+    
+  # PnL Calculation Settings
+  pnl:
+    # PnL Calculation Methods
+    calculation_methods:
+      first_in_first_out: true      # FIFO method
+      last_in_first_out: false      # LIFO method
+      average_cost: true            # Average cost method
+      specific_identification: false # Specific identification
+    
+    # PnL Components
+    components:
+      realized_pnl:
+        enabled: true
+        include_closed_positions: true
+        include_partial_closes: true
+        include_transfer_fees: false
+      
+      unrealized_pnl:
+        enabled: true
+        calculate_on_mark_to_market: true
+        update_frequency: "realtime"  # realtime, hourly, daily
+        include_open_positions: true
+        include_pending_orders: false
+      
+      financing_pnl:
+        enabled: true
+        include_overnight_funding: true
+        include_swap_rates: true
+        include_carry_trade: true
+      
+      commission_pnl:
+        enabled: true
+        include_exchange_fees: true
+        include_broker_fees: true
+        include_rebates: true
+        include_discounts: true
+    
+    # PnL Display
+    display:
+      show_breakdown: true
+      show_trade_history: true
+      show_performance_metrics: true
+      show_drawdown_analysis: true
+      show_risk_adjusted_metrics: true
+    
+    # PnL Metrics
+    metrics:
+      total_pnl: true
+      daily_pnl: true
+      weekly_pnl: true
+      monthly_pnl: true
+      yearly_pnl: true
+      cumulative_pnl: true
+      win_rate: true
+      loss_rate: true
+      average_win: true
+      average_loss: true
+      profit_factor: true
+      sharpe_ratio: true
+      sortino_ratio: true
+      calmar_ratio: true
+      max_drawdown: true
+      recovery_factor: true
+      expectancy: true
+    
+    # PnL Reporting
+    reporting:
+      generate_daily_reports: true
+      generate_weekly_reports: true
+      generate_monthly_reports: true
+      generate_quarterly_reports: true
+      generate_annual_reports: true
+      report_format: "json"  # json, csv, pdf, excel
+      report_destination: "database"  # database, email, file, api
+      report_language: "en"
+      report_timezone: "UTC"
+
+# ============================================================
+# POSITION ACCOUNTING
+# ============================================================
+position_accounting:
+  # Position Valuation
+  valuation:
+    method: "mark_to_market"  # mark_to_market, average_cost, base_cost
+    use_mid_price: true
+    use_bid_ask_spread: true
+    use_last_trade_price: false
+    update_frequency: "realtime"  # realtime, on_trade, hourly, daily
+    
+  # Position Cost Basis
+  cost_basis:
+    method: "average_cost"  # fifo, lifo, average_cost, specific
+    include_commissions_in_cost: true
+    include_fees_in_cost: true
+    include_slippage_in_cost: true
+    adjust_for_splits: true
+    adjust_for_dividends: true
+    
+  # Position Sizing
+  sizing:
+    calculate_using: "notional_value"  # notional_value, units, percentage
+    min_position_size: 0.01
+    max_position_size: 1000000
+    position_size_step: 0.01
+    
+  # Position Reporting
+  reporting:
+    show_unrealized_pnl: true
+    show_realized_pnl: true
+    show_cost_basis: true
+    show_current_value: true
+    show_return_percentage: true
+    show_hold_period: true
+    show_trade_count: true
+
+# ============================================================
+# TRADE ACCOUNTING
+# ============================================================
+trade_accounting:
+  # Trade Recording
+  recording:
+    record_all_trades: true
+    record_partial_trades: true
+    record_cancelled_trades: false
+    record_rejected_trades: false
+    record_amendments: true
+    include_trade_timezone: "UTC"
+    include_trade_duration: true
+    include_trade_reason: true
+    
+  # Trade Classification
+  classification:
+    by_asset_class: true
+    by_strategy: true
+    by_bot: true
+    by_side: true
+    by_size: true
+    by_risk_level: true
+    
+  # Trade Tags
+  tags:
+    hedge_trades: ["hedge", "protection", "risk_reduction"]
+    speculative_trades: ["speculative", "directional", "momentum"]
+    arbitrage_trades: ["arbitrage", "basis", "spread"]
+    scalping_trades: ["scalping", "high_frequency", "short_term"]
+    swing_trades: ["swing", "position", "trend"]
+    execution_trades: ["execution", "liquidity", "order"]
+
+# ============================================================
+# COST ACCOUNTING
+# ============================================================
+cost_accounting:
+  # Commission Costs
+  commissions:
+    structure: "tiered"  # flat, tiered, percentage
+    include_maker_fees: true
+    include_taker_fees: true
+    include_exchange_fees: true
+    include_broker_fees: true
+    include_referral_rebates: true
+    include_volume_discounts: true
+    
+  # Financing Costs
+  financing:
+    include_overnight_swap: true
+    include_funding_rates: true
+    include_borrowing_costs: true
+    include_interest_charges: true
+    include_rollover_costs: true
+    
+  # Slippage Costs
+  slippage:
+    calculate_using: "bid_ask_spread"  # bid_ask_spread, execution_vs_mid, model_estimate
+    include_market_impact: true
+    include_latency_impact: true
+    include_volatility_impact: true
+    
+  # Operational Costs
+  operational:
+    include_platform_fees: true
+    include_data_fees: true
+    include_infrastructure_costs: true
+    include_connectivity_costs: true
+    include_maintenance_costs: true
+
+# ============================================================
+# MARGIN ACCOUNTING
+# ============================================================
+margin_accounting:
+  # Margin Types
+  margin_types:
+    initial_margin: true
+    maintenance_margin: true
+    variation_margin: true
+    portfolio_margin: true
+    
+  # Margin Calculation
+  calculation:
+    method: "risk_based"  # risk_based, fixed, percentage
+    leverage_allowed: 3.0
+    max_leverage: 5.0
+    min_collateral: 1000.0
+    collateral_currency: "USD"
+    
+  # Collateral Management
+  collateral:
+    accepted_assets:
+      - "USD"
+      - "USDC"
+      - "USDT"
+      - "BUSD"
+      - "DAI"
+      - "BTC"
+      - "ETH"
+    haircut_rates:
+      USD: 0.0
+      USDC: 0.0
+      USDT: 0.0
+      BUSD: 0.0
+      DAI: 0.02
+      BTC: 0.15
+      ETH: 0.15
+    concentration_limits:
+      per_asset: 0.5
+      per_issuer: 0.3
+      per_currency: 0.7
+
+# ============================================================
+# TAX ACCOUNTING
+# ============================================================
+tax_accounting:
+  # Tax Settings
+  settings:
+    enabled: false
+    tax_jurisdiction: "none"  # us, uk, eu, singapore, offshore
+    tax_year_start: "2026-01-01"
+    tax_year_end: "2026-12-31"
+    use_tax_lot_accounting: true
+    
+  # Tax Rates
+  rates:
+    capital_gains_tax: 0.20
+    short_term_capital_gains: 0.30
+    long_term_capital_gains: 0.15
+    dividend_tax: 0.15
+    withholding_tax: 0.30
+    
+  # Tax Reporting
+  reporting:
+    generate_tax_reports: false
+    report_format: "pdf"
+    include_trade_summaries: true
+    include_pnl_summaries: true
+    include_cost_basis_reports: true
+    include_capital_gains_reports: true
+
+# ============================================================
+# PERFORMANCE ACCOUNTING
+# ============================================================
+performance_accounting:
+  # Performance Metrics
+  metrics:
+    # Return Metrics
+    total_return: true
+    annualized_return: true
+    cumulative_return: true
+    time_weighted_return: true
+    money_weighted_return: true
+    risk_adjusted_return: true
+    
+    # Risk Metrics
+    volatility: true
+    max_drawdown: true
+    sharpe_ratio: true
+    sortino_ratio: true
+    calmar_ratio: true
+    omega_ratio: true
+    alpha: true
+    beta: true
+    
+    # Efficiency Metrics
+    win_rate: true
+    loss_rate: true
+    average_win: true
+    average_loss: true
+    profit_factor: true
+    recovery_factor: true
+    expectancy: true
+    trade_efficiency: true
+    
+  # Benchmarking
+  benchmarking:
+    enabled: true
+    benchmarks:
+      - "S&P500"
+      - "NASDAQ"
+      - "BTC/USD"
+      - "ETH/USD"
+      - "Gold"
+    use_custom_benchmark: false
+    custom_benchmark: []
+    
+  # Attribution
+  attribution:
+    by_asset_class: true
+    by_sector: true
+    by_strategy: true
+    by_bot: true
+    by_region: true
+    by_currency: true
+
+# ============================================================
+# REPORTING
+# ============================================================
+reporting:
+  # Report Generation
+  generation:
+    generate_accounting_reports: true
+    generate_performance_reports: true
+    generate_risk_reports: true
+    generate_tax_reports: false
+    generate_audit_reports: true
+    generate_regulatory_reports: false
+    
+  # Report Formats
+  formats:
+    json: true
+    csv: true
+    excel: true
+    pdf: true
+    html: true
+    
+  # Report Delivery
+  delivery:
+    save_to_database: true
+    save_to_filesystem: true
+    send_email: false
+    send_webhook: false
+    upload_cloud: true
+    
+  # Report Schedule
+  schedule:
+    daily: true
+    weekly: true
+    monthly: true
+    quarterly: true
+    yearly: true
+    on_demand: true
+
+# ============================================================
+# AUDIT & COMPLIANCE
+# ============================================================
+audit_compliance:
+  # Audit Settings
+  audit:
+    enabled: true
+    log_all_transactions: true
+    log_all_events: true
+    log_all_errors: true
+    log_all_trades: true
+    log_all_positions: true
+    log_all_accounting_events: true
+    audit_retention_days: 365
+    
+  # Compliance
+  compliance:
+    regulatory_framework: "none"  # none, us, uk, eu, singapore
+    reporting_requirements: []
+    compliance_check_interval: 60
+    enforce_trade_limits: true
+    enforce_position_limits: true
+    enforce_margin_limits: true
+    enforce_risk_limits: true
+    
+  # Regulatory Reports
+  regulatory_reports:
+    - name: "Daily_Transaction_Report"
+      frequency: "daily"
+      format: "csv"
+    - name: "Monthly_PnL_Report"
+      frequency: "monthly"
+      format: "pdf"
+    - name: "Quarterly_Risk_Report"
+      frequency: "quarterly"
+      format: "pdf"
+
+# ============================================================
+# CURRENCY CONVERSION
+# ============================================================
+currency_conversion:
+  # Conversion Settings
+  settings:
+    base_currency: "USD"
+    fallback_currency: "USD"
+    use_fx_rates: true
+    fx_rate_source: "primary"  # primary, secondary, backup
+    rate_update_frequency: 60
+    
+  # Fx Rates
+  fx_rates:
+    usd_eur: 0.92
+    usd_gbp: 0.80
+    usd_jpy: 150.00
+    usd_chf: 0.88
+    usd_cad: 1.35
+    usd_aud: 1.52
+    usd_nzd: 1.65
+    
+  # Crypto Rates
+  crypto_rates:
+    btc_usd: 100000.00
+    eth_usd: 3000.00
+    sol_usd: 150.00
+    ada_usd: 0.50
+    dot_usd: 8.00
+    avax_usd: 35.00
+    xrp_usd: 0.50
+
+# ============================================================
+# NOTIFICATIONS
+# ============================================================
+notifications:
+  # Notification Settings
+  settings:
+    enabled: true
+    notification_channel: "all"  # all, email, telegram, slack, push
+    
+  # Accounting Notifications
+  accounting:
+    send_pnl_updates: true
+    send_margin_alerts: true
+    send_position_alerts: true
+    send_risk_alerts: true
+    send_performance_reports: true
+    
+  # Alert Thresholds
+  thresholds:
+    daily_loss_alert: 0.05
+    weekly_loss_alert: 0.10
+    margin_utilization_alert: 0.70
+    drawdown_alert: 0.15
+    position_concentration_alert: 0.25
+
+# ============================================================
+# DATA STORAGE
+# ============================================================
+data_storage:
+  # Storage Settings
+  settings:
+    storage_engine: "timescaledb"  # timescaledb, postgresql, mongodb, clickhouse
+    retention_policy:
+      trade_data: "10y"
+      position_data: "5y"
+      pnl_data: "10y"
+      accounting_events: "5y"
+      audit_logs: "7y"
+      performance_metrics: "5y"
+    
+  # Compression
+  compression:
+    enabled: true
+    compression_algorithm: "zstd"  # zstd, gzip, lz4, snappy
+    compression_level: 3
+    
+  # Backup
+  backup:
+    enabled: true
+    backup_frequency: "daily"
+    backup_retention: 30
+    backup_location: "cloud"  # cloud, local, both
+    cloud_provider: "aws"  # aws, gcp, azure
+    
+  # Archiving
+  archiving:
+    enabled: true
+    archive_after_days: 365
+    archive_location: "cold_storage"
+    archive_format: "parquet"
+
+# ============================================================
+# INTEGRATION
+# ============================================================
+integration:
+  # External Systems
+  external:
+    accounting_system:
+      enabled: false
+      provider: "none"  # quickbooks, xero, sap, custom
+      api_endpoint: ""
+      api_key: ""
+      
+    reporting_system:
+      enabled: true
+      provider: "tableau"  # tableau, powerbi, metabase, custom
+      api_endpoint: ""
+      
+    risk_system:
+      enabled: true
+      provider: "internal"  # internal, external
+      
+    compliance_system:
+      enabled: false
+      provider: "none"
+
+# ============================================================
+# DEBUG & LOGGING
+# ============================================================
+debug_logging:
+  # Debug Settings
+  enabled: true
+  log_level: "INFO"  # DEBUG, INFO, WARNING, ERROR, CRITICAL
+  log_accounting_calculations: true
+  log_pnl_calculations: true
+  log_position_updates: true
+  log_trade_events: true
+  log_margin_updates: true
+  
+  # Log Files
+  files:
+    accounting_log: "logs/accounting.log"
+    pnl_log: "logs/pnl.log"
+    position_log: "logs/position.log"
+    trade_log: "logs/trade.log"
+    error_log: "logs/error.log"
+    debug_log: "logs/debug.log"
+  
+  # Log Rotation
+  rotation:
+    max_size_mb: 100
+    max_files: 10
+    compress: true
+    rotate_on_start: true
+
+# ============================================================
+# ENVIRONMENT SPECIFIC CONFIGURATIONS
+# ============================================================
+environments:
+  # Development Environment
+  development:
+    accounting:
+      general:
+        base_currency: "USD"
+        accounting_method: "mark_to_market"
+        
+    logging:
+      log_level: "DEBUG"
+      log_accounting_calculations: true
+      
+  # Staging Environment
+  staging:
+    accounting:
+      general:
+        base_currency: "USD"
+        accounting_method: "mark_to_market"
+        
+    logging:
+      log_level: "INFO"
+      log_accounting_calculations: true
+      
+  # Production Environment
+  production:
+    accounting:
+      general:
+        base_currency: "USD"
+        accounting_method: "mark_to_market"
+        
+    logging:
+      log_level: "INFO"
+      log_accounting_calculations: false
+      
+  # Demo Environment
+  demo:
+    accounting:
+      general:
+        base_currency: "USD"
+        accounting_method: "cash_basis"
+        
+    logging:
+      log_level: "INFO"
+      log_accounting_calculations: true
+
+# ============================================================
+# ACCOUNTING TEMPLATES
+# ============================================================
+templates:
+  # PnL Template
+  pnl_template:
+    header:
+      - "Date"
+      - "Strategy"
+      - "Asset"
+      - "Side"
+      - "Quantity"
+      - "Price"
+      - "Cost"
+      - "Fees"
+      - "Realized_PnL"
+      - "Unrealized_PnL"
+      - "Total_PnL"
+      - "Return_%"
+      - "Hold_Period"
+      
+  # Position Template
+  position_template:
+    header:
+      - "Date"
+      - "Strategy"
+      - "Asset"
+      - "Side"
+      - "Quantity"
+      - "Avg_Price"
+      - "Cost_Basis"
+      - "Mark_Price"
+      - "Current_Value"
+      - "Unrealized_PnL"
+      - "Unrealized_PnL_%"
+      
+  # Trade Template
+  trade_template:
+    header:
+      - "Trade_ID"
+      - "Date"
+      - "Strategy"
+      - "Asset"
+      - "Side"
+      - "Quantity"
+      - "Price"
+      - "Fees"
+      - "Slippage"
+      - "PnL"
+      - "Return_%"
+      
+  # Performance Template
+  performance_template:
+    header:
+      - "Date"
+      - "Total_PnL"
+      - "Daily_PnL"
+      - "Return_%"
+      - "Sharpe"
+      - "Sortino"
+      - "Calmar"
+      - "Drawdown_%"
+      - "Win_Rate_%"
+      - "Profit_Factor"
+
+# ============================================================
+# ACCOUNTING METRICS CONFIGURATION
+# ============================================================
+metrics_config:
+  # Metric Definitions
+  definitions:
+    total_pnl:
+      description: "Total Profit and Loss"
+      type: "float"
+      precision: 2
+      calculation: "realized_pnl + unrealized_pnl"
+      
+    realized_pnl:
+      description: "Realized Profit and Loss"
+      type: "float"
+      precision: 2
+      calculation: "sum(closed_trade_pnl)"
+      
+    unrealized_pnl:
+      description: "Unrealized Profit and Loss"
+      type: "float"
+      precision: 2
+      calculation: "sum(mark_to_market_value - cost_basis)"
+      
+    sharpe_ratio:
+      description: "Sharpe Ratio"
+      type: "float"
+      precision: 3
+      calculation: "(average_return - risk_free_rate) / standard_deviation"
+      
+    sortino_ratio:
+      description: "Sortino Ratio"
+      type: "float"
+      precision: 3
+      calculation: "(average_return - risk_free_rate) / downside_standard_deviation"
+      
+    calmar_ratio:
+      description: "Calmar Ratio"
+      type: "float"
+      precision: 3
+      calculation: "annualized_return / max_drawdown"
+      
+    max_drawdown:
+      description: "Maximum Drawdown"
+      type: "float"
+      precision: 4
+      calculation: "max(peak_to_trough_decline)"
+      
+    win_rate:
+      description: "Win Rate"
+      type: "float"
+      precision: 4
+      calculation: "winning_trades / total_trades"
+      
+    profit_factor:
+      description: "Profit Factor"
+      type: "float"
+      precision: 3
+      calculation: "total_wins / total_losses"
+
+# ============================================================
+# END OF CONFIGURATION
+# ============================================================
