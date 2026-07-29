@@ -1,0 +1,527 @@
+# trading/bots/hedge_bot/config/stop_loss_configs.yaml
+# NEXUS AI TRADING SYSTEM - Hedge Bot Stop Loss Configuration
+# Version: 2.0.0
+# Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+
+# ============================================================
+# STOP LOSS GENERAL SETTINGS
+# ============================================================
+stop_loss:
+  # General Stop Loss Settings
+  general:
+    enabled: true
+    stop_loss_type: "dynamic"  # dynamic, fixed, trailing, adaptive
+    default_stop_loss: 0.05  # 5% default
+    min_stop_loss: 0.01  # 1% minimum
+    max_stop_loss: 0.20  # 20% maximum
+    stop_loss_activation: "immediate"  # immediate, threshold, conditional
+    update_frequency: "realtime"
+    use_volatility_adjustment: true
+    use_market_regime_adjustment: true
+    use_asset_specific_stops: true
+    
+  # Stop Loss Types
+  types:
+    fixed_stop_loss:
+      enabled: true
+      description: "Fixed percentage stop loss"
+      percentage: 0.05
+      
+    trailing_stop_loss:
+      enabled: true
+      description: "Trailing stop loss"
+      trailing_distance: 0.03  # 3%
+      activation_threshold: 0.02  # 2%
+      
+    dynamic_stop_loss:
+      enabled: true
+      description: "Dynamic stop loss based on volatility"
+      volatility_multiplier: 2.0
+      
+    adaptive_stop_loss:
+      enabled: true
+      description: "Adaptive stop loss learning from market patterns"
+      learning_rate: 0.1
+      
+    atr_stop_loss:
+      enabled: true
+      description: "ATR-based stop loss"
+      atr_multiplier: 2.0
+      atr_period: 14
+
+# ============================================================
+# STOP LOSS BY ASSET CLASS
+# ============================================================
+stop_loss_by_asset:
+  # Cryptocurrency
+  cryptocurrency:
+    fixed_stop: 0.05  # 5%
+    trailing_stop: 0.03  # 3%
+    atr_multiplier: 2.0
+    min_stop: 0.02
+    max_stop: 0.15
+    volatility_adjustment: true
+    
+    assets:
+      BTC:
+        fixed_stop: 0.05
+        trailing_stop: 0.03
+        atr_multiplier: 2.0
+        volatility_adjustment: 0.8
+      ETH:
+        fixed_stop: 0.06
+        trailing_stop: 0.035
+        atr_multiplier: 2.2
+        volatility_adjustment: 0.9
+      SOL:
+        fixed_stop: 0.08
+        trailing_stop: 0.04
+        atr_multiplier: 2.5
+        volatility_adjustment: 1.2
+      ADA:
+        fixed_stop: 0.08
+        trailing_stop: 0.04
+        atr_multiplier: 2.5
+        volatility_adjustment: 1.2
+      DOT:
+        fixed_stop: 0.07
+        trailing_stop: 0.038
+        atr_multiplier: 2.3
+        volatility_adjustment: 1.1
+      AVAX:
+        fixed_stop: 0.09
+        trailing_stop: 0.045
+        atr_multiplier: 2.8
+        volatility_adjustment: 1.3
+      XRP:
+        fixed_stop: 0.06
+        trailing_stop: 0.035
+        atr_multiplier: 2.0
+        volatility_adjustment: 1.0
+      LINK:
+        fixed_stop: 0.07
+        trailing_stop: 0.038
+        atr_multiplier: 2.2
+        volatility_adjustment: 1.1
+      UNI:
+        fixed_stop: 0.08
+        trailing_stop: 0.04
+        atr_multiplier: 2.5
+        volatility_adjustment: 1.2
+      AAVE:
+        fixed_stop: 0.08
+        trailing_stop: 0.04
+        atr_multiplier: 2.5
+        volatility_adjustment: 1.2
+        
+  # Forex
+  forex:
+    fixed_stop: 0.02  # 2%
+    trailing_stop: 0.01  # 1%
+    atr_multiplier: 1.5
+    min_stop: 0.005
+    max_stop: 0.05
+    volatility_adjustment: true
+    
+    assets:
+      EURUSD:
+        fixed_stop: 0.02
+        trailing_stop: 0.01
+        atr_multiplier: 1.5
+      GBPUSD:
+        fixed_stop: 0.02
+        trailing_stop: 0.01
+        atr_multiplier: 1.5
+      USDJPY:
+        fixed_stop: 0.02
+        trailing_stop: 0.01
+        atr_multiplier: 1.5
+      USDCHF:
+        fixed_stop: 0.02
+        trailing_stop: 0.01
+        atr_multiplier: 1.5
+      AUDUSD:
+        fixed_stop: 0.025
+        trailing_stop: 0.012
+        atr_multiplier: 1.8
+      USDCAD:
+        fixed_stop: 0.025
+        trailing_stop: 0.012
+        atr_multiplier: 1.8
+        
+  # Equity
+  equity:
+    fixed_stop: 0.04  # 4%
+    trailing_stop: 0.02  # 2%
+    atr_multiplier: 1.8
+    min_stop: 0.01
+    max_stop: 0.10
+    volatility_adjustment: true
+    
+    assets:
+      SPY:
+        fixed_stop: 0.03
+        trailing_stop: 0.015
+        atr_multiplier: 1.5
+      AAPL:
+        fixed_stop: 0.04
+        trailing_stop: 0.02
+        atr_multiplier: 1.8
+      MSFT:
+        fixed_stop: 0.04
+        trailing_stop: 0.02
+        atr_multiplier: 1.8
+      GOOGL:
+        fixed_stop: 0.04
+        trailing_stop: 0.02
+        atr_multiplier: 1.8
+      AMZN:
+        fixed_stop: 0.05
+        trailing_stop: 0.025
+        atr_multiplier: 2.0
+      TSLA:
+        fixed_stop: 0.07
+        trailing_stop: 0.035
+        atr_multiplier: 2.5
+      NVDA:
+        fixed_stop: 0.05
+        trailing_stop: 0.025
+        atr_multiplier: 2.0
+        
+  # Commodity
+  commodity:
+    fixed_stop: 0.04  # 4%
+    trailing_stop: 0.02  # 2%
+    atr_multiplier: 2.0
+    min_stop: 0.01
+    max_stop: 0.12
+    volatility_adjustment: true
+    
+    assets:
+      GOLD:
+        fixed_stop: 0.03
+        trailing_stop: 0.015
+        atr_multiplier: 1.5
+      SILVER:
+        fixed_stop: 0.05
+        trailing_stop: 0.025
+        atr_multiplier: 2.0
+      OIL:
+        fixed_stop: 0.06
+        trailing_stop: 0.03
+        atr_multiplier: 2.5
+      NATURAL_GAS:
+        fixed_stop: 0.08
+        trailing_stop: 0.04
+        atr_multiplier: 3.0
+
+# ============================================================
+# STOP LOSS ADJUSTMENTS
+# ============================================================
+stop_loss_adjustments:
+  # Market Regime Adjustments
+  market_regime:
+    bull_market:
+      stop_multiplier: 1.2
+      description: "Wider stops in bull markets"
+      
+    bear_market:
+      stop_multiplier: 0.8
+      description: "Tighter stops in bear markets"
+      
+    sideways_market:
+      stop_multiplier: 1.0
+      description: "Neutral stops in sideways markets"
+      
+    high_volatility:
+      stop_multiplier: 1.5
+      description: "Wider stops in high volatility"
+      
+    low_volatility:
+      stop_multiplier: 0.7
+      description: "Tighter stops in low volatility"
+      
+  # Risk Profile Adjustments
+  risk_profile:
+    conservative:
+      stop_multiplier: 0.7
+      target_stop: 0.03
+      
+    moderate:
+      stop_multiplier: 1.0
+      target_stop: 0.05
+      
+    aggressive:
+      stop_multiplier: 1.3
+      target_stop: 0.07
+
+# ============================================================
+# STOP LOSS MONITORING
+# ============================================================
+stop_loss_monitoring:
+  # Monitoring Settings
+  settings:
+    enabled: true
+    monitoring_frequency: "realtime"
+    alert_threshold: 0.75  # 75% of stop
+    critical_threshold: 0.90  # 90% of stop
+    reporting_frequency: "daily"
+    
+  # Alert Conditions
+  alerts:
+    stop_loss_approaching:
+      enabled: true
+      level: "warning"
+      threshold: 0.80
+      message: "Stop loss approaching: {distance}%"
+      
+    stop_loss_hit:
+      enabled: true
+      level: "critical"
+      message: "Stop loss hit for {asset}"
+      
+    stop_loss_adjustment:
+      enabled: true
+      level: "info"
+      message: "Stop loss adjusted: {old} -> {new}"
+      
+  # Monitoring Metrics
+  metrics:
+    - "current_stop_loss"
+    - "stop_loss_distance"
+    - "stop_loss_hit_count"
+    - "stop_loss_adjustment_count"
+    - "stop_loss_effectiveness"
+
+# ============================================================
+# STOP LOSS REPORTING
+# ============================================================
+stop_loss_reporting:
+  # Report Settings
+  settings:
+    enabled: true
+    report_frequency: "daily"
+    report_format: "json"  # json, csv, pdf, html
+    include_analytics: true
+    include_visualizations: true
+    include_recommendations: true
+    
+  # Report Sections
+  sections:
+    stop_loss_summary:
+      enabled: true
+      include_current_stops: true
+      include_hit_count: true
+      include_effectiveness: true
+      
+    asset_stops:
+      enabled: true
+      include_by_asset_class: true
+      include_by_asset: true
+      
+    adjustments:
+      enabled: true
+      include_adjustment_count: true
+      include_adjustment_reasons: true
+      
+    recommendations:
+      enabled: true
+      include_stop_optimization: true
+      include_risk_management: true
+
+# ============================================================
+# STOP LOSS DASHBOARD
+# ============================================================
+stop_loss_dashboard:
+  # Dashboard Settings
+  settings:
+    enabled: true
+    refresh_interval: 5
+    default_view: "summary"  # summary, details, analytics
+    
+  # Dashboard Widgets
+  widgets:
+    stop_loss_summary:
+      enabled: true
+      position: 1
+      size: "large"
+      
+    stop_loss_chart:
+      enabled: true
+      position: 2
+      size: "large"
+      
+    asset_stops:
+      enabled: true
+      position: 3
+      size: "medium"
+      
+    hit_analysis:
+      enabled: true
+      position: 4
+      size: "medium"
+      
+    alert_status:
+      enabled: true
+      position: 5
+      size: "small"
+
+# ============================================================
+# STOP LOSS SCENARIOS
+# ============================================================
+stop_loss_scenarios:
+  # Scenario 1: Fixed Stop
+  fixed_stop_scenario:
+    description: "Fixed stop loss scenario"
+    entry_price: 100
+    stop_price: 95  # 5% stop
+    risk: 5
+    risk_percentage: 0.05
+    
+  # Scenario 2: Trailing Stop
+  trailing_stop_scenario:
+    description: "Trailing stop loss scenario"
+    entry_price: 100
+    trailing_distance: 3
+    activation_threshold: 2
+    
+    # Price moves to 105
+    new_price: 105
+    trailing_stop: 102  # 105 - 3
+    lock_in_profit: 2  # 102 - 100
+    
+  # Scenario 3: Dynamic Stop
+  dynamic_stop_scenario:
+    description: "Dynamic stop loss scenario"
+    entry_price: 100
+    volatility: 0.20
+    volatility_multiplier: 2.0
+    stop_percentage: 0.04  # 4%
+    stop_price: 96  # 100 * (1 - 0.04)
+
+# ============================================================
+# STOP LOSS EXAMPLES
+# ============================================================
+stop_loss_examples:
+  # Example 1: Stop Loss Calculation
+  stop_loss_calculation:
+    description: "Stop Loss Calculation Example"
+    entry_price: 100
+    stop_loss_percentage: 0.05  # 5%
+    stop_loss_price: 95
+    risk_per_share: 5
+    position_size: 100
+    total_risk: 500
+    
+  # Example 2: Trailing Stop Calculation
+  trailing_stop_calculation:
+    description: "Trailing Stop Calculation Example"
+    entry_price: 100
+    trailing_distance: 0.03  # 3%
+    activation_threshold: 0.02  # 2%
+    
+    # Initial
+    current_price: 101
+    trailing_stop: 100  # Not activated yet
+    
+    # After activation (price > 102)
+    current_price: 103
+    trailing_stop: 100  # 103 - 3 = 100
+    
+    # After further move
+    current_price: 106
+    trailing_stop: 103  # 106 - 3 = 103
+    
+  # Example 3: ATR-Based Stop
+  atr_stop_calculation:
+    description: "ATR-Based Stop Loss Example"
+    entry_price: 100
+    atr: 2.0
+    atr_multiplier: 2.0
+    stop_distance: 4.0  # 2.0 * 2.0
+    stop_price: 96  # 100 - 4
+
+# ============================================================
+# ENVIRONMENT-SPECIFIC CONFIGURATIONS
+# ============================================================
+environments:
+  # Development Environment
+  development:
+    stop_loss:
+      general:
+        enabled: true
+        stop_loss_type: "fixed"
+        default_stop_loss: 0.08
+        update_frequency: "hourly"
+        
+    stop_loss_monitoring:
+      alerts:
+        stop_loss_approaching:
+          enabled: false
+        stop_loss_hit:
+          enabled: true
+          
+  # Staging Environment
+  staging:
+    stop_loss:
+      general:
+        enabled: true
+        stop_loss_type: "dynamic"
+        default_stop_loss: 0.05
+        update_frequency: "realtime"
+        
+    stop_loss_monitoring:
+      alerts:
+        stop_loss_approaching:
+          enabled: true
+        stop_loss_hit:
+          enabled: true
+        stop_loss_adjustment:
+          enabled: true
+          
+  # Production Environment
+  production:
+    stop_loss:
+      general:
+        enabled: true
+        stop_loss_type: "dynamic"
+        default_stop_loss: 0.05
+        min_stop_loss: 0.01
+        max_stop_loss: 0.20
+        stop_loss_activation: "immediate"
+        update_frequency: "realtime"
+        use_volatility_adjustment: true
+        use_market_regime_adjustment: true
+        use_asset_specific_stops: true
+        
+    stop_loss_monitoring:
+      alerts:
+        stop_loss_approaching:
+          enabled: true
+          level: "warning"
+        stop_loss_hit:
+          enabled: true
+          level: "critical"
+        stop_loss_adjustment:
+          enabled: true
+          level: "info"
+          
+  # Demo Environment
+  demo:
+    stop_loss:
+      general:
+        enabled: true
+        stop_loss_type: "fixed"
+        default_stop_loss: 0.06
+        update_frequency: "hourly"
+        
+    stop_loss_monitoring:
+      alerts:
+        stop_loss_approaching:
+          enabled: false
+        stop_loss_hit:
+          enabled: true
+
+# ============================================================
+# END OF CONFIGURATION
+# ============================================================
