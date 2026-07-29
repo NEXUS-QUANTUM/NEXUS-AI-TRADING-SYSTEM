@@ -1,0 +1,442 @@
+# trading/bots/hedge_bot/config/position_sizing_configs.yaml
+# NEXUS AI TRADING SYSTEM - Hedge Bot Position Sizing Configuration
+# Version: 2.0.0
+# Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+
+# ============================================================
+# POSITION SIZING GENERAL SETTINGS
+# ============================================================
+position_sizing:
+  # General Position Sizing Settings
+  general:
+    enabled: true
+    sizing_method: "risk_based"  # risk_based, fixed, kelly, optimal_f, volatility_based
+    max_position_size: 10000  # USD
+    min_position_size: 100  # USD
+    default_position_size: 1000  # USD
+    max_portfolio_risk: 0.02  # 2% of portfolio
+    max_position_risk: 0.01  # 1% of portfolio
+    use_dynamic_sizing: true
+    use_correlation_adjustment: true
+    use_volatility_adjustment: true
+    update_frequency: "realtime"
+    
+  # Sizing Methods
+  methods:
+    fixed_sizing:
+      enabled: true
+      description: "Fixed position size"
+      fixed_size: 1000
+      
+    risk_based_sizing:
+      enabled: true
+      description: "Risk-based position sizing"
+      risk_per_trade: 0.01  # 1% of portfolio
+      stop_loss_percentage: 0.05  # 5% stop loss
+      
+    kelly_criterion:
+      enabled: true
+      description: "Kelly Criterion position sizing"
+      kelly_fraction: 0.25  # 25% of Kelly
+      win_rate: 0.55
+      win_loss_ratio: 2.0
+      
+    optimal_f:
+      enabled: true
+      description: "Optimal F position sizing"
+      historical_returns: true
+      lookback_period: 252  # days
+      
+    volatility_based:
+      enabled: true
+      description: "Volatility-based position sizing"
+      target_volatility: 0.15
+      position_volatility: 0.20
+
+# ============================================================
+# RISK-BASED SIZING
+# ============================================================
+risk_based_sizing:
+  # Risk Parameters
+  parameters:
+    risk_per_trade: 0.01  # 1% of portfolio
+    max_risk_per_trade: 0.02  # 2% of portfolio
+    min_risk_per_trade: 0.005  # 0.5% of portfolio
+    risk_per_day: 0.05  # 5% of portfolio
+    risk_per_month: 0.15  # 15% of portfolio
+    stop_loss_percentage: 0.05  # 5% stop loss
+    take_profit_percentage: 0.10  # 10% take profit
+    
+  # Risk Calculation
+  calculation:
+    method: "var_based"  # var_based, historical, monte_carlo
+    confidence_level: 0.95
+    lookback_period: 30  # days
+    use_correlation: true
+    use_volatility: true
+    
+  # Risk Adjustments
+  adjustments:
+    volatility_adjustment: true
+    correlation_adjustment: true
+    liquidity_adjustment: true
+    concentration_adjustment: true
+    market_regime_adjustment: true
+
+# ============================================================
+# KELLY CRITERION SIZING
+# ============================================================
+kelly_sizing:
+  # Kelly Parameters
+  parameters:
+    win_rate: 0.55  # 55% win rate
+    win_loss_ratio: 2.0  # 2:1 win/loss ratio
+    kelly_fraction: 0.25  # 25% of full Kelly
+    max_kelly_fraction: 0.50  # 50% of full Kelly
+    min_kelly_fraction: 0.10  # 10% of full Kelly
+    
+  # Kelly Calculation
+  calculation:
+    method: "standard"  # standard, fractional, optimal
+    use_historical_data: true
+    lookback_period: 90  # days
+    update_frequency: "daily"
+    
+  # Kelly Adjustments
+  adjustments:
+    risk_adjustment: true
+    drawdown_adjustment: true
+    volatility_adjustment: true
+    market_regime_adjustment: true
+
+# ============================================================
+# POSITION SIZING BY ASSET CLASS
+# ============================================================
+position_sizing_by_asset:
+  # Cryptocurrency
+  cryptocurrency:
+    max_position: 10000
+    min_position: 100
+    risk_per_trade: 0.015  # 1.5%
+    kelly_fraction: 0.20
+    volatility_adjustment: true
+    
+    assets:
+      BTC:
+        max_position: 10000
+        min_position: 100
+        risk_per_trade: 0.02
+        kelly_fraction: 0.25
+      ETH:
+        max_position: 8000
+        min_position: 100
+        risk_per_trade: 0.018
+        kelly_fraction: 0.22
+      SOL:
+        max_position: 5000
+        min_position: 50
+        risk_per_trade: 0.015
+        kelly_fraction: 0.18
+      ADA:
+        max_position: 5000
+        min_position: 50
+        risk_per_trade: 0.015
+        kelly_fraction: 0.18
+      DOT:
+        max_position: 5000
+        min_position: 50
+        risk_per_trade: 0.015
+        kelly_fraction: 0.18
+        
+  # Forex
+  forex:
+    max_position: 20000
+    min_position: 200
+    risk_per_trade: 0.01  # 1%
+    kelly_fraction: 0.30
+    volatility_adjustment: true
+    
+    assets:
+      EURUSD:
+        max_position: 20000
+        min_position: 200
+        risk_per_trade: 0.01
+        kelly_fraction: 0.30
+      GBPUSD:
+        max_position: 15000
+        min_position: 200
+        risk_per_trade: 0.01
+        kelly_fraction: 0.28
+      USDJPY:
+        max_position: 15000
+        min_position: 200
+        risk_per_trade: 0.01
+        kelly_fraction: 0.28
+        
+  # Equity
+  equity:
+    max_position: 15000
+    min_position: 150
+    risk_per_trade: 0.008  # 0.8%
+    kelly_fraction: 0.25
+    volatility_adjustment: true
+    
+    assets:
+      SPY:
+        max_position: 15000
+        min_position: 150
+        risk_per_trade: 0.01
+        kelly_fraction: 0.30
+      AAPL:
+        max_position: 10000
+        min_position: 100
+        risk_per_trade: 0.008
+        kelly_fraction: 0.25
+      MSFT:
+        max_position: 10000
+        min_position: 100
+        risk_per_trade: 0.008
+        kelly_fraction: 0.25
+        
+  # Commodity
+  commodity:
+    max_position: 10000
+    min_position: 100
+    risk_per_trade: 0.012  # 1.2%
+    kelly_fraction: 0.20
+    volatility_adjustment: true
+    
+    assets:
+      GOLD:
+        max_position: 10000
+        min_position: 100
+        risk_per_trade: 0.015
+        kelly_fraction: 0.25
+      OIL:
+        max_position: 8000
+        min_position: 100
+        risk_per_trade: 0.012
+        kelly_fraction: 0.20
+
+# ============================================================
+# POSITION SIZING MONITORING
+# ============================================================
+position_sizing_monitoring:
+  # Monitoring Settings
+  settings:
+    enabled: true
+    monitoring_frequency: "realtime"
+    alert_threshold: 0.75  # 75% of limit
+    critical_threshold: 0.90  # 90% of limit
+    reporting_frequency: "daily"
+    
+  # Alert Conditions
+  alerts:
+    position_size_alert:
+      enabled: true
+      level: "warning"
+      threshold: 0.80
+      message: "Position size approaching limit: {size}"
+      
+    risk_alert:
+      enabled: true
+      level: "warning"
+      threshold: 0.80
+      message: "Position risk approaching limit: {risk}%"
+      
+    sizing_deviation_alert:
+      enabled: true
+      level: "warning"
+      threshold: 0.20
+      message: "Position sizing deviation: {deviation}%"
+      
+  # Monitoring Metrics
+  metrics:
+    - "position_size"
+    - "position_risk"
+    - "portfolio_risk"
+    - "sizing_deviation"
+    - "risk_per_trade"
+    - "risk_per_day"
+    - "risk_per_month"
+
+# ============================================================
+# POSITION SIZING REPORTING
+# ============================================================
+position_sizing_reporting:
+  # Report Settings
+  settings:
+    enabled: true
+    report_frequency: "daily"
+    report_format: "json"  # json, csv, pdf, html
+    include_analytics: true
+    include_visualizations: true
+    include_recommendations: true
+    
+  # Report Sections
+  sections:
+    sizing_summary:
+      enabled: true
+      include_current_sizes: true
+      include_risk_metrics: true
+      include_deviation: true
+      
+    asset_sizing:
+      enabled: true
+      include_by_asset_class: true
+      include_by_asset: true
+      include_limits: true
+      
+    risk_analysis:
+      enabled: true
+      include_risk_per_trade: true
+      include_risk_per_day: true
+      include_risk_per_month: true
+      
+    recommendations:
+      enabled: true
+      include_sizing_optimization: true
+      include_risk_reduction: true
+      include_asset_allocation: true
+
+# ============================================================
+# POSITION SIZING DASHBOARD
+# ============================================================
+position_sizing_dashboard:
+  # Dashboard Settings
+  settings:
+    enabled: true
+    refresh_interval: 5
+    default_view: "summary"  # summary, details, analytics
+    
+  # Dashboard Widgets
+  widgets:
+    sizing_summary:
+      enabled: true
+      position: 1
+      size: "large"
+      
+    risk_summary:
+      enabled: true
+      position: 2
+      size: "medium"
+      
+    asset_sizing:
+      enabled: true
+      position: 3
+      size: "medium"
+      
+    risk_chart:
+      enabled: true
+      position: 4
+      size: "large"
+      
+    alert_status:
+      enabled: true
+      position: 5
+      size: "small"
+
+# ============================================================
+# POSITION SIZING SCENARIOS
+# ============================================================
+sizing_scenarios:
+  # Scenario 1: Conservative Sizing
+  conservative:
+    description: "Conservative position sizing"
+    position_size: 500
+    risk_per_trade: 0.005  # 0.5%
+    portfolio_risk: 0.01  # 1%
+    kelly_fraction: 0.10
+    
+  # Scenario 2: Moderate Sizing
+  moderate:
+    description: "Moderate position sizing"
+    position_size: 1000
+    risk_per_trade: 0.01  # 1%
+    portfolio_risk: 0.02  # 2%
+    kelly_fraction: 0.25
+    
+  # Scenario 3: Aggressive Sizing
+  aggressive:
+    description: "Aggressive position sizing"
+    position_size: 2000
+    risk_per_trade: 0.02  # 2%
+    portfolio_risk: 0.05  # 5%
+    kelly_fraction: 0.40
+
+# ============================================================
+# POSITION SIZING EXAMPLES
+# ============================================================
+sizing_examples:
+  # Example 1: Risk-Based Sizing
+  risk_based_example:
+    description: "Risk-Based Sizing Example"
+    portfolio_value: 100000
+    risk_per_trade: 0.01  # 1%
+    stop_loss: 0.05  # 5%
+    position_size: 20000  # (100000 * 0.01) / 0.05
+    
+  # Example 2: Kelly Criterion Sizing
+  kelly_example:
+    description: "Kelly Criterion Sizing Example"
+    win_rate: 0.55
+    win_loss_ratio: 2.0
+    kelly_percentage: 0.25
+    portfolio_value: 100000
+    position_size: 13750  # (0.55 * 2.0 - 0.45) / 2.0 * 0.25 * 100000
+    
+  # Example 3: Volatility-Based Sizing
+  volatility_example:
+    description: "Volatility-Based Sizing Example"
+    target_volatility: 0.15
+    asset_volatility: 0.20
+    portfolio_value: 100000
+    position_size: 75000  # (0.15 / 0.20) * 100000
+
+# ============================================================
+# ENVIRONMENT-SPECIFIC CONFIGURATIONS
+# ============================================================
+environments:
+  # Development Environment
+  development:
+    position_sizing:
+      general:
+        enabled: true
+        max_position_size: 5000
+        min_position_size: 50
+        max_portfolio_risk: 0.05
+        
+  # Staging Environment
+  staging:
+    position_sizing:
+      general:
+        enabled: true
+        max_position_size: 7500
+        min_position_size: 75
+        max_portfolio_risk: 0.03
+        
+  # Production Environment
+  production:
+    position_sizing:
+      general:
+        enabled: true
+        max_position_size: 10000
+        min_position_size: 100
+        max_portfolio_risk: 0.02
+        max_position_risk: 0.01
+        use_dynamic_sizing: true
+        use_correlation_adjustment: true
+        use_volatility_adjustment: true
+        
+  # Demo Environment
+  demo:
+    position_sizing:
+      general:
+        enabled: true
+        max_position_size: 5000
+        min_position_size: 50
+        max_portfolio_risk: 0.04
+
+# ============================================================
+# END OF CONFIGURATION
+# ============================================================
