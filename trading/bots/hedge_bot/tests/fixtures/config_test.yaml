@@ -1,0 +1,946 @@
+# trading/bots/hedge_bot/tests/fixtures/config_test.yaml
+# NEXUS AI TRADING SYSTEM - Hedge Bot Test Configuration Fixture
+# Version: 2.0.0
+# Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+
+# ============================================================
+# TEST CONFIGURATION FIXTURE
+# ============================================================
+# This file provides test configuration data for unit tests
+# and integration tests. It includes both valid and invalid
+# configurations for comprehensive testing.
+# ============================================================
+
+# ============================================================
+# VALID CONFIGURATIONS
+# ============================================================
+
+# --- Full Valid Configuration ---
+full_valid_config:
+  bot:
+    id: "test_hedge_bot"
+    name: "Test Hedge Bot"
+    version: "2.0.0-test"
+    description: "Test instance of NEXUS Hedge Bot"
+    enabled: true
+    active: true
+    environment: "testing"
+    mode: "automatic"
+    debug_mode: true
+    log_level: "DEBUG"
+    features:
+      paper_trading: true
+      mock_exchange: true
+      synthetic_data: true
+      auto_hedging: true
+      auto_rebalancing: true
+      ai_optimization: false
+
+  exchange:
+    name: "binance"
+    type: "spot"
+    sandbox: true
+    testnet: true
+    api:
+      key: "test_api_key"
+      secret: "test_api_secret"
+      passphrase: "test_passphrase"
+      timeout: 30
+      retry_attempts: 3
+      rate_limit: 1200
+      use_hmac: true
+      use_signing: true
+    settings:
+      use_mock_data: true
+      use_websocket: true
+      websocket_reconnect: true
+      websocket_timeout: 30
+    pairs:
+      - "BTC/USDT"
+      - "ETH/USDT"
+      - "SOL/USDT"
+      - "ADA/USDT"
+      - "DOT/USDT"
+
+  trading:
+    order:
+      type: "limit"
+      time_in_force: "GTC"
+      max_order_size: 10000
+      min_order_size: 100
+      slippage_tolerance: 0.001
+      use_post_only: true
+      use_reduce_only: false
+    position:
+      max_positions: 10
+      max_leverage: 3.0
+      target_hedge_ratio: 0.50
+      min_hedge_ratio: 0.20
+      max_hedge_ratio: 0.80
+      position_monitoring: true
+      auto_close: false
+    execution:
+      simulate_execution: true
+      execution_delay: 100
+      fill_probability: 1.0
+      partial_fill_probability: 0.05
+      execution_timeout: 30
+      order_retry: true
+      order_retry_attempts: 3
+
+  hedge_strategy:
+    config:
+      hedge_ratio: 0.50
+      hedge_threshold: 0.01
+      max_hedge_position: 0.80
+      min_hedge_position: 0.20
+      dynamic_hedge_ratio: true
+      rebalance_interval: 15
+      volatility_lookback: 30
+      correlation_lookback: 60
+      ml_hedge_optimization: false
+      adaptive_hedging: false
+    execution:
+      order_type: "limit"
+      time_in_force: "GTC"
+      max_order_size: 10000
+      min_order_size: 100
+      slippage_tolerance: 0.001
+      iceberg_order: false
+      smart_routing: false
+    risk:
+      max_drawdown: 0.15
+      daily_loss_limit: 0.05
+      max_leverage: 3.0
+      stop_loss: 0.10
+      take_profit: 0.20
+      trailing_stop: 0.03
+      circuit_breaker: false
+
+  hedging_strategies:
+    delta_hedging:
+      enabled: true
+      parameters:
+        target_delta: 0.0
+        delta_tolerance: 0.01
+        rebalancing_frequency: "realtime"
+        hedging_instrument: "futures"
+    gamma_hedging:
+      enabled: false
+      parameters:
+        gamma_threshold: 0.0001
+        gamma_tolerance: 0.01
+        rebalancing_frequency: "realtime"
+        gamma_scalping: false
+    cross_hedging:
+      enabled: false
+      parameters:
+        correlation_threshold: 0.70
+        hedge_ratio: 0.50
+        hedging_assets: []
+    basis_hedging:
+      enabled: false
+      parameters:
+        basis_threshold: 0.005
+        basis_tolerance: 0.002
+        hedging_instrument: "perpetual"
+
+  directional_strategies:
+    trend_following:
+      enabled: false
+      parameters:
+        trend_period: 20
+        signal_threshold: 0.01
+        entry_signal: "crossover"
+        exit_signal: "crossunder"
+        indicators: []
+    mean_reversion:
+      enabled: false
+      parameters:
+        lookback_period: 20
+        deviation_threshold: 2.0
+        entry_signal: "oversold"
+        exit_signal: "overbought"
+        indicators: []
+    momentum:
+      enabled: false
+      parameters:
+        momentum_period: 14
+        signal_threshold: 0.02
+        entry_signal: "momentum_high"
+        exit_signal: "momentum_low"
+
+  arbitrage_strategies:
+    funding_arbitrage:
+      enabled: false
+      parameters:
+        min_funding_rate: 0.0005
+        max_funding_rate: 0.005
+        position_size: 0.10
+        arbitrage_window: 8
+    basis_arbitrage:
+      enabled: false
+      parameters:
+        min_basis: 0.002
+        max_basis: 0.01
+        position_size: 0.05
+        arbitrage_window: 24
+    cross_exchange_arbitrage:
+      enabled: false
+      parameters:
+        min_spread: 0.001
+        max_spread: 0.005
+        position_size: 0.05
+        execution_timeout: 5
+        exchanges: []
+
+  risk_management:
+    enabled: true
+    risk_level: "moderate"
+    max_risk_per_trade: 0.02
+    max_risk_per_day: 0.05
+    max_risk_per_month: 0.15
+    risk_monitoring: true
+    risk_alerts: true
+    risk_limits: true
+    position_sizing:
+      method: "fixed"
+      risk_per_trade: 0.01
+      max_position_size: 10000
+      min_position_size: 100
+      use_correlation_adj: false
+      use_volatility_adj: false
+      kelly_fraction: 0.25
+    limits:
+      max_drawdown: 0.15
+      daily_loss_limit: 0.05
+      weekly_loss_limit: 0.10
+      monthly_loss_limit: 0.15
+      max_correlation: 0.70
+      max_leverage: 3.0
+      max_exposure: 1000000
+      max_position_size: 10000
+
+  risk_metrics:
+    var:
+      confidence_levels: [0.95, 0.99]
+      horizons: [1, 5, 10]
+      calculation_method: "historical"
+      lookback_period: 252
+    cvar:
+      confidence_levels: [0.95, 0.99]
+      horizons: [1, 5, 10]
+      calculation_method: "historical"
+    drawdown:
+      max_drawdown_limit: 0.15
+      drawdown_warning_threshold: 0.10
+      drawdown_critical_threshold: 0.12
+      drawdown_emergency_threshold: 0.14
+
+  portfolio:
+    id: "test_portfolio"
+    name: "Test Trading Portfolio"
+    currency: "USD"
+    initial_balance: 100000
+    current_balance: 100000
+    allocation:
+      method: "equal_weight"
+      target_volatility: 0.15
+      max_single_asset: 0.15
+      max_sector: 0.40
+      max_asset_class: 0.50
+      min_assets: 5
+      target_assets: 10
+      rebalance_frequency: "daily"
+      rebalance_threshold: 0.02
+    performance:
+      track_metrics: true
+      benchmark: "SPY"
+      risk_free_rate: 0.04
+      performance_frequency: "daily"
+
+  data:
+    sources:
+      market_data:
+        provider: "mock"
+        update_frequency: "realtime"
+        cache: true
+        cache_ttl: 5
+      historical_data:
+        provider: "file"
+        lookback_period: 90
+        granularity: "1h"
+        min_data_points: 50
+      sentiment_data:
+        provider: "mock"
+        update_frequency: "hourly"
+        sources: []
+    storage:
+      database: "sqlite"
+      cache: "memory"
+      retention_days: 30
+      compression: false
+      backup: false
+    quality:
+      validate_data: true
+      remove_outliers: true
+      interpolate_missing: true
+      min_data_points: 50
+      outlier_threshold: 3.0
+      data_quality_check: true
+
+  ai_ml:
+    config:
+      enabled: false
+      model_type: "ensemble"
+      model_path: "/tmp/test_model.pkl"
+      inference_batch_size: 50
+      prediction_horizon: 60
+      confidence_threshold: 0.60
+      use_gpu: false
+      use_cuda: false
+    features: []
+    training:
+      enabled: false
+      frequency: "daily"
+      lookback_period: 30
+      validation_split: 0.20
+      epochs: 10
+      early_stopping: true
+      batch_size: 8
+    prediction:
+      enabled: false
+      confidence_threshold: 0.60
+      prediction_models: []
+
+  monitoring:
+    config:
+      enabled: true
+      monitoring_frequency: "realtime"
+      alert_channels:
+        - "console"
+        - "file"
+    health:
+      check_interval: 30
+      auto_recovery: true
+      max_failures: 3
+      recovery_timeout: 60
+    alerts:
+      trade_execution: true
+      position_changes: true
+      risk_breaches: true
+      system_errors: true
+      performance_issues: true
+    metrics:
+      - "pnl"
+      - "win_rate"
+      - "sharpe_ratio"
+      - "max_drawdown"
+      - "trade_count"
+      - "volume_traded"
+      - "response_time"
+      - "error_rate"
+
+  logging:
+    config:
+      enabled: true
+      log_level: "DEBUG"
+      log_format: "json"
+      log_rotation: "daily"
+      log_compression: false
+      log_retention_days: 7
+    files:
+      main_log: "/tmp/test_hedge_bot.log"
+      trade_log: "/tmp/test_trades.log"
+      error_log: "/tmp/test_errors.log"
+      audit_log: "/tmp/test_audit.log"
+    categories:
+      trade: true
+      position: true
+      risk: true
+      system: true
+      audit: true
+      performance: true
+      debug: true
+
+  security:
+    enabled: false
+    encryption: false
+    encryption_method: "AES-256-GCM"
+    key_rotation_days: 30
+    auth:
+      enabled: false
+      method: "jwt"
+      token_expiry: 3600
+      refresh_token_expiry: 86400
+      multi_factor_auth: false
+    authorization:
+      enabled: false
+      rbac: false
+      permission_level: "admin"
+    api:
+      rate_limiting: false
+      max_requests_per_minute: 60
+      ip_whitelist: []
+      ip_blacklist: []
+
+  compliance:
+    enabled: false
+    regulatory_framework: "none"
+    compliance_level: "basic"
+    auto_remediation: false
+    audit_trail: false
+    aml_kyc:
+      enabled: false
+      screening: false
+      reporting: false
+    position_limits:
+      enabled: false
+    reporting:
+      enabled: false
+    record_keeping:
+      enabled: false
+      retention_days: 7
+      immutable: false
+
+  notifications:
+    channels:
+      email:
+        enabled: false
+        smtp_server: "localhost"
+        smtp_port: 25
+        username: "test"
+        password: "test"
+      telegram:
+        enabled: false
+        bot_token: "test_token"
+        chat_id: "test_chat_id"
+      slack:
+        enabled: false
+        webhook_url: "test_webhook"
+        channel: "#test"
+      push:
+        enabled: false
+        app_id: "test_app_id"
+        api_key: "test_api_key"
+    types:
+      trade_execution: true
+      position_update: true
+      risk_alert: true
+      system_error: true
+      performance_report: true
+      daily_summary: true
+
+  backup:
+    enabled: false
+    schedule: "daily"
+    time: "00:00:00"
+    retention_days: 7
+    compression: false
+    encryption: false
+    verification: false
+    types:
+      database: false
+      configuration: false
+      logs: false
+      models: false
+    storage:
+      local: true
+      cloud: false
+
+  performance:
+    enabled: true
+    max_workers: 2
+    batch_size: 50
+    queue_size: 100
+    use_async: false
+    use_caching: true
+    cache_ttl: 30
+    use_connection_pooling: false
+    resources:
+      max_memory_mb: 512
+      max_cpu_cores: 2
+      max_concurrent_trades: 3
+      max_order_rate: 5
+    latency:
+      target_latency_ms: 100
+      max_latency_ms: 500
+      latency_alert_threshold: 300
+    throughput:
+      target_tps: 50
+      max_tps: 100
+      throughput_alert_threshold: 80
+
+# --- Minimal Valid Configuration ---
+minimal_valid_config:
+  bot:
+    enabled: true
+    environment: "testing"
+  
+  exchange:
+    name: "binance"
+    type: "spot"
+    api:
+      key: "test_key"
+      secret: "test_secret"
+  
+  trading:
+    position:
+      max_leverage: 1.0
+  
+  risk_management:
+    limits:
+      max_drawdown: 0.15
+  
+  portfolio:
+    currency: "USD"
+  
+  data:
+    sources:
+      market_data:
+        provider: "mock"
+  
+  logging:
+    config:
+      enabled: true
+
+# ============================================================
+# INVALID CONFIGURATIONS
+# ============================================================
+
+# --- Missing Required Fields ---
+missing_required_fields:
+  exchange:
+    name: "binance"
+
+# --- Invalid Environment ---
+invalid_environment:
+  bot:
+    enabled: true
+    environment: "invalid_env"
+  exchange:
+    name: "binance"
+    api:
+      key: "test"
+      secret: "test"
+  trading:
+    position:
+      max_leverage: 1.0
+  risk_management:
+    limits:
+      max_drawdown: 0.15
+  portfolio:
+    currency: "USD"
+  data:
+    sources:
+      market_data:
+        provider: "mock"
+  logging:
+    config:
+      enabled: true
+
+# --- Invalid Exchange ---
+invalid_exchange:
+  bot:
+    enabled: true
+    environment: "testing"
+  exchange:
+    name: "invalid_exchange"
+    api:
+      key: "test"
+      secret: "test"
+  trading:
+    position:
+      max_leverage: 1.0
+  risk_management:
+    limits:
+      max_drawdown: 0.15
+  portfolio:
+    currency: "USD"
+  data:
+    sources:
+      market_data:
+        provider: "mock"
+  logging:
+    config:
+      enabled: true
+
+# --- Invalid Leverage ---
+invalid_leverage:
+  bot:
+    enabled: true
+    environment: "testing"
+  exchange:
+    name: "binance"
+    api:
+      key: "test"
+      secret: "test"
+  trading:
+    position:
+      max_leverage: 0.0
+  risk_management:
+    limits:
+      max_drawdown: 0.15
+  portfolio:
+    currency: "USD"
+  data:
+    sources:
+      market_data:
+        provider: "mock"
+  logging:
+    config:
+      enabled: true
+
+# --- Invalid Drawdown ---
+invalid_drawdown:
+  bot:
+    enabled: true
+    environment: "testing"
+  exchange:
+    name: "binance"
+    api:
+      key: "test"
+      secret: "test"
+  trading:
+    position:
+      max_leverage: 1.0
+  risk_management:
+    limits:
+      max_drawdown: 2.0
+  portfolio:
+    currency: "USD"
+  data:
+    sources:
+      market_data:
+        provider: "mock"
+  logging:
+    config:
+      enabled: true
+
+# --- Invalid Log Level ---
+invalid_log_level:
+  bot:
+    enabled: true
+    environment: "testing"
+    log_level: "INVALID"
+  exchange:
+    name: "binance"
+    api:
+      key: "test"
+      secret: "test"
+  trading:
+    position:
+      max_leverage: 1.0
+  risk_management:
+    limits:
+      max_drawdown: 0.15
+  portfolio:
+    currency: "USD"
+  data:
+    sources:
+      market_data:
+        provider: "mock"
+  logging:
+    config:
+      enabled: true
+
+# ============================================================
+# SPECIALIZED TEST CONFIGURATIONS
+# ============================================================
+
+# --- Edge Case Configurations ---
+edge_cases:
+  # Zero values
+  zero_values:
+    bot:
+      enabled: true
+      environment: "testing"
+    exchange:
+      name: "binance"
+      api:
+        key: ""
+        secret: ""
+    trading:
+      position:
+        max_leverage: 0.0
+    risk_management:
+      limits:
+        max_drawdown: 0.0
+    portfolio:
+      currency: "USD"
+    data:
+      sources:
+        market_data:
+          provider: "mock"
+    logging:
+      config:
+        enabled: true
+
+  # Large values
+  large_values:
+    bot:
+      enabled: true
+      environment: "testing"
+    exchange:
+      name: "binance"
+      api:
+        key: "test_key"
+        secret: "test_secret"
+    trading:
+      position:
+        max_leverage: 999999
+    risk_management:
+      limits:
+        max_drawdown: 0.999
+    portfolio:
+      currency: "USD"
+      initial_balance: 999999999
+    data:
+      sources:
+        market_data:
+          provider: "mock"
+    logging:
+      config:
+        enabled: true
+
+  # Special characters
+  special_characters:
+    bot:
+      enabled: true
+      environment: "testing"
+      name: "Test Bot!@#$%^&*()"
+    exchange:
+      name: "binance"
+      api:
+        key: "!@#$%^&*()_+"
+        secret: "!@#$%^&*()_+"
+    trading:
+      position:
+        max_leverage: 1.0
+    risk_management:
+      limits:
+        max_drawdown: 0.15
+    portfolio:
+      currency: "USD"
+    data:
+      sources:
+        market_data:
+          provider: "mock"
+    logging:
+      config:
+        enabled: true
+
+# --- Multi-Environment Configurations ---
+multi_environment:
+  development:
+    bot:
+      environment: "development"
+      debug_mode: true
+      log_level: "DEBUG"
+    exchange:
+      sandbox: true
+  
+  staging:
+    bot:
+      environment: "staging"
+      debug_mode: true
+      log_level: "INFO"
+    exchange:
+      sandbox: true
+  
+  production:
+    bot:
+      environment: "production"
+      debug_mode: false
+      log_level: "INFO"
+    exchange:
+      sandbox: false
+
+# --- Performance Test Configurations ---
+performance_test:
+  # High throughput configuration
+  high_throughput:
+    performance:
+      max_workers: 50
+      batch_size: 500
+      queue_size: 10000
+      use_async: true
+      use_caching: true
+      use_connection_pooling: true
+      resources:
+        max_memory_mb: 4096
+        max_cpu_cores: 8
+        max_concurrent_trades: 20
+        max_order_rate: 100
+
+  # Low latency configuration
+  low_latency:
+    performance:
+      max_workers: 5
+      batch_size: 10
+      queue_size: 100
+      use_async: true
+      use_caching: false
+      use_connection_pooling: true
+      latency:
+        target_latency_ms: 10
+        max_latency_ms: 50
+      resources:
+        max_memory_mb: 1024
+        max_cpu_cores: 4
+
+# --- Security Test Configurations ---
+security_test:
+  # High security configuration
+  high_security:
+    security:
+      enabled: true
+      encryption: true
+      encryption_method: "AES-256-GCM"
+      key_rotation_days: 7
+      auth:
+        enabled: true
+        method: "jwt"
+        token_expiry: 300
+        refresh_token_expiry: 3600
+        multi_factor_auth: true
+      authorization:
+        enabled: true
+        rbac: true
+      api:
+        rate_limiting: true
+        max_requests_per_minute: 30
+        ip_whitelist:
+          - "192.168.1.0/24"
+          - "10.0.0.0/8"
+    compliance:
+      enabled: true
+      regulatory_framework: "multi"
+      compliance_level: "full"
+      auto_remediation: true
+      audit_trail: true
+      aml_kyc:
+        enabled: true
+        screening: true
+        reporting: true
+      position_limits:
+        enabled: true
+      record_keeping:
+        enabled: true
+        retention_days: 730
+        immutable: true
+
+# --- Integration Test Configurations ---
+integration_test:
+  # Database integration
+  database_integration:
+    data:
+      storage:
+        database: "postgresql"
+        cache: "redis"
+        retention_days: 365
+        compression: true
+        backup: true
+      quality:
+        validate_data: true
+        remove_outliers: true
+        interpolate_missing: true
+        min_data_points: 100
+
+  # Exchange integration
+  exchange_integration:
+    exchange:
+      name: "binance"
+      type: "spot"
+      sandbox: true
+      settings:
+        use_mock_data: false
+        use_websocket: true
+      pairs:
+        - "BTC/USDT"
+        - "ETH/USDT"
+        - "SOL/USDT"
+
+  # Notification integration
+  notification_integration:
+    notifications:
+      channels:
+        email:
+          enabled: true
+          smtp_server: "smtp.test.com"
+          smtp_port: 587
+          username: "test@test.com"
+          password: "test_password"
+        telegram:
+          enabled: true
+          bot_token: "test_token"
+          chat_id: "test_chat_id"
+        slack:
+          enabled: true
+          webhook_url: "test_webhook"
+          channel: "#test"
+      types:
+        trade_execution: true
+        position_update: true
+        risk_alert: true
+        system_error: true
+
+# ============================================================
+# DYNAMIC TEST CONFIGURATIONS
+# ============================================================
+
+dynamic_config:
+  # Configurations that can be modified at runtime
+  modifiable:
+    trading:
+      position:
+        max_leverage: 2.0
+        target_hedge_ratio: 0.60
+      order:
+        max_order_size: 20000
+        slippage_tolerance: 0.002
+    
+    hedge_strategy:
+      config:
+        hedge_ratio: 0.60
+        hedge_threshold: 0.02
+        rebalance_interval: 10
+    
+    risk_management:
+      limits:
+        max_drawdown: 0.10
+        daily_loss_limit: 0.03
+
+# ============================================================
+# ERROR SCENARIO CONFIGURATIONS
+# ============================================================
+
+error_scenarios:
+  # Database connection error
+  db_connection_error:
+    data:
+      storage:
+        database: "postgresql"
+        connection_string: "postgresql://invalid:invalid@localhost:9999/invalid"
+  
+  # Exchange API error
+  exchange_api_error:
+    exchange:
+      api:
+        key: "invalid_key"
+        secret: "invalid_secret"
+        timeout: 1
+        retry_attempts: 1
+  
+  # Rate limit error
+  rate_limit_error:
+    exchange:
+      api:
+        rate_limit: 1
+    trading:
+      order:
+        max_order_rate: 10
+
+# ============================================================
+# END OF CONFIGURATION
+# ============================================================
