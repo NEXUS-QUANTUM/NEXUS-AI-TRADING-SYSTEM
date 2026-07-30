@@ -1,5 +1,5 @@
 # trading/bots/hedge_bot/hedge_bot_data_elk.py
-# Advanced ELK Stack Integration for Hedge Bot - Logging, Monitoring & Analytics
+# Advanced ELK Stack Integration for Hedge Bot - Logging, Monitoring  & Analytics
 # NEXUS AI TRADING SYSTEM - Copyright © 2026 NEXUS QUANTUM LTD
 
 """
