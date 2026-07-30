@@ -1,6 +1,6 @@
 # trading/bots/hedge_bot/hedge_bot_data_azure_iot.py
 # NEXUS AI TRADING SYSTEM - Hedge Bot Azure IoT Integration Module
-# Version: 2.0.0
+# Version: 2.0.0 
 # Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
 
 """
