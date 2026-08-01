@@ -1,5 +1,5 @@
 # trading/bots/hedge_bot/hedge_bot_metrics.py
-# Advanced Metrics & Performance Analytics Module for Hedge Bot
+# Advanced Metrics & Performance Analytics Module for Hedge Bot.
 # NEXUS AI TRADING SYSTEM - Copyright © 2026 NEXUS QUANTUM LTD
 
 """
