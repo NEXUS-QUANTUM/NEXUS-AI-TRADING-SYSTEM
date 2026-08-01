@@ -1,4 +1,4 @@
-# trading/bots/hedge_bot/hedge_bot_data_postgresql.py
+# trading/bots/hedge_bot/hedge_bot_data_postgresql.py.
 # Advanced PostgreSQL Integration & Relational Data Management Module for Hedge Bot
 # NEXUS AI TRADING SYSTEM - Copyright © 2026 NEXUS QUANTUM LTD
 
