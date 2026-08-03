@@ -1,0 +1,1100 @@
+<!-- trading/bots/hedge_bot/templates/partials/sidebar.html -->
+
+<!--
+NEXUS AI TRADING SYSTEM - Hedge Bot Sidebar Partial
+Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+
+Complete sidebar implementation with real-time navigation, market data,
+and interactive widgets.
+-->
+
+{% load static %}
+{% load nexus_tags %}
+
+<aside id="nexus-sidebar" class="nexus-sidebar" 
+       data-user-id="{{ user_id|default:'current' }}"
+       data-exchange="{{ exchange|default:'binance' }}"
+       data-refresh-interval="{{ refresh_interval|default:10 }}">
+
+    <!-- Sidebar Header -->
+    <div class="sidebar-header">
+        <div class="sidebar-brand">
+            <a href="/dashboard/" class="brand-link">
+                <img src="{% static 'images/nexus-logo-light.svg' %}" 
+                     alt="NEXUS Logo" 
+                     class="sidebar-logo"
+                     onerror="this.src='{% static 'images/nexus-favicon.svg' %}'">
+                <span class="brand-name">NEXUS</span>
+            </a>
+        </div>
+        <button class="sidebar-collapse" id="sidebar-collapse" title="Collapse sidebar">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+    </div>
+
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar-nav" id="sidebar-nav">
+        <ul class="nav-list">
+            <li class="nav-section">
+                <span class="section-label">Main</span>
+            </li>
+            <li class="nav-item">
+                <a href="/dashboard/" class="nav-link active" data-page="dashboard">
+                    <i class="fas fa-th-large"></i>
+                    <span class="nav-text">Dashboard</span>
+                    <span class="nav-badge" id="dashboard-badge">Live</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/trading/" class="nav-link" data-page="trading">
+                    <i class="fas fa-chart-line"></i>
+                    <span class="nav-text">Trading</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/portfolio/" class="nav-link" data-page="portfolio">
+                    <i class="fas fa-wallet"></i>
+                    <span class="nav-text">Portfolio</span>
+                    <span class="nav-badge" id="portfolio-badge">0</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/orders/" class="nav-link" data-page="orders">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="nav-text">Orders</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/positions/" class="nav-link" data-page="positions">
+                    <i class="fas fa-arrows-alt-h"></i>
+                    <span class="nav-text">Positions</span>
+                    <span class="nav-badge" id="positions-badge">0</span>
+                </a>
+            </li>
+
+            <li class="nav-section">
+                <span class="section-label">Analytics</span>
+            </li>
+            <li class="nav-item">
+                <a href="/risk/" class="nav-link" data-page="risk">
+                    <i class="fas fa-shield-alt"></i>
+                    <span class="nav-text">Risk Management</span>
+                    <span class="nav-badge" id="risk-badge">Low</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/metrics/" class="nav-link" data-page="metrics">
+                    <i class="fas fa-chart-pie"></i>
+                    <span class="nav-text">Metrics</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/backtest/" class="nav-link" data-page="backtest">
+                    <i class="fas fa-flask"></i>
+                    <span class="nav-text">Backtest</span>
+                </a>
+            </li>
+
+            <li class="nav-section">
+                <span class="section-label">Management</span>
+            </li>
+            <li class="nav-item">
+                <a href="/strategies/" class="nav-link" data-page="strategies">
+                    <i class="fas fa-robot"></i>
+                    <span class="nav-text">Strategies</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/bots/" class="nav-link" data-page="bots">
+                    <i class="fas fa-bot"></i>
+                    <span class="nav-text">Bots</span>
+                    <span class="nav-badge" id="bots-badge">0</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/signals/" class="nav-link" data-page="signals">
+                    <i class="fas fa-bullhorn"></i>
+                    <span class="nav-text">Signals</span>
+                </a>
+            </li>
+
+            <li class="nav-section">
+                <span class="section-label">System</span>
+            </li>
+            <li class="nav-item">
+                <a href="/alerts/" class="nav-link" data-page="alerts">
+                    <i class="fas fa-bell"></i>
+                    <span class="nav-text">Alerts</span>
+                    <span class="nav-badge" id="alerts-badge">0</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/logs/" class="nav-link" data-page="logs">
+                    <i class="fas fa-file-alt"></i>
+                    <span class="nav-text">Logs</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/settings/" class="nav-link" data-page="settings">
+                    <i class="fas fa-cog"></i>
+                    <span class="nav-text">Settings</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Sidebar Market Data -->
+    <div class="sidebar-market" id="sidebar-market">
+        <div class="market-header">
+            <span class="market-title">Market Data</span>
+            <button class="market-refresh" onclick="refreshMarketData()" title="Refresh">
+                <i class="fas fa-sync-alt"></i>
+            </button>
+        </div>
+        <div class="market-list" id="market-list">
+            <div class="market-loading">
+                <span>Loading market data...</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sidebar Footer -->
+    <div class="sidebar-footer">
+        <div class="footer-user">
+            <div class="user-avatar">
+                <img src="{% static 'images/default-avatar.png' %}" 
+                     alt="User Avatar"
+                     onerror="this.src='{% static 'images/default-avatar.png' %}'">
+                <span class="user-status online"></span>
+            </div>
+            <div class="user-info">
+                <span class="user-name" id="sidebar-user-name">{{ user_name|default:'Guest' }}</span>
+                <span class="user-role" id="sidebar-user-role">{{ user_role|default:'Trader' }}</span>
+            </div>
+        </div>
+        <div class="footer-actions">
+            <button class="footer-action" onclick="toggleSidebarTheme()" title="Toggle theme">
+                <i class="fas fa-moon" id="sidebar-theme-icon"></i>
+            </button>
+            <button class="footer-action" onclick="logout()" title="Logout">
+                <i class="fas fa-sign-out-alt"></i>
+            </button>
+        </div>
+    </div>
+</aside>
+
+<script>
+// Complete Sidebar Implementation with Real Data Integration
+
+(function() {
+    'use strict';
+
+    class SidebarManager {
+        constructor() {
+            this.sidebar = document.getElementById('nexus-sidebar');
+            if (!this.sidebar) return;
+            
+            this.userId = this.sidebar.dataset.userId || 'current';
+            this.exchange = this.sidebar.dataset.exchange || 'binance';
+            this.refreshInterval = parseInt(this.sidebar.dataset.refreshInterval) || 10;
+            this.isCollapsed = localStorage.getItem('sidebar-collapsed') === 'true';
+            this.ws = null;
+            this.connectionRetries = 0;
+            this.maxRetries = 5;
+            this.marketData = [];
+            this.badgeData = {};
+            
+            // DOM Elements
+            this.navLinks = document.querySelectorAll('.nav-link');
+            this.collapseBtn = document.getElementById('sidebar-collapse');
+            this.marketList = document.getElementById('market-list');
+            this.userName = document.getElementById('sidebar-user-name');
+            this.userRole = document.getElementById('sidebar-user-role');
+            
+            // Badge elements
+            this.badges = {
+                dashboard: document.getElementById('dashboard-badge'),
+                portfolio: document.getElementById('portfolio-badge'),
+                positions: document.getElementById('positions-badge'),
+                risk: document.getElementById('risk-badge'),
+                bots: document.getElementById('bots-badge'),
+                alerts: document.getElementById('alerts-badge')
+            };
+            
+            this.init();
+        }
+        
+        init() {
+            this.setupEventListeners();
+            this.loadUserData();
+            this.loadMarketData();
+            this.loadBadgeData();
+            this.initializeWebSocket();
+            this.setCollapsedState();
+            this.handleActivePage();
+            this.startAutoRefresh();
+        }
+        
+        setupEventListeners() {
+            // Collapse toggle
+            if (this.collapseBtn) {
+                this.collapseBtn.addEventListener('click', () => {
+                    this.toggleCollapse();
+                });
+            }
+            
+            // Navigation links
+            this.navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    this.setActivePage(link.dataset.page);
+                });
+            });
+            
+            // Keyboard shortcuts
+            document.addEventListener('keydown', (e) => {
+                if (e.ctrlKey && e.key === 'b') {
+                    e.preventDefault();
+                    this.toggleCollapse();
+                }
+                if (e.key === 'Escape' && window.innerWidth < 768) {
+                    this.collapseSidebar();
+                }
+            });
+            
+            // Responsive behavior
+            window.addEventListener('resize', () => {
+                if (window.innerWidth < 768) {
+                    this.collapseSidebar();
+                }
+            });
+        }
+        
+        initializeWebSocket() {
+            const wsProtocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsUrl = `${wsProtocol}//${window.location.host}/ws/sidebar/${this.userId}`;
+            
+            try {
+                if (this.ws) this.ws.close();
+                
+                this.ws = new WebSocket(wsUrl);
+                
+                this.ws.onopen = () => {
+                    this.connectionRetries = 0;
+                    this.sendSubscription();
+                };
+                
+                this.ws.onmessage = (event) => {
+                    try {
+                        const data = JSON.parse(event.data);
+                        this.handleWebSocketMessage(data);
+                    } catch (e) {
+                        console.error('WebSocket message parse error:', e);
+                    }
+                };
+                
+                this.ws.onclose = () => {
+                    this.reconnectWebSocket();
+                };
+                
+                this.ws.onerror = (error) => {
+                    console.error('WebSocket error:', error);
+                };
+            } catch (error) {
+                console.error('WebSocket connection failed:', error);
+                this.reconnectWebSocket();
+            }
+        }
+        
+        reconnectWebSocket() {
+            if (this.connectionRetries < this.maxRetries) {
+                this.connectionRetries++;
+                const delay = Math.min(1000 * Math.pow(2, this.connectionRetries), 30000);
+                setTimeout(() => {
+                    this.initializeWebSocket();
+                }, delay);
+            }
+        }
+        
+        sendSubscription() {
+            if (this.ws && this.ws.readyState === WebSocket.OPEN) {
+                this.ws.send(JSON.stringify({
+                    type: 'subscribe_sidebar',
+                    userId: this.userId,
+                    exchange: this.exchange
+                }));
+            }
+        }
+        
+        handleWebSocketMessage(data) {
+            if (data.type === 'market_update') {
+                this.updateMarketData(data);
+            } else if (data.type === 'badge_update') {
+                this.updateBadges(data);
+            } else if (data.type === 'heartbeat') {
+                // Keep connection alive
+            }
+        }
+        
+        toggleCollapse() {
+            this.isCollapsed = !this.isCollapsed;
+            this.setCollapsedState();
+            localStorage.setItem('sidebar-collapsed', this.isCollapsed ? 'true' : 'false');
+        }
+        
+        collapseSidebar() {
+            this.isCollapsed = true;
+            this.setCollapsedState();
+            localStorage.setItem('sidebar-collapsed', 'true');
+        }
+        
+        setCollapsedState() {
+            if (this.isCollapsed) {
+                this.sidebar.classList.add('collapsed');
+                if (this.collapseBtn) {
+                    this.collapseBtn.innerHTML = '<i class="fas fa-chevron-right"></i>';
+                }
+            } else {
+                this.sidebar.classList.remove('collapsed');
+                if (this.collapseBtn) {
+                    this.collapseBtn.innerHTML = '<i class="fas fa-chevron-left"></i>';
+                }
+            }
+        }
+        
+        setActivePage(page) {
+            this.navLinks.forEach(link => {
+                link.classList.toggle('active', link.dataset.page === page);
+            });
+        }
+        
+        handleActivePage() {
+            const currentPath = window.location.pathname;
+            this.navLinks.forEach(link => {
+                const page = link.dataset.page;
+                if (currentPath.includes(`/${page}/`)) {
+                    link.classList.add('active');
+                }
+            });
+        }
+        
+        loadUserData() {
+            fetch('/api/user/profile')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.name) {
+                        this.userName.textContent = data.name;
+                    }
+                    if (data.role) {
+                        this.userRole.textContent = data.role;
+                    }
+                    if (data.avatar) {
+                        const avatar = document.querySelector('.user-avatar img');
+                        if (avatar) {
+                            avatar.src = data.avatar;
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.error('Failed to load user data:', error);
+                });
+        }
+        
+        loadMarketData() {
+            fetch(`/api/market/tickers?exchange=${this.exchange}&limit=10`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.tickers) {
+                        this.marketData = data.tickers;
+                        this.renderMarketData();
+                    }
+                })
+                .catch(error => {
+                    console.error('Failed to load market data:', error);
+                    this.showMarketError();
+                });
+        }
+        
+        loadBadgeData() {
+            fetch('/api/badges')
+                .then(response => response.json())
+                .then(data => {
+                    this.badgeData = data;
+                    this.updateBadges(data);
+                })
+                .catch(error => {
+                    console.error('Failed to load badge data:', error);
+                });
+        }
+        
+        updateMarketData(data) {
+            if (data.tickers) {
+                this.marketData = data.tickers;
+                this.renderMarketData();
+            }
+        }
+        
+        renderMarketData() {
+            if (!this.marketList) return;
+            
+            if (this.marketData.length === 0) {
+                this.marketList.innerHTML = `
+                    <div class="market-empty">
+                        <span>No market data available</span>
+                    </div>
+                `;
+                return;
+            }
+            
+            let html = '';
+            this.marketData.forEach(item => {
+                const change = item.change24h || 0;
+                const changeClass = change >= 0 ? 'positive' : 'negative';
+                const changeIcon = change >= 0 ? 'fa-arrow-up' : 'fa-arrow-down';
+                
+                html += `
+                    <div class="market-item" onclick="navigateToAsset('${item.symbol}')">
+                        <div class="market-symbol">
+                            <span class="symbol">${item.symbol}</span>
+                            <span class="market-price">${this.formatPrice(item.price)}</span>
+                        </div>
+                        <div class="market-change ${changeClass}">
+                            <i class="fas ${changeIcon}"></i>
+                            <span>${change >= 0 ? '+' : ''}${change.toFixed(2)}%</span>
+                        </div>
+                    </div>
+                `;
+            });
+            this.marketList.innerHTML = html;
+        }
+        
+        showMarketError() {
+            if (this.marketList) {
+                this.marketList.innerHTML = `
+                    <div class="market-error">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <span>Failed to load market data</span>
+                        <button onclick="refreshMarketData()">Retry</button>
+                    </div>
+                `;
+            }
+        }
+        
+        updateBadges(data) {
+            if (data.portfolio !== undefined && this.badges.portfolio) {
+                this.badges.portfolio.textContent = data.portfolio;
+                this.badges.portfolio.style.display = data.portfolio > 0 ? 'block' : 'none';
+            }
+            
+            if (data.positions !== undefined && this.badges.positions) {
+                this.badges.positions.textContent = data.positions;
+                this.badges.positions.style.display = data.positions > 0 ? 'block' : 'none';
+            }
+            
+            if (data.risk !== undefined && this.badges.risk) {
+                const riskMap = {
+                    'low': 'Low',
+                    'medium': 'Medium',
+                    'high': 'High',
+                    'critical': 'Critical'
+                };
+                this.badges.risk.textContent = riskMap[data.risk] || data.risk;
+                this.badges.risk.className = `nav-badge ${data.risk}`;
+            }
+            
+            if (data.bots !== undefined && this.badges.bots) {
+                this.badges.bots.textContent = data.bots;
+                this.badges.bots.style.display = data.bots > 0 ? 'block' : 'none';
+            }
+            
+            if (data.alerts !== undefined && this.badges.alerts) {
+                this.badges.alerts.textContent = data.alerts > 99 ? '99+' : data.alerts;
+                this.badges.alerts.style.display = data.alerts > 0 ? 'block' : 'none';
+                if (data.alerts > 0) {
+                    this.badges.alerts.classList.add('pulse');
+                } else {
+                    this.badges.alerts.classList.remove('pulse');
+                }
+            }
+        }
+        
+        formatPrice(price) {
+            if (price === null || price === undefined) return '--';
+            if (price < 0.000001) return price.toExponential(6);
+            if (price < 0.0001) return price.toFixed(8);
+            if (price < 0.01) return price.toFixed(6);
+            if (price < 1) return price.toFixed(4);
+            if (price < 100) return price.toFixed(2);
+            if (price < 10000) return price.toFixed(0);
+            return price.toLocaleString('en-US', { maximumFractionDigits: 0 });
+        }
+        
+        startAutoRefresh() {
+            setInterval(() => {
+                this.loadMarketData();
+                this.loadBadgeData();
+            }, this.refreshInterval * 1000);
+        }
+        
+        destroy() {
+            if (this.ws) {
+                this.ws.close();
+                this.ws = null;
+            }
+        }
+    }
+    
+    // Global functions
+    window.refreshMarketData = function() {
+        const instance = window.sidebarInstance;
+        if (instance) {
+            instance.loadMarketData();
+        }
+    };
+    
+    window.toggleSidebarTheme = function() {
+        const isDark = document.body.classList.toggle('dark-mode');
+        const icon = document.getElementById('sidebar-theme-icon');
+        if (icon) {
+            icon.className = `fas fa-${isDark ? 'sun' : 'moon'}`;
+        }
+        localStorage.setItem('nexus-theme', isDark ? 'dark' : 'light');
+    };
+    
+    window.navigateToAsset = function(symbol) {
+        window.location.href = `/asset/${symbol}`;
+    };
+    
+    window.logout = function() {
+        if (confirm('Are you sure you want to logout?')) {
+            window.location.href = '/logout/';
+        }
+    };
+    
+    // Initialize on DOM ready
+    document.addEventListener('DOMContentLoaded', function() {
+        const instance = new SidebarManager();
+        window.sidebarInstance = instance;
+    });
+    
+    // Expose SidebarManager for dynamic initialization
+    window.SidebarManager = SidebarManager;
+    
+})();
+</script>
+
+<style>
+/* Sidebar Styles - Full Implementation with Nexus Branding */
+.nexus-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 280px;
+    background: #1a1a2e;
+    border-right: 1px solid #2d2d44;
+    display: flex;
+    flex-direction: column;
+    z-index: 1000;
+    transition: width 0.3s ease, transform 0.3s ease;
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    overflow: hidden;
+}
+
+.nexus-sidebar.collapsed {
+    width: 64px;
+}
+
+.nexus-sidebar.collapsed .brand-name,
+.nexus-sidebar.collapsed .nav-text,
+.nexus-sidebar.collapsed .nav-badge,
+.nexus-sidebar.collapsed .section-label,
+.nexus-sidebar.collapsed .user-info,
+.nexus-sidebar.collapsed .market-title,
+.nexus-sidebar.collapsed .market-item .market-price,
+.nexus-sidebar.collapsed .market-item .market-change span {
+    display: none;
+}
+
+.nexus-sidebar.collapsed .nav-item .nav-link {
+    justify-content: center;
+    padding: 12px;
+}
+
+.nexus-sidebar.collapsed .nav-item .nav-link i {
+    font-size: 20px;
+    margin: 0;
+}
+
+.nexus-sidebar.collapsed .sidebar-header {
+    justify-content: center;
+}
+
+.nexus-sidebar.collapsed .sidebar-footer {
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.nexus-sidebar.collapsed .footer-user {
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Sidebar Header */
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    border-bottom: 1px solid #2d2d44;
+    min-height: 64px;
+}
+
+.sidebar-brand .brand-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+}
+
+.sidebar-logo {
+    height: 32px;
+    width: auto;
+}
+
+.brand-name {
+    color: #00d4ff;
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.sidebar-collapse {
+    background: transparent;
+    border: none;
+    color: #74b9ff;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.sidebar-collapse:hover {
+    background: rgba(116, 185, 255, 0.1);
+}
+
+/* Sidebar Navigation */
+.sidebar-nav {
+    flex: 1;
+    overflow-y: auto;
+    padding: 8px 0;
+}
+
+.sidebar-nav::-webkit-scrollbar {
+    width: 4px;
+}
+
+.sidebar-nav::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.sidebar-nav::-webkit-scrollbar-thumb {
+    background: #2d2d44;
+    border-radius: 2px;
+}
+
+.nav-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.nav-section {
+    padding: 8px 20px;
+}
+
+.section-label {
+    color: #74b9ff;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    opacity: 0.4;
+}
+
+.nav-item {
+    margin: 2px 0;
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 20px;
+    color: #74b9ff;
+    text-decoration: none;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    position: relative;
+    font-size: 14px;
+}
+
+.nav-link:hover {
+    background: rgba(116, 185, 255, 0.08);
+    color: #ffffff;
+}
+
+.nav-link.active {
+    background: rgba(116, 185, 255, 0.12);
+    color: #00d4ff;
+}
+
+.nav-link i {
+    font-size: 16px;
+    width: 20px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.nav-text {
+    flex: 1;
+    white-space: nowrap;
+}
+
+.nav-badge {
+    background: #ff6b6b;
+    color: #ffffff;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 1px 8px;
+    border-radius: 10px;
+    min-width: 18px;
+    text-align: center;
+    display: none;
+}
+
+.nav-badge.low {
+    background: #00b894;
+}
+
+.nav-badge.medium {
+    background: #fdcb6e;
+}
+
+.nav-badge.high {
+    background: #e17055;
+}
+
+.nav-badge.critical {
+    background: #ff6b6b;
+    animation: pulse 1s infinite;
+}
+
+.nav-badge.pulse {
+    animation: pulse 1s infinite;
+}
+
+/* Sidebar Market Data */
+.sidebar-market {
+    border-top: 1px solid #2d2d44;
+    padding: 12px 16px;
+    max-height: 300px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.market-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.market-title {
+    color: #74b9ff;
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: uppercase;
+    opacity: 0.6;
+}
+
+.market-refresh {
+    background: transparent;
+    border: none;
+    color: #74b9ff;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.market-refresh:hover {
+    background: rgba(116, 185, 255, 0.1);
+}
+
+.market-list {
+    flex: 1;
+    overflow-y: auto;
+    max-height: 250px;
+}
+
+.market-list::-webkit-scrollbar {
+    width: 3px;
+}
+
+.market-list::-webkit-scrollbar-thumb {
+    background: #2d2d44;
+    border-radius: 2px;
+}
+
+.market-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.market-item:hover {
+    background: rgba(116, 185, 255, 0.05);
+}
+
+.market-symbol {
+    display: flex;
+    flex-direction: column;
+}
+
+.market-symbol .symbol {
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.market-symbol .market-price {
+    color: #74b9ff;
+    font-size: 11px;
+    opacity: 0.6;
+}
+
+.market-change {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.market-change.positive {
+    color: #00b894;
+}
+
+.market-change.negative {
+    color: #ff6b6b;
+}
+
+.market-loading,
+.market-empty,
+.market-error {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    color: #74b9ff;
+    gap: 8px;
+    font-size: 13px;
+    opacity: 0.5;
+}
+
+.market-error {
+    opacity: 1;
+}
+
+.market-error i {
+    color: #ff6b6b;
+    font-size: 20px;
+}
+
+.market-error button {
+    padding: 4px 16px;
+    background: #74b9ff;
+    border: none;
+    border-radius: 4px;
+    color: #1a1a2e;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+/* Sidebar Footer */
+.sidebar-footer {
+    border-top: 1px solid #2d2d44;
+    padding: 12px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.footer-user {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.user-avatar {
+    position: relative;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.user-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.user-status {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 2px solid #1a1a2e;
+}
+
+.user-status.online {
+    background: #00b894;
+}
+
+.user-status.away {
+    background: #fdcb6e;
+}
+
+.user-status.offline {
+    background: #ff6b6b;
+}
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+}
+
+.user-name {
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.user-role {
+    color: #74b9ff;
+    font-size: 10px;
+    opacity: 0.6;
+}
+
+.footer-actions {
+    display: flex;
+    gap: 2px;
+}
+
+.footer-action {
+    background: transparent;
+    border: none;
+    color: #74b9ff;
+    padding: 6px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.footer-action:hover {
+    background: rgba(116, 185, 255, 0.1);
+    color: #ffffff;
+}
+
+/* Animations */
+@keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.95); }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .nexus-sidebar {
+        transform: translateX(-100%);
+        width: 280px;
+    }
+    
+    .nexus-sidebar.open {
+        transform: translateX(0);
+    }
+    
+    .nexus-sidebar.collapsed {
+        width: 280px;
+    }
+    
+    .nexus-sidebar.collapsed .brand-name,
+    .nexus-sidebar.collapsed .nav-text,
+    .nexus-sidebar.collapsed .nav-badge,
+    .nexus-sidebar.collapsed .section-label,
+    .nexus-sidebar.collapsed .user-info,
+    .nexus-sidebar.collapsed .market-title,
+    .nexus-sidebar.collapsed .market-item .market-price,
+    .nexus-sidebar.collapsed .market-item .market-change span {
+        display: block;
+    }
+    
+    .nexus-sidebar.collapsed .nav-item .nav-link {
+        justify-content: flex-start;
+        padding: 10px 20px;
+    }
+    
+    .nexus-sidebar.collapsed .nav-item .nav-link i {
+        font-size: 16px;
+        margin: 0;
+        width: 20px;
+    }
+    
+    .nexus-sidebar.collapsed .sidebar-header {
+        justify-content: space-between;
+    }
+    
+    .nexus-sidebar.collapsed .sidebar-footer {
+        flex-direction: row;
+    }
+    
+    .nexus-sidebar.collapsed .footer-user {
+        flex-direction: row;
+    }
+}
+
+/* Dark Mode */
+body.dark-mode .nexus-sidebar {
+    background: #0a0a1a;
+    border-right-color: #1a1a3a;
+}
+
+body.dark-mode .sidebar-header {
+    border-bottom-color: #1a1a3a;
+}
+
+body.dark-mode .sidebar-market {
+    border-top-color: #1a1a3a;
+}
+
+body.dark-mode .sidebar-footer {
+    border-top-color: #1a1a3a;
+}
+
+/* Print styles */
+@media print {
+    .nexus-sidebar {
+        display: none !important;
+    }
+}
+</style>
