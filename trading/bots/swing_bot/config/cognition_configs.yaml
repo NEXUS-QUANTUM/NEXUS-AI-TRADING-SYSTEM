@@ -1,0 +1,415 @@
+# trading/bots/swing_bot/config/cognition_configs.yaml
+
+# ============================================================================
+# NEXUS AI TRADING SYSTEM - Swing Bot Cognition Configuration
+# Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+# ============================================================================
+#
+# Description: Complete Cognition configuration for swing trading bot
+# Framework: Cognitive Trading - AI-Powered Decision Making
+# Version: 3.0.0
+#
+# The Cognition configuration enables the bot to make intelligent trading
+# decisions using advanced cognitive computing, pattern recognition,
+# and adaptive learning algorithms.
+# ============================================================================
+
+# ----------------------------------------------------------------------------
+# General Configuration
+# ----------------------------------------------------------------------------
+cognition:
+  enabled: true
+  version: "3.0.0"
+  description: "Cognitive Trading for swing trading"
+  
+  # Cognitive modes
+  modes:
+    - "pattern_recognition"
+    - "adaptive_learning"
+    - "decision_making"
+    - "memory_processing"
+    - "attention_mechanism"
+    - "reasoning"
+  
+  default_mode: "adaptive_learning"
+  
+  # Learning rates
+  learning_rates:
+    fast: 0.1
+    medium: 0.01
+    slow: 0.001
+    adaptive: true
+  
+  default_rate: "adaptive"
+
+# ----------------------------------------------------------------------------
+# Pattern Recognition
+# ----------------------------------------------------------------------------
+pattern_recognition:
+  enabled: true
+  description: "Pattern Recognition configuration"
+  
+  # Parameters
+  parameters:
+    lookback_period: 50
+    min_confidence: 0.6
+    max_patterns: 10
+    pattern_types:
+      - "price_patterns"
+      - "volume_patterns"
+      - "indicator_patterns"
+      - "combined_patterns"
+  
+  # Pattern types
+  patterns:
+    price:
+      - "head_and_shoulders"
+      - "double_top"
+      - "double_bottom"
+      - "triangles"
+      - "flags"
+      - "pennants"
+      - "wedges"
+      - "rectangles"
+    
+    volume:
+      - "volume_spike"
+      - "volume_climax"
+      - "volume_divergence"
+      - "volume_confirmation"
+    
+    indicator:
+      - "rsi_divergence"
+      - "macd_crossover"
+      - "bb_breakout"
+      - "ma_crossover"
+  
+  # Recognition rules
+  rules:
+    price_patterns:
+      enabled: true
+      min_bars: 5
+      max_bars: 30
+      tolerance: 0.01
+    
+    volume_patterns:
+      enabled: true
+      min_volume_ratio: 1.5
+      max_volume_ratio: 5.0
+    
+    indicator_patterns:
+      enabled: true
+      min_confidence: 0.7
+      confirmation_bars: 2
+
+# ----------------------------------------------------------------------------
+# Adaptive Learning
+# ----------------------------------------------------------------------------
+adaptive_learning:
+  enabled: true
+  description: "Adaptive Learning configuration"
+  
+  # Parameters
+  parameters:
+    lookback_period: 50
+    learning_rate: 0.01
+    adaptation_interval: 10  # bars
+    confidence_threshold: 0.7
+    memory_size: 1000
+  
+  # Learning methods
+  methods:
+    - "reinforcement_learning"
+    - "supervised_learning"
+    - "unsupervised_learning"
+    - "transfer_learning"
+  
+  # Learning rules
+  rules:
+    reward_based:
+      enabled: true
+      reward_function: "sharpe_ratio"
+      discount_factor: 0.95
+    
+    error_based:
+      enabled: true
+      error_function: "mse"
+      learning_rate: 0.01
+    
+    pattern_based:
+      enabled: true
+      pattern_weight: 0.5
+      novelty_weight: 0.3
+      relevance_weight: 0.2
+
+# ----------------------------------------------------------------------------
+# Decision Making
+# ----------------------------------------------------------------------------
+decision_making:
+  enabled: true
+  description: "Decision Making configuration"
+  
+  # Parameters
+  parameters:
+    decision_threshold: 0.6
+    confidence_threshold: 0.7
+    risk_threshold: 0.3
+    max_decisions: 10
+    decision_interval: 5  # bars
+  
+  # Decision methods
+  methods:
+    - "bayesian"
+    - "fuzzy_logic"
+    - "neural_network"
+    - "rule_based"
+    - "ensemble"
+  
+  # Decision rules
+  rules:
+    buy_decision:
+      conditions:
+        - "confidence_>_0.7"
+        - "risk_<_0.3"
+        - "reward_>_1.5"
+      action: "buy"
+    
+    sell_decision:
+      conditions:
+        - "confidence_>_0.7"
+        - "risk_>_0.5"
+        - "reward_<_1.0"
+      action: "sell"
+    
+    hold_decision:
+      conditions:
+        - "confidence_<_0.6"
+        - "risk_medium"
+        - "reward_uncertain"
+      action: "hold"
+
+# ----------------------------------------------------------------------------
+# Memory Processing
+# ----------------------------------------------------------------------------
+memory_processing:
+  enabled: true
+  description: "Memory Processing configuration"
+  
+  # Parameters
+  parameters:
+    memory_size: 1000
+    retention_period: 100  # bars
+    importance_threshold: 0.5
+    consolidation_interval: 20  # bars
+  
+  # Memory types
+  types:
+    - "short_term"
+    - "long_term"
+    - "working_memory"
+    - "episodic_memory"
+  
+  # Memory rules
+  rules:
+    short_term:
+      enabled: true
+      capacity: 100
+      decay_rate: 0.1
+    
+    long_term:
+      enabled: true
+      capacity: 1000
+      consolidation_rate: 0.01
+    
+    working_memory:
+      enabled: true
+      capacity: 20
+      attention_span: 10  # bars
+    
+    episodic_memory:
+      enabled: true
+      capacity: 500
+      retention_period: 100  # bars
+
+# ----------------------------------------------------------------------------
+# Attention Mechanism
+# ----------------------------------------------------------------------------
+attention_mechanism:
+  enabled: true
+  description: "Attention Mechanism configuration"
+  
+  # Parameters
+  parameters:
+    attention_size: 20
+    num_heads: 4
+    attention_scale: 0.1
+    dropout_rate: 0.1
+    update_interval: 5  # bars
+  
+  # Attention types
+  types:
+    - "self_attention"
+    - "cross_attention"
+    - "multi_head_attention"
+    - "scaled_dot_product"
+  
+  # Attention rules
+  rules:
+    self_attention:
+      enabled: true
+      num_heads: 4
+      attention_scale: 0.1
+    
+    cross_attention:
+      enabled: true
+      num_heads: 4
+      attention_scale: 0.1
+    
+    multi_head_attention:
+      enabled: true
+      num_heads: 8
+      attention_scale: 0.1
+
+# ----------------------------------------------------------------------------
+# Reasoning Engine
+# ----------------------------------------------------------------------------
+reasoning_engine:
+  enabled: true
+  description: "Reasoning Engine configuration"
+  
+  # Parameters
+  parameters:
+    reasoning_depth: 5
+    confidence_threshold: 0.7
+    inference_interval: 10  # bars
+  
+  # Reasoning methods
+  methods:
+    - "deductive"
+    - "inductive"
+    - "abductive"
+    - "analogical"
+    - "causal"
+  
+  # Reasoning rules
+  rules:
+    deductive:
+      enabled: true
+      logic_type: "first_order"
+      inference_chain: true
+    
+    inductive:
+      enabled: true
+      generalization: true
+      pattern_learning: true
+    
+    abductive:
+      enabled: true
+      explanation_generation: true
+      hypothesis_testing: true
+
+# ----------------------------------------------------------------------------
+# Cognitive Signals
+# ----------------------------------------------------------------------------
+signals:
+  enabled: true
+  description: "Cognitive-based trading signals"
+  
+  # Signal types
+  types:
+    cognitive_buy:
+      description: "Cognitive buy signal"
+      conditions:
+        - "pattern_bullish"
+        - "confidence_high"
+        - "risk_low"
+        - "attention_positive"
+      confidence: 0.8
+    
+    cognitive_sell:
+      description: "Cognitive sell signal"
+      conditions:
+        - "pattern_bearish"
+        - "confidence_high"
+        - "risk_high"
+        - "attention_negative"
+      confidence: 0.8
+    
+    cognitive_hedge:
+      description: "Cognitive hedge signal"
+      conditions:
+        - "pattern_uncertain"
+        - "confidence_medium"
+        - "risk_medium"
+        - "attention_mixed"
+      confidence: 0.6
+  
+  # Signal confirmation
+  confirmation:
+    required_confirmations: 2
+    confirmation_sources:
+      - "price_action"
+      - "volume"
+      - "technical_indicators"
+
+# ----------------------------------------------------------------------------
+# Risk Management
+# ----------------------------------------------------------------------------
+risk_management:
+  enabled: true
+  description: "Risk management for cognitive trading"
+  
+  # Risk parameters
+  parameters:
+    max_position: 0.05
+    max_daily_loss: 0.02
+    max_drawdown: 0.1
+    risk_per_trade: 0.01
+    
+    # Cognitive-based stop loss
+    stop_loss:
+      type: "cognitive_based"
+      threshold: 0.5
+      update_interval: 10  # bars
+
+# ----------------------------------------------------------------------------
+# Performance Monitoring
+# ----------------------------------------------------------------------------
+performance_monitoring:
+  enabled: true
+  description: "Performance monitoring for cognitive trading"
+  
+  metrics:
+    - "win_rate"
+    - "profit_factor"
+    - "sharpe_ratio"
+    - "max_drawdown"
+    - "average_trade"
+    - "consecutive_wins"
+    - "consecutive_losses"
+    - "learning_rate"
+    - "confidence_score"
+  
+  targets:
+    min_win_rate: 0.5
+    min_profit_factor: 1.5
+    min_sharpe_ratio: 0.6
+    max_max_drawdown: 0.1
+
+# ----------------------------------------------------------------------------
+# Logging Configuration
+# ----------------------------------------------------------------------------
+logging:
+  enabled: true
+  level: "INFO"
+  file: "logs/cognition_bot.log"
+  rotation: "daily"
+  retention: 30  # days
+  
+  log_categories:
+    signals: true
+    trades: true
+    errors: true
+    performance: true
+    cognition: true
+    debugging: false
