@@ -1,0 +1,1619 @@
+<!-- trading/bots/hedge_bot/templates/settings.html -->
+
+<!--
+NEXUS AI TRADING SYSTEM - Hedge Bot Settings Page
+Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+
+Complete settings management interface with real-time configuration,
+API key management, and system preferences.
+-->
+
+{% extends "base.html" %}
+{% load static %}
+{% load nexus_tags %}
+
+{% block title %}Settings - NEXUS AI Trading{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/settings.css' %}">
+{% endblock %}
+
+{% block content %}
+<div id="settings-container" class="settings-container"
+     data-user-id="{{ user_id|default:'current' }}"
+     data-refresh-interval="{{ refresh_interval|default:30 }}">
+
+    <!-- Settings Header -->
+    <div class="settings-header">
+        <div class="settings-title-section">
+            <div class="settings-logo-container">
+                <img src="{% static 'images/nexus-logo-light.svg' %}"
+                     alt="NEXUS Logo"
+                     class="settings-logo"
+                     onerror="this.src='{% static 'images/nexus-favicon.svg' %}'">
+                <span class="settings-brand">NEXUS</span>
+            </div>
+            <h1 class="settings-title">Settings</h1>
+            <span class="settings-subtitle">Configure your trading environment</span>
+        </div>
+        <div class="settings-actions">
+            <button class="btn-secondary" onclick="resetToDefault()">
+                <i class="fas fa-undo"></i> Reset to Default
+            </button>
+            <button class="btn-primary" onclick="saveAllSettings()">
+                <i class="fas fa-save"></i> Save All
+            </button>
+        </div>
+    </div>
+
+    <!-- Settings Navigation -->
+    <div class="settings-nav">
+        <button class="nav-tab active" data-tab="general" onclick="switchTab('general')">
+            <i class="fas fa-cog"></i> General
+        </button>
+        <button class="nav-tab" data-tab="trading" onclick="switchTab('trading')">
+            <i class="fas fa-chart-line"></i> Trading
+        </button>
+        <button class="nav-tab" data-tab="risk" onclick="switchTab('risk')">
+            <i class="fas fa-shield-alt"></i> Risk
+        </button>
+        <button class="nav-tab" data-tab="api" onclick="switchTab('api')">
+            <i class="fas fa-key"></i> API Keys
+        </button>
+        <button class="nav-tab" data-tab="notifications" onclick="switchTab('notifications')">
+            <i class="fas fa-bell"></i> Notifications
+        </button>
+        <button class="nav-tab" data-tab="security" onclick="switchTab('security')">
+            <i class="fas fa-lock"></i> Security
+        </button>
+        <button class="nav-tab" data-tab="advanced" onclick="switchTab('advanced')">
+            <i class="fas fa-code"></i> Advanced
+        </button>
+    </div>
+
+    <!-- Settings Content -->
+    <div class="settings-content">
+
+        <!-- General Settings -->
+        <div class="settings-panel active" id="panel-general">
+            <div class="panel-header">
+                <h3>General Settings</h3>
+                <p>Configure your basic preferences and environment</p>
+            </div>
+            <div class="panel-body">
+                <div class="setting-group">
+                    <label>Display Language</label>
+                    <select id="setting-language">
+                        <option value="en">English</option>
+                        <option value="fr">Français</option>
+                        <option value="es">Español</option>
+                        <option value="de">Deutsch</option>
+                        <option value="zh">中文</option>
+                        <option value="ja">日本語</option>
+                        <option value="ko">한국어</option>
+                        <option value="ru">Русский</option>
+                    </select>
+                </div>
+                <div class="setting-group">
+                    <label>Timezone</label>
+                    <select id="setting-timezone">
+                        <option value="UTC">UTC</option>
+                        <option value="America/New_York">Eastern Time (ET)</option>
+                        <option value="America/Chicago">Central Time (CT)</option>
+                        <option value="America/Denver">Mountain Time (MT)</option>
+                        <option value="America/Los_Angeles">Pacific Time (PT)</option>
+                        <option value="Europe/London">London (GMT/BST)</option>
+                        <option value="Europe/Paris">Paris (CET/CEST)</option>
+                        <option value="Asia/Dubai">Dubai (GST)</option>
+                        <option value="Asia/Singapore">Singapore (SGT)</option>
+                        <option value="Asia/Tokyo">Tokyo (JST)</option>
+                        <option value="Australia/Sydney">Sydney (AEST/AEDT)</option>
+                    </select>
+                </div>
+                <div class="setting-group">
+                    <label>Date Format</label>
+                    <select id="setting-date-format">
+                        <option value="YYYY-MM-DD">YYYY-MM-DD</option>
+                        <option value="MM/DD/YYYY">MM/DD/YYYY</option>
+                        <option value="DD/MM/YYYY">DD/MM/YYYY</option>
+                        <option value="MMM DD, YYYY">MMM DD, YYYY</option>
+                    </select>
+                </div>
+                <div class="setting-group">
+                    <label>Time Format</label>
+                    <select id="setting-time-format">
+                        <option value="24h">24-hour (HH:MM)</option>
+                        <option value="12h">12-hour (HH:MM AM/PM)</option>
+                    </select>
+                </div>
+                <div class="setting-group">
+                    <label>Currency Display</label>
+                    <select id="setting-currency">
+                        <option value="USD">USD ($)</option>
+                        <option value="EUR">EUR (€)</option>
+                        <option value="GBP">GBP (£)</option>
+                        <option value="JPY">JPY (¥)</option>
+                        <option value="CAD">CAD (C$)</option>
+                        <option value="AUD">AUD (A$)</option>
+                        <option value="CHF">CHF (Fr)</option>
+                        <option value="CNY">CNY (¥)</option>
+                        <option value="HKD">HKD (HK$)</option>
+                        <option value="SGD">SGD (S$)</option>
+                        <option value="BTC">BTC (₿)</option>
+                        <option value="ETH">ETH (Ξ)</option>
+                        <option value="USDC">USDC</option>
+                        <option value="USDT">USDT</option>
+                    </select>
+                </div>
+                <div class="setting-group checkbox">
+                    <label>
+                        <input type="checkbox" id="setting-dark-mode"> Dark Mode
+                    </label>
+                </div>
+                <div class="setting-group checkbox">
+                    <label>
+                        <input type="checkbox" id="setting-auto-save"> Auto-save changes
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Trading Settings -->
+        <div class="settings-panel" id="panel-trading">
+            <div class="panel-header">
+                <h3>Trading Settings</h3>
+                <p>Configure your trading preferences and execution parameters</p>
+            </div>
+            <div class="panel-body">
+                <div class="setting-group">
+                    <label>Default Exchange</label>
+                    <select id="setting-default-exchange">
+                        <option value="binance">Binance</option>
+                        <option value="bybit">Bybit</option>
+                        <option value="kraken">Kraken</option>
+                        <option value="coinbase">Coinbase</option>
+                        <option value="okx">OKX</option>
+                        <option value="ftx">FTX</option>
+                        <option value="gate">Gate.io</option>
+                        <option value="huobi">Huobi</option>
+                        <option value="kucoin">KuCoin</option>
+                        <option value="bitfinex">Bitfinex</option>
+                        <option value="deribit">Deribit</option>
+                        <option value="bitmex">BitMEX</option>
+                    </select>
+                </div>
+                <div class="setting-group">
+                    <label>Default Order Type</label>
+                    <select id="setting-order-type">
+                        <option value="market">Market</option>
+                        <option value="limit">Limit</option>
+                        <option value="stop">Stop</option>
+                        <option value="stop_limit">Stop Limit</option>
+                        <option value="trailing_stop">Trailing Stop</option>
+                    </select>
+                </div>
+                <div class="setting-group">
+                    <label>Default Time in Force</label>
+                    <select id="setting-time-in-force">
+                        <option value="GTC">Good 'til Cancelled (GTC)</option>
+                        <option value="IOC">Immediate or Cancel (IOC)</option>
+                        <option value="FOK">Fill or Kill (FOK)</option>
+                        <option value="DAY">Day</option>
+                        <option value="GTD">Good 'til Date (GTD)</option>
+                    </select>
+                </div>
+                <div class="setting-group">
+                    <label>Default Leverage</label>
+                    <input type="number" id="setting-leverage" value="1" min="1" max="100" step="0.5">
+                </div>
+                <div class="setting-group checkbox">
+                    <label>
+                        <input type="checkbox" id="setting-paper-trading"> Paper Trading Mode
+                    </label>
+                </div>
+                <div class="setting-group checkbox">
+                    <label>
+                        <input type="checkbox" id="setting-auto-trade"> Auto-trade Enabled
+                    </label>
+                </div>
+                <div class="setting-group">
+                    <label>Max Order Size (quote currency)</label>
+                    <input type="number" id="setting-max-order-size" value="10000" step="100" min="0">
+                </div>
+                <div class="setting-group">
+                    <label>Min Order Size (quote currency)</label>
+                    <input type="number" id="setting-min-order-size" value="10" step="1" min="0">
+                </div>
+            </div>
+        </div>
+
+        <!-- Risk Settings -->
+        <div class="settings-panel" id="panel-risk">
+            <div class="panel-header">
+                <h3>Risk Management Settings</h3>
+                <p>Configure your risk parameters and limits</p>
+            </div>
+            <div class="panel-body">
+                <div class="setting-group">
+                    <label>Max Portfolio Risk (%)</label>
+                    <input type="number" id="setting-max-risk" value="2" step="0.5" min="0.5" max="100">
+                </div>
+                <div class="setting-group">
+                    <label>Max Position Size (%)</label>
+                    <input type="number" id="setting-max-position" value="10" step="1" min="1" max="100">
+                </div>
+                <div class="setting-group">
+                    <label>Default Stop Loss (%)</label>
+                    <input type="number" id="setting-stop-loss" value="5" step="0.5" min="0.5" max="100">
+                </div>
+                <div class="setting-group">
+                    <label>Default Take Profit (%)</label>
+                    <input type="number" id="setting-take-profit" value="10" step="0.5" min="0.5" max="100">
+                </div>
+                <div class="setting-group">
+                    <label>Max Daily Loss (%)</label>
+                    <input type="number" id="setting-daily-loss" value="10" step="1" min="0" max="100">
+                </div>
+                <div class="setting-group">
+                    <label>Max Drawdown (%)</label>
+                    <input type="number" id="setting-drawdown" value="20" step="1" min="0" max="100">
+                </div>
+                <div class="setting-group checkbox">
+                    <label>
+                        <input type="checkbox" id="setting-auto-stop"> Auto-stop on critical drawdown
+                    </label>
+                </div>
+                <div class="setting-group checkbox">
+                    <label>
+                        <input type="checkbox" id="setting-risk-limit"> Enforce risk limits
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <!-- API Keys Settings -->
+        <div class="settings-panel" id="panel-api">
+            <div class="panel-header">
+                <h3>API Keys</h3>
+                <p>Manage your exchange API keys securely</p>
+            </div>
+            <div class="panel-body">
+                <div id="api-keys-list">
+                    <div class="api-key-item">
+                        <div class="api-key-info">
+                            <span class="api-key-name">Binance</span>
+                            <span class="api-key-status active">Active</span>
+                            <span class="api-key-permissions">Read, Trade</span>
+                        </div>
+                        <div class="api-key-actions">
+                            <button class="btn-sm btn-secondary" onclick="editApiKey('binance')">Edit</button>
+                            <button class="btn-sm btn-danger" onclick="deleteApiKey('binance')">Remove</button>
+                        </div>
+                    </div>
+                    <div class="api-key-item">
+                        <div class="api-key-info">
+                            <span class="api-key-name">Bybit</span>
+                            <span class="api-key-status inactive">Inactive</span>
+                            <span class="api-key-permissions">Read</span>
+                        </div>
+                        <div class="api-key-actions">
+                            <button class="btn-sm btn-secondary" onclick="editApiKey('bybit')">Edit</button>
+                            <button class="btn-sm btn-danger" onclick="deleteApiKey('bybit')">Remove</button>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn-primary" onclick="addApiKey()">
+                    <i class="fas fa-plus"></i> Add API Key
+                </button>
+            </div>
+        </div>
+
+        <!-- Notifications Settings -->
+        <div class="settings-panel" id="panel-notifications">
+            <div class="panel-header">
+                <h3>Notification Settings</h3>
+                <p>Configure how you receive alerts and notifications</p>
+            </div>
+            <div class="panel-body">
+                <div class="setting-group checkbox">
+                    <label>
+                        <input type="checkbox" id="notif-push" checked> Push Notifications
+                    </label>
+                </div>
+                <div class="setting-group checkbox">
+                    <label>
+                        <input type="checkbox" id="notif-email" checked> Email Notifications
+                    </label>
+                </div>
+                <div class="setting-group checkbox">
+                    <label>
+                        <input type="checkbox" id="notif-sms"> SMS Notifications
+                    </label>
+                </div>
+                <div class="setting-group checkbox">
+                    <label>
+                        <input type="checkbox" id="notif-telegram"> Telegram Notifications
+                    </label>
+                </div>
+                <div class="setting-group checkbox">
+                    <label>
+                        <input type="checkbox" id="notif-discord"> Discord Notifications
+                    </label>
+                </div>
+                <div class="setting-group">
+                    <label>Email Address</label>
+                    <input type="email" id="notif-email-address" placeholder="your@email.com">
+                </div>
+                <div class="setting-group">
+                    <label>Telegram Bot Token</label>
+                    <input type="password" id="notif-telegram-token" placeholder="Bot token">
+                </div>
+                <div class="setting-group">
+                    <label>Telegram Chat ID</label>
+                    <input type="text" id="notif-telegram-chat" placeholder="Chat ID">
+                </div>
+                <div class="setting-group">
+                    <label>Alert Severity</label>
+                    <select id="notif-severity">
+                        <option value="all">All</option>
+                        <option value="critical">Critical Only</option>
+                        <option value="high">High and Critical</option>
+                        <option value="medium">Medium and Above</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Security Settings -->
+        <div class="settings-panel" id="panel-security">
+            <div class="panel-header">
+                <h3>Security Settings</h3>
+                <p>Protect your account and data</p>
+            </div>
+            <div class="panel-body">
+                <div class="setting-group">
+                    <label>Current Password</label>
+                    <input type="password" id="sec-current-password" placeholder="Enter current password">
+                </div>
+                <div class="setting-group">
+                    <label>New Password</label>
+                    <input type="password" id="sec-new-password" placeholder="Enter new password">
+                </div>
+                <div class="setting-group">
+                    <label>Confirm New Password</label>
+                    <input type="password" id="sec-confirm-password" placeholder="Confirm new password">
+                </div>
+                <button class="btn-primary" onclick="changePassword()">Change Password</button>
+                <hr>
+                <div class="setting-group checkbox">
+                    <label>
+                        <input type="checkbox" id="sec-2fa"> Enable Two-Factor Authentication (2FA)
+                    </label>
+                </div>
+                <div class="setting-group checkbox">
+                    <label>
+                        <input type="checkbox" id="sec-session"> Require session confirmation on new devices
+                    </label>
+                </div>
+                <div class="setting-group">
+                    <label>Session Timeout (minutes)</label>
+                    <input type="number" id="sec-session-timeout" value="60" min="5" max="1440">
+                </div>
+                <button class="btn-danger" onclick="logoutAllSessions()">
+                    <i class="fas fa-sign-out-alt"></i> Logout All Sessions
+                </button>
+            </div>
+        </div>
+
+        <!-- Advanced Settings -->
+        <div class="settings-panel" id="panel-advanced">
+            <div class="panel-header">
+                <h3>Advanced Settings</h3>
+                <p>For experienced users - use with caution</p>
+            </div>
+            <div class="panel-body">
+                <div class="setting-group">
+                    <label>Log Level</label>
+                    <select id="adv-log-level">
+                        <option value="DEBUG">DEBUG</option>
+                        <option value="INFO" selected>INFO</option>
+                        <option value="WARNING">WARNING</option>
+                        <option value="ERROR">ERROR</option>
+                        <option value="CRITICAL">CRITICAL</option>
+                    </select>
+                </div>
+                <div class="setting-group">
+                    <label>Data Retention (days)</label>
+                    <input type="number" id="adv-data-retention" value="30" min="1" max="365">
+                </div>
+                <div class="setting-group">
+                    <label>Max Concurrent Trades</label>
+                    <input type="number" id="adv-concurrent-trades" value="10" min="1" max="100">
+                </div>
+                <div class="setting-group">
+                    <label>WebSocket Reconnect Interval (seconds)</label>
+                    <input type="number" id="adv-ws-reconnect" value="5" min="1" max="60">
+                </div>
+                <div class="setting-group">
+                    <label>API Rate Limit (requests/second)</label>
+                    <input type="number" id="adv-rate-limit" value="10" min="1" max="100">
+                </div>
+                <div class="setting-group checkbox">
+                    <label>
+                        <input type="checkbox" id="adv-debug-mode"> Debug Mode
+                    </label>
+                </div>
+                <div class="setting-group checkbox">
+                    <label>
+                        <input type="checkbox" id="adv-perf-tracking"> Performance Tracking
+                    </label>
+                </div>
+                <div class="setting-group checkbox">
+                    <label>
+                        <input type="checkbox" id="adv-verbose-logs"> Verbose Logging
+                    </label>
+                </div>
+                <div class="setting-group">
+                    <label>Custom Config (JSON)</label>
+                    <textarea id="adv-custom-config" rows="5" placeholder='{"key": "value"}'></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Footer -->
+    <div class="settings-footer">
+        <div class="settings-nexus-branding">
+            <span class="nexus-copyright">© 2026 NEXUS QUANTUM LTD</span>
+            <span class="nexus-version">v{{ nexus_version|default:'3.0.0' }}</span>
+        </div>
+        <div class="settings-status" id="settings-status">
+            <span class="status-dot"></span>
+            <span class="status-label">Connected</span>
+        </div>
+    </div>
+
+    <!-- API Key Modal -->
+    <div class="api-key-modal" id="api-key-modal" style="display:none;">
+        <div class="modal-overlay" onclick="closeApiKeyModal()"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="api-key-modal-title">Add API Key</h3>
+                <button class="modal-close" onclick="closeApiKeyModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="api-key-form" onsubmit="saveApiKey(event)">
+                    <div class="form-group">
+                        <label>Exchange</label>
+                        <select id="api-key-exchange" required>
+                            <option value="binance">Binance</option>
+                            <option value="bybit">Bybit</option>
+                            <option value="kraken">Kraken</option>
+                            <option value="coinbase">Coinbase</option>
+                            <option value="okx">OKX</option>
+                            <option value="ftx">FTX</option>
+                            <option value="gate">Gate.io</option>
+                            <option value="huobi">Huobi</option>
+                            <option value="kucoin">KuCoin</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>API Key</label>
+                        <input type="text" id="api-key-key" placeholder="Enter API key" required>
+                    </div>
+                    <div class="form-group">
+                        <label>API Secret</label>
+                        <input type="password" id="api-key-secret" placeholder="Enter API secret" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Permissions</label>
+                        <div class="checkbox-group">
+                            <label><input type="checkbox" id="api-perm-read" checked> Read</label>
+                            <label><input type="checkbox" id="api-perm-trade"> Trade</label>
+                            <label><input type="checkbox" id="api-perm-withdraw"> Withdraw</label>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn-secondary" onclick="closeApiKeyModal()">Cancel</button>
+                        <button type="submit" class="btn-primary" id="api-key-save-btn">Add API Key</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="settings-toast" class="settings-toast" style="display:none;">
+        <span id="settings-toast-message"></span>
+        <button onclick="this.parentElement.style.display='none'">&times;</button>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Complete Settings Implementation with Real API Integration
+
+(function() {
+    'use strict';
+
+    class SettingsManager {
+        constructor() {
+            this.container = document.getElementById('settings-container');
+            if (!this.container) return;
+            
+            this.userId = this.container.dataset.userId || 'current';
+            this.refreshInterval = parseInt(this.container.dataset.refreshInterval) || 30;
+            this.currentTab = 'general';
+            this.settings = {};
+            this.apiKeys = [];
+            this._isEditing = false;
+            this._editingId = null;
+            
+            // DOM Elements
+            this.status = document.getElementById('settings-status');
+            this.toast = document.getElementById('settings-toast');
+            this.toastMessage = document.getElementById('settings-toast-message');
+            
+            // Initialize
+            this.init();
+        }
+        
+        init() {
+            this.loadSettings();
+            this.setupEventListeners();
+            this.applySavedTheme();
+        }
+        
+        setupEventListeners() {
+            // Auto-save on change
+            document.querySelectorAll('.setting-group input, .setting-group select, .setting-group textarea').forEach(el => {
+                el.addEventListener('change', () => {
+                    if (document.getElementById('setting-auto-save')?.checked) {
+                        this.saveAllSettings();
+                    }
+                });
+            });
+            
+            // Keyboard shortcuts
+            document.addEventListener('keydown', (e) => {
+                if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+                    e.preventDefault();
+                    this.saveAllSettings();
+                }
+                if (e.key === 'Escape') {
+                    closeApiKeyModal();
+                }
+            });
+        }
+        
+        loadSettings() {
+            fetch('/api/settings')
+                .then(response => response.json())
+                .then(data => {
+                    this.settings = data;
+                    this.applySettingsToUI(data);
+                    this.loadApiKeys();
+                })
+                .catch(error => {
+                    console.error('Failed to load settings:', error);
+                    this.showToast('Failed to load settings', 'error');
+                });
+        }
+        
+        loadApiKeys() {
+            fetch('/api/settings/api-keys')
+                .then(response => response.json())
+                .then(data => {
+                    this.apiKeys = data.keys || [];
+                    this.renderApiKeys();
+                })
+                .catch(error => {
+                    console.error('Failed to load API keys:', error);
+                });
+        }
+        
+        applySettingsToUI(settings) {
+            // General
+            if (settings.language) document.getElementById('setting-language').value = settings.language;
+            if (settings.timezone) document.getElementById('setting-timezone').value = settings.timezone;
+            if (settings.dateFormat) document.getElementById('setting-date-format').value = settings.dateFormat;
+            if (settings.timeFormat) document.getElementById('setting-time-format').value = settings.timeFormat;
+            if (settings.currency) document.getElementById('setting-currency').value = settings.currency;
+            if (settings.darkMode) document.getElementById('setting-dark-mode').checked = settings.darkMode;
+            if (settings.autoSave) document.getElementById('setting-auto-save').checked = settings.autoSave;
+            
+            // Trading
+            if (settings.defaultExchange) document.getElementById('setting-default-exchange').value = settings.defaultExchange;
+            if (settings.orderType) document.getElementById('setting-order-type').value = settings.orderType;
+            if (settings.timeInForce) document.getElementById('setting-time-in-force').value = settings.timeInForce;
+            if (settings.leverage) document.getElementById('setting-leverage').value = settings.leverage;
+            if (settings.paperTrading) document.getElementById('setting-paper-trading').checked = settings.paperTrading;
+            if (settings.autoTrade) document.getElementById('setting-auto-trade').checked = settings.autoTrade;
+            if (settings.maxOrderSize) document.getElementById('setting-max-order-size').value = settings.maxOrderSize;
+            if (settings.minOrderSize) document.getElementById('setting-min-order-size').value = settings.minOrderSize;
+            
+            // Risk
+            if (settings.maxRisk) document.getElementById('setting-max-risk').value = settings.maxRisk;
+            if (settings.maxPosition) document.getElementById('setting-max-position').value = settings.maxPosition;
+            if (settings.stopLoss) document.getElementById('setting-stop-loss').value = settings.stopLoss;
+            if (settings.takeProfit) document.getElementById('setting-take-profit').value = settings.takeProfit;
+            if (settings.dailyLoss) document.getElementById('setting-daily-loss').value = settings.dailyLoss;
+            if (settings.drawdown) document.getElementById('setting-drawdown').value = settings.drawdown;
+            if (settings.autoStop) document.getElementById('setting-auto-stop').checked = settings.autoStop;
+            if (settings.riskLimit) document.getElementById('setting-risk-limit').checked = settings.riskLimit;
+            
+            // Notifications
+            if (settings.notifications) {
+                document.getElementById('notif-push').checked = settings.notifications.push || false;
+                document.getElementById('notif-email').checked = settings.notifications.email || false;
+                document.getElementById('notif-sms').checked = settings.notifications.sms || false;
+                document.getElementById('notif-telegram').checked = settings.notifications.telegram || false;
+                document.getElementById('notif-discord').checked = settings.notifications.discord || false;
+                if (settings.notifications.emailAddress) document.getElementById('notif-email-address').value = settings.notifications.emailAddress;
+                if (settings.notifications.telegramToken) document.getElementById('notif-telegram-token').value = settings.notifications.telegramToken;
+                if (settings.notifications.telegramChat) document.getElementById('notif-telegram-chat').value = settings.notifications.telegramChat;
+                if (settings.notifications.severity) document.getElementById('notif-severity').value = settings.notifications.severity;
+            }
+            
+            // Advanced
+            if (settings.logLevel) document.getElementById('adv-log-level').value = settings.logLevel;
+            if (settings.dataRetention) document.getElementById('adv-data-retention').value = settings.dataRetention;
+            if (settings.concurrentTrades) document.getElementById('adv-concurrent-trades').value = settings.concurrentTrades;
+            if (settings.wsReconnect) document.getElementById('adv-ws-reconnect').value = settings.wsReconnect;
+            if (settings.rateLimit) document.getElementById('adv-rate-limit').value = settings.rateLimit;
+            if (settings.debugMode) document.getElementById('adv-debug-mode').checked = settings.debugMode;
+            if (settings.perfTracking) document.getElementById('adv-perf-tracking').checked = settings.perfTracking;
+            if (settings.verboseLogs) document.getElementById('adv-verbose-logs').checked = settings.verboseLogs;
+            if (settings.customConfig) document.getElementById('adv-custom-config').value = settings.customConfig;
+        }
+        
+        getSettingsFromUI() {
+            return {
+                // General
+                language: document.getElementById('setting-language').value,
+                timezone: document.getElementById('setting-timezone').value,
+                dateFormat: document.getElementById('setting-date-format').value,
+                timeFormat: document.getElementById('setting-time-format').value,
+                currency: document.getElementById('setting-currency').value,
+                darkMode: document.getElementById('setting-dark-mode').checked,
+                autoSave: document.getElementById('setting-auto-save').checked,
+                
+                // Trading
+                defaultExchange: document.getElementById('setting-default-exchange').value,
+                orderType: document.getElementById('setting-order-type').value,
+                timeInForce: document.getElementById('setting-time-in-force').value,
+                leverage: parseFloat(document.getElementById('setting-leverage').value),
+                paperTrading: document.getElementById('setting-paper-trading').checked,
+                autoTrade: document.getElementById('setting-auto-trade').checked,
+                maxOrderSize: parseFloat(document.getElementById('setting-max-order-size').value),
+                minOrderSize: parseFloat(document.getElementById('setting-min-order-size').value),
+                
+                // Risk
+                maxRisk: parseFloat(document.getElementById('setting-max-risk').value),
+                maxPosition: parseFloat(document.getElementById('setting-max-position').value),
+                stopLoss: parseFloat(document.getElementById('setting-stop-loss').value),
+                takeProfit: parseFloat(document.getElementById('setting-take-profit').value),
+                dailyLoss: parseFloat(document.getElementById('setting-daily-loss').value),
+                drawdown: parseFloat(document.getElementById('setting-drawdown').value),
+                autoStop: document.getElementById('setting-auto-stop').checked,
+                riskLimit: document.getElementById('setting-risk-limit').checked,
+                
+                // Notifications
+                notifications: {
+                    push: document.getElementById('notif-push').checked,
+                    email: document.getElementById('notif-email').checked,
+                    sms: document.getElementById('notif-sms').checked,
+                    telegram: document.getElementById('notif-telegram').checked,
+                    discord: document.getElementById('notif-discord').checked,
+                    emailAddress: document.getElementById('notif-email-address').value,
+                    telegramToken: document.getElementById('notif-telegram-token').value,
+                    telegramChat: document.getElementById('notif-telegram-chat').value,
+                    severity: document.getElementById('notif-severity').value
+                },
+                
+                // Advanced
+                logLevel: document.getElementById('adv-log-level').value,
+                dataRetention: parseInt(document.getElementById('adv-data-retention').value),
+                concurrentTrades: parseInt(document.getElementById('adv-concurrent-trades').value),
+                wsReconnect: parseInt(document.getElementById('adv-ws-reconnect').value),
+                rateLimit: parseInt(document.getElementById('adv-rate-limit').value),
+                debugMode: document.getElementById('adv-debug-mode').checked,
+                perfTracking: document.getElementById('adv-perf-tracking').checked,
+                verboseLogs: document.getElementById('adv-verbose-logs').checked,
+                customConfig: document.getElementById('adv-custom-config').value
+            };
+        }
+        
+        renderApiKeys() {
+            const container = document.getElementById('api-keys-list');
+            if (!container) return;
+            
+            if (this.apiKeys.length === 0) {
+                container.innerHTML = `
+                    <div class="api-key-empty">
+                        <i class="fas fa-key"></i>
+                        <span>No API keys configured</span>
+                        <p>Add your exchange API keys to start trading</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            let html = '';
+            this.apiKeys.forEach(key => {
+                const statusClass = key.status || 'active';
+                html += `
+                    <div class="api-key-item" data-id="${key.id}">
+                        <div class="api-key-info">
+                            <span class="api-key-name">${key.exchange}</span>
+                            <span class="api-key-status ${statusClass}">${statusClass}</span>
+                            <span class="api-key-permissions">${(key.permissions || ['read']).join(', ')}</span>
+                        </div>
+                        <div class="api-key-actions">
+                            <button class="btn-sm btn-secondary" onclick="editApiKey('${key.id}')">Edit</button>
+                            <button class="btn-sm btn-danger" onclick="deleteApiKey('${key.id}')">Remove</button>
+                        </div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+        
+        saveAllSettings() {
+            const settings = this.getSettingsFromUI();
+            
+            fetch('/api/settings', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(settings)
+            })
+            .then(response => response.json())
+            .then(result => {
+                if (result.error) {
+                    this.showToast(result.error, 'error');
+                    return;
+                }
+                this.showToast('Settings saved successfully', 'success');
+                this.applyTheme(settings.darkMode);
+            })
+            .catch(error => {
+                console.error('Failed to save settings:', error);
+                this.showToast('Failed to save settings', 'error');
+            });
+        }
+        
+        applyTheme(darkMode) {
+            if (darkMode) {
+                document.body.classList.add('dark-mode');
+                document.getElementById('setting-dark-mode').checked = true;
+            } else {
+                document.body.classList.remove('dark-mode');
+                document.getElementById('setting-dark-mode').checked = false;
+            }
+            localStorage.setItem('nexus-theme', darkMode ? 'dark' : 'light');
+        }
+        
+        applySavedTheme() {
+            const darkMode = localStorage.getItem('nexus-theme') === 'dark';
+            this.applyTheme(darkMode);
+        }
+        
+        switchTab(tab) {
+            this.currentTab = tab;
+            
+            // Update tabs
+            document.querySelectorAll('.nav-tab').forEach(el => {
+                el.classList.toggle('active', el.dataset.tab === tab);
+            });
+            
+            // Update panels
+            document.querySelectorAll('.settings-panel').forEach(el => {
+                el.classList.toggle('active', el.id === `panel-${tab}`);
+            });
+        }
+        
+        showToast(message, type) {
+            if (this.toast && this.toastMessage) {
+                this.toastMessage.textContent = message;
+                this.toast.className = `settings-toast ${type}`;
+                this.toast.style.display = 'flex';
+                setTimeout(() => {
+                    this.toast.style.display = 'none';
+                }, 5000);
+            }
+        }
+        
+        resetToDefault() {
+            if (!confirm('Are you sure you want to reset all settings to default?')) return;
+            
+            fetch('/api/settings/reset', { method: 'POST' })
+                .then(response => response.json())
+                .then(result => {
+                    if (result.error) {
+                        this.showToast(result.error, 'error');
+                        return;
+                    }
+                    this.loadSettings();
+                    this.showToast('Settings reset to default', 'success');
+                })
+                .catch(error => {
+                    console.error('Failed to reset settings:', error);
+                    this.showToast('Failed to reset settings', 'error');
+                });
+        }
+    }
+    
+    // Global Functions
+    window.switchTab = function(tab) {
+        if (window.settingsInstance) {
+            window.settingsInstance.switchTab(tab);
+        }
+    };
+    
+    window.saveAllSettings = function() {
+        if (window.settingsInstance) {
+            window.settingsInstance.saveAllSettings();
+        }
+    };
+    
+    window.resetToDefault = function() {
+        if (window.settingsInstance) {
+            window.settingsInstance.resetToDefault();
+        }
+    };
+    
+    window.addApiKey = function() {
+        const modal = document.getElementById('api-key-modal');
+        const title = document.getElementById('api-key-modal-title');
+        const saveBtn = document.getElementById('api-key-save-btn');
+        const form = document.getElementById('api-key-form');
+        
+        title.textContent = 'Add API Key';
+        form.reset();
+        saveBtn.textContent = 'Add API Key';
+        window._isEditing = false;
+        window._editingId = null;
+        
+        modal.style.display = 'block';
+        document.body.style.overflow = 'hidden';
+    };
+    
+    window.editApiKey = function(id) {
+        const instance = window.settingsInstance;
+        if (!instance) return;
+        
+        const key = instance.apiKeys.find(k => k.id === id);
+        if (!key) return;
+        
+        const modal = document.getElementById('api-key-modal');
+        const title = document.getElementById('api-key-modal-title');
+        const saveBtn = document.getElementById('api-key-save-btn');
+        
+        title.textContent = 'Edit API Key';
+        document.getElementById('api-key-exchange').value = key.exchange;
+        document.getElementById('api-key-key').value = key.key || '';
+        document.getElementById('api-key-secret').value = key.secret || '';
+        document.getElementById('api-perm-read').checked = (key.permissions || []).includes('read');
+        document.getElementById('api-perm-trade').checked = (key.permissions || []).includes('trade');
+        document.getElementById('api-perm-withdraw').checked = (key.permissions || []).includes('withdraw');
+        saveBtn.textContent = 'Update API Key';
+        window._isEditing = true;
+        window._editingId = id;
+        
+        modal.style.display = 'block';
+        document.body.style.overflow = 'hidden';
+    };
+    
+    window.saveApiKey = function(event) {
+        event.preventDefault();
+        
+        const data = {
+            exchange: document.getElementById('api-key-exchange').value,
+            key: document.getElementById('api-key-key').value,
+            secret: document.getElementById('api-key-secret').value,
+            permissions: []
+        };
+        
+        if (document.getElementById('api-perm-read').checked) data.permissions.push('read');
+        if (document.getElementById('api-perm-trade').checked) data.permissions.push('trade');
+        if (document.getElementById('api-perm-withdraw').checked) data.permissions.push('withdraw');
+        
+        const isEditing = window._isEditing;
+        const id = window._editingId;
+        const url = isEditing ? `/api/settings/api-keys/${id}` : '/api/settings/api-keys';
+        const method = isEditing ? 'PUT' : 'POST';
+        
+        fetch(url, {
+            method: method,
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        })
+        .then(response => response.json())
+        .then(result => {
+            if (result.error) {
+                alert(result.error);
+                return;
+            }
+            closeApiKeyModal();
+            if (window.settingsInstance) {
+                window.settingsInstance.loadApiKeys();
+                window.settingsInstance.showToast('API key saved successfully', 'success');
+            }
+        })
+        .catch(error => {
+            console.error('Failed to save API key:', error);
+            alert('Failed to save API key');
+        });
+    };
+    
+    window.closeApiKeyModal = function() {
+        document.getElementById('api-key-modal').style.display = 'none';
+        document.body.style.overflow = '';
+    };
+    
+    window.deleteApiKey = function(id) {
+        if (!confirm('Are you sure you want to remove this API key?')) return;
+        
+        fetch(`/api/settings/api-keys/${id}`, { method: 'DELETE' })
+            .then(response => response.json())
+            .then(result => {
+                if (result.error) {
+                    alert(result.error);
+                    return;
+                }
+                if (window.settingsInstance) {
+                    window.settingsInstance.loadApiKeys();
+                    window.settingsInstance.showToast('API key removed', 'success');
+                }
+            })
+            .catch(error => {
+                console.error('Failed to delete API key:', error);
+                alert('Failed to delete API key');
+            });
+    };
+    
+    window.changePassword = function() {
+        const current = document.getElementById('sec-current-password').value;
+        const newPass = document.getElementById('sec-new-password').value;
+        const confirm = document.getElementById('sec-confirm-password').value;
+        
+        if (!current || !newPass || !confirm) {
+            alert('Please fill in all password fields');
+            return;
+        }
+        
+        if (newPass !== confirm) {
+            alert('New passwords do not match');
+            return;
+        }
+        
+        fetch('/api/settings/change-password', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ current, newPassword: newPass })
+        })
+        .then(response => response.json())
+        .then(result => {
+            if (result.error) {
+                alert(result.error);
+                return;
+            }
+            alert('Password changed successfully');
+            document.getElementById('sec-current-password').value = '';
+            document.getElementById('sec-new-password').value = '';
+            document.getElementById('sec-confirm-password').value = '';
+        })
+        .catch(error => {
+            console.error('Failed to change password:', error);
+            alert('Failed to change password');
+        });
+    };
+    
+    window.logoutAllSessions = function() {
+        if (!confirm('This will log you out from all devices. Continue?')) return;
+        
+        fetch('/api/settings/logout-all', { method: 'POST' })
+            .then(response => response.json())
+            .then(result => {
+                if (result.error) {
+                    alert(result.error);
+                    return;
+                }
+                alert('All sessions logged out');
+                window.location.href = '/login/';
+            })
+            .catch(error => {
+                console.error('Failed to logout all sessions:', error);
+                alert('Failed to logout all sessions');
+            });
+    };
+    
+    // Initialize on DOM ready
+    document.addEventListener('DOMContentLoaded', function() {
+        const instance = new SettingsManager();
+        window.settingsInstance = instance;
+    });
+    
+})();
+</script>
+
+<style>
+/* Settings Styles - Full Implementation */
+.settings-container {
+    padding: 24px;
+    background: #0f0f1a;
+    min-height: calc(100vh - 64px);
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    color: #ffffff;
+}
+
+.settings-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.settings-title-section {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.settings-logo-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.settings-logo {
+    height: 32px;
+    width: auto;
+}
+
+.settings-brand {
+    color: #00d4ff;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.settings-title {
+    font-size: 24px;
+    font-weight: 700;
+    margin: 0;
+}
+
+.settings-subtitle {
+    color: #74b9ff;
+    font-size: 14px;
+    opacity: 0.6;
+}
+
+.settings-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.btn-primary {
+    padding: 8px 16px;
+    background: #74b9ff;
+    border: none;
+    border-radius: 6px;
+    color: #1a1a2e;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s ease;
+}
+
+.btn-primary:hover {
+    transform: scale(1.02);
+    box-shadow: 0 4px 20px rgba(116, 185, 255, 0.3);
+}
+
+.btn-secondary {
+    padding: 8px 16px;
+    background: transparent;
+    border: 1px solid #2d2d44;
+    border-radius: 6px;
+    color: #74b9ff;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s ease;
+}
+
+.btn-secondary:hover {
+    background: rgba(116, 185, 255, 0.05);
+    border-color: #4d4d6a;
+}
+
+.btn-sm {
+    padding: 4px 12px;
+    font-size: 12px;
+    border-radius: 4px;
+}
+
+.btn-danger {
+    padding: 8px 16px;
+    background: #ff6b6b;
+    border: none;
+    border-radius: 6px;
+    color: #ffffff;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-danger:hover {
+    background: #ff6b6b;
+    transform: scale(1.02);
+}
+
+/* Settings Navigation */
+.settings-nav {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 24px;
+    padding: 4px;
+    background: #1a1a2e;
+    border-radius: 8px;
+    border: 1px solid #2d2d44;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+}
+
+.nav-tab {
+    padding: 10px 16px;
+    background: transparent;
+    border: none;
+    border-radius: 6px;
+    color: #74b9ff;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+}
+
+.nav-tab:hover {
+    background: rgba(116, 185, 255, 0.05);
+}
+
+.nav-tab.active {
+    background: #74b9ff;
+    color: #1a1a2e;
+}
+
+/* Settings Panels */
+.settings-content {
+    background: #1a1a2e;
+    border: 1px solid #2d2d44;
+    border-radius: 8px;
+    padding: 24px;
+}
+
+.settings-panel {
+    display: none;
+}
+
+.settings-panel.active {
+    display: block;
+}
+
+.panel-header {
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #2d2d44;
+}
+
+.panel-header h3 {
+    margin: 0 0 4px 0;
+    font-size: 18px;
+}
+
+.panel-header p {
+    margin: 0;
+    color: #74b9ff;
+    font-size: 14px;
+    opacity: 0.6;
+}
+
+.panel-body {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.setting-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.setting-group label {
+    color: #74b9ff;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.setting-group input,
+.setting-group select,
+.setting-group textarea {
+    padding: 8px 12px;
+    background: #131722;
+    border: 1px solid #2d2d44;
+    border-radius: 6px;
+    color: #ffffff;
+    font-size: 13px;
+    font-family: inherit;
+}
+
+.setting-group input:focus,
+.setting-group select:focus,
+.setting-group textarea:focus {
+    outline: none;
+    border-color: #74b9ff;
+}
+
+.setting-group textarea {
+    resize: vertical;
+}
+
+.setting-group.checkbox {
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+}
+
+.setting-group.checkbox label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.setting-group.checkbox input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: #74b9ff;
+}
+
+/* API Keys */
+#api-keys-list {
+    margin-bottom: 16px;
+}
+
+.api-key-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    background: #131722;
+    border-radius: 6px;
+    margin-bottom: 8px;
+    border: 1px solid #2d2d44;
+}
+
+.api-key-item:hover {
+    border-color: #4d4d6a;
+}
+
+.api-key-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.api-key-name {
+    font-weight: 600;
+    color: #ffffff;
+}
+
+.api-key-status {
+    padding: 2px 12px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 500;
+}
+
+.api-key-status.active {
+    background: rgba(0, 184, 148, 0.2);
+    color: #00b894;
+}
+
+.api-key-status.inactive {
+    background: rgba(116, 185, 255, 0.1);
+    color: #74b9ff;
+}
+
+.api-key-permissions {
+    color: #74b9ff;
+    font-size: 12px;
+    opacity: 0.6;
+}
+
+.api-key-actions {
+    display: flex;
+    gap: 4px;
+}
+
+.api-key-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    color: #74b9ff;
+    gap: 8px;
+}
+
+.api-key-empty i {
+    font-size: 36px;
+    opacity: 0.5;
+}
+
+.api-key-empty p {
+    font-size: 13px;
+    opacity: 0.5;
+}
+
+/* Modal Styles */
+.api-key-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+}
+
+.modal-content {
+    position: relative;
+    background: #1a1a2e;
+    border: 1px solid #2d2d44;
+    border-radius: 12px;
+    padding: 24px;
+    max-width: 500px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    z-index: 1;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #2d2d44;
+}
+
+.modal-header h3 {
+    margin: 0;
+}
+
+.modal-close {
+    background: transparent;
+    border: none;
+    color: #74b9ff;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.modal-body .form-group {
+    margin-bottom: 12px;
+}
+
+.modal-body .form-group label {
+    display: block;
+    color: #74b9ff;
+    font-size: 12px;
+    margin-bottom: 4px;
+}
+
+.checkbox-group {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.checkbox-group label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    padding-top: 16px;
+    border-top: 1px solid #2d2d44;
+    margin-top: 16px;
+}
+
+/* Settings Toast */
+.settings-toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    padding: 12px 20px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    z-index: 2000;
+    background: #1a1a2e;
+    border: 1px solid #2d2d44;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+    min-width: 200px;
+}
+
+.settings-toast.success {
+    border-left: 4px solid #00b894;
+}
+
+.settings-toast.error {
+    border-left: 4px solid #ff6b6b;
+}
+
+.settings-toast button {
+    background: transparent;
+    border: none;
+    color: #74b9ff;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+/* Settings Footer */
+.settings-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 24px;
+    padding-top: 16px;
+    border-top: 1px solid #2d2d44;
+    font-size: 12px;
+    color: #74b9ff;
+    opacity: 0.6;
+}
+
+.settings-nexus-branding {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.nexus-copyright {
+    font-size: 10px;
+    opacity: 0.5;
+}
+
+.nexus-version {
+    color: #00d4ff;
+    font-size: 10px;
+    font-weight: 600;
+}
+
+.settings-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+.status-dot.connected {
+    background: #00b894;
+}
+
+.status-dot.disconnected {
+    background: #ff6b6b;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .settings-container {
+        padding: 16px;
+    }
+    
+    .settings-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .settings-title-section {
+        flex-wrap: wrap;
+    }
+    
+    .settings-actions {
+        justify-content: stretch;
+    }
+    
+    .settings-actions button {
+        flex: 1;
+        justify-content: center;
+    }
+    
+    .settings-nav {
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        padding: 2px;
+    }
+    
+    .nav-tab {
+        padding: 8px 12px;
+        font-size: 12px;
+    }
+    
+    .settings-content {
+        padding: 16px;
+    }
+    
+    .api-key-item {
+        flex-direction: column;
+        gap: 8px;
+        align-items: stretch;
+    }
+    
+    .api-key-info {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .api-key-actions {
+        justify-content: flex-end;
+    }
+    
+    .checkbox-group {
+        flex-direction: column;
+        gap: 8px;
+    }
+}
+
+@media (max-width: 480px) {
+    .settings-container {
+        padding: 12px;
+    }
+    
+    .settings-content {
+        padding: 12px;
+    }
+    
+    .modal-content {
+        padding: 16px;
+        width: 95%;
+    }
+}
+</style>
+{% endblock %}
