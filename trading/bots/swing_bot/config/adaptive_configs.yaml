@@ -1,0 +1,598 @@
+# trading/bots/swing_bot/config/adaptive_configs.yaml
+
+# ============================================================================
+# NEXUS AI TRADING SYSTEM - Swing Bot Adaptive Strategy Configuration
+# Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+# ============================================================================
+#
+# Description: Complete Adaptive Strategy configuration for swing trading bot
+# Framework: Adaptive Trading - Dynamic Strategy Adjustment
+# Version: 3.0.0
+#
+# The Adaptive Strategy framework enables the bot to dynamically adjust its
+# trading approach based on changing market conditions, volatility regimes,
+# and real-time performance feedback.
+# ============================================================================
+
+# ----------------------------------------------------------------------------
+# General Configuration
+# ----------------------------------------------------------------------------
+adaptive:
+  enabled: true
+  version: "3.0.0"
+  description: "Adaptive Strategy for swing trading"
+  
+  # Adaptation modes
+  modes:
+    - "aggressive"
+    - "moderate"
+    - "conservative"
+    - "defensive"
+    - "custom"
+  
+  default_mode: "moderate"
+  
+  # Strategy types
+  strategies:
+    - "trend_following"
+    - "mean_reversion"
+    - "breakout"
+    - "momentum"
+    - "volatility"
+    - "range_bound"
+  
+  # Timeframes
+  timeframes:
+    - "1m"
+    - "5m"
+    - "15m"
+    - "30m"
+    - "1h"
+    - "4h"
+    - "1d"
+  
+  default_timeframe: "1h"
+
+# ----------------------------------------------------------------------------
+# Market Regime Detection
+# ----------------------------------------------------------------------------
+market_regime:
+  enabled: true
+  description: "Market regime detection for adaptation"
+  
+  # Regime types
+  regimes:
+    strong_uptrend:
+      conditions:
+        - "trend_strength_>_0.3"
+        - "price_above_ma50"
+        - "volatility_<_0.15"
+      confidence_threshold: 0.7
+    
+    weak_uptrend:
+      conditions:
+        - "trend_strength_>_0.1"
+        - "price_above_ma50"
+        - "volatility_<_0.25"
+      confidence_threshold: 0.6
+    
+    strong_downtrend:
+      conditions:
+        - "trend_strength_<_-0.3"
+        - "price_below_ma50"
+        - "volatility_<_0.15"
+      confidence_threshold: 0.7
+    
+    weak_downtrend:
+      conditions:
+        - "trend_strength_<_-0.1"
+        - "price_below_ma50"
+        - "volatility_<_0.25"
+      confidence_threshold: 0.6
+    
+    range_bound:
+      conditions:
+        - "trend_strength_<_0.1"
+        - "price_around_ma50"
+        - "volatility_<_0.15"
+      confidence_threshold: 0.65
+    
+    volatile:
+      conditions:
+        - "volatility_>_0.25"
+        - "trend_strength_any"
+      confidence_threshold: 0.6
+  
+  # Regime transition
+  lookback_bars: 20
+  confirmation_bars: 3
+  transition_threshold: 0.3
+
+# ----------------------------------------------------------------------------
+# Strategy Selection
+# ----------------------------------------------------------------------------
+strategy_selection:
+  enabled: true
+  description: "Dynamic strategy selection based on market conditions"
+  
+  # Strategy mapping
+  mapping:
+    strong_uptrend:
+      primary: "trend_following"
+      secondary: "momentum"
+      tertiary: "breakout"
+    
+    weak_uptrend:
+      primary: "trend_following"
+      secondary: "breakout"
+      tertiary: "momentum"
+    
+    strong_downtrend:
+      primary: "trend_following"
+      secondary: "volatility"
+      tertiary: "mean_reversion"
+    
+    weak_downtrend:
+      primary: "mean_reversion"
+      secondary: "volatility"
+      tertiary: "trend_following"
+    
+    range_bound:
+      primary: "mean_reversion"
+      secondary: "range_bound"
+      tertiary: "breakout"
+    
+    volatile:
+      primary: "volatility"
+      secondary: "breakout"
+      tertiary: "momentum"
+  
+  # Selection criteria
+  criteria:
+    performance_weight: 0.4
+    regime_weight: 0.3
+    confidence_weight: 0.2
+    diversity_weight: 0.1
+  
+  # Selection rules
+  rules:
+    select_primary:
+      description: "Select primary strategy"
+      conditions:
+        - "regime_confident"
+        - "performance_positive"
+      confidence: 0.8
+    
+    select_ensemble:
+      description: "Select ensemble of strategies"
+      conditions:
+        - "regime_uncertain"
+        - "diversity_beneficial"
+      confidence: 0.9
+    
+    switch_strategy:
+      description: "Switch strategy on regime change"
+      conditions:
+        - "regime_changed"
+        - "performance_declining"
+      confidence: 0.85
+
+# ----------------------------------------------------------------------------
+# Parameter Adaptation
+# ----------------------------------------------------------------------------
+parameter_adaptation:
+  enabled: true
+  description: "Dynamic parameter adaptation"
+  
+  # Parameters
+  parameters:
+    entry_threshold:
+      base: 0.5
+      range: [0.3, 0.9]
+      adjustment: 0.05
+    
+    exit_threshold:
+      base: 0.5
+      range: [0.2, 0.8]
+      adjustment: 0.05
+    
+    stop_loss_multiplier:
+      base: 1.5
+      range: [1.0, 3.0]
+      adjustment: 0.1
+    
+    take_profit_multiplier:
+      base: 3.0
+      range: [2.0, 6.0]
+      adjustment: 0.2
+    
+    position_size_multiplier:
+      base: 1.0
+      range: [0.3, 2.0]
+      adjustment: 0.1
+  
+  # Adaptation rules
+  rules:
+    volatility_adjustment:
+      description: "Adjust parameters for volatility"
+      formula: "param = base * (1 + volatility_factor)"
+      volatility_factor: 0.5
+    
+    trend_adjustment:
+      description: "Adjust parameters for trend"
+      formula: "param = base * (1 + trend_factor)"
+      trend_factor: 0.3
+    
+    performance_adjustment:
+      description: "Adjust parameters for performance"
+      formula: "param = base * (1 + performance_factor)"
+      performance_factor: 0.4
+
+# ----------------------------------------------------------------------------
+# Position Sizing Adaptation
+# ----------------------------------------------------------------------------
+position_sizing:
+  enabled: true
+  description: "Adaptive position sizing"
+  
+  # Sizing methods
+  methods:
+    fixed:
+      enabled: true
+      description: "Fixed position size"
+      size: 0.02
+    
+    kelly:
+      enabled: true
+      description: "Kelly Criterion sizing"
+      fraction: 0.25
+      max_size: 0.1
+    
+    risk_parity:
+      enabled: true
+      description: "Risk parity sizing"
+      risk_target: 0.02
+      volatility_adjust: true
+    
+    adaptive:
+      enabled: true
+      description: "Adaptive sizing"
+      method: "risk_parity"
+      adjustment_factor: 1.5
+  
+  # Sizing rules
+  rules:
+    confidence_based:
+      description: "Size based on confidence"
+      multiplier:
+        high: 1.2
+        medium: 1.0
+        low: 0.8
+    
+    volatility_based:
+      description: "Size based on volatility"
+      multiplier:
+        low: 1.2
+        medium: 1.0
+        high: 0.8
+    
+    performance_based:
+      description: "Size based on performance"
+      multiplier:
+        good: 1.2
+        normal: 1.0
+        poor: 0.8
+
+# ----------------------------------------------------------------------------
+# Entry/Exit Adaptation
+# ----------------------------------------------------------------------------
+entry_exit:
+  enabled: true
+  description: "Adaptive entry and exit rules"
+  
+  # Entry rules
+  entry:
+    aggressive:
+      conditions:
+        - "trend_confirmed"
+        - "volume_confirmed"
+        - "momentum_strong"
+      threshold: 0.3
+    
+    moderate:
+      conditions:
+        - "trend_confirmed"
+        - "volume_confirmed"
+        - "momentum_moderate"
+      threshold: 0.5
+    
+    conservative:
+      conditions:
+        - "trend_confirmed"
+        - "volume_confirmed"
+        - "momentum_weak"
+      threshold: 0.7
+    
+    defensive:
+      conditions:
+        - "trend_strong"
+        - "volume_strong"
+        - "momentum_strong"
+      threshold: 0.8
+  
+  # Exit rules
+  exit:
+    aggressive:
+      conditions:
+        - "trend_reversal"
+        - "momentum_loss"
+        - "volume_decrease"
+      threshold: 0.3
+    
+    moderate:
+      conditions:
+        - "trend_weakening"
+        - "momentum_decrease"
+        - "volume_decrease"
+      threshold: 0.5
+    
+    conservative:
+      conditions:
+        - "trend_weak"
+        - "momentum_weak"
+        - "volume_weak"
+      threshold: 0.7
+    
+    defensive:
+      conditions:
+        - "trend_reversal"
+        - "momentum_breakdown"
+        - "volume_spike"
+      threshold: 0.8
+
+# ----------------------------------------------------------------------------
+# Risk Adaptation
+# ----------------------------------------------------------------------------
+risk_adaptation:
+  enabled: true
+  description: "Adaptive risk management"
+  
+  # Risk parameters
+  parameters:
+    max_risk_per_trade:
+      base: 0.02
+      range: [0.005, 0.05]
+      adaptation: true
+    
+    max_total_risk:
+      base: 0.1
+      range: [0.02, 0.2]
+      adaptation: true
+    
+    max_drawdown:
+      base: 0.15
+      range: [0.05, 0.3]
+      adaptation: true
+  
+  # Risk rules
+  rules:
+    increase_risk:
+      conditions:
+        - "sharpe_ratio_>_1.5"
+        - "win_rate_>_0.6"
+        - "volatility_<_0.15"
+      adjustment: "increase_by_0.005"
+    
+    decrease_risk:
+      conditions:
+        - "sharpe_ratio_<_0.5"
+        - "win_rate_<_0.4"
+        - "volatility_>_0.25"
+      adjustment: "decrease_by_0.005"
+    
+    emergency_risk:
+      conditions:
+        - "drawdown_>_0.1"
+        - "consecutive_losses_>_3"
+      adjustment: "reduce_by_0.01"
+
+# ----------------------------------------------------------------------------
+# Performance Feedback
+# ----------------------------------------------------------------------------
+performance_feedback:
+  enabled: true
+  description: "Performance-based adaptation"
+  
+  # Metrics
+  metrics:
+    - "win_rate"
+    - "profit_factor"
+    - "sharpe_ratio"
+    - "max_drawdown"
+    - "average_trade"
+    - "consecutive_wins"
+    - "consecutive_losses"
+  
+  # Feedback loops
+  loops:
+    short_term:
+      lookback_bars: 50
+      update_interval: 10
+      weight: 0.3
+    
+    medium_term:
+      lookback_bars: 200
+      update_interval: 50
+      weight: 0.4
+    
+    long_term:
+      lookback_bars: 500
+      update_interval: 100
+      weight: 0.3
+  
+  # Feedback rules
+  rules:
+    improve_performance:
+      conditions:
+        - "performance_declining"
+        - "market_regime_changed"
+      action: "adjust_strategy"
+    
+    maintain_performance:
+      conditions:
+        - "performance_stable"
+        - "market_regime_stable"
+      action: "maintain_current"
+    
+    optimize_performance:
+      conditions:
+        - "performance_good"
+        - "market_regime_optimal"
+      action: "optimize_parameters"
+
+# ----------------------------------------------------------------------------
+# Adaptation Signals
+# ----------------------------------------------------------------------------
+signals:
+  enabled: true
+  description: "Adaptation-based trading signals"
+  
+  # Signal types
+  types:
+    adaptation_entry:
+      description: "Adaptive entry signal"
+      conditions:
+        - "regime_favorable"
+        - "strategy_selected"
+        - "entry_triggered"
+      confidence: 0.7
+    
+    adaptation_exit:
+      description: "Adaptive exit signal"
+      conditions:
+        - "regime_unfavorable"
+        - "strategy_failing"
+        - "exit_triggered"
+      confidence: 0.7
+    
+    adaptation_hedge:
+      description: "Adaptive hedge signal"
+      conditions:
+        - "regime_uncertain"
+        - "risk_increasing"
+        - "volatility_high"
+      confidence: 0.65
+    
+    adaptation_pause:
+      description: "Adaptive pause signal"
+      conditions:
+        - "performance_declining"
+        - "regime_unclear"
+        - "risk_high"
+      confidence: 0.8
+
+# ----------------------------------------------------------------------------
+# Visualization Configuration
+# ----------------------------------------------------------------------------
+visualization:
+  enabled: true
+  description: "Visualization configuration for adaptation"
+  
+  chart_types:
+    - "candlestick"
+    - "regime_indicator"
+    - "strategy_performance"
+    - "parameter_evolution"
+  
+  indicators:
+    - "regime_zones"
+    - "strategy_labels"
+    - "entry_signals"
+    - "exit_signals"
+    - "performance_tracking"
+  
+  colors:
+    aggressive: "#ff6b6b"
+    moderate: "#fdcb6e"
+    conservative: "#74b9ff"
+    defensive: "#00b894"
+    regime_bull: "#00b894"
+    regime_bear: "#ff6b6b"
+    regime_range: "#fdcb6e"
+    regime_volatile: "#e17055"
+
+# ----------------------------------------------------------------------------
+# Backtesting Configuration
+# ----------------------------------------------------------------------------
+backtesting:
+  enabled: true
+  description: "Backtesting configuration for adaptive strategy"
+  
+  parameters:
+    start_date: "2024-01-01"
+    end_date: "2024-12-31"
+    initial_capital: 10000
+    commission: 0.001
+    slippage: 0.001
+  
+  test_scenarios:
+    - scenario: "bull_market"
+      parameters:
+        regime: "bull"
+        volatility: "low"
+    
+    - scenario: "bear_market"
+      parameters:
+        regime: "bear"
+        volatility: "high"
+    
+    - scenario: "range_market"
+      parameters:
+        regime: "range"
+        volatility: "medium"
+    
+    - scenario: "volatile_market"
+      parameters:
+        regime: "volatile"
+        volatility: "high"
+
+# ----------------------------------------------------------------------------
+# Performance Monitoring
+# ----------------------------------------------------------------------------
+performance_monitoring:
+  enabled: true
+  description: "Performance monitoring for adaptation"
+  
+  metrics:
+    - "win_rate"
+    - "profit_factor"
+    - "sharpe_ratio"
+    - "max_drawdown"
+    - "average_trade"
+    - "consecutive_wins"
+    - "consecutive_losses"
+    - "recovery_factor"
+  
+  targets:
+    min_win_rate: 0.45
+    min_profit_factor: 1.3
+    min_sharpe_ratio: 0.6
+    max_max_drawdown: 0.12
+
+# ----------------------------------------------------------------------------
+# Logging Configuration
+# ----------------------------------------------------------------------------
+logging:
+  enabled: true
+  level: "INFO"
+  file: "logs/adaptive_bot.log"
+  rotation: "daily"
+  retention: 30  # days
+  
+  log_categories:
+    signals: true
+    trades: true
+    errors: true
+    performance: true
+    adaptation: true
+    debugging: false
