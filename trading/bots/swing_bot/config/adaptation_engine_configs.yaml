@@ -1,0 +1,559 @@
+# trading/bots/swing_bot/config/adaptation_engine_configs.yaml
+
+# ============================================================================
+# NEXUS AI TRADING SYSTEM - Swing Bot Adaptation Engine Configuration
+# Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+# ============================================================================
+#
+# Description: Complete Adaptation Engine configuration for swing trading bot
+# Framework: Adaptive Trading Engine - Multi-Strategy Optimization
+# Version: 3.0.0
+#
+# The Adaptation Engine dynamically optimizes strategy parameters based on
+# market conditions, performance metrics, and machine learning predictions.
+# ============================================================================
+
+# ----------------------------------------------------------------------------
+# General Configuration
+# ----------------------------------------------------------------------------
+adaptation_engine:
+  enabled: true
+  version: "3.0.0"
+  description: "Adaptive Trading Engine for swing trading"
+  
+  # Engine modes
+  modes:
+    - "static"
+    - "dynamic"
+    - "hybrid"
+    - "reinforcement_learning"
+    - "genetic_algorithm"
+  
+  default_mode: "hybrid"
+  
+  # Update frequencies
+  frequencies:
+    real_time: 60  # seconds
+    intraday: 3600  # 1 hour
+    daily: 86400  # 1 day
+    weekly: 604800  # 1 week
+  
+  # Data sources
+  data_sources:
+    - "price_action"
+    - "technical_indicators"
+    - "market_regime"
+    - "performance_metrics"
+    - "sentiment_analysis"
+
+# ----------------------------------------------------------------------------
+# Parameter Optimization
+# ----------------------------------------------------------------------------
+parameter_optimization:
+  enabled: true
+  description: "Dynamic parameter optimization"
+  
+  # Optimization methods
+  methods:
+    grid_search:
+      enabled: true
+      description: "Grid search optimization"
+      parameters:
+        - "entry_threshold"
+        - "exit_threshold"
+        - "stop_loss_multiplier"
+        - "take_profit_multiplier"
+      grid_size: 5
+      optimization_interval: 100  # bars
+    
+    bayesian:
+      enabled: true
+      description: "Bayesian optimization"
+      parameters:
+        - "entry_threshold"
+        - "exit_threshold"
+        - "stop_loss_multiplier"
+        - "take_profit_multiplier"
+      iterations: 50
+      optimization_interval: 200  # bars
+    
+    genetic_algorithm:
+      enabled: true
+      description: "Genetic algorithm optimization"
+      parameters:
+        - "entry_threshold"
+        - "exit_threshold"
+        - "stop_loss_multiplier"
+        - "take_profit_multiplier"
+      population_size: 50
+      generations: 20
+      mutation_rate: 0.1
+      crossover_rate: 0.8
+    
+    reinforcement_learning:
+      enabled: true
+      description: "Reinforcement learning optimization"
+      state_space:
+        - "market_regime"
+        - "volatility"
+        - "momentum"
+        - "performance"
+      action_space:
+        - "increase_risk"
+        - "decrease_risk"
+        - "adjust_entry"
+        - "adjust_exit"
+      learning_rate: 0.01
+      discount_factor: 0.9
+      exploration_rate: 0.1
+  
+  # Parameter ranges
+  ranges:
+    entry_threshold:
+      min: 0.3
+      max: 0.9
+      step: 0.05
+    
+    exit_threshold:
+      min: 0.2
+      max: 0.8
+      step: 0.05
+    
+    stop_loss_multiplier:
+      min: 1.0
+      max: 3.0
+      step: 0.1
+    
+    take_profit_multiplier:
+      min: 2.0
+      max: 6.0
+      step: 0.2
+    
+    position_size_multiplier:
+      min: 0.3
+      max: 2.0
+      step: 0.1
+
+# ----------------------------------------------------------------------------
+# Strategy Selection
+# ----------------------------------------------------------------------------
+strategy_selection:
+  enabled: true
+  description: "Dynamic strategy selection"
+  
+  # Strategy pool
+  strategies:
+    - "trend_following"
+    - "mean_reversion"
+    - "breakout"
+    - "momentum"
+    - "volatility_scalping"
+    - "range_trading"
+    - "arbitrage"
+    - "statistical_arbitrage"
+  
+  # Selection criteria
+  criteria:
+    performance_based:
+      weight: 0.4
+      lookback_period: 50
+      metrics:
+        - "win_rate"
+        - "profit_factor"
+        - "sharpe_ratio"
+    
+    regime_based:
+      weight: 0.3
+      lookback_period: 20
+      metrics:
+        - "regime_suitability"
+        - "volatility_suitability"
+    
+    confidence_based:
+      weight: 0.2
+      lookback_period: 30
+      metrics:
+        - "signal_confidence"
+        - "prediction_accuracy"
+    
+    diversity_based:
+      weight: 0.1
+      lookback_period: 40
+      metrics:
+        - "strategy_diversity"
+        - "correlation_penalty"
+  
+  # Selection rules
+  rules:
+    select_best_performing:
+      description: "Select best performing strategy"
+      conditions:
+        - "performance_rank_1"
+      confidence: 0.8
+    
+    select_ensemble:
+      description: "Select ensemble of top strategies"
+      conditions:
+        - "performance_rank_3"
+        - "diversity_high"
+      confidence: 0.9
+    
+    select_regime_specific:
+      description: "Select regime-specific strategy"
+      conditions:
+        - "regime_match"
+        - "performance_positive"
+      confidence: 0.85
+
+# ----------------------------------------------------------------------------
+# Portfolio Allocation
+# ----------------------------------------------------------------------------
+portfolio_allocation:
+  enabled: true
+  description: "Dynamic portfolio allocation"
+  
+  # Allocation methods
+  methods:
+    risk_parity:
+      enabled: true
+      description: "Risk parity allocation"
+      lookback_period: 50
+      risk_target: 0.1
+    
+    equal_weight:
+      enabled: true
+      description: "Equal weight allocation"
+      max_positions: 10
+    
+    market_cap:
+      enabled: true
+      description: "Market cap weighted allocation"
+      rebalance_interval: 50  # bars
+    
+    adaptive:
+      enabled: true
+      description: "Adaptive allocation"
+      allocation_method: "risk_parity"
+      rebalance_interval: 20  # bars
+  
+  # Allocation constraints
+  constraints:
+    max_position_size: 0.2
+    min_position_size: 0.01
+    max_sector_exposure: 0.3
+    max_asset_class_exposure: 0.4
+    max_correlation: 0.7
+
+# ----------------------------------------------------------------------------
+# Risk Management Engine
+# ----------------------------------------------------------------------------
+risk_engine:
+  enabled: true
+  description: "Adaptive risk management engine"
+  
+  # Risk metrics
+  metrics:
+    - "var_95"
+    - "var_99"
+    - "cvar_95"
+    - "cvar_99"
+    - "expected_shortfall"
+    - "tail_risk"
+    - "stress_test"
+  
+  # Risk limits
+  limits:
+    max_total_risk: 0.1
+    max_per_trade_risk: 0.02
+    max_daily_loss: 0.05
+    max_drawdown: 0.15
+    max_consecutive_losses: 5
+  
+  # Risk adjustment
+  adjustment:
+    method: "dynamic"
+    lookback_period: 20
+    adjustment_factor: 1.5
+    min_risk: 0.001
+    max_risk: 0.05
+    
+    rules:
+      increase_risk:
+        conditions:
+          - "sharpe_ratio_>_1"
+          - "win_rate_>_0.6"
+          - "volatility_<_0.2"
+        adjustment: "increase_by_0.002"
+      
+      decrease_risk:
+        conditions:
+          - "sharpe_ratio_<_0.5"
+          - "win_rate_<_0.4"
+          - "volatility_>_0.3"
+        adjustment: "decrease_by_0.002"
+      
+      emergency_stop:
+        conditions:
+          - "drawdown_>_0.15"
+          - "consecutive_losses_>_5"
+        adjustment: "set_to_min"
+
+# ----------------------------------------------------------------------------
+# Performance Monitoring Engine
+# ----------------------------------------------------------------------------
+performance_engine:
+  enabled: true
+  description: "Performance monitoring and evaluation"
+  
+  # Performance metrics
+  metrics:
+    - "returns"
+    - "volatility"
+    - "sharpe_ratio"
+    - "sortino_ratio"
+    - "calmar_ratio"
+    - "max_drawdown"
+    - "win_rate"
+    - "profit_factor"
+    - "average_trade"
+  
+  # Monitoring intervals
+  intervals:
+    real_time: 60  # seconds
+    intraday: 3600  # 1 hour
+    daily: 86400  # 1 day
+    weekly: 604800  # 1 week
+  
+  # Evaluation criteria
+  evaluation:
+    lookback_period: 50
+    rolling_window: 20
+    benchmark: "SPY"
+    
+    thresholds:
+      min_win_rate: 0.4
+      min_profit_factor: 1.2
+      min_sharpe_ratio: 0.5
+      max_drawdown_limit: 0.15
+
+# ----------------------------------------------------------------------------
+# Learning Engine
+# ----------------------------------------------------------------------------
+learning_engine:
+  enabled: true
+  description: "Machine learning-based adaptation"
+  
+  # Learning methods
+  methods:
+    supervised:
+      enabled: true
+      models:
+        - "random_forest"
+        - "gradient_boosting"
+        - "neural_network"
+      features:
+        - "technical_indicators"
+        - "market_regime"
+        - "volatility"
+        - "momentum"
+      target: "strategy_performance"
+    
+    unsupervised:
+      enabled: true
+      methods:
+        - "clustering"
+        - "dimensionality_reduction"
+      features:
+        - "returns"
+        - "volatility"
+        - "correlation"
+    
+    reinforcement:
+      enabled: true
+      algorithm: "PPO"
+      state_space: 10
+      action_space: 5
+      learning_rate: 0.001
+  
+  # Feature engineering
+  features:
+    technical:
+      - "rsi"
+      - "macd"
+      - "bollinger_bands"
+      - "moving_averages"
+      - "volume_indicators"
+    
+    market:
+      - "regime"
+      - "volatility"
+      - "trend_strength"
+      - "momentum"
+    
+    performance:
+      - "win_rate"
+      - "sharpe_ratio"
+      - "drawdown"
+      - "trade_efficiency"
+
+# ----------------------------------------------------------------------------
+# Adaptation Rules Engine
+# ----------------------------------------------------------------------------
+rules_engine:
+  enabled: true
+  description: "Rule-based adaptation engine"
+  
+  # Rule types
+  types:
+    - "market_regime"
+    - "volatility"
+    - "performance"
+    - "risk"
+    - "technical"
+  
+  # Rule definitions
+  rules:
+    bull_market_high_confidence:
+      conditions:
+        - "regime:bull"
+        - "volatility:low"
+        - "performance:high"
+      actions:
+        - "increase_position_size"
+        - "aggressive_entry"
+        - "relax_stop_loss"
+      priority: 1
+    
+    bear_market_low_confidence:
+      conditions:
+        - "regime:bear"
+        - "volatility:high"
+        - "performance:low"
+      actions:
+        - "decrease_position_size"
+        - "conservative_entry"
+        - "tighten_stop_loss"
+      priority: 2
+    
+    volatility_spike:
+      conditions:
+        - "volatility:high"
+        - "volatility_change:>_50%"
+      actions:
+        - "reduce_position_size"
+        - "widen_stop_loss"
+        - "increase_take_profit"
+      priority: 3
+    
+    performance_drawdown:
+      conditions:
+        - "drawdown:>_10%"
+        - "consecutive_losses:>_3"
+      actions:
+        - "pause_trading"
+        - "reduce_risk"
+        - "switch_strategy"
+      priority: 4
+
+# ----------------------------------------------------------------------------
+# State Management
+# ----------------------------------------------------------------------------
+state_management:
+  enabled: true
+  description: "Adaptation engine state management"
+  
+  # State types
+  states:
+    - "initializing"
+    - "learning"
+    - "adapting"
+    - "stable"
+    - "emergency"
+    - "shutdown"
+  
+  # State transitions
+  transitions:
+    initializing_to_learning:
+      conditions:
+        - "data_collected"
+        - "model_trained"
+      timeout: 60  # seconds
+    
+    learning_to_adapting:
+      conditions:
+        - "model_converged"
+        - "performance_positive"
+      timeout: 300  # seconds
+    
+    adapting_to_stable:
+      conditions:
+        - "performance_stable"
+        - "confident_predictions"
+      timeout: 600  # seconds
+    
+    stable_to_emergency:
+      conditions:
+        - "drawdown_>_15%"
+        - "consecutive_losses_>_5"
+      timeout: 10  # seconds
+    
+    emergency_to_adapting:
+      conditions:
+        - "drawdown_recovered"
+        - "performance_improved"
+      timeout: 3600  # seconds
+
+# ----------------------------------------------------------------------------
+# Backtesting Configuration
+# ----------------------------------------------------------------------------
+backtesting:
+  enabled: true
+  description: "Backtesting configuration for adaptation engine"
+  
+  parameters:
+    start_date: "2024-01-01"
+    end_date: "2024-12-31"
+    initial_capital: 10000
+    commission: 0.001
+    slippage: 0.001
+  
+  test_scenarios:
+    - scenario: "bull_market"
+      parameters:
+        regime: "bull"
+        volatility: "low"
+    
+    - scenario: "bear_market"
+      parameters:
+        regime: "bear"
+        volatility: "high"
+    
+    - scenario: "volatile_market"
+      parameters:
+        regime: "transition"
+        volatility: "high"
+    
+    - scenario: "range_market"
+      parameters:
+        regime: "range"
+        volatility: "medium"
+
+# ----------------------------------------------------------------------------
+# Logging Configuration
+# ----------------------------------------------------------------------------
+logging:
+  enabled: true
+  level: "INFO"
+  file: "logs/adaptation_engine.log"
+  rotation: "daily"
+  retention: 30  # days
+  
+  log_categories:
+    signals: true
+    trades: true
+    errors: true
+    performance: true
+    adaptation: true
+    learning: true
+    state: true
+    debugging: false
