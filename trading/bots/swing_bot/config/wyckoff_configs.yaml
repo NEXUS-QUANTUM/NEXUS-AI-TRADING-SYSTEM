@@ -1,0 +1,610 @@
+# trading/bots/swing_bot/config/wyckoff_configs.yaml
+
+# ============================================================================
+# NEXUS AI TRADING SYSTEM - Swing Bot Wyckoff Configuration
+# Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+# ============================================================================
+#
+# Description: Complete Wyckoff Method configuration for swing trading bot
+# Framework: Wyckoff Accumulation/Distribution Analysis
+# Version: 3.0.0
+#
+# The Wyckoff Method provides a comprehensive framework for analyzing
+# market structure, identifying accumulation/distribution phases, and
+# making high-probability trading decisions.
+# ============================================================================
+
+# ----------------------------------------------------------------------------
+# Wyckoff Method Configuration
+# ----------------------------------------------------------------------------
+wyckoff:
+  # General settings
+  enabled: true
+  version: "3.0.0"
+  description: "Wyckoff Method analysis for swing trading"
+  
+  # Wyckoff phases
+  phases:
+    accumulation:
+      enabled: true
+      description: "Accumulation phase identification"
+      indicators:
+        - "volume_spread_analysis"
+        - "price_volume_trend"
+        - "supply_demand_balance"
+      parameters:
+        min_duration_bars: 20
+        volume_threshold: 1.5
+        price_range_threshold: 0.15
+        confidence_threshold: 0.7
+    
+    markup:
+      enabled: true
+      description: "Markup phase identification"
+      indicators:
+        - "breakout_identification"
+        - "volume_confirmation"
+        - "trend_strength"
+      parameters:
+        breakout_threshold: 0.03
+        volume_confirm_threshold: 1.8
+        trend_strength_threshold: 0.5
+        confidence_threshold: 0.8
+    
+    distribution:
+      enabled: true
+      description: "Distribution phase identification"
+      indicators:
+        - "volume_spread_analysis"
+        - "price_volume_trend"
+        - "supply_demand_balance"
+      parameters:
+        min_duration_bars: 20
+        volume_threshold: 1.5
+        price_range_threshold: 0.15
+        confidence_threshold: 0.7
+    
+    markdown:
+      enabled: true
+      description: "Markdown phase identification"
+      indicators:
+        - "breakdown_identification"
+        - "volume_confirmation"
+        - "trend_strength"
+      parameters:
+        breakdown_threshold: 0.03
+        volume_confirm_threshold: 1.8
+        trend_strength_threshold: 0.5
+        confidence_threshold: 0.8
+
+# ----------------------------------------------------------------------------
+# Wyckoff Events
+# ----------------------------------------------------------------------------
+wyckoff_events:
+  # Spring events
+  spring:
+    enabled: true
+    description: "Spring (shakeout) event detection"
+    parameters:
+      min_price_drop: 0.02
+      max_price_drop: 0.08
+      volume_spike_threshold: 2.0
+      recovery_threshold: 0.5
+      confidence_threshold: 0.7
+  
+  # Upthrust events
+  upthrust:
+    enabled: true
+    description: "Upthrust event detection"
+    parameters:
+      min_price_rally: 0.02
+      max_price_rally: 0.08
+      volume_spike_threshold: 2.0
+      rejection_threshold: 0.5
+      confidence_threshold: 0.7
+  
+  # Sign of Strength (SOS)
+  sos:
+    enabled: true
+    description: "Sign of Strength detection"
+    parameters:
+      price_rise_threshold: 0.02
+      volume_increase_threshold: 1.5
+      breakout_confirmation: true
+      confidence_threshold: 0.75
+  
+  # Last Point of Support (LPS)
+  lps:
+    enabled: true
+    description: "Last Point of Support detection"
+    parameters:
+      pullback_threshold: 0.01
+      volume_decrease_threshold: 0.6
+      support_confirmation: true
+      confidence_threshold: 0.75
+  
+  # Sign of Weakness (SOW)
+  sow:
+    enabled: true
+    description: "Sign of Weakness detection"
+    parameters:
+      price_drop_threshold: 0.02
+      volume_increase_threshold: 1.5
+      breakdown_confirmation: true
+      confidence_threshold: 0.75
+  
+  # Last Point of Supply (LPSY)
+  lpsy:
+    enabled: true
+    description: "Last Point of Supply detection"
+    parameters:
+      rally_threshold: 0.01
+      volume_decrease_threshold: 0.6
+      resistance_confirmation: true
+      confidence_threshold: 0.75
+
+# ----------------------------------------------------------------------------
+# Volume Spread Analysis (VSA)
+# ----------------------------------------------------------------------------
+volume_spread_analysis:
+  enabled: true
+  description: "Volume Spread Analysis for Wyckoff"
+  
+  # VSA bars classification
+  bar_types:
+    up_bar:
+      description: "Bullish bar with closing above opening"
+      conditions:
+        close_gt_open: true
+    down_bar:
+      description: "Bearish bar with closing below opening"
+      conditions:
+        close_lt_open: true
+    neutral_bar:
+      description: "Neutral bar with close near open"
+      conditions:
+        close_eq_open: true
+  
+  # VSA signals
+  signals:
+    # No demand
+    no_demand:
+      description: "No demand - weak upward move"
+      conditions:
+        close_above_open: true
+        volume_below_average: true
+        spread_narrow: true
+      confidence: 0.6
+    
+    # No supply
+    no_supply:
+      description: "No supply - weak downward move"
+      conditions:
+        close_below_open: true
+        volume_below_average: true
+        spread_narrow: true
+      confidence: 0.6
+    
+    # Demand increasing
+    demand_increasing:
+      description: "Demand increasing - bullish"
+      conditions:
+        close_above_open: true
+        volume_above_average: true
+        spread_wide: true
+      confidence: 0.8
+    
+    # Supply increasing
+    supply_increasing:
+      description: "Supply increasing - bearish"
+      conditions:
+        close_below_open: true
+        volume_above_average: true
+        spread_wide: true
+      confidence: 0.8
+    
+    # Climbing
+    climbing:
+      description: "Climbing - bullish continuation"
+      conditions:
+        close_above_previous_high: true
+        volume_average: true
+        spread_medium: true
+      confidence: 0.7
+    
+    # Testing
+    testing:
+      description: "Testing - supply/demand test"
+      conditions:
+        close_near_previous_low_high: true
+        volume_below_average: true
+        spread_narrow: true
+      confidence: 0.7
+
+# ----------------------------------------------------------------------------
+# Price Volume Trend (PVT)
+# ----------------------------------------------------------------------------
+price_volume_trend:
+  enabled: true
+  description: "Price Volume Trend analysis"
+  
+  parameters:
+    # PVT calculation
+    pvt:
+      period: 20
+      smoothing: 10
+      threshold: 0.2
+    
+    # PVT divergence detection
+    divergence:
+      enabled: true
+      lookback_bars: 50
+      threshold: 0.1
+      
+    # PVT signals
+    signals:
+      bullish_divergence:
+        description: "Bullish divergence - price lower, PVT higher"
+        confidence: 0.7
+      bearish_divergence:
+        description: "Bearish divergence - price higher, PVT lower"
+        confidence: 0.7
+      pvt_breakout:
+        description: "PVT breakout confirmation"
+        confidence: 0.75
+
+# ----------------------------------------------------------------------------
+# Supply and Demand Zones
+# ----------------------------------------------------------------------------
+supply_demand_zones:
+  enabled: true
+  description: "Supply and Demand Zone Analysis"
+  
+  parameters:
+    # Zone detection
+    zone_detection:
+      lookback_bars: 100
+      consolidation_threshold: 0.05
+      volume_confirmation: true
+      zone_strength_threshold: 0.7
+    
+    # Demand zones
+    demand_zones:
+      enabled: true
+      min_touches: 2
+      max_zone_width: 0.02
+      strength_criteria:
+        - "volume_increase"
+        - "price_reversal"
+        - "multiple_touches"
+    
+    # Supply zones
+    supply_zones:
+      enabled: true
+      min_touches: 2
+      max_zone_width: 0.02
+      strength_criteria:
+        - "volume_increase"
+        - "price_rejection"
+        - "multiple_touches"
+
+# ----------------------------------------------------------------------------
+# Wyckoff Schematics
+# ----------------------------------------------------------------------------
+schematics:
+  enabled: true
+  description: "Wyckoff Schematic Recognition"
+  
+  # Accumulation schematics
+  accumulation:
+    # A - Preliminary Support (PS)
+    preliminary_support:
+      enabled: true
+      conditions:
+        - "volume_spike"
+        - "price_drop"
+        - "wide_spread"
+      confidence: 0.6
+    
+    # B - Selling Climax (SC)
+    selling_climax:
+      enabled: true
+      conditions:
+        - "volume_spike_max"
+        - "price_drop_max"
+        - "wide_spread_max"
+      confidence: 0.7
+    
+    # C - Automatic Rally (AR)
+    automatic_rally:
+      enabled: true
+      conditions:
+        - "price_rally"
+        - "volume_decrease"
+        - "narrow_spread"
+      confidence: 0.65
+    
+    # D - Secondary Test (ST)
+    secondary_test:
+      enabled: true
+      conditions:
+        - "price_drop_retest"
+        - "volume_decrease"
+        - "narrow_spread"
+      confidence: 0.7
+    
+    # E - Spring (SP)
+    spring:
+      enabled: true
+      conditions:
+        - "price_break_below"
+        - "volume_spike"
+        - "quick_recovery"
+      confidence: 0.75
+    
+    # F - Test of Spring (TS)
+    test_spring:
+      enabled: true
+      conditions:
+        - "price_retest"
+        - "volume_below_average"
+        - "narrow_spread"
+      confidence: 0.7
+    
+    # G - Sign of Strength (SOS)
+    sos_schematic:
+      enabled: true
+      conditions:
+        - "price_breakout"
+        - "volume_confirm"
+        - "wide_spread"
+      confidence: 0.8
+    
+    # H - Last Point of Support (LPS)
+    lps_schematic:
+      enabled: true
+      conditions:
+        - "pullback"
+        - "volume_decrease"
+        - "support_hold"
+      confidence: 0.75
+    
+    # I - Test of Support (TOS)
+    tos:
+      enabled: true
+      conditions:
+        - "price_retest_support"
+        - "volume_decrease"
+        - "narrow_spread"
+      confidence: 0.65
+  
+  # Distribution schematics
+  distribution:
+    # A - Preliminary Supply (PSY)
+    preliminary_supply:
+      enabled: true
+      conditions:
+        - "volume_spike"
+        - "price_rally"
+        - "wide_spread"
+      confidence: 0.6
+    
+    # B - Buying Climax (BC)
+    buying_climax:
+      enabled: true
+      conditions:
+        - "volume_spike_max"
+        - "price_rally_max"
+        - "wide_spread_max"
+      confidence: 0.7
+    
+    # C - Automatic Reaction (AR)
+    automatic_reaction:
+      enabled: true
+      conditions:
+        - "price_drop"
+        - "volume_decrease"
+        - "narrow_spread"
+      confidence: 0.65
+    
+    # D - Secondary Test (ST)
+    secondary_test_dist:
+      enabled: true
+      conditions:
+        - "price_rally_retest"
+        - "volume_decrease"
+        - "narrow_spread"
+      confidence: 0.7
+    
+    # E - Upthrust (UT)
+    upthrust:
+      enabled: true
+      conditions:
+        - "price_break_above"
+        - "volume_spike"
+        - "quick_rejection"
+      confidence: 0.75
+    
+    # F - Test of Upthrust (TUT)
+    tut:
+      enabled: true
+      conditions:
+        - "price_retest"
+        - "volume_below_average"
+        - "narrow_spread"
+      confidence: 0.7
+    
+    # G - Sign of Weakness (SOW)
+    sow_schematic:
+      enabled: true
+      conditions:
+        - "price_breakdown"
+        - "volume_confirm"
+        - "wide_spread"
+      confidence: 0.8
+    
+    # H - Last Point of Supply (LPSY)
+    lpsy_schematic:
+      enabled: true
+      conditions:
+        - "rally"
+        - "volume_decrease"
+        - "resistance_hold"
+      confidence: 0.75
+
+# ----------------------------------------------------------------------------
+# Wyckoff Trading Rules
+# ----------------------------------------------------------------------------
+trading_rules:
+  enabled: true
+  description: "Wyckoff-based trading rules"
+  
+  # Entry rules
+  entry:
+    # Accumulation entries
+    accumulation:
+      - rule: "spring_entry"
+        description: "Enter on spring with volume confirmation"
+        conditions:
+          - "spring_detected"
+          - "volume_increase_confirmation"
+          - "price_recovery"
+        confidence: 0.8
+      
+      - rule: "sos_entry"
+        description: "Enter on Sign of Strength"
+        conditions:
+          - "sos_detected"
+          - "volume_breakout_confirmation"
+          - "price_breakout"
+        confidence: 0.85
+      
+      - rule: "lps_entry"
+        description: "Enter on Last Point of Support"
+        conditions:
+          - "lps_detected"
+          - "support_confirmation"
+          - "volume_decrease"
+        confidence: 0.75
+    
+    # Distribution entries
+    distribution:
+      - rule: "upthrust_entry"
+        description: "Enter on upthrust with volume confirmation"
+        conditions:
+          - "upthrust_detected"
+          - "volume_increase_confirmation"
+          - "price_rejection"
+        confidence: 0.8
+      
+      - rule: "sow_entry"
+        description: "Enter on Sign of Weakness"
+        conditions:
+          - "sow_detected"
+          - "volume_breakdown_confirmation"
+          - "price_breakdown"
+        confidence: 0.85
+      
+      - rule: "lpsy_entry"
+        description: "Enter on Last Point of Supply"
+        conditions:
+          - "lpsy_detected"
+          - "resistance_confirmation"
+          - "volume_decrease"
+        confidence: 0.75
+  
+  # Exit rules
+  exit:
+    - rule: "take_profit"
+      description: "Take profit at target"
+      conditions:
+        - "price_reached_target"
+      confidence: 0.9
+    
+    - rule: "stop_loss"
+      description: "Stop loss activation"
+      conditions:
+        - "price_below_stop_loss"
+      confidence: 0.9
+    
+    - rule: "trailing_stop"
+      description: "Trailing stop activation"
+      conditions:
+        - "price_retracement_percent"
+        - "volume_increase_confirmation"
+      confidence: 0.8
+    
+    - rule: "signal_reversal"
+      description: "Exit on signal reversal"
+      conditions:
+        - "signal_reversal_detected"
+      confidence: 0.75
+
+# ----------------------------------------------------------------------------
+# Wyckoff Position Sizing
+# ----------------------------------------------------------------------------
+position_sizing:
+  enabled: true
+  description: "Wyckoff-based position sizing"
+  
+  parameters:
+    risk_per_trade: 0.02
+    max_position_size: 0.1
+    min_position_size: 0.001
+    risk_reward_ratio: 3.0
+    
+  sizing_rules:
+    - rule: "confidence_based"
+      description: "Size based on signal confidence"
+      formula: "position_size = base_size * confidence_multiplier"
+      confidence_multipliers:
+        high: 1.0
+        medium: 0.75
+        low: 0.5
+    
+    - rule: "volatility_adjusted"
+      description: "Adjust position size for volatility"
+      formula: "position_size = base_size / volatility_multiplier"
+      volatility_multipliers:
+        low: 0.8
+        medium: 1.0
+        high: 1.5
+
+# ----------------------------------------------------------------------------
+# Performance Monitoring
+# ----------------------------------------------------------------------------
+performance_monitoring:
+  enabled: true
+  description: "Wyckoff strategy performance monitoring"
+  
+  metrics:
+    - "win_rate"
+    - "avg_win_loss_ratio"
+    - "profit_factor"
+    - "max_drawdown"
+    - "sharpe_ratio"
+    - "calmar_ratio"
+    
+  monitoring_interval: 60  # minutes
+  alert_thresholds:
+    max_drawdown: 0.15
+    min_win_rate: 0.4
+    max_avg_loss: 0.02
+
+# ----------------------------------------------------------------------------
+# Logging Configuration
+# ----------------------------------------------------------------------------
+logging:
+  enabled: true
+  level: "INFO"
+  file: "logs/wyckoff_bot.log"
+  rotation: "daily"
+  retention: 30  # days
+  
+  # Log categories
+  categories:
+    signals: true
+    trades: true
+    errors: true
+    performance: true
+    debugging: true
