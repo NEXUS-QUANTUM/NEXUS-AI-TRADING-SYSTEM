@@ -1,0 +1,1623 @@
+<!-- trading/bots/hedge_bot/templates/risk.html -->
+
+<!--
+NEXUS AI TRADING SYSTEM - Hedge Bot Risk Management Page
+Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+
+Complete risk management interface with real-time risk metrics,
+position monitoring, VaR calculations, and risk analytics.
+-->
+
+{% extends "base.html" %}
+{% load static %}
+{% load nexus_tags %}
+
+{% block title %}Risk Management - NEXUS AI Trading{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/risk.css' %}">
+{% endblock %}
+
+{% block content %}
+<div id="risk-container" class="risk-container"
+     data-user-id="{{ user_id|default:'current' }}"
+     data-exchange="{{ exchange|default:'binance' }}"
+     data-refresh-interval="{{ refresh_interval|default:10 }}">
+
+    <!-- Risk Header -->
+    <div class="risk-header">
+        <div class="risk-title-section">
+            <div class="risk-logo-container">
+                <img src="{% static 'images/nexus-logo-light.svg' %}"
+                     alt="NEXUS Logo"
+                     class="risk-logo"
+                     onerror="this.src='{% static 'images/nexus-favicon.svg' %}'">
+                <span class="risk-brand">NEXUS</span>
+            </div>
+            <h1 class="risk-title">Risk Management</h1>
+            <span class="risk-subtitle">Monitor and control your portfolio risk in real-time</span>
+        </div>
+        <div class="risk-actions">
+            <button class="btn-secondary" onclick="refreshRiskData()">
+                <i class="fas fa-sync-alt"></i> Refresh
+            </button>
+            <button class="btn-primary" onclick="exportRiskReport()">
+                <i class="fas fa-file-export"></i> Export Report
+            </button>
+        </div>
+    </div>
+
+    <!-- Risk Summary Cards -->
+    <div class="risk-summary-grid">
+        <div class="risk-summary-card">
+            <div class="summary-icon" style="background: rgba(0, 184, 148, 0.2); color: #00b894;">
+                <i class="fas fa-shield-alt"></i>
+            </div>
+            <div class="summary-content">
+                <span class="summary-label">Overall Risk Score</span>
+                <span class="summary-value" id="risk-score">0.0</span>
+                <span class="summary-change" id="risk-score-change">+0.0%</span>
+            </div>
+        </div>
+        <div class="risk-summary-card">
+            <div class="summary-icon" style="background: rgba(255, 107, 107, 0.2); color: #ff6b6b;">
+                <i class="fas fa-chart-line"></i>
+            </div>
+            <div class="summary-content">
+                <span class="summary-label">Value at Risk (95%)</span>
+                <span class="summary-value" id="var-95">$0.00</span>
+                <span class="summary-change" id="var-95-change">+0.0%</span>
+            </div>
+        </div>
+        <div class="risk-summary-card">
+            <div class="summary-icon" style="background: rgba(253, 203, 110, 0.2); color: #fdcb6e;">
+                <i class="fas fa-arrow-down"></i>
+            </div>
+            <div class="summary-content">
+                <span class="summary-label">Max Drawdown</span>
+                <span class="summary-value" id="max-drawdown">0.00%</span>
+                <span class="summary-change" id="drawdown-change">+0.0%</span>
+            </div>
+        </div>
+        <div class="risk-summary-card">
+            <div class="summary-icon" style="background: rgba(116, 185, 255, 0.2); color: #74b9ff;">
+                <i class="fas fa-balance-scale"></i>
+            </div>
+            <div class="summary-content">
+                <span class="summary-label">Sharpe Ratio</span>
+                <span class="summary-value" id="sharpe-ratio">0.00</span>
+                <span class="summary-change" id="sharpe-change">+0.00</span>
+            </div>
+        </div>
+        <div class="risk-summary-card">
+            <div class="summary-icon" style="background: rgba(225, 112, 85, 0.2); color: #e17055;">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <div class="summary-content">
+                <span class="summary-label">Exposure</span>
+                <span class="summary-value" id="total-exposure">$0.00</span>
+                <span class="summary-change" id="exposure-change">+0.0%</span>
+            </div>
+        </div>
+        <div class="risk-summary-card">
+            <div class="summary-icon" style="background: rgba(162, 155, 254, 0.2); color: #a29bfe;">
+                <i class="fas fa-chart-pie"></i>
+            </div>
+            <div class="summary-content">
+                <span class="summary-label">Concentration</span>
+                <span class="summary-value" id="concentration">0.00%</span>
+                <span class="summary-change" id="concentration-change">+0.0%</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Risk Charts Row -->
+    <div class="risk-charts-row">
+        <div class="risk-chart-container">
+            <div class="chart-header">
+                <span class="chart-title">Risk Distribution</span>
+                <button class="chart-expand-btn" onclick="expandRiskChart('distribution')">
+                    <i class="fas fa-expand"></i>
+                </button>
+            </div>
+            <div id="risk-distribution-chart" style="width:100%;height:280px;"></div>
+        </div>
+        <div class="risk-chart-container">
+            <div class="chart-header">
+                <span class="chart-title">VaR History</span>
+                <button class="chart-expand-btn" onclick="expandRiskChart('var')">
+                    <i class="fas fa-expand"></i>
+                </button>
+            </div>
+            <div id="var-history-chart" style="width:100%;height:280px;"></div>
+        </div>
+    </div>
+
+    <!-- Risk Metrics Grid -->
+    <div class="risk-metrics-grid">
+        <div class="risk-metric-card">
+            <span class="metric-label">Portfolio Beta</span>
+            <span class="metric-value" id="portfolio-beta">--</span>
+            <span class="metric-status" id="beta-status">Neutral</span>
+        </div>
+        <div class="risk-metric-card">
+            <span class="metric-label">Correlation</span>
+            <span class="metric-value" id="avg-correlation">--</span>
+            <span class="metric-status" id="correlation-status">Low</span>
+        </div>
+        <div class="risk-metric-card">
+            <span class="metric-label">Volatility (Annual)</span>
+            <span class="metric-value" id="annual-volatility">--</span>
+            <span class="metric-status" id="volatility-status">Medium</span>
+        </div>
+        <div class="risk-metric-card">
+            <span class="metric-label">Tail Risk</span>
+            <span class="metric-value" id="tail-risk">--</span>
+            <span class="metric-status" id="tail-risk-status">Low</span>
+        </div>
+        <div class="risk-metric-card">
+            <span class="metric-label">Diversification</span>
+            <span class="metric-value" id="diversification-score">--</span>
+            <span class="metric-status" id="diversification-status">Good</span>
+        </div>
+        <div class="risk-metric-card">
+            <span class="metric-label">Stress Test</span>
+            <span class="metric-value" id="stress-test">--</span>
+            <span class="metric-status" id="stress-status">Pass</span>
+        </div>
+    </div>
+
+    <!-- Risk Positions Table -->
+    <div class="risk-positions">
+        <div class="risk-positions-header">
+            <span class="risk-positions-title">Risk Positions</span>
+            <div class="risk-positions-filters">
+                <select class="risk-positions-sort" id="risk-positions-sort">
+                    <option value="risk_desc">Risk (High to Low)</option>
+                    <option value="risk_asc">Risk (Low to High)</option>
+                    <option value="exposure_desc">Exposure (High to Low)</option>
+                    <option value="exposure_asc">Exposure (Low to High)</option>
+                    <option value="symbol">Symbol</option>
+                </select>
+            </div>
+        </div>
+        <div class="risk-positions-table-container">
+            <table class="risk-positions-table">
+                <thead>
+                    <tr>
+                        <th>Symbol</th>
+                        <th>Exposure</th>
+                        <th>Risk %</th>
+                        <th>VaR</th>
+                        <th>CVaR</th>
+                        <th>Beta</th>
+                        <th>Correlation</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="risk-positions-body">
+                    <tr>
+                        <td colspan="9" class="loading-row">Loading risk positions...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="risk-positions-footer">
+            <span class="positions-count" id="positions-count">0 positions</span>
+            <span class="positions-total-risk" id="positions-total-risk">Total Risk: 0.00%</span>
+        </div>
+    </div>
+
+    <!-- Risk Alerts -->
+    <div class="risk-alerts">
+        <div class="risk-alerts-header">
+            <span class="risk-alerts-title">Risk Alerts</span>
+            <span class="risk-alerts-count" id="risk-alerts-count">0 alerts</span>
+        </div>
+        <div class="risk-alerts-list" id="risk-alerts-list">
+            <div class="risk-alert-item no-alerts">No active risk alerts</div>
+        </div>
+    </div>
+
+    <!-- Risk Footer -->
+    <div class="risk-footer">
+        <div class="risk-nexus-branding">
+            <span class="nexus-copyright">© 2026 NEXUS QUANTUM LTD</span>
+            <span class="nexus-version">v{{ nexus_version|default:'3.0.0' }}</span>
+        </div>
+        <div class="risk-timestamp" id="risk-timestamp">
+            Last updated: <span id="risk-last-update">--</span>
+        </div>
+        <div class="risk-status" id="risk-status">
+            <span class="status-dot"></span>
+            <span class="status-label">Connected</span>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Complete Risk Management Implementation with Real Data Integration
+
+(function() {
+    'use strict';
+
+    class RiskManager {
+        constructor() {
+            this.container = document.getElementById('risk-container');
+            if (!this.container) return;
+            
+            this.userId = this.container.dataset.userId || 'current';
+            this.exchange = this.container.dataset.exchange || 'binance';
+            this.refreshInterval = parseInt(this.container.dataset.refreshInterval) || 10;
+            this.riskData = null;
+            this.positions = [];
+            this.alerts = [];
+            this.isLive = true;
+            this.ws = null;
+            this.connectionRetries = 0;
+            this.maxRetries = 5;
+            
+            // DOM Elements
+            this.positionsBody = document.getElementById('risk-positions-body');
+            this.alertsList = document.getElementById('risk-alerts-list');
+            this.alertsCount = document.getElementById('risk-alerts-count');
+            this.timestamp = document.getElementById('risk-last-update');
+            this.status = document.getElementById('risk-status');
+            this.positionsCount = document.getElementById('positions-count');
+            this.positionsTotalRisk = document.getElementById('positions-total-risk');
+            
+            // Summary Elements
+            this.riskScore = document.getElementById('risk-score');
+            this.var95 = document.getElementById('var-95');
+            this.maxDrawdown = document.getElementById('max-drawdown');
+            this.sharpeRatio = document.getElementById('sharpe-ratio');
+            this.totalExposure = document.getElementById('total-exposure');
+            this.concentration = document.getElementById('concentration');
+            
+            // Metric Elements
+            this.portfolioBeta = document.getElementById('portfolio-beta');
+            this.avgCorrelation = document.getElementById('avg-correlation');
+            this.annualVolatility = document.getElementById('annual-volatility');
+            this.tailRisk = document.getElementById('tail-risk');
+            this.diversificationScore = document.getElementById('diversification-score');
+            this.stressTest = document.getElementById('stress-test');
+            
+            // Change Elements
+            this.riskScoreChange = document.getElementById('risk-score-change');
+            this.var95Change = document.getElementById('var-95-change');
+            this.drawdownChange = document.getElementById('drawdown-change');
+            this.sharpeChange = document.getElementById('sharpe-change');
+            this.exposureChange = document.getElementById('exposure-change');
+            this.concentrationChange = document.getElementById('concentration-change');
+            
+            // Initialize
+            this.init();
+        }
+        
+        init() {
+            this.setupEventListeners();
+            this.initializeWebSocket();
+            this.loadRiskData();
+            this.startAutoRefresh();
+            this.setupResizeObserver();
+        }
+        
+        setupEventListeners() {
+            // Sort select
+            const sortSelect = document.getElementById('risk-positions-sort');
+            if (sortSelect) {
+                sortSelect.addEventListener('change', (e) => this.sortPositions(e.target.value));
+            }
+            
+            // Keyboard shortcuts
+            document.addEventListener('keydown', (e) => {
+                if ((e.ctrlKey || e.metaKey) && e.key === 'r') {
+                    e.preventDefault();
+                    this.loadRiskData();
+                }
+            });
+        }
+        
+        initializeWebSocket() {
+            const wsProtocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsUrl = `${wsProtocol}//${window.location.host}/ws/risk/${this.userId}/${this.exchange}`;
+            
+            try {
+                if (this.ws) this.ws.close();
+                
+                this.ws = new WebSocket(wsUrl);
+                
+                this.ws.onopen = () => {
+                    this.connectionRetries = 0;
+                    this.updateStatus('connected', 'Connected');
+                    this.sendSubscription();
+                };
+                
+                this.ws.onmessage = (event) => {
+                    try {
+                        const data = JSON.parse(event.data);
+                        this.handleWebSocketMessage(data);
+                    } catch (e) {
+                        console.error('WebSocket message parse error:', e);
+                    }
+                };
+                
+                this.ws.onclose = () => {
+                    this.updateStatus('disconnected', 'Disconnected');
+                    this.reconnectWebSocket();
+                };
+                
+                this.ws.onerror = (error) => {
+                    console.error('WebSocket error:', error);
+                    this.updateStatus('error', 'Error');
+                };
+            } catch (error) {
+                console.error('WebSocket connection failed:', error);
+                this.updateStatus('error', 'Error');
+                this.reconnectWebSocket();
+            }
+        }
+        
+        reconnectWebSocket() {
+            if (this.connectionRetries < this.maxRetries) {
+                this.connectionRetries++;
+                const delay = Math.min(1000 * Math.pow(2, this.connectionRetries), 30000);
+                setTimeout(() => {
+                    if (this.isLive) {
+                        this.initializeWebSocket();
+                    }
+                }, delay);
+            }
+        }
+        
+        sendSubscription() {
+            if (this.ws && this.ws.readyState === WebSocket.OPEN) {
+                this.ws.send(JSON.stringify({
+                    type: 'subscribe_risk',
+                    userId: this.userId,
+                    exchange: this.exchange
+                }));
+            }
+        }
+        
+        handleWebSocketMessage(data) {
+            if (data.type === 'risk_update') {
+                this.updateRiskData(data);
+            } else if (data.type === 'position_update') {
+                this.updatePosition(data);
+            } else if (data.type === 'alert') {
+                this.addAlert(data);
+            } else if (data.type === 'heartbeat') {
+                // Keep connection alive
+            }
+            
+            this.updateTimestamp();
+        }
+        
+        updateRiskData(data) {
+            this.riskData = data;
+            
+            // Update summary cards
+            if (data.riskScore !== undefined) {
+                this.riskScore.textContent = data.riskScore.toFixed(1);
+                this.riskScore.style.color = this.getRiskColor(data.riskScore);
+            }
+            
+            if (data.var95 !== undefined) {
+                this.var95.textContent = this.formatCurrency(data.var95);
+                this.var95.style.color = data.var95 > 0 ? '#ff6b6b' : '#00b894';
+            }
+            
+            if (data.maxDrawdown !== undefined) {
+                this.maxDrawdown.textContent = (data.maxDrawdown * 100).toFixed(2) + '%';
+                this.maxDrawdown.style.color = data.maxDrawdown > 0.2 ? '#ff6b6b' : '#fdcb6e';
+            }
+            
+            if (data.sharpeRatio !== undefined) {
+                this.sharpeRatio.textContent = data.sharpeRatio.toFixed(2);
+                this.sharpeRatio.style.color = data.sharpeRatio > 1 ? '#00b894' : '#fdcb6e';
+            }
+            
+            if (data.totalExposure !== undefined) {
+                this.totalExposure.textContent = this.formatCurrency(data.totalExposure);
+            }
+            
+            if (data.concentration !== undefined) {
+                this.concentration.textContent = (data.concentration * 100).toFixed(2) + '%';
+                this.concentration.style.color = data.concentration > 0.3 ? '#ff6b6b' : '#fdcb6e';
+            }
+            
+            // Update changes
+            if (data.changes) {
+                this.updateChange(this.riskScoreChange, data.changes.riskScore);
+                this.updateChange(this.var95Change, data.changes.var95);
+                this.updateChange(this.drawdownChange, data.changes.maxDrawdown);
+                this.updateChange(this.sharpeChange, data.changes.sharpeRatio);
+                this.updateChange(this.exposureChange, data.changes.totalExposure);
+                this.updateChange(this.concentrationChange, data.changes.concentration);
+            }
+            
+            // Update metrics
+            if (data.beta !== undefined) {
+                this.portfolioBeta.textContent = data.beta.toFixed(2);
+                this.updateMetricStatus('beta-status', data.beta, 0.5, 1.5);
+            }
+            
+            if (data.correlation !== undefined) {
+                this.avgCorrelation.textContent = data.correlation.toFixed(2);
+                this.updateMetricStatus('correlation-status', Math.abs(data.correlation), 0.3, 0.7);
+            }
+            
+            if (data.volatility !== undefined) {
+                this.annualVolatility.textContent = (data.volatility * 100).toFixed(2) + '%';
+                this.updateMetricStatus('volatility-status', data.volatility, 0.2, 0.5);
+            }
+            
+            if (data.tailRisk !== undefined) {
+                this.tailRisk.textContent = (data.tailRisk * 100).toFixed(2) + '%';
+                this.updateMetricStatus('tail-risk-status', data.tailRisk, 0.05, 0.15);
+            }
+            
+            if (data.diversification !== undefined) {
+                this.diversificationScore.textContent = (data.diversification * 100).toFixed(0) + '%';
+                this.updateMetricStatus('diversification-status', data.diversification, 0.3, 0.7);
+            }
+            
+            if (data.stressTest !== undefined) {
+                this.stressTest.textContent = data.stressTest.passed ? 'Pass' : 'Fail';
+                this.stressTest.style.color = data.stressTest.passed ? '#00b894' : '#ff6b6b';
+                document.getElementById('stress-status').textContent = data.stressTest.passed ? 'Pass' : 'Fail';
+                document.getElementById('stress-status').style.color = data.stressTest.passed ? '#00b894' : '#ff6b6b';
+            }
+            
+            // Update positions
+            if (data.positions) {
+                this.positions = data.positions;
+                this.renderPositions();
+            }
+            
+            // Update alerts
+            if (data.alerts) {
+                this.alerts = data.alerts;
+                this.renderAlerts();
+            }
+            
+            // Update charts
+            if (data.riskDistribution) {
+                this.renderRiskDistribution(data.riskDistribution);
+            }
+            
+            if (data.varHistory) {
+                this.renderVaRHistory(data.varHistory);
+            }
+        }
+        
+        updatePosition(data) {
+            const index = this.positions.findIndex(p => p.symbol === data.symbol);
+            if (index >= 0) {
+                this.positions[index] = data;
+                this.renderPositions();
+            }
+        }
+        
+        addAlert(data) {
+            this.alerts.unshift(data);
+            if (this.alerts.length > 50) {
+                this.alerts = this.alerts.slice(0, 50);
+            }
+            this.renderAlerts();
+            
+            // Show notification
+            this.showAlertNotification(data);
+        }
+        
+        showAlertNotification(alert) {
+            const notification = document.createElement('div');
+            notification.className = `risk-alert-notification ${alert.severity || 'warning'}`;
+            notification.innerHTML = `
+                <i class="fas fa-exclamation-triangle"></i>
+                <div class="notification-content">
+                    <div class="notification-title">${alert.title || 'Risk Alert'}</div>
+                    <div class="notification-message">${alert.message || ''}</div>
+                </div>
+                <button onclick="this.parentElement.remove()">&times;</button>
+            `;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.classList.add('fade-out');
+                setTimeout(() => notification.remove(), 500);
+            }, 5000);
+        }
+        
+        updateChange(element, value) {
+            if (!element) return;
+            if (value === undefined || value === null) {
+                element.textContent = '+0.0%';
+                element.style.color = '#74b9ff';
+                return;
+            }
+            
+            const isPositive = value >= 0;
+            element.textContent = `${isPositive ? '+' : ''}${(value * 100).toFixed(1)}%`;
+            element.style.color = isPositive ? '#00b894' : '#ff6b6b';
+        }
+        
+        updateMetricStatus(elementId, value, lowThreshold, highThreshold) {
+            const element = document.getElementById(elementId);
+            if (!element) return;
+            
+            if (value < lowThreshold) {
+                element.textContent = 'Low';
+                element.style.color = '#00b894';
+            } else if (value < highThreshold) {
+                element.textContent = 'Medium';
+                element.style.color = '#fdcb6e';
+            } else {
+                element.textContent = 'High';
+                element.style.color = '#ff6b6b';
+            }
+        }
+        
+        getRiskColor(score) {
+            if (score < 25) return '#00b894';
+            if (score < 50) return '#fdcb6e';
+            if (score < 75) return '#e17055';
+            return '#ff6b6b';
+        }
+        
+        async loadRiskData() {
+            try {
+                const url = `/api/risk/data?userId=${this.userId}&exchange=${this.exchange}`;
+                const response = await fetch(url);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                if (data.error) {
+                    throw new Error(data.error);
+                }
+                
+                this.updateRiskData(data);
+                this.updateStatus('connected', 'Connected');
+                
+            } catch (error) {
+                console.error('Failed to load risk data:', error);
+                this.updateStatus('error', 'Error');
+                
+                if (this.positionsBody) {
+                    this.positionsBody.innerHTML = `
+                        <tr>
+                            <td colspan="9" class="error-row">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                Failed to load risk data: ${error.message}
+                            </td>
+                        </tr>
+                    `;
+                }
+            }
+        }
+        
+        renderPositions() {
+            if (!this.positionsBody) return;
+            
+            const sortValue = document.getElementById('risk-positions-sort')?.value || 'risk_desc';
+            const sortedPositions = this.sortPositionsData(this.positions, sortValue);
+            
+            if (sortedPositions.length === 0) {
+                this.positionsBody.innerHTML = `
+                    <tr>
+                        <td colspan="9" class="empty-row">No risk positions found</td>
+                    </tr>
+                `;
+                if (this.positionsCount) this.positionsCount.textContent = '0 positions';
+                if (this.positionsTotalRisk) this.positionsTotalRisk.textContent = 'Total Risk: 0.00%';
+                return;
+            }
+            
+            let html = '';
+            let totalRisk = 0;
+            sortedPositions.forEach(p => {
+                const riskScore = p.riskScore || 0;
+                totalRisk += riskScore;
+                const riskColor = this.getRiskColor(riskScore * 100);
+                
+                html += `
+                    <tr>
+                        <td>
+                            <div class="position-cell">
+                                <span class="position-symbol">${p.symbol}</span>
+                            </div>
+                        </td>
+                        <td class="exposure-cell">${this.formatCurrency(p.exposure)}</td>
+                        <td class="risk-cell" style="color: ${riskColor}">${(riskScore * 100).toFixed(1)}%</td>
+                        <td class="var-cell">${this.formatCurrency(p.var)}</td>
+                        <td class="cvar-cell">${this.formatCurrency(p.cvar)}</td>
+                        <td class="beta-cell">${p.beta ? p.beta.toFixed(2) : '--'}</td>
+                        <td class="correlation-cell">${p.correlation ? p.correlation.toFixed(2) : '--'}</td>
+                        <td>
+                            <span class="position-status ${p.status || 'active'}">${p.status || 'Active'}</span>
+                        </td>
+                        <td>
+                            <button class="action-btn" onclick="viewPosition('${p.symbol}')">View</button>
+                        </td>
+                    </tr>
+                `;
+            });
+            this.positionsBody.innerHTML = html;
+            
+            if (this.positionsCount) {
+                this.positionsCount.textContent = `${sortedPositions.length} positions`;
+            }
+            if (this.positionsTotalRisk) {
+                const avgRisk = sortedPositions.length > 0 ? (totalRisk / sortedPositions.length * 100) : 0;
+                this.positionsTotalRisk.textContent = `Total Risk: ${avgRisk.toFixed(2)}%`;
+            }
+        }
+        
+        sortPositionsData(positions, sortValue) {
+            const sorts = {
+                'risk_desc': (a, b) => (b.riskScore || 0) - (a.riskScore || 0),
+                'risk_asc': (a, b) => (a.riskScore || 0) - (b.riskScore || 0),
+                'exposure_desc': (a, b) => (b.exposure || 0) - (a.exposure || 0),
+                'exposure_asc': (a, b) => (a.exposure || 0) - (b.exposure || 0),
+                'symbol': (a, b) => a.symbol.localeCompare(b.symbol)
+            };
+            return positions.sort(sorts[sortValue] || sorts['risk_desc']);
+        }
+        
+        sortPositions(sortValue) {
+            this.renderPositions();
+        }
+        
+        renderAlerts() {
+            if (!this.alertsList) return;
+            
+            if (this.alertsCount) {
+                this.alertsCount.textContent = `${this.alerts.length} alerts`;
+            }
+            
+            if (this.alerts.length === 0) {
+                this.alertsList.innerHTML = '<div class="risk-alert-item no-alerts">No active risk alerts</div>';
+            } else {
+                let html = '';
+                this.alerts.slice(0, 5).forEach(alert => {
+                    const severityClass = alert.severity || 'warning';
+                    const icon = severityClass === 'critical' ? 'fa-exclamation-circle' : 
+                                 severityClass === 'high' ? 'fa-exclamation-triangle' : 
+                                 'fa-info-circle';
+                    html += `
+                        <div class="risk-alert-item ${severityClass}">
+                            <i class="fas ${icon}"></i>
+                            <div class="alert-content">
+                                <div class="alert-title">${alert.title || 'Alert'}</div>
+                                <div class="alert-message">${alert.message || ''}</div>
+                                <div class="alert-time">${new Date(alert.timestamp).toLocaleTimeString()}</div>
+                            </div>
+                            <button class="alert-dismiss" onclick="this.parentElement.remove()">&times;</button>
+                        </div>
+                    `;
+                });
+                this.alertsList.innerHTML = html;
+            }
+        }
+        
+        renderRiskDistribution(data) {
+            if (typeof Plotly === 'undefined') return;
+            
+            const chartDiv = document.getElementById('risk-distribution-chart');
+            if (!chartDiv) return;
+            
+            const categories = data.categories || [];
+            const values = data.values || [];
+            
+            const trace = {
+                type: 'bar',
+                x: categories,
+                y: values,
+                marker: {
+                    color: values.map(v => this.getRiskColor(v * 100)),
+                    line: { color: '#2d2d44', width: 1 }
+                },
+                name: 'Risk Distribution'
+            };
+            
+            const layout = {
+                paper_bgcolor: 'transparent',
+                plot_bgcolor: 'transparent',
+                font: { color: '#ffffff', size: 10 },
+                margin: { l: 40, r: 10, t: 10, b: 30 },
+                xaxis: {
+                    gridcolor: '#2d2d44',
+                    tickfont: { color: '#74b9ff', size: 8 }
+                },
+                yaxis: {
+                    gridcolor: '#2d2d44',
+                    tickfont: { color: '#74b9ff', size: 8 },
+                    title: { text: 'Risk %', font: { color: '#74b9ff', size: 9 } }
+                },
+                bargap: 0.3
+            };
+            
+            Plotly.react(chartDiv, [trace], layout, { responsive: true });
+        }
+        
+        renderVaRHistory(data) {
+            if (typeof Plotly === 'undefined') return;
+            
+            const chartDiv = document.getElementById('var-history-chart');
+            if (!chartDiv) return;
+            
+            const dates = data.dates || [];
+            const var95 = data.var95 || [];
+            const var99 = data.var99 || [];
+            
+            const trace95 = {
+                type: 'scatter',
+                mode: 'lines',
+                x: dates,
+                y: var95,
+                name: 'VaR 95%',
+                line: { color: '#ff6b6b', width: 2 },
+                fill: 'tozeroy',
+                fillcolor: 'rgba(255, 107, 107, 0.2)'
+            };
+            
+            const trace99 = {
+                type: 'scatter',
+                mode: 'lines',
+                x: dates,
+                y: var99,
+                name: 'VaR 99%',
+                line: { color: '#e17055', width: 2 },
+                fill: 'tozeroy',
+                fillcolor: 'rgba(225, 112, 85, 0.2)'
+            };
+            
+            const layout = {
+                paper_bgcolor: 'transparent',
+                plot_bgcolor: 'transparent',
+                font: { color: '#ffffff', size: 10 },
+                margin: { l: 40, r: 10, t: 10, b: 30 },
+                xaxis: {
+                    gridcolor: '#2d2d44',
+                    tickfont: { color: '#74b9ff', size: 8 }
+                },
+                yaxis: {
+                    gridcolor: '#2d2d44',
+                    tickfont: { color: '#74b9ff', size: 8 },
+                    title: { text: 'VaR ($)', font: { color: '#74b9ff', size: 9 } }
+                },
+                legend: {
+                    orientation: 'h',
+                    y: 1.02,
+                    x: 0.5,
+                    xanchor: 'center',
+                    font: { color: '#74b9ff', size: 9 }
+                }
+            };
+            
+            Plotly.react(chartDiv, [trace95, trace99], layout, { responsive: true });
+        }
+        
+        updateStatus(status, label) {
+            if (!this.status) return;
+            const dot = this.status.querySelector('.status-dot');
+            const labelEl = this.status.querySelector('.status-label');
+            
+            if (dot) dot.className = `status-dot ${status}`;
+            if (labelEl) labelEl.textContent = label;
+        }
+        
+        updateTimestamp() {
+            if (this.timestamp) {
+                this.timestamp.textContent = new Date().toLocaleString('en-US', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit'
+                });
+            }
+        }
+        
+        startAutoRefresh() {
+            if (this.refreshTimer) clearInterval(this.refreshTimer);
+            
+            this.refreshTimer = setInterval(() => {
+                if (this.isLive) {
+                    this.loadRiskData();
+                }
+            }, this.refreshInterval * 1000);
+        }
+        
+        setupResizeObserver() {
+            const resizeObserver = new ResizeObserver(() => {
+                if (document.getElementById('risk-distribution-chart')) {
+                    Plotly.Plots.resize(document.getElementById('risk-distribution-chart'));
+                }
+                if (document.getElementById('var-history-chart')) {
+                    Plotly.Plots.resize(document.getElementById('var-history-chart'));
+                }
+            });
+            resizeObserver.observe(this.container);
+        }
+        
+        formatCurrency(value) {
+            if (value === null || value === undefined || isNaN(value)) return '$0.00';
+            const abs = Math.abs(value);
+            if (abs >= 1e9) return `$${(value / 1e9).toFixed(2)}B`;
+            if (abs >= 1e6) return `$${(value / 1e6).toFixed(2)}M`;
+            if (abs >= 1e3) return `$${(value / 1e3).toFixed(2)}K`;
+            return `$${value.toFixed(2)}`;
+        }
+        
+        destroy() {
+            if (this.refreshTimer) clearInterval(this.refreshTimer);
+            if (this.ws) this.ws.close();
+            if (document.getElementById('risk-distribution-chart')) {
+                Plotly.purge(document.getElementById('risk-distribution-chart'));
+            }
+            if (document.getElementById('var-history-chart')) {
+                Plotly.purge(document.getElementById('var-history-chart'));
+            }
+        }
+    }
+    
+    // Global functions
+    window.refreshRiskData = function() {
+        const instance = window.riskInstance;
+        if (instance) instance.loadRiskData();
+    };
+    
+    window.exportRiskReport = function() {
+        const instance = window.riskInstance;
+        if (!instance) return;
+        
+        const data = {
+            timestamp: new Date().toISOString(),
+            summary: instance.riskData,
+            positions: instance.positions,
+            alerts: instance.alerts
+        };
+        
+        const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `risk_report_${Date.now()}.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+    };
+    
+    window.viewPosition = function(symbol) {
+        window.location.href = `/position/${symbol}`;
+    };
+    
+    window.expandRiskChart = function(chartId) {
+        const chartDiv = document.getElementById(`${chartId}-chart`);
+        if (!chartDiv) return;
+        
+        const isExpanded = chartDiv.classList.contains('expanded');
+        chartDiv.classList.toggle('expanded');
+        
+        if (!isExpanded) {
+            chartDiv.style.position = 'fixed';
+            chartDiv.style.top = '50%';
+            chartDiv.style.left = '50%';
+            chartDiv.style.transform = 'translate(-50%, -50%)';
+            chartDiv.style.width = '80%';
+            chartDiv.style.height = '80%';
+            chartDiv.style.zIndex = '10000';
+            chartDiv.style.background = '#1a1a2e';
+            chartDiv.style.border = '1px solid #2d2d44';
+            chartDiv.style.borderRadius = '12px';
+            chartDiv.style.padding = '16px';
+            chartDiv.style.boxShadow = '0 20px 60px rgba(0,0,0,0.8)';
+        } else {
+            chartDiv.style.position = '';
+            chartDiv.style.top = '';
+            chartDiv.style.left = '';
+            chartDiv.style.transform = '';
+            chartDiv.style.width = '';
+            chartDiv.style.height = '';
+            chartDiv.style.zIndex = '';
+            chartDiv.style.background = '';
+            chartDiv.style.border = '';
+            chartDiv.style.borderRadius = '';
+            chartDiv.style.padding = '';
+            chartDiv.style.boxShadow = '';
+        }
+        
+        setTimeout(() => {
+            if (typeof Plotly !== 'undefined') {
+                Plotly.Plots.resize(chartDiv);
+            }
+        }, 100);
+    };
+    
+    // Initialize on DOM ready
+    document.addEventListener('DOMContentLoaded', function() {
+        const instance = new RiskManager();
+        window.riskInstance = instance;
+    });
+    
+})();
+</script>
+
+<style>
+/* Risk Page Styles - Full Implementation */
+.risk-container {
+    padding: 24px;
+    background: #0f0f1a;
+    min-height: calc(100vh - 64px);
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    color: #ffffff;
+}
+
+.risk-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.risk-title-section {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.risk-logo-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.risk-logo {
+    height: 32px;
+    width: auto;
+}
+
+.risk-brand {
+    color: #00d4ff;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.risk-title {
+    font-size: 24px;
+    font-weight: 700;
+    margin: 0;
+}
+
+.risk-subtitle {
+    color: #74b9ff;
+    font-size: 14px;
+    opacity: 0.6;
+}
+
+.risk-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.btn-primary {
+    padding: 8px 16px;
+    background: #74b9ff;
+    border: none;
+    border-radius: 6px;
+    color: #1a1a2e;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s ease;
+}
+
+.btn-primary:hover {
+    transform: scale(1.02);
+    box-shadow: 0 4px 20px rgba(116, 185, 255, 0.3);
+}
+
+.btn-secondary {
+    padding: 8px 16px;
+    background: transparent;
+    border: 1px solid #2d2d44;
+    border-radius: 6px;
+    color: #74b9ff;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s ease;
+}
+
+.btn-secondary:hover {
+    background: rgba(116, 185, 255, 0.05);
+    border-color: #4d4d6a;
+}
+
+/* Risk Summary Cards */
+.risk-summary-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.risk-summary-card {
+    background: #1a1a2e;
+    border: 1px solid #2d2d44;
+    border-radius: 8px;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.3s ease;
+}
+
+.risk-summary-card:hover {
+    border-color: #4d4d6a;
+}
+
+.summary-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+}
+
+.summary-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.summary-label {
+    display: block;
+    color: #74b9ff;
+    font-size: 11px;
+    text-transform: uppercase;
+    opacity: 0.6;
+}
+
+.summary-value {
+    font-size: 20px;
+    font-weight: 700;
+    font-family: 'Courier New', monospace;
+}
+
+.summary-change {
+    font-size: 12px;
+    opacity: 0.7;
+}
+
+/* Risk Charts */
+.risk-charts-row {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.risk-chart-container {
+    background: #1a1a2e;
+    border: 1px solid #2d2d44;
+    border-radius: 8px;
+    padding: 16px;
+    min-height: 280px;
+}
+
+.chart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.chart-title {
+    color: #74b9ff;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.chart-expand-btn {
+    background: transparent;
+    border: none;
+    color: #74b9ff;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.chart-expand-btn:hover {
+    background: rgba(116, 185, 255, 0.1);
+}
+
+/* Risk Metrics Grid */
+.risk-metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.risk-metric-card {
+    background: #1a1a2e;
+    border: 1px solid #2d2d44;
+    border-radius: 8px;
+    padding: 12px 16px;
+    text-align: center;
+}
+
+.metric-label {
+    display: block;
+    color: #74b9ff;
+    font-size: 10px;
+    text-transform: uppercase;
+    opacity: 0.6;
+}
+
+.metric-value {
+    display: block;
+    font-size: 18px;
+    font-weight: 700;
+    font-family: 'Courier New', monospace;
+    color: #ffffff;
+}
+
+.metric-status {
+    display: inline-block;
+    padding: 2px 12px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 500;
+    margin-top: 4px;
+}
+
+/* Risk Positions Table */
+.risk-positions {
+    background: #1a1a2e;
+    border: 1px solid #2d2d44;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 20px;
+}
+
+.risk-positions-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.risk-positions-title {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.risk-positions-sort {
+    padding: 6px 12px;
+    background: #131722;
+    border: 1px solid #2d2d44;
+    border-radius: 6px;
+    color: #ffffff;
+    font-size: 12px;
+}
+
+.risk-positions-sort:focus {
+    outline: none;
+    border-color: #74b9ff;
+}
+
+.risk-positions-table-container {
+    overflow-x: auto;
+}
+
+.risk-positions-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+.risk-positions-table th {
+    color: #74b9ff;
+    font-weight: 500;
+    text-align: left;
+    padding: 8px 12px;
+    border-bottom: 1px solid #2d2d44;
+    font-size: 11px;
+    text-transform: uppercase;
+    opacity: 0.7;
+}
+
+.risk-positions-table td {
+    padding: 8px 12px;
+    border-bottom: 1px solid #2d2d44;
+    color: #ffffff;
+}
+
+.risk-positions-table tr:hover td {
+    background: rgba(45, 45, 68, 0.3);
+}
+
+.position-cell {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.position-symbol {
+    font-weight: 600;
+}
+
+.position-status {
+    padding: 2px 12px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 500;
+}
+
+.position-status.active {
+    background: rgba(0, 184, 148, 0.2);
+    color: #00b894;
+}
+
+.position-status.warning {
+    background: rgba(253, 203, 110, 0.2);
+    color: #fdcb6e;
+}
+
+.position-status.critical {
+    background: rgba(255, 107, 107, 0.2);
+    color: #ff6b6b;
+}
+
+.action-btn {
+    padding: 4px 12px;
+    background: rgba(116, 185, 255, 0.1);
+    border: none;
+    border-radius: 4px;
+    color: #74b9ff;
+    cursor: pointer;
+    font-size: 12px;
+    transition: all 0.2s ease;
+}
+
+.action-btn:hover {
+    background: rgba(116, 185, 255, 0.2);
+}
+
+.loading-row td, .empty-row td, .error-row td {
+    text-align: center;
+    padding: 30px;
+    color: #74b9ff;
+}
+
+.error-row td {
+    color: #ff6b6b;
+}
+
+.risk-positions-footer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid #2d2d44;
+    font-size: 12px;
+    color: #74b9ff;
+    opacity: 0.7;
+}
+
+/* Risk Alerts */
+.risk-alerts {
+    background: #1a1a2e;
+    border: 1px solid #2d2d44;
+    border-radius: 8px;
+    padding: 16px;
+}
+
+.risk-alerts-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.risk-alerts-title {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.risk-alerts-count {
+    font-size: 12px;
+    color: #74b9ff;
+    opacity: 0.7;
+}
+
+.risk-alerts-list {
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.risk-alert-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    border-radius: 6px;
+    margin-bottom: 4px;
+    background: #131722;
+}
+
+.risk-alert-item.warning {
+    border-left: 3px solid #fdcb6e;
+}
+
+.risk-alert-item.high {
+    border-left: 3px solid #e17055;
+}
+
+.risk-alert-item.critical {
+    border-left: 3px solid #ff6b6b;
+}
+
+.risk-alert-item.no-alerts {
+    color: #74b9ff;
+    opacity: 0.5;
+    justify-content: center;
+}
+
+.risk-alert-item i {
+    color: #fdcb6e;
+    font-size: 16px;
+}
+
+.alert-content {
+    flex: 1;
+}
+
+.alert-title {
+    font-weight: 500;
+    font-size: 13px;
+}
+
+.alert-message {
+    color: #74b9ff;
+    font-size: 12px;
+    opacity: 0.8;
+}
+
+.alert-time {
+    color: #74b9ff;
+    font-size: 10px;
+    opacity: 0.5;
+}
+
+.alert-dismiss {
+    background: transparent;
+    border: none;
+    color: #74b9ff;
+    cursor: pointer;
+    font-size: 16px;
+    opacity: 0.5;
+}
+
+.alert-dismiss:hover {
+    opacity: 1;
+}
+
+/* Risk Alert Notification */
+.risk-alert-notification {
+    position: fixed;
+    top: 80px;
+    right: 24px;
+    padding: 12px 16px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    z-index: 10000;
+    animation: slideIn 0.3s ease;
+    max-width: 400px;
+    background: #1a1a2e;
+    border: 1px solid #2d2d44;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+}
+
+.risk-alert-notification.warning {
+    border-left: 4px solid #fdcb6e;
+}
+
+.risk-alert-notification.high {
+    border-left: 4px solid #e17055;
+}
+
+.risk-alert-notification.critical {
+    border-left: 4px solid #ff6b6b;
+}
+
+.risk-alert-notification i {
+    font-size: 20px;
+    color: #fdcb6e;
+}
+
+.notification-content {
+    flex: 1;
+}
+
+.notification-title {
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.notification-message {
+    font-size: 12px;
+    opacity: 0.8;
+}
+
+.risk-alert-notification button {
+    background: transparent;
+    border: none;
+    color: #74b9ff;
+    font-size: 18px;
+    cursor: pointer;
+    opacity: 0.5;
+}
+
+.risk-alert-notification.fade-out {
+    opacity: 0;
+    transform: translateX(100px);
+    transition: all 0.5s ease;
+}
+
+/* Risk Footer */
+.risk-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid #2d2d44;
+    font-size: 12px;
+    color: #74b9ff;
+    opacity: 0.6;
+}
+
+.risk-nexus-branding {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.nexus-copyright {
+    font-size: 10px;
+    opacity: 0.5;
+}
+
+.nexus-version {
+    color: #00d4ff;
+    font-size: 10px;
+    font-weight: 600;
+}
+
+.risk-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+.status-dot.connected {
+    background: #00b894;
+}
+
+.status-dot.disconnected {
+    background: #ff6b6b;
+}
+
+.status-dot.error {
+    background: #ff6b6b;
+    animation: blink 0.5s infinite;
+}
+
+/* Animations */
+@keyframes slideIn {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.2; }
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .risk-summary-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    .risk-metrics-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    .risk-charts-row {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .risk-container {
+        padding: 16px;
+    }
+    
+    .risk-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .risk-title-section {
+        flex-wrap: wrap;
+    }
+    
+    .risk-actions {
+        justify-content: stretch;
+    }
+    
+    .risk-actions button {
+        flex: 1;
+        justify-content: center;
+    }
+    
+    .risk-summary-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .risk-metrics-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .risk-positions-header {
+        flex-direction: column;
+        gap: 8px;
+        align-items: stretch;
+    }
+}
+
+@media (max-width: 480px) {
+    .risk-summary-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .risk-metrics-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .summary-value {
+        font-size: 18px;
+    }
+}
+</style>
+{% endblock %}
