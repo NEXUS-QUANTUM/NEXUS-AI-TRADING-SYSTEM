@@ -1,0 +1,1365 @@
+<!-- trading/bots/hedge_bot/templates/partials/alerts.html -->
+
+<!--
+NEXUS AI TRADING SYSTEM - Hedge Bot Alerts Partial
+Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+
+Real-time alerts system with WebSocket integration, severity-based styling,
+and interactive alert management.
+-->
+
+{% load static %}
+{% load nexus_tags %}
+
+<div id="alerts-container" class="alerts-container" data-user-id="{{ user_id|default:'current' }}">
+    
+    <!-- Alerts Header -->
+    <div class="alerts-header">
+        <div class="alerts-title-section">
+            <div class="alerts-logo-container">
+                <img src="{% static 'images/nexus-logo-light.svg' %}" 
+                     alt="NEXUS Logo" 
+                     class="alerts-logo"
+                     onerror="this.src='{% static 'images/nexus-favicon.svg' %}'">
+                <span class="alerts-brand">NEXUS</span>
+            </div>
+            <h3 class="alerts-title">Alerts & Notifications</h3>
+            <span class="alerts-count" id="alerts-count-total">0</span>
+        </div>
+        <div class="alerts-controls">
+            <div class="alerts-filters">
+                <button class="alert-filter-btn active" data-filter="all" onclick="filterAlerts('all')">All</button>
+                <button class="alert-filter-btn" data-filter="critical" onclick="filterAlerts('critical')">
+                    <span class="filter-dot critical"></span> Critical
+                </button>
+                <button class="alert-filter-btn" data-filter="high" onclick="filterAlerts('high')">
+                    <span class="filter-dot high"></span> High
+                </button>
+                <button class="alert-filter-btn" data-filter="medium" onclick="filterAlerts('medium')">
+                    <span class="filter-dot medium"></span> Medium
+                </button>
+                <button class="alert-filter-btn" data-filter="low" onclick="filterAlerts('low')">
+                    <span class="filter-dot low"></span> Low
+                </button>
+                <button class="alert-filter-btn" data-filter="info" onclick="filterAlerts('info')">
+                    <span class="filter-dot info"></span> Info
+                </button>
+            </div>
+            <div class="alerts-actions">
+                <button class="alerts-action-btn" onclick="markAllAlertsRead()" title="Mark all as read">
+                    <i class="fas fa-check-double"></i>
+                </button>
+                <button class="alerts-action-btn" onclick="clearAlerts()" title="Clear all alerts">
+                    <i class="fas fa-trash-alt"></i>
+                </button>
+                <button class="alerts-action-btn" onclick="toggleAlertsSound()" title="Toggle sound">
+                    <i class="fas fa-volume-up" id="alerts-sound-icon"></i>
+                </button>
+                <div class="live-indicator" id="alerts-live-indicator">
+                    <span class="live-dot"></span>
+                    <span class="live-label">LIVE</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Alerts List -->
+    <div class="alerts-list" id="alerts-list">
+        <div class="alerts-loading" id="alerts-loading">
+            <div class="spinner"></div>
+            <span>Loading alerts...</span>
+        </div>
+        <div class="alerts-empty" id="alerts-empty" style="display:none;">
+            <i class="fas fa-check-circle"></i>
+            <span>No alerts to display</span>
+            <span class="empty-subtitle">All clear! You're up to date.</span>
+        </div>
+        <div id="alerts-items" class="alerts-items"></div>
+    </div>
+
+    <!-- Alerts Footer -->
+    <div class="alerts-footer">
+        <div class="alerts-nexus-branding">
+            <span class="nexus-copyright">© 2026 NEXUS QUANTUM LTD</span>
+            <span class="nexus-version">v{{ nexus_version|default:'3.0.0' }}</span>
+        </div>
+        <div class="alerts-stats">
+            <span id="alerts-stats-unread">0 unread</span>
+            <span id="alerts-stats-total">0 total</span>
+        </div>
+        <div class="alerts-status" id="alerts-status">
+            <span class="status-dot connected"></span>
+            <span class="status-label">Connected</span>
+        </div>
+    </div>
+</div>
+
+<script>
+// Complete Alerts System with Real WebSocket Integration
+
+(function() {
+    'use strict';
+
+    class AlertsSystem {
+        constructor() {
+            this.container = document.getElementById('alerts-container');
+            if (!this.container) return;
+            
+            this.userId = this.container.dataset.userId || 'current';
+            this.alerts = [];
+            this.filter = 'all';
+            this.soundEnabled = true;
+            this.isLive = true;
+            this.ws = null;
+            this.connectionRetries = 0;
+            this.maxRetries = 5;
+            this.unreadCount = 0;
+            
+            // DOM Elements
+            this.list = document.getElementById('alerts-items');
+            this.loading = document.getElementById('alerts-loading');
+            this.empty = document.getElementById('alerts-empty');
+            this.totalCount = document.getElementById('alerts-count-total');
+            this.unreadStats = document.getElementById('alerts-stats-unread');
+            this.totalStats = document.getElementById('alerts-stats-total');
+            this.status = document.getElementById('alerts-status');
+            this.soundIcon = document.getElementById('alerts-sound-icon');
+            
+            // Sound files
+            this.sounds = {
+                critical: '/static/audio/alert-critical.mp3',
+                high: '/static/audio/alert-high.mp3',
+                medium: '/static/audio/alert-medium.mp3',
+                low: '/static/audio/alert-low.mp3',
+                info: '/static/audio/alert-info.mp3'
+            };
+            
+            this.init();
+        }
+        
+        init() {
+            this.setupEventListeners();
+            this.initializeWebSocket();
+            this.loadAlerts();
+            this.startAutoRefresh();
+        }
+        
+        setupEventListeners() {
+            // Keyboard shortcuts
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    // Close alert details
+                }
+                if ((e.ctrlKey || e.metaKey) && e.key === 'a') {
+                    e.preventDefault();
+                    markAllAlertsRead();
+                }
+            });
+        }
+        
+        initializeWebSocket() {
+            const wsProtocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsUrl = `${wsProtocol}//${window.location.host}/ws/alerts/${this.userId}`;
+            
+            try {
+                if (this.ws) {
+                    this.ws.close();
+                }
+                
+                this.ws = new WebSocket(wsUrl);
+                
+                this.ws.onopen = () => {
+                    this.connectionRetries = 0;
+                    this.updateStatus('connected', 'Connected');
+                    this.sendSubscription();
+                };
+                
+                this.ws.onmessage = (event) => {
+                    try {
+                        const data = JSON.parse(event.data);
+                        this.handleWebSocketMessage(data);
+                    } catch (e) {
+                        console.error('WebSocket message parse error:', e);
+                    }
+                };
+                
+                this.ws.onclose = () => {
+                    this.updateStatus('disconnected', 'Disconnected');
+                    this.reconnectWebSocket();
+                };
+                
+                this.ws.onerror = (error) => {
+                    console.error('WebSocket error:', error);
+                    this.updateStatus('error', 'Error');
+                };
+            } catch (error) {
+                console.error('WebSocket connection failed:', error);
+                this.updateStatus('error', 'Error');
+                this.reconnectWebSocket();
+            }
+        }
+        
+        reconnectWebSocket() {
+            if (this.connectionRetries < this.maxRetries) {
+                this.connectionRetries++;
+                const delay = Math.min(1000 * Math.pow(2, this.connectionRetries), 30000);
+                setTimeout(() => {
+                    if (this.isLive) {
+                        this.initializeWebSocket();
+                    }
+                }, delay);
+            }
+        }
+        
+        sendSubscription() {
+            if (this.ws && this.ws.readyState === WebSocket.OPEN) {
+                this.ws.send(JSON.stringify({
+                    type: 'subscribe_alerts',
+                    userId: this.userId
+                }));
+            }
+        }
+        
+        handleWebSocketMessage(data) {
+            if (data.type === 'alert') {
+                this.addAlert(data);
+            } else if (data.type === 'alerts_update') {
+                this.updateAlerts(data.alerts);
+            } else if (data.type === 'alert_read') {
+                this.markAlertRead(data.alertId);
+            } else if (data.type === 'heartbeat') {
+                // Keep connection alive
+            }
+        }
+        
+        addAlert(alert) {
+            // Check for duplicates
+            const exists = this.alerts.some(a => a.id === alert.id);
+            if (exists) return;
+            
+            // Add to list
+            this.alerts.unshift(alert);
+            if (this.alerts.length > 500) {
+                this.alerts = this.alerts.slice(0, 500);
+            }
+            
+            // Update counts
+            if (!alert.read) {
+                this.unreadCount++;
+            }
+            
+            // Render
+            this.renderAlerts();
+            this.updateCounts();
+            
+            // Play sound
+            if (this.soundEnabled && alert.severity) {
+                this.playAlertSound(alert.severity);
+            }
+            
+            // Show notification
+            this.showBrowserNotification(alert);
+            
+            // Auto dismiss after 30 seconds
+            setTimeout(() => {
+                const element = document.querySelector(`[data-alert-id="${alert.id}"]`);
+                if (element && alert.autoDismiss !== false) {
+                    element.classList.add('dismissing');
+                    setTimeout(() => {
+                        if (element.parentNode) {
+                            element.remove();
+                        }
+                    }, 500);
+                }
+            }, 30000);
+        }
+        
+        updateAlerts(alerts) {
+            this.alerts = alerts;
+            this.unreadCount = alerts.filter(a => !a.read).length;
+            this.renderAlerts();
+            this.updateCounts();
+        }
+        
+        markAlertRead(alertId) {
+            const alert = this.alerts.find(a => a.id === alertId);
+            if (alert && !alert.read) {
+                alert.read = true;
+                this.unreadCount = Math.max(0, this.unreadCount - 1);
+                this.renderAlerts();
+                this.updateCounts();
+                
+                // Send read confirmation
+                if (this.ws && this.ws.readyState === WebSocket.OPEN) {
+                    this.ws.send(JSON.stringify({
+                        type: 'mark_read',
+                        alertId: alertId
+                    }));
+                }
+            }
+        }
+        
+        markAllAlertsRead() {
+            this.alerts.forEach(alert => {
+                if (!alert.read) {
+                    alert.read = true;
+                }
+            });
+            this.unreadCount = 0;
+            this.renderAlerts();
+            this.updateCounts();
+            
+            if (this.ws && this.ws.readyState === WebSocket.OPEN) {
+                this.ws.send(JSON.stringify({
+                    type: 'mark_all_read'
+                }));
+            }
+        }
+        
+        clearAlerts() {
+            if (confirm('Clear all alerts?')) {
+                this.alerts = [];
+                this.unreadCount = 0;
+                this.renderAlerts();
+                this.updateCounts();
+                
+                if (this.ws && this.ws.readyState === WebSocket.OPEN) {
+                    this.ws.send(JSON.stringify({
+                        type: 'clear_alerts'
+                    }));
+                }
+            }
+        }
+        
+        filterAlerts(severity) {
+            this.filter = severity;
+            document.querySelectorAll('.alert-filter-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.filter === severity);
+            });
+            this.renderAlerts();
+        }
+        
+        renderAlerts() {
+            const filtered = this.filter === 'all' 
+                ? this.alerts 
+                : this.alerts.filter(a => a.severity === this.filter);
+            
+            if (this.alerts.length === 0) {
+                this.loading.style.display = 'none';
+                this.empty.style.display = 'flex';
+                this.list.innerHTML = '';
+                return;
+            }
+            
+            this.loading.style.display = 'none';
+            this.empty.style.display = 'none';
+            
+            let html = '';
+            filtered.forEach(alert => {
+                const severityClass = alert.severity || 'info';
+                const icon = this.getAlertIcon(alert.severity);
+                const time = new Date(alert.timestamp).toLocaleString();
+                
+                html += `
+                    <div class="alert-item ${severityClass} ${alert.read ? 'read' : 'unread'}" 
+                         data-alert-id="${alert.id}"
+                         data-severity="${alert.severity || 'info'}"
+                         onclick="viewAlert('${alert.id}')">
+                        <div class="alert-icon">
+                            <i class="fas ${icon}"></i>
+                        </div>
+                        <div class="alert-content">
+                            <div class="alert-header">
+                                <span class="alert-title">${alert.title || 'Alert'}</span>
+                                <span class="alert-time">${time}</span>
+                            </div>
+                            <div class="alert-message">${alert.message || ''}</div>
+                            ${alert.details ? `<div class="alert-details">${alert.details}</div>` : ''}
+                            <div class="alert-actions">
+                                ${alert.actionUrl ? `<a href="${alert.actionUrl}" class="alert-action-btn">${alert.actionLabel || 'View'}</a>` : ''}
+                                <button class="alert-dismiss-btn" onclick="dismissAlert('${alert.id}', event)">Dismiss</button>
+                            </div>
+                        </div>
+                        ${!alert.read ? '<span class="alert-unread-dot"></span>' : ''}
+                    </div>
+                `;
+            });
+            
+            this.list.innerHTML = html;
+        }
+        
+        getAlertIcon(severity) {
+            const icons = {
+                'critical': 'fa-exclamation-circle',
+                'high': 'fa-exclamation-triangle',
+                'medium': 'fa-exclamation-triangle',
+                'low': 'fa-info-circle',
+                'info': 'fa-info-circle'
+            };
+            return icons[severity] || 'fa-bell';
+        }
+        
+        getSeverityLabel(severity) {
+            const labels = {
+                'critical': 'Critical',
+                'high': 'High',
+                'medium': 'Medium',
+                'low': 'Low',
+                'info': 'Info'
+            };
+            return labels[severity] || severity;
+        }
+        
+        updateCounts() {
+            const total = this.alerts.length;
+            const unread = this.unreadCount;
+            
+            if (this.totalCount) {
+                this.totalCount.textContent = total;
+                this.totalCount.style.display = total > 0 ? 'inline' : 'none';
+            }
+            
+            if (this.unreadStats) {
+                this.unreadStats.textContent = `${unread} unread`;
+            }
+            
+            if (this.totalStats) {
+                this.totalStats.textContent = `${total} total`;
+            }
+            
+            // Update favicon badge
+            this.updateFaviconBadge(unread);
+        }
+        
+        updateFaviconBadge(count) {
+            const favicon = document.querySelector('link[rel="icon"]');
+            if (!favicon) return;
+            
+            if (count > 0) {
+                // Create canvas for badge
+                const canvas = document.createElement('canvas');
+                canvas.width = 32;
+                canvas.height = 32;
+                const ctx = canvas.getContext('2d');
+                
+                // Load favicon and draw badge
+                const img = new Image();
+                img.onload = () => {
+                    ctx.drawImage(img, 0, 0, 32, 32);
+                    ctx.fillStyle = '#ff6b6b';
+                    ctx.beginPath();
+                    ctx.arc(24, 8, 8, 0, 2 * Math.PI);
+                    ctx.fill();
+                    ctx.fillStyle = '#ffffff';
+                    ctx.font = 'bold 10px Arial';
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillText(Math.min(count, 99).toString(), 24, 9);
+                    
+                    favicon.href = canvas.toDataURL('image/png');
+                };
+                img.src = favicon.href;
+            } else {
+                // Restore original favicon
+                favicon.href = '/static/images/nexus-favicon.svg';
+            }
+        }
+        
+        playAlertSound(severity) {
+            const soundFile = this.sounds[severity] || this.sounds.info;
+            const audio = new Audio(soundFile);
+            audio.volume = 0.5;
+            audio.play().catch(() => {
+                // Ignore autoplay restrictions
+            });
+        }
+        
+        showBrowserNotification(alert) {
+            if (!('Notification' in window) || Notification.permission !== 'granted') {
+                return;
+            }
+            
+            const options = {
+                body: alert.message || '',
+                icon: '/static/images/nexus-favicon.png',
+                tag: alert.id,
+                data: alert
+            };
+            
+            const notification = new Notification(
+                `NEXUS Alert: ${alert.title || 'Alert'}`,
+                options
+            );
+            
+            notification.onclick = () => {
+                if (alert.actionUrl) {
+                    window.open(alert.actionUrl, '_blank');
+                }
+                notification.close();
+            };
+            
+            setTimeout(() => notification.close(), 5000);
+        }
+        
+        loadAlerts() {
+            fetch(`/api/alerts?userId=${this.userId}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.alerts) {
+                        this.updateAlerts(data.alerts);
+                        this.updateStatus('connected', 'Connected');
+                    }
+                })
+                .catch(error => {
+                    console.error('Failed to load alerts:', error);
+                    this.updateStatus('error', 'Error');
+                });
+        }
+        
+        startAutoRefresh() {
+            setInterval(() => {
+                if (this.isLive) {
+                    this.loadAlerts();
+                }
+            }, 30000);
+        }
+        
+        updateStatus(status, label) {
+            if (!this.status) return;
+            const dot = this.status.querySelector('.status-dot');
+            const labelEl = this.status.querySelector('.status-label');
+            
+            if (dot) {
+                dot.className = `status-dot ${status}`;
+            }
+            if (labelEl) {
+                labelEl.textContent = label;
+            }
+        }
+        
+        toggleSound() {
+            this.soundEnabled = !this.soundEnabled;
+            if (this.soundIcon) {
+                this.soundIcon.className = `fas fa-${this.soundEnabled ? 'volume-up' : 'volume-mute'}`;
+            }
+        }
+    }
+    
+    // Global functions
+    window.viewAlert = function(alertId) {
+        const alert = window.alertsSystem?.alerts?.find(a => a.id === alertId);
+        if (alert) {
+            // Mark as read
+            window.alertsSystem.markAlertRead(alertId);
+            
+            // Show details modal or navigate
+            if (alert.actionUrl) {
+                window.open(alert.actionUrl, '_blank');
+            } else {
+                showAlertDetails(alert);
+            }
+        }
+    };
+    
+    window.dismissAlert = function(alertId, event) {
+        if (event) {
+            event.stopPropagation();
+        }
+        const element = document.querySelector(`[data-alert-id="${alertId}"]`);
+        if (element) {
+            element.classList.add('dismissing');
+            setTimeout(() => {
+                if (element.parentNode) {
+                    element.remove();
+                }
+            }, 500);
+        }
+        
+        if (window.alertsSystem) {
+            window.alertsSystem.markAlertRead(alertId);
+        }
+    };
+    
+    window.filterAlerts = function(severity) {
+        if (window.alertsSystem) {
+            window.alertsSystem.filterAlerts(severity);
+        }
+    };
+    
+    window.markAllAlertsRead = function() {
+        if (window.alertsSystem) {
+            window.alertsSystem.markAllAlertsRead();
+        }
+    };
+    
+    window.clearAlerts = function() {
+        if (window.alertsSystem) {
+            window.alertsSystem.clearAlerts();
+        }
+    };
+    
+    window.toggleAlertsSound = function() {
+        if (window.alertsSystem) {
+            window.alertsSystem.toggleSound();
+        }
+    };
+    
+    window.showAlertDetails = function(alert) {
+        // Create detail modal
+        const modal = document.createElement('div');
+        modal.className = 'alert-detail-modal';
+        modal.innerHTML = `
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title-section">
+                        <span class="alert-severity ${alert.severity || 'info'}">
+                            ${window.alertsSystem?.getSeverityLabel(alert.severity) || 'Info'}
+                        </span>
+                        <h3>${alert.title || 'Alert Details'}</h3>
+                    </div>
+                    <button onclick="this.closest('.alert-detail-modal').remove()">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="alert-detail-message">${alert.message || ''}</div>
+                    ${alert.details ? `<div class="alert-detail-data">${alert.details}</div>` : ''}
+                    ${alert.data ? `<pre class="alert-detail-json">${JSON.stringify(alert.data, null, 2)}</pre>` : ''}
+                    <div class="alert-detail-meta">
+                        <span>ID: ${alert.id}</span>
+                        <span>Time: ${new Date(alert.timestamp).toLocaleString()}</span>
+                        ${alert.source ? `<span>Source: ${alert.source}</span>` : ''}
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    ${alert.actionUrl ? `<a href="${alert.actionUrl}" class="action-btn primary">${alert.actionLabel || 'View'}</a>` : ''}
+                    <button onclick="this.closest('.alert-detail-modal').remove()">Close</button>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+    };
+    
+    // Initialize on DOM ready
+    document.addEventListener('DOMContentLoaded', function() {
+        // Request notification permission
+        if ('Notification' in window && Notification.permission === 'default') {
+            Notification.requestPermission();
+        }
+        
+        const alertsSystem = new AlertsSystem();
+        window.alertsSystem = alertsSystem;
+    });
+    
+    // Expose AlertsSystem for dynamic initialization
+    window.AlertsSystem = AlertsSystem;
+    
+})();
+</script>
+
+<style>
+/* Alerts Styles - Full Implementation with Nexus Branding */
+.alerts-container {
+    background: #1a1a2e;
+    border-radius: 12px;
+    border: 1px solid #2d2d44;
+    padding: 16px;
+    margin-bottom: 20px;
+    min-height: 300px;
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+}
+
+.alerts-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.alerts-title-section {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.alerts-logo-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.alerts-logo {
+    height: 28px;
+    width: auto;
+}
+
+.alerts-brand {
+    color: #00d4ff;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.alerts-title {
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0;
+}
+
+.alerts-count {
+    background: #ff6b6b;
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 2px 10px;
+    border-radius: 12px;
+    min-width: 20px;
+    text-align: center;
+    display: none;
+}
+
+.alerts-controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.alerts-filters {
+    display: flex;
+    gap: 4px;
+    background: #2d2d44;
+    border-radius: 8px;
+    padding: 4px;
+}
+
+.alert-filter-btn {
+    background: transparent;
+    border: none;
+    color: #74b9ff;
+    padding: 4px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.alert-filter-btn:hover {
+    background: rgba(116, 185, 255, 0.1);
+}
+
+.alert-filter-btn.active {
+    background: #74b9ff;
+    color: #1a1a2e;
+}
+
+.filter-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.filter-dot.critical { background: #ff6b6b; }
+.filter-dot.high { background: #e17055; }
+.filter-dot.medium { background: #fdcb6e; }
+.filter-dot.low { background: #74b9ff; }
+.filter-dot.info { background: #00b894; }
+
+.alerts-actions {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.alerts-action-btn {
+    background: transparent;
+    border: none;
+    color: #74b9ff;
+    padding: 6px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.alerts-action-btn:hover {
+    background: rgba(116, 185, 255, 0.1);
+}
+
+.live-indicator {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(0, 184, 148, 0.15);
+    padding: 4px 10px;
+    border-radius: 16px;
+    border: 1px solid rgba(0, 184, 148, 0.3);
+}
+
+.live-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #00b894;
+    animation: pulse 1.5s infinite;
+}
+
+.live-label {
+    color: #00b894;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.alerts-list {
+    min-height: 200px;
+    position: relative;
+}
+
+.alerts-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    color: #74b9ff;
+    gap: 12px;
+}
+
+.alerts-loading .spinner {
+    width: 30px;
+    height: 30px;
+    border: 2px solid #2d2d44;
+    border-top-color: #74b9ff;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+.alerts-empty {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    color: #74b9ff;
+    gap: 8px;
+}
+
+.alerts-empty i {
+    font-size: 48px;
+    color: #00b894;
+}
+
+.alerts-empty span {
+    font-size: 16px;
+}
+
+.alerts-empty .empty-subtitle {
+    font-size: 13px;
+    opacity: 0.5;
+}
+
+.alerts-items {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.alert-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 16px;
+    border-radius: 8px;
+    background: #2d2d44;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    position: relative;
+    border-left: 3px solid #2d2d44;
+}
+
+.alert-item:hover {
+    background: #3d3d5a;
+    transform: translateX(4px);
+}
+
+.alert-item.critical {
+    border-left-color: #ff6b6b;
+    background: rgba(255, 107, 107, 0.08);
+}
+
+.alert-item.high {
+    border-left-color: #e17055;
+    background: rgba(225, 112, 85, 0.08);
+}
+
+.alert-item.medium {
+    border-left-color: #fdcb6e;
+    background: rgba(253, 203, 110, 0.08);
+}
+
+.alert-item.low {
+    border-left-color: #74b9ff;
+    background: rgba(116, 185, 255, 0.08);
+}
+
+.alert-item.info {
+    border-left-color: #00b894;
+    background: rgba(0, 184, 148, 0.08);
+}
+
+.alert-item.dismissing {
+    opacity: 0;
+    transform: translateX(100px);
+    transition: all 0.5s ease;
+}
+
+.alert-item.read {
+    opacity: 0.7;
+}
+
+.alert-item.unread {
+    border-left-width: 4px;
+}
+
+.alert-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    background: rgba(116, 185, 255, 0.1);
+    color: #74b9ff;
+}
+
+.alert-item.critical .alert-icon {
+    background: rgba(255, 107, 107, 0.2);
+    color: #ff6b6b;
+}
+
+.alert-item.high .alert-icon {
+    background: rgba(225, 112, 85, 0.2);
+    color: #e17055;
+}
+
+.alert-item.medium .alert-icon {
+    background: rgba(253, 203, 110, 0.2);
+    color: #fdcb6e;
+}
+
+.alert-item.info .alert-icon {
+    background: rgba(0, 184, 148, 0.2);
+    color: #00b894;
+}
+
+.alert-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.alert-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 4px;
+    gap: 12px;
+}
+
+.alert-title {
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.alert-time {
+    color: #74b9ff;
+    font-size: 11px;
+    opacity: 0.5;
+    white-space: nowrap;
+}
+
+.alert-message {
+    color: #74b9ff;
+    font-size: 13px;
+    opacity: 0.8;
+    margin-bottom: 4px;
+}
+
+.alert-details {
+    color: #74b9ff;
+    font-size: 12px;
+    opacity: 0.6;
+    margin-top: 4px;
+    padding: 8px 12px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+}
+
+.alert-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.alert-action-btn {
+    padding: 4px 12px;
+    background: #74b9ff;
+    color: #1a1a2e;
+    border: none;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.alert-action-btn:hover {
+    background: #74b9ff;
+    transform: scale(1.05);
+}
+
+.alert-dismiss-btn {
+    padding: 4px 12px;
+    background: transparent;
+    color: #74b9ff;
+    border: 1px solid #4d4d6a;
+    border-radius: 4px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.alert-dismiss-btn:hover {
+    background: #4d4d6a;
+}
+
+.alert-unread-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #74b9ff;
+    flex-shrink: 0;
+    margin-top: 8px;
+}
+
+.alert-item.critical .alert-unread-dot {
+    background: #ff6b6b;
+}
+
+.alert-item.high .alert-unread-dot {
+    background: #e17055;
+}
+
+.alert-item.medium .alert-unread-dot {
+    background: #fdcb6e;
+}
+
+.alert-detail-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10001;
+    animation: fadeIn 0.3s ease;
+}
+
+.alert-detail-modal .modal-content {
+    background: #1a1a2e;
+    border: 1px solid #2d2d44;
+    border-radius: 12px;
+    padding: 24px;
+    max-width: 600px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.alert-detail-modal .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #2d2d44;
+}
+
+.alert-detail-modal .modal-header h3 {
+    color: #ffffff;
+    margin: 0;
+}
+
+.alert-detail-modal .modal-header button {
+    background: transparent;
+    border: none;
+    color: #74b9ff;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.alert-severity {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.alert-severity.critical {
+    background: rgba(255, 107, 107, 0.2);
+    color: #ff6b6b;
+}
+
+.alert-severity.high {
+    background: rgba(225, 112, 85, 0.2);
+    color: #e17055;
+}
+
+.alert-severity.medium {
+    background: rgba(253, 203, 110, 0.2);
+    color: #fdcb6e;
+}
+
+.alert-severity.low {
+    background: rgba(116, 185, 255, 0.2);
+    color: #74b9ff;
+}
+
+.alert-severity.info {
+    background: rgba(0, 184, 148, 0.2);
+    color: #00b894;
+}
+
+.alert-detail-message {
+    color: #ffffff;
+    font-size: 15px;
+    margin-bottom: 12px;
+}
+
+.alert-detail-data {
+    color: #74b9ff;
+    font-size: 13px;
+    margin-bottom: 12px;
+    padding: 12px;
+    background: #2d2d44;
+    border-radius: 6px;
+}
+
+.alert-detail-json {
+    color: #74b9ff;
+    font-size: 12px;
+    margin-bottom: 12px;
+    padding: 12px;
+    background: #131722;
+    border-radius: 6px;
+    overflow-x: auto;
+    font-family: 'Courier New', monospace;
+}
+
+.alert-detail-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    font-size: 11px;
+    color: #74b9ff;
+    opacity: 0.5;
+}
+
+.alert-detail-modal .modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 16px;
+    padding-top: 12px;
+    border-top: 1px solid #2d2d44;
+}
+
+.alert-detail-modal .modal-footer .action-btn {
+    padding: 8px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.alert-detail-modal .modal-footer .action-btn.primary {
+    background: #74b9ff;
+    color: #1a1a2e;
+}
+
+.alert-detail-modal .modal-footer .action-btn.primary:hover {
+    transform: scale(1.05);
+}
+
+.alert-detail-modal .modal-footer button:not(.action-btn) {
+    padding: 8px 20px;
+    background: transparent;
+    color: #74b9ff;
+    border: 1px solid #4d4d6a;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.alert-detail-modal .modal-footer button:not(.action-btn):hover {
+    background: #4d4d6a;
+}
+
+.alerts-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 12px;
+    padding-top: 8px;
+    border-top: 1px solid #2d2d44;
+    font-size: 11px;
+    color: #74b9ff;
+    opacity: 0.6;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.alerts-nexus-branding {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.nexus-copyright {
+    color: #74b9ff;
+    font-size: 10px;
+    opacity: 0.5;
+}
+
+.nexus-version {
+    color: #00d4ff;
+    font-size: 10px;
+    font-weight: 600;
+}
+
+.alerts-stats {
+    display: flex;
+    gap: 16px;
+}
+
+.alerts-stats span {
+    font-size: 11px;
+}
+
+.alerts-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+.status-dot.connected {
+    background: #00b894;
+}
+
+.status-dot.disconnected {
+    background: #ff6b6b;
+}
+
+.status-dot.error {
+    background: #ff6b6b;
+    animation: blink 0.5s infinite;
+}
+
+/* Animations */
+@keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.3; transform: scale(0.8); }
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes slideIn {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .alerts-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .alerts-controls {
+        flex-wrap: wrap;
+    }
+    
+    .alerts-filters {
+        overflow-x: auto;
+        flex-wrap: nowrap;
+    }
+    
+    .alert-item {
+        padding: 10px 12px;
+    }
+    
+    .alert-header {
+        flex-wrap: wrap;
+    }
+    
+    .alert-detail-modal .modal-content {
+        width: 95%;
+        margin: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .alerts-title-section {
+        flex-wrap: wrap;
+    }
+    
+    .alerts-actions {
+        flex-wrap: wrap;
+    }
+    
+    .alert-item {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .alert-icon {
+        width: 24px;
+        height: 24px;
+        font-size: 12px;
+    }
+    
+    .alert-unread-dot {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+    }
+    
+    .alert-detail-modal .modal-content {
+        padding: 16px;
+    }
+}
+</style>
