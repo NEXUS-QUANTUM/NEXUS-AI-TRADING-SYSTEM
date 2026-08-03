@@ -1,0 +1,2181 @@
+<!-- trading/bots/hedge_bot/templates/partials/header.html -->
+
+<!--
+NEXUS AI TRADING SYSTEM - Hedge Bot Header Partial
+Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+
+Complete header implementation with real-time data, navigation,
+user authentication, and interactive widgets.
+-->
+
+{% load static %}
+{% load nexus_tags %}
+
+<header id="nexus-header" class="nexus-header" 
+        data-user-id="{{ user_id|default:'current' }}"
+        data-refresh-interval="{{ refresh_interval|default:15 }}"
+        data-theme="{{ theme|default:'dark' }}">
+
+    <!-- Header Main Content -->
+    <div class="header-container">
+        
+        <!-- Header Left - Logo & Brand -->
+        <div class="header-left">
+            <div class="header-brand">
+                <a href="/dashboard/" class="brand-link">
+                    <img src="{% static 'images/nexus-logo-light.svg' %}" 
+                         alt="NEXUS Logo" 
+                         class="header-logo"
+                         onerror="this.src='{% static 'images/nexus-favicon.svg' %}'">
+                    <div class="brand-text">
+                        <span class="brand-name">NEXUS</span>
+                        <span class="brand-sub">AI Trading System</span>
+                    </div>
+                </a>
+            </div>
+            <button class="header-menu-toggle" id="header-menu-toggle" aria-label="Toggle menu">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+
+        <!-- Header Center - Navigation -->
+        <nav class="header-nav" id="header-nav">
+            <ul class="nav-list">
+                <li class="nav-item">
+                    <a href="/dashboard/" class="nav-link active" data-page="dashboard">
+                        <i class="fas fa-th-large"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/trading/" class="nav-link" data-page="trading">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Trading</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/portfolio/" class="nav-link" data-page="portfolio">
+                        <i class="fas fa-wallet"></i>
+                        <span>Portfolio</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/risk/" class="nav-link" data-page="risk">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>Risk</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/analytics/" class="nav-link" data-page="analytics">
+                        <i class="fas fa-chart-pie"></i>
+                        <span>Analytics</span>
+                    </a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/settings/general/" class="dropdown-item">General</a></li>
+                        <li><a href="/settings/trading/" class="dropdown-item">Trading</a></li>
+                        <li><a href="/settings/risk/" class="dropdown-item">Risk</a></li>
+                        <li><a href="/settings/notifications/" class="dropdown-item">Notifications</a></li>
+                        <li><a href="/settings/api/" class="dropdown-item">API Keys</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a href="/settings/security/" class="dropdown-item">Security</a></li>
+                        <li><a href="/settings/advanced/" class="dropdown-item">Advanced</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Header Right - User & Actions -->
+        <div class="header-right">
+            <!-- Search -->
+            <div class="header-search">
+                <button class="search-toggle" id="search-toggle" aria-label="Search">
+                    <i class="fas fa-search"></i>
+                </button>
+                <div class="search-container" id="search-container">
+                    <input type="text" 
+                           class="search-input" 
+                           id="header-search-input" 
+                           placeholder="Search assets, strategies, orders..." 
+                           autocomplete="off">
+                    <div class="search-results" id="search-results"></div>
+                </div>
+            </div>
+
+            <!-- Exchange Selector -->
+            <div class="header-exchange">
+                <button class="exchange-toggle" id="exchange-toggle">
+                    <img src="{% static 'logos/binance-logo.png' %}" 
+                         alt="Binance" 
+                         class="exchange-icon"
+                         id="header-exchange-icon"
+                         onerror="this.style.display='none'">
+                    <span id="header-exchange-name">Binance</span>
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="exchange-dropdown" id="exchange-dropdown">
+                    <div class="exchange-item" data-exchange="binance">
+                        <img src="{% static 'logos/binance-logo.png' %}" alt="Binance">
+                        <span>Binance</span>
+                        <span class="exchange-status online"></span>
+                    </div>
+                    <div class="exchange-item" data-exchange="bybit">
+                        <img src="{% static 'logos/bybit-logo.png' %}" alt="Bybit">
+                        <span>Bybit</span>
+                        <span class="exchange-status online"></span>
+                    </div>
+                    <div class="exchange-item" data-exchange="kraken">
+                        <img src="{% static 'logos/kraken-logo.png' %}" alt="Kraken">
+                        <span>Kraken</span>
+                        <span class="exchange-status online"></span>
+                    </div>
+                    <div class="exchange-item" data-exchange="coinbase">
+                        <img src="{% static 'logos/coinbase-logo.png' %}" alt="Coinbase">
+                        <span>Coinbase</span>
+                        <span class="exchange-status online"></span>
+                    </div>
+                    <div class="exchange-item" data-exchange="ftx">
+                        <img src="{% static 'logos/ftx-logo.png' %}" alt="FTX">
+                        <span>FTX</span>
+                        <span class="exchange-status offline"></span>
+                    </div>
+                    <div class="exchange-divider"></div>
+                    <div class="exchange-item" data-exchange="custom">
+                        <i class="fas fa-plus"></i>
+                        <span>Add Exchange</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Notifications -->
+            <div class="header-notifications">
+                <button class="notifications-toggle" id="notifications-toggle" aria-label="Notifications">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-badge" id="header-notification-badge">0</span>
+                </button>
+                <div class="notifications-dropdown" id="notifications-dropdown">
+                    <div class="notifications-header">
+                        <span class="notifications-title">Notifications</span>
+                        <button class="notifications-mark-all" onclick="markAllNotificationsRead()">Mark all read</button>
+                    </div>
+                    <div class="notifications-list" id="notifications-list">
+                        <div class="notification-empty">
+                            <i class="fas fa-check-circle"></i>
+                            <span>No notifications</span>
+                        </div>
+                    </div>
+                    <div class="notifications-footer">
+                        <a href="/notifications/" class="notifications-view-all">View all notifications</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- User Profile -->
+            <div class="header-user">
+                <button class="user-toggle" id="user-toggle">
+                    <div class="user-avatar" id="user-avatar">
+                        <img src="{% static 'images/default-avatar.png' %}" 
+                             alt="User Avatar"
+                             onerror="this.src='{% static 'images/default-avatar.png' %}'">
+                        <span class="user-status online"></span>
+                    </div>
+                    <div class="user-info">
+                        <span class="user-name" id="header-user-name">{{ user_name|default:'Guest' }}</span>
+                        <span class="user-role" id="header-user-role">{{ user_role|default:'Trader' }}</span>
+                    </div>
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="user-dropdown" id="user-dropdown">
+                    <div class="user-profile-header">
+                        <div class="user-profile-avatar">
+                            <img src="{% static 'images/default-avatar.png' %}" 
+                                 alt="User Avatar"
+                                 onerror="this.src='{% static 'images/default-avatar.png' %}'">
+                        </div>
+                        <div class="user-profile-info">
+                            <span class="user-profile-name" id="dropdown-user-name">{{ user_name|default:'Guest' }}</span>
+                            <span class="user-profile-email" id="dropdown-user-email">{{ user_email|default:'guest@nexus.com' }}</span>
+                        </div>
+                    </div>
+                    <div class="user-dropdown-divider"></div>
+                    <a href="/profile/" class="dropdown-item">
+                        <i class="fas fa-user-circle"></i> Profile
+                    </a>
+                    <a href="/settings/" class="dropdown-item">
+                        <i class="fas fa-cog"></i> Settings
+                    </a>
+                    <a href="/security/" class="dropdown-item">
+                        <i class="fas fa-lock"></i> Security
+                    </a>
+                    <a href="/api/" class="dropdown-item">
+                        <i class="fas fa-key"></i> API Access
+                    </a>
+                    <div class="user-dropdown-divider"></div>
+                    <a href="/support/" class="dropdown-item">
+                        <i class="fas fa-headset"></i> Support
+                    </a>
+                    <a href="/docs/" class="dropdown-item">
+                        <i class="fas fa-book"></i> Documentation
+                    </a>
+                    <a href="/changelog/" class="dropdown-item">
+                        <i class="fas fa-history"></i> Changelog
+                    </a>
+                    <div class="user-dropdown-divider"></div>
+                    <a href="/logout/" class="dropdown-item danger">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a>
+                </div>
+            </div>
+
+            <!-- Theme Toggle -->
+            <button class="header-theme-toggle" id="header-theme-toggle" aria-label="Toggle theme">
+                <i class="fas fa-moon" id="header-theme-icon"></i>
+            </button>
+
+            <!-- Live Status -->
+            <div class="header-live-status">
+                <span class="live-dot"></span>
+                <span class="live-label">LIVE</span>
+                <span class="live-time" id="header-live-time">--:--:--</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header Progress Bar -->
+    <div class="header-progress" id="header-progress">
+        <div class="progress-bar" id="header-progress-bar" style="width: 0%;"></div>
+    </div>
+
+</header>
+
+<script>
+// Complete Header Implementation with Real-time Data
+
+(function() {
+    'use strict';
+
+    class HeaderManager {
+        constructor() {
+            this.header = document.getElementById('nexus-header');
+            if (!this.header) return;
+            
+            this.userId = this.header.dataset.userId || 'current';
+            this.refreshInterval = parseInt(this.header.dataset.refreshInterval) || 15;
+            this.ws = null;
+            this.connectionRetries = 0;
+            this.maxRetries = 5;
+            this.isLive = true;
+            this.notificationCount = 0;
+            this.searchTimeout = null;
+            
+            // DOM Elements
+            this.navLinks = document.querySelectorAll('.nav-link');
+            this.menuToggle = document.getElementById('header-menu-toggle');
+            this.nav = document.getElementById('header-nav');
+            this.searchToggle = document.getElementById('search-toggle');
+            this.searchContainer = document.getElementById('search-container');
+            this.searchInput = document.getElementById('header-search-input');
+            this.searchResults = document.getElementById('search-results');
+            this.exchangeToggle = document.getElementById('exchange-toggle');
+            this.exchangeDropdown = document.getElementById('exchange-dropdown');
+            this.exchangeName = document.getElementById('header-exchange-name');
+            this.exchangeIcon = document.getElementById('header-exchange-icon');
+            this.notificationsToggle = document.getElementById('notifications-toggle');
+            this.notificationsDropdown = document.getElementById('notifications-dropdown');
+            this.notificationsList = document.getElementById('notifications-list');
+            this.notificationBadge = document.getElementById('header-notification-badge');
+            this.userToggle = document.getElementById('user-toggle');
+            this.userDropdown = document.getElementById('user-dropdown');
+            this.userName = document.getElementById('header-user-name');
+            this.userRole = document.getElementById('header-user-role');
+            this.themeToggle = document.getElementById('header-theme-toggle');
+            this.themeIcon = document.getElementById('header-theme-icon');
+            this.liveTime = document.getElementById('header-live-time');
+            this.progressBar = document.getElementById('header-progress-bar');
+            
+            this.init();
+        }
+        
+        init() {
+            this.setupEventListeners();
+            this.initializeWebSocket();
+            this.loadUserData();
+            this.loadNotifications();
+            this.updateLiveTime();
+            this.setupTheme();
+            this.setupSearch();
+            this.handleActivePage();
+            this.startAutoRefresh();
+        }
+        
+        setupEventListeners() {
+            // Menu toggle
+            if (this.menuToggle) {
+                this.menuToggle.addEventListener('click', () => {
+                    this.nav.classList.toggle('open');
+                    this.menuToggle.classList.toggle('active');
+                });
+            }
+            
+            // Search toggle
+            if (this.searchToggle) {
+                this.searchToggle.addEventListener('click', () => {
+                    this.searchContainer.classList.toggle('open');
+                    if (this.searchContainer.classList.contains('open')) {
+                        this.searchInput.focus();
+                    }
+                });
+            }
+            
+            // Search input
+            if (this.searchInput) {
+                this.searchInput.addEventListener('input', (e) => {
+                    clearTimeout(this.searchTimeout);
+                    this.searchTimeout = setTimeout(() => {
+                        this.performSearch(e.target.value);
+                    }, 300);
+                });
+                
+                this.searchInput.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape') {
+                        this.searchContainer.classList.remove('open');
+                        this.searchInput.blur();
+                    }
+                    if (e.key === 'Enter') {
+                        this.performSearch(this.searchInput.value);
+                    }
+                });
+                
+                // Close search on click outside
+                document.addEventListener('click', (e) => {
+                    if (!this.searchContainer.contains(e.target) && e.target !== this.searchToggle) {
+                        this.searchContainer.classList.remove('open');
+                    }
+                });
+            }
+            
+            // Exchange toggle
+            if (this.exchangeToggle) {
+                this.exchangeToggle.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    this.exchangeDropdown.classList.toggle('open');
+                });
+            }
+            
+            // Exchange items
+            document.querySelectorAll('.exchange-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    const exchange = item.dataset.exchange;
+                    if (exchange === 'custom') {
+                        this.showAddExchangeModal();
+                        return;
+                    }
+                    this.switchExchange(exchange);
+                    this.exchangeDropdown.classList.remove('open');
+                });
+            });
+            
+            // Close dropdowns on click outside
+            document.addEventListener('click', (e) => {
+                if (!this.exchangeToggle.contains(e.target) && !this.exchangeDropdown.contains(e.target)) {
+                    this.exchangeDropdown.classList.remove('open');
+                }
+                if (!this.notificationsToggle.contains(e.target) && !this.notificationsDropdown.contains(e.target)) {
+                    this.notificationsDropdown.classList.remove('open');
+                }
+                if (!this.userToggle.contains(e.target) && !this.userDropdown.contains(e.target)) {
+                    this.userDropdown.classList.remove('open');
+                }
+            });
+            
+            // Notifications toggle
+            if (this.notificationsToggle) {
+                this.notificationsToggle.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    this.notificationsDropdown.classList.toggle('open');
+                    if (this.notificationsDropdown.classList.contains('open')) {
+                        this.markNotificationsRead();
+                    }
+                });
+            }
+            
+            // User toggle
+            if (this.userToggle) {
+                this.userToggle.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    this.userDropdown.classList.toggle('open');
+                });
+            }
+            
+            // Theme toggle
+            if (this.themeToggle) {
+                this.themeToggle.addEventListener('click', this.toggleTheme.bind(this));
+            }
+            
+            // Navigation links
+            this.navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    this.setActivePage(link.dataset.page);
+                });
+            });
+            
+            // Keyboard shortcuts
+            document.addEventListener('keydown', (e) => {
+                if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                    e.preventDefault();
+                    this.searchContainer.classList.toggle('open');
+                    if (this.searchContainer.classList.contains('open')) {
+                        this.searchInput.focus();
+                    }
+                }
+                if (e.key === '/' && !e.ctrlKey && !e.metaKey) {
+                    if (!['INPUT', 'TEXTAREA'].includes(e.target.tagName)) {
+                        e.preventDefault();
+                        this.searchContainer.classList.add('open');
+                        this.searchInput.focus();
+                    }
+                }
+            });
+        }
+        
+        initializeWebSocket() {
+            const wsProtocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsUrl = `${wsProtocol}//${window.location.host}/ws/header/${this.userId}`;
+            
+            try {
+                if (this.ws) {
+                    this.ws.close();
+                }
+                
+                this.ws = new WebSocket(wsUrl);
+                
+                this.ws.onopen = () => {
+                    this.connectionRetries = 0;
+                    this.sendSubscription();
+                };
+                
+                this.ws.onmessage = (event) => {
+                    try {
+                        const data = JSON.parse(event.data);
+                        this.handleWebSocketMessage(data);
+                    } catch (e) {
+                        console.error('WebSocket message parse error:', e);
+                    }
+                };
+                
+                this.ws.onclose = () => {
+                    this.reconnectWebSocket();
+                };
+                
+                this.ws.onerror = (error) => {
+                    console.error('WebSocket error:', error);
+                };
+            } catch (error) {
+                console.error('WebSocket connection failed:', error);
+                this.reconnectWebSocket();
+            }
+        }
+        
+        reconnectWebSocket() {
+            if (this.connectionRetries < this.maxRetries) {
+                this.connectionRetries++;
+                const delay = Math.min(1000 * Math.pow(2, this.connectionRetries), 30000);
+                setTimeout(() => {
+                    if (this.isLive) {
+                        this.initializeWebSocket();
+                    }
+                }, delay);
+            }
+        }
+        
+        sendSubscription() {
+            if (this.ws && this.ws.readyState === WebSocket.OPEN) {
+                this.ws.send(JSON.stringify({
+                    type: 'subscribe_header',
+                    userId: this.userId
+                }));
+            }
+        }
+        
+        handleWebSocketMessage(data) {
+            if (data.type === 'notification') {
+                this.addNotification(data);
+            } else if (data.type === 'exchange_update') {
+                this.updateExchange(data);
+            } else if (data.type === 'status_update') {
+                this.updateStatus(data);
+            } else if (data.type === 'heartbeat') {
+                // Keep connection alive
+            }
+        }
+        
+        loadUserData() {
+            fetch(`/api/user/profile`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.name) {
+                        this.userName.textContent = data.name;
+                        document.getElementById('dropdown-user-name').textContent = data.name;
+                    }
+                    if (data.email) {
+                        document.getElementById('dropdown-user-email').textContent = data.email;
+                    }
+                    if (data.role) {
+                        this.userRole.textContent = data.role;
+                    }
+                    if (data.avatar) {
+                        const avatar = document.querySelector('.user-avatar img');
+                        if (avatar) {
+                            avatar.src = data.avatar;
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.error('Failed to load user data:', error);
+                });
+        }
+        
+        loadNotifications() {
+            fetch(`/api/notifications?limit=10`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.notifications) {
+                        this.updateNotifications(data.notifications);
+                    }
+                    if (data.unread !== undefined) {
+                        this.notificationCount = data.unread;
+                        this.updateNotificationBadge();
+                    }
+                })
+                .catch(error => {
+                    console.error('Failed to load notifications:', error);
+                });
+        }
+        
+        updateNotifications(notifications) {
+            const list = this.notificationsList;
+            if (!list) return;
+            
+            if (!notifications || notifications.length === 0) {
+                list.innerHTML = `
+                    <div class="notification-empty">
+                        <i class="fas fa-check-circle"></i>
+                        <span>No notifications</span>
+                    </div>
+                `;
+                return;
+            }
+            
+            let html = '';
+            notifications.forEach(n => {
+                const severityClass = n.severity || 'info';
+                const icon = this.getNotificationIcon(n.type);
+                html += `
+                    <div class="notification-item ${n.read ? 'read' : 'unread'} ${severityClass}" 
+                         onclick="viewNotification('${n.id}')">
+                        <div class="notification-icon">
+                            <i class="fas ${icon}"></i>
+                        </div>
+                        <div class="notification-content">
+                            <div class="notification-title">${n.title || 'Notification'}</div>
+                            <div class="notification-message">${n.message || ''}</div>
+                            <div class="notification-time">${this.formatTime(n.timestamp)}</div>
+                        </div>
+                        ${!n.read ? '<span class="notification-unread-dot"></span>' : ''}
+                    </div>
+                `;
+            });
+            list.innerHTML = html;
+        }
+        
+        getNotificationIcon(type) {
+            const icons = {
+                'trade': 'fa-exchange-alt',
+                'order': 'fa-shopping-cart',
+                'position': 'fa-chart-bar',
+                'alert': 'fa-exclamation-triangle',
+                'system': 'fa-server',
+                'risk': 'fa-shield-alt',
+                'performance': 'fa-chart-line'
+            };
+            return icons[type] || 'fa-bell';
+        }
+        
+        addNotification(data) {
+            this.notificationCount++;
+            this.updateNotificationBadge();
+            
+            // Show toast notification
+            this.showToastNotification(data);
+            
+            // Update list if open
+            if (this.notificationsDropdown.classList.contains('open')) {
+                this.loadNotifications();
+            }
+        }
+        
+        showToastNotification(data) {
+            const toast = document.createElement('div');
+            toast.className = `header-toast ${data.severity || 'info'}`;
+            toast.innerHTML = `
+                <div class="toast-content">
+                    <div class="toast-title">${data.title || 'Notification'}</div>
+                    <div class="toast-message">${data.message || ''}</div>
+                </div>
+                <button class="toast-close" onclick="this.parentElement.remove()">&times;</button>
+            `;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.classList.add('dismissing');
+                setTimeout(() => {
+                    if (toast.parentNode) {
+                        toast.remove();
+                    }
+                }, 300);
+            }, 5000);
+        }
+        
+        markNotificationsRead() {
+            if (this.notificationCount > 0) {
+                fetch('/api/notifications/mark-read', { method: 'POST' })
+                    .then(() => {
+                        this.notificationCount = 0;
+                        this.updateNotificationBadge();
+                        this.loadNotifications();
+                    })
+                    .catch(error => {
+                        console.error('Failed to mark notifications read:', error);
+                    });
+            }
+        }
+        
+        updateNotificationBadge() {
+            if (!this.notificationBadge) return;
+            
+            if (this.notificationCount > 0) {
+                this.notificationBadge.textContent = this.notificationCount > 99 ? '99+' : this.notificationCount;
+                this.notificationBadge.style.display = 'block';
+            } else {
+                this.notificationBadge.style.display = 'none';
+            }
+        }
+        
+        switchExchange(exchange) {
+            const exchangeNames = {
+                'binance': 'Binance',
+                'bybit': 'Bybit',
+                'kraken': 'Kraken',
+                'coinbase': 'Coinbase',
+                'ftx': 'FTX'
+            };
+            
+            this.exchangeName.textContent = exchangeNames[exchange] || exchange;
+            this.exchangeIcon.src = `/static/logos/${exchange}-logo.png`;
+            this.exchangeIcon.style.display = 'block';
+            
+            // Update active state
+            document.querySelectorAll('.exchange-item').forEach(item => {
+                item.classList.toggle('active', item.dataset.exchange === exchange);
+            });
+            
+            // Dispatch event
+            window.dispatchEvent(new CustomEvent('exchange-switch', { 
+                detail: { exchange: exchange }
+            }));
+            
+            // Save preference
+            localStorage.setItem('nexus-exchange', exchange);
+        }
+        
+        updateExchange(data) {
+            const exchangeNames = {
+                'binance': 'Binance',
+                'bybit': 'Bybit',
+                'kraken': 'Kraken',
+                'coinbase': 'Coinbase',
+                'ftx': 'FTX'
+            };
+            
+            if (data.name) {
+                this.exchangeName.textContent = data.name;
+                this.exchangeIcon.src = `/static/logos/${data.id}-logo.png`;
+                this.exchangeIcon.style.display = 'block';
+            }
+            
+            if (data.status) {
+                document.querySelectorAll('.exchange-status').forEach(el => {
+                    el.className = `exchange-status ${data.status}`;
+                });
+            }
+        }
+        
+        updateStatus(data) {
+            // Update live status
+            const liveDot = document.querySelector('.live-dot');
+            if (liveDot && data.status) {
+                liveDot.className = `live-dot ${data.status}`;
+            }
+            
+            // Update progress bar
+            if (this.progressBar && data.progress !== undefined) {
+                this.progressBar.style.width = `${Math.min(100, data.progress)}%`;
+                this.progressBar.style.background = data.progress > 80 ? '#00b894' : 
+                                                     data.progress > 50 ? '#fdcb6e' : '#ff6b6b';
+            }
+        }
+        
+        setupTheme() {
+            const savedTheme = localStorage.getItem('nexus-theme') || 'dark';
+            this.applyTheme(savedTheme);
+        }
+        
+        applyTheme(theme) {
+            const isDark = theme === 'dark';
+            document.body.classList.toggle('dark-mode', isDark);
+            this.themeIcon.className = `fas fa-${isDark ? 'sun' : 'moon'}`;
+            this.header.dataset.theme = theme;
+            localStorage.setItem('nexus-theme', theme);
+        }
+        
+        toggleTheme() {
+            const currentTheme = this.header.dataset.theme || 'dark';
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            this.applyTheme(newTheme);
+        }
+        
+        setupSearch() {
+            // Search results handling
+            document.addEventListener('click', (e) => {
+                if (!this.searchContainer.contains(e.target) && e.target !== this.searchToggle) {
+                    this.searchContainer.classList.remove('open');
+                }
+            });
+        }
+        
+        performSearch(query) {
+            if (!query || query.length < 2) {
+                this.searchResults.innerHTML = '';
+                this.searchResults.style.display = 'none';
+                return;
+            }
+            
+            fetch(`/api/search?q=${encodeURIComponent(query)}&limit=5`)
+                .then(response => response.json())
+                .then(data => {
+                    this.renderSearchResults(data);
+                })
+                .catch(error => {
+                    console.error('Search error:', error);
+                });
+        }
+        
+        renderSearchResults(results) {
+            const container = this.searchResults;
+            if (!container) return;
+            
+            if (!results || results.length === 0) {
+                container.innerHTML = `
+                    <div class="search-empty">
+                        <i class="fas fa-search"></i>
+                        <span>No results found</span>
+                    </div>
+                `;
+                container.style.display = 'block';
+                return;
+            }
+            
+            let html = '';
+            results.forEach(item => {
+                const icon = this.getSearchIcon(item.type);
+                html += `
+                    <a href="${item.url}" class="search-item">
+                        <i class="fas ${icon}"></i>
+                        <div class="search-item-content">
+                            <span class="search-item-title">${item.title}</span>
+                            <span class="search-item-subtitle">${item.subtitle || ''}</span>
+                        </div>
+                        <span class="search-item-type">${item.type}</span>
+                    </a>
+                `;
+            });
+            container.innerHTML = html;
+            container.style.display = 'block';
+        }
+        
+        getSearchIcon(type) {
+            const icons = {
+                'asset': 'fa-coins',
+                'strategy': 'fa-robot',
+                'order': 'fa-shopping-cart',
+                'position': 'fa-chart-bar',
+                'portfolio': 'fa-wallet',
+                'user': 'fa-user'
+            };
+            return icons[type] || 'fa-search';
+        }
+        
+        setActivePage(page) {
+            this.navLinks.forEach(link => {
+                link.classList.toggle('active', link.dataset.page === page);
+            });
+        }
+        
+        handleActivePage() {
+            const currentPath = window.location.pathname;
+            this.navLinks.forEach(link => {
+                const page = link.dataset.page;
+                if (currentPath.includes(`/${page}/`)) {
+                    link.classList.add('active');
+                }
+            });
+        }
+        
+        updateLiveTime() {
+            const now = new Date();
+            this.liveTime.textContent = now.toLocaleTimeString('en-US', { hour12: false });
+            setInterval(() => {
+                const now = new Date();
+                this.liveTime.textContent = now.toLocaleTimeString('en-US', { hour12: false });
+            }, 1000);
+        }
+        
+        formatTime(timestamp) {
+            const now = new Date();
+            const time = new Date(timestamp);
+            const diff = now - time;
+            
+            if (diff < 60000) return 'Just now';
+            if (diff < 3600000) return `${Math.floor(diff / 60000)}m ago`;
+            if (diff < 86400000) return `${Math.floor(diff / 3600000)}h ago`;
+            if (diff < 604800000) return `${Math.floor(diff / 86400000)}d ago`;
+            return time.toLocaleDateString();
+        }
+        
+        startAutoRefresh() {
+            setInterval(() => {
+                this.loadNotifications();
+                this.loadUserData();
+            }, this.refreshInterval * 1000);
+        }
+        
+        showAddExchangeModal() {
+            // Show add exchange modal
+            const modal = document.createElement('div');
+            modal.className = 'header-modal';
+            modal.innerHTML = `
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>Add Exchange</h3>
+                        <button onclick="this.closest('.header-modal').remove()">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>Exchange Name</label>
+                            <input type="text" id="new-exchange-name" placeholder="e.g. Kraken">
+                        </div>
+                        <div class="form-group">
+                            <label>API Key</label>
+                            <input type="text" id="new-exchange-api-key" placeholder="Enter API key">
+                        </div>
+                        <div class="form-group">
+                            <label>API Secret</label>
+                            <input type="password" id="new-exchange-api-secret" placeholder="Enter API secret">
+                        </div>
+                        <button onclick="addExchange()" class="btn-primary">Add Exchange</button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+            
+            window.addExchange = function() {
+                const name = document.getElementById('new-exchange-name').value;
+                const apiKey = document.getElementById('new-exchange-api-key').value;
+                const apiSecret = document.getElementById('new-exchange-api-secret').value;
+                
+                if (!name || !apiKey || !apiSecret) {
+                    alert('Please fill in all fields');
+                    return;
+                }
+                
+                fetch('/api/exchanges/add', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, apiKey, apiSecret })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        modal.remove();
+                        this.switchExchange(name.toLowerCase());
+                        location.reload();
+                    } else {
+                        alert(data.error || 'Failed to add exchange');
+                    }
+                })
+                .catch(error => {
+                    console.error('Failed to add exchange:', error);
+                    alert('Failed to add exchange');
+                });
+            };
+        }
+    }
+    
+    // Global functions
+    window.viewNotification = function(notificationId) {
+        fetch(`/api/notifications/${notificationId}/view`, { method: 'POST' })
+            .then(() => {
+                const count = document.getElementById('header-notification-badge');
+                if (count) {
+                    const current = parseInt(count.textContent) || 0;
+                    if (current > 0) {
+                        count.textContent = current - 1;
+                        if (current - 1 <= 0) {
+                            count.style.display = 'none';
+                        }
+                    }
+                }
+                // Navigate to notification
+                window.location.href = `/notifications/${notificationId}`;
+            })
+            .catch(error => {
+                console.error('Failed to view notification:', error);
+            });
+    };
+    
+    window.markAllNotificationsRead = function() {
+        fetch('/api/notifications/mark-read', { method: 'POST' })
+            .then(() => {
+                const badge = document.getElementById('header-notification-badge');
+                if (badge) {
+                    badge.textContent = '0';
+                    badge.style.display = 'none';
+                }
+                document.querySelectorAll('.notification-item.unread').forEach(el => {
+                    el.classList.remove('unread');
+                    el.classList.add('read');
+                    const dot = el.querySelector('.notification-unread-dot');
+                    if (dot) dot.remove();
+                });
+            })
+            .catch(error => {
+                console.error('Failed to mark all notifications read:', error);
+            });
+    };
+    
+    // Initialize on DOM ready
+    document.addEventListener('DOMContentLoaded', function() {
+        const headerManager = new HeaderManager();
+        window.headerManager = headerManager;
+        
+        // Restore saved exchange
+        const savedExchange = localStorage.getItem('nexus-exchange');
+        if (savedExchange) {
+            headerManager.switchExchange(savedExchange);
+        }
+    });
+    
+    // Expose HeaderManager for dynamic initialization
+    window.HeaderManager = HeaderManager;
+    
+})();
+</script>
+
+<style>
+/* Header Styles - Full Implementation with Nexus Branding */
+.nexus-header {
+    background: #1a1a2e;
+    border-bottom: 1px solid #2d2d44;
+    padding: 0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+}
+
+.header-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px;
+    height: 64px;
+    gap: 16px;
+}
+
+/* Header Left */
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.header-brand {
+    display: flex;
+    align-items: center;
+}
+
+.brand-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+}
+
+.header-logo {
+    height: 32px;
+    width: auto;
+}
+
+.brand-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.brand-name {
+    color: #00d4ff;
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    line-height: 1;
+}
+
+.brand-sub {
+    color: #74b9ff;
+    font-size: 10px;
+    opacity: 0.6;
+    letter-spacing: 0.5px;
+}
+
+.header-menu-toggle {
+    display: none;
+    background: transparent;
+    border: none;
+    color: #74b9ff;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 4px 8px;
+}
+
+/* Header Nav */
+.header-nav {
+    flex: 1;
+    display: flex;
+    align-items: center;
+}
+
+.nav-list {
+    display: flex;
+    align-items: center;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    gap: 2px;
+}
+
+.nav-item {
+    position: relative;
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    color: #74b9ff;
+    text-decoration: none;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.nav-link:hover {
+    background: rgba(116, 185, 255, 0.08);
+    color: #ffffff;
+}
+
+.nav-link.active {
+    background: rgba(116, 185, 255, 0.12);
+    color: #00d4ff;
+}
+
+.nav-link i {
+    font-size: 16px;
+    width: 20px;
+    text-align: center;
+}
+
+/* Dropdown */
+.dropdown-toggle {
+    cursor: pointer;
+}
+
+.dropdown-toggle .fa-chevron-down {
+    font-size: 12px;
+    margin-left: 4px;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: #1a1a2e;
+    border: 1px solid #2d2d44;
+    border-radius: 8px;
+    padding: 8px 0;
+    min-width: 200px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+    z-index: 1000;
+}
+
+.dropdown:hover .dropdown-menu {
+    display: block;
+}
+
+.dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 16px;
+    color: #74b9ff;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    font-size: 13px;
+}
+
+.dropdown-item:hover {
+    background: rgba(116, 185, 255, 0.08);
+    color: #ffffff;
+}
+
+.dropdown-item i {
+    width: 18px;
+    text-align: center;
+}
+
+.dropdown-divider {
+    margin: 4px 0;
+    border: none;
+    border-top: 1px solid #2d2d44;
+}
+
+/* Header Right */
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Search */
+.header-search {
+    position: relative;
+}
+
+.search-toggle {
+    background: transparent;
+    border: none;
+    color: #74b9ff;
+    padding: 8px 10px;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.search-toggle:hover {
+    background: rgba(116, 185, 255, 0.08);
+}
+
+.search-container {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: #1a1a2e;
+    border: 1px solid #2d2d44;
+    border-radius: 8px;
+    padding: 12px;
+    width: 400px;
+    max-width: 90vw;
+    display: none;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+}
+
+.search-container.open {
+    display: block;
+}
+
+.search-input {
+    width: 100%;
+    padding: 8px 12px;
+    background: #2d2d44;
+    border: 1px solid #4d4d6a;
+    border-radius: 6px;
+    color: #ffffff;
+    font-size: 14px;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: #74b9ff;
+}
+
+.search-input::placeholder {
+    color: #74b9ff;
+    opacity: 0.4;
+}
+
+.search-results {
+    margin-top: 8px;
+    max-height: 300px;
+    overflow-y: auto;
+    display: none;
+}
+
+.search-results .search-empty {
+    text-align: center;
+    color: #74b9ff;
+    padding: 20px;
+    opacity: 0.5;
+}
+
+.search-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 12px;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.search-item:hover {
+    background: rgba(116, 185, 255, 0.08);
+}
+
+.search-item i {
+    color: #74b9ff;
+    width: 20px;
+    text-align: center;
+}
+
+.search-item-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.search-item-title {
+    color: #ffffff;
+    font-size: 13px;
+}
+
+.search-item-subtitle {
+    color: #74b9ff;
+    font-size: 11px;
+    opacity: 0.6;
+}
+
+.search-item-type {
+    color: #74b9ff;
+    font-size: 10px;
+    opacity: 0.4;
+    text-transform: uppercase;
+}
+
+/* Exchange */
+.header-exchange {
+    position: relative;
+}
+
+.exchange-toggle {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    background: transparent;
+    border: 1px solid #2d2d44;
+    border-radius: 6px;
+    color: #74b9ff;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.exchange-toggle:hover {
+    border-color: #4d4d6a;
+    background: rgba(116, 185, 255, 0.05);
+}
+
+.exchange-icon {
+    height: 20px;
+    width: auto;
+}
+
+.exchange-dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: #1a1a2e;
+    border: 1px solid #2d2d44;
+    border-radius: 8px;
+    padding: 8px 0;
+    min-width: 200px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+    z-index: 1000;
+}
+
+.exchange-dropdown.open {
+    display: block;
+}
+
+.exchange-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 16px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.exchange-item:hover {
+    background: rgba(116, 185, 255, 0.08);
+}
+
+.exchange-item img {
+    height: 20px;
+    width: auto;
+}
+
+.exchange-item span {
+    color: #74b9ff;
+    font-size: 13px;
+}
+
+.exchange-status {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-left: auto;
+}
+
+.exchange-status.online {
+    background: #00b894;
+}
+
+.exchange-status.offline {
+    background: #ff6b6b;
+}
+
+.exchange-status.maintenance {
+    background: #fdcb6e;
+}
+
+.exchange-divider {
+    margin: 4px 16px;
+    border-top: 1px solid #2d2d44;
+}
+
+.exchange-item[data-exchange="custom"] {
+    color: #74b9ff;
+}
+
+.exchange-item[data-exchange="custom"] i {
+    color: #74b9ff;
+}
+
+/* Notifications */
+.header-notifications {
+    position: relative;
+}
+
+.notifications-toggle {
+    position: relative;
+    background: transparent;
+    border: none;
+    color: #74b9ff;
+    padding: 8px 10px;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.notifications-toggle:hover {
+    background: rgba(116, 185, 255, 0.08);
+}
+
+.notifications-toggle i {
+    font-size: 18px;
+}
+
+.notification-badge {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: #ff6b6b;
+    color: #ffffff;
+    font-size: 9px;
+    font-weight: 700;
+    padding: 1px 6px;
+    border-radius: 10px;
+    min-width: 18px;
+    text-align: center;
+    display: none;
+}
+
+.notifications-dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: #1a1a2e;
+    border: 1px solid #2d2d44;
+    border-radius: 8px;
+    width: 380px;
+    max-width: 90vw;
+    max-height: 500px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+    z-index: 1000;
+    overflow: hidden;
+}
+
+.notifications-dropdown.open {
+    display: block;
+}
+
+.notifications-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    border-bottom: 1px solid #2d2d44;
+}
+
+.notifications-title {
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.notifications-mark-all {
+    background: transparent;
+    border: none;
+    color: #74b9ff;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.notifications-mark-all:hover {
+    color: #00d4ff;
+}
+
+.notifications-list {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.notification-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 10px 16px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border-left: 3px solid transparent;
+}
+
+.notification-item:hover {
+    background: rgba(116, 185, 255, 0.05);
+}
+
+.notification-item.unread {
+    background: rgba(116, 185, 255, 0.05);
+    border-left-color: #74b9ff;
+}
+
+.notification-item.critical {
+    border-left-color: #ff6b6b;
+}
+
+.notification-item.high {
+    border-left-color: #e17055;
+}
+
+.notification-item.medium {
+    border-left-color: #fdcb6e;
+}
+
+.notification-item.read {
+    opacity: 0.6;
+}
+
+.notification-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(116, 185, 255, 0.1);
+    color: #74b9ff;
+    flex-shrink: 0;
+}
+
+.notification-content {
+    flex: 1;
+}
+
+.notification-title {
+    color: #ffffff;
+    font-weight: 500;
+    font-size: 13px;
+}
+
+.notification-message {
+    color: #74b9ff;
+    font-size: 12px;
+    opacity: 0.7;
+}
+
+.notification-time {
+    color: #74b9ff;
+    font-size: 10px;
+    opacity: 0.4;
+    margin-top: 2px;
+}
+
+.notification-unread-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #74b9ff;
+    flex-shrink: 0;
+    margin-top: 8px;
+}
+
+.notification-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    color: #74b9ff;
+    gap: 8px;
+}
+
+.notification-empty i {
+    font-size: 32px;
+    color: #00b894;
+}
+
+.notification-empty span {
+    font-size: 14px;
+    opacity: 0.5;
+}
+
+.notifications-footer {
+    padding: 8px 16px;
+    border-top: 1px solid #2d2d44;
+    text-align: center;
+}
+
+.notifications-view-all {
+    color: #74b9ff;
+    text-decoration: none;
+    font-size: 12px;
+}
+
+.notifications-view-all:hover {
+    color: #00d4ff;
+}
+
+/* User */
+.header-user {
+    position: relative;
+}
+
+.user-toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 8px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.user-toggle:hover {
+    background: rgba(116, 185, 255, 0.08);
+}
+
+.user-avatar {
+    position: relative;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.user-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.user-status {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 2px solid #1a1a2e;
+}
+
+.user-status.online {
+    background: #00b894;
+}
+
+.user-status.away {
+    background: #fdcb6e;
+}
+
+.user-status.offline {
+    background: #ff6b6b;
+}
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+}
+
+.user-name {
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.user-role {
+    color: #74b9ff;
+    font-size: 10px;
+    opacity: 0.6;
+}
+
+.user-toggle .fa-chevron-down {
+    color: #74b9ff;
+    font-size: 12px;
+}
+
+.user-dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: #1a1a2e;
+    border: 1px solid #2d2d44;
+    border-radius: 8px;
+    padding: 8px 0;
+    min-width: 220px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+    z-index: 1000;
+}
+
+.user-dropdown.open {
+    display: block;
+}
+
+.user-profile-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px 8px;
+}
+
+.user-profile-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.user-profile-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.user-profile-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.user-profile-name {
+    color: #ffffff;
+    font-weight: 500;
+}
+
+.user-profile-email {
+    color: #74b9ff;
+    font-size: 12px;
+    opacity: 0.6;
+}
+
+.user-dropdown-divider {
+    margin: 4px 0;
+    border: none;
+    border-top: 1px solid #2d2d44;
+}
+
+.user-dropdown .dropdown-item {
+    padding: 8px 16px;
+    color: #74b9ff;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.2s ease;
+}
+
+.user-dropdown .dropdown-item:hover {
+    background: rgba(116, 185, 255, 0.08);
+    color: #ffffff;
+}
+
+.user-dropdown .dropdown-item i {
+    width: 18px;
+    text-align: center;
+}
+
+.user-dropdown .dropdown-item.danger {
+    color: #ff6b6b;
+}
+
+.user-dropdown .dropdown-item.danger:hover {
+    background: rgba(255, 107, 107, 0.08);
+}
+
+/* Theme Toggle */
+.header-theme-toggle {
+    background: transparent;
+    border: none;
+    color: #74b9ff;
+    padding: 8px 10px;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.header-theme-toggle:hover {
+    background: rgba(116, 185, 255, 0.08);
+}
+
+/* Live Status */
+.header-live-status {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(0, 184, 148, 0.08);
+    padding: 4px 12px;
+    border-radius: 16px;
+    border: 1px solid rgba(0, 184, 148, 0.2);
+}
+
+.live-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #00b894;
+    animation: pulse 1.5s infinite;
+}
+
+.live-label {
+    color: #00b894;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.live-time {
+    color: #74b9ff;
+    font-size: 11px;
+    font-family: 'Courier New', monospace;
+}
+
+/* Progress Bar */
+.header-progress {
+    height: 2px;
+    background: #2d2d44;
+    overflow: hidden;
+    position: relative;
+}
+
+.progress-bar {
+    height: 100%;
+    transition: width 0.3s ease;
+    background: #74b9ff;
+    width: 0%;
+}
+
+/* Header Toast */
+.header-toast {
+    position: fixed;
+    top: 80px;
+    right: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    background: #1a1a2e;
+    border: 1px solid #2d2d44;
+    border-radius: 8px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+    z-index: 10000;
+    animation: slideIn 0.3s ease;
+    max-width: 400px;
+}
+
+.header-toast.critical {
+    border-left: 3px solid #ff6b6b;
+}
+
+.header-toast.high {
+    border-left: 3px solid #e17055;
+}
+
+.header-toast.medium {
+    border-left: 3px solid #fdcb6e;
+}
+
+.header-toast.info {
+    border-left: 3px solid #00b894;
+}
+
+.header-toast .toast-content {
+    flex: 1;
+}
+
+.header-toast .toast-title {
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 13px;
+}
+
+.header-toast .toast-message {
+    color: #74b9ff;
+    font-size: 12px;
+    opacity: 0.8;
+}
+
+.header-toast .toast-close {
+    background: transparent;
+    border: none;
+    color: #74b9ff;
+    cursor: pointer;
+    font-size: 16px;
+    opacity: 0.5;
+}
+
+.header-toast .toast-close:hover {
+    opacity: 1;
+}
+
+.header-toast.dismissing {
+    animation: slideOut 0.3s ease forwards;
+}
+
+/* Header Modal */
+.header-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10001;
+    animation: fadeIn 0.3s ease;
+}
+
+.header-modal .modal-content {
+    background: #1a1a2e;
+    border: 1px solid #2d2d44;
+    border-radius: 12px;
+    padding: 24px;
+    max-width: 450px;
+    width: 90%;
+}
+
+.header-modal .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.header-modal .modal-header h3 {
+    color: #ffffff;
+    margin: 0;
+}
+
+.header-modal .modal-header button {
+    background: transparent;
+    border: none;
+    color: #74b9ff;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.header-modal .form-group {
+    margin-bottom: 16px;
+}
+
+.header-modal .form-group label {
+    display: block;
+    color: #74b9ff;
+    font-size: 12px;
+    margin-bottom: 4px;
+}
+
+.header-modal .form-group input {
+    width: 100%;
+    padding: 8px 12px;
+    background: #2d2d44;
+    border: 1px solid #4d4d6a;
+    border-radius: 6px;
+    color: #ffffff;
+    font-size: 13px;
+}
+
+.header-modal .form-group input:focus {
+    outline: none;
+    border-color: #74b9ff;
+}
+
+.header-modal .btn-primary {
+    width: 100%;
+    padding: 10px;
+    background: #74b9ff;
+    border: none;
+    border-radius: 6px;
+    color: #1a1a2e;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.header-modal .btn-primary:hover {
+    transform: scale(1.02);
+}
+
+/* Animations */
+@keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.3; transform: scale(0.8); }
+}
+
+@keyframes slideIn {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes slideOut {
+    from { transform: translateX(0); opacity: 1; }
+    to { transform: translateX(100%); opacity: 0; }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+/* Dark Mode */
+body.dark-mode .nexus-header {
+    background: #0a0a1a;
+    border-bottom-color: #1a1a3a;
+}
+
+body.dark-mode .header-logo {
+    filter: brightness(0.9);
+}
+
+body.dark-mode .search-container {
+    background: #0a0a1a;
+    border-color: #1a1a3a;
+}
+
+body.dark-mode .search-input {
+    background: #1a1a3a;
+    border-color: #2a2a5a;
+}
+
+body.dark-mode .dropdown-menu {
+    background: #0a0a1a;
+    border-color: #1a1a3a;
+}
+
+body.dark-mode .user-dropdown {
+    background: #0a0a1a;
+    border-color: #1a1a3a;
+}
+
+body.dark-mode .notifications-dropdown {
+    background: #0a0a1a;
+    border-color: #1a1a3a;
+}
+
+body.dark-mode .exchange-dropdown {
+    background: #0a0a1a;
+    border-color: #1a1a3a;
+}
+
+body.dark-mode .header-modal .modal-content {
+    background: #0a0a1a;
+    border-color: #1a1a3a;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .header-nav {
+        display: none;
+    }
+    
+    .header-nav.open {
+        display: block;
+        position: absolute;
+        top: 64px;
+        left: 0;
+        right: 0;
+        background: #1a1a2e;
+        border-bottom: 1px solid #2d2d44;
+        padding: 8px 16px;
+    }
+    
+    .header-nav.open .nav-list {
+        flex-direction: column;
+        width: 100%;
+    }
+    
+    .header-nav.open .nav-link {
+        padding: 10px 16px;
+        width: 100%;
+    }
+    
+    .header-nav.open .dropdown-menu {
+        position: static;
+        box-shadow: none;
+        border: none;
+        background: transparent;
+        padding-left: 16px;
+    }
+    
+    .header-menu-toggle {
+        display: block;
+    }
+    
+    .header-right .user-info {
+        display: none;
+    }
+    
+    .search-container {
+        width: 300px;
+        right: 0;
+    }
+}
+
+@media (max-width: 768px) {
+    .header-container {
+        padding: 0 12px;
+        height: 56px;
+    }
+    
+    .header-logo {
+        height: 24px;
+    }
+    
+    .brand-sub {
+        display: none;
+    }
+    
+    .header-right {
+        gap: 4px;
+    }
+    
+    .exchange-toggle span:not(.exchange-icon) {
+        display: none;
+    }
+    
+    .header-live-status .live-label {
+        display: none;
+    }
+    
+    .header-live-status .live-time {
+        display: none;
+    }
+    
+    .search-container {
+        width: 90vw;
+        right: -50%;
+        transform: translateX(-50%);
+    }
+    
+    .notifications-dropdown {
+        width: 90vw;
+        right: -50%;
+        transform: translateX(-50%);
+    }
+}
+
+@media (max-width: 480px) {
+    .header-container {
+        height: 48px;
+        padding: 0 8px;
+    }
+    
+    .brand-name {
+        font-size: 16px;
+    }
+    
+    .header-logo {
+        height: 20px;
+    }
+    
+    .nav-link span {
+        display: none;
+    }
+    
+    .nav-link i {
+        font-size: 18px;
+        width: auto;
+    }
+    
+    .exchange-icon {
+        height: 16px;
+    }
+    
+    .user-avatar {
+        width: 28px;
+        height: 28px;
+    }
+    
+    .header-theme-toggle {
+        padding: 4px 6px;
+    }
+}
+
+/* Print styles */
+@media print {
+    .nexus-header {
+        display: none !important;
+    }
+}
+</style>
