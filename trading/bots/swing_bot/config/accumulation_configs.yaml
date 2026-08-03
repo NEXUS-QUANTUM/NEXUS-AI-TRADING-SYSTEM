@@ -1,0 +1,671 @@
+# trading/bots/swing_bot/config/accumulation_configs.yaml
+
+# ============================================================================
+# NEXUS AI TRADING SYSTEM - Swing Bot Accumulation Configuration
+# Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+# ============================================================================
+#
+# Description: Complete Accumulation configuration for swing trading bot
+# Framework: Market Accumulation Analysis - Smart Money Accumulation Detection
+# Version: 3.0.0
+#
+# Accumulation analysis identifies periods where smart money is accumulating
+# positions, providing early entry signals for swing trading strategies.
+# ============================================================================
+
+# ----------------------------------------------------------------------------
+# General Configuration
+# ----------------------------------------------------------------------------
+accumulation:
+  enabled: true
+  version: "3.0.0"
+  description: "Market Accumulation Analysis for swing trading"
+  
+  # Timeframes for accumulation analysis
+  timeframes:
+    - "5m"
+    - "15m"
+    - "30m"
+    - "1h"
+    - "4h"
+    - "1d"
+    - "1w"
+  
+  default_timeframe: "1h"
+  
+  # Data sources
+  data_sources:
+    - "price_action"
+    - "volume_analysis"
+    - "order_flow"
+    - "on_chain_data"
+    - "social_sentiment"
+
+# ----------------------------------------------------------------------------
+# Accumulation Detection Parameters
+# ----------------------------------------------------------------------------
+accumulation_detection:
+  enabled: true
+  description: "Parameters for detecting accumulation patterns"
+  
+  # General accumulation parameters
+  general:
+    min_duration_bars: 10
+    max_duration_bars: 100
+    volume_threshold: 1.3
+    price_range_threshold: 0.05
+    confidence_threshold: 0.65
+  
+  # Accumulation phases
+  phases:
+    early_accumulation:
+      description: "Early accumulation phase"
+      parameters:
+        volume_increase: 1.2
+        price_consolidation: 0.02
+        duration_min: 5
+        confidence_threshold: 0.6
+    
+    mid_accumulation:
+      description: "Mid accumulation phase"
+      parameters:
+        volume_increase: 1.5
+        price_consolidation: 0.015
+        duration_min: 10
+        confidence_threshold: 0.7
+    
+    late_accumulation:
+      description: "Late accumulation phase"
+      parameters:
+        volume_increase: 1.8
+        price_consolidation: 0.01
+        duration_min: 15
+        confidence_threshold: 0.8
+    
+    climax_accumulation:
+      description: "Climax accumulation phase"
+      parameters:
+        volume_increase: 2.5
+        price_consolidation: 0.005
+        duration_min: 20
+        confidence_threshold: 0.85
+
+# ----------------------------------------------------------------------------
+# Volume Accumulation Analysis
+# ----------------------------------------------------------------------------
+volume_accumulation:
+  enabled: true
+  description: "Volume-based accumulation analysis"
+  
+  # Volume accumulation indicators
+  indicators:
+    # On-Balance Volume (OBV)
+    obv:
+      enabled: true
+      description: "On-Balance Volume for accumulation"
+      lookback_period: 50
+      divergence_threshold: 0.3
+      breakout_threshold: 1.5
+    
+    # Volume Weighted Average Price (VWAP)
+    vwap:
+      enabled: true
+      description: "VWAP for accumulation"
+      lookback_period: 20
+      deviation_threshold: 0.02
+      band_width: 0.01
+    
+    # Accumulation/Distribution Line
+    ad_line:
+      enabled: true
+      description: "Accumulation/Distribution Line"
+      lookback_period: 30
+      divergence_threshold: 0.3
+      signal_threshold: 0.7
+    
+    # Money Flow Index (MFI)
+    mfi:
+      enabled: true
+      description: "Money Flow Index for accumulation"
+      period: 14
+      overbought: 80
+      oversold: 20
+      accumulation_threshold: 60
+  
+  # Volume patterns
+  patterns:
+    volume_spike:
+      description: "Volume spike pattern"
+      threshold: 2.0
+      confirmation: true
+    
+    volume_climax:
+      description: "Volume climax pattern"
+      threshold: 3.0
+      confirmation: true
+    
+    volume_decrease:
+      description: "Volume decrease pattern"
+      threshold: 0.5
+      confirmation: true
+    
+    volume_breakout:
+      description: "Volume breakout pattern"
+      threshold: 1.8
+      confirmation: true
+
+# ----------------------------------------------------------------------------
+# Price Accumulation Patterns
+# ----------------------------------------------------------------------------
+price_patterns:
+  enabled: true
+  description: "Price-based accumulation patterns"
+  
+  # Accumulation patterns
+  patterns:
+    # Base formation
+    base_formation:
+      enabled: true
+      description: "Base formation pattern"
+      min_duration_bars: 20
+      max_price_range: 0.05
+      volume_increase: 1.5
+      confidence: 0.7
+    
+    # Ascending triangle
+    ascending_triangle:
+      enabled: true
+      description: "Ascending triangle pattern"
+      min_duration_bars: 15
+      resistance_flat: true
+      support_rising: true
+      volume_decrease: true
+      confidence: 0.75
+    
+    # Descending triangle
+    descending_triangle:
+      enabled: true
+      description: "Descending triangle pattern"
+      min_duration_bars: 15
+      support_flat: true
+      resistance_falling: true
+      volume_decrease: true
+      confidence: 0.75
+    
+    # Cup and handle
+    cup_and_handle:
+      enabled: true
+      description: "Cup and handle pattern"
+      min_duration_bars: 30
+      cup_depth: 0.15
+      handle_depth: 0.05
+      volume_decrease: true
+      confidence: 0.8
+    
+    # Rounding bottom
+    rounding_bottom:
+      enabled: true
+      description: "Rounding bottom pattern"
+      min_duration_bars: 25
+      max_price_range: 0.08
+      volume_increase: true
+      confidence: 0.7
+    
+    # Rectangle consolidation
+    rectangle_consolidation:
+      enabled: true
+      description: "Rectangle consolidation pattern"
+      min_duration_bars: 15
+      max_price_range: 0.03
+      volume_decrease: true
+      confidence: 0.65
+
+# ----------------------------------------------------------------------------
+# Smart Money Indicators
+# ----------------------------------------------------------------------------
+smart_money:
+  enabled: true
+  description: "Smart money accumulation indicators"
+  
+  # Smart money metrics
+  metrics:
+    # Large order detection
+    large_orders:
+      enabled: true
+      min_order_size: 10000
+      volume_threshold: 2.0
+      accumulation_ratio: 0.6
+    
+    # Whales activity
+    whales:
+      enabled: true
+      min_transaction: 100000
+      accumulation_ratio: 0.7
+      volume_threshold: 1.5
+    
+    # Institutional flow
+    institutional_flow:
+      enabled: true
+      min_flow_size: 50000
+      direction_threshold: 0.8
+      confidence_threshold: 0.7
+    
+    # Dark pool activity
+    dark_pool:
+      enabled: true
+      min_trade_size: 10000
+      volume_threshold: 1.5
+      confidence_threshold: 0.6
+  
+  # Smart money patterns
+  patterns:
+    stealth_accumulation:
+      description: "Stealth accumulation pattern"
+      conditions:
+        - "volume_increase"
+        - "price_consolidation"
+        - "large_order_activity"
+      confidence: 0.75
+    
+    aggressive_accumulation:
+      description: "Aggressive accumulation pattern"
+      conditions:
+        - "volume_spike"
+        - "price_breakout"
+        - "institutional_flow"
+      confidence: 0.85
+    
+    passive_accumulation:
+      description: "Passive accumulation pattern"
+      conditions:
+        - "volume_decrease"
+        - "price_consolidation"
+        - "dark_pool_activity"
+      confidence: 0.65
+
+# ----------------------------------------------------------------------------
+# On-Chain Accumulation
+# ----------------------------------------------------------------------------
+on_chain:
+  enabled: true
+  description: "On-chain accumulation analysis"
+  
+  # On-chain metrics
+  metrics:
+    # Exchange flows
+    exchange_flows:
+      enabled: true
+      inflow_threshold: 1000
+      outflow_threshold: 1000
+      net_flow_ratio: 0.6
+    
+    # Supply distribution
+    supply_distribution:
+      enabled: true
+      min_balance: 10
+      max_balance: 10000
+      distribution_change: 0.05
+    
+    # Whale concentration
+    whale_concentration:
+      enabled: true
+      min_balance: 1000
+      concentration_change: 0.1
+    
+    # Age distribution
+    age_distribution:
+      enabled: true
+      age_buckets:
+        - "0-1d"
+        - "1-7d"
+        - "7-30d"
+        - "30-90d"
+        - "90d+"
+  
+  # On-chain patterns
+  patterns:
+    whale_accumulation:
+      description: "Whale accumulation pattern"
+      conditions:
+        - "exchange_outflow"
+        - "whale_balance_increase"
+        - "supply_decrease"
+      confidence: 0.8
+    
+    retail_dump:
+      description: "Retail dump pattern"
+      conditions:
+        - "exchange_inflow"
+        - "small_balance_decrease"
+        - "supply_increase"
+      confidence: 0.7
+    
+    hibernation:
+      description: "Hibernation pattern"
+      conditions:
+        - "age_distribution_shift"
+        - "supply_increase"
+        - "exchange_flow_decrease"
+      confidence: 0.75
+
+# ----------------------------------------------------------------------------
+# Accumulation Signals
+# ----------------------------------------------------------------------------
+signals:
+  enabled: true
+  description: "Accumulation-based trading signals"
+  
+  # Signal types
+  types:
+    # Buy signals
+    buy:
+      - signal: "early_accumulation"
+        description: "Early accumulation detected"
+        conditions:
+          - "accumulation_phase_early"
+          - "volume_increase"
+          - "price_support"
+        confidence: 0.65
+      
+      - signal: "smart_money_inflow"
+        description: "Smart money inflow detected"
+        conditions:
+          - "smart_money_accumulation"
+          - "large_order_activity"
+          - "institutional_flow"
+        confidence: 0.75
+      
+      - signal: "accumulation_breakout"
+        description: "Accumulation breakout detected"
+        conditions:
+          - "accumulation_complete"
+          - "price_breakout"
+          - "volume_confirmation"
+        confidence: 0.85
+      
+      - signal: "accumulation_retest"
+        description: "Accumulation retest detected"
+        conditions:
+          - "accumulation_zone"
+          - "price_retest"
+          - "volume_confirmation"
+        confidence: 0.7
+    
+    # Sell signals
+    sell:
+      - signal: "distribution_start"
+        description: "Distribution start detected"
+        conditions:
+          - "accumulation_ending"
+          - "volume_spike"
+          - "price_resistance"
+        confidence: 0.65
+      
+      - signal: "smart_money_outflow"
+        description: "Smart money outflow detected"
+        conditions:
+          - "large_order_selling"
+          - "institutional_outflow"
+          - "price_weakness"
+        confidence: 0.75
+      
+      - signal: "accumulation_failure"
+        description: "Accumulation failure detected"
+        conditions:
+          - "accumulation_failure"
+          - "price_breakdown"
+          - "volume_confirmation"
+        confidence: 0.8
+
+# ----------------------------------------------------------------------------
+# Accumulation Zones
+# ----------------------------------------------------------------------------
+accumulation_zones:
+  enabled: true
+  description: "Accumulation zone identification"
+  
+  # Zone types
+  types:
+    primary_zone:
+      description: "Primary accumulation zone"
+      parameters:
+        min_touches: 3
+        volume_threshold: 1.5
+        zone_width: 0.02
+        strength_criteria:
+          - "volume_increase"
+          - "price_support"
+          - "smart_money_activity"
+    
+    secondary_zone:
+      description: "Secondary accumulation zone"
+      parameters:
+        min_touches: 2
+        volume_threshold: 1.3
+        zone_width: 0.015
+        strength_criteria:
+          - "volume_increase"
+          - "price_support"
+    
+    breakout_zone:
+      description: "Breakout accumulation zone"
+      parameters:
+        min_touches: 1
+        volume_threshold: 2.0
+        zone_width: 0.01
+        strength_criteria:
+          - "volume_breakout"
+          - "price_breakout"
+          - "smart_money_activity"
+  
+  # Zone strength
+  strength:
+    high:
+      conditions:
+        - "zone_touches_>_3"
+        - "volume_>_2x_average"
+        - "smart_money_confirmed"
+      multiplier: 1.3
+    
+    medium:
+      conditions:
+        - "zone_touches_>_2"
+        - "volume_>_1.5x_average"
+        - "smart_money_likely"
+      multiplier: 1.0
+    
+    low:
+      conditions:
+        - "zone_touches_>_1"
+        - "volume_>_1x_average"
+        - "smart_money_possible"
+      multiplier: 0.7
+
+# ----------------------------------------------------------------------------
+# Risk Management
+# ----------------------------------------------------------------------------
+risk_management:
+  enabled: true
+  description: "Risk management for accumulation strategy"
+  
+  # Position sizing
+  position_sizing:
+    base_risk: 0.02
+    max_position: 0.1
+    min_position: 0.001
+    
+    sizing_rules:
+      - rule: "phase_based"
+        description: "Size based on accumulation phase"
+        multipliers:
+          early: 0.5
+          mid: 0.75
+          late: 1.0
+          climax: 1.2
+      
+      - rule: "confidence_based"
+        description: "Size based on signal confidence"
+        multipliers:
+          high: 1.0
+          medium: 0.75
+          low: 0.5
+  
+  # Stop Loss
+  stop_loss:
+    type: "zone_based"
+    zone_multiplier: 1.2
+    atr_multiplier: 1.5
+    min_distance: 0.005
+    max_distance: 0.025
+    
+    stop_loss_placement:
+      primary_zone: "below_zone"
+      secondary_zone: "below_zone"
+      breakout: "below_breakout"
+  
+  # Take Profit
+  take_profit:
+    type: "risk_reward"
+    risk_reward_ratio: 3.0
+    min_target: 0.01
+    max_target: 0.08
+    
+    take_profit_targets:
+      - level: "first_resistance"
+        percentage: 0.3
+      - level: "second_resistance"
+        percentage: 0.6
+      - level: "full_target"
+        percentage: 1.0
+
+# ----------------------------------------------------------------------------
+# Alert Configuration
+# ----------------------------------------------------------------------------
+alerts:
+  enabled: true
+  description: "Alerts for accumulation events"
+  
+  alert_types:
+    - "accumulation_phase_detected"
+    - "smart_money_activity"
+    - "accumulation_zone_formed"
+    - "accumulation_breakout"
+    - "accumulation_failure"
+    - "signal_generated"
+    - "stop_loss_triggered"
+    - "take_profit_triggered"
+  
+  alert_priority:
+    high:
+      - "accumulation_breakout"
+      - "smart_money_inflow"
+      - "signal_high_confidence"
+    
+    medium:
+      - "accumulation_phase_detected"
+      - "zone_formed"
+      - "signal_medium_confidence"
+    
+    low:
+      - "accumulation_retest"
+      - "volume_spike"
+      - "signal_low_confidence"
+
+# ----------------------------------------------------------------------------
+# Backtesting Configuration
+# ----------------------------------------------------------------------------
+backtesting:
+  enabled: true
+  description: "Backtesting configuration for accumulation strategy"
+  
+  parameters:
+    start_date: "2024-01-01"
+    end_date: "2024-12-31"
+    initial_capital: 10000
+    commission: 0.001
+    slippage: 0.001
+    
+  test_scenarios:
+    - scenario: "bullish_market"
+      parameters:
+        market_condition: "uptrend"
+        volatility: "medium"
+    
+    - scenario: "bearish_market"
+      parameters:
+        market_condition: "downtrend"
+        volatility: "medium"
+    
+    - scenario: "sideways_market"
+      parameters:
+        market_condition: "range_bound"
+        volatility: "low"
+
+# ----------------------------------------------------------------------------
+# Performance Metrics
+# ----------------------------------------------------------------------------
+performance_metrics:
+  enabled: true
+  description: "Performance metrics for accumulation strategy"
+  
+  metrics:
+    - "win_rate"
+    - "avg_win_loss_ratio"
+    - "profit_factor"
+    - "max_drawdown"
+    - "sharpe_ratio"
+    - "calmar_ratio"
+    - "sortino_ratio"
+    - "expectancy"
+  
+  targets:
+    min_win_rate: 0.5
+    min_avg_win_loss_ratio: 2.0
+    max_max_drawdown: 0.12
+    min_sharpe_ratio: 0.6
+
+# ----------------------------------------------------------------------------
+# Visualization Configuration
+# ----------------------------------------------------------------------------
+visualization:
+  enabled: true
+  description: "Visualization configuration for accumulation analysis"
+  
+  chart_types:
+    - "candlestick"
+    - "volume_profile"
+    - "obv"
+    - "vwap"
+    - "ad_line"
+  
+  indicators:
+    - "accumulation_zones"
+    - "accumulation_phases"
+    - "smart_money_activity"
+    - "volume_spikes"
+    - "signal_markers"
+  
+  colors:
+    accumulation_zone: "#74b9ff"
+    smart_money_inflow: "#00b894"
+    smart_money_outflow: "#ff6b6b"
+    accumulation_breakout: "#fdcb6e"
+    signal_buy: "#00b894"
+    signal_sell: "#ff6b6b"
+
+# ----------------------------------------------------------------------------
+# Logging Configuration
+# ----------------------------------------------------------------------------
+logging:
+  enabled: true
+  level: "INFO"
+  file: "logs/accumulation_bot.log"
+  rotation: "daily"
+  retention: 30  # days
+  
+  log_categories:
+    signals: true
+    trades: true
+    errors: true
+    performance: true
+    debugging: false
