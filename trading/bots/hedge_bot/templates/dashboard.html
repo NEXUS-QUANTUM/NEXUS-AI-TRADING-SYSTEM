@@ -1,0 +1,1602 @@
+<!-- trading/bots/hedge_bot/templates/dashboard.html -->
+
+<!--
+NEXUS AI TRADING SYSTEM - Hedge Bot Dashboard Page
+Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+
+Complete dashboard implementation with real-time data,
+interactive widgets, and comprehensive system overview.
+-->
+
+{% extends "base.html" %}
+{% load static %}
+{% load nexus_tags %}
+
+{% block title %}Dashboard - NEXUS AI Trading{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+{% endblock %}
+
+{% block content %}
+<div id="dashboard-container" class="dashboard-container"
+     data-user-id="{{ user_id|default:'current' }}"
+     data-exchange="{{ exchange|default:'binance' }}"
+     data-refresh-interval="{{ refresh_interval|default:15 }}">
+
+    <!-- Dashboard Header -->
+    <div class="dashboard-header">
+        <div class="dashboard-title-section">
+            <div class="dashboard-logo-container">
+                <img src="{% static 'images/nexus-logo-light.svg' %}"
+                     alt="NEXUS Logo"
+                     class="dashboard-logo"
+                     onerror="this.src='{% static 'images/nexus-favicon.svg' %}'">
+                <span class="dashboard-brand">NEXUS</span>
+            </div>
+            <h1 class="dashboard-title">Dashboard</h1>
+            <span class="dashboard-subtitle">Real-time trading overview</span>
+        </div>
+        <div class="dashboard-actions">
+            <div class="dashboard-timeframe">
+                <button class="tf-btn active" data-tf="1h">1H</button>
+                <button class="tf-btn" data-tf="4h">4H</button>
+                <button class="tf-btn" data-tf="24h">24H</button>
+                <button class="tf-btn" data-tf="7d">7D</button>
+                <button class="tf-btn" data-tf="30d">30D</button>
+            </div>
+            <button class="btn-secondary" onclick="refreshDashboard()">
+                <i class="fas fa-sync-alt"></i> Refresh
+            </button>
+            <button class="btn-primary" onclick="exportDashboard()">
+                <i class="fas fa-file-export"></i> Export
+            </button>
+        </div>
+    </div>
+
+    <!-- Dashboard Summary Cards -->
+    <div class="dashboard-summary">
+        <div class="summary-card">
+            <div class="summary-icon" style="background: rgba(0, 184, 148, 0.2); color: #00b894;">
+                <i class="fas fa-wallet"></i>
+            </div>
+            <div class="summary-content">
+                <span class="summary-label">Total Value</span>
+                <span class="summary-value" id="total-value">
+                    <span class="currency-symbol">$</span>
+                    <span class="value-number">0.00</span>
+                </span>
+                <span class="summary-change" id="total-change">+0.00%</span>
+            </div>
+        </div>
+        <div class="summary-card">
+            <div class="summary-icon" style="background: rgba(255, 107, 107, 0.2); color: #ff6b6b;">
+                <i class="fas fa-chart-line"></i>
+            </div>
+            <div class="summary-content">
+                <span class="summary-label">24h PnL</span>
+                <span class="summary-value" id="daily-pnl">
+                    <span class="currency-symbol">$</span>
+                    <span class="value-number">0.00</span>
+                </span>
+                <span class="summary-change" id="daily-change">+0.00%</span>
+            </div>
+        </div>
+        <div class="summary-card">
+            <div class="summary-icon" style="background: rgba(253, 203, 110, 0.2); color: #fdcb6e;">
+                <i class="fas fa-arrow-up"></i>
+            </div>
+            <div class="summary-content">
+                <span class="summary-label">Total PnL</span>
+                <span class="summary-value" id="total-pnl">
+                    <span class="currency-symbol">$</span>
+                    <span class="value-number">0.00</span>
+                </span>
+                <span class="summary-change" id="pnl-change">+0.00%</span>
+            </div>
+        </div>
+        <div class="summary-card">
+            <div class="summary-icon" style="background: rgba(116, 185, 255, 0.2); color: #74b9ff;">
+                <i class="fas fa-shield-alt"></i>
+            </div>
+            <div class="summary-content">
+                <span class="summary-label">Risk Score</span>
+                <span class="summary-value" id="risk-score">0.0</span>
+                <span class="summary-change" id="risk-change">-0.0%</span>
+            </div>
+        </div>
+        <div class="summary-card">
+            <div class="summary-icon" style="background: rgba(162, 155, 254, 0.2); color: #a29bfe;">
+                <i class="fas fa-exchange-alt"></i>
+            </div>
+            <div class="summary-content">
+                <span class="summary-label">Open Positions</span>
+                <span class="summary-value" id="open-positions">0</span>
+                <span class="summary-change" id="positions-change">+0</span>
+            </div>
+        </div>
+        <class="summary-card">
+            <div class="summary-icon" style="background: rgba(225, 112, 85, 0.2); color: #e17055;">
+                <i class="fas fa-percent"></i>
+            </div>
+            <div class="summary-content">
+                <span class="summary-label">Win Rate</span>
+                <span class="summary-value" id="win-rate">0.00%</span>
+                <span class="summary-change" id="winrate-change">+0.00%</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard Charts Row -->
+    <div class="dashboard-charts-row">
+        <div class="dashboard-chart-container">
+            <div class="chart-header">
+                <span class="chart-title">Price Chart</span>
+                <div class="chart-controls">
+                    <button class="chart-control-btn active" onclick="toggleChartType('candlestick')">
+                        <i class="fas fa-candlestick"></i>
+                    </button>
+                    <button class="chart-control-btn" onclick="toggleChartType('line')">
+                        <i class="fas fa-line-chart"></i>
+                    </button>
+                    <button class="chart-control-btn" onclick="toggleChartType('area')">
+                        <i class="fas fa-area-chart"></i>
+                    </button>
+                    <button class="chart-expand-btn" onclick="expandChart('price')">
+                        <i class="fas fa-expand"></i>
+                    </button>
+                </div>
+            </div>
+            <div id="price-chart" style="width:100%;height:300px;"></div>
+        </div>
+        <div class="dashboard-chart-container">
+            <div class="chart-header">
+                <span class="chart-title">Portfolio Allocation</span>
+                <button class="chart-expand-btn" onclick="expandChart('allocation')">
+                    <i class="fas fa-expand"></i>
+                </button>
+            </div>
+            <div id="allocation-chart" style="width:100%;height:300px;"></div>
+        </div>
+    </div>
+
+    <!-- Dashboard Metrics Grid -->
+    <div class="dashboard-metrics">
+        <div class="metric-card">
+            <span class="metric-label">Sharpe Ratio</span>
+            <span class="metric-value" id="sharpe-ratio">--</span>
+            <span class="metric-status" id="sharpe-status">Good</span>
+        </div>
+        <div class="metric-card">
+            <span class="metric-label">Max Drawdown</span>
+            <span class="metric-value" id="max-drawdown">--</span>
+            <span class="metric-status" id="drawdown-status">Low</span>
+        </div>
+        <div class="metric-card">
+            <span class="metric-label">Volatility</span>
+            <span class="metric-value" id="volatility">--</span>
+            <span class="metric-status" id="volatility-status">Medium</span>
+        </div>
+        <div class="metric-card">
+            <span class="metric-label">Profit Factor</span>
+            <span class="metric-value" id="profit-factor">--</span>
+            <span class="metric-status" id="profit-status">Good</span>
+        </div>
+        <div class="metric-card">
+            <span class="metric-label">Avg Trade</span>
+            <span class="metric-value" id="avg-trade">--</span>
+            <span class="metric-status" id="trade-status">Neutral</span>
+        </div>
+        <div class="metric-card">
+            <span class="metric-label">Consecutive Wins</span>
+            <span class="metric-value" id="consecutive-wins">--</span>
+            <span class="metric-status" id="streak-status">Active</span>
+        </div>
+    </div>
+
+    <!-- Dashboard Recent Activity -->
+    <div class="dashboard-activity">
+        <div class="activity-header">
+            <span class="activity-title">Recent Activity</span>
+            <a href="/logs/" class="activity-view-all">View All</a>
+        </div>
+        <div class="activity-list" id="activity-list">
+            <div class="activity-loading">
+                <div class="spinner"></div>
+                <span>Loading activity...</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard Footer -->
+    <div class="dashboard-footer">
+        <div class="dashboard-nexus-branding">
+            <span class="nexus-copyright">© 2026 NEXUS QUANTUM LTD</span>
+            <span class="nexus-version">v{{ nexus_version|default:'3.0.0' }}</span>
+        </div>
+        <div class="dashboard-timestamp" id="dashboard-timestamp">
+            Last updated: <span id="dashboard-last-update">--</span>
+        </div>
+        <div class="dashboard-status" id="dashboard-status">
+            <span class="status-dot"></span>
+            <span class="status-label">Connected</span>
+        </div>
+    </div>
+</div>
+
+<!-- Dashboard Widget Modal -->
+<div class="widget-modal" id="widget-modal" style="display:none;">
+    <div class="modal-overlay" onclick="closeWidgetModal()"></div>
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Add Widget</h3>
+            <button class="modal-close" onclick="closeWidgetModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="widget-grid">
+                <div class="widget-option" onclick="addWidget('price')">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Price Chart</span>
+                </div>
+                <div class="widget-option" onclick="addWidget('allocation')">
+                    <i class="fas fa-chart-pie"></i>
+                    <span>Allocation</span>
+                </div>
+                <div class="widget-option" onclick="addWidget('metrics')">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Metrics</span>
+                </div>
+                <div class="widget-option" onclick="addWidget('activity')">
+                    <i class="fas fa-list"></i>
+                    <span>Activity</span>
+                </div>
+                <div class="widget-option" onclick="addWidget('orders')">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Orders</span>
+                </div>
+                <div class="widget-option" onclick="addWidget('positions')">
+                    <i class="fas fa-arrows-alt-h"></i>
+                    <span>Positions</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Complete Dashboard Implementation with Real Data Integration
+
+(function() {
+    'use strict';
+
+    class DashboardManager {
+        constructor() {
+            this.container = document.getElementById('dashboard-container');
+            if (!this.container) return;
+            
+            this.userId = this.container.dataset.userId || 'current';
+            this.exchange = this.container.dataset.exchange || 'binance';
+            this.refreshInterval = parseInt(this.container.dataset.refreshInterval) || 15;
+            this.timeframe = '24h';
+            this.isLive = true;
+            this.ws = null;
+            this.connectionRetries = 0;
+            this.maxRetries = 5;
+            this.chartType = 'candlestick';
+            this.dashboardData = {};
+            
+            // DOM Elements
+            this.timestamp = document.getElementById('dashboard-last-update');
+            this.status = document.getElementById('dashboard-status');
+            
+            // Summary Elements
+            this.totalValue = document.getElementById('total-value').querySelector('.value-number');
+            this.dailyPnl = document.getElementById('daily-pnl').querySelector('.value-number');
+            this.totalPnl = document.getElementById('total-pnl').querySelector('.value-number');
+            this.riskScore = document.getElementById('risk-score');
+            this.openPositions = document.getElementById('open-positions');
+            this.winRate = document.getElementById('win-rate');
+            
+            // Metric Elements
+            this.sharpeRatio = document.getElementById('sharpe-ratio');
+            this.maxDrawdown = document.getElementById('max-drawdown');
+            this.volatility = document.getElementById('volatility');
+            this.profitFactor = document.getElementById('profit-factor');
+            this.avgTrade = document.getElementById('avg-trade');
+            this.consecutiveWins = document.getElementById('consecutive-wins');
+            
+            // Initialize
+            this.init();
+        }
+        
+        init() {
+            this.setupEventListeners();
+            this.initializeWebSocket();
+            this.loadDashboardData();
+            this.startAutoRefresh();
+            this.setupResizeObserver();
+        }
+        
+        setupEventListeners() {
+            // Timeframe buttons
+            document.querySelectorAll('.tf-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.tf-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    this.timeframe = btn.dataset.tf;
+                    this.loadDashboardData();
+                });
+            });
+            
+            // Keyboard shortcuts
+            document.addEventListener('keydown', (e) => {
+                if ((e.ctrlKey || e.metaKey) && e.key === 'r') {
+                    e.preventDefault();
+                    this.loadDashboardData();
+                }
+            });
+        }
+        
+        initializeWebSocket() {
+            const wsProtocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsUrl = `${wsProtocol}//${window.location.host}/ws/dashboard/${this.userId}`;
+            
+            try {
+                if (this.ws) this.ws.close();
+                
+                this.ws = new WebSocket(wsUrl);
+                
+                this.ws.onopen = () => {
+                    this.connectionRetries = 0;
+                    this.updateStatus('connected', 'Connected');
+                    this.sendSubscription();
+                };
+                
+                this.ws.onmessage = (event) => {
+                    try {
+                        const data = JSON.parse(event.data);
+                        this.handleWebSocketMessage(data);
+                    } catch (e) {
+                        console.error('WebSocket message parse error:', e);
+                    }
+                };
+                
+                this.ws.onclose = () => {
+                    this.updateStatus('disconnected', 'Disconnected');
+                    this.reconnectWebSocket();
+                };
+                
+                this.ws.onerror = (error) => {
+                    console.error('WebSocket error:', error);
+                    this.updateStatus('error', 'Error');
+                };
+            } catch (error) {
+                console.error('WebSocket connection failed:', error);
+                this.updateStatus('error', 'Error');
+                this.reconnectWebSocket();
+            }
+        }
+        
+        reconnectWebSocket() {
+            if (this.connectionRetries < this.maxRetries) {
+                this.connectionRetries++;
+                const delay = Math.min(1000 * Math.pow(2, this.connectionRetries), 30000);
+                setTimeout(() => {
+                    if (this.isLive) {
+                        this.initializeWebSocket();
+                    }
+                }, delay);
+            }
+        }
+        
+        sendSubscription() {
+            if (this.ws && this.ws.readyState === WebSocket.OPEN) {
+                this.ws.send(JSON.stringify({
+                    type: 'subscribe_dashboard',
+                    userId: this.userId,
+                    exchange: this.exchange,
+                    timeframe: this.timeframe
+                }));
+            }
+        }
+        
+        handleWebSocketMessage(data) {
+            if (data.type === 'dashboard_update') {
+                this.updateDashboard(data);
+            } else if (data.type === 'price_update') {
+                this.updatePrice(data);
+            } else if (data.type === 'position_update') {
+                this.updatePositions(data);
+            } else if (data.type === 'heartbeat') {
+                // Keep connection alive
+            }
+            
+            this.updateTimestamp();
+        }
+        
+        updateDashboard(data) {
+            this.dashboardData = data;
+            
+            // Update summary
+            if (data.totalValue !== undefined) {
+                this.totalValue.textContent = this.formatCurrency(data.totalValue);
+            }
+            
+            if (data.dailyPnl !== undefined) {
+                this.dailyPnl.textContent = (data.dailyPnl >= 0 ? '+' : '') + this.formatCurrency(data.dailyPnl);
+                this.dailyPnl.style.color = data.dailyPnl >= 0 ? '#00b894' : '#ff6b6b';
+            }
+            
+            if (data.totalPnl !== undefined) {
+                this.totalPnl.textContent = (data.totalPnl >= 0 ? '+' : '') + this.formatCurrency(data.totalPnl);
+                this.totalPnl.style.color = data.totalPnl >= 0 ? '#00b894' : '#ff6b6b';
+            }
+            
+            if (data.riskScore !== undefined) {
+                this.riskScore.textContent = data.riskScore.toFixed(1);
+                this.riskScore.style.color = this.getRiskColor(data.riskScore);
+            }
+            
+            if (data.openPositions !== undefined) {
+                this.openPositions.textContent = data.openPositions;
+            }
+            
+            if (data.winRate !== undefined) {
+                this.winRate.textContent = (data.winRate * 100).toFixed(1) + '%';
+                this.winRate.style.color = data.winRate > 0.5 ? '#00b894' : '#ff6b6b';
+            }
+            
+            // Update changes
+            if (data.changes) {
+                this.updateChange('total-change', data.changes.totalValue);
+                this.updateChange('daily-change', data.changes.dailyPnl);
+                this.updateChange('pnl-change', data.changes.totalPnl);
+                this.updateChange('risk-change', data.changes.riskScore);
+                this.updateChange('positions-change', data.changes.openPositions);
+                this.updateChange('winrate-change', data.changes.winRate);
+            }
+            
+            // Update metrics
+            if (data.metrics) {
+                this.updateMetrics(data.metrics);
+            }
+            
+            // Update activity
+            if (data.activity) {
+                this.renderActivity(data.activity);
+            }
+            
+            // Update charts
+            if (data.priceData) {
+                this.renderPriceChart(data.priceData);
+            }
+            
+            if (data.allocation) {
+                this.renderAllocationChart(data.allocation);
+            }
+        }
+        
+        updatePrice(data) {
+            // Update price chart with real-time data
+            if (data.candle) {
+                this.updatePriceChart(data.candle);
+            }
+        }
+        
+        updatePositions(data) {
+            this.openPositions.textContent = data.count || 0;
+        }
+        
+        updateChange(elementId, value) {
+            const element = document.getElementById(elementId);
+            if (!element) return;
+            if (value === undefined || value === null) {
+                element.textContent = '+0.00%';
+                element.style.color = '#74b9ff';
+                return;
+            }
+            
+            const isPositive = value >= 0;
+            element.textContent = `${isPositive ? '+' : ''}${(value * 100).toFixed(2)}%`;
+            element.style.color = isPositive ? '#00b894' : '#ff6b6b';
+        }
+        
+        updateMetrics(metrics) {
+            if (metrics.sharpeRatio !== undefined) {
+                this.sharpeRatio.textContent = metrics.sharpeRatio.toFixed(2);
+                this.sharpeRatio.style.color = metrics.sharpeRatio > 1 ? '#00b894' : '#fdcb6e';
+                document.getElementById('sharpe-status').textContent = metrics.sharpeRatio > 1 ? 'Good' : 'Needs Improvement';
+                document.getElementById('sharpe-status').style.color = metrics.sharpeRatio > 1 ? '#00b894' : '#fdcb6e';
+            }
+            
+            if (metrics.maxDrawdown !== undefined) {
+                this.maxDrawdown.textContent = (metrics.maxDrawdown * 100).toFixed(2) + '%';
+                this.maxDrawdown.style.color = metrics.maxDrawdown > 0.2 ? '#ff6b6b' : '#fdcb6e';
+                document.getElementById('drawdown-status').textContent = metrics.maxDrawdown > 0.2 ? 'High' : 'Low';
+                document.getElementById('drawdown-status').style.color = metrics.maxDrawdown > 0.2 ? '#ff6b6b' : '#00b894';
+            }
+            
+            if (metrics.volatility !== undefined) {
+                this.volatility.textContent = (metrics.volatility * 100).toFixed(2) + '%';
+                document.getElementById('volatility-status').textContent = metrics.volatility < 0.3 ? 'Low' : metrics.volatility < 0.5 ? 'Medium' : 'High';
+                document.getElementById('volatility-status').style.color = metrics.volatility < 0.3 ? '#00b894' : metrics.volatility < 0.5 ? '#fdcb6e' : '#ff6b6b';
+            }
+            
+            if (metrics.profitFactor !== undefined) {
+                this.profitFactor.textContent = metrics.profitFactor.toFixed(2);
+                this.profitFactor.style.color = metrics.profitFactor > 1 ? '#00b894' : '#ff6b6b';
+                document.getElementById('profit-status').textContent = metrics.profitFactor > 1 ? 'Good' : 'Needs Improvement';
+                document.getElementById('profit-status').style.color = metrics.profitFactor > 1 ? '#00b894' : '#ff6b6b';
+            }
+            
+            if (metrics.avgTrade !== undefined) {
+                this.avgTrade.textContent = this.formatCurrency(metrics.avgTrade);
+                this.avgTrade.style.color = metrics.avgTrade >= 0 ? '#00b894' : '#ff6b6b';
+                document.getElementById('trade-status').textContent = metrics.avgTrade >= 0 ? 'Positive' : 'Negative';
+                document.getElementById('trade-status').style.color = metrics.avgTrade >= 0 ? '#00b894' : '#ff6b6b';
+            }
+            
+            if (metrics.consecutiveWins !== undefined) {
+                this.consecutiveWins.textContent = metrics.consecutiveWins;
+                this.consecutiveWins.style.color = '#00b894';
+                document.getElementById('streak-status').textContent = metrics.consecutiveWins > 0 ? 'Active' : 'No Streak';
+                document.getElementById('streak-status').style.color = metrics.consecutiveWins > 0 ? '#00b894' : '#74b9ff';
+            }
+        }
+        
+        async loadDashboardData() {
+            try {
+                const url = `/api/dashboard/data?userId=${this.userId}&exchange=${this.exchange}&timeframe=${this.timeframe}`;
+                const response = await fetch(url);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                if (data.error) {
+                    throw new Error(data.error);
+                }
+                
+                this.updateDashboard(data);
+                this.updateStatus('connected', 'Connected');
+                
+            } catch (error) {
+                console.error('Failed to load dashboard data:', error);
+                this.updateStatus('error', 'Error');
+                
+                // Show error on summary cards
+                document.querySelectorAll('.summary-value .value-number').forEach(el => {
+                    el.textContent = '--';
+                });
+            }
+        }
+        
+        renderPriceChart(data) {
+            if (typeof Plotly === 'undefined') return;
+            
+            const chartDiv = document.getElementById('price-chart');
+            if (!chartDiv) return;
+            
+            const dates = data.map(d => d.date);
+            const open = data.map(d => d.open);
+            const high = data.map(d => d.high);
+            const low = data.map(d => d.low);
+            const close = data.map(d => d.close);
+            
+            const trace = {
+                type: 'candlestick',
+                x: dates,
+                open: open,
+                high: high,
+                low: low,
+                close: close,
+                increasing: { line: { color: '#00b894' } },
+                decreasing: { line: { color: '#ff6b6b' } },
+                name: 'Price'
+            };
+            
+            const layout = {
+                paper_bgcolor: 'transparent',
+                plot_bgcolor: 'transparent',
+                font: { color: '#ffffff', size: 10 },
+                margin: { l: 40, r: 10, t: 10, b: 30 },
+                xaxis: {
+                    gridcolor: '#2d2d44',
+                    tickfont: { color: '#74b9ff', size: 8 }
+                },
+                yaxis: {
+                    gridcolor: '#2d2d44',
+                    tickfont: { color: '#74b9ff', size: 8 }
+                },
+                hovermode: 'x'
+            };
+            
+            Plotly.react(chartDiv, [trace], layout, { responsive: true });
+        }
+        
+        updatePriceChart(candle) {
+            // Update existing chart with new candle
+            const chartDiv = document.getElementById('price-chart');
+            if (!chartDiv || typeof Plotly === 'undefined') return;
+            
+            Plotly.extendTraces(chartDiv, {
+                x: [[candle.date]],
+                open: [[candle.open]],
+                high: [[candle.high]],
+                low: [[candle.low]],
+                close: [[candle.close]]
+            }, [0]);
+        }
+        
+        renderAllocationChart(data) {
+            if (typeof Plotly === 'undefined') return;
+            
+            const chartDiv = document.getElementById('allocation-chart');
+            if (!chartDiv) return;
+            
+            const labels = data.map(d => d.symbol);
+            const values = data.map(d => d.value);
+            const colors = labels.map(s => this.getAllocationColor(s));
+            
+            const trace = {
+                type: 'pie',
+                labels: labels,
+                values: values,
+                marker: { colors: colors },
+                textinfo: 'label+percent',
+                hoverinfo: 'label+value+percent',
+                hole: 0.4,
+                textfont: { color: '#ffffff', size: 10 }
+            };
+            
+            const layout = {
+                paper_bgcolor: 'transparent',
+                plot_bgcolor: 'transparent',
+                font: { color: '#ffffff', size: 10 },
+                margin: { l: 10, r: 10, t: 10, b: 10 },
+                showlegend: true,
+                legend: {
+                    orientation: 'h',
+                    y: 1.1,
+                    x: 0.5,
+                    xanchor: 'center',
+                    font: { color: '#74b9ff', size: 9 }
+                }
+            };
+            
+            Plotly.react(chartDiv, [trace], layout, { responsive: true });
+        }
+        
+        getAllocationColor(symbol) {
+            const colors = {
+                'BTC': '#f7931a',
+                'ETH': '#627eea',
+                'USDT': '#26a17b',
+                'USDC': '#2775ca',
+                'SOL': '#9945ff',
+                'ADA': '#0033ad',
+                'DOT': '#e6007a',
+                'AVAX': '#e84142',
+                'MATIC': '#8247e5',
+                'LINK': '#2a5ada',
+                'UNI': '#ff007a',
+                'ATOM': '#2e3148',
+                'LTC': '#345d9d',
+                'BCH': '#8dc351',
+                'XRP': '#00aae4',
+                'DOGE': '#c2a633',
+                'SHIB': '#ff6100'
+            };
+            return colors[symbol] || '#74b9ff';
+        }
+        
+        renderActivity(activities) {
+            const list = document.getElementById('activity-list');
+            if (!list) return;
+            
+            if (!activities || activities.length === 0) {
+                list.innerHTML = `
+                    <div class="activity-empty">
+                        <i class="fas fa-inbox"></i>
+                        <span>No recent activity</span>
+                    </div>
+                `;
+                return;
+            }
+            
+            let html = '';
+            activities.forEach(item => {
+                const icon = this.getActivityIcon(item.type);
+                const time = new Date(item.timestamp).toLocaleTimeString();
+                const isPositive = item.pnl && item.pnl >= 0;
+                
+                html += `
+                    <div class="activity-item">
+                        <div class="activity-icon ${item.type}">
+                            <i class="fas ${icon}"></i>
+                        </div>
+                        <div class="activity-content">
+                            <div class="activity-title">${item.title}</div>
+                            <div class="activity-details">${item.details}</div>
+                        </div>
+                        <div class="activity-time">${time}</div>
+                        ${item.pnl !== undefined ? `
+                            <div class="activity-pnl ${isPositive ? 'positive' : 'negative'}">
+                                ${isPositive ? '+' : ''}${this.formatCurrency(item.pnl)}
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            });
+            list.innerHTML = html;
+        }
+        
+        getActivityIcon(type) {
+            const icons = {
+                'trade': 'fa-exchange-alt',
+                'order': 'fa-shopping-cart',
+                'position': 'fa-arrows-alt-h',
+                'alert': 'fa-exclamation-triangle',
+                'system': 'fa-server',
+                'risk': 'fa-shield-alt',
+                'performance': 'fa-chart-line'
+            };
+            return icons[type] || 'fa-circle';
+        }
+        
+        getRiskColor(score) {
+            if (score < 25) return '#00b894';
+            if (score < 50) return '#fdcb6e';
+            if (score < 75) return '#e17055';
+            return '#ff6b6b';
+        }
+        
+        updateStatus(status, label) {
+            if (!this.status) return;
+            const dot = this.status.querySelector('.status-dot');
+            const labelEl = this.status.querySelector('.status-label');
+            
+            if (dot) dot.className = `status-dot ${status}`;
+            if (labelEl) labelEl.textContent = label;
+        }
+        
+        updateTimestamp() {
+            if (this.timestamp) {
+                this.timestamp.textContent = new Date().toLocaleString('en-US', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit'
+                });
+            }
+        }
+        
+        startAutoRefresh() {
+            if (this.refreshTimer) clearInterval(this.refreshTimer);
+            
+            this.refreshTimer = setInterval(() => {
+                if (this.isLive) {
+                    this.loadDashboardData();
+                }
+            }, this.refreshInterval * 1000);
+        }
+        
+        setupResizeObserver() {
+            const resizeObserver = new ResizeObserver(() => {
+                if (document.getElementById('price-chart')) {
+                    Plotly.Plots.resize(document.getElementById('price-chart'));
+                }
+                if (document.getElementById('allocation-chart')) {
+                    Plotly.Plots.resize(document.getElementById('allocation-chart'));
+                }
+            });
+            resizeObserver.observe(this.container);
+        }
+        
+        formatCurrency(value) {
+            if (value === null || value === undefined || isNaN(value)) return '0.00';
+            return value.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        }
+        
+        toggleChartType(type) {
+            this.chartType = type;
+            // Update chart type buttons
+            document.querySelectorAll('.chart-control-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.currentTarget.classList.add('active');
+            
+            // Reload chart with new type
+            const data = this.dashboardData.priceData;
+            if (data) {
+                this.renderPriceChart(data);
+            }
+        }
+        
+        destroy() {
+            if (this.refreshTimer) clearInterval(this.refreshTimer);
+            if (this.ws) this.ws.close();
+            if (document.getElementById('price-chart')) {
+                Plotly.purge(document.getElementById('price-chart'));
+            }
+            if (document.getElementById('allocation-chart')) {
+                Plotly.purge(document.getElementById('allocation-chart'));
+            }
+        }
+    }
+    
+    // Global functions
+    window.refreshDashboard = function() {
+        const instance = window.dashboardInstance;
+        if (instance) instance.loadDashboardData();
+    };
+    
+    window.exportDashboard = function() {
+        const instance = window.dashboardInstance;
+        if (!instance) return;
+        
+        const data = {
+            timestamp: new Date().toISOString(),
+            summary: {
+                totalValue: instance.totalValue.textContent,
+                dailyPnl: instance.dailyPnl.textContent,
+                totalPnl: instance.totalPnl.textContent,
+                riskScore: instance.riskScore.textContent,
+                openPositions: instance.openPositions.textContent,
+                winRate: instance.winRate.textContent
+            },
+            metrics: {
+                sharpeRatio: instance.sharpeRatio.textContent,
+                maxDrawdown: instance.maxDrawdown.textContent,
+                volatility: instance.volatility.textContent,
+                profitFactor: instance.profitFactor.textContent,
+                avgTrade: instance.avgTrade.textContent,
+                consecutiveWins: instance.consecutiveWins.textContent
+            }
+        };
+        
+        const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `dashboard_export_${Date.now()}.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+    };
+    
+    window.toggleChartType = function(type) {
+        const instance = window.dashboardInstance;
+        if (instance) instance.toggleChartType(type);
+    };
+    
+    window.expandChart = function(chartType) {
+        const chartDiv = document.getElementById(`${chartType}-chart`);
+        if (!chartDiv) return;
+        
+        const isExpanded = chartDiv.classList.contains('expanded');
+        chartDiv.classList.toggle('expanded');
+        
+        if (!isExpanded) {
+            chartDiv.style.position = 'fixed';
+            chartDiv.style.top = '50%';
+            chartDiv.style.left = '50%';
+            chartDiv.style.transform = 'translate(-50%, -50%)';
+            chartDiv.style.width = '80%';
+            chartDiv.style.height = '80%';
+            chartDiv.style.zIndex = '10000';
+            chartDiv.style.background = '#1a1a2e';
+            chartDiv.style.border = '1px solid #2d2d44';
+            chartDiv.style.borderRadius = '12px';
+            chartDiv.style.padding = '16px';
+            chartDiv.style.boxShadow = '0 20px 60px rgba(0,0,0,0.8)';
+        } else {
+            chartDiv.style.position = '';
+            chartDiv.style.top = '';
+            chartDiv.style.left = '';
+            chartDiv.style.transform = '';
+            chartDiv.style.width = '';
+            chartDiv.style.height = '';
+            chartDiv.style.zIndex = '';
+            chartDiv.style.background = '';
+            chartDiv.style.border = '';
+            chartDiv.style.borderRadius = '';
+            chartDiv.style.padding = '';
+            chartDiv.style.boxShadow = '';
+        }
+        
+        setTimeout(() => {
+            if (typeof Plotly !== 'undefined') {
+                Plotly.Plots.resize(chartDiv);
+            }
+        }, 100);
+    };
+    
+    // Initialize on DOM ready
+    document.addEventListener('DOMContentLoaded', function() {
+        const instance = new DashboardManager();
+        window.dashboardInstance = instance;
+    });
+    
+})();
+</script>
+
+<style>
+/* Dashboard Styles - Full Implementation */
+.dashboard-container {
+    padding: 24px;
+    background: #0f0f1a;
+    min-height: calc(100vh - 64px);
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    color: #ffffff;
+}
+
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.dashboard-title-section {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.dashboard-logo-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.dashboard-logo {
+    height: 32px;
+    width: auto;
+}
+
+.dashboard-brand {
+    color: #00d4ff;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.dashboard-title {
+    font-size: 24px;
+    font-weight: 700;
+    margin: 0;
+}
+
+.dashboard-subtitle {
+    color: #74b9ff;
+    font-size: 14px;
+    opacity: 0.6;
+}
+
+.dashboard-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.dashboard-timeframe {
+    display: flex;
+    background: #1a1a2e;
+    border: 1px solid #2d2d44;
+    border-radius: 6px;
+    padding: 2px;
+}
+
+.tf-btn {
+    background: transparent;
+    border: none;
+    color: #74b9ff;
+    padding: 4px 12px;
+    font-size: 12px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.tf-btn:hover {
+    background: rgba(116, 185, 255, 0.1);
+}
+
+.tf-btn.active {
+    background: #74b9ff;
+    color: #1a1a2e;
+}
+
+.btn-primary {
+    padding: 8px 16px;
+    background: #74b9ff;
+    border: none;
+    border-radius: 6px;
+    color: #1a1a2e;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s ease;
+}
+
+.btn-primary:hover {
+    transform: scale(1.02);
+    box-shadow: 0 4px 20px rgba(116, 185, 255, 0.3);
+}
+
+.btn-secondary {
+    padding: 8px 16px;
+    background: transparent;
+    border: 1px solid #2d2d44;
+    border-radius: 6px;
+    color: #74b9ff;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s ease;
+}
+
+.btn-secondary:hover {
+    background: rgba(116, 185, 255, 0.05);
+    border-color: #4d4d6a;
+}
+
+/* Dashboard Summary */
+.dashboard-summary {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.summary-card {
+    background: #1a1a2e;
+    border: 1px solid #2d2d44;
+    border-radius: 8px;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.3s ease;
+}
+
+.summary-card:hover {
+    border-color: #4d4d6a;
+}
+
+.summary-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+}
+
+.summary-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.summary-label {
+    display: block;
+    color: #74b9ff;
+    font-size: 11px;
+    text-transform: uppercase;
+    opacity: 0.6;
+}
+
+.summary-value {
+    font-size: 20px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+}
+
+.currency-symbol {
+    color: #74b9ff;
+    font-size: 16px;
+}
+
+.summary-change {
+    font-size: 12px;
+    opacity: 0.7;
+}
+
+/* Dashboard Charts */
+.dashboard-charts-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.dashboard-chart-container {
+    background: #1a1a2e;
+    border: 1px solid #2d2d44;
+    border-radius: 8px;
+    padding: 16px;
+    min-height: 300px;
+}
+
+.chart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.chart-title {
+    color: #74b9ff;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.chart-controls {
+    display: flex;
+    gap: 4px;
+}
+
+.chart-control-btn {
+    background: transparent;
+    border: 1px solid #2d2d44;
+    color: #74b9ff;
+    padding: 2px 8px;
+    font-size: 11px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.chart-control-btn:hover {
+    background: rgba(116, 185, 255, 0.1);
+}
+
+.chart-control-btn.active {
+    background: #74b9ff;
+    color: #1a1a2e;
+    border-color: #74b9ff;
+}
+
+.chart-expand-btn {
+    background: transparent;
+    border: none;
+    color: #74b9ff;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.chart-expand-btn:hover {
+    background: rgba(116, 185, 255, 0.1);
+}
+
+/* Dashboard Metrics */
+.dashboard-metrics {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.metric-card {
+    background: #1a1a2e;
+    border: 1px solid #2d2d44;
+    border-radius: 8px;
+    padding: 12px 16px;
+    text-align: center;
+}
+
+.metric-label {
+    display: block;
+    color: #74b9ff;
+    font-size: 10px;
+    text-transform: uppercase;
+    opacity: 0.6;
+}
+
+.metric-value {
+    display: block;
+    font-size: 18px;
+    font-weight: 700;
+    font-family: 'Courier New', monospace;
+}
+
+.metric-status {
+    display: inline-block;
+    padding: 2px 12px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 500;
+    margin-top: 4px;
+}
+
+/* Dashboard Activity */
+.dashboard-activity {
+    background: #1a1a2e;
+    border: 1px solid #2d2d44;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 20px;
+}
+
+.activity-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.activity-title {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.activity-view-all {
+    color: #74b9ff;
+    font-size: 13px;
+    text-decoration: none;
+    opacity: 0.6;
+}
+
+.activity-view-all:hover {
+    opacity: 1;
+}
+
+.activity-list {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.activity-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+    color: #74b9ff;
+    gap: 12px;
+}
+
+.spinner {
+    width: 24px;
+    height: 24px;
+    border: 2px solid #2d2d44;
+    border-top-color: #74b9ff;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+.activity-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 12px;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.activity-item:hover {
+    background: rgba(45, 45, 68, 0.3);
+}
+
+.activity-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    flex-shrink: 0;
+}
+
+.activity-icon.trade {
+    background: rgba(0, 184, 148, 0.2);
+    color: #00b894;
+}
+
+.activity-icon.order {
+    background: rgba(116, 185, 255, 0.2);
+    color: #74b9ff;
+}
+
+.activity-icon.position {
+    background: rgba(253, 203, 110, 0.2);
+    color: #fdcb6e;
+}
+
+.activity-icon.alert {
+    background: rgba(255, 107, 107, 0.2);
+    color: #ff6b6b;
+}
+
+.activity-icon.system {
+    background: rgba(162, 155, 254, 0.2);
+    color: #a29bfe;
+}
+
+.activity-content {
+    flex: 1;
+}
+
+.activity-title {
+    font-weight: 500;
+    font-size: 13px;
+}
+
+.activity-details {
+    color: #74b9ff;
+    font-size: 12px;
+    opacity: 0.7;
+}
+
+.activity-time {
+    color: #74b9ff;
+    font-size: 11px;
+    opacity: 0.4;
+}
+
+.activity-pnl {
+    font-size: 13px;
+    font-weight: 600;
+    font-family: 'Courier New', monospace;
+}
+
+.activity-pnl.positive {
+    color: #00b894;
+}
+
+.activity-pnl.negative {
+    color: #ff6b6b;
+}
+
+.activity-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+    color: #74b9ff;
+    gap: 8px;
+}
+
+.activity-empty i {
+    font-size: 36px;
+    opacity: 0.3;
+}
+
+/* Dashboard Footer */
+.dashboard-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid #2d2d44;
+    font-size: 12px;
+    color: #74b9ff;
+    opacity: 0.6;
+}
+
+.dashboard-nexus-branding {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.nexus-copyright {
+    font-size: 10px;
+    opacity: 0.5;
+}
+
+.nexus-version {
+    color: #00d4ff;
+    font-size: 10px;
+    font-weight: 600;
+}
+
+.dashboard-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+.status-dot.connected {
+    background: #00b894;
+}
+
+.status-dot.disconnected {
+    background: #ff6b6b;
+}
+
+.status-dot.error {
+    background: #ff6b6b;
+    animation: blink 0.5s infinite;
+}
+
+/* Widget Modal */
+.widget-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+}
+
+.modal-content {
+    position: relative;
+    background: #1a1a2e;
+    border: 1px solid #2d2d44;
+    border-radius: 12px;
+    padding: 24px;
+    max-width: 600px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    z-index: 1;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #2d2d44;
+}
+
+.modal-header h3 {
+    margin: 0;
+}
+
+.modal-close {
+    background: transparent;
+    border: none;
+    color: #74b9ff;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.widget-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+}
+
+.widget-option {
+    padding: 20px;
+    background: #131722;
+    border: 1px solid #2d2d44;
+    border-radius: 8px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.widget-option:hover {
+    border-color: #74b9ff;
+    transform: translateY(-2px);
+}
+
+.widget-option i {
+    font-size: 32px;
+    color: #74b9ff;
+    display: block;
+    margin-bottom: 8px;
+}
+
+.widget-option span {
+    color: #ffffff;
+    font-size: 13px;
+}
+
+/* Animations */
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.2; }
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .dashboard-summary {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    .dashboard-metrics {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    .dashboard-charts-row {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .dashboard-container {
+        padding: 16px;
+    }
+    
+    .dashboard-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .dashboard-actions {
+        flex-direction: column;
+    }
+    
+    .dashboard-timeframe {
+        flex-wrap: wrap;
+    }
+    
+    .dashboard-summary {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .dashboard-metrics {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .widget-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .dashboard-summary {
+        grid-template-columns: 1fr;
+    }
+    
+    .dashboard-metrics {
+        grid-template-columns: 1fr;
+    }
+    
+    .widget-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .summary-value {
+        font-size: 18px;
+    }
+}
+</style>
+{% endblock %}
