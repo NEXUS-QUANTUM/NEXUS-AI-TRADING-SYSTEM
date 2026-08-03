@@ -1,0 +1,450 @@
+# trading/bots/swing_bot/config/breadth_configs.yaml
+
+# ============================================================================
+# NEXUS AI TRADING SYSTEM - Swing Bot Market Breadth Configuration
+# Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+# ============================================================================
+#
+# Description: Complete Market Breadth configuration for swing trading bot
+# Framework: Market Breadth Analysis - Internal Market Health
+# Version: 3.0.0
+#
+# Market Breadth analysis provides insight into the underlying health and
+# direction of the market by analyzing the number of advancing vs declining
+# issues, new highs/lows, and other internal market metrics.
+# ============================================================================
+
+# ----------------------------------------------------------------------------
+# General Configuration
+# ----------------------------------------------------------------------------
+breadth:
+  enabled: true
+  version: "3.0.0"
+  description: "Market Breadth Analysis for swing trading"
+  
+  # Breadth indicators
+  indicators:
+    - "advance_decline_line"
+    - "advance_decline_ratio"
+    - "new_highs_lows"
+    - "up_down_volume"
+    - "ticks"
+    - "trin"
+    - "mcclellan_oscillator"
+    - "arms_index"
+    - "high_low_index"
+  
+  # Timeframes
+  timeframes:
+    - "1m"
+    - "5m"
+    - "15m"
+    - "30m"
+    - "1h"
+    - "4h"
+    - "1d"
+  
+  default_timeframe: "1h"
+  
+  # Data sources
+  data_sources:
+    - "exchange_data"
+    - "market_data"
+    - "sector_data"
+    - "global_market_data"
+
+# ----------------------------------------------------------------------------
+# Advance-Decline Analysis
+# ----------------------------------------------------------------------------
+advance_decline:
+  enabled: true
+  description: "Advance-Decline analysis configuration"
+  
+  # Parameters
+  parameters:
+    lookback_period: 20
+    moving_average_period: 10
+    threshold: 0.5
+    extreme_threshold: 0.8
+  
+  # Metrics
+  metrics:
+    advance_decline_line:
+      enabled: true
+      calculation: "cumulative"
+      lookback_period: 50
+    
+    advance_decline_ratio:
+      enabled: true
+      calculation: "ratio"
+      lookback_period: 10
+    
+    advance_decline_percent:
+      enabled: true
+      calculation: "percentage"
+      lookback_period: 5
+  
+  # Signals
+  signals:
+    bullish_divergence:
+      description: "Bullish divergence - price down, A/D up"
+      conditions:
+        - "price_decreasing"
+        - "ad_line_increasing"
+      confidence: 0.7
+    
+    bearish_divergence:
+      description: "Bearish divergence - price up, A/D down"
+      conditions:
+        - "price_increasing"
+        - "ad_line_decreasing"
+      confidence: 0.7
+    
+    extreme_breadth:
+      description: "Extreme breadth condition"
+      conditions:
+        - "ad_ratio_>_0.8"
+        - "ad_ratio_<_0.2"
+      confidence: 0.6
+
+# ----------------------------------------------------------------------------
+# New Highs-Lows Analysis
+# ----------------------------------------------------------------------------
+new_highs_lows:
+  enabled: true
+  description: "New Highs-Lows analysis configuration"
+  
+  # Parameters
+  parameters:
+    lookback_period: 20
+    moving_average_period: 10
+    threshold: 0.3
+    extreme_threshold: 0.7
+  
+  # Metrics
+  metrics:
+    new_highs:
+      enabled: true
+      calculation: "count"
+      lookback_period: 10
+    
+    new_lows:
+      enabled: true
+      calculation: "count"
+      lookback_period: 10
+    
+    high_low_ratio:
+      enabled: true
+      calculation: "ratio"
+      lookback_period: 10
+    
+    high_low_index:
+      enabled: true
+      calculation: "index"
+      lookback_period: 50
+  
+  # Signals
+  signals:
+    breadth_confirmation:
+      description: "Breadth confirmation"
+      conditions:
+        - "high_low_ratio_>_0.5"
+        - "price_trend_confirmed"
+      confidence: 0.75
+    
+    breadth_warning:
+      description: "Breadth warning"
+      conditions:
+        - "high_low_ratio_<_0.2"
+        - "price_divergence"
+      confidence: 0.65
+
+# ----------------------------------------------------------------------------
+# Volume Breadth Analysis
+# ----------------------------------------------------------------------------
+volume_breadth:
+  enabled: true
+  description: "Volume breadth analysis configuration"
+  
+  # Parameters
+  parameters:
+    lookback_period: 20
+    moving_average_period: 10
+    threshold: 0.3
+    extreme_threshold: 0.7
+  
+  # Metrics
+  metrics:
+    up_volume:
+      enabled: true
+      calculation: "sum"
+      lookback_period: 10
+    
+    down_volume:
+      enabled: true
+      calculation: "sum"
+      lookback_period: 10
+    
+    volume_ratio:
+      enabled: true
+      calculation: "ratio"
+      lookback_period: 10
+    
+    volume_breadth:
+      enabled: true
+      calculation: "cumulative"
+      lookback_period: 50
+  
+  # Signals
+  signals:
+    volume_confirmation:
+      description: "Volume confirmation"
+      conditions:
+        - "volume_ratio_>_0.5"
+        - "price_trend_confirmed"
+      confidence: 0.75
+    
+    volume_warning:
+      description: "Volume warning"
+      conditions:
+        - "volume_ratio_<_0.2"
+        - "price_divergence"
+      confidence: 0.65
+
+# ----------------------------------------------------------------------------
+# Tick and TRIN Analysis
+# ----------------------------------------------------------------------------
+tick_trin:
+  enabled: true
+  description: "Tick and TRIN analysis configuration"
+  
+  # Parameters
+  parameters:
+    lookback_period: 20
+    moving_average_period: 10
+    threshold: 1000
+    trin_threshold: 1.0
+  
+  # Metrics
+  metrics:
+    ticks:
+      enabled: true
+      calculation: "net"
+      lookback_period: 10
+    
+    trin:
+      enabled: true
+      calculation: "ratio"
+      lookback_period: 10
+    
+    tick_ma:
+      enabled: true
+      calculation: "moving_average"
+      lookback_period: 10
+    
+    trin_ma:
+      enabled: true
+      calculation: "moving_average"
+      lookback_period: 10
+  
+  # Signals
+  signals:
+    tick_extreme:
+      description: "Tick extreme condition"
+      conditions:
+        - "ticks_>_1000"
+        - "ticks_<_-1000"
+      confidence: 0.6
+    
+    trin_signal:
+      description: "TRIN signal"
+      conditions:
+        - "trin_>_1.2"
+        - "trin_<_0.8"
+      confidence: 0.65
+
+# ----------------------------------------------------------------------------
+# McClellan Oscillator
+# ----------------------------------------------------------------------------
+mcclellan:
+  enabled: true
+  description: "McClellan Oscillator configuration"
+  
+  # Parameters
+  parameters:
+    fast_ma_period: 19
+    slow_ma_period: 39
+    threshold: 100
+    extreme_threshold: 200
+  
+  # Metrics
+  metrics:
+    mcclellan_oscillator:
+      enabled: true
+      calculation: "difference"
+      lookback_period: 50
+    
+    mcclellan_summary_index:
+      enabled: true
+      calculation: "cumulative"
+      lookback_period: 50
+  
+  # Signals
+  signals:
+    mcclellan_extreme:
+      description: "McClellan extreme condition"
+      conditions:
+        - "mcclellan_>_200"
+        - "mcclellan_<_-200"
+      confidence: 0.7
+    
+    mcclellan_crossover:
+      description: "McClellan crossover"
+      conditions:
+        - "mcclellan_crossing_above_zero"
+        - "mcclellan_crossing_below_zero"
+      confidence: 0.65
+
+# ----------------------------------------------------------------------------
+# Arms Index
+# ----------------------------------------------------------------------------
+arms_index:
+  enabled: true
+  description: "Arms Index (TRIN) configuration"
+  
+  # Parameters
+  parameters:
+    lookback_period: 20
+    moving_average_period: 10
+    overbought_threshold: 1.2
+    oversold_threshold: 0.8
+  
+  # Metrics
+  metrics:
+    arms_index:
+      enabled: true
+      calculation: "standard"
+      lookback_period: 10
+    
+    arms_ma:
+      enabled: true
+      calculation: "moving_average"
+      lookback_period: 10
+  
+  # Signals
+  signals:
+    arms_overbought:
+      description: "Arms index overbought"
+      conditions:
+        - "arms_index_>_1.2"
+        - "price_confirming"
+      confidence: 0.65
+    
+    arms_oversold:
+      description: "Arms index oversold"
+      conditions:
+        - "arms_index_<_0.8"
+        - "price_confirming"
+      confidence: 0.65
+
+# ----------------------------------------------------------------------------
+# Breadth Signals
+# ----------------------------------------------------------------------------
+signals:
+  enabled: true
+  description: "Breadth-based trading signals"
+  
+  # Signal types
+  types:
+    breadth_buy:
+      description: "Breadth buy signal"
+      conditions:
+        - "ad_line_increasing"
+        - "high_low_ratio_>_0.5"
+        - "volume_ratio_>_0.5"
+      confidence: 0.75
+    
+    breadth_sell:
+      description: "Breadth sell signal"
+      conditions:
+        - "ad_line_decreasing"
+        - "high_low_ratio_<_0.2"
+        - "volume_ratio_<_0.2"
+      confidence: 0.75
+    
+    breadth_warning:
+      description: "Breadth warning signal"
+      conditions:
+        - "ad_line_diverging"
+        - "high_low_ratio_diverging"
+        - "volume_ratio_diverging"
+      confidence: 0.65
+  
+  # Signal confirmation
+  confirmation:
+    required_confirmations: 2
+    confirmation_sources:
+      - "price_action"
+      - "volume"
+      - "technical_indicators"
+
+# ----------------------------------------------------------------------------
+# Risk Management
+# ----------------------------------------------------------------------------
+risk_management:
+  enabled: true
+  description: "Risk management for breadth trading"
+  
+  # Risk parameters
+  parameters:
+    max_position: 0.05
+    max_daily_loss: 0.02
+    max_drawdown: 0.1
+    risk_per_trade: 0.01
+  
+  # Stop loss
+  stop_loss:
+    enabled: true
+    type: "breadth_based"
+    threshold: 0.5
+    update_interval: 10  # bars
+
+# ----------------------------------------------------------------------------
+# Performance Monitoring
+# ----------------------------------------------------------------------------
+performance_monitoring:
+  enabled: true
+  description: "Performance monitoring for breadth trading"
+  
+  metrics:
+    - "win_rate"
+    - "profit_factor"
+    - "sharpe_ratio"
+    - "max_drawdown"
+    - "average_trade"
+    - "consecutive_wins"
+    - "consecutive_losses"
+  
+  targets:
+    min_win_rate: 0.5
+    min_profit_factor: 1.5
+    min_sharpe_ratio: 0.6
+    max_max_drawdown: 0.1
+
+# ----------------------------------------------------------------------------
+# Logging Configuration
+# ----------------------------------------------------------------------------
+logging:
+  enabled: true
+  level: "INFO"
+  file: "logs/breadth_bot.log"
+  rotation: "daily"
+  retention: 30  # days
+  
+  log_categories:
+    signals: true
+    trades: true
+    errors: true
+    performance: true
+    breadth: true
+    debugging: false
