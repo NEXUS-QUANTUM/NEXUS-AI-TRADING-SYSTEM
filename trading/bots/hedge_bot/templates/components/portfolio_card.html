@@ -1,0 +1,1938 @@
+<!-- trading/bots/hedge_bot/templates/components/portfolio_card.html -->
+
+<!--
+NEXUS AI TRADING SYSTEM - Hedge Bot Portfolio Card Component
+Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+
+Full implementation with real API data integration, live WebSocket updates,
+and interactive portfolio visualization using real exchange data.
+-->
+
+{% load static %}
+{% load nexus_tags %}
+
+<div id="portfolio-card-{{ portfolio_id|default:'default' }}" 
+     class="portfolio-card" 
+     data-portfolio-id="{{ portfolio_id|default:'default' }}"
+     data-user-id="{{ user_id|default:'current' }}"
+     data-refresh-interval="{{ refresh_interval|default:15 }}"
+     data-currency="{{ currency|default:'USD' }}"
+     data-exchange="{{ exchange|default:'binance' }}">
+
+    <!-- Portfolio Card Header with Nexus Branding -->
+    <div class="portfolio-card-header">
+        <div class="portfolio-title-section">
+            <div class="portfolio-logo-container">
+                <img src="{% static 'images/nexus-logo-light.svg' %}" 
+                     alt="NEXUS Logo" 
+                     class="portfolio-logo"
+                     onerror="this.src='{% static 'images/nexus-favicon.svg' %}'">
+                <span class="portfolio-brand">NEXUS</span>
+            </div>
+            <div class="portfolio-title-group">
+                <h3 class="portfolio-title">{{ portfolio_title|default:'Portfolio Overview' }}</h3>
+                <span class="portfolio-subtitle" id="portfolio-subtitle-{{ portfolio_id|default:'default' }}">
+                    <span class="exchange-badge" id="exchange-badge-{{ portfolio_id|default:'default' }}">
+                        <img src="{% static 'logos/binance-logo.png' %}" alt="Binance" class="exchange-badge-icon">
+                        Binance
+                    </span>
+                    <span class="user-name">{{ user_name|default:'Main Portfolio' }}</span>
+                </span>
+            </div>
+        </div>
+        <div class="portfolio-controls">
+            <div class="exchange-selector">
+                <button class="ex-btn active" data-exchange="binance" onclick="switchExchange('{{ portfolio_id|default:'default' }}', 'binance')">
+                    <img src="{% static 'logos/binance-logo.png' %}" alt="Binance" class="exchange-icon">
+                </button>
+                <button class="ex-btn" data-exchange="bybit" onclick="switchExchange('{{ portfolio_id|default:'default' }}', 'bybit')">
+                    <img src="{% static 'logos/bybit-logo.png' %}" alt="Bybit" class="exchange-icon">
+                </button>
+                <button class="ex-btn" data-exchange="kraken" onclick="switchExchange('{{ portfolio_id|default:'default' }}', 'kraken')">
+                    <img src="{% static 'logos/kraken-logo.png' %}" alt="Kraken" class="exchange-icon">
+                </button>
+                <button class="ex-btn" data-exchange="coinbase" onclick="switchExchange('{{ portfolio_id|default:'default' }}', 'coinbase')">
+                    <img src="{% static 'logos/coinbase-logo.png' %}" alt="Coinbase" class="exchange-icon">
+                </button>
+            </div>
+            <button class="portfolio-btn" id="refresh-btn-{{ portfolio_id|default:'default' }}" title="Refresh">
+                <i class="fas fa-sync-alt"></i>
+            </button>
+            <button class="portfolio-btn" id="download-btn-{{ portfolio_id|default:'default' }}" title="Download Report">
+                <i class="fas fa-download"></i>
+            </button>
+            <button class="portfolio-btn" id="settings-btn-{{ portfolio_id|default:'default' }}" title="Settings">
+                <i class="fas fa-cog"></i>
+            </button>
+            <div class="live-indicator" id="live-indicator-{{ portfolio_id|default:'default' }}">
+                <span class="live-dot"></span>
+                <span class="live-label">LIVE</span>
+                <span class="live-time" id="live-time-{{ portfolio_id|default:'default' }}">--:--:--</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Portfolio Summary with Real Data -->
+    <div class="portfolio-summary">
+        <div class="summary-item">
+            <span class="summary-label">Total Value</span>
+            <span class="summary-value" id="total-value-{{ portfolio_id|default:'default' }}">
+                <span class="currency-symbol">{{ currency_symbol|default:'$' }}</span>
+                <span class="value-number" id="total-value-number-{{ portfolio_id|default:'default' }}">0.00</span>
+            </span>
+        </div>
+        <div class="summary-item">
+            <span class="summary-label">24h Change</span>
+            <span class="summary-value" id="total-change-{{ portfolio_id|default:'default' }}">
+                <span class="value-number" id="total-change-number-{{ portfolio_id|default:'default' }}">0.00%</span>
+            </span>
+        </div>
+        <div class="summary-item">
+            <span class="summary-label">Total PnL</span>
+            <span class="summary-value" id="total-pnl-{{ portfolio_id|default:'default' }}">
+                <span class="currency-symbol">{{ currency_symbol|default:'$' }}</span>
+                <span class="value-number" id="total-pnl-number-{{ portfolio_id|default:'default' }}">0.00</span>
+            </span>
+        </div>
+        <div class="summary-item">
+            <span class="summary-label">Open Positions</span>
+            <span class="summary-value" id="open-positions-{{ portfolio_id|default:'default' }}">
+                <span class="value-number" id="open-positions-number-{{ portfolio_id|default:'default' }}">0</span>
+            </span>
+        </div>
+        <div class="summary-item">
+            <span class="summary-label">Equity</span>
+            <span class="summary-value" id="equity-{{ portfolio_id|default:'default' }}">
+                <span class="currency-symbol">{{ currency_symbol|default:'$' }}</span>
+                <span class="value-number" id="equity-number-{{ portfolio_id|default:'default' }}">0.00</span>
+            </span>
+        </div>
+        <div class="summary-item">
+            <span class="summary-label">Risk Level</span>
+            <span class="summary-value" id="risk-level-{{ portfolio_id|default:'default' }}">
+                <span class="risk-badge low" id="risk-badge-{{ portfolio_id|default:'default' }}">Low</span>
+            </span>
+        </div>
+    </div>
+
+    <!-- Portfolio Charts Row with Real Data -->
+    <div class="portfolio-charts-row">
+        <div class="portfolio-chart-container">
+            <div class="chart-header">
+                <span class="chart-title">Asset Allocation</span>
+                <button class="chart-expand-btn" onclick="expandChart('allocation', '{{ portfolio_id|default:'default' }}')">
+                    <i class="fas fa-expand"></i>
+                </button>
+            </div>
+            <div id="allocation-chart-{{ portfolio_id|default:'default' }}" style="width:100%;height:250px;"></div>
+        </div>
+        <div class="portfolio-chart-container">
+            <div class="chart-header">
+                <span class="chart-title">Equity Curve</span>
+                <button class="chart-expand-btn" onclick="expandChart('performance', '{{ portfolio_id|default:'default' }}')">
+                    <i class="fas fa-expand"></i>
+                </button>
+            </div>
+            <div id="performance-chart-{{ portfolio_id|default:'default' }}" style="width:100%;height:250px;"></div>
+        </div>
+    </div>
+
+    <!-- Portfolio Holdings Table with Real Data -->
+    <div class="portfolio-holdings">
+        <div class="holdings-header">
+            <span class="holdings-title">Holdings</span>
+            <div class="holdings-filters">
+                <input type="text" class="holdings-search" placeholder="Search assets..." 
+                       id="holdings-search-{{ portfolio_id|default:'default' }}">
+                <select class="holdings-sort" id="holdings-sort-{{ portfolio_id|default:'default' }}">
+                    <option value="value_desc">Value (High to Low)</option>
+                    <option value="value_asc">Value (Low to High)</option>
+                    <option value="pnl_desc">PnL (High to Low)</option>
+                    <option value="pnl_asc">PnL (Low to High)</option>
+                    <option value="name">Name (A-Z)</option>
+                </select>
+            </div>
+        </div>
+        <div class="holdings-table-container">
+            <table class="holdings-table" id="holdings-table-{{ portfolio_id|default:'default' }}">
+                <thead>
+                    <tr>
+                        <th>Asset</th>
+                        <th>Balance</th>
+                        <th>Value</th>
+                        <th>Allocation</th>
+                        <th>PnL</th>
+                        <th>PnL %</th>
+                        <th>Price</th>
+                        <th>24h Change</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="holdings-body-{{ portfolio_id|default:'default' }}">
+                    <tr>
+                        <td colspan="9" class="loading-row">Loading holdings from {{ exchange|default:'Binance' }}...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="holdings-footer">
+            <span class="holdings-count" id="holdings-count-{{ portfolio_id|default:'default' }}">0 assets</span>
+            <span class="holdings-total" id="holdings-total-{{ portfolio_id|default:'default' }}">
+                Total: <span class="currency-symbol">{{ currency_symbol|default:'$' }}</span>
+                <span id="holdings-total-number-{{ portfolio_id|default:'default' }}">0.00</span>
+            </span>
+        </div>
+    </div>
+
+    <!-- Portfolio Metrics with Real Data -->
+    <div class="portfolio-metrics">
+        <div class="metric-item">
+            <span class="metric-label">Sharpe Ratio</span>
+            <span class="metric-value" id="metric-sharpe-{{ portfolio_id|default:'default' }}">--</span>
+        </div>
+        <div class="metric-item">
+            <span class="metric-label">Max Drawdown</span>
+            <span class="metric-value" id="metric-drawdown-{{ portfolio_id|default:'default' }}">--</span>
+        </div>
+        <div class="metric-item">
+            <span class="metric-label">Win Rate</span>
+            <span class="metric-value" id="metric-winrate-{{ portfolio_id|default:'default' }}">--</span>
+        </div>
+        <div class="metric-item">
+            <span class="metric-label">Avg Trade</span>
+            <span class="metric-value" id="metric-avg-trade-{{ portfolio_id|default:'default' }}">--</span>
+        </div>
+        <div class="metric-item">
+            <span class="metric-label">Profit Factor</span>
+            <span class="metric-value" id="metric-profit-factor-{{ portfolio_id|default:'default' }}">--</span>
+        </div>
+        <div class="metric-item">
+            <span class="metric-label">Volatility</span>
+            <span class="metric-value" id="metric-volatility-{{ portfolio_id|default:'default' }}">--</span>
+        </div>
+    </div>
+
+    <!-- Portfolio Footer -->
+    <div class="portfolio-card-footer">
+        <div class="portfolio-nexus-branding">
+            <span class="nexus-copyright">© 2026 NEXUS QUANTUM LTD</span>
+            <span class="nexus-version">v{{ nexus_version|default:'3.0.0' }}</span>
+        </div>
+        <div class="portfolio-timestamp" id="portfolio-timestamp-{{ portfolio_id|default:'default' }}">
+            Last updated: <span id="last-update-{{ portfolio_id|default:'default' }}">--</span>
+        </div>
+        <div class="portfolio-data-source">
+            Data Source: <span id="data-source-{{ portfolio_id|default:'default' }}">Binance</span>
+        </div>
+        <div class="portfolio-status" id="portfolio-status-{{ portfolio_id|default:'default' }}">
+            <span class="status-dot"></span>
+            <span class="status-label">Connected</span>
+        </div>
+    </div>
+</div>
+
+<script>
+// Complete Portfolio Card Implementation with Real API Integration
+
+(function() {
+    'use strict';
+
+    class PortfolioCard {
+        constructor(elementId) {
+            this.elementId = elementId;
+            this.element = document.getElementById(elementId);
+            if (!this.element) return;
+            
+            // Configuration from data attributes
+            this.portfolioId = this.element.dataset.portfolioId || 'default';
+            this.userId = this.element.dataset.userId || 'current';
+            this.refreshInterval = parseInt(this.element.dataset.refreshInterval) || 15;
+            this.currency = this.element.dataset.currency || 'USD';
+            this.exchange = this.element.dataset.exchange || 'binance';
+            this.currencySymbol = this.getCurrencySymbol(this.currency);
+            
+            // State
+            this.holdings = [];
+            this.metrics = {};
+            this.performanceData = [];
+            this.allocationData = {};
+            this.isLive = true;
+            this.ws = null;
+            this.refreshTimer = null;
+            this.charts = {};
+            this.connectionRetries = 0;
+            this.maxRetries = 5;
+            
+            // DOM Elements
+            this.totalValue = document.getElementById(`total-value-number-${this.portfolioId}`);
+            this.totalChange = document.getElementById(`total-change-number-${this.portfolioId}`);
+            this.totalPnl = document.getElementById(`total-pnl-number-${this.portfolioId}`);
+            this.openPositions = document.getElementById(`open-positions-number-${this.portfolioId}`);
+            this.equity = document.getElementById(`equity-number-${this.portfolioId}`);
+            this.riskBadge = document.getElementById(`risk-badge-${this.portfolioId}`);
+            this.holdingsBody = document.getElementById(`holdings-body-${this.portfolioId}`);
+            this.holdingsCount = document.getElementById(`holdings-count-${this.portfolioId}`);
+            this.holdingsTotal = document.getElementById(`holdings-total-number-${this.portfolioId}`);
+            this.timestamp = document.getElementById(`last-update-${this.portfolioId}`);
+            this.status = document.getElementById(`portfolio-status-${this.portfolioId}`);
+            this.dataSource = document.getElementById(`data-source-${this.portfolioId}`);
+            this.liveTime = document.getElementById(`live-time-${this.portfolioId}`);
+            
+            // Metric elements
+            this.metricSharpe = document.getElementById(`metric-sharpe-${this.portfolioId}`);
+            this.metricDrawdown = document.getElementById(`metric-drawdown-${this.portfolioId}`);
+            this.metricWinrate = document.getElementById(`metric-winrate-${this.portfolioId}`);
+            this.metricAvgTrade = document.getElementById(`metric-avg-trade-${this.portfolioId}`);
+            this.metricProfitFactor = document.getElementById(`metric-profit-factor-${this.portfolioId}`);
+            this.metricVolatility = document.getElementById(`metric-volatility-${this.portfolioId}`);
+            
+            // Initialize
+            this.init();
+        }
+        
+        init() {
+            this.setupEventListeners();
+            this.initializeWebSocket();
+            this.loadPortfolioData();
+            this.startAutoRefresh();
+            this.setupResizeObserver();
+        }
+        
+        setupEventListeners() {
+            // Refresh button
+            const refreshBtn = document.getElementById(`refresh-btn-${this.portfolioId}`);
+            if (refreshBtn) {
+                refreshBtn.addEventListener('click', () => this.loadPortfolioData());
+            }
+            
+            // Download button
+            const downloadBtn = document.getElementById(`download-btn-${this.portfolioId}`);
+            if (downloadBtn) {
+                downloadBtn.addEventListener('click', () => this.downloadReport());
+            }
+            
+            // Settings button
+            const settingsBtn = document.getElementById(`settings-btn-${this.portfolioId}`);
+            if (settingsBtn) {
+                settingsBtn.addEventListener('click', () => this.openSettings());
+            }
+            
+            // Search input
+            const searchInput = document.getElementById(`holdings-search-${this.portfolioId}`);
+            if (searchInput) {
+                searchInput.addEventListener('input', (e) => this.filterHoldings(e.target.value));
+            }
+            
+            // Sort select
+            const sortSelect = document.getElementById(`holdings-sort-${this.portfolioId}`);
+            if (sortSelect) {
+                sortSelect.addEventListener('change', (e) => this.sortHoldings(e.target.value));
+            }
+        }
+        
+        initializeWebSocket() {
+            const wsProtocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsUrl = `${wsProtocol}//${window.location.host}/ws/portfolio/${this.userId}/${this.exchange}`;
+            
+            try {
+                if (this.ws) {
+                    this.ws.close();
+                }
+                
+                this.ws = new WebSocket(wsUrl);
+                
+                this.ws.onopen = () => {
+                    this.connectionRetries = 0;
+                    this.updateStatus('connected', 'Connected');
+                    this.sendSubscription();
+                };
+                
+                this.ws.onmessage = (event) => {
+                    try {
+                        const data = JSON.parse(event.data);
+                        this.handleWebSocketMessage(data);
+                    } catch (e) {
+                        console.error('WebSocket message parse error:', e);
+                    }
+                };
+                
+                this.ws.onclose = () => {
+                    this.updateStatus('disconnected', 'Disconnected');
+                    this.reconnectWebSocket();
+                };
+                
+                this.ws.onerror = (error) => {
+                    console.error('WebSocket error:', error);
+                    this.updateStatus('error', 'Error');
+                };
+            } catch (error) {
+                console.error('WebSocket connection failed:', error);
+                this.updateStatus('error', 'Error');
+                this.reconnectWebSocket();
+            }
+        }
+        
+        reconnectWebSocket() {
+            if (this.connectionRetries < this.maxRetries) {
+                this.connectionRetries++;
+                const delay = Math.min(1000 * Math.pow(2, this.connectionRetries), 30000);
+                setTimeout(() => {
+                    if (this.isLive) {
+                        this.initializeWebSocket();
+                    }
+                }, delay);
+            }
+        }
+        
+        sendSubscription() {
+            if (this.ws && this.ws.readyState === WebSocket.OPEN) {
+                this.ws.send(JSON.stringify({
+                    type: 'subscribe_portfolio',
+                    userId: this.userId,
+                    portfolioId: this.portfolioId,
+                    exchange: this.exchange,
+                    currency: this.currency
+                }));
+            }
+        }
+        
+        handleWebSocketMessage(data) {
+            if (data.type === 'portfolio_update') {
+                this.updatePortfolio(data);
+            } else if (data.type === 'position_update') {
+                this.updatePosition(data);
+            } else if (data.type === 'trade_update') {
+                this.updateTrade(data);
+            } else if (data.type === 'pnl_update') {
+                this.updatePnL(data);
+            } else if (data.type === 'risk_update') {
+                this.updateRisk(data);
+            } else if (data.type === 'heartbeat') {
+                // Keep connection alive
+            }
+            
+            this.updateLiveTime();
+            this.updateTimestamp();
+        }
+        
+        updatePortfolio(data) {
+            // Update summary from real data
+            if (this.totalValue) {
+                this.totalValue.textContent = this.formatCurrency(data.totalValue || 0);
+            }
+            
+            if (this.totalChange) {
+                const change = data.change24h || 0;
+                this.totalChange.textContent = (change >= 0 ? '+' : '') + change.toFixed(2) + '%';
+                this.totalChange.style.color = change >= 0 ? '#00b894' : '#ff6b6b';
+            }
+            
+            if (this.totalPnl) {
+                const pnl = data.totalPnl || 0;
+                this.totalPnl.textContent = (pnl >= 0 ? '+' : '') + this.formatCurrency(pnl);
+                this.totalPnl.style.color = pnl >= 0 ? '#00b894' : '#ff6b6b';
+            }
+            
+            if (this.openPositions) {
+                this.openPositions.textContent = data.openPositions || 0;
+            }
+            
+            if (this.equity) {
+                this.equity.textContent = this.formatCurrency(data.equity || 0);
+            }
+            
+            // Update risk level
+            if (this.riskBadge && data.riskLevel) {
+                this.riskBadge.textContent = data.riskLevel.charAt(0).toUpperCase() + data.riskLevel.slice(1);
+                this.riskBadge.className = `risk-badge ${data.riskLevel}`;
+            }
+            
+            // Update holdings from real data
+            if (data.holdings) {
+                this.holdings = data.holdings;
+                this.renderHoldings();
+            }
+            
+            // Update metrics
+            if (data.metrics) {
+                this.metrics = data.metrics;
+                this.updateMetrics();
+            }
+            
+            // Update charts
+            if (data.allocation) {
+                this.allocationData = data.allocation;
+                this.renderAllocationChart();
+            }
+            
+            if (data.performance) {
+                this.performanceData = data.performance;
+                this.renderPerformanceChart();
+            }
+            
+            // Update data source
+            if (this.dataSource && data.exchange) {
+                const exchangeNames = {
+                    'binance': 'Binance',
+                    'bybit': 'Bybit',
+                    'kraken': 'Kraken',
+                    'coinbase': 'Coinbase'
+                };
+                this.dataSource.textContent = exchangeNames[data.exchange] || data.exchange;
+            }
+        }
+        
+        updatePosition(data) {
+            // Update specific position
+            const index = this.holdings.findIndex(h => h.symbol === data.symbol);
+            if (index >= 0) {
+                this.holdings[index] = data;
+                this.renderHoldings();
+            } else {
+                this.holdings.push(data);
+                this.renderHoldings();
+            }
+        }
+        
+        updateTrade(data) {
+            // Update after trade
+            this.loadPortfolioData();
+        }
+        
+        updatePnL(data) {
+            if (this.totalPnl) {
+                const pnl = data.pnl || 0;
+                this.totalPnl.textContent = (pnl >= 0 ? '+' : '') + this.formatCurrency(pnl);
+                this.totalPnl.style.color = pnl >= 0 ? '#00b894' : '#ff6b6b';
+            }
+        }
+        
+        updateRisk(data) {
+            if (this.riskBadge && data.level) {
+                this.riskBadge.textContent = data.level.charAt(0).toUpperCase() + data.level.slice(1);
+                this.riskBadge.className = `risk-badge ${data.level}`;
+            }
+            
+            if (this.metricVolatility && data.volatility !== undefined) {
+                this.metricVolatility.textContent = data.volatility.toFixed(2) + '%';
+            }
+        }
+        
+        async loadPortfolioData() {
+            try {
+                const url = `/api/portfolio/data?userId=${this.userId}&portfolioId=${this.portfolioId}&exchange=${this.exchange}&currency=${this.currency}`;
+                const response = await fetch(url);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                if (data.error) {
+                    throw new Error(data.error);
+                }
+                
+                this.updatePortfolio(data);
+                this.updateStatus('connected', 'Connected');
+                
+            } catch (error) {
+                console.error('Failed to load portfolio data:', error);
+                this.updateStatus('error', 'Error');
+                // Show error message in table
+                if (this.holdingsBody) {
+                    this.holdingsBody.innerHTML = `
+                        <tr>
+                            <td colspan="9" class="error-row">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                Failed to load data: ${error.message}
+                                <button onclick="window.portfolioInstances['${this.portfolioId}'].loadPortfolioData()" class="retry-btn-small">Retry</button>
+                            </td>
+                        </tr>
+                    `;
+                }
+            }
+        }
+        
+        renderHoldings() {
+            if (!this.holdingsBody) return;
+            
+            const searchValue = document.getElementById(`holdings-search-${this.portfolioId}`)?.value?.toLowerCase() || '';
+            const sortValue = document.getElementById(`holdings-sort-${this.portfolioId}`)?.value || 'value_desc';
+            
+            let filteredHoldings = this.holdings;
+            
+            // Filter
+            if (searchValue) {
+                filteredHoldings = filteredHoldings.filter(h => 
+                    h.symbol.toLowerCase().includes(searchValue) || 
+                    (h.name && h.name.toLowerCase().includes(searchValue))
+                );
+            }
+            
+            // Sort
+            filteredHoldings = this.sortHoldingsData(filteredHoldings, sortValue);
+            
+            if (filteredHoldings.length === 0) {
+                this.holdingsBody.innerHTML = `
+                    <tr>
+                        <td colspan="9" class="empty-row">
+                            ${this.holdings.length === 0 ? 'No holdings found' : 'No matching assets found'}
+                        </td>
+                    </tr>
+                `;
+            } else {
+                let html = '';
+                filteredHoldings.forEach(h => {
+                    const pnl = h.pnl || 0;
+                    const pnlPct = h.pnlPct || 0;
+                    const allocation = h.allocation || 0;
+                    const change24h = h.change24h || 0;
+                    
+                    html += `
+                        <tr>
+                            <td>
+                                <div class="asset-cell">
+                                    <img src="/static/logos/${h.symbol.toLowerCase()}-logo.png" 
+                                         alt="${h.symbol}" 
+                                         class="asset-icon"
+                                         onerror="this.style.display='none'">
+                                    <div class="asset-info">
+                                        <span class="asset-symbol">${h.symbol}</span>
+                                        <span class="asset-name">${h.name || h.symbol}</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="balance-cell">${this.formatQuantity(h.balance)}</td>
+                            <td class="value-cell">${this.formatCurrency(h.value)}</td>
+                            <td class="allocation-cell">
+                                <div class="allocation-bar-container">
+                                    <div class="allocation-bar" style="width: ${Math.min(allocation, 100)}%; background: ${this.getAllocationColor(h.symbol)};"></div>
+                                    <span class="allocation-text">${allocation.toFixed(1)}%</span>
+                                </div>
+                            </td>
+                            <td class="pnl-cell ${pnl >= 0 ? 'positive' : 'negative'}">${pnl >= 0 ? '+' : ''}${this.formatCurrency(pnl)}</td>
+                            <td class="pnl-pct-cell ${pnlPct >= 0 ? 'positive' : 'negative'}">${pnlPct >= 0 ? '+' : ''}${pnlPct.toFixed(2)}%</td>
+                            <td class="price-cell">${this.formatPrice(h.price)}</td>
+                            <td class="change-cell ${change24h >= 0 ? 'positive' : 'negative'}">${change24h >= 0 ? '+' : ''}${change24h.toFixed(2)}%</td>
+                            <td class="action-cell">
+                                <button class="action-btn trade-btn" onclick="openTradeModal('${h.symbol}', '${this.portfolioId}')">Trade</button>
+                                <button class="action-btn view-btn" onclick="viewAsset('${h.symbol}')">View</button>
+                            </td>
+                        </tr>
+                    `;
+                });
+                this.holdingsBody.innerHTML = html;
+            }
+            
+            // Update counts
+            if (this.holdingsCount) {
+                this.holdingsCount.textContent = `${filteredHoldings.length} assets`;
+            }
+            
+            if (this.holdingsTotal) {
+                const total = filteredHoldings.reduce((sum, h) => sum + (h.value || 0), 0);
+                this.holdingsTotal.textContent = this.formatCurrency(total);
+            }
+        }
+        
+        sortHoldingsData(holdings, sortValue) {
+            const sorts = {
+                'value_desc': (a, b) => (b.value || 0) - (a.value || 0),
+                'value_asc': (a, b) => (a.value || 0) - (b.value || 0),
+                'pnl_desc': (a, b) => (b.pnl || 0) - (a.pnl || 0),
+                'pnl_asc': (a, b) => (a.pnl || 0) - (b.pnl || 0),
+                'name': (a, b) => a.symbol.localeCompare(b.symbol)
+            };
+            return holdings.sort(sorts[sortValue] || sorts['value_desc']);
+        }
+        
+        sortHoldings(sortValue) {
+            this.renderHoldings();
+        }
+        
+        filterHoldings(searchValue) {
+            this.renderHoldings();
+        }
+        
+        updateMetrics() {
+            const metrics = this.metrics;
+            
+            if (this.metricSharpe && metrics.sharpe !== undefined) {
+                this.metricSharpe.textContent = metrics.sharpe.toFixed(2);
+                this.metricSharpe.style.color = metrics.sharpe > 1 ? '#00b894' : '#fdcb6e';
+            }
+            
+            if (this.metricDrawdown && metrics.maxDrawdown !== undefined) {
+                this.metricDrawdown.textContent = (metrics.maxDrawdown * 100).toFixed(2) + '%';
+                this.metricDrawdown.style.color = metrics.maxDrawdown > 0.2 ? '#ff6b6b' : '#fdcb6e';
+            }
+            
+            if (this.metricWinrate && metrics.winRate !== undefined) {
+                this.metricWinrate.textContent = (metrics.winRate * 100).toFixed(1) + '%';
+                this.metricWinrate.style.color = metrics.winRate > 0.5 ? '#00b894' : '#ff6b6b';
+            }
+            
+            if (this.metricAvgTrade && metrics.avgTrade !== undefined) {
+                this.metricAvgTrade.textContent = this.formatCurrency(metrics.avgTrade);
+            }
+            
+            if (this.metricProfitFactor && metrics.profitFactor !== undefined) {
+                this.metricProfitFactor.textContent = metrics.profitFactor.toFixed(2);
+                this.metricProfitFactor.style.color = metrics.profitFactor > 1 ? '#00b894' : '#ff6b6b';
+            }
+            
+            if (this.metricVolatility && metrics.volatility !== undefined) {
+                this.metricVolatility.textContent = (metrics.volatility * 100).toFixed(2) + '%';
+            }
+        }
+        
+        renderAllocationChart() {
+            if (typeof Plotly === 'undefined') return;
+            
+            const chartDiv = document.getElementById(`allocation-chart-${this.portfolioId}`);
+            if (!chartDiv) return;
+            
+            const data = Object.entries(this.allocationData);
+            if (data.length === 0) {
+                chartDiv.innerHTML = '<div class="chart-empty">No allocation data</div>';
+                return;
+            }
+            
+            const labels = data.map(([key]) => key);
+            const values = data.map(([, value]) => value);
+            const colors = data.map(([key]) => this.getAllocationColor(key));
+            
+            const trace = {
+                type: 'pie',
+                labels: labels,
+                values: values,
+                marker: { colors: colors },
+                textinfo: 'label+percent',
+                hoverinfo: 'label+value+percent',
+                hole: 0.4,
+                textfont: { color: '#ffffff', size: 11 }
+            };
+            
+            const layout = {
+                paper_bgcolor: 'transparent',
+                plot_bgcolor: 'transparent',
+                font: { color: '#ffffff', size: 12 },
+                margin: { l: 10, r: 10, t: 10, b: 10 },
+                showlegend: true,
+                legend: {
+                    orientation: 'h',
+                    y: 1.1,
+                    x: 0.5,
+                    xanchor: 'center',
+                    font: { color: '#74b9ff', size: 10 }
+                }
+            };
+            
+            Plotly.react(chartDiv, [trace], layout, { responsive: true });
+        }
+        
+        renderPerformanceChart() {
+            if (typeof Plotly === 'undefined') return;
+            
+            const chartDiv = document.getElementById(`performance-chart-${this.portfolioId}`);
+            if (!chartDiv) return;
+            
+            if (!this.performanceData || this.performanceData.length === 0) {
+                chartDiv.innerHTML = '<div class="chart-empty">No performance data</div>';
+                return;
+            }
+            
+            const dates = this.performanceData.map(d => d.date);
+            const values = this.performanceData.map(d => d.value);
+            
+            const trace = {
+                type: 'scatter',
+                mode: 'lines',
+                x: dates,
+                y: values,
+                name: 'Portfolio Value',
+                line: { color: '#74b9ff', width: 2 },
+                fill: 'tozeroy',
+                fillcolor: 'rgba(116, 185, 255, 0.2)'
+            };
+            
+            const layout = {
+                paper_bgcolor: 'transparent',
+                plot_bgcolor: 'transparent',
+                font: { color: '#ffffff', size: 12 },
+                margin: { l: 50, r: 20, t: 10, b: 30 },
+                xaxis: {
+                    gridcolor: '#2d2d44',
+                    zerolinecolor: '#2d2d44',
+                    showgrid: true,
+                    gridwidth: 0.5,
+                    tickfont: { color: '#74b9ff', size: 10 }
+                },
+                yaxis: {
+                    gridcolor: '#2d2d44',
+                    zerolinecolor: '#2d2d44',
+                    showgrid: true,
+                    gridwidth: 0.5,
+                    side: 'left',
+                    tickfont: { color: '#74b9ff', size: 10 }
+                },
+                legend: {
+                    orientation: 'h',
+                    y: 1.02,
+                    x: 0.5,
+                    xanchor: 'center',
+                    font: { color: '#74b9ff', size: 10 }
+                }
+            };
+            
+            Plotly.react(chartDiv, [trace], layout, { responsive: true });
+        }
+        
+        getAllocationColor(symbol) {
+            const colors = {
+                'BTC': '#f7931a',
+                'ETH': '#627eea',
+                'USDT': '#26a17b',
+                'USDC': '#2775ca',
+                'SOL': '#9945ff',
+                'ADA': '#0033ad',
+                'DOT': '#e6007a',
+                'AVAX': '#e84142',
+                'MATIC': '#8247e5',
+                'LINK': '#2a5ada',
+                'UNI': '#ff007a',
+                'ATOM': '#2e3148',
+                'LTC': '#345d9d',
+                'BCH': '#8dc351',
+                'XRP': '#00aae4',
+                'DOGE': '#c2a633',
+                'SHIB': '#ff6100'
+            };
+            return colors[symbol] || '#74b9ff';
+        }
+        
+        updateStatus(status, label) {
+            if (!this.status) return;
+            const dot = this.status.querySelector('.status-dot');
+            const labelEl = this.status.querySelector('.status-label');
+            
+            if (dot) {
+                dot.className = `status-dot ${status}`;
+            }
+            if (labelEl) {
+                labelEl.textContent = label;
+            }
+        }
+        
+        updateLiveTime() {
+            if (this.liveTime) {
+                this.liveTime.textContent = new Date().toLocaleTimeString('en-US', { hour12: false });
+            }
+        }
+        
+        updateTimestamp() {
+            if (this.timestamp) {
+                this.timestamp.textContent = new Date().toLocaleString('en-US', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit'
+                });
+            }
+        }
+        
+        startAutoRefresh() {
+            if (this.refreshTimer) {
+                clearInterval(this.refreshTimer);
+            }
+            
+            this.refreshTimer = setInterval(() => {
+                if (this.isLive) {
+                    this.loadPortfolioData();
+                }
+            }, this.refreshInterval * 1000);
+        }
+        
+        setupResizeObserver() {
+            const resizeObserver = new ResizeObserver(() => {
+                if (document.getElementById(`allocation-chart-${this.portfolioId}`)) {
+                    Plotly.Plots.resize(document.getElementById(`allocation-chart-${this.portfolioId}`));
+                }
+                if (document.getElementById(`performance-chart-${this.portfolioId}`)) {
+                    Plotly.Plots.resize(document.getElementById(`performance-chart-${this.portfolioId}`));
+                }
+            });
+            resizeObserver.observe(this.element);
+        }
+        
+        downloadReport() {
+            // Generate portfolio report from real data
+            const report = {
+                timestamp: new Date().toISOString(),
+                portfolioId: this.portfolioId,
+                exchange: this.exchange,
+                currency: this.currency,
+                summary: {
+                    totalValue: this.totalValue?.textContent || '0',
+                    totalPnl: this.totalPnl?.textContent || '0',
+                    openPositions: this.openPositions?.textContent || '0',
+                    equity: this.equity?.textContent || '0'
+                },
+                holdings: this.holdings,
+                metrics: this.metrics
+            };
+            
+            const blob = new Blob([JSON.stringify(report, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `portfolio_report_${this.portfolioId}_${Date.now()}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+        
+        openSettings() {
+            // Open settings modal
+            const modal = document.createElement('div');
+            modal.className = 'portfolio-settings-modal';
+            modal.innerHTML = `
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>Portfolio Settings</h3>
+                        <button onclick="this.closest('.portfolio-settings-modal').remove()">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="setting-group">
+                            <label>Currency</label>
+                            <select id="portfolio-currency-${this.portfolioId}">
+                                <option value="USD" ${this.currency === 'USD' ? 'selected' : ''}>USD ($)</option>
+                                <option value="EUR" ${this.currency === 'EUR' ? 'selected' : ''}>EUR (€)</option>
+                                <option value="GBP" ${this.currency === 'GBP' ? 'selected' : ''}>GBP (£)</option>
+                                <option value="BTC" ${this.currency === 'BTC' ? 'selected' : ''}>BTC (₿)</option>
+                                <option value="ETH" ${this.currency === 'ETH' ? 'selected' : ''}>ETH (Ξ)</option>
+                            </select>
+                        </div>
+                        <div class="setting-group">
+                            <label>Refresh Interval (seconds)</label>
+                            <input type="number" id="portfolio-refresh-interval-${this.portfolioId}" value="${this.refreshInterval}" min="5" max="300">
+                        </div>
+                        <button onclick="applyPortfolioSettings('${this.portfolioId}')">Apply Settings</button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+        }
+        
+        getCurrencySymbol(currency) {
+            const symbols = {
+                'USD': '$',
+                'EUR': '€',
+                'GBP': '£',
+                'BTC': '₿',
+                'ETH': 'Ξ'
+            };
+            return symbols[currency] || '$';
+        }
+        
+        formatCurrency(value) {
+            if (value === null || value === undefined || isNaN(value)) return '0.00';
+            return value.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        }
+        
+        formatQuantity(value) {
+            if (value === null || value === undefined || isNaN(value)) return '0';
+            if (value >= 1e9) return (value / 1e9).toFixed(2) + 'B';
+            if (value >= 1e6) return (value / 1e6).toFixed(2) + 'M';
+            if (value >= 1e3) return (value / 1e3).toFixed(2) + 'K';
+            return value.toFixed(2);
+        }
+        
+        formatPrice(value) {
+            if (value === null || value === undefined || isNaN(value)) return '--';
+            if (value < 0.000001) return value.toExponential(6);
+            if (value < 0.0001) return value.toFixed(8);
+            if (value < 0.01) return value.toFixed(6);
+            if (value < 1) return value.toFixed(4);
+            if (value < 100) return value.toFixed(2);
+            if (value < 10000) return value.toFixed(0);
+            return value.toLocaleString('en-US', { maximumFractionDigits: 0 });
+        }
+        
+        destroy() {
+            if (this.refreshTimer) {
+                clearInterval(this.refreshTimer);
+            }
+            if (this.ws) {
+                this.ws.close();
+                this.ws = null;
+            }
+            if (document.getElementById(`allocation-chart-${this.portfolioId}`)) {
+                Plotly.purge(document.getElementById(`allocation-chart-${this.portfolioId}`));
+            }
+            if (document.getElementById(`performance-chart-${this.portfolioId}`)) {
+                Plotly.purge(document.getElementById(`performance-chart-${this.portfolioId}`));
+            }
+        }
+    }
+    
+    // Global functions
+    window.openTradeModal = function(symbol, portfolioId) {
+        // Open trade modal for specific asset
+        console.log('Trade modal for:', symbol);
+        // Implement trade modal
+    };
+    
+    window.viewAsset = function(symbol) {
+        // Navigate to asset detail
+        console.log('View asset:', symbol);
+        window.location.href = `/asset/${symbol}`;
+    };
+    
+    window.switchExchange = function(portfolioId, exchange) {
+        const card = document.querySelector(`#portfolio-card-${portfolioId}`);
+        if (!card) return;
+        
+        // Update active button
+        card.querySelectorAll('.ex-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.exchange === exchange);
+        });
+        
+        const instance = card._instance;
+        if (instance) {
+            instance.exchange = exchange;
+            instance.loadPortfolioData();
+        }
+    };
+    
+    window.expandChart = function(chartType, portfolioId) {
+        const chartDiv = document.getElementById(`${chartType}-chart-${portfolioId}`);
+        if (!chartDiv) return;
+        
+        const isExpanded = chartDiv.classList.contains('expanded');
+        chartDiv.classList.toggle('expanded');
+        
+        if (!isExpanded) {
+            chartDiv.style.position = 'fixed';
+            chartDiv.style.top = '50%';
+            chartDiv.style.left = '50%';
+            chartDiv.style.transform = 'translate(-50%, -50%)';
+            chartDiv.style.width = '80%';
+            chartDiv.style.height = '80%';
+            chartDiv.style.zIndex = '10000';
+            chartDiv.style.background = '#1a1a2e';
+            chartDiv.style.border = '1px solid #2d2d44';
+            chartDiv.style.borderRadius = '12px';
+            chartDiv.style.padding = '16px';
+            chartDiv.style.boxShadow = '0 20px 60px rgba(0,0,0,0.8)';
+            chartDiv.style.overflow = 'hidden';
+        } else {
+            chartDiv.style.position = '';
+            chartDiv.style.top = '';
+            chartDiv.style.left = '';
+            chartDiv.style.transform = '';
+            chartDiv.style.width = '';
+            chartDiv.style.height = '';
+            chartDiv.style.zIndex = '';
+            chartDiv.style.background = '';
+            chartDiv.style.border = '';
+            chartDiv.style.borderRadius = '';
+            chartDiv.style.padding = '';
+            chartDiv.style.boxShadow = '';
+            chartDiv.style.overflow = '';
+        }
+        
+        setTimeout(() => {
+            if (typeof Plotly !== 'undefined') {
+                Plotly.Plots.resize(chartDiv);
+            }
+        }, 100);
+    };
+    
+    window.applyPortfolioSettings = function(portfolioId) {
+        const card = document.querySelector(`#portfolio-card-${portfolioId}`);
+        if (!card) return;
+        
+        const currency = document.getElementById(`portfolio-currency-${portfolioId}`)?.value;
+        const interval = document.getElementById(`portfolio-refresh-interval-${portfolioId}`)?.value;
+        
+        const instance = card._instance;
+        if (instance) {
+            if (currency) {
+                instance.currency = currency;
+                instance.currencySymbol = instance.getCurrencySymbol(currency);
+                instance.loadPortfolioData();
+            }
+            if (interval) {
+                instance.refreshInterval = parseInt(interval);
+                instance.startAutoRefresh();
+            }
+        }
+        
+        document.querySelector('.portfolio-settings-modal')?.remove();
+    };
+    
+    // Initialize on DOM ready
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.portfolio-card').forEach(card => {
+            const instance = new PortfolioCard(card.id);
+            card._instance = instance;
+            
+            // Store instance reference
+            if (!window.portfolioInstances) {
+                window.portfolioInstances = {};
+            }
+            const portfolioId = card.dataset.portfolioId || 'default';
+            window.portfolioInstances[portfolioId] = instance;
+        });
+    });
+    
+    // Expose PortfolioCard for dynamic initialization
+    window.PortfolioCard = PortfolioCard;
+    
+})();
+</script>
+
+<style>
+/* Portfolio Card Styles - Full Implementation with Nexus Branding */
+.portfolio-card {
+    background: #1a1a2e;
+    border-radius: 12px;
+    border: 1px solid #2d2d44;
+    padding: 16px;
+    margin-bottom: 20px;
+    min-height: 400px;
+    transition: all 0.3s ease;
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    position: relative;
+}
+
+.portfolio-card:hover {
+    border-color: #4d4d6a;
+}
+
+.portfolio-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.portfolio-title-section {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.portfolio-logo-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.portfolio-logo {
+    height: 28px;
+    width: auto;
+}
+
+.portfolio-brand {
+    color: #00d4ff;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.portfolio-title-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.portfolio-title {
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0;
+    padding: 0;
+}
+
+.portfolio-subtitle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #74b9ff;
+    font-size: 13px;
+    margin-top: 2px;
+}
+
+.exchange-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: rgba(116, 185, 255, 0.1);
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 11px;
+}
+
+.exchange-badge-icon {
+    height: 14px;
+    width: auto;
+}
+
+.user-name {
+    color: #74b9ff;
+    opacity: 0.7;
+}
+
+.portfolio-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.exchange-selector {
+    display: flex;
+    background: #2d2d44;
+    border-radius: 6px;
+    padding: 2px;
+    gap: 2px;
+}
+
+.ex-btn {
+    background: transparent;
+    border: none;
+    padding: 4px 8px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    opacity: 0.5;
+}
+
+.ex-btn:hover {
+    opacity: 0.8;
+}
+
+.ex-btn.active {
+    opacity: 1;
+    background: rgba(116, 185, 255, 0.15);
+}
+
+.exchange-icon {
+    height: 20px;
+    width: auto;
+}
+
+.portfolio-btn {
+    background: transparent;
+    border: none;
+    color: #74b9ff;
+    padding: 6px 10px;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.portfolio-btn:hover {
+    background: rgba(116, 185, 255, 0.1);
+    color: #ffffff;
+}
+
+.live-indicator {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(0, 184, 148, 0.15);
+    padding: 4px 12px;
+    border-radius: 20px;
+    border: 1px solid rgba(0, 184, 148, 0.3);
+}
+
+.live-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #00b894;
+    animation: pulse 1.5s infinite;
+}
+
+.live-label {
+    color: #00b894;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.live-time {
+    color: #74b9ff;
+    font-size: 11px;
+    font-family: 'Courier New', monospace;
+}
+
+.portfolio-summary {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.summary-item {
+    background: #2d2d44;
+    padding: 12px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.summary-label {
+    display: block;
+    color: #74b9ff;
+    font-size: 11px;
+    text-transform: uppercase;
+    opacity: 0.7;
+    margin-bottom: 4px;
+}
+
+.summary-value {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+}
+
+.currency-symbol {
+    color: #74b9ff;
+    font-size: 14px;
+}
+
+.value-number {
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: 700;
+    font-family: 'Courier New', monospace;
+}
+
+.risk-badge {
+    padding: 2px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.risk-badge.low {
+    background: rgba(0, 184, 148, 0.2);
+    color: #00b894;
+}
+
+.risk-badge.medium {
+    background: rgba(253, 203, 110, 0.2);
+    color: #fdcb6e;
+}
+
+.risk-badge.high {
+    background: rgba(255, 107, 107, 0.2);
+    color: #ff6b6b;
+}
+
+.risk-badge.extreme {
+    background: rgba(255, 107, 107, 0.4);
+    color: #ff6b6b;
+    animation: pulse 1s infinite;
+}
+
+.portfolio-charts-row {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.portfolio-chart-container {
+    background: #131722;
+    border-radius: 8px;
+    padding: 12px;
+    position: relative;
+}
+
+.chart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.chart-title {
+    color: #74b9ff;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.chart-expand-btn {
+    background: transparent;
+    border: none;
+    color: #74b9ff;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.chart-expand-btn:hover {
+    background: rgba(116, 185, 255, 0.1);
+}
+
+.chart-empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: #74b9ff;
+    opacity: 0.5;
+    font-size: 14px;
+}
+
+.portfolio-holdings {
+    background: #131722;
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 16px;
+}
+
+.holdings-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.holdings-title {
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.holdings-filters {
+    display: flex;
+    gap: 8px;
+}
+
+.holdings-search {
+    padding: 6px 12px;
+    background: #2d2d44;
+    border: 1px solid #4d4d6a;
+    border-radius: 6px;
+    color: #ffffff;
+    font-size: 12px;
+    width: 150px;
+}
+
+.holdings-search:focus {
+    outline: none;
+    border-color: #74b9ff;
+}
+
+.holdings-search::placeholder {
+    color: #74b9ff;
+    opacity: 0.5;
+}
+
+.holdings-sort {
+    padding: 6px 12px;
+    background: #2d2d44;
+    border: 1px solid #4d4d6a;
+    border-radius: 6px;
+    color: #ffffff;
+    font-size: 12px;
+}
+
+.holdings-sort:focus {
+    outline: none;
+    border-color: #74b9ff;
+}
+
+.holdings-table-container {
+    overflow-x: auto;
+}
+
+.holdings-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+.holdings-table th {
+    color: #74b9ff;
+    font-weight: 500;
+    text-align: left;
+    padding: 10px 12px;
+    border-bottom: 1px solid #2d2d44;
+    font-size: 11px;
+    text-transform: uppercase;
+    opacity: 0.7;
+}
+
+.holdings-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid #2d2d44;
+    color: #ffffff;
+}
+
+.holdings-table tr:hover td {
+    background: rgba(45, 45, 68, 0.3);
+}
+
+.asset-cell {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.asset-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #2d2d44;
+}
+
+.asset-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.asset-symbol {
+    font-weight: 600;
+    color: #ffffff;
+}
+
+.asset-name {
+    font-size: 11px;
+    color: #74b9ff;
+    opacity: 0.7;
+}
+
+.balance-cell {
+    font-family: 'Courier New', monospace;
+}
+
+.value-cell {
+    font-family: 'Courier New', monospace;
+}
+
+.allocation-cell {
+    min-width: 120px;
+}
+
+.allocation-bar-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.allocation-bar {
+    height: 6px;
+    border-radius: 3px;
+    transition: width 0.3s ease;
+}
+
+.allocation-text {
+    font-size: 12px;
+    color: #74b9ff;
+    min-width: 40px;
+}
+
+.pnl-cell {
+    font-family: 'Courier New', monospace;
+}
+
+.pnl-cell.positive {
+    color: #00b894;
+}
+
+.pnl-cell.negative {
+    color: #ff6b6b;
+}
+
+.pnl-pct-cell {
+    font-family: 'Courier New', monospace;
+}
+
+.pnl-pct-cell.positive {
+    color: #00b894;
+}
+
+.pnl-pct-cell.negative {
+    color: #ff6b6b;
+}
+
+.price-cell {
+    font-family: 'Courier New', monospace;
+}
+
+.change-cell {
+    font-family: 'Courier New', monospace;
+}
+
+.change-cell.positive {
+    color: #00b894;
+}
+
+.change-cell.negative {
+    color: #ff6b6b;
+}
+
+.action-cell {
+    display: flex;
+    gap: 4px;
+}
+
+.action-btn {
+    padding: 4px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 11px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.trade-btn {
+    background: #74b9ff;
+    color: #1a1a2e;
+}
+
+.trade-btn:hover {
+    background: #74b9ff;
+    transform: scale(1.05);
+}
+
+.view-btn {
+    background: rgba(116, 185, 255, 0.1);
+    color: #74b9ff;
+}
+
+.view-btn:hover {
+    background: rgba(116, 185, 255, 0.2);
+}
+
+.loading-row td {
+    text-align: center;
+    color: #74b9ff;
+    opacity: 0.5;
+    padding: 30px;
+}
+
+.empty-row td {
+    text-align: center;
+    color: #74b9ff;
+    opacity: 0.5;
+    padding: 30px;
+}
+
+.error-row td {
+    text-align: center;
+    color: #ff6b6b;
+    padding: 30px;
+}
+
+.error-row .retry-btn-small {
+    margin-left: 12px;
+    padding: 4px 16px;
+    background: #ff6b6b;
+    border: none;
+    border-radius: 4px;
+    color: #1a1a2e;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.holdings-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid #2d2d44;
+}
+
+.holdings-count {
+    color: #74b9ff;
+    font-size: 12px;
+    opacity: 0.7;
+}
+
+.holdings-total {
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.holdings-total .currency-symbol {
+    font-size: 14px;
+}
+
+.portfolio-metrics {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.metric-item {
+    background: #2d2d44;
+    padding: 10px 12px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.metric-label {
+    display: block;
+    color: #74b9ff;
+    font-size: 10px;
+    text-transform: uppercase;
+    opacity: 0.7;
+    margin-bottom: 2px;
+}
+
+.metric-value {
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 600;
+    font-family: 'Courier New', monospace;
+}
+
+.portfolio-card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 12px;
+    padding-top: 8px;
+    border-top: 1px solid #2d2d44;
+    font-size: 11px;
+    color: #74b9ff;
+    opacity: 0.6;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.portfolio-nexus-branding {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.nexus-copyright {
+    color: #74b9ff;
+    font-size: 10px;
+    opacity: 0.5;
+}
+
+.nexus-version {
+    color: #00d4ff;
+    font-size: 10px;
+    font-weight: 600;
+}
+
+.portfolio-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+.status-dot.connected {
+    background: #00b894;
+}
+
+.status-dot.disconnected {
+    background: #ff6b6b;
+}
+
+.status-dot.error {
+    background: #ff6b6b;
+    animation: blink 0.5s infinite;
+}
+
+/* Portfolio Settings Modal */
+.portfolio-settings-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10001;
+    animation: fadeIn 0.3s ease;
+}
+
+.portfolio-settings-modal .modal-content {
+    background: #1a1a2e;
+    border: 1px solid #2d2d44;
+    border-radius: 12px;
+    padding: 24px;
+    max-width: 500px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.portfolio-settings-modal .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #2d2d44;
+}
+
+.portfolio-settings-modal .modal-header h3 {
+    color: #ffffff;
+    margin: 0;
+}
+
+.portfolio-settings-modal .modal-header button {
+    background: transparent;
+    border: none;
+    color: #74b9ff;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.portfolio-settings-modal .modal-body button {
+    width: 100%;
+    padding: 10px;
+    background: #74b9ff;
+    border: none;
+    border-radius: 6px;
+    color: #1a1a2e;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.portfolio-settings-modal .modal-body button:hover {
+    background: #74b9ff;
+    transform: scale(1.02);
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .portfolio-summary {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    .portfolio-metrics {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    .portfolio-charts-row {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .portfolio-card {
+        padding: 12px;
+        min-height: 300px;
+    }
+    
+    .portfolio-card-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .portfolio-title-section {
+        flex-wrap: wrap;
+    }
+    
+    .portfolio-controls {
+        justify-content: center;
+    }
+    
+    .portfolio-summary {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .portfolio-metrics {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .holdings-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .holdings-filters {
+        flex-direction: column;
+    }
+    
+    .holdings-search {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .portfolio-summary {
+        grid-template-columns: 1fr;
+    }
+    
+    .portfolio-metrics {
+        grid-template-columns: 1fr;
+    }
+    
+    .value-number {
+        font-size: 16px;
+    }
+    
+    .holdings-table {
+        font-size: 12px;
+    }
+    
+    .holdings-table th,
+    .holdings-table td {
+        padding: 6px 8px;
+    }
+    
+    .asset-icon {
+        width: 20px;
+        height: 20px;
+    }
+    
+    .asset-symbol {
+        font-size: 12px;
+    }
+    
+    .action-cell {
+        flex-direction: column;
+    }
+}
+
+/* Print styles */
+@media print {
+    .portfolio-card {
+        border: 1px solid #ccc;
+        min-height: auto;
+        break-inside: avoid;
+    }
+    
+    .portfolio-btn, .live-indicator, .portfolio-controls {
+        display: none !important;
+    }
+    
+    .portfolio-charts-row {
+        break-inside: avoid;
+    }
+}
+</style>
