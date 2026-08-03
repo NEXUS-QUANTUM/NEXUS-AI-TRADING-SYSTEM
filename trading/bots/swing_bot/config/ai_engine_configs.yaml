@@ -1,0 +1,538 @@
+# trading/bots/swing_bot/config/ai_engine_configs.yaml
+
+# ============================================================================
+# NEXUS AI TRADING SYSTEM - Swing Bot AI Engine Configuration
+# Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+# ============================================================================
+#
+# Description: Complete AI Engine configuration for swing trading bot
+# Framework: Artificial Intelligence - Machine Learning & Deep Learning
+# Version: 3.0.0
+#
+# The AI Engine provides advanced machine learning capabilities for signal
+# generation, market prediction, and strategy optimization.
+# ============================================================================
+
+# ----------------------------------------------------------------------------
+# General Configuration
+# ----------------------------------------------------------------------------
+ai_engine:
+  enabled: true
+  version: "3.0.0"
+  description: "AI Engine for swing trading"
+  
+  # AI modes
+  modes:
+    - "prediction"
+    - "classification"
+    - "reinforcement_learning"
+    - "ensemble"
+    - "deep_learning"
+  
+  default_mode: "ensemble"
+  
+  # AI models
+  models:
+    - "lstm"
+    - "transformer"
+    - "random_forest"
+    - "xgboost"
+    - "neural_network"
+    - "cnn"
+    - "rnn"
+    - "autoencoder"
+  
+  # Data sources
+  data_sources:
+    - "price_action"
+    - "technical_indicators"
+    - "volume_analysis"
+    - "market_data"
+    - "sentiment_data"
+    - "alternative_data"
+
+# ----------------------------------------------------------------------------
+# Model Configuration
+# ----------------------------------------------------------------------------
+models:
+  enabled: true
+  description: "Model configurations"
+  
+  # LSTM Model
+  lstm:
+    enabled: true
+    description: "Long Short-Term Memory model"
+    parameters:
+      input_size: 10
+      hidden_size: 64
+      num_layers: 2
+      output_size: 1
+      dropout: 0.2
+      learning_rate: 0.001
+      batch_size: 32
+      epochs: 100
+    
+    features:
+      - "close_prices"
+      - "volume"
+      - "technical_indicators"
+    
+    targets:
+      - "price_change"
+      - "trend_direction"
+  
+  # Transformer Model
+  transformer:
+    enabled: true
+    description: "Transformer model"
+    parameters:
+      d_model: 64
+      nhead: 4
+      num_encoder_layers: 3
+      num_decoder_layers: 3
+      dim_feedforward: 256
+      dropout: 0.1
+      learning_rate: 0.001
+      batch_size: 32
+      epochs: 100
+    
+    features:
+      - "price_sequence"
+      - "volume_sequence"
+      - "indicator_sequence"
+    
+    targets:
+      - "next_price"
+      - "trend_prediction"
+  
+  # Random Forest
+  random_forest:
+    enabled: true
+    description: "Random Forest model"
+    parameters:
+      n_estimators: 100
+      max_depth: 10
+      min_samples_split: 5
+      min_samples_leaf: 2
+      max_features: "sqrt"
+    
+    features:
+      - "technical_indicators"
+      - "price_action"
+      - "volume_metrics"
+    
+    targets:
+      - "signal_label"
+      - "confidence_score"
+  
+  # XGBoost
+  xgboost:
+    enabled: true
+    description: "XGBoost model"
+    parameters:
+      n_estimators: 100
+      max_depth: 6
+      learning_rate: 0.1
+      subsample: 0.8
+      colsample_bytree: 0.8
+      reg_alpha: 0.1
+      reg_lambda: 1.0
+    
+    features:
+      - "technical_indicators"
+      - "price_action"
+      - "volume_metrics"
+      - "market_data"
+    
+    targets:
+      - "signal_label"
+      - "trend_prediction"
+
+# ----------------------------------------------------------------------------
+# Neural Network Configuration
+# ----------------------------------------------------------------------------
+neural_networks:
+  enabled: true
+  description: "Neural network configurations"
+  
+  # CNN
+  cnn:
+    enabled: true
+    description: "Convolutional Neural Network"
+    parameters:
+      conv_layers: 3
+      filters: [32, 64, 128]
+      kernel_sizes: [3, 3, 3]
+      pool_sizes: [2, 2, 2]
+      dense_layers: [128, 64]
+      dropout: 0.3
+      learning_rate: 0.001
+      batch_size: 64
+      epochs: 150
+    
+    features:
+      - "price_image"
+      - "volume_image"
+      - "indicator_image"
+    
+    targets:
+      - "pattern_classification"
+      - "breakout_prediction"
+  
+  # RNN
+  rnn:
+    enabled: true
+    description: "Recurrent Neural Network"
+    parameters:
+      input_size: 10
+      hidden_size: 128
+      num_layers: 2
+      output_size: 1
+      dropout: 0.3
+      learning_rate: 0.001
+      batch_size: 32
+      epochs: 100
+    
+    features:
+      - "time_series"
+      - "sequential_data"
+    
+    targets:
+      - "sequence_prediction"
+      - "trend_forecast"
+  
+  # Autoencoder
+  autoencoder:
+    enabled: true
+    description: "Autoencoder for feature extraction"
+    parameters:
+      input_size: 20
+      hidden_sizes: [64, 32, 16]
+      latent_size: 8
+      learning_rate: 0.001
+      batch_size: 64
+      epochs: 100
+    
+    features:
+      - "all_indicators"
+      - "price_features"
+      - "volume_features"
+    
+    targets:
+      - "latent_features"
+      - "reconstructed_data"
+
+# ----------------------------------------------------------------------------
+# Ensemble Configuration
+# ----------------------------------------------------------------------------
+ensemble:
+  enabled: true
+  description: "Ensemble model configuration"
+  
+  # Ensemble methods
+  methods:
+    voting:
+      enabled: true
+      description: "Voting ensemble"
+      models:
+        - "random_forest"
+        - "xgboost"
+        - "lstm"
+      voting_type: "soft"
+    
+    stacking:
+      enabled: true
+      description: "Stacking ensemble"
+      base_models:
+        - "random_forest"
+        - "xgboost"
+        - "lstm"
+      meta_model: "neural_network"
+      cross_validation: 3
+    
+    blending:
+      enabled: true
+      description: "Blending ensemble"
+      models:
+        - "random_forest"
+        - "xgboost"
+        - "lstm"
+        - "transformer"
+      weights:
+        random_forest: 0.25
+        xgboost: 0.25
+        lstm: 0.25
+        transformer: 0.25
+  
+  # Ensemble rules
+  rules:
+    dynamic_weighting:
+      description: "Dynamic weight allocation"
+      weight_method: "performance_based"
+      update_interval: 50  # bars
+    
+    confidence_threshold:
+      description: "Minimum confidence threshold"
+      threshold: 0.6
+      min_models: 3
+
+# ----------------------------------------------------------------------------
+# Feature Engineering
+# ----------------------------------------------------------------------------
+feature_engineering:
+  enabled: true
+  description: "Feature engineering configuration"
+  
+  # Feature types
+  feature_types:
+    technical:
+      - "rsi"
+      - "macd"
+      - "bollinger_bands"
+      - "moving_averages"
+      - "volume_indicators"
+      - "momentum_indicators"
+      - "volatility_indicators"
+    
+    price:
+      - "returns"
+      - "price_momentum"
+      - "price_volatility"
+      - "price_patterns"
+      - "support_resistance"
+    
+    market:
+      - "market_regime"
+      - "sector_performance"
+      - "correlation_matrix"
+      - "volatility_index"
+    
+    sentiment:
+      - "fear_greed_index"
+      - "social_sentiment"
+      - "news_sentiment"
+      - "institutional_flow"
+  
+  # Feature selection
+  selection:
+    method: "mutual_information"
+    num_features: 20
+    correlation_threshold: 0.95
+    importance_threshold: 0.01
+  
+  # Feature scaling
+  scaling:
+    method: "standard"
+    method_options:
+      - "standard"
+      - "minmax"
+      - "robust"
+      - "quantile"
+
+# ----------------------------------------------------------------------------
+# Training Configuration
+# ----------------------------------------------------------------------------
+training:
+  enabled: true
+  description: "Training configuration"
+  
+  # Training data
+  data:
+    train_split: 0.7
+    validation_split: 0.15
+    test_split: 0.15
+    batch_size: 32
+    shuffle: true
+    
+    data_augmentation:
+      enabled: true
+      methods:
+        - "noise_injection"
+        - "time_shift"
+        - "scale_transform"
+  
+  # Training parameters
+  parameters:
+    learning_rate: 0.001
+    optimizer: "adam"
+    loss_function: "mse"
+    early_stopping: true
+    early_stopping_patience: 10
+    checkpoints: true
+    checkpoint_interval: 10  # epochs
+  
+  # Cross-validation
+  cross_validation:
+    enabled: true
+    folds: 5
+    shuffle: true
+    random_state: 42
+
+# ----------------------------------------------------------------------------
+# Prediction Configuration
+# ----------------------------------------------------------------------------
+prediction:
+  enabled: true
+  description: "Prediction configuration"
+  
+  # Prediction types
+  types:
+    price_prediction:
+      enabled: true
+      horizon:
+        - 1  # bar
+        - 5  # bars
+        - 10  # bars
+        - 20  # bars
+      confidence_threshold: 0.6
+    
+    trend_prediction:
+      enabled: true
+      horizon:
+        - 1  # bar
+        - 5  # bars
+        - 10  # bars
+      confidence_threshold: 0.7
+    
+    signal_prediction:
+      enabled: true
+      horizon:
+        - 1  # bar
+        - 5  # bars
+      confidence_threshold: 0.65
+  
+  # Prediction rules
+  rules:
+    combine_predictions:
+      description: "Combine multiple predictions"
+      method: "weighted_average"
+      confidence_weight: true
+    
+    confidence_filter:
+      description: "Filter predictions by confidence"
+      min_confidence: 0.6
+      max_confidence: 1.0
+    
+    prediction_timeout:
+      description: "Prediction timeout"
+      timeout_seconds: 30
+
+# ----------------------------------------------------------------------------
+# Reinforcement Learning
+# ----------------------------------------------------------------------------
+reinforcement_learning:
+  enabled: true
+  description: "Reinforcement learning configuration"
+  
+  # RL algorithms
+  algorithms:
+    ppo:
+      enabled: true
+      parameters:
+        learning_rate: 0.0003
+        n_steps: 2048
+        batch_size: 64
+        n_epochs: 10
+        gamma: 0.99
+        gae_lambda: 0.95
+        clip_range: 0.2
+        ent_coef: 0.01
+    
+    dqn:
+      enabled: true
+      parameters:
+        learning_rate: 0.001
+        buffer_size: 10000
+        batch_size: 32
+        gamma: 0.9
+        epsilon_start: 1.0
+        epsilon_end: 0.01
+        epsilon_decay: 0.995
+        target_update: 100
+  
+  # Environment
+  environment:
+    state_space: 10
+    action_space: 5
+    max_steps: 1000
+    reward_function: "sharpe_ratio"
+    
+    reward_parameters:
+      trade_reward: 1.0
+      loss_penalty: -1.0
+      risk_penalty: -0.5
+      holding_cost: -0.01
+
+# ----------------------------------------------------------------------------
+# Model Serving
+# ----------------------------------------------------------------------------
+model_serving:
+  enabled: true
+  description: "Model serving configuration"
+  
+  # Serving modes
+  modes:
+    - "online"
+    - "batch"
+    - "hybrid"
+  
+  default_mode: "hybrid"
+  
+  # Serving parameters
+  parameters:
+    update_interval: 60  # seconds
+    batch_size: 100
+    timeout: 30  # seconds
+    max_retries: 3
+  
+  # Monitoring
+  monitoring:
+    enabled: true
+    metrics:
+      - "latency"
+      - "throughput"
+      - "accuracy"
+      - "confidence"
+    alert_thresholds:
+      max_latency: 1000  # ms
+      min_accuracy: 0.7
+
+# ----------------------------------------------------------------------------
+# Performance Monitoring
+# ----------------------------------------------------------------------------
+performance_monitoring:
+  enabled: true
+  description: "Performance monitoring for AI models"
+  
+  metrics:
+    - "accuracy"
+    - "precision"
+    - "recall"
+    - "f1_score"
+    - "mse"
+    - "mae"
+    - "r2_score"
+  
+  monitoring_interval: 60  # minutes
+  alert_thresholds:
+    min_accuracy: 0.6
+    max_mse: 0.1
+    max_mae: 0.05
+
+# ----------------------------------------------------------------------------
+# Logging Configuration
+# ----------------------------------------------------------------------------
+logging:
+  enabled: true
+  level: "INFO"
+  file: "logs/ai_engine.log"
+  rotation: "daily"
+  retention: 30  # days
+  
+  log_categories:
+    predictions: true
+    training: true
+    errors: true
+    performance: true
+    serving: true
+    debugging: false
