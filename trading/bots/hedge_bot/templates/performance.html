@@ -1,0 +1,1513 @@
+<!-- trading/bots/hedge_bot/templates/performance.html -->
+
+<!--
+NEXUS AI TRADING SYSTEM - Hedge Bot Performance Page
+Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+
+Complete performance analytics interface with real-time data,
+detailed metrics, and comprehensive performance visualization.
+-->
+
+{% extends "base.html" %}
+{% load static %}
+{% load nexus_tags %}
+
+{% block title %}Performance - NEXUS AI Trading{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/performance.css' %}">
+{% endblock %}
+
+{% block content %}
+<div id="performance-container" class="performance-container"
+     data-user-id="{{ user_id|default:'current' }}"
+     data-exchange="{{ exchange|default:'binance' }}"
+     data-refresh-interval="{{ refresh_interval|default:15 }}">
+
+    <!-- Performance Header -->
+    <div class="performance-header">
+        <div class="performance-title-section">
+            <div class="performance-logo-container">
+                <img src="{% static 'images/nexus-logo-light.svg' %}"
+                     alt="NEXUS Logo"
+                     class="performance-logo"
+                     onerror="this.src='{% static 'images/nexus-favicon.svg' %}'">
+                <span class="performance-brand">NEXUS</span>
+            </div>
+            <h1 class="performance-title">Performance</h1>
+            <span class="performance-subtitle">Track your trading performance in real-time</span>
+        </div>
+        <div class="performance-actions">
+            <div class="performance-timeframe">
+                <button class="tf-btn active" data-tf="1d">1D</button>
+                <button class="tf-btn" data-tf="1w">1W</button>
+                <button class="tf-btn" data-tf="1m">1M</button>
+                <button class="tf-btn" data-tf="3m">3M</button>
+                <button class="tf-btn" data-tf="6m">6M</button>
+                <button class="tf-btn" data-tf="1y">1Y</button>
+                <button class="tf-btn" data-tf="all">All</button>
+            </div>
+            <button class="btn-secondary" onclick="refreshPerformance()">
+                <i class="fas fa-sync-alt"></i> Refresh
+            </button>
+            <button class="btn-primary" onclick="exportPerformance()">
+                <i class="fas fa-file-export"></i> Export
+            </button>
+        </div>
+    </div>
+
+    <!-- Performance Summary Cards -->
+    <div class="performance-summary">
+        <div class="summary-card">
+            <span class="summary-label">Total Return</span>
+            <span class="summary-value" id="total-return">+0.00%</span>
+            <span class="summary-change" id="return-change">+0.00%</span>
+        </div>
+        <div class="summary-card">
+            <span class="summary-label">Sharpe Ratio</span>
+            <span class="summary-value" id="sharpe-ratio">0.00</span>
+            <span class="summary-change" id="sharpe-change">+0.00</span>
+        </div>
+        <div class="summary-card">
+            <span class="summary-label">Sortino Ratio</span>
+            <span class="summary-value" id="sortino-ratio">0.00</span>
+            <span class="summary-change" id="sortino-change">+0.00</span>
+        </div>
+        <div class="summary-card">
+            <span class="summary-label">Calmar Ratio</span>
+            <span class="summary-value" id="calmar-ratio">0.00</span>
+            <span class="summary-change" id="calmar-change">+0.00</span>
+        </div>
+        <div class="summary-card">
+            <span class="summary-label">Max Drawdown</span>
+            <span class="summary-value" id="max-drawdown">0.00%</span>
+            <span class="summary-change" id="drawdown-change">+0.00%</span>
+        </div>
+        <div class="summary-card">
+            <span class="summary-label">Win Rate</span>
+            <span class="summary-value" id="win-rate">0.00%</span>
+            <span class="summary-change" id="winrate-change">+0.00%</span>
+        </div>
+    </div>
+
+    <!-- Performance Charts -->
+    <div class="performance-charts">
+        <div class="performance-chart-container full-width">
+            <div class="chart-header">
+                <span class="chart-title">Equity Curve</span>
+                <div class="chart-controls">
+                    <button class="chart-control-btn active" onclick="toggleChartOverlay('sma')">SMA</button>
+                    <button class="chart-control-btn" onclick="toggleChartOverlay('ema')">EMA</button>
+                    <button class="chart-control-btn" onclick="toggleChartOverlay('bands')">Bands</button>
+                    <button class="chart-expand-btn" onclick="expandChart('equity')">
+                        <i class="fas fa-expand"></i>
+                    </button>
+                </div>
+            </div>
+            <div id="equity-chart" style="width:100%;height:350px;"></div>
+        </div>
+    </div>
+
+    <!-- Performance Charts Row -->
+    <div class="performance-charts-row">
+        <div class="performance-chart-container">
+            <div class="chart-header">
+                <span class="chart-title">Returns Distribution</span>
+                <button class="chart-expand-btn" onclick="expandChart('distribution')">
+                    <i class="fas fa-expand"></i>
+                </button>
+            </div>
+            <div id="distribution-chart" style="width:100%;height:250px;"></div>
+        </div>
+        <div class="performance-chart-container">
+            <div class="chart-header">
+                <span class="chart-title">Drawdown History</span>
+                <button class="chart-expand-btn" onclick="expandChart('drawdown')">
+                    <i class="fas fa-expand"></i>
+                </button>
+            </div>
+            <div id="drawdown-chart" style="width:100%;height:250px;"></div>
+        </div>
+    </div>
+
+    <!-- Performance Metrics Grid -->
+    <div class="performance-metrics-grid">
+        <div class="metric-card">
+            <span class="metric-label">Total Trades</span>
+            <span class="metric-value" id="total-trades">0</span>
+        </div>
+        <div class="metric-card">
+            <span class="metric-label">Winning Trades</span>
+            <span class="metric-value" id="winning-trades">0</span>
+        </div>
+        <div class="metric-card">
+            <span class="metric-label">Losing Trades</span>
+            <span class="metric-value" id="losing-trades">0</span>
+        </div>
+        <div class="metric-card">
+            <span class="metric-label">Avg Win</span>
+            <span class="metric-value" id="avg-win">$0.00</span>
+        </div>
+        <div class="metric-card">
+            <span class="metric-label">Avg Loss</span>
+            <span class="metric-value" id="avg-loss">$0.00</span>
+        </div>
+        <div class="metric-card">
+            <span class="metric-label">Profit Factor</span>
+            <span class="metric-value" id="profit-factor">0.00</span>
+        </div>
+        <div class="metric-card">
+            <span class="metric-label">Expectancy</span>
+            <span class="metric-value" id="expectancy">$0.00</span>
+        </div>
+        <div class="metric-card">
+            <span class="metric-label">Risk Reward Ratio</span>
+            <span class="metric-value" id="risk-reward">0.00</span>
+        </div>
+        <div class="metric-card">
+            <span class="metric-label">Consecutive Wins</span>
+            <span class="metric-value" id="consecutive-wins">0</span>
+        </div>
+        <div class="metric-card">
+            <span class="metric-label">Consecutive Losses</span>
+            <span class="metric-value" id="consecutive-losses">0</span>
+        </div>
+        <div class="metric-card">
+            <span class="metric-label">Best Trade</span>
+            <span class="metric-value" id="best-trade">$0.00</span>
+        </div>
+        <div class="metric-card">
+            <span class="metric-label">Worst Trade</span>
+            <span class="metric-value" id="worst-trade">$0.00</span>
+        </div>
+    </div>
+
+    <!-- Performance Table -->
+    <div class="performance-table-container">
+        <div class="table-header">
+            <span class="table-title">Trade History</span>
+            <div class="table-filters">
+                <input type="text" class="table-search" placeholder="Search trades..." id="trade-search" oninput="filterTrades()">
+                <select class="table-sort" id="trade-sort" onchange="sortTrades()">
+                    <option value="date_desc">Date (Newest)</option>
+                    <option value="date_asc">Date (Oldest)</option>
+                    <option value="pnl_desc">PnL (High to Low)</option>
+                    <option value="pnl_asc">PnL (Low to High)</option>
+                </select>
+            </div>
+        </div>
+        <div class="table-container">
+            <table class="performance-table" id="performance-table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Symbol</th>
+                        <th>Side</th>
+                        <th>Quantity</th>
+                        <th>Entry</th>
+                        <th>Exit</th>
+                        <th>PnL</th>
+                        <th>PnL %</th>
+                        <th>Duration</th>
+                        <th>Fee</th>
+                    </tr>
+                </thead>
+                <tbody id="performance-body">
+                    <tr>
+                        <td colspan="10" class="loading-row">Loading trade history...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="table-footer">
+            <span class="table-count" id="trade-count">0 trades</span>
+            <div class="table-pagination">
+                <button class="page-btn" onclick="changePage('prev')">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <span class="page-info" id="page-info">Page 1 of 1</span>
+                <button class="page-btn" onclick="changePage('next')">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Performance Footer -->
+    <div class="performance-footer">
+        <div class="performance-nexus-branding">
+            <span class="nexus-copyright">© 2026 NEXUS QUANTUM LTD</span>
+            <span class="nexus-version">v{{ nexus_version|default:'3.0.0' }}</span>
+        </div>
+        <div class="performance-timestamp" id="performance-timestamp">
+            Last updated: <span id="performance-last-update">--</span>
+        </div>
+        <div class="performance-status" id="performance-status">
+            <span class="status-dot"></span>
+            <span class="status-label">Connected</span>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Complete Performance Implementation with Real Data Integration
+
+(function() {
+    'use strict';
+
+    class PerformanceManager {
+        constructor() {
+            this.container = document.getElementById('performance-container');
+            if (!this.container) return;
+            
+            this.userId = this.container.dataset.userId || 'current';
+            this.exchange = this.container.dataset.exchange || 'binance';
+            this.refreshInterval = parseInt(this.container.dataset.refreshInterval) || 15;
+            this.timeframe = '1m';
+            this.trades = [];
+            this.performanceData = {};
+            this.isLive = true;
+            this.ws = null;
+            this.connectionRetries = 0;
+            this.maxRetries = 5;
+            this.currentPage = 1;
+            this.pageSize = 20;
+            this.filteredTrades = [];
+            
+            // DOM Elements
+            this.tradesBody = document.getElementById('performance-body');
+            this.tradeCount = document.getElementById('trade-count');
+            this.pageInfo = document.getElementById('page-info');
+            this.timestamp = document.getElementById('performance-last-update');
+            this.status = document.getElementById('performance-status');
+            
+            // Summary Elements
+            this.totalReturn = document.getElementById('total-return');
+            this.sharpeRatio = document.getElementById('sharpe-ratio');
+            this.sortinoRatio = document.getElementById('sortino-ratio');
+            this.calmarRatio = document.getElementById('calmar-ratio');
+            this.maxDrawdown = document.getElementById('max-drawdown');
+            this.winRate = document.getElementById('win-rate');
+            
+            // Metrics Elements
+            this.totalTrades = document.getElementById('total-trades');
+            this.winningTrades = document.getElementById('winning-trades');
+            this.losingTrades = document.getElementById('losing-trades');
+            this.avgWin = document.getElementById('avg-win');
+            this.avgLoss = document.getElementById('avg-loss');
+            this.profitFactor = document.getElementById('profit-factor');
+            this.expectancy = document.getElementById('expectancy');
+            this.riskReward = document.getElementById('risk-reward');
+            this.consecutiveWins = document.getElementById('consecutive-wins');
+            this.consecutiveLosses = document.getElementById('consecutive-losses');
+            this.bestTrade = document.getElementById('best-trade');
+            this.worstTrade = document.getElementById('worst-trade');
+            
+            // Initialize
+            this.init();
+        }
+        
+        init() {
+            this.setupEventListeners();
+            this.initializeWebSocket();
+            this.loadPerformanceData();
+            this.startAutoRefresh();
+            this.setupResizeObserver();
+        }
+        
+        setupEventListeners() {
+            // Timeframe buttons
+            document.querySelectorAll('.tf-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.tf-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    this.timeframe = btn.dataset.tf;
+                    this.loadPerformanceData();
+                });
+            });
+            
+            document.addEventListener('keydown', (e) => {
+                if ((e.ctrlKey || e.metaKey) && e.key === 'r') {
+                    e.preventDefault();
+                    this.loadPerformanceData();
+                }
+            });
+        }
+        
+        initializeWebSocket() {
+            const wsProtocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsUrl = `${wsProtocol}//${window.location.host}/ws/performance/${this.userId}`;
+            
+            try {
+                if (this.ws) this.ws.close();
+                
+                this.ws = new WebSocket(wsUrl);
+                
+                this.ws.onopen = () => {
+                    this.connectionRetries = 0;
+                    this.updateStatus('connected', 'Connected');
+                    this.sendSubscription();
+                };
+                
+                this.ws.onmessage = (event) => {
+                    try {
+                        const data = JSON.parse(event.data);
+                        this.handleWebSocketMessage(data);
+                    } catch (e) {
+                        console.error('WebSocket message parse error:', e);
+                    }
+                };
+                
+                this.ws.onclose = () => {
+                    this.updateStatus('disconnected', 'Disconnected');
+                    this.reconnectWebSocket();
+                };
+                
+                this.ws.onerror = (error) => {
+                    console.error('WebSocket error:', error);
+                    this.updateStatus('error', 'Error');
+                };
+            } catch (error) {
+                console.error('WebSocket connection failed:', error);
+                this.updateStatus('error', 'Error');
+                this.reconnectWebSocket();
+            }
+        }
+        
+        reconnectWebSocket() {
+            if (this.connectionRetries < this.maxRetries) {
+                this.connectionRetries++;
+                const delay = Math.min(1000 * Math.pow(2, this.connectionRetries), 30000);
+                setTimeout(() => {
+                    if (this.isLive) {
+                        this.initializeWebSocket();
+                    }
+                }, delay);
+            }
+        }
+        
+        sendSubscription() {
+            if (this.ws && this.ws.readyState === WebSocket.OPEN) {
+                this.ws.send(JSON.stringify({
+                    type: 'subscribe_performance',
+                    userId: this.userId,
+                    exchange: this.exchange,
+                    timeframe: this.timeframe
+                }));
+            }
+        }
+        
+        handleWebSocketMessage(data) {
+            if (data.type === 'performance_update') {
+                this.updatePerformance(data);
+            } else if (data.type === 'trade_update') {
+                this.updateTrade(data);
+            } else if (data.type === 'heartbeat') {
+                // Keep connection alive
+            }
+            
+            this.updateTimestamp();
+        }
+        
+        updatePerformance(data) {
+            this.performanceData = data;
+            
+            // Update summary
+            if (data.totalReturn !== undefined) {
+                this.totalReturn.textContent = (data.totalReturn >= 0 ? '+' : '') + data.totalReturn.toFixed(2) + '%';
+                this.totalReturn.style.color = data.totalReturn >= 0 ? '#00b894' : '#ff6b6b';
+            }
+            
+            if (data.sharpeRatio !== undefined) {
+                this.sharpeRatio.textContent = data.sharpeRatio.toFixed(2);
+                this.sharpeRatio.style.color = data.sharpeRatio > 1 ? '#00b894' : '#fdcb6e';
+            }
+            
+            if (data.sortinoRatio !== undefined) {
+                this.sortinoRatio.textContent = data.sortinoRatio.toFixed(2);
+                this.sortinoRatio.style.color = data.sortinoRatio > 1 ? '#00b894' : '#fdcb6e';
+            }
+            
+            if (data.calmarRatio !== undefined) {
+                this.calmarRatio.textContent = data.calmarRatio.toFixed(2);
+                this.calmarRatio.style.color = data.calmarRatio > 1 ? '#00b894' : '#fdcb6e';
+            }
+            
+            if (data.maxDrawdown !== undefined) {
+                this.maxDrawdown.textContent = (data.maxDrawdown * 100).toFixed(2) + '%';
+                this.maxDrawdown.style.color = data.maxDrawdown > 0.2 ? '#ff6b6b' : '#fdcb6e';
+            }
+            
+            if (data.winRate !== undefined) {
+                this.winRate.textContent = (data.winRate * 100).toFixed(1) + '%';
+                this.winRate.style.color = data.winRate > 0.5 ? '#00b894' : '#ff6b6b';
+            }
+            
+            // Update changes
+            if (data.changes) {
+                this.updateChange('return-change', data.changes.totalReturn);
+                this.updateChange('sharpe-change', data.changes.sharpeRatio);
+                this.updateChange('sortino-change', data.changes.sortinoRatio);
+                this.updateChange('calmar-change', data.changes.calmarRatio);
+                this.updateChange('drawdown-change', data.changes.maxDrawdown);
+                this.updateChange('winrate-change', data.changes.winRate);
+            }
+            
+            // Update metrics
+            if (data.metrics) {
+                this.updateMetrics(data.metrics);
+            }
+            
+            // Update trades
+            if (data.trades) {
+                this.trades = data.trades;
+                this.filteredTrades = this.trades;
+                this.renderTrades();
+            }
+            
+            // Update charts
+            if (data.equityCurve) {
+                this.renderEquityChart(data.equityCurve);
+            }
+            
+            if (data.returnsDistribution) {
+                this.renderDistributionChart(data.returnsDistribution);
+            }
+            
+            if (data.drawdownHistory) {
+                this.renderDrawdownChart(data.drawdownHistory);
+            }
+        }
+        
+        updateTrade(data) {
+            this.trades.unshift(data);
+            if (this.trades.length > 1000) {
+                this.trades = this.trades.slice(0, 1000);
+            }
+            this.filteredTrades = this.trades;
+            this.renderTrades();
+            this.updateMetrics(this.performanceData.metrics || {});
+        }
+        
+        updateChange(elementId, value) {
+            const element = document.getElementById(elementId);
+            if (!element) return;
+            if (value === undefined || value === null) {
+                element.textContent = '+0.00%';
+                element.style.color = '#74b9ff';
+                return;
+            }
+            
+            const isPositive = value >= 0;
+            element.textContent = `${isPositive ? '+' : ''}${(value * 100).toFixed(2)}%`;
+            element.style.color = isPositive ? '#00b894' : '#ff6b6b';
+        }
+        
+        updateMetrics(metrics) {
+            if (metrics.totalTrades !== undefined) {
+                this.totalTrades.textContent = metrics.totalTrades;
+            }
+            
+            if (metrics.winningTrades !== undefined) {
+                this.winningTrades.textContent = metrics.winningTrades;
+                this.winningTrades.style.color = '#00b894';
+            }
+            
+            if (metrics.losingTrades !== undefined) {
+                this.losingTrades.textContent = metrics.losingTrades;
+                this.losingTrades.style.color = '#ff6b6b';
+            }
+            
+            if (metrics.avgWin !== undefined) {
+                this.avgWin.textContent = this.formatCurrency(metrics.avgWin);
+                this.avgWin.style.color = '#00b894';
+            }
+            
+            if (metrics.avgLoss !== undefined) {
+                this.avgLoss.textContent = this.formatCurrency(metrics.avgLoss);
+                this.avgLoss.style.color = '#ff6b6b';
+            }
+            
+            if (metrics.profitFactor !== undefined) {
+                this.profitFactor.textContent = metrics.profitFactor.toFixed(2);
+                this.profitFactor.style.color = metrics.profitFactor > 1 ? '#00b894' : '#ff6b6b';
+            }
+            
+            if (metrics.expectancy !== undefined) {
+                this.expectancy.textContent = this.formatCurrency(metrics.expectancy);
+                this.expectancy.style.color = metrics.expectancy >= 0 ? '#00b894' : '#ff6b6b';
+            }
+            
+            if (metrics.riskReward !== undefined) {
+                this.riskReward.textContent = metrics.riskReward.toFixed(2);
+            }
+            
+            if (metrics.consecutiveWins !== undefined) {
+                this.consecutiveWins.textContent = metrics.consecutiveWins;
+                this.consecutiveWins.style.color = '#00b894';
+            }
+            
+            if (metrics.consecutiveLosses !== undefined) {
+                this.consecutiveLosses.textContent = metrics.consecutiveLosses;
+                this.consecutiveLosses.style.color = '#ff6b6b';
+            }
+            
+            if (metrics.bestTrade !== undefined) {
+                this.bestTrade.textContent = this.formatCurrency(metrics.bestTrade);
+                this.bestTrade.style.color = '#00b894';
+            }
+            
+            if (metrics.worstTrade !== undefined) {
+                this.worstTrade.textContent = this.formatCurrency(metrics.worstTrade);
+                this.worstTrade.style.color = '#ff6b6b';
+            }
+        }
+        
+        async loadPerformanceData() {
+            try {
+                const url = `/api/performance/data?userId=${this.userId}&exchange=${this.exchange}&timeframe=${this.timeframe}`;
+                const response = await fetch(url);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                if (data.error) {
+                    throw new Error(data.error);
+                }
+                
+                this.updatePerformance(data);
+                this.updateStatus('connected', 'Connected');
+                
+            } catch (error) {
+                console.error('Failed to load performance data:', error);
+                this.updateStatus('error', 'Error');
+                
+                if (this.tradesBody) {
+                    this.tradesBody.innerHTML = `
+                        <tr>
+                            <td colspan="10" class="error-row">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                Failed to load performance: ${error.message}
+                            </td>
+                        </tr>
+                    `;
+                }
+            }
+        }
+        
+        renderTrades() {
+            if (!this.tradesBody) return;
+            
+            const searchValue = document.getElementById('trade-search')?.value?.toLowerCase() || '';
+            const sortValue = document.getElementById('trade-sort')?.value || 'date_desc';
+            
+            let filtered = this.filteredTrades;
+            
+            if (searchValue) {
+                filtered = filtered.filter(t => 
+                    t.symbol.toLowerCase().includes(searchValue) ||
+                    t.side.toLowerCase().includes(searchValue)
+                );
+            }
+            
+            filtered = this.sortTradesData(filtered, sortValue);
+            
+            // Pagination
+            const totalPages = Math.ceil(filtered.length / this.pageSize);
+            const start = (this.currentPage - 1) * this.pageSize;
+            const end = start + this.pageSize;
+            const pageItems = filtered.slice(start, end);
+            
+            if (pageItems.length === 0) {
+                this.tradesBody.innerHTML = `
+                    <tr>
+                        <td colspan="10" class="empty-row">No trades found</td>
+                    </tr>
+                `;
+            } else {
+                let html = '';
+                pageItems.forEach(t => {
+                    const pnl = t.pnl || 0;
+                    const pnlClass = pnl >= 0 ? 'positive' : 'negative';
+                    
+                    html += `
+                        <tr>
+                            <td>${new Date(t.timestamp).toLocaleString()}</td>
+                            <td>${t.symbol}</td>
+                            <td class="side-${t.side}">${t.side.toUpperCase()}</td>
+                            <td>${this.formatQuantity(t.quantity)}</td>
+                            <td>${this.formatPrice(t.entryPrice)}</td>
+                            <td>${this.formatPrice(t.exitPrice)}</td>
+                            <td class="${pnlClass}">${pnl >= 0 ? '+' : ''}${this.formatCurrency(pnl)}</td>
+                            <td class="${pnlClass}">${pnl >= 0 ? '+' : ''}${(t.pnlPercent || 0).toFixed(2)}%</td>
+                            <td>${t.duration || '--'}</td>
+                            <td>${this.formatCurrency(t.fee || 0)}</td>
+                        </tr>
+                    `;
+                });
+                this.tradesBody.innerHTML = html;
+            }
+            
+            // Update count
+            if (this.tradeCount) {
+                this.tradeCount.textContent = `${filtered.length} trades`;
+            }
+            
+            // Update pagination
+            if (this.pageInfo) {
+                this.pageInfo.textContent = `Page ${this.currentPage} of ${totalPages || 1}`;
+            }
+        }
+        
+        sortTradesData(trades, sortValue) {
+            const sorts = {
+                'date_desc': (a, b) => b.timestamp - a.timestamp,
+                'date_asc': (a, b) => a.timestamp - b.timestamp,
+                'pnl_desc': (a, b) => (b.pnl || 0) - (a.pnl || 0),
+                'pnl_asc': (a, b) => (a.pnl || 0) - (b.pnl || 0)
+            };
+            return trades.sort(sorts[sortValue] || sorts['date_desc']);
+        }
+        
+        sortTrades() {
+            this.renderTrades();
+        }
+        
+        filterTrades() {
+            this.renderTrades();
+        }
+        
+        changePage(direction) {
+            const totalPages = Math.ceil(this.filteredTrades.length / this.pageSize);
+            if (direction === 'prev' && this.currentPage > 1) {
+                this.currentPage--;
+                this.renderTrades();
+            } else if (direction === 'next' && this.currentPage < totalPages) {
+                this.currentPage++;
+                this.renderTrades();
+            }
+        }
+        
+        renderEquityChart(data) {
+            if (typeof Plotly === 'undefined') return;
+            
+            const chartDiv = document.getElementById('equity-chart');
+            if (!chartDiv) return;
+            
+            const dates = data.map(d => d.date);
+            const values = data.map(d => d.value);
+            
+            const trace = {
+                type: 'scatter',
+                mode: 'lines',
+                x: dates,
+                y: values,
+                name: 'Equity',
+                line: { color: '#74b9ff', width: 2 },
+                fill: 'tozeroy',
+                fillcolor: 'rgba(116, 185, 255, 0.2)'
+            };
+            
+            const layout = {
+                paper_bgcolor: 'transparent',
+                plot_bgcolor: 'transparent',
+                font: { color: '#ffffff', size: 10 },
+                margin: { l: 50, r: 20, t: 10, b: 30 },
+                xaxis: {
+                    gridcolor: '#2d2d44',
+                    tickfont: { color: '#74b9ff', size: 10 }
+                },
+                yaxis: {
+                    gridcolor: '#2d2d44',
+                    tickfont: { color: '#74b9ff', size: 10 },
+                    tickformat: '$.2f'
+                },
+                hovermode: 'x'
+            };
+            
+            Plotly.react(chartDiv, [trace], layout, { responsive: true });
+        }
+        
+        renderDistributionChart(data) {
+            if (typeof Plotly === 'undefined') return;
+            
+            const chartDiv = document.getElementById('distribution-chart');
+            if (!chartDiv) return;
+            
+            const values = data.values || [];
+            const bins = data.bins || 30;
+            
+            const trace = {
+                type: 'histogram',
+                x: values,
+                nbinsx: bins,
+                marker: {
+                    color: 'rgba(116, 185, 255, 0.7)',
+                    line: { color: '#74b9ff', width: 1 }
+                },
+                name: 'Returns Distribution'
+            };
+            
+            const layout = {
+                paper_bgcolor: 'transparent',
+                plot_bgcolor: 'transparent',
+                font: { color: '#ffffff', size: 10 },
+                margin: { l: 40, r: 10, t: 10, b: 30 },
+                xaxis: {
+                    gridcolor: '#2d2d44',
+                    tickfont: { color: '#74b9ff', size: 8 },
+                    title: { text: 'Return %', font: { color: '#74b9ff', size: 9 } }
+                },
+                yaxis: {
+                    gridcolor: '#2d2d44',
+                    tickfont: { color: '#74b9ff', size: 8 },
+                    title: { text: 'Frequency', font: { color: '#74b9ff', size: 9 } }
+                },
+                bargap: 0.05
+            };
+            
+            Plotly.react(chartDiv, [trace], layout, { responsive: true });
+        }
+        
+        renderDrawdownChart(data) {
+            if (typeof Plotly === 'undefined') return;
+            
+            const chartDiv = document.getElementById('drawdown-chart');
+            if (!chartDiv) return;
+            
+            const dates = data.map(d => d.date);
+            const drawdowns = data.map(d => d.drawdown * 100);
+            
+            const trace = {
+                type: 'scatter',
+                mode: 'lines',
+                x: dates,
+                y: drawdowns,
+                name: 'Drawdown %',
+                line: { color: '#ff6b6b', width: 2 },
+                fill: 'tozeroy',
+                fillcolor: 'rgba(255, 107, 107, 0.2)'
+            };
+            
+            const layout = {
+                paper_bgcolor: 'transparent',
+                plot_bgcolor: 'transparent',
+                font: { color: '#ffffff', size: 10 },
+                margin: { l: 40, r: 10, t: 10, b: 30 },
+                xaxis: {
+                    gridcolor: '#2d2d44',
+                    tickfont: { color: '#74b9ff', size: 8 }
+                },
+                yaxis: {
+                    gridcolor: '#2d2d44',
+                    tickfont: { color: '#74b9ff', size: 8 },
+                    title: { text: 'Drawdown %', font: { color: '#74b9ff', size: 9 } },
+                    ticksuffix: '%'
+                }
+            };
+            
+            Plotly.react(chartDiv, [trace], layout, { responsive: true });
+        }
+        
+        toggleChartOverlay(type) {
+            // Toggle chart overlays
+            console.log('Toggle overlay:', type);
+        }
+        
+        updateStatus(status, label) {
+            if (!this.status) return;
+            const dot = this.status.querySelector('.status-dot');
+            const labelEl = this.status.querySelector('.status-label');
+            
+            if (dot) dot.className = `status-dot ${status}`;
+            if (labelEl) labelEl.textContent = label;
+        }
+        
+        updateTimestamp() {
+            if (this.timestamp) {
+                this.timestamp.textContent = new Date().toLocaleString('en-US', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit'
+                });
+            }
+        }
+        
+        startAutoRefresh() {
+            if (this.refreshTimer) clearInterval(this.refreshTimer);
+            
+            this.refreshTimer = setInterval(() => {
+                if (this.isLive) {
+                    this.loadPerformanceData();
+                }
+            }, this.refreshInterval * 1000);
+        }
+        
+        setupResizeObserver() {
+            const resizeObserver = new ResizeObserver(() => {
+                if (document.getElementById('equity-chart')) {
+                    Plotly.Plots.resize(document.getElementById('equity-chart'));
+                }
+                if (document.getElementById('distribution-chart')) {
+                    Plotly.Plots.resize(document.getElementById('distribution-chart'));
+                }
+                if (document.getElementById('drawdown-chart')) {
+                    Plotly.Plots.resize(document.getElementById('drawdown-chart'));
+                }
+            });
+            resizeObserver.observe(this.container);
+        }
+        
+        formatCurrency(value) {
+            if (value === null || value === undefined || isNaN(value)) return '0.00';
+            return value.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        }
+        
+        formatQuantity(value) {
+            if (value === null || value === undefined || isNaN(value)) return '0';
+            if (value >= 1e9) return (value / 1e9).toFixed(2) + 'B';
+            if (value >= 1e6) return (value / 1e6).toFixed(2) + 'M';
+            if (value >= 1e3) return (value / 1e3).toFixed(2) + 'K';
+            return value.toFixed(2);
+        }
+        
+        formatPrice(value) {
+            if (value === null || value === undefined || isNaN(value)) return '--';
+            if (value < 0.000001) return value.toExponential(6);
+            if (value < 0.0001) return value.toFixed(8);
+            if (value < 0.01) return value.toFixed(6);
+            if (value < 1) return value.toFixed(4);
+            if (value < 100) return value.toFixed(2);
+            if (value < 10000) return value.toFixed(0);
+            return value.toLocaleString('en-US', { maximumFractionDigits: 0 });
+        }
+        
+        destroy() {
+            if (this.refreshTimer) clearInterval(this.refreshTimer);
+            if (this.ws) this.ws.close();
+            if (document.getElementById('equity-chart')) {
+                Plotly.purge(document.getElementById('equity-chart'));
+            }
+            if (document.getElementById('distribution-chart')) {
+                Plotly.purge(document.getElementById('distribution-chart'));
+            }
+            if (document.getElementById('drawdown-chart')) {
+                Plotly.purge(document.getElementById('drawdown-chart'));
+            }
+        }
+    }
+    
+    // Global functions
+    window.refreshPerformance = function() {
+        const instance = window.performanceInstance;
+        if (instance) instance.loadPerformanceData();
+    };
+    
+    window.exportPerformance = function() {
+        const instance = window.performanceInstance;
+        if (!instance) return;
+        
+        const data = {
+            timestamp: new Date().toISOString(),
+            performance: instance.performanceData,
+            trades: instance.trades
+        };
+        
+        const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `performance_export_${Date.now()}.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+    };
+    
+    window.toggleChartOverlay = function(type) {
+        const instance = window.performanceInstance;
+        if (instance) instance.toggleChartOverlay(type);
+    };
+    
+    window.sortTrades = function() {
+        const instance = window.performanceInstance;
+        if (instance) instance.sortTrades();
+    };
+    
+    window.filterTrades = function() {
+        const instance = window.performanceInstance;
+        if (instance) instance.filterTrades();
+    };
+    
+    window.changePage = function(direction) {
+        const instance = window.performanceInstance;
+        if (instance) instance.changePage(direction);
+    };
+    
+    window.expandChart = function(chartType) {
+        const chartDiv = document.getElementById(`${chartType}-chart`);
+        if (!chartDiv) return;
+        
+        const isExpanded = chartDiv.classList.contains('expanded');
+        chartDiv.classList.toggle('expanded');
+        
+        if (!isExpanded) {
+            chartDiv.style.position = 'fixed';
+            chartDiv.style.top = '50%';
+            chartDiv.style.left = '50%';
+            chartDiv.style.transform = 'translate(-50%, -50%)';
+            chartDiv.style.width = '80%';
+            chartDiv.style.height = '80%';
+            chartDiv.style.zIndex = '10000';
+            chartDiv.style.background = '#1a1a2e';
+            chartDiv.style.border = '1px solid #2d2d44';
+            chartDiv.style.borderRadius = '12px';
+            chartDiv.style.padding = '16px';
+            chartDiv.style.boxShadow = '0 20px 60px rgba(0,0,0,0.8)';
+        } else {
+            chartDiv.style.position = '';
+            chartDiv.style.top = '';
+            chartDiv.style.left = '';
+            chartDiv.style.transform = '';
+            chartDiv.style.width = '';
+            chartDiv.style.height = '';
+            chartDiv.style.zIndex = '';
+            chartDiv.style.background = '';
+            chartDiv.style.border = '';
+            chartDiv.style.borderRadius = '';
+            chartDiv.style.padding = '';
+            chartDiv.style.boxShadow = '';
+        }
+        
+        setTimeout(() => {
+            if (typeof Plotly !== 'undefined') {
+                Plotly.Plots.resize(chartDiv);
+            }
+        }, 100);
+    };
+    
+    // Initialize on DOM ready
+    document.addEventListener('DOMContentLoaded', function() {
+        const instance = new PerformanceManager();
+        window.performanceInstance = instance;
+    });
+    
+})();
+</script>
+
+<style>
+/* Performance Page Styles - Full Implementation */
+.performance-container {
+    padding: 24px;
+    background: #0f0f1a;
+    min-height: calc(100vh - 64px);
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    color: #ffffff;
+}
+
+.performance-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.performance-title-section {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.performance-logo-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.performance-logo {
+    height: 32px;
+    width: auto;
+}
+
+.performance-brand {
+    color: #00d4ff;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.performance-title {
+    font-size: 24px;
+    font-weight: 700;
+    margin: 0;
+}
+
+.performance-subtitle {
+    color: #74b9ff;
+    font-size: 14px;
+    opacity: 0.6;
+}
+
+.performance-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.performance-timeframe {
+    display: flex;
+    background: #1a1a2e;
+    border: 1px solid #2d2d44;
+    border-radius: 6px;
+    padding: 2px;
+}
+
+.tf-btn {
+    background: transparent;
+    border: none;
+    color: #74b9ff;
+    padding: 4px 12px;
+    font-size: 12px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.tf-btn:hover {
+    background: rgba(116, 185, 255, 0.1);
+}
+
+.tf-btn.active {
+    background: #74b9ff;
+    color: #1a1a2e;
+}
+
+/* Performance Summary */
+.performance-summary {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.summary-card {
+    background: #1a1a2e;
+    border: 1px solid #2d2d44;
+    border-radius: 8px;
+    padding: 16px;
+    text-align: center;
+}
+
+.summary-label {
+    display: block;
+    color: #74b9ff;
+    font-size: 11px;
+    text-transform: uppercase;
+    opacity: 0.6;
+}
+
+.summary-value {
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.summary-change {
+    font-size: 12px;
+    opacity: 0.7;
+}
+
+/* Performance Charts */
+.performance-charts {
+    margin-bottom: 20px;
+}
+
+.performance-chart-container {
+    background: #1a1a2e;
+    border: 1px solid #2d2d44;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 16px;
+}
+
+.performance-chart-container.full-width {
+    min-height: 350px;
+}
+
+.performance-charts-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.performance-chart-container {
+    min-height: 250px;
+}
+
+.chart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.chart-title {
+    color: #74b9ff;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.chart-controls {
+    display: flex;
+    gap: 4px;
+}
+
+.chart-control-btn {
+    background: transparent;
+    border: 1px solid #2d2d44;
+    color: #74b9ff;
+    padding: 2px 10px;
+    font-size: 11px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.chart-control-btn:hover {
+    background: rgba(116, 185, 255, 0.1);
+}
+
+.chart-control-btn.active {
+    background: #74b9ff;
+    color: #1a1a2e;
+    border-color: #74b9ff;
+}
+
+.chart-expand-btn {
+    background: transparent;
+    border: none;
+    color: #74b9ff;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.chart-expand-btn:hover {
+    background: rgba(116, 185, 255, 0.1);
+}
+
+/* Performance Metrics Grid */
+.performance-metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.metric-card {
+    background: #1a1a2e;
+    border: 1px solid #2d2d44;
+    border-radius: 8px;
+    padding: 12px 16px;
+    text-align: center;
+}
+
+.metric-label {
+    display: block;
+    color: #74b9ff;
+    font-size: 10px;
+    text-transform: uppercase;
+    opacity: 0.6;
+}
+
+.metric-value {
+    display: block;
+    font-size: 18px;
+    font-weight: 700;
+    font-family: 'Courier New', monospace;
+}
+
+/* Performance Table */
+.performance-table-container {
+    background: #1a1a2e;
+    border: 1px solid #2d2d44;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 20px;
+}
+
+.table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.table-title {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.table-filters {
+    display: flex;
+    gap: 8px;
+}
+
+.table-search {
+    padding: 6px 12px;
+    background: #131722;
+    border: 1px solid #2d2d44;
+    border-radius: 6px;
+    color: #ffffff;
+    font-size: 12px;
+    width: 150px;
+}
+
+.table-search:focus {
+    outline: none;
+    border-color: #74b9ff;
+}
+
+.table-sort {
+    padding: 6px 12px;
+    background: #131722;
+    border: 1px solid #2d2d44;
+    border-radius: 6px;
+    color: #ffffff;
+    font-size: 12px;
+}
+
+.table-container {
+    overflow-x: auto;
+}
+
+.performance-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+.performance-table th {
+    color: #74b9ff;
+    font-weight: 500;
+    text-align: left;
+    padding: 8px 12px;
+    border-bottom: 1px solid #2d2d44;
+    font-size: 11px;
+    text-transform: uppercase;
+    opacity: 0.7;
+}
+
+.performance-table td {
+    padding: 8px 12px;
+    border-bottom: 1px solid #2d2d44;
+    color: #ffffff;
+}
+
+.performance-table tr:hover td {
+    background: rgba(45, 45, 68, 0.3);
+}
+
+.performance-table .positive {
+    color: #00b894;
+}
+
+.performance-table .negative {
+    color: #ff6b6b;
+}
+
+.performance-table .side-buy {
+    color: #00b894;
+}
+
+.performance-table .side-sell {
+    color: #ff6b6b;
+}
+
+.loading-row td, .empty-row td, .error-row td {
+    text-align: center;
+    padding: 30px;
+    color: #74b9ff;
+}
+
+.error-row td {
+    color: #ff6b6b;
+}
+
+.table-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid #2d2d44;
+}
+
+.table-count {
+    color: #74b9ff;
+    font-size: 12px;
+    opacity: 0.7;
+}
+
+.table-pagination {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.page-btn {
+    padding: 4px 10px;
+    background: transparent;
+    border: 1px solid #2d2d44;
+    border-radius: 4px;
+    color: #74b9ff;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.page-btn:hover {
+    background: rgba(116, 185, 255, 0.1);
+}
+
+.page-info {
+    color: #74b9ff;
+    font-size: 12px;
+    opacity: 0.7;
+}
+
+/* Performance Footer */
+.performance-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid #2d2d44;
+    font-size: 12px;
+    color: #74b9ff;
+    opacity: 0.6;
+}
+
+.performance-nexus-branding {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.nexus-copyright {
+    font-size: 10px;
+    opacity: 0.5;
+}
+
+.nexus-version {
+    color: #00d4ff;
+    font-size: 10px;
+    font-weight: 600;
+}
+
+.performance-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+.status-dot.connected {
+    background: #00b894;
+}
+
+.status-dot.disconnected {
+    background: #ff6b6b;
+}
+
+.status-dot.error {
+    background: #ff6b6b;
+    animation: blink 0.5s infinite;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .performance-summary {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    .performance-metrics-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    .performance-charts-row {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .performance-container {
+        padding: 16px;
+    }
+    
+    .performance-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .performance-actions {
+        flex-wrap: wrap;
+    }
+    
+    .performance-timeframe {
+        flex-wrap: wrap;
+    }
+    
+    .performance-summary {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .performance-metrics-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .table-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .table-filters {
+        flex-direction: column;
+    }
+    
+    .table-search {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .performance-summary {
+        grid-template-columns: 1fr;
+    }
+    
+    .performance-metrics-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .summary-value {
+        font-size: 18px;
+    }
+}
+</style>
+{% endblock %}
