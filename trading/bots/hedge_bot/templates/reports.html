@@ -1,0 +1,1609 @@
+<!-- trading/bots/hedge_bot/templates/reports.html -->
+
+<!--
+NEXUS AI TRADING SYSTEM - Hedge Bot Reports Page
+Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+
+Complete reports management interface with real-time data,
+custom report generation, and export capabilities.
+-->
+
+{% extends "base.html" %}
+{% load static %}
+{% load nexus_tags %}
+
+{% block title %}Reports - NEXUS AI Trading{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/reports.css' %}">
+{% endblock %}
+
+{% block content %}
+<div id="reports-container" class="reports-container"
+     data-user-id="{{ user_id|default:'current' }}"
+     data-exchange="{{ exchange|default:'binance' }}"
+     data-refresh-interval="{{ refresh_interval|default:30 }}">
+
+    <!-- Reports Header -->
+    <div class="reports-header">
+        <div class="reports-title-section">
+            <div class="reports-logo-container">
+                <img src="{% static 'images/nexus-logo-light.svg' %}"
+                     alt="NEXUS Logo"
+                     class="reports-logo"
+                     onerror="this.src='{% static 'images/nexus-favicon.svg' %}'">
+                <span class="reports-brand">NEXUS</span>
+            </div>
+            <h1 class="reports-title">Reports</h1>
+            <span class="reports-subtitle">Generate and manage trading reports</span>
+        </div>
+        <div class="reports-actions">
+            <button class="btn-primary" onclick="openCreateReport()">
+                <i class="fas fa-plus"></i> New Report
+            </button>
+            <button class="btn-secondary" onclick="refreshReports()">
+                <i class="fas fa-sync-alt"></i> Refresh
+            </button>
+        </div>
+    </div>
+
+    <!-- Report Stats -->
+    <div class="reports-stats">
+        <div class="stat-item">
+            <span class="stat-label">Total Reports</span>
+            <span class="stat-value" id="total-reports">0</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-label">Generated</span>
+            <span class="stat-value" id="generated-reports">0</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-label">Scheduled</span>
+            <span class="stat-value" id="scheduled-reports">0</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-label">Templates</span>
+            <span class="stat-value" id="report-templates">0</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-label">Total Size</span>
+            <span class="stat-value" id="total-size">0 MB</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-label">Last Generated</span>
+            <span class="stat-value" id="last-generated">--</span>
+        </div>
+    </div>
+
+    <!-- Reports Filter -->
+    <div class="reports-filter">
+        <div class="filter-group">
+            <input type="text" class="filter-search" id="reports-search" placeholder="Search reports..." oninput="filterReports()">
+            <select class="filter-select" id="reports-type-filter" onchange="filterReports()">
+                <option value="all">All Types</option>
+                <option value="performance">Performance</option>
+                <option value="risk">Risk</option>
+                <option value="trading">Trading</option>
+                <option value="portfolio">Portfolio</option>
+                <option value="audit">Audit</option>
+                <option value="compliance">Compliance</option>
+                <option value="summary">Summary</option>
+                <option value="daily">Daily</option>
+                <option value="weekly">Weekly</option>
+                <option value="monthly">Monthly</option>
+                <option value="quarterly">Quarterly</option>
+                <option value="annual">Annual</option>
+            </select>
+            <select class="filter-select" id="reports-format-filter" onchange="filterReports()">
+                <option value="all">All Formats</option>
+                <option value="pdf">PDF</option>
+                <option value="html">HTML</option>
+                <option value="json">JSON</option>
+                <option value="csv">CSV</option>
+                <option value="excel">Excel</option>
+                <option value="markdown">Markdown</option>
+            </select>
+            <input type="date" class="filter-date" id="reports-date-from" onchange="filterReports()">
+            <input type="date" class="filter-date" id="reports-date-to" onchange="filterReports()">
+        </div>
+        <div class="filter-actions">
+            <button class="btn-secondary" onclick="resetFilters()">Reset Filters</button>
+        </div>
+    </div>
+
+    <!-- Reports Grid -->
+    <div class="reports-grid" id="reports-grid">
+        <div class="loading-spinner" id="reports-loading">
+            <div class="spinner"></div>
+            <span>Loading reports...</span>
+        </div>
+    </div>
+
+    <!-- Pagination -->
+    <div class="reports-pagination" id="reports-pagination">
+        <button class="pagination-btn" onclick="changePage('prev')">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+        <span class="pagination-info" id="pagination-info">Page 1 of 1</span>
+        <button class="pagination-btn" onclick="changePage('next')">
+            <i class="fas fa-chevron-right"></i>
+        </button>
+    </div>
+
+    <!-- Create Report Modal -->
+    <div class="report-modal" id="report-modal" style="display:none;">
+        <div class="modal-overlay" onclick="closeReportModal()"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="report-modal-title">Create New Report</h3>
+                <button class="modal-close" onclick="closeReportModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="report-form" onsubmit="createReport(event)">
+                    <div class="form-section">
+                        <h4>Report Information</h4>
+                        <div class="form-group">
+                            <label>Report Name</label>
+                            <input type="text" id="report-name" placeholder="Enter report name" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Description</label>
+                            <textarea id="report-description" rows="2" placeholder="Describe the report"></textarea>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Type</label>
+                                <select id="report-type" required>
+                                    <option value="performance">Performance</option>
+                                    <option value="risk">Risk</option>
+                                    <option value="trading">Trading</option>
+                                    <option value="portfolio">Portfolio</option>
+                                    <option value="audit">Audit</option>
+                                    <option value="compliance">Compliance</option>
+                                    <option value="summary">Summary</option>
+                                    <option value="daily">Daily</option>
+                                    <option value="weekly">Weekly</option>
+                                    <option value="monthly">Monthly</option>
+                                    <option value="quarterly">Quarterly</option>
+                                    <option value="annual">Annual</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Format</label>
+                                <select id="report-format" required>
+                                    <option value="pdf">PDF</option>
+                                    <option value="html">HTML</option>
+                                    <option value="json">JSON</option>
+                                    <option value="csv">CSV</option>
+                                    <option value="excel">Excel</option>
+                                    <option value="markdown">Markdown</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h4>Date Range</h4>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Start Date</label>
+                                <input type="date" id="report-start-date" required>
+                            </div>
+                            <div class="form-group">
+                                <label>End Date</label>
+                                <input type="date" id="report-end-date" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h4>Report Options</h4>
+                        <div class="form-row">
+                            <div class="form-group checkbox">
+                                <label>
+                                    <input type="checkbox" id="report-include-charts" checked>
+                                    Include Charts
+                                </label>
+                            </div>
+                            <div class="form-group checkbox">
+                                <label>
+                                    <input type="checkbox" id="report-include-summary" checked>
+                                    Include Summary
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group checkbox">
+                                <label>
+                                    <input type="checkbox" id="report-include-details" checked>
+                                    Include Details
+                                </label>
+                            </div>
+                            <div class="form-group checkbox">
+                                <label>
+                                    <input type="checkbox" id="report-include-recommendations">
+                                    Include Recommendations
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn-secondary" onclick="closeReportModal()">Cancel</button>
+                        <button type="submit" class="btn-primary" id="report-create-btn">Generate Report</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Report Detail Modal -->
+    <div class="report-detail-modal" id="report-detail-modal" style="display:none;">
+        <div class="modal-overlay" onclick="closeReportDetail()"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="detail-report-name">Report Details</h3>
+                <button class="modal-close" onclick="closeReportDetail()">&times;</button>
+            </div>
+            <div class="modal-body" id="detail-content">
+                <div class="detail-loading">Loading...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Schedule Report Modal -->
+    <div class="schedule-modal" id="schedule-modal" style="display:none;">
+        <div class="modal-overlay" onclick="closeScheduleModal()"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Schedule Report</h3>
+                <button class="modal-close" onclick="closeScheduleModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="schedule-form" onsubmit="scheduleReport(event)">
+                    <div class="form-group">
+                        <label>Frequency</label>
+                        <select id="schedule-frequency" required>
+                            <option value="daily">Daily</option>
+                            <option value="weekly">Weekly</option>
+                            <option value="monthly">Monthly</option>
+                            <option value="quarterly">Quarterly</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Time</label>
+                        <input type="time" id="schedule-time" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Day of Week (Weekly)</label>
+                        <select id="schedule-day">
+                            <option value="monday">Monday</option>
+                            <option value="tuesday">Tuesday</option>
+                            <option value="wednesday">Wednesday</option>
+                            <option value="thursday">Thursday</option>
+                            <option value="friday">Friday</option>
+                            <option value="saturday">Saturday</option>
+                            <option value="sunday">Sunday</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Day of Month (Monthly)</label>
+                        <input type="number" id="schedule-day-month" min="1" max="31" placeholder="1-31">
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn-secondary" onclick="closeScheduleModal()">Cancel</button>
+                        <button type="submit" class="btn-primary">Schedule Report</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reports Footer -->
+    <div class="reports-footer">
+        <div class="reports-nexus-branding">
+            <span class="nexus-copyright">© 2026 NEXUS QUANTUM LTD</span>
+            <span class="nexus-version">v{{ nexus_version|default:'3.0.0' }}</span>
+        </div>
+        <div class="reports-timestamp" id="reports-timestamp">
+            Last updated: <span id="reports-last-update">--</span>
+        </div>
+        <div class="reports-status" id="reports-status">
+            <span class="status-dot"></span>
+            <span class="status-label">Connected</span>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Complete Reports Implementation with Real Data Integration
+
+(function() {
+    'use strict';
+
+    class ReportsManager {
+        constructor() {
+            this.container = document.getElementById('reports-container');
+            if (!this.container) return;
+            
+            this.userId = this.container.dataset.userId || 'current';
+            this.exchange = this.container.dataset.exchange || 'binance';
+            this.refreshInterval = parseInt(this.container.dataset.refreshInterval) || 30;
+            this.currentPage = 1;
+            this.pageSize = 12;
+            this.totalReports = 0;
+            this.reports = [];
+            this.filteredReports = [];
+            this.templates = [];
+            
+            // DOM Elements
+            this.grid = document.getElementById('reports-grid');
+            this.loading = document.getElementById('reports-loading');
+            this.paginationInfo = document.getElementById('pagination-info');
+            this.searchInput = document.getElementById('reports-search');
+            this.typeFilter = document.getElementById('reports-type-filter');
+            this.formatFilter = document.getElementById('reports-format-filter');
+            this.dateFrom = document.getElementById('reports-date-from');
+            this.dateTo = document.getElementById('reports-date-to');
+            
+            // Stats Elements
+            this.totalStats = document.getElementById('total-reports');
+            this.generatedStats = document.getElementById('generated-reports');
+            this.scheduledStats = document.getElementById('scheduled-reports');
+            this.templatesStats = document.getElementById('report-templates');
+            this.sizeStats = document.getElementById('total-size');
+            this.lastGenerated = document.getElementById('last-generated');
+            
+            this.init();
+        }
+        
+        init() {
+            this.setupEventListeners();
+            this.loadReports();
+            this.loadTemplates();
+            this.startAutoRefresh();
+        }
+        
+        setupEventListeners() {
+            document.addEventListener('keydown', (e) => {
+                if ((e.ctrlKey || e.metaKey) && e.key === 'n') {
+                    e.preventDefault();
+                    openCreateReport();
+                }
+                if (e.key === 'Escape') {
+                    closeReportModal();
+                    closeReportDetail();
+                    closeScheduleModal();
+                }
+            });
+        }
+        
+        async loadReports() {
+            this.showLoading(true);
+            
+            try {
+                const response = await fetch(`/api/reports?page=${this.currentPage}&limit=${this.pageSize}`);
+                if (!response.ok) throw new Error('Failed to load reports');
+                
+                const data = await response.json();
+                this.reports = data.reports || [];
+                this.totalReports = data.total || 0;
+                this.filteredReports = this.reports;
+                this.render();
+                this.updatePagination();
+                this.updateStats();
+                
+            } catch (error) {
+                console.error('Failed to load reports:', error);
+                this.showError('Failed to load reports');
+            } finally {
+                this.showLoading(false);
+            }
+        }
+        
+        async loadTemplates() {
+            try {
+                const response = await fetch('/api/reports/templates');
+                if (!response.ok) throw new Error('Failed to load templates');
+                
+                const data = await response.json();
+                this.templates = data.templates || [];
+                if (this.templatesStats) {
+                    this.templatesStats.textContent = this.templates.length;
+                }
+            } catch (error) {
+                console.error('Failed to load templates:', error);
+            }
+        }
+        
+        render() {
+            if (!this.grid) return;
+            
+            if (this.filteredReports.length === 0) {
+                this.grid.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-file-alt"></i>
+                        <h3>No Reports Found</h3>
+                        <p>Generate your first report to get started</p>
+                        <button class="btn-primary" onclick="openCreateReport()">
+                            <i class="fas fa-plus"></i> Generate Report
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+            
+            let html = '';
+            this.filteredReports.forEach(report => {
+                html += this.renderReportCard(report);
+            });
+            this.grid.innerHTML = html;
+        }
+        
+        renderReportCard(report) {
+            const statusClass = report.status || 'completed';
+            const typeLabel = this.getTypeLabel(report.type);
+            const formatLabel = report.format.toUpperCase();
+            const size = this.formatSize(report.size || 0);
+            const date = new Date(report.createdAt).toLocaleString();
+            
+            return `
+                <div class="report-card" data-id="${report.id}">
+                    <div class="report-card-header">
+                        <div class="report-info">
+                            <h4 class="report-name">${report.name}</h4>
+                            <span class="report-type">${typeLabel}</span>
+                            <span class="report-format">${formatLabel}</span>
+                        </div>
+                        <span class="report-status ${statusClass}">${statusClass}</span>
+                    </div>
+                    <div class="report-description">${report.description || 'No description'}</div>
+                    <div class="report-meta">
+                        <span class="meta-item">
+                            <i class="fas fa-calendar"></i>
+                            ${date}
+                        </span>
+                        <span class="meta-item">
+                            <i class="fas fa-file"></i>
+                            ${size}
+                        </span>
+                    </div>
+                    <div class="report-actions">
+                        <button class="btn-sm btn-primary" onclick="viewReport('${report.id}')">
+                            <i class="fas fa-eye"></i> View
+                        </button>
+                        <button class="btn-sm btn-secondary" onclick="downloadReport('${report.id}')">
+                            <i class="fas fa-download"></i> Download
+                        </button>
+                        <button class="btn-sm btn-secondary" onclick="scheduleReportDialog('${report.id}')">
+                            <i class="fas fa-clock"></i> Schedule
+                        </button>
+                        <button class="btn-sm btn-danger" onclick="deleteReport('${report.id}')">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+        
+        getTypeLabel(type) {
+            const labels = {
+                'performance': 'Performance',
+                'risk': 'Risk',
+                'trading': 'Trading',
+                'portfolio': 'Portfolio',
+                'audit': 'Audit',
+                'compliance': 'Compliance',
+                'summary': 'Summary',
+                'daily': 'Daily',
+                'weekly': 'Weekly',
+                'monthly': 'Monthly',
+                'quarterly': 'Quarterly',
+                'annual': 'Annual'
+            };
+            return labels[type] || type;
+        }
+        
+        formatSize(bytes) {
+            if (bytes === 0) return '0 B';
+            const k = 1024;
+            const sizes = ['B', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+        
+        filterReports() {
+            const search = this.searchInput.value.toLowerCase();
+            const type = this.typeFilter.value;
+            const format = this.formatFilter.value;
+            const dateFrom = this.dateFrom.value;
+            const dateTo = this.dateTo.value;
+            
+            this.filteredReports = this.reports.filter(r => {
+                const matchesSearch = r.name.toLowerCase().includes(search) ||
+                                     (r.description && r.description.toLowerCase().includes(search));
+                const matchesType = type === 'all' || r.type === type;
+                const matchesFormat = format === 'all' || r.format === format;
+                
+                let matchesDate = true;
+                if (dateFrom) {
+                    const reportDate = new Date(r.createdAt).toISOString().split('T')[0];
+                    matchesDate = matchesDate && reportDate >= dateFrom;
+                }
+                if (dateTo) {
+                    const reportDate = new Date(r.createdAt).toISOString().split('T')[0];
+                    matchesDate = matchesDate && reportDate <= dateTo;
+                }
+                
+                return matchesSearch && matchesType && matchesFormat && matchesDate;
+            });
+            
+            this.render();
+            this.updatePagination();
+        }
+        
+        resetFilters() {
+            this.searchInput.value = '';
+            this.typeFilter.value = 'all';
+            this.formatFilter.value = 'all';
+            this.dateFrom.value = '';
+            this.dateTo.value = '';
+            this.filterReports();
+        }
+        
+        updateStats() {
+            const total = this.reports.length;
+            const generated = this.reports.filter(r => r.status === 'completed' || r.status === 'generated').length;
+            const scheduled = this.reports.filter(r => r.status === 'scheduled').length;
+            const totalSize = this.reports.reduce((sum, r) => sum + (r.size || 0), 0);
+            const last = this.reports.length > 0 ? this.reports[0].createdAt : null;
+            
+            if (this.totalStats) this.totalStats.textContent = total;
+            if (this.generatedStats) this.generatedStats.textContent = generated;
+            if (this.scheduledStats) this.scheduledStats.textContent = scheduled;
+            if (this.sizeStats) this.sizeStats.textContent = this.formatSize(totalSize);
+            if (this.lastGenerated) {
+                this.lastGenerated.textContent = last ? new Date(last).toLocaleString() : '--';
+            }
+        }
+        
+        updatePagination() {
+            const totalPages = Math.ceil(this.totalReports / this.pageSize);
+            if (this.paginationInfo) {
+                this.paginationInfo.textContent = `Page ${this.currentPage} of ${totalPages || 1}`;
+            }
+        }
+        
+        changePage(direction) {
+            const totalPages = Math.ceil(this.totalReports / this.pageSize);
+            if (direction === 'prev' && this.currentPage > 1) {
+                this.currentPage--;
+                this.loadReports();
+            } else if (direction === 'next' && this.currentPage < totalPages) {
+                this.currentPage++;
+                this.loadReports();
+            }
+        }
+        
+        showLoading(show) {
+            if (this.loading) {
+                this.loading.style.display = show ? 'flex' : 'none';
+            }
+        }
+        
+        showError(message) {
+            if (this.grid) {
+                this.grid.innerHTML = `
+                    <div class="error-state">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <h3>Error</h3>
+                        <p>${message}</p>
+                        <button class="btn-primary" onclick="refreshReports()">Retry</button>
+                    </div>
+                `;
+            }
+        }
+        
+        startAutoRefresh() {
+            setInterval(() => {
+                this.loadReports();
+            }, this.refreshInterval * 1000);
+        }
+    }
+    
+    // Global Functions
+    window.openCreateReport = function() {
+        const modal = document.getElementById('report-modal');
+        const form = document.getElementById('report-form');
+        const createBtn = document.getElementById('report-create-btn');
+        
+        form.reset();
+        createBtn.textContent = 'Generate Report';
+        
+        // Set default dates
+        const today = new Date();
+        const thirtyDaysAgo = new Date(today);
+        thirtyDaysAgo.setDate(today.getDate() - 30);
+        document.getElementById('report-start-date').value = thirtyDaysAgo.toISOString().split('T')[0];
+        document.getElementById('report-end-date').value = today.toISOString().split('T')[0];
+        
+        modal.style.display = 'block';
+        document.body.style.overflow = 'hidden';
+    };
+    
+    window.closeReportModal = function() {
+        document.getElementById('report-modal').style.display = 'none';
+        document.body.style.overflow = '';
+    };
+    
+    window.createReport = function(event) {
+        event.preventDefault();
+        
+        const data = {
+            name: document.getElementById('report-name').value,
+            description: document.getElementById('report-description').value,
+            type: document.getElementById('report-type').value,
+            format: document.getElementById('report-format').value,
+            startDate: document.getElementById('report-start-date').value,
+            endDate: document.getElementById('report-end-date').value,
+            includeCharts: document.getElementById('report-include-charts').checked,
+            includeSummary: document.getElementById('report-include-summary').checked,
+            includeDetails: document.getElementById('report-include-details').checked,
+            includeRecommendations: document.getElementById('report-include-recommendations').checked
+        };
+        
+        fetch('/api/reports', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        })
+        .then(response => response.json())
+        .then(result => {
+            if (result.error) {
+                alert(result.error);
+                return;
+            }
+            closeReportModal();
+            if (window.reportsInstance) {
+                window.reportsInstance.loadReports();
+            }
+            alert('Report generation started!');
+        })
+        .catch(error => {
+            console.error('Failed to create report:', error);
+            alert('Failed to create report');
+        });
+    };
+    
+    window.viewReport = function(id) {
+        const modal = document.getElementById('report-detail-modal');
+        const content = document.getElementById('detail-content');
+        const nameEl = document.getElementById('detail-report-name');
+        
+        modal.style.display = 'block';
+        document.body.style.overflow = 'hidden';
+        content.innerHTML = '<div class="detail-loading">Loading...</div>';
+        
+        fetch(`/api/reports/${id}`)
+            .then(response => response.json())
+            .then(report => {
+                nameEl.textContent = report.name;
+                content.innerHTML = `
+                    <div class="detail-section">
+                        <h4>Description</h4>
+                        <p>${report.description || 'No description'}</p>
+                    </div>
+                    <div class="detail-section">
+                        <h4>Details</h4>
+                        <div class="detail-grid">
+                            <div><strong>Type:</strong> ${report.type}</div>
+                            <div><strong>Format:</strong> ${report.format.toUpperCase()}</div>
+                            <div><strong>Status:</strong> <span class="detail-status ${report.status}">${report.status}</span></div>
+                            <div><strong>Size:</strong> ${report.size ? (report.size / 1024).toFixed(2) + ' KB' : 'N/A'}</div>
+                            <div><strong>Created:</strong> ${new Date(report.createdAt).toLocaleString()}</div>
+                            <div><strong>Generated:</strong> ${report.generatedAt ? new Date(report.generatedAt).toLocaleString() : 'Pending'}</div>
+                        </div>
+                    </div>
+                    <div class="detail-section">
+                        <h4>Date Range</h4>
+                        <div>${report.startDate ? new Date(report.startDate).toLocaleDateString() : 'N/A'} - ${report.endDate ? new Date(report.endDate).toLocaleDateString() : 'N/A'}</div>
+                    </div>
+                    ${report.summary ? `
+                        <div class="detail-section">
+                            <h4>Summary</h4>
+                            <pre>${report.summary}</pre>
+                        </div>
+                    ` : ''}
+                    ${report.actions ? `
+                        <div class="detail-actions">
+                            <button class="btn-primary" onclick="downloadReport('${report.id}')">
+                                <i class="fas fa-download"></i> Download
+                            </button>
+                            <button class="btn-secondary" onclick="scheduleReportDialog('${report.id}')">
+                                <i class="fas fa-clock"></i> Schedule
+                            </button>
+                            <button class="btn-secondary" onclick="closeReportDetail()">Close</button>
+                        </div>
+                    ` : ''}
+                `;
+            })
+            .catch(error => {
+                content.innerHTML = `
+                    <div class="error-state">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <p>Failed to load report details</p>
+                        <button class="btn-primary" onclick="viewReport('${id}')">Retry</button>
+                    </div>
+                `;
+            });
+    };
+    
+    window.closeReportDetail = function() {
+        document.getElementById('report-detail-modal').style.display = 'none';
+        document.body.style.overflow = '';
+    };
+    
+    window.downloadReport = function(id) {
+        window.open(`/api/reports/${id}/download`, '_blank');
+    };
+    
+    window.scheduleReportDialog = function(id) {
+        document.getElementById('schedule-modal').style.display = 'block';
+        document.body.style.overflow = 'hidden';
+        window._scheduleReportId = id;
+    };
+    
+    window.closeScheduleModal = function() {
+        document.getElementById('schedule-modal').style.display = 'none';
+        document.body.style.overflow = '';
+    };
+    
+    window.scheduleReport = function(event) {
+        event.preventDefault();
+        
+        const id = window._scheduleReportId;
+        const data = {
+            frequency: document.getElementById('schedule-frequency').value,
+            time: document.getElementById('schedule-time').value,
+            day: document.getElementById('schedule-day').value,
+            dayMonth: parseInt(document.getElementById('schedule-day-month').value) || 1
+        };
+        
+        fetch(`/api/reports/${id}/schedule`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        })
+        .then(response => response.json())
+        .then(result => {
+            if (result.error) {
+                alert(result.error);
+                return;
+            }
+            closeScheduleModal();
+            if (window.reportsInstance) {
+                window.reportsInstance.loadReports();
+            }
+            alert('Report scheduled successfully!');
+        })
+        .catch(error => {
+            console.error('Failed to schedule report:', error);
+            alert('Failed to schedule report');
+        });
+    };
+    
+    window.deleteReport = function(id) {
+        if (!confirm('Are you sure you want to delete this report?')) return;
+        
+        fetch(`/api/reports/${id}`, { method: 'DELETE' })
+            .then(response => response.json())
+            .then(result => {
+                if (result.error) {
+                    alert(result.error);
+                    return;
+                }
+                if (window.reportsInstance) {
+                    window.reportsInstance.loadReports();
+                }
+            })
+            .catch(error => {
+                console.error('Failed to delete report:', error);
+                alert('Failed to delete report');
+            });
+    };
+    
+    window.filterReports = function() {
+        if (window.reportsInstance) {
+            window.reportsInstance.filterReports();
+        }
+    };
+    
+    window.resetFilters = function() {
+        if (window.reportsInstance) {
+            window.reportsInstance.resetFilters();
+        }
+    };
+    
+    window.refreshReports = function() {
+        if (window.reportsInstance) {
+            window.reportsInstance.loadReports();
+        }
+    };
+    
+    window.changePage = function(direction) {
+        if (window.reportsInstance) {
+            window.reportsInstance.changePage(direction);
+        }
+    };
+    
+    // Initialize on DOM ready
+    document.addEventListener('DOMContentLoaded', function() {
+        const instance = new ReportsManager();
+        window.reportsInstance = instance;
+    });
+    
+})();
+</script>
+
+<style>
+/* Reports Page Styles - Full Implementation */
+.reports-container {
+    padding: 24px;
+    background: #0f0f1a;
+    min-height: calc(100vh - 64px);
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    color: #ffffff;
+}
+
+.reports-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.reports-title-section {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.reports-logo-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.reports-logo {
+    height: 32px;
+    width: auto;
+}
+
+.reports-brand {
+    color: #00d4ff;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.reports-title {
+    font-size: 24px;
+    font-weight: 700;
+    margin: 0;
+}
+
+.reports-subtitle {
+    color: #74b9ff;
+    font-size: 14px;
+    opacity: 0.6;
+}
+
+.reports-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.btn-primary {
+    padding: 8px 16px;
+    background: #74b9ff;
+    border: none;
+    border-radius: 6px;
+    color: #1a1a2e;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s ease;
+}
+
+.btn-primary:hover {
+    transform: scale(1.02);
+    box-shadow: 0 4px 20px rgba(116, 185, 255, 0.3);
+}
+
+.btn-secondary {
+    padding: 8px 16px;
+    background: transparent;
+    border: 1px solid #2d2d44;
+    border-radius: 6px;
+    color: #74b9ff;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s ease;
+}
+
+.btn-secondary:hover {
+    background: rgba(116, 185, 255, 0.05);
+    border-color: #4d4d6a;
+}
+
+.btn-sm {
+    padding: 4px 12px;
+    font-size: 12px;
+    border-radius: 4px;
+}
+
+.btn-danger {
+    padding: 8px 16px;
+    background: #ff6b6b;
+    border: none;
+    border-radius: 6px;
+    color: #ffffff;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-danger:hover {
+    background: #ff6b6b;
+    transform: scale(1.02);
+}
+
+/* Reports Stats */
+.reports-stats {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.stat-item {
+    background: #1a1a2e;
+    padding: 12px 16px;
+    border-radius: 8px;
+    border: 1px solid #2d2d44;
+    text-align: center;
+}
+
+.stat-label {
+    display: block;
+    color: #74b9ff;
+    font-size: 11px;
+    text-transform: uppercase;
+    opacity: 0.6;
+    margin-bottom: 4px;
+}
+
+.stat-value {
+    font-size: 20px;
+    font-weight: 700;
+    font-family: 'Courier New', monospace;
+}
+
+/* Reports Filter */
+.reports-filter {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.filter-group {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.filter-search {
+    padding: 8px 12px;
+    background: #1a1a2e;
+    border: 1px solid #2d2d44;
+    border-radius: 6px;
+    color: #ffffff;
+    font-size: 13px;
+    width: 180px;
+}
+
+.filter-search:focus {
+    outline: none;
+    border-color: #74b9ff;
+}
+
+.filter-search::placeholder {
+    color: #74b9ff;
+    opacity: 0.4;
+}
+
+.filter-select {
+    padding: 8px 12px;
+    background: #1a1a2e;
+    border: 1px solid #2d2d44;
+    border-radius: 6px;
+    color: #ffffff;
+    font-size: 13px;
+}
+
+.filter-select:focus {
+    outline: none;
+    border-color: #74b9ff;
+}
+
+.filter-date {
+    padding: 8px 12px;
+    background: #1a1a2e;
+    border: 1px solid #2d2d44;
+    border-radius: 6px;
+    color: #ffffff;
+    font-size: 13px;
+}
+
+.filter-date:focus {
+    outline: none;
+    border-color: #74b9ff;
+}
+
+/* Reports Grid */
+.reports-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.report-card {
+    background: #1a1a2e;
+    border: 1px solid #2d2d44;
+    border-radius: 8px;
+    padding: 16px;
+    transition: all 0.3s ease;
+}
+
+.report-card:hover {
+    border-color: #4d4d6a;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+
+.report-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 8px;
+}
+
+.report-info h4 {
+    margin: 0 0 4px 0;
+    font-size: 15px;
+}
+
+.report-type {
+    font-size: 11px;
+    color: #74b9ff;
+    opacity: 0.6;
+    margin-right: 8px;
+}
+
+.report-format {
+    font-size: 11px;
+    padding: 1px 8px;
+    background: rgba(116, 185, 255, 0.1);
+    border-radius: 4px;
+    color: #74b9ff;
+}
+
+.report-status {
+    padding: 2px 12px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+}
+
+.report-status.completed, .report-status.generated {
+    background: rgba(0, 184, 148, 0.2);
+    color: #00b894;
+}
+
+.report-status.scheduled {
+    background: rgba(253, 203, 110, 0.2);
+    color: #fdcb6e;
+}
+
+.report-status.generating {
+    background: rgba(116, 185, 255, 0.2);
+    color: #74b9ff;
+}
+
+.report-status.failed {
+    background: rgba(255, 107, 107, 0.2);
+    color: #ff6b6b;
+}
+
+.report-description {
+    color: #74b9ff;
+    font-size: 13px;
+    opacity: 0.7;
+    margin-bottom: 12px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.report-meta {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 12px;
+    padding: 8px 12px;
+    background: #131722;
+    border-radius: 6px;
+    font-size: 12px;
+    color: #74b9ff;
+    opacity: 0.7;
+}
+
+.meta-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.meta-item i {
+    font-size: 12px;
+}
+
+.report-actions {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+}
+
+/* Empty State */
+.empty-state {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+    color: #74b9ff;
+    gap: 12px;
+}
+
+.empty-state i {
+    font-size: 48px;
+    color: #2d2d44;
+}
+
+.empty-state h3 {
+    margin: 0;
+    font-size: 20px;
+}
+
+.empty-state p {
+    opacity: 0.6;
+}
+
+.error-state {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    color: #ff6b6b;
+    gap: 12px;
+}
+
+.error-state i {
+    font-size: 36px;
+}
+
+/* Loading */
+.loading-spinner {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    gap: 12px;
+}
+
+.spinner {
+    width: 32px;
+    height: 32px;
+    border: 3px solid #2d2d44;
+    border-top-color: #74b9ff;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+/* Pagination */
+.reports-pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+}
+
+.pagination-btn {
+    padding: 8px 12px;
+    background: #1a1a2e;
+    border: 1px solid #2d2d44;
+    border-radius: 6px;
+    color: #74b9ff;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.pagination-btn:hover {
+    background: rgba(116, 185, 255, 0.05);
+    border-color: #4d4d6a;
+}
+
+.pagination-info {
+    color: #74b9ff;
+    font-size: 13px;
+    opacity: 0.6;
+}
+
+/* Modal Styles */
+.report-modal,
+.report-detail-modal,
+.schedule-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+}
+
+.modal-content {
+    position: relative;
+    background: #1a1a2e;
+    border: 1px solid #2d2d44;
+    border-radius: 12px;
+    padding: 24px;
+    max-width: 600px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    z-index: 1;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #2d2d44;
+}
+
+.modal-header h3 {
+    margin: 0;
+}
+
+.modal-close {
+    background: transparent;
+    border: none;
+    color: #74b9ff;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+/* Form Styles */
+.form-section {
+    margin-bottom: 20px;
+}
+
+.form-section h4 {
+    color: #74b9ff;
+    font-size: 14px;
+    margin: 0 0 12px 0;
+    padding-bottom: 4px;
+    border-bottom: 1px solid #2d2d44;
+}
+
+.form-group {
+    margin-bottom: 12px;
+}
+
+.form-group label {
+    display: block;
+    color: #74b9ff;
+    font-size: 12px;
+    margin-bottom: 4px;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+    width: 100%;
+    padding: 8px 12px;
+    background: #131722;
+    border: 1px solid #2d2d44;
+    border-radius: 6px;
+    color: #ffffff;
+    font-size: 13px;
+    font-family: inherit;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: #74b9ff;
+}
+
+.form-group textarea {
+    resize: vertical;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.form-group.checkbox {
+    display: flex;
+    align-items: center;
+}
+
+.form-group.checkbox label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    margin: 0;
+}
+
+.form-group.checkbox input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: #74b9ff;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    padding-top: 16px;
+    border-top: 1px solid #2d2d44;
+}
+
+/* Detail Modal */
+.detail-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    color: #74b9ff;
+}
+
+.detail-section {
+    margin-bottom: 16px;
+}
+
+.detail-section h4 {
+    color: #74b9ff;
+    font-size: 13px;
+    margin: 0 0 8px 0;
+    opacity: 0.6;
+}
+
+.detail-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+
+.detail-grid div {
+    font-size: 13px;
+}
+
+.detail-status {
+    padding: 2px 12px;
+    border-radius: 4px;
+    font-size: 13px;
+}
+
+.detail-status.completed, .detail-status.generated {
+    background: rgba(0, 184, 148, 0.2);
+    color: #00b894;
+}
+
+.detail-status.scheduled {
+    background: rgba(253, 203, 110, 0.2);
+    color: #fdcb6e;
+}
+
+.detail-status.generating {
+    background: rgba(116, 185, 255, 0.2);
+    color: #74b9ff;
+}
+
+.detail-status.failed {
+    background: rgba(255, 107, 107, 0.2);
+    color: #ff6b6b;
+}
+
+.detail-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 16px;
+    padding-top: 12px;
+    border-top: 1px solid #2d2d44;
+}
+
+/* Reports Footer */
+.reports-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid #2d2d44;
+    font-size: 12px;
+    color: #74b9ff;
+    opacity: 0.6;
+}
+
+.reports-nexus-branding {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.nexus-copyright {
+    font-size: 10px;
+    opacity: 0.5;
+}
+
+.nexus-version {
+    color: #00d4ff;
+    font-size: 10px;
+    font-weight: 600;
+}
+
+.reports-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+.status-dot.connected {
+    background: #00b894;
+}
+
+.status-dot.disconnected {
+    background: #ff6b6b;
+}
+
+.status-dot.error {
+    background: #ff6b6b;
+    animation: blink 0.5s infinite;
+}
+
+/* Animations */
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.2; }
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .reports-stats {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .reports-container {
+        padding: 16px;
+    }
+    
+    .reports-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .reports-title-section {
+        flex-wrap: wrap;
+    }
+    
+    .reports-actions {
+        justify-content: stretch;
+    }
+    
+    .reports-actions button {
+        flex: 1;
+        justify-content: center;
+    }
+    
+    .reports-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .reports-filter {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .filter-group {
+        flex-direction: column;
+    }
+    
+    .filter-search {
+        width: 100%;
+    }
+    
+    .reports-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+    
+    .detail-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .reports-stats {
+        grid-template-columns: 1fr;
+    }
+    
+    .modal-content {
+        padding: 16px;
+        width: 95%;
+    }
+}
+</style>
+{% endblock %}
