@@ -1,0 +1,430 @@
+# trading/bots/swing_bot/config/breakout_configs.yaml
+
+# ============================================================================
+# NEXUS AI TRADING SYSTEM - Swing Bot Breakout Configuration
+# Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+# ============================================================================
+#
+# Description: Complete Breakout configuration for swing trading bot
+# Framework: Breakout Trading - Price Breakout & Momentum Analysis
+# Version: 3.0.0
+#
+# The Breakout configuration enables the bot to identify and trade
+# price breakouts with confidence, volume confirmation, and momentum.
+# ============================================================================
+
+# ----------------------------------------------------------------------------
+# General Configuration
+# ----------------------------------------------------------------------------
+breakout:
+  enabled: true
+  version: "3.0.0"
+  description: "Breakout Trading for swing trading"
+  
+  # Breakout types
+  types:
+    - "range_breakout"
+    - "trendline_breakout"
+    - "channel_breakout"
+    - "pattern_breakout"
+    - "volume_breakout"
+    - "gap_breakout"
+    - "moving_average_breakout"
+    - "volatility_breakout"
+  
+  # Timeframes
+  timeframes:
+    - "1m"
+    - "5m"
+    - "15m"
+    - "30m"
+    - "1h"
+    - "4h"
+    - "1d"
+  
+  default_timeframe: "1h"
+  
+  # Confirmation requirements
+  confirmations:
+    required: 2
+    sources:
+      - "volume"
+      - "momentum"
+      - "price_action"
+      - "pattern"
+
+# ----------------------------------------------------------------------------
+# Range Breakout
+# ----------------------------------------------------------------------------
+range_breakout:
+  enabled: true
+  description: "Range breakout configuration"
+  
+  # Parameters
+  parameters:
+    lookback_period: 20
+    min_range_duration: 10  # bars
+    max_range_duration: 50  # bars
+    min_range_size: 0.01
+    max_range_size: 0.05
+    volume_threshold: 1.5
+    momentum_threshold: 0.5
+  
+  # Detection
+  detection:
+    resistance_levels: 3
+    support_levels: 3
+    min_touches: 2
+    tolerance: 0.001
+  
+  # Signals
+  signals:
+    bullish_breakout:
+      description: "Bullish range breakout"
+      conditions:
+        - "price_above_resistance"
+        - "volume_confirmation"
+        - "momentum_increasing"
+      confidence: 0.8
+    
+    bearish_breakout:
+      description: "Bearish range breakout"
+      conditions:
+        - "price_below_support"
+        - "volume_confirmation"
+        - "momentum_decreasing"
+      confidence: 0.8
+    
+    false_breakout:
+      description: "False breakout detection"
+      conditions:
+        - "price_returns_to_range"
+        - "volume_decrease"
+        - "momentum_reversal"
+      confidence: 0.7
+
+# ----------------------------------------------------------------------------
+# Trendline Breakout
+# ----------------------------------------------------------------------------
+trendline_breakout:
+  enabled: true
+  description: "Trendline breakout configuration"
+  
+  # Parameters
+  parameters:
+    min_touches: 2
+    max_touches: 5
+    lookback_period: 50
+    volume_threshold: 1.5
+    momentum_threshold: 0.5
+    breakout_distance: 0.005
+  
+  # Detection
+  detection:
+    trendline_types:
+      - "ascending"
+      - "descending"
+      - "horizontal"
+    min_slope: 0.001
+    max_slope: 0.05
+  
+  # Signals
+  signals:
+    bullish_trendline:
+      description: "Bullish trendline breakout"
+      conditions:
+        - "price_above_trendline"
+        - "volume_confirmation"
+        - "momentum_increasing"
+      confidence: 0.75
+    
+    bearish_trendline:
+      description: "Bearish trendline breakout"
+      conditions:
+        - "price_below_trendline"
+        - "volume_confirmation"
+        - "momentum_decreasing"
+      confidence: 0.75
+
+# ----------------------------------------------------------------------------
+# Channel Breakout
+# ----------------------------------------------------------------------------
+channel_breakout:
+  enabled: true
+  description: "Channel breakout configuration"
+  
+  # Parameters
+  parameters:
+    lookback_period: 30
+    min_channel_duration: 10  # bars
+    max_channel_duration: 50  # bars
+    channel_width: 0.02
+    volume_threshold: 1.5
+    momentum_threshold: 0.5
+  
+  # Detection
+  detection:
+    channel_types:
+      - "parallel"
+      - "ascending"
+      - "descending"
+    min_touches: 2
+    tolerance: 0.001
+  
+  # Signals
+  signals:
+    bullish_channel:
+      description: "Bullish channel breakout"
+      conditions:
+        - "price_above_channel_top"
+        - "volume_confirmation"
+        - "momentum_increasing"
+      confidence: 0.8
+    
+    bearish_channel:
+      description: "Bearish channel breakout"
+      conditions:
+        - "price_below_channel_bottom"
+        - "volume_confirmation"
+        - "momentum_decreasing"
+      confidence: 0.8
+
+# ----------------------------------------------------------------------------
+# Volume Breakout
+# ----------------------------------------------------------------------------
+volume_breakout:
+  enabled: true
+  description: "Volume breakout configuration"
+  
+  # Parameters
+  parameters:
+    lookback_period: 20
+    volume_threshold: 2.0
+    price_move_threshold: 0.01
+    momentum_threshold: 0.5
+    confirmation_bars: 2
+  
+  # Detection
+  detection:
+    volume_spike: 2.0
+    volume_average: 1.5
+    min_volume: 1000
+  
+  # Signals
+  signals:
+    volume_breakout_up:
+      description: "Volume breakout up"
+      conditions:
+        - "volume_>_2x_average"
+        - "price_increasing"
+        - "momentum_increasing"
+      confidence: 0.85
+    
+    volume_breakout_down:
+      description: "Volume breakout down"
+      conditions:
+        - "volume_>_2x_average"
+        - "price_decreasing"
+        - "momentum_decreasing"
+      confidence: 0.85
+
+# ----------------------------------------------------------------------------
+# Pattern Breakout
+# ----------------------------------------------------------------------------
+pattern_breakout:
+  enabled: true
+  description: "Pattern breakout configuration"
+  
+  # Patterns
+  patterns:
+    - "ascending_triangle"
+    - "descending_triangle"
+    - "symmetrical_triangle"
+    - "flag"
+    - "pennant"
+    - "wedge"
+    - "rectangle"
+  
+  # Parameters
+  parameters:
+    lookback_period: 50
+    min_pattern_duration: 5  # bars
+    max_pattern_duration: 30  # bars
+    volume_threshold: 1.5
+    momentum_threshold: 0.5
+  
+  # Detection
+  detection:
+    pattern_recognition: true
+    min_confidence: 0.7
+    tolerance: 0.001
+  
+  # Signals
+  signals:
+    pattern_breakout_bullish:
+      description: "Bullish pattern breakout"
+      conditions:
+        - "pattern_complete"
+        - "price_above_pattern"
+        - "volume_confirmation"
+      confidence: 0.8
+    
+    pattern_breakout_bearish:
+      description: "Bearish pattern breakout"
+      conditions:
+        - "pattern_complete"
+        - "price_below_pattern"
+        - "volume_confirmation"
+      confidence: 0.8
+
+# ----------------------------------------------------------------------------
+# Gap Breakout
+# ----------------------------------------------------------------------------
+gap_breakout:
+  enabled: true
+  description: "Gap breakout configuration"
+  
+  # Parameters
+  parameters:
+    min_gap_size: 0.01
+    max_gap_size: 0.05
+    volume_threshold: 1.5
+    momentum_threshold: 0.5
+    confirmation_bars: 2
+  
+  # Detection
+  detection:
+    gap_types:
+      - "breakaway"
+      - "runaway"
+      - "exhaustion"
+    min_volume: 1000
+  
+  # Signals
+  signals:
+    gap_up:
+      description: "Gap up breakout"
+      conditions:
+        - "gap_above_resistance"
+        - "volume_confirmation"
+        - "momentum_increasing"
+      confidence: 0.8
+    
+    gap_down:
+      description: "Gap down breakout"
+      conditions:
+        - "gap_below_support"
+        - "volume_confirmation"
+        - "momentum_decreasing"
+      confidence: 0.8
+
+# ----------------------------------------------------------------------------
+# Breakout Signals
+# ----------------------------------------------------------------------------
+signals:
+  enabled: true
+  description: "Breakout-based trading signals"
+  
+  # Signal types
+  types:
+    breakout_buy:
+      description: "Breakout buy signal"
+      conditions:
+        - "breakout_detected"
+        - "volume_confirmed"
+        - "momentum_confirmed"
+        - "pattern_confirmed"
+      confidence: 0.85
+    
+    breakout_sell:
+      description: "Breakout sell signal"
+      conditions:
+        - "breakdown_detected"
+        - "volume_confirmed"
+        - "momentum_confirmed"
+        - "pattern_confirmed"
+      confidence: 0.85
+    
+    breakout_hedge:
+      description: "Breakout hedge signal"
+      conditions:
+        - "breakout_detected"
+        - "volume_uncertain"
+        - "momentum_uncertain"
+      confidence: 0.7
+  
+  # Signal confirmation
+  confirmation:
+    required_confirmations: 2
+    confirmation_sources:
+      - "volume"
+      - "momentum"
+      - "price_action"
+
+# ----------------------------------------------------------------------------
+# Risk Management
+# ----------------------------------------------------------------------------
+risk_management:
+  enabled: true
+  description: "Risk management for breakout trading"
+  
+  # Risk parameters
+  parameters:
+    max_position: 0.05
+    max_daily_loss: 0.02
+    max_drawdown: 0.1
+    risk_per_trade: 0.01
+    
+    # Stop loss
+    stop_loss:
+      type: "breakout_based"
+      distance: 0.01
+      atr_multiplier: 1.5
+      min: 0.005
+      max: 0.02
+    
+    # Take profit
+    take_profit:
+      type: "breakout_based"
+      multiplier: 2.5
+      min: 0.01
+      max: 0.05
+
+# ----------------------------------------------------------------------------
+# Performance Monitoring
+# ----------------------------------------------------------------------------
+performance_monitoring:
+  enabled: true
+  description: "Performance monitoring for breakout trading"
+  
+  metrics:
+    - "win_rate"
+    - "profit_factor"
+    - "sharpe_ratio"
+    - "max_drawdown"
+    - "average_trade"
+    - "consecutive_wins"
+    - "consecutive_losses"
+  
+  targets:
+    min_win_rate: 0.45
+    min_profit_factor: 1.2
+    min_sharpe_ratio: 0.5
+    max_max_drawdown: 0.15
+
+# ----------------------------------------------------------------------------
+# Logging Configuration
+# ----------------------------------------------------------------------------
+logging:
+  enabled: true
+  level: "INFO"
+  file: "logs/breakout_bot.log"
+  rotation: "daily"
+  retention: 30  # days
+  
+  log_categories:
+    signals: true
+    trades: true
+    errors: true
+    performance: true
+    debugging: false
