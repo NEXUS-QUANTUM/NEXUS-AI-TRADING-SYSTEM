@@ -1,0 +1,433 @@
+# trading/bots/swing_bot/config/capital_flows_configs.yaml
+
+# ============================================================================
+# NEXUS AI TRADING SYSTEM - Swing Bot Capital Flows Configuration
+# Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+# ============================================================================
+#
+# Description: Complete Capital Flows configuration for swing trading bot
+# Framework: Capital Flow Analysis - Institutional & Smart Money Tracking
+# Version: 3.0.0
+#
+# The Capital Flows configuration enables the bot to track and analyze
+# institutional capital flows, smart money movements, and market liquidity.
+# ============================================================================
+
+# ----------------------------------------------------------------------------
+# General Configuration
+# ----------------------------------------------------------------------------
+capital_flows:
+  enabled: true
+  version: "3.0.0"
+  description: "Capital Flows Analysis for swing trading"
+  
+  # Flow types
+  types:
+    - "institutional"
+    - "retail"
+    - "smart_money"
+    - "whale"
+    - "exchange"
+    - "cross_border"
+  
+  # Timeframes
+  timeframes:
+    - "1m"
+    - "5m"
+    - "15m"
+    - "30m"
+    - "1h"
+    - "4h"
+    - "1d"
+    - "1w"
+  
+  default_timeframe: "1h"
+  
+  # Data sources
+  data_sources:
+    - "exchange_data"
+    - "on_chain_data"
+    - "institutional_data"
+    - "sentiment_data"
+    - "market_data"
+
+# ----------------------------------------------------------------------------
+# Institutional Flows
+# ----------------------------------------------------------------------------
+institutional_flows:
+  enabled: true
+  description: "Institutional flows analysis configuration"
+  
+  # Parameters
+  parameters:
+    lookback_period: 20
+    min_trade_size: 10000
+    max_trade_size: 1000000
+    flow_threshold: 0.3
+    confidence_threshold: 0.7
+  
+  # Flow metrics
+  metrics:
+    institutional_buying:
+      enabled: true
+      calculation: "volume_weighted"
+      lookback_period: 10
+    
+    institutional_selling:
+      enabled: true
+      calculation: "volume_weighted"
+      lookback_period: 10
+    
+    institutional_net_flow:
+      enabled: true
+      calculation: "difference"
+      lookback_period: 10
+    
+    institutional_pressure:
+      enabled: true
+      calculation: "ratio"
+      lookback_period: 10
+  
+  # Flow signals
+  signals:
+    institutional_accumulation:
+      description: "Institutional accumulation"
+      conditions:
+        - "net_flow_positive"
+        - "buying_pressure_>_0.5"
+        - "volume_increasing"
+      confidence: 0.8
+    
+    institutional_distribution:
+      description: "Institutional distribution"
+      conditions:
+        - "net_flow_negative"
+        - "selling_pressure_>_0.5"
+        - "volume_increasing"
+      confidence: 0.8
+
+# ----------------------------------------------------------------------------
+# Smart Money Flows
+# ----------------------------------------------------------------------------
+smart_money:
+  enabled: true
+  description: "Smart money flows analysis configuration"
+  
+  # Parameters
+  parameters:
+    lookback_period: 20
+    min_trade_size: 5000
+    max_trade_size: 500000
+    flow_threshold: 0.4
+    confidence_threshold: 0.75
+  
+  # Flow metrics
+  metrics:
+    smart_money_buying:
+      enabled: true
+      calculation: "volume_weighted"
+      lookback_period: 10
+    
+    smart_money_selling:
+      enabled: true
+      calculation: "volume_weighted"
+      lookback_period: 10
+    
+    smart_money_net:
+      enabled: true
+      calculation: "difference"
+      lookback_period: 10
+    
+    smart_money_pressure:
+      enabled: true
+      calculation: "ratio"
+      lookback_period: 10
+  
+  # Flow signals
+  signals:
+    smart_money_accumulation:
+      description: "Smart money accumulation"
+      conditions:
+        - "net_flow_positive"
+        - "buying_pressure_>_0.5"
+        - "volume_increasing"
+      confidence: 0.75
+    
+    smart_money_distribution:
+      description: "Smart money distribution"
+      conditions:
+        - "net_flow_negative"
+        - "selling_pressure_>_0.5"
+        - "volume_increasing"
+      confidence: 0.75
+
+# ----------------------------------------------------------------------------
+# Whale Activity
+# ----------------------------------------------------------------------------
+whale_activity:
+  enabled: true
+  description: "Whale activity analysis configuration"
+  
+  # Parameters
+  parameters:
+    lookback_period: 20
+    min_balance: 100000
+    max_balance: 10000000
+    activity_threshold: 0.3
+    confidence_threshold: 0.7
+  
+  # Activity metrics
+  metrics:
+    whale_buying:
+      enabled: true
+      calculation: "balance_increase"
+      lookback_period: 10
+    
+    whale_selling:
+      enabled: true
+      calculation: "balance_decrease"
+      lookback_period: 10
+    
+    whale_net_flow:
+      enabled: true
+      calculation: "difference"
+      lookback_period: 10
+    
+    whale_concentration:
+      enabled: true
+      calculation: "concentration_ratio"
+      lookback_period: 10
+  
+  # Activity signals
+  signals:
+    whale_accumulation:
+      description: "Whale accumulation"
+      conditions:
+        - "balance_increasing"
+        - "concentration_increasing"
+        - "volume_increasing"
+      confidence: 0.8
+    
+    whale_distribution:
+      description: "Whale distribution"
+      conditions:
+        - "balance_decreasing"
+        - "concentration_decreasing"
+        - "volume_increasing"
+      confidence: 0.8
+
+# ----------------------------------------------------------------------------
+# Exchange Flows
+# ----------------------------------------------------------------------------
+exchange_flows:
+  enabled: true
+  description: "Exchange flows analysis configuration"
+  
+  # Parameters
+  parameters:
+    lookback_period: 20
+    min_flow_size: 1000
+    max_flow_size: 1000000
+    flow_threshold: 0.3
+    confidence_threshold: 0.7
+  
+  # Exchanges
+  exchanges:
+    - "binance"
+    - "bybit"
+    - "okx"
+    - "kraken"
+    - "coinbase"
+  
+  # Flow metrics
+  metrics:
+    inflow:
+      enabled: true
+      calculation: "sum"
+      lookback_period: 10
+    
+    outflow:
+      enabled: true
+      calculation: "sum"
+      lookback_period: 10
+    
+    net_flow:
+      enabled: true
+      calculation: "difference"
+      lookback_period: 10
+    
+    flow_ratio:
+      enabled: true
+      calculation: "ratio"
+      lookback_period: 10
+  
+  # Flow signals
+  signals:
+    exchange_inflow:
+      description: "Exchange inflow"
+      conditions:
+        - "inflow_>_outflow"
+        - "flow_ratio_>_1.5"
+        - "volume_increasing"
+      confidence: 0.7
+    
+    exchange_outflow:
+      description: "Exchange outflow"
+      conditions:
+        - "outflow_>_inflow"
+        - "flow_ratio_<_0.5"
+        - "volume_increasing"
+      confidence: 0.7
+
+# ----------------------------------------------------------------------------
+# Cross-Border Flows
+# ----------------------------------------------------------------------------
+cross_border:
+  enabled: true
+  description: "Cross-border flows analysis configuration"
+  
+  # Parameters
+  parameters:
+    lookback_period: 20
+    min_flow_size: 10000
+    max_flow_size: 10000000
+    flow_threshold: 0.3
+    confidence_threshold: 0.7
+  
+  # Regions
+  regions:
+    - "north_america"
+    - "europe"
+    - "asia"
+    - "middle_east"
+    - "africa"
+    - "latin_america"
+  
+  # Flow metrics
+  metrics:
+    regional_inflow:
+      enabled: true
+      calculation: "sum"
+      lookback_period: 10
+    
+    regional_outflow:
+      enabled: true
+      calculation: "sum"
+      lookback_period: 10
+    
+    regional_net:
+      enabled: true
+      calculation: "difference"
+      lookback_period: 10
+  
+  # Flow signals
+  signals:
+    regional_accumulation:
+      description: "Regional accumulation"
+      conditions:
+        - "net_flow_positive"
+        - "regional_pressure_>_0.5"
+        - "volume_increasing"
+      confidence: 0.7
+
+# ----------------------------------------------------------------------------
+# Capital Flow Signals
+# ----------------------------------------------------------------------------
+signals:
+  enabled: true
+  description: "Capital flow-based trading signals"
+  
+  # Signal types
+  types:
+    flow_buy:
+      description: "Capital flow buy signal"
+      conditions:
+        - "institutional_buying"
+        - "smart_money_buying"
+        - "whale_accumulation"
+      confidence: 0.8
+    
+    flow_sell:
+      description: "Capital flow sell signal"
+      conditions:
+        - "institutional_selling"
+        - "smart_money_selling"
+        - "whale_distribution"
+      confidence: 0.8
+    
+    flow_hedge:
+      description: "Capital flow hedge signal"
+      conditions:
+        - "mixed_flows"
+        - "uncertain_direction"
+        - "volume_increasing"
+      confidence: 0.6
+  
+  # Signal confirmation
+  confirmation:
+    required_confirmations: 2
+    confirmation_sources:
+      - "price_action"
+      - "volume"
+      - "technical_indicators"
+
+# ----------------------------------------------------------------------------
+# Risk Management
+# ----------------------------------------------------------------------------
+risk_management:
+  enabled: true
+  description: "Risk management for capital flow trading"
+  
+  # Risk parameters
+  parameters:
+    max_position: 0.05
+    max_daily_loss: 0.02
+    max_drawdown: 0.1
+    risk_per_trade: 0.01
+    
+    # Flow-based risk
+    flow_risk:
+      enabled: true
+      threshold: 0.5
+      adaptation: true
+      update_interval: 10  # bars
+
+# ----------------------------------------------------------------------------
+# Performance Monitoring
+# ----------------------------------------------------------------------------
+performance_monitoring:
+  enabled: true
+  description: "Performance monitoring for capital flow trading"
+  
+  metrics:
+    - "win_rate"
+    - "profit_factor"
+    - "sharpe_ratio"
+    - "max_drawdown"
+    - "average_trade"
+    - "consecutive_wins"
+    - "consecutive_losses"
+  
+  targets:
+    min_win_rate: 0.5
+    min_profit_factor: 1.5
+    min_sharpe_ratio: 0.6
+    max_max_drawdown: 0.1
+
+# ----------------------------------------------------------------------------
+# Logging Configuration
+# ----------------------------------------------------------------------------
+logging:
+  enabled: true
+  level: "INFO"
+  file: "logs/capital_flows.log"
+  rotation: "daily"
+  retention: 30  # days
+  
+  log_categories:
+    signals: true
+    trades: true
+    errors: true
+    performance: true
+    flows: true
+    debugging: false
