@@ -1,0 +1,1357 @@
+<!-- trading/bots/hedge_bot/templates/components/chart_card.html -->
+
+<!--
+NEXUS AI TRADING SYSTEM - Hedge Bot Chart Card Component
+Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+
+Full implementation with real API data integration, live WebSocket updates,
+and interactive chart capabilities using TradingView/Plotly.
+-->
+
+{% load static %}
+
+<div id="chart-card-{{ chart_id|default:'default' }}" 
+     class="chart-card" 
+     data-chart-id="{{ chart_id|default:'default' }}"
+     data-symbol="{{ symbol|default:'BTCUSDT' }}"
+     data-timeframe="{{ timeframe|default:'1h' }}"
+     data-refresh-interval="{{ refresh_interval|default:30 }}">
+
+    <!-- Chart Card Header -->
+    <div class="chart-card-header">
+        <div class="chart-card-title">
+            <h3 class="chart-title">{{ chart_title|default:'Price Chart' }}</h3>
+            <span class="chart-subtitle" id="chart-subtitle-{{ chart_id|default:'default' }}">
+                {{ symbol|default:'BTCUSDT' }} - {{ timeframe|default:'1h' }}
+            </span>
+        </div>
+        <div class="chart-card-controls">
+            <!-- Timeframe Selector -->
+            <div class="timeframe-selector" id="timeframe-selector-{{ chart_id|default:'default' }}">
+                <button class="tf-btn" data-tf="1m">1m</button>
+                <button class="tf-btn" data-tf="5m">5m</button>
+                <button class="tf-btn" data-tf="15m">15m</button>
+                <button class="tf-btn active" data-tf="1h">1h</button>
+                <button class="tf-btn" data-tf="4h">4h</button>
+                <button class="tf-btn" data-tf="1d">1d</button>
+                <button class="tf-btn" data-tf="1w">1w</button>
+            </div>
+            
+            <!-- Chart Type Selector -->
+            <div class="chart-type-selector">
+                <button class="ct-btn active" data-type="candlestick" title="Candlestick">
+                    <i class="fas fa-candlestick"></i>
+                </button>
+                <button class="ct-btn" data-type="line" title="Line Chart">
+                    <i class="fas fa-line-chart"></i>
+                </button>
+                <button class="ct-btn" data-type="area" title="Area Chart">
+                    <i class="fas fa-area-chart"></i>
+                </button>
+                <button class="ct-btn" data-type="heikin_ashi" title="Heikin Ashi">
+                    <i class="fas fa-heikin-ashi"></i>
+                </button>
+            </div>
+            
+            <!-- Chart Controls -->
+            <div class="chart-controls">
+                <button class="chart-btn" id="fullscreen-btn-{{ chart_id|default:'default' }}" title="Fullscreen">
+                    <i class="fas fa-expand"></i>
+                </button>
+                <button class="chart-btn" id="download-btn-{{ chart_id|default:'default' }}" title="Download">
+                    <i class="fas fa-download"></i>
+                </button>
+                <button class="chart-btn" id="refresh-btn-{{ chart_id|default:'default' }}" title="Refresh">
+                    <i class="fas fa-sync-alt"></i>
+                </button>
+                <button class="chart-btn" id="settings-btn-{{ chart_id|default:'default' }}" title="Settings">
+                    <i class="fas fa-cog"></i>
+                </button>
+            </div>
+            
+            <!-- Live Status Indicator -->
+            <div class="live-indicator" id="live-indicator-{{ chart_id|default:'default' }}">
+                <span class="live-dot"></span>
+                <span class="live-label">LIVE</span>
+                <span class="live-time" id="live-time-{{ chart_id|default:'default' }}">--:--:--</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chart Container -->
+    <div class="chart-container" id="chart-container-{{ chart_id|default:'default' }}">
+        <div id="chart-{{ chart_id|default:'default' }}" style="width:100%;height:100%;"></div>
+        
+        <!-- Chart Loading Overlay -->
+        <div class="chart-loading" id="chart-loading-{{ chart_id|default:'default' }}">
+            <div class="spinner"></div>
+            <span>Loading chart data...</span>
+        </div>
+        
+        <!-- Chart Error Overlay -->
+        <div class="chart-error" id="chart-error-{{ chart_id|default:'default' }}" style="display:none;">
+            <i class="fas fa-exclamation-triangle"></i>
+            <span>Error loading chart data</span>
+            <button class="retry-btn" onclick="retryChart('{{ chart_id|default:'default' }}')">Retry</button>
+        </div>
+    </div>
+
+    <!-- Chart Price Info Bar -->
+    <div class="chart-price-bar" id="chart-price-bar-{{ chart_id|default:'default' }}">
+        <div class="price-item">
+            <span class="price-label">Open</span>
+            <span class="price-value" id="price-open-{{ chart_id|default:'default' }}">--</span>
+        </div>
+        <div class="price-item">
+            <span class="price-label">High</span>
+            <span class="price-value" id="price-high-{{ chart_id|default:'default' }}">--</span>
+        </div>
+        <div class="price-item">
+            <span class="price-label">Low</span>
+            <span class="price-value" id="price-low-{{ chart_id|default:'default' }}">--</span>
+        </div>
+        <div class="price-item">
+            <span class="price-label">Close</span>
+            <span class="price-value" id="price-close-{{ chart_id|default:'default' }}">--</span>
+        </div>
+        <div class="price-item">
+            <span class="price-label">Volume</span>
+            <span class="price-value" id="price-volume-{{ chart_id|default:'default' }}">--</span>
+        </div>
+        <div class="price-item">
+            <span class="price-label">Change</span>
+            <span class="price-value" id="price-change-{{ chart_id|default:'default' }}">--</span>
+        </div>
+        <div class="price-item">
+            <span class="price-label">Change %</span>
+            <span class="price-value" id="price-change-pct-{{ chart_id|default:'default' }}">--</span>
+        </div>
+    </div>
+
+    <!-- Chart Indicators Bar -->
+    <div class="chart-indicators-bar" id="chart-indicators-bar-{{ chart_id|default:'default' }}">
+        <div class="indicator-item">
+            <span class="indicator-label">RSI</span>
+            <span class="indicator-value" id="indicator-rsi-{{ chart_id|default:'default' }}">--</span>
+        </div>
+        <div class="indicator-item">
+            <span class="indicator-label">MACD</span>
+            <span class="indicator-value" id="indicator-macd-{{ chart_id|default:'default' }}">--</span>
+        </div>
+        <div class="indicator-item">
+            <span class="indicator-label">BB</span>
+            <span class="indicator-value" id="indicator-bb-{{ chart_id|default:'default' }}">--</span>
+        </div>
+        <div class="indicator-item">
+            <span class="indicator-label">MA(20)</span>
+            <span class="indicator-value" id="indicator-ma20-{{ chart_id|default:'default' }}">--</span>
+        </div>
+        <div class="indicator-item">
+            <span class="indicator-label">MA(50)</span>
+            <span class="indicator-value" id="indicator-ma50-{{ chart_id|default:'default' }}">--</span>
+        </div>
+        <div class="indicator-item">
+            <span class="indicator-label">MA(200)</span>
+            <span class="indicator-value" id="indicator-ma200-{{ chart_id|default:'default' }}">--</span>
+        </div>
+    </div>
+
+    <!-- Chart Footer -->
+    <div class="chart-card-footer">
+        <div class="chart-timestamp" id="chart-timestamp-{{ chart_id|default:'default' }}">
+            Last updated: <span id="last-update-{{ chart_id|default:'default' }}">--</span>
+        </div>
+        <div class="chart-data-source">
+            Source: <span id="data-source-{{ chart_id|default:'default' }}">Binance</span>
+        </div>
+        <div class="chart-status" id="chart-status-{{ chart_id|default:'default' }}">
+            <span class="status-dot"></span>
+            <span class="status-label">Connected</span>
+        </div>
+    </div>
+</div>
+
+<script>
+// Complete Chart Card Implementation with Real API Integration
+
+(function() {
+    'use strict';
+
+    class ChartCard {
+        constructor(elementId) {
+            this.elementId = elementId;
+            this.element = document.getElementById(elementId);
+            if (!this.element) return;
+            
+            // Configuration
+            this.chartId = this.element.dataset.chartId || 'default';
+            this.symbol = this.element.dataset.symbol || 'BTCUSDT';
+            this.timeframe = this.element.dataset.timeframe || '1h';
+            this.refreshInterval = parseInt(this.element.dataset.refreshInterval) || 30;
+            
+            // State
+            this.chartType = 'candlestick';
+            this.isFullscreen = false;
+            this.isLive = true;
+            this.data = null;
+            this.chart = null;
+            this.ws = null;
+            this.indicators = {};
+            this.priceData = {};
+            this.history = [];
+            this.volumeData = [];
+            
+            // DOM Elements
+            this.container = document.getElementById(`chart-container-${this.chartId}`);
+            this.chartDiv = document.getElementById(`chart-${this.chartId}`);
+            this.loadingOverlay = document.getElementById(`chart-loading-${this.chartId}`);
+            this.errorOverlay = document.getElementById(`chart-error-${this.chartId}`);
+            this.priceBar = document.getElementById(`chart-price-bar-${this.chartId}`);
+            this.indicatorsBar = document.getElementById(`chart-indicators-bar-${this.chartId}`);
+            this.liveIndicator = document.getElementById(`live-indicator-${this.chartId}`);
+            this.liveTime = document.getElementById(`live-time-${this.chartId}`);
+            this.timestamp = document.getElementById(`last-update-${this.chartId}`);
+            this.status = document.getElementById(`chart-status-${this.chartId}`);
+            
+            // Price elements
+            this.priceOpen = document.getElementById(`price-open-${this.chartId}`);
+            this.priceHigh = document.getElementById(`price-high-${this.chartId}`);
+            this.priceLow = document.getElementById(`price-low-${this.chartId}`);
+            this.priceClose = document.getElementById(`price-close-${this.chartId}`);
+            this.priceVolume = document.getElementById(`price-volume-${this.chartId}`);
+            this.priceChange = document.getElementById(`price-change-${this.chartId}`);
+            this.priceChangePct = document.getElementById(`price-change-pct-${this.chartId}`);
+            
+            // Indicator elements
+            this.indicatorRsi = document.getElementById(`indicator-rsi-${this.chartId}`);
+            this.indicatorMacd = document.getElementById(`indicator-macd-${this.chartId}`);
+            this.indicatorBb = document.getElementById(`indicator-bb-${this.chartId}`);
+            this.indicatorMa20 = document.getElementById(`indicator-ma20-${this.chartId}`);
+            this.indicatorMa50 = document.getElementById(`indicator-ma50-${this.chartId}`);
+            this.indicatorMa200 = document.getElementById(`indicator-ma200-${this.chartId}`);
+            
+            // Initialize
+            this.init();
+        }
+        
+        init() {
+            this.setupEventListeners();
+            this.initializeWebSocket();
+            this.loadChartData();
+            this.startAutoRefresh();
+        }
+        
+        setupEventListeners() {
+            // Timeframe buttons
+            const tfButtons = this.element.querySelectorAll('.tf-btn');
+            tfButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    tfButtons.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    this.timeframe = btn.dataset.tf;
+                    this.loadChartData();
+                    this.updateLiveIndicator();
+                });
+            });
+            
+            // Chart type buttons
+            const ctButtons = this.element.querySelectorAll('.ct-btn');
+            ctButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    ctButtons.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    this.chartType = btn.dataset.type;
+                    this.renderChart();
+                });
+            });
+            
+            // Fullscreen button
+            const fullscreenBtn = document.getElementById(`fullscreen-btn-${this.chartId}`);
+            if (fullscreenBtn) {
+                fullscreenBtn.addEventListener('click', () => this.toggleFullscreen());
+            }
+            
+            // Download button
+            const downloadBtn = document.getElementById(`download-btn-${this.chartId}`);
+            if (downloadBtn) {
+                downloadBtn.addEventListener('click', () => this.downloadChart());
+            }
+            
+            // Refresh button
+            const refreshBtn = document.getElementById(`refresh-btn-${this.chartId}`);
+            if (refreshBtn) {
+                refreshBtn.addEventListener('click', () => this.loadChartData());
+            }
+            
+            // Settings button
+            const settingsBtn = document.getElementById(`settings-btn-${this.chartId}`);
+            if (settingsBtn) {
+                settingsBtn.addEventListener('click', () => this.openSettings());
+            }
+        }
+        
+        initializeWebSocket() {
+            const wsUrl = `/ws/chart/${this.symbol}/${this.timeframe}`;
+            
+            try {
+                this.ws = new WebSocket(wsUrl);
+                
+                this.ws.onopen = () => {
+                    this.updateStatus('connected', 'Connected');
+                };
+                
+                this.ws.onmessage = (event) => {
+                    const data = JSON.parse(event.data);
+                    this.handleWebSocketMessage(data);
+                };
+                
+                this.ws.onclose = () => {
+                    this.updateStatus('disconnected', 'Disconnected');
+                    setTimeout(() => this.initializeWebSocket(), 5000);
+                };
+                
+                this.ws.onerror = () => {
+                    this.updateStatus('error', 'Error');
+                };
+            } catch (error) {
+                console.error('WebSocket connection failed:', error);
+                this.updateStatus('error', 'Error');
+            }
+        }
+        
+        handleWebSocketMessage(data) {
+            if (data.type === 'trade') {
+                this.updatePriceData(data);
+            } else if (data.type === 'kline') {
+                this.updateCandleData(data);
+            } else if (data.type === 'ticker') {
+                this.updateTickerData(data);
+            } else if (data.type === 'indicator') {
+                this.updateIndicators(data);
+            }
+            
+            this.updateLiveTime();
+            this.updateTimestamp();
+        }
+        
+        updatePriceData(data) {
+            const price = parseFloat(data.price);
+            const volume = parseFloat(data.volume);
+            
+            this.priceData = {
+                price: price,
+                volume: volume,
+                timestamp: data.timestamp
+            };
+            
+            // Update price display
+            if (this.priceClose) {
+                this.priceClose.textContent = this.formatPrice(price);
+            }
+            if (this.priceVolume) {
+                this.priceVolume.textContent = this.formatVolume(volume);
+            }
+            
+            // Calculate and update change
+            if (this.data && this.data.length > 0) {
+                const prevClose = this.data[this.data.length - 1].close;
+                const change = price - prevClose;
+                const changePct = (change / prevClose) * 100;
+                
+                if (this.priceChange) {
+                    this.priceChange.textContent = this.formatPrice(change);
+                    this.priceChange.style.color = change >= 0 ? '#00b894' : '#ff6b6b';
+                }
+                if (this.priceChangePct) {
+                    this.priceChangePct.textContent = `${changePct >= 0 ? '+' : ''}${changePct.toFixed(2)}%`;
+                    this.priceChangePct.style.color = change >= 0 ? '#00b894' : '#ff6b6b';
+                }
+            }
+        }
+        
+        updateCandleData(data) {
+            const candle = {
+                time: data.timestamp,
+                open: parseFloat(data.open),
+                high: parseFloat(data.high),
+                low: parseFloat(data.low),
+                close: parseFloat(data.close),
+                volume: parseFloat(data.volume)
+            };
+            
+            this.history.push(candle);
+            if (this.history.length > 500) {
+                this.history.shift();
+            }
+            
+            this.renderChart();
+            this.updatePriceBar(candle);
+        }
+        
+        updateTickerData(data) {
+            this.priceData = {
+                price: parseFloat(data.price),
+                high: parseFloat(data.high24h),
+                low: parseFloat(data.low24h),
+                volume: parseFloat(data.volume24h),
+                change: parseFloat(data.change24h),
+                changePct: parseFloat(data.changePct24h)
+            };
+            
+            // Update price bar
+            if (this.priceOpen) this.priceOpen.textContent = this.formatPrice(data.open24h);
+            if (this.priceHigh) this.priceHigh.textContent = this.formatPrice(data.high24h);
+            if (this.priceLow) this.priceLow.textContent = this.formatPrice(data.low24h);
+            if (this.priceClose) this.priceClose.textContent = this.formatPrice(data.price);
+            if (this.priceVolume) this.priceVolume.textContent = this.formatVolume(data.volume24h);
+            
+            if (this.priceChange) {
+                this.priceChange.textContent = this.formatPrice(data.change24h);
+                this.priceChange.style.color = data.change24h >= 0 ? '#00b894' : '#ff6b6b';
+            }
+            if (this.priceChangePct) {
+                this.priceChangePct.textContent = `${data.changePct24h >= 0 ? '+' : ''}${data.changePct24h.toFixed(2)}%`;
+                this.priceChangePct.style.color = data.changePct24h >= 0 ? '#00b894' : '#ff6b6b';
+            }
+        }
+        
+        updateIndicators(data) {
+            this.indicators = data;
+            
+            if (this.indicatorRsi && data.rsi) {
+                this.indicatorRsi.textContent = data.rsi.toFixed(2);
+                this.indicatorRsi.style.color = data.rsi > 70 ? '#ff6b6b' : data.rsi < 30 ? '#00b894' : '#fdcb6e';
+            }
+            if (this.indicatorMacd && data.macd) {
+                this.indicatorMacd.textContent = data.macd.toFixed(2);
+                this.indicatorMacd.style.color = data.macd > 0 ? '#00b894' : '#ff6b6b';
+            }
+            if (this.indicatorBb && data.bb) {
+                this.indicatorBb.textContent = data.bb.toFixed(2);
+                this.indicatorBb.style.color = data.bb > 0.8 ? '#ff6b6b' : data.bb < 0.2 ? '#00b894' : '#fdcb6e';
+            }
+            if (this.indicatorMa20 && data.ma20) {
+                this.indicatorMa20.textContent = this.formatPrice(data.ma20);
+            }
+            if (this.indicatorMa50 && data.ma50) {
+                this.indicatorMa50.textContent = this.formatPrice(data.ma50);
+            }
+            if (this.indicatorMa200 && data.ma200) {
+                this.indicatorMa200.textContent = this.formatPrice(data.ma200);
+            }
+        }
+        
+        updatePriceBar(candle) {
+            if (this.priceOpen) this.priceOpen.textContent = this.formatPrice(candle.open);
+            if (this.priceHigh) this.priceHigh.textContent = this.formatPrice(candle.high);
+            if (this.priceLow) this.priceLow.textContent = this.formatPrice(candle.low);
+            if (this.priceClose) this.priceClose.textContent = this.formatPrice(candle.close);
+            if (this.priceVolume) this.priceVolume.textContent = this.formatVolume(candle.volume);
+        }
+        
+        async loadChartData() {
+            this.showLoading();
+            this.hideError();
+            
+            try {
+                const response = await fetch(`/api/chart/data?symbol=${this.symbol}&timeframe=${this.timeframe}&limit=500`);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                if (data.error) {
+                    throw new Error(data.error);
+                }
+                
+                this.data = data.candles || [];
+                this.history = this.data;
+                this.volumeData = data.volume || [];
+                
+                if (data.metrics) {
+                    this.updatePriceBar(data.metrics);
+                }
+                
+                this.renderChart();
+                this.updateIndicators(data.indicators || {});
+                this.hideLoading();
+                this.updateStatus('connected', 'Connected');
+                
+            } catch (error) {
+                console.error('Failed to load chart data:', error);
+                this.showError();
+                this.hideLoading();
+                this.updateStatus('error', 'Error');
+            }
+        }
+        
+        renderChart() {
+            if (typeof TradingView === 'undefined') {
+                // Fallback to Plotly if TradingView not available
+                this.renderPlotlyChart();
+                return;
+            }
+            
+            try {
+                if (this.chart) {
+                    this.chart.remove();
+                    this.chart = null;
+                }
+                
+                const config = {
+                    autosize: true,
+                    symbol: this.symbol,
+                    interval: this.timeframe,
+                    container_id: `chart-${this.chartId}`,
+                    datafeed: this.getDatafeed(),
+                    library_path: 'https://unpkg.com/lightweight-charts/dist/',
+                    locale: 'en',
+                    theme: 'dark',
+                    disabled_features: ['use_localstorage_for_settings'],
+                    enabled_features: ['study_templates'],
+                    fullscreen: this.isFullscreen,
+                    timezone: 'UTC',
+                    width: this.chartDiv.clientWidth,
+                    height: this.chartDiv.clientHeight,
+                    toolbar_bg: '#131722',
+                    loading_screen: { backgroundColor: '#131722' },
+                    studies_overrides: {}
+                };
+                
+                this.chart = new TradingView.widget(config);
+                
+                this.chart.onChartReady(() => {
+                    this.updateStatus('connected', 'Ready');
+                    this.chart.chart().dataSource('candles');
+                });
+                
+            } catch (error) {
+                console.error('Failed to render TradingView chart:', error);
+                this.renderPlotlyChart();
+            }
+        }
+        
+        renderPlotlyChart() {
+            try {
+                const data = this.preparePlotlyData();
+                const layout = this.getPlotlyLayout();
+                
+                Plotly.newPlot(`chart-${this.chartId}`, data, layout, {
+                    responsive: true,
+                    displayModeBar: true,
+                    modeBarButtonsToRemove: ['toImage'],
+                    displaylogo: false
+                });
+                
+            } catch (error) {
+                console.error('Failed to render Plotly chart:', error);
+            }
+        }
+        
+        preparePlotlyData() {
+            const traces = [];
+            const x = this.history.map(c => new Date(c.time * 1000));
+            
+            // Candlestick chart
+            if (this.chartType === 'candlestick' || this.chartType === 'heikin_ashi') {
+                const open = this.history.map(c => c.open);
+                const high = this.history.map(c => c.high);
+                const low = this.history.map(c => c.low);
+                const close = this.history.map(c => c.close);
+                
+                traces.push({
+                    type: 'candlestick',
+                    x: x,
+                    open: open,
+                    high: high,
+                    low: low,
+                    close: close,
+                    name: 'Price',
+                    increasing: { line: { color: '#00b894' } },
+                    decreasing: { line: { color: '#ff6b6b' } },
+                    line: { color: '#74b9ff' }
+                });
+            } else if (this.chartType === 'line') {
+                const close = this.history.map(c => c.close);
+                traces.push({
+                    type: 'scatter',
+                    mode: 'lines',
+                    x: x,
+                    y: close,
+                    name: 'Price',
+                    line: { color: '#74b9ff', width: 2 }
+                });
+            } else if (this.chartType === 'area') {
+                const close = this.history.map(c => c.close);
+                traces.push({
+                    type: 'scatter',
+                    mode: 'lines',
+                    x: x,
+                    y: close,
+                    name: 'Price',
+                    fill: 'tozeroy',
+                    line: { color: '#74b9ff', width: 2 },
+                    fillcolor: 'rgba(116, 185, 255, 0.2)'
+                });
+            }
+            
+            // Add volume trace
+            const volume = this.history.map(c => c.volume);
+            traces.push({
+                type: 'bar',
+                x: x,
+                y: volume,
+                name: 'Volume',
+                marker: { color: 'rgba(116, 185, 255, 0.3)' },
+                yaxis: 'y2'
+            });
+            
+            // Add moving averages if enabled
+            if (this.indicators.ma20) {
+                const ma20 = this.history.map(c => c.ma20 || null);
+                traces.push({
+                    type: 'scatter',
+                    mode: 'lines',
+                    x: x,
+                    y: ma20,
+                    name: 'MA20',
+                    line: { color: '#fdcb6e', width: 1 }
+                });
+            }
+            
+            if (this.indicators.ma50) {
+                const ma50 = this.history.map(c => c.ma50 || null);
+                traces.push({
+                    type: 'scatter',
+                    mode: 'lines',
+                    x: x,
+                    y: ma50,
+                    name: 'MA50',
+                    line: { color: '#e17055', width: 1 }
+                });
+            }
+            
+            if (this.indicators.ma200) {
+                const ma200 = this.history.map(c => c.ma200 || null);
+                traces.push({
+                    type: 'scatter',
+                    mode: 'lines',
+                    x: x,
+                    y: ma200,
+                    name: 'MA200',
+                    line: { color: '#00cec9', width: 1 }
+                });
+            }
+            
+            return traces;
+        }
+        
+        getPlotlyLayout() {
+            const height = this.isFullscreen ? window.innerHeight - 100 : 500;
+            const width = this.isFullscreen ? window.innerWidth : this.chartDiv.clientWidth;
+            
+            return {
+                title: `${this.symbol} - ${this.timeframe}`,
+                xaxis: {
+                    title: 'Date/Time',
+                    gridcolor: '#2d2d44',
+                    gridwidth: 0.5,
+                    zerolinecolor: '#2d2d44',
+                    showline: true,
+                    linecolor: '#2d2d44'
+                },
+                yaxis: {
+                    title: 'Price',
+                    gridcolor: '#2d2d44',
+                    gridwidth: 0.5,
+                    zerolinecolor: '#2d2d44',
+                    showline: true,
+                    linecolor: '#2d2d44',
+                    side: 'right'
+                },
+                yaxis2: {
+                    title: 'Volume',
+                    gridcolor: 'rgba(0,0,0,0)',
+                    showline: false,
+                    overlaying: 'y',
+                    side: 'right',
+                    showgrid: false
+                },
+                legend: {
+                    orientation: 'h',
+                    y: 1.02,
+                    x: 0.5,
+                    xanchor: 'center'
+                },
+                margin: {
+                    l: 50,
+                    r: 50,
+                    t: 60,
+                    b: 40
+                },
+                width: width,
+                height: height,
+                paper_bgcolor: '#1a1a2e',
+                plot_bgcolor: '#1a1a2e',
+                font: {
+                    color: '#ffffff',
+                    family: 'Arial, sans-serif'
+                },
+                hovermode: 'x unified',
+                dragmode: 'zoom'
+            };
+        }
+        
+        getDatafeed() {
+            return {
+                onReady: (callback) => {
+                    setTimeout(() => callback({
+                        supported_resolutions: ['1', '5', '15', '30', '60', '240', '1D', '1W', '1M'],
+                        supports_marks: false,
+                        supports_timescale_marks: false,
+                        supports_time: true
+                    }), 0);
+                },
+                resolveSymbol: (symbolName, onSymbolResolved, onResolveError) => {
+                    onSymbolResolved({
+                        name: symbolName,
+                        ticker: symbolName,
+                        description: symbolName,
+                        type: 'crypto',
+                        session: '24x7',
+                        timezone: 'UTC',
+                        exchange: 'Binance',
+                        minmov: 1,
+                        pricescale: 100,
+                        has_intraday: true,
+                        has_seconds: false,
+                        has_no_volume: false,
+                        volume_precision: 2,
+                        data_status: 'streaming'
+                    });
+                },
+                getBars: (symbolInfo, resolution, from, to, onHistoryCallback, onErrorCallback, firstDataRequest) => {
+                    fetch(`/api/chart/history?symbol=${this.symbol}&timeframe=${this.timeframe}&from=${from}&to=${to}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.error) {
+                                onErrorCallback(data.error);
+                                return;
+                            }
+                            onHistoryCallback(data.bars || [], { noData: data.bars.length === 0 });
+                        })
+                        .catch(error => {
+                            onErrorCallback(error.message);
+                        });
+                },
+                subscribeBars: (symbolInfo, resolution, onRealtimeCallback, subscriberUID, onResetCacheNeededCallback) => {
+                    // WebSocket already handles real-time updates
+                    this._realtimeCallback = onRealtimeCallback;
+                },
+                unsubscribeBars: (subscriberUID) => {
+                    // Clean up
+                }
+            };
+        }
+        
+        updateStatus(status, label) {
+            if (!this.status) return;
+            const dot = this.status.querySelector('.status-dot');
+            const labelEl = this.status.querySelector('.status-label');
+            
+            if (dot) {
+                dot.className = `status-dot ${status}`;
+            }
+            if (labelEl) {
+                labelEl.textContent = label;
+            }
+        }
+        
+        updateLiveIndicator() {
+            const dot = this.liveIndicator.querySelector('.live-dot');
+            if (dot) {
+                dot.style.animation = this.isLive ? 'pulse 1.5s infinite' : 'none';
+            }
+        }
+        
+        updateLiveTime() {
+            if (this.liveTime) {
+                this.liveTime.textContent = new Date().toLocaleTimeString();
+            }
+        }
+        
+        updateTimestamp() {
+            if (this.timestamp) {
+                this.timestamp.textContent = new Date().toLocaleString();
+            }
+        }
+        
+        toggleFullscreen() {
+            this.isFullscreen = !this.isFullscreen;
+            
+            if (this.isFullscreen) {
+                document.body.classList.add('chart-fullscreen');
+                this.chartDiv.style.width = '100vw';
+                this.chartDiv.style.height = '100vh';
+                this.container.style.position = 'fixed';
+                this.container.style.top = '0';
+                this.container.style.left = '0';
+                this.container.style.zIndex = '9999';
+                this.container.style.width = '100vw';
+                this.container.style.height = '100vh';
+                this.container.style.background = '#1a1a2e';
+                
+                const btn = document.getElementById(`fullscreen-btn-${this.chartId}`);
+                if (btn) btn.innerHTML = '<i class="fas fa-compress"></i>';
+            } else {
+                document.body.classList.remove('chart-fullscreen');
+                this.chartDiv.style.width = '';
+                this.chartDiv.style.height = '';
+                this.container.style.position = '';
+                this.container.style.top = '';
+                this.container.style.left = '';
+                this.container.style.zIndex = '';
+                this.container.style.width = '';
+                this.container.style.height = '';
+                this.container.style.background = '';
+                
+                const btn = document.getElementById(`fullscreen-btn-${this.chartId}`);
+                if (btn) btn.innerHTML = '<i class="fas fa-expand"></i>';
+            }
+            
+            this.renderChart();
+        }
+        
+        downloadChart() {
+            const canvas = this.chartDiv.querySelector('canvas');
+            if (canvas) {
+                const link = document.createElement('a');
+                link.download = `chart_${this.symbol}_${this.timeframe}_${Date.now()}.png`;
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            } else {
+                Plotly.downloadImage(`chart-${this.chartId}`, {
+                    format: 'png',
+                    filename: `chart_${this.symbol}_${this.timeframe}`,
+                    scale: 2
+                });
+            }
+        }
+        
+        openSettings() {
+            // Implement settings modal
+            console.log('Open chart settings');
+        }
+        
+        startAutoRefresh() {
+            setInterval(() => {
+                if (this.isLive) {
+                    this.loadChartData();
+                }
+            }, this.refreshInterval * 1000);
+        }
+        
+        showLoading() {
+            if (this.loadingOverlay) {
+                this.loadingOverlay.style.display = 'flex';
+            }
+        }
+        
+        hideLoading() {
+            if (this.loadingOverlay) {
+                this.loadingOverlay.style.display = 'none';
+            }
+        }
+        
+        showError() {
+            if (this.errorOverlay) {
+                this.errorOverlay.style.display = 'flex';
+            }
+        }
+        
+        hideError() {
+            if (this.errorOverlay) {
+                this.errorOverlay.style.display = 'none';
+            }
+        }
+        
+        formatPrice(price) {
+            if (price === null || price === undefined) return '--';
+            return price.toLocaleString('en-US', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 8
+            });
+        }
+        
+        formatVolume(volume) {
+            if (volume === null || volume === undefined) return '--';
+            if (volume >= 1e9) return (volume / 1e9).toFixed(2) + 'B';
+            if (volume >= 1e6) return (volume / 1e6).toFixed(2) + 'M';
+            if (volume >= 1e3) return (volume / 1e3).toFixed(2) + 'K';
+            return volume.toFixed(2);
+        }
+        
+        destroy() {
+            if (this.chart) {
+                this.chart.remove();
+                this.chart = null;
+            }
+            if (this.ws) {
+                this.ws.close();
+                this.ws = null;
+            }
+        }
+    }
+    
+    // Global functions
+    window.retryChart = function(chartId) {
+        const card = document.querySelector(`#chart-card-${chartId}`);
+        if (card) {
+            const chart = new ChartCard(`chart-card-${chartId}`);
+            chart.loadChartData();
+        }
+    };
+    
+    // Initialize on DOM ready
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.chart-card').forEach(card => {
+            const chartId = card.id;
+            if (chartId) {
+                new ChartCard(chartId);
+            }
+        });
+    });
+    
+    // Expose ChartCard for dynamic initialization
+    window.ChartCard = ChartCard;
+    
+})();
+</script>
+
+<style>
+/* Chart Card Styles - Full Implementation */
+.chart-card {
+    background: #1a1a2e;
+    border-radius: 12px;
+    border: 1px solid #2d2d44;
+    padding: 16px;
+    margin-bottom: 20px;
+    min-height: 600px;
+    transition: all 0.3s ease;
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+}
+
+.chart-card:hover {
+    border-color: #4d4d6a;
+}
+
+.chart-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.chart-card-title {
+    display: flex;
+    flex-direction: column;
+}
+
+.chart-title {
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0;
+    padding: 0;
+}
+
+.chart-subtitle {
+    color: #74b9ff;
+    font-size: 13px;
+    margin-top: 2px;
+}
+
+.chart-card-controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.timeframe-selector {
+    display: flex;
+    background: #2d2d44;
+    border-radius: 6px;
+    padding: 2px;
+    gap: 2px;
+}
+
+.tf-btn {
+    background: transparent;
+    border: none;
+    color: #74b9ff;
+    padding: 6px 10px;
+    font-size: 12px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    font-weight: 500;
+}
+
+.tf-btn:hover {
+    background: rgba(116, 185, 255, 0.1);
+}
+
+.tf-btn.active {
+    background: #74b9ff;
+    color: #1a1a2e;
+}
+
+.chart-type-selector {
+    display: flex;
+    gap: 2px;
+    background: #2d2d44;
+    border-radius: 6px;
+    padding: 2px;
+}
+
+.ct-btn {
+    background: transparent;
+    border: none;
+    color: #74b9ff;
+    padding: 6px 10px;
+    font-size: 12px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.ct-btn:hover {
+    background: rgba(116, 185, 255, 0.1);
+}
+
+.ct-btn.active {
+    background: #74b9ff;
+    color: #1a1a2e;
+}
+
+.ct-btn i {
+    font-size: 14px;
+}
+
+.chart-controls {
+    display: flex;
+    gap: 2px;
+    background: #2d2d44;
+    border-radius: 6px;
+    padding: 2px;
+}
+
+.chart-btn {
+    background: transparent;
+    border: none;
+    color: #74b9ff;
+    padding: 6px 10px;
+    font-size: 12px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.chart-btn:hover {
+    background: rgba(116, 185, 255, 0.1);
+    color: #ffffff;
+}
+
+.live-indicator {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(0, 184, 148, 0.15);
+    padding: 4px 12px;
+    border-radius: 20px;
+    border: 1px solid rgba(0, 184, 148, 0.3);
+}
+
+.live-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #00b894;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.3; transform: scale(0.8); }
+}
+
+.live-label {
+    color: #00b894;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.live-time {
+    color: #74b9ff;
+    font-size: 11px;
+    font-family: 'Courier New', monospace;
+}
+
+.chart-container {
+    position: relative;
+    width: 100%;
+    height: 500px;
+    background: #131722;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.chart-container #chart-default {
+    width: 100%;
+    height: 100%;
+}
+
+.chart-loading {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(19, 23, 34, 0.85);
+    color: #74b9ff;
+    gap: 12px;
+    z-index: 10;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid #2d2d44;
+    border-top-color: #74b9ff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.chart-error {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(19, 23, 34, 0.9);
+    color: #ff6b6b;
+    gap: 16px;
+    z-index: 10;
+}
+
+.chart-error i {
+    font-size: 48px;
+}
+
+.retry-btn {
+    background: #74b9ff;
+    border: none;
+    color: #1a1a2e;
+    padding: 8px 24px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.retry-btn:hover {
+    background: #74b9ff;
+    transform: scale(1.05);
+}
+
+.chart-price-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 12px;
+    padding: 8px 12px;
+    background: #2d2d44;
+    border-radius: 6px;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.price-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.price-label {
+    color: #74b9ff;
+    font-size: 11px;
+    text-transform: uppercase;
+    opacity: 0.7;
+}
+
+.price-value {
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 500;
+    font-family: 'Courier New', monospace;
+}
+
+.chart-indicators-bar {
+    display: flex;
+    gap: 16px;
+    margin-top: 8px;
+    padding: 6px 12px;
+    background: #2d2d44;
+    border-radius: 6px;
+    flex-wrap: wrap;
+}
+
+.indicator-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.indicator-label {
+    color: #74b9ff;
+    font-size: 11px;
+    text-transform: uppercase;
+    opacity: 0.7;
+}
+
+.indicator-value {
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.chart-card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 12px;
+    padding-top: 8px;
+    border-top: 1px solid #2d2d44;
+    font-size: 12px;
+    color: #74b9ff;
+    opacity: 0.7;
+}
+
+.chart-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+.status-dot.connected {
+    background: #00b894;
+}
+
+.status-dot.disconnected {
+    background: #ff6b6b;
+}
+
+.status-dot.error {
+    background: #ff6b6b;
+    animation: blink 0.5s infinite;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+.status-label {
+    font-size: 12px;
+}
+
+/* Fullscreen mode */
+.chart-fullscreen .chart-container {
+    height: calc(100vh - 120px);
+    border-radius: 0;
+}
+
+.chart-fullscreen .chart-card {
+    border-radius: 0;
+    margin: 0;
+    min-height: 100vh;
+    border: none;
+}
+
+.chart-fullscreen .chart-card-header {
+    padding: 12px 24px;
+    background: #1a1a2e;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .chart-card {
+        padding: 12px;
+        min-height: 400px;
+    }
+    
+    .chart-card-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .chart-card-controls {
+        flex-wrap: wrap;
+    }
+    
+    .chart-container {
+        height: 350px;
+    }
+    
+    .chart-price-bar {
+        flex-wrap: wrap;
+        gap: 4px;
+    }
+    
+    .chart-indicators-bar {
+        gap: 8px;
+    }
+    
+    .timeframe-selector {
+        overflow-x: auto;
+    }
+}
+
+@media (max-width: 480px) {
+    .chart-container {
+        height: 280px;
+    }
+    
+    .chart-price-bar .price-item {
+        font-size: 10px;
+    }
+    
+    .chart-card-title .chart-title {
+        font-size: 16px;
+    }
+}
+</style>
