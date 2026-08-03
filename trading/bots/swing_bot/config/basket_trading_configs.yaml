@@ -1,0 +1,337 @@
+# trading/bots/swing_bot/config/basket_trading_configs.yaml
+
+# ============================================================================
+# NEXUS AI TRADING SYSTEM - Swing Bot Basket Trading Configuration
+# Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+# ============================================================================
+#
+# Description: Complete Basket Trading configuration for swing trading bot
+# Framework: Basket Trading - Multi-Asset Portfolio Execution
+# Version: 3.0.0
+#
+# The Basket Trading configuration enables the bot to trade multiple assets
+# simultaneously as a coordinated portfolio, optimizing execution and returns.
+# ============================================================================
+
+# ----------------------------------------------------------------------------
+# General Configuration
+# ----------------------------------------------------------------------------
+basket_trading:
+  enabled: true
+  version: "3.0.0"
+  description: "Basket Trading for swing trading"
+  
+  # Basket types
+  types:
+    - "index"
+    - "sector"
+    - "strategy"
+    - "custom"
+    - "dynamic"
+  
+  default_type: "strategy"
+  
+  # Trading modes
+  modes:
+    - "simultaneous"
+    - "sequential"
+    - "weighted"
+    - "adaptive"
+  
+  default_mode: "weighted"
+
+# ----------------------------------------------------------------------------
+# Basket Definition
+# ----------------------------------------------------------------------------
+basket_definition:
+  enabled: true
+  description: "Basket definition configuration"
+  
+  # Basket structure
+  structure:
+    name: "NEXUS Swing Basket"
+    version: "1.0"
+    max_assets: 15
+    min_assets: 3
+    rebalance_frequency: "daily"
+  
+  # Asset allocation
+  allocation:
+    weights:
+      BTCUSDT: 0.2
+      ETHUSDT: 0.15
+      SOLUSDT: 0.12
+      ADAUSDT: 0.10
+      DOTUSDT: 0.08
+      AVAXUSDT: 0.07
+      MATICUSDT: 0.06
+      LINKUSDT: 0.05
+      UNIUSDT: 0.04
+      AAVEUSDT: 0.03
+      MKRUSDT: 0.03
+      ATOMUSDT: 0.02
+      LTCUSDT: 0.02
+      BCHUSDT: 0.02
+      XRPUSDT: 0.01
+      DOGEUSDT: 0.01
+      SHIBUSDT: 0.01
+      TRXUSDT: 0.01
+  
+  # Asset selection
+  selection:
+    method: "market_cap"
+    min_market_cap: 100000000
+    max_market_cap: 1000000000000
+    min_volume: 10000000
+    max_volume: 100000000000
+    min_price: 0.01
+    max_price: 100000
+
+# ----------------------------------------------------------------------------
+# Basket Strategy
+# ----------------------------------------------------------------------------
+basket_strategy:
+  enabled: true
+  description: "Basket trading strategy configuration"
+  
+  # Strategy types
+  types:
+    - "momentum"
+    - "mean_reversion"
+    - "trend_following"
+    - "volatility"
+    - "hybrid"
+  
+  default_type: "hybrid"
+  
+  # Strategy parameters
+  parameters:
+    lookback_period: 50
+    rebalance_threshold: 0.05
+    min_holding_period: 3  # bars
+    max_holding_period: 30  # bars
+    entry_signal_threshold: 0.6
+    exit_signal_threshold: 0.4
+  
+  # Strategy rules
+  rules:
+    entry:
+      - condition: "momentum_>_0.5"
+        action: "add_to_basket"
+        weight: 0.5
+      
+      - condition: "volatility_<_0.2"
+        action: "add_to_basket"
+        weight: 0.3
+      
+      - condition: "trend_>_0.3"
+        action: "add_to_basket"
+        weight: 0.2
+    
+    exit:
+      - condition: "momentum_<_-0.3"
+        action: "remove_from_basket"
+        weight: 0.5
+      
+      - condition: "volatility_>_0.4"
+        action: "remove_from_basket"
+        weight: 0.3
+      
+      - condition: "trend_<_-0.2"
+        action: "remove_from_basket"
+        weight: 0.2
+  
+  # Strategy signals
+  signals:
+    buy:
+      conditions:
+        - "momentum_increasing"
+        - "volatility_favorable"
+        - "trend_confirmed"
+      confidence: 0.7
+    
+    sell:
+      conditions:
+        - "momentum_decreasing"
+        - "volatility_high"
+        - "trend_reversing"
+      confidence: 0.7
+
+# ----------------------------------------------------------------------------
+# Execution Parameters
+# ----------------------------------------------------------------------------
+execution:
+  enabled: true
+  description: "Execution parameters for basket trading"
+  
+  # Order types
+  order_types:
+    - "market"
+    - "limit"
+    - "twap"
+    - "vwap"
+    - "iceberg"
+  
+  default_order_type: "twap"
+  
+  # Execution parameters
+  parameters:
+    max_order_size: 1000
+    min_order_size: 10
+    max_slippage: 0.001
+    max_spread: 0.002
+    execution_time: 60  # seconds
+    order_frequency: 10  # seconds
+  
+  # Execution rules
+  rules:
+    simultaneous:
+      enabled: true
+      max_parallel: 5
+      timeout: 30  # seconds
+    
+    sequential:
+      enabled: false
+      order_interval: 5  # seconds
+    
+    weighted:
+      enabled: true
+      weight_based: true
+
+# ----------------------------------------------------------------------------
+# Rebalancing
+# ----------------------------------------------------------------------------
+rebalancing:
+  enabled: true
+  description: "Rebalancing configuration for basket trading"
+  
+  # Rebalancing types
+  types:
+    - "periodic"
+    - "threshold"
+    - "opportunistic"
+    - "adaptive"
+  
+  default_type: "periodic"
+  
+  # Rebalancing parameters
+  parameters:
+    rebalance_frequency: "daily"
+    rebalance_time: "00:00:00"
+    deviation_threshold: 0.05
+    min_rebalance_size: 10
+    max_rebalance_size: 1000
+    lookback_period: 20
+  
+  # Rebalancing rules
+  rules:
+    periodic:
+      frequency: "daily"
+      time: "00:00:00"
+    
+    threshold:
+      deviation: 0.05
+      check_interval: 60  # minutes
+    
+    opportunistic:
+      min_profit: 0.01
+      max_loss: 0.005
+      min_volume: 1000
+    
+    adaptive:
+      lookback_period: 50
+      adjustment_factor: 0.1
+      volatility_adjustment: true
+
+# ----------------------------------------------------------------------------
+# Performance Monitoring
+# ----------------------------------------------------------------------------
+performance_monitoring:
+  enabled: true
+  description: "Performance monitoring for basket trading"
+  
+  metrics:
+    - "total_return"
+    - "sharpe_ratio"
+    - "max_drawdown"
+    - "volatility"
+    - "win_rate"
+    - "profit_factor"
+    - "consecutive_wins"
+    - "consecutive_losses"
+    - "tracking_error"
+    - "information_ratio"
+  
+  targets:
+    min_return: 0.05
+    min_sharpe_ratio: 0.5
+    max_max_drawdown: 0.15
+    min_win_rate: 0.45
+
+# ----------------------------------------------------------------------------
+# Risk Management
+# ----------------------------------------------------------------------------
+risk_management:
+  enabled: true
+  description: "Risk management for basket trading"
+  
+  # Risk parameters
+  parameters:
+    max_total_risk: 0.15
+    max_position_risk: 0.02
+    max_correlation: 0.7
+    max_sector_concentration: 0.3
+    max_asset_concentration: 0.2
+    
+    # Stop loss
+    stop_loss:
+      enabled: true
+      type: "portfolio"
+      threshold: 0.05
+    
+    # Take profit
+    take_profit:
+      enabled: true
+      type: "portfolio"
+      threshold: 0.15
+
+# ----------------------------------------------------------------------------
+# Reporting
+# ----------------------------------------------------------------------------
+reporting:
+  enabled: true
+  description: "Reporting configuration for basket trading"
+  
+  # Report types
+  types:
+    - "performance"
+    - "holdings"
+    - "transactions"
+    - "risk"
+    - "summary"
+  
+  default_type: "performance"
+  
+  # Report frequency
+  frequency: "daily"
+  
+  # Report format
+  format: "json"
+
+# ----------------------------------------------------------------------------
+# Logging Configuration
+# ----------------------------------------------------------------------------
+logging:
+  enabled: true
+  level: "INFO"
+  file: "logs/basket_trading.log"
+  rotation: "daily"
+  retention: 30  # days
+  
+  log_categories:
+    signals: true
+    trades: true
+    errors: true
+    performance: true
+    rebalancing: true
+    debugging: false
