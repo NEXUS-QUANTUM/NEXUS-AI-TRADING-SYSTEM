@@ -1,0 +1,1053 @@
+<!-- trading/bots/hedge_bot/templates/partials/footer.html -->
+
+<!--
+NEXUS AI TRADING SYSTEM - Hedge Bot Footer Partial
+Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+
+Complete footer implementation with real-time system status, version info,
+and interactive widgets.
+-->
+
+{% load static %}
+{% load nexus_tags %}
+
+<footer id="nexus-footer" class="nexus-footer" 
+        data-user-id="{{ user_id|default:'current' }}"
+        data-refresh-interval="{{ refresh_interval|default:30 }}">
+
+    <!-- Footer Main Content -->
+    <div class="footer-content">
+        
+        <!-- Footer Left - Branding & Info -->
+        <div class="footer-left">
+            <div class="footer-brand">
+                <img src="{% static 'images/nexus-logo-light.svg' %}" 
+                     alt="NEXUS Logo" 
+                     class="footer-logo"
+                     onerror="this.src='{% static 'images/nexus-favicon.svg' %}'">
+                <div class="footer-brand-text">
+                    <span class="footer-brand-name">NEXUS</span>
+                    <span class="footer-brand-sub">AI Trading System</span>
+                </div>
+            </div>
+            <div class="footer-copyright">
+                <span>© 2026 NEXUS QUANTUM LTD</span>
+                <span class="footer-divider">|</span>
+                <span>All Rights Reserved</span>
+                <span class="footer-divider">|</span>
+                <span class="footer-version">v{{ nexus_version|default:'3.0.0' }}</span>
+            </div>
+        </div>
+
+        <!-- Footer Center - System Status -->
+        <div class="footer-center">
+            <div class="footer-status-grid">
+                <div class="footer-status-item">
+                    <span class="status-label">System</span>
+                    <span class="status-value online" id="footer-system-status">
+                        <span class="status-dot"></span>
+                        Online
+                    </span>
+                </div>
+                <div class="footer-status-item">
+                    <span class="status-label">Exchange</span>
+                    <span class="status-value" id="footer-exchange-status">
+                        <img src="{% static 'logos/binance-logo.png' %}" 
+                             alt="Binance" 
+                             class="status-exchange-icon"
+                             onerror="this.style.display='none'">
+                        <span id="footer-exchange-name">Binance</span>
+                    </span>
+                </div>
+                <div class="footer-status-item">
+                    <span class="status-label">Uptime</span>
+                    <span class="status-value" id="footer-uptime">00:00:00</span>
+                </div>
+                <div class="footer-status-item">
+                    <span class="status-label">Latency</span>
+                    <span class="status-value" id="footer-latency">
+                        <span id="footer-latency-value">--</span> ms
+                    </span>
+                </div>
+                <div class="footer-status-item">
+                    <span class="status-label">Active Bots</span>
+                    <span class="status-value" id="footer-active-bots">
+                        <span id="footer-bots-count">0</span>
+                    </span>
+                </div>
+                <div class="footer-status-item">
+                    <span class="status-label">Last Block</span>
+                    <span class="status-value" id="footer-last-block">--</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer Right - Quick Actions & Social -->
+        <div class="footer-right">
+            <div class="footer-actions">
+                <button class="footer-action-btn" onclick="toggleDarkMode()" title="Toggle Theme">
+                    <i class="fas fa-moon" id="theme-icon"></i>
+                </button>
+                <button class="footer-action-btn" onclick="openSupport()" title="Support">
+                    <i class="fas fa-headset"></i>
+                </button>
+                <button class="footer-action-btn" onclick="openDocs()" title="Documentation">
+                    <i class="fas fa-book"></i>
+                </button>
+                <button class="footer-action-btn" onclick="toggleNotifications()" title="Notifications">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-badge" id="footer-notification-badge">0</span>
+                </button>
+            </div>
+            <div class="footer-social">
+                <a href="https://twitter.com/NexusTradingIA" target="_blank" class="social-link" title="Twitter/X">
+                    <i class="fab fa-twitter"></i>
+                </a>
+                <a href="https://github.com/NEXUS-QUANTUM" target="_blank" class="social-link" title="GitHub">
+                    <i class="fab fa-github"></i>
+                </a>
+                <a href="https://linkedin.com/company/nexus-trading-ia" target="_blank" class="social-link" title="LinkedIn">
+                    <i class="fab fa-linkedin"></i>
+                </a>
+                <a href="https://t.me/NexusTradingIA" target="_blank" class="social-link" title="Telegram">
+                    <i class="fab fa-telegram"></i>
+                </a>
+                <a href="https://youtube.com/@NexusTradingIA" target="_blank" class="social-link" title="YouTube">
+                    <i class="fab fa-youtube"></i>
+                </a>
+                <a href="https://discord.gg/nexustradingia" target="_blank" class="social-link" title="Discord">
+                    <i class="fab fa-discord"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer Bottom - Links & Legal -->
+    <div class="footer-bottom">
+        <div class="footer-links">
+            <a href="/terms/" class="footer-link">Terms of Service</a>
+            <a href="/privacy/" class="footer-link">Privacy Policy</a>
+            <a href="/cookies/" class="footer-link">Cookie Policy</a>
+            <a href="/disclaimer/" class="footer-link">Disclaimer</a>
+            <a href="/compliance/" class="footer-link">Compliance</a>
+            <a href="/security/" class="footer-link">Security</a>
+            <a href="/status/" class="footer-link">Status</a>
+            <a href="/support/" class="footer-link">Support</a>
+            <a href="/contact/" class="footer-link">Contact</a>
+        </div>
+        <div class="footer-legal">
+            <span class="legal-text">
+                <span class="nexus-address">Suite 1001, 10th Floor, One Commercial Centre, 54 Jermyn Street, London SW1Y 6LX, United Kingdom</span>
+                <span class="legal-divider">|</span>
+                <span class="nexus-company">Company No: 14567890</span>
+                <span class="legal-divider">|</span>
+                <span class="nexus-vat">VAT: GB 123 4567 89</span>
+            </span>
+            <span class="legal-disclaimer">
+                <i class="fas fa-exclamation-triangle"></i>
+                <span>Trading involves risk. Past performance is not indicative of future results.</span>
+            </span>
+        </div>
+        <div class="footer-powered">
+            <span>Powered by</span>
+            <img src="{% static 'images/nexus-favicon.svg' %}" alt="NEXUS" class="powered-logo">
+            <span class="powered-name">NEXUS QUANTUM</span>
+        </div>
+    </div>
+
+    <!-- Footer Toast Container -->
+    <div id="footer-toast-container" class="footer-toast-container"></div>
+
+</footer>
+
+<script>
+// Complete Footer Implementation with Real-time Status Updates
+
+(function() {
+    'use strict';
+
+    class FooterManager {
+        constructor() {
+            this.footer = document.getElementById('nexus-footer');
+            if (!this.footer) return;
+            
+            this.userId = this.footer.dataset.userId || 'current';
+            this.refreshInterval = parseInt(this.footer.dataset.refreshInterval) || 30;
+            this.startTime = Date.now();
+            this.ws = null;
+            this.connectionRetries = 0;
+            this.maxRetries = 5;
+            this.isLive = true;
+            this.notificationCount = 0;
+            
+            // DOM Elements
+            this.systemStatus = document.getElementById('footer-system-status');
+            this.exchangeName = document.getElementById('footer-exchange-name');
+            this.uptimeElement = document.getElementById('footer-uptime');
+            this.latencyValue = document.getElementById('footer-latency-value');
+            this.botsCount = document.getElementById('footer-bots-count');
+            this.lastBlock = document.getElementById('footer-last-block');
+            this.notificationBadge = document.getElementById('footer-notification-badge');
+            this.themeIcon = document.getElementById('theme-icon');
+            this.toastContainer = document.getElementById('footer-toast-container');
+            
+            this.init();
+        }
+        
+        init() {
+            this.setupEventListeners();
+            this.initializeWebSocket();
+            this.startUptimeTimer();
+            this.startLatencyCheck();
+            this.loadSystemStatus();
+            this.startAutoRefresh();
+        }
+        
+        setupEventListeners() {
+            // Keyboard shortcuts
+            document.addEventListener('keydown', (e) => {
+                if ((e.ctrlKey || e.metaKey) && e.key === 'd') {
+                    e.preventDefault();
+                    toggleDarkMode();
+                }
+                if (e.key === 'Escape') {
+                    this.closeAllToasts();
+                }
+            });
+            
+            // Theme preference from localStorage
+            const savedTheme = localStorage.getItem('nexus-theme');
+            if (savedTheme === 'dark') {
+                document.body.classList.add('dark-mode');
+                this.themeIcon.className = 'fas fa-sun';
+            }
+            
+            // Window focus to refresh status
+            document.addEventListener('visibilitychange', () => {
+                if (!document.hidden) {
+                    this.loadSystemStatus();
+                }
+            });
+        }
+        
+        initializeWebSocket() {
+            const wsProtocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsUrl = `${wsProtocol}//${window.location.host}/ws/footer/${this.userId}`;
+            
+            try {
+                if (this.ws) {
+                    this.ws.close();
+                }
+                
+                this.ws = new WebSocket(wsUrl);
+                
+                this.ws.onopen = () => {
+                    this.connectionRetries = 0;
+                    this.updateStatus('online');
+                    this.sendSubscription();
+                };
+                
+                this.ws.onmessage = (event) => {
+                    try {
+                        const data = JSON.parse(event.data);
+                        this.handleWebSocketMessage(data);
+                    } catch (e) {
+                        console.error('WebSocket message parse error:', e);
+                    }
+                };
+                
+                this.ws.onclose = () => {
+                    this.updateStatus('offline');
+                    this.reconnectWebSocket();
+                };
+                
+                this.ws.onerror = (error) => {
+                    console.error('WebSocket error:', error);
+                    this.updateStatus('offline');
+                };
+            } catch (error) {
+                console.error('WebSocket connection failed:', error);
+                this.updateStatus('offline');
+                this.reconnectWebSocket();
+            }
+        }
+        
+        reconnectWebSocket() {
+            if (this.connectionRetries < this.maxRetries) {
+                this.connectionRetries++;
+                const delay = Math.min(1000 * Math.pow(2, this.connectionRetries), 30000);
+                setTimeout(() => {
+                    if (this.isLive) {
+                        this.initializeWebSocket();
+                    }
+                }, delay);
+            }
+        }
+        
+        sendSubscription() {
+            if (this.ws && this.ws.readyState === WebSocket.OPEN) {
+                this.ws.send(JSON.stringify({
+                    type: 'subscribe_footer',
+                    userId: this.userId
+                }));
+            }
+        }
+        
+        handleWebSocketMessage(data) {
+            if (data.type === 'status_update') {
+                this.updateSystemStatus(data);
+            } else if (data.type === 'exchange_update') {
+                this.updateExchange(data);
+            } else if (data.type === 'notification') {
+                this.addNotification(data);
+            } else if (data.type === 'heartbeat') {
+                // Keep connection alive
+            }
+        }
+        
+        loadSystemStatus() {
+            fetch(`/api/system/status`)
+                .then(response => response.json())
+                .then(data => {
+                    this.updateSystemStatus(data);
+                })
+                .catch(error => {
+                    console.error('Failed to load system status:', error);
+                });
+        }
+        
+        updateSystemStatus(data) {
+            if (data.status) {
+                this.updateStatus(data.status);
+            }
+            
+            if (data.exchange) {
+                this.updateExchange(data.exchange);
+            }
+            
+            if (data.bots !== undefined) {
+                this.botsCount.textContent = data.bots;
+            }
+            
+            if (data.latency !== undefined) {
+                this.latencyValue.textContent = data.latency.toFixed(1);
+                this.latencyValue.style.color = data.latency < 100 ? '#00b894' : data.latency < 300 ? '#fdcb6e' : '#ff6b6b';
+            }
+            
+            if (data.lastBlock !== undefined) {
+                this.lastBlock.textContent = data.lastBlock;
+            }
+            
+            if (data.notifications !== undefined) {
+                this.notificationCount = data.notifications;
+                this.updateNotificationBadge();
+            }
+        }
+        
+        updateStatus(status) {
+            const statusElement = this.systemStatus;
+            if (!statusElement) return;
+            
+            statusElement.className = `status-value ${status}`;
+            const dot = statusElement.querySelector('.status-dot');
+            const text = statusElement.textContent.trim();
+            
+            if (dot) {
+                // Keep dot, update text after
+            }
+            
+            const statusMap = {
+                'online': 'Online',
+                'offline': 'Offline',
+                'maintenance': 'Maintenance',
+                'error': 'Error'
+            };
+            
+            statusElement.innerHTML = `<span class="status-dot"></span> ${statusMap[status] || status}`;
+        }
+        
+        updateExchange(data) {
+            if (this.exchangeName) {
+                this.exchangeName.textContent = data.name || data;
+            }
+            
+            const icon = document.querySelector('.status-exchange-icon');
+            if (icon && data.icon) {
+                icon.src = data.icon;
+            }
+        }
+        
+        updateNotificationBadge() {
+            const badge = this.notificationBadge;
+            if (!badge) return;
+            
+            if (this.notificationCount > 0) {
+                badge.textContent = this.notificationCount > 99 ? '99+' : this.notificationCount;
+                badge.style.display = 'block';
+                badge.classList.add('pulse');
+            } else {
+                badge.style.display = 'none';
+            }
+        }
+        
+        addNotification(data) {
+            this.notificationCount++;
+            this.updateNotificationBadge();
+            
+            // Show toast
+            this.showToast(data);
+            
+            // Play sound
+            if (data.severity && data.severity !== 'info') {
+                this.playNotificationSound(data.severity);
+            }
+        }
+        
+        showToast(data) {
+            const container = this.toastContainer;
+            if (!container) return;
+            
+            const toast = document.createElement('div');
+            toast.className = `footer-toast ${data.severity || 'info'}`;
+            toast.innerHTML = `
+                <div class="toast-icon">
+                    <i class="fas ${this.getToastIcon(data.severity)}"></i>
+                </div>
+                <div class="toast-content">
+                    <div class="toast-title">${data.title || 'Notification'}</div>
+                    <div class="toast-message">${data.message || ''}</div>
+                </div>
+                <button class="toast-close" onclick="this.parentElement.remove()">&times;</button>
+            `;
+            
+            container.appendChild(toast);
+            
+            // Auto dismiss after 5 seconds
+            setTimeout(() => {
+                toast.classList.add('dismissing');
+                setTimeout(() => {
+                    if (toast.parentNode) {
+                        toast.remove();
+                    }
+                }, 300);
+            }, 5000);
+        }
+        
+        getToastIcon(severity) {
+            const icons = {
+                'critical': 'fa-exclamation-circle',
+                'high': 'fa-exclamation-triangle',
+                'medium': 'fa-exclamation-triangle',
+                'low': 'fa-info-circle',
+                'info': 'fa-info-circle'
+            };
+            return icons[severity] || 'fa-bell';
+        }
+        
+        playNotificationSound(severity) {
+            const soundFile = `/static/audio/alert-${severity}.mp3`;
+            const audio = new Audio(soundFile);
+            audio.volume = 0.3;
+            audio.play().catch(() => {
+                // Ignore autoplay restrictions
+            });
+        }
+        
+        closeAllToasts() {
+            const toasts = document.querySelectorAll('.footer-toast');
+            toasts.forEach(toast => toast.remove());
+        }
+        
+        startUptimeTimer() {
+            setInterval(() => {
+                const uptime = Math.floor((Date.now() - this.startTime) / 1000);
+                const hours = String(Math.floor(uptime / 3600)).padStart(2, '0');
+                const minutes = String(Math.floor((uptime % 3600) / 60)).padStart(2, '0');
+                const seconds = String(uptime % 60).padStart(2, '0');
+                this.uptimeElement.textContent = `${hours}:${minutes}:${seconds}`;
+            }, 1000);
+        }
+        
+        startLatencyCheck() {
+            setInterval(() => {
+                const start = performance.now();
+                fetch('/api/ping')
+                    .then(response => response.json())
+                    .then(() => {
+                        const latency = performance.now() - start;
+                        this.latencyValue.textContent = latency.toFixed(1);
+                        this.latencyValue.style.color = latency < 100 ? '#00b894' : latency < 300 ? '#fdcb6e' : '#ff6b6b';
+                    })
+                    .catch(() => {
+                        this.latencyValue.textContent = '--';
+                        this.latencyValue.style.color = '#ff6b6b';
+                    });
+            }, 5000);
+        }
+        
+        startAutoRefresh() {
+            setInterval(() => {
+                if (this.isLive) {
+                    this.loadSystemStatus();
+                }
+            }, this.refreshInterval * 1000);
+        }
+    }
+    
+    // Global functions
+    window.toggleDarkMode = function() {
+        document.body.classList.toggle('dark-mode');
+        const isDark = document.body.classList.contains('dark-mode');
+        const icon = document.getElementById('theme-icon');
+        if (icon) {
+            icon.className = `fas fa-${isDark ? 'sun' : 'moon'}`;
+        }
+        localStorage.setItem('nexus-theme', isDark ? 'dark' : 'light');
+    };
+    
+    window.openSupport = function() {
+        window.open('/support/', '_blank');
+    };
+    
+    window.openDocs = function() {
+        window.open('/docs/', '_blank');
+    };
+    
+    window.toggleNotifications = function() {
+        const badge = document.getElementById('footer-notification-badge');
+        if (badge) {
+            const count = parseInt(badge.textContent) || 0;
+            if (count > 0) {
+                // Open notification panel
+                window.dispatchEvent(new CustomEvent('open-notifications'));
+            }
+        }
+    };
+    
+    // Initialize on DOM ready
+    document.addEventListener('DOMContentLoaded', function() {
+        const footerManager = new FooterManager();
+        window.footerManager = footerManager;
+    });
+    
+    // Expose FooterManager for dynamic initialization
+    window.FooterManager = FooterManager;
+    
+})();
+</script>
+
+<style>
+/* Footer Styles - Full Implementation with Nexus Branding */
+.nexus-footer {
+    background: #131722;
+    border-top: 1px solid #2d2d44;
+    padding: 16px 24px;
+    margin-top: auto;
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    position: relative;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 12px;
+}
+
+/* Footer Left */
+.footer-left {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.footer-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.footer-logo {
+    height: 32px;
+    width: auto;
+}
+
+.footer-brand-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.footer-brand-name {
+    color: #00d4ff;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    line-height: 1;
+}
+
+.footer-brand-sub {
+    color: #74b9ff;
+    font-size: 11px;
+    opacity: 0.7;
+}
+
+.footer-copyright {
+    color: #74b9ff;
+    font-size: 11px;
+    opacity: 0.5;
+}
+
+.footer-divider {
+    margin: 0 6px;
+    opacity: 0.3;
+}
+
+.footer-version {
+    color: #00d4ff;
+    font-weight: 600;
+}
+
+/* Footer Center */
+.footer-center {
+    flex: 1;
+    min-width: 200px;
+}
+
+.footer-status-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 8px;
+}
+
+.footer-status-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 4px 8px;
+    background: rgba(45, 45, 68, 0.5);
+    border-radius: 6px;
+}
+
+.status-label {
+    color: #74b9ff;
+    font-size: 9px;
+    text-transform: uppercase;
+    opacity: 0.5;
+    letter-spacing: 0.5px;
+}
+
+.status-value {
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.status-value .status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.status-value.online .status-dot {
+    background: #00b894;
+    animation: pulse 1.5s infinite;
+}
+
+.status-value.offline .status-dot {
+    background: #ff6b6b;
+}
+
+.status-value.maintenance .status-dot {
+    background: #fdcb6e;
+}
+
+.status-value.error .status-dot {
+    background: #ff6b6b;
+    animation: blink 0.5s infinite;
+}
+
+.status-exchange-icon {
+    height: 16px;
+    width: auto;
+}
+
+/* Footer Right */
+.footer-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 8px;
+}
+
+.footer-actions {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    position: relative;
+}
+
+.footer-action-btn {
+    background: transparent;
+    border: none;
+    color: #74b9ff;
+    padding: 6px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+.footer-action-btn:hover {
+    background: rgba(116, 185, 255, 0.1);
+    color: #ffffff;
+}
+
+.footer-action-btn i {
+    font-size: 16px;
+}
+
+.notification-badge {
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    background: #ff6b6b;
+    color: #ffffff;
+    font-size: 9px;
+    font-weight: 700;
+    padding: 1px 6px;
+    border-radius: 10px;
+    min-width: 18px;
+    text-align: center;
+    display: none;
+}
+
+.notification-badge.pulse {
+    animation: pulse 1s infinite;
+}
+
+.footer-social {
+    display: flex;
+    gap: 6px;
+}
+
+.social-link {
+    color: #74b9ff;
+    font-size: 14px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    opacity: 0.5;
+}
+
+.social-link:hover {
+    color: #00d4ff;
+    opacity: 1;
+    transform: translateY(-1px);
+}
+
+/* Footer Bottom */
+.footer-bottom {
+    padding-top: 12px;
+    border-top: 1px solid #2d2d44;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.footer-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+}
+
+.footer-link {
+    color: #74b9ff;
+    font-size: 11px;
+    text-decoration: none;
+    opacity: 0.5;
+    transition: all 0.2s ease;
+}
+
+.footer-link:hover {
+    opacity: 1;
+    color: #00d4ff;
+}
+
+.footer-legal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    font-size: 10px;
+    color: #74b9ff;
+    opacity: 0.3;
+}
+
+.legal-divider {
+    margin: 0 6px;
+    opacity: 0.3;
+}
+
+.nexus-address,
+.nexus-company,
+.nexus-vat {
+    font-size: 10px;
+}
+
+.legal-disclaimer {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #fdcb6e;
+    opacity: 0.5;
+    font-size: 10px;
+}
+
+.legal-disclaimer i {
+    font-size: 12px;
+}
+
+.footer-powered {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    justify-content: center;
+    font-size: 10px;
+    color: #74b9ff;
+    opacity: 0.3;
+}
+
+.powered-logo {
+    height: 16px;
+    width: auto;
+}
+
+.powered-name {
+    color: #00d4ff;
+    font-weight: 600;
+}
+
+/* Footer Toast Container */
+.footer-toast-container {
+    position: fixed;
+    bottom: 80px;
+    right: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    z-index: 10000;
+    max-width: 360px;
+}
+
+.footer-toast {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 16px;
+    background: #1a1a2e;
+    border: 1px solid #2d2d44;
+    border-radius: 8px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+    animation: slideIn 0.3s ease;
+    position: relative;
+}
+
+.footer-toast.dismissing {
+    animation: slideOut 0.3s ease forwards;
+}
+
+.footer-toast.critical {
+    border-left: 3px solid #ff6b6b;
+}
+
+.footer-toast.high {
+    border-left: 3px solid #e17055;
+}
+
+.footer-toast.medium {
+    border-left: 3px solid #fdcb6e;
+}
+
+.footer-toast.low {
+    border-left: 3px solid #74b9ff;
+}
+
+.footer-toast.info {
+    border-left: 3px solid #00b894;
+}
+
+.toast-icon {
+    color: #fdcb6e;
+    font-size: 18px;
+    padding-top: 2px;
+}
+
+.footer-toast.critical .toast-icon {
+    color: #ff6b6b;
+}
+
+.footer-toast.high .toast-icon {
+    color: #e17055;
+}
+
+.footer-toast.info .toast-icon {
+    color: #00b894;
+}
+
+.toast-content {
+    flex: 1;
+}
+
+.toast-title {
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 13px;
+}
+
+.toast-message {
+    color: #74b9ff;
+    font-size: 12px;
+    opacity: 0.8;
+}
+
+.toast-close {
+    background: transparent;
+    border: none;
+    color: #74b9ff;
+    cursor: pointer;
+    font-size: 16px;
+    opacity: 0.5;
+    padding: 4px;
+}
+
+.toast-close:hover {
+    opacity: 1;
+}
+
+/* Animations */
+@keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.3; transform: scale(0.8); }
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.2; }
+}
+
+@keyframes slideIn {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes slideOut {
+    from { transform: translateX(0); opacity: 1; }
+    to { transform: translateX(100%); opacity: 0; }
+}
+
+/* Dark Mode Styles */
+body.dark-mode .nexus-footer {
+    background: #0a0a1a;
+    border-top-color: #1a1a3a;
+}
+
+body.dark-mode .footer-status-item {
+    background: rgba(26, 26, 58, 0.5);
+}
+
+body.dark-mode .footer-bottom {
+    border-top-color: #1a1a3a;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .footer-status-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .nexus-footer {
+        padding: 12px 16px;
+    }
+    
+    .footer-content {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+    }
+    
+    .footer-left {
+        align-items: center;
+    }
+    
+    .footer-right {
+        align-items: center;
+    }
+    
+    .footer-status-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    .footer-links {
+        gap: 8px;
+    }
+    
+    .footer-legal {
+        font-size: 9px;
+    }
+    
+    .footer-toast-container {
+        max-width: 90%;
+        right: 5%;
+        bottom: 70px;
+    }
+}
+
+@media (max-width: 480px) {
+    .footer-status-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .footer-brand-name {
+        font-size: 16px;
+    }
+    
+    .footer-logo {
+        height: 24px;
+    }
+    
+    .footer-links {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .footer-link {
+        font-size: 10px;
+    }
+    
+    .footer-social {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .footer-toast {
+        padding: 10px 12px;
+    }
+}
+
+/* Print styles */
+@media print {
+    .nexus-footer {
+        display: none !important;
+    }
+}
+</style>
