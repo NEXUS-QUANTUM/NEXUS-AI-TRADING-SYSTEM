@@ -1,0 +1,497 @@
+# trading/bots/swing_bot/config/adaptation_configs.yaml
+
+# ============================================================================
+# NEXUS AI TRADING SYSTEM - Swing Bot Adaptation Configuration
+# Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+# ============================================================================
+#
+# Description: Complete Adaptation configuration for swing trading bot
+# Framework: Adaptive Market Analysis - Dynamic Strategy Adjustment
+# Version: 3.0.0
+#
+# Adaptation analysis enables the bot to dynamically adjust its strategies
+# based on changing market conditions, volatility regimes, and performance
+# feedback loops.
+# ============================================================================
+
+# ----------------------------------------------------------------------------
+# General Configuration
+# ----------------------------------------------------------------------------
+adaptation:
+  enabled: true
+  version: "3.0.0"
+  description: "Adaptive Market Analysis for swing trading"
+  
+  # Adaptation modes
+  modes:
+    - "market_regime"
+    - "volatility_adaptive"
+    - "performance_feedback"
+    - "machine_learning"
+    - "ensemble"
+  
+  default_mode: "ensemble"
+  
+  # Update intervals
+  intervals:
+    real_time: 60  # seconds
+    intraday: 3600  # 1 hour
+    daily: 86400  # 1 day
+    weekly: 604800  # 1 week
+  
+  # Data sources for adaptation
+  data_sources:
+    - "price_action"
+    - "volume_analysis"
+    - "volatility_indicators"
+    - "market_breadth"
+    - "sentiment_analysis"
+
+# ----------------------------------------------------------------------------
+# Market Regime Detection
+# ----------------------------------------------------------------------------
+market_regime:
+  enabled: true
+  description: "Market regime detection for strategy adaptation"
+  
+  # Regime types
+  regimes:
+    bull_market:
+      description: "Bull market regime"
+      conditions:
+        - "trend_strength_>_0.3"
+        - "volatility_<_0.2"
+        - "risk_on_sentiment"
+      confidence_threshold: 0.7
+    
+    bear_market:
+      description: "Bear market regime"
+      conditions:
+        - "trend_strength_<_-0.3"
+        - "volatility_>_0.2"
+        - "risk_off_sentiment"
+      confidence_threshold: 0.7
+    
+    range_bound:
+      description: "Range-bound market regime"
+      conditions:
+        - "trend_strength_<_0.1"
+        - "volatility_<_0.15"
+        - "neutral_sentiment"
+      confidence_threshold: 0.6
+    
+    high_volatility:
+      description: "High volatility regime"
+      conditions:
+        - "volatility_>_0.3"
+        - "trend_strength_any"
+        - "fear_sentiment"
+      confidence_threshold: 0.65
+    
+    low_volatility:
+      description: "Low volatility regime"
+      conditions:
+        - "volatility_<_0.1"
+        - "trend_strength_any"
+        - "greed_sentiment"
+      confidence_threshold: 0.6
+  
+  # Regime transition
+  transitions:
+    lookback_bars: 20
+    confirmation_bars: 3
+    transition_threshold: 0.3
+    max_transition_bars: 10
+
+# ----------------------------------------------------------------------------
+# Volatility Adaptation
+# ----------------------------------------------------------------------------
+volatility_adaptation:
+  enabled: true
+  description: "Volatility-based strategy adaptation"
+  
+  # Volatility metrics
+  metrics:
+    historical_volatility:
+      enabled: true
+      lookback_periods:
+        - 10
+        - 20
+        - 50
+        - 200
+      calculation_method: "standard_deviation"
+    
+    implied_volatility:
+      enabled: true
+      lookback_periods:
+        - 10
+        - 20
+        - 50
+      calculation_method: "option_implied"
+    
+    volatility_skew:
+      enabled: true
+      lookback_periods:
+        - 10
+        - 20
+      calculation_method: "put_call_ratio"
+    
+    volatility_term_structure:
+      enabled: true
+      lookback_periods:
+        - 10
+        - 30
+        - 60
+      calculation_method: "futures_curve"
+  
+  # Adaptation rules
+  rules:
+    position_sizing:
+      description: "Adjust position size based on volatility"
+      formula: "position_size = base_size * (target_volatility / current_volatility)"
+      min_multiplier: 0.3
+      max_multiplier: 2.0
+    
+    stop_loss:
+      description: "Adjust stop loss based on volatility"
+      formula: "stop_loss = atr * multiplier"
+      multiplier_range:
+        min: 1.0
+        max: 3.0
+      adjustment_interval: 5  # bars
+    
+    take_profit:
+      description: "Adjust take profit based on volatility"
+      formula: "take_profit = stop_loss * risk_reward_ratio"
+      risk_reward_ratio_range:
+        min: 1.5
+        max: 4.0
+    
+    signal_threshold:
+      description: "Adjust signal threshold based on volatility"
+      formula: "threshold = base_threshold * (1 + volatility_factor)"
+      volatility_factor: 0.5
+
+# ----------------------------------------------------------------------------
+# Performance Feedback
+# ----------------------------------------------------------------------------
+performance_feedback:
+  enabled: true
+  description: "Performance-based strategy adaptation"
+  
+  # Performance metrics
+  metrics:
+    - "win_rate"
+    - "profit_factor"
+    - "sharpe_ratio"
+    - "max_drawdown"
+    - "average_trade"
+    - "consecutive_losses"
+  
+  # Feedback loops
+  loops:
+    short_term:
+      lookback_bars: 50
+      update_interval: 10
+      weight: 0.3
+    
+    medium_term:
+      lookback_bars: 200
+      update_interval: 50
+      weight: 0.4
+    
+    long_term:
+      lookback_bars: 500
+      update_interval: 100
+      weight: 0.3
+  
+  # Adaptation actions
+  actions:
+    increase_confidence:
+      conditions:
+        - "win_rate_>_0.6"
+        - "profit_factor_>_1.5"
+        - "max_drawdown_<_0.1"
+      effect: "increase_position_size_by_0.2"
+    
+    decrease_confidence:
+      conditions:
+        - "win_rate_<_0.4"
+        - "profit_factor_<_1.0"
+        - "max_drawdown_>_0.15"
+      effect: "decrease_position_size_by_0.2"
+    
+    adjust_risk:
+      conditions:
+        - "consecutive_losses_>_3"
+        - "sharpe_ratio_<_0.5"
+      effect: "reduce_risk_by_0.3"
+    
+    pause_trading:
+      conditions:
+        - "max_drawdown_>_0.2"
+        - "win_rate_<_0.3"
+        - "consecutive_losses_>_5"
+      effect: "pause_trading_for_24h"
+
+# ----------------------------------------------------------------------------
+# Machine Learning Adaptation
+# ----------------------------------------------------------------------------
+machine_learning:
+  enabled: true
+  description: "Machine learning-based strategy adaptation"
+  
+  # ML models
+  models:
+    regime_classifier:
+      type: "random_forest"
+      features:
+        - "trend_strength"
+        - "volatility"
+        - "momentum"
+        - "volume_ratio"
+      retrain_interval: 100  # bars
+    
+    signal_confidence:
+      type: "gradient_boosting"
+      features:
+        - "price_patterns"
+        - "volume_patterns"
+        - "market_conditions"
+        - "technical_indicators"
+      retrain_interval: 50  # bars
+    
+    parameter_optimizer:
+      type: "bayesian_optimization"
+      parameters:
+        - "stop_loss_multiplier"
+        - "take_profit_multiplier"
+        - "position_size_multiplier"
+      optimization_interval: 200  # bars
+  
+  # Feature engineering
+  features:
+    price_features:
+      - "returns"
+      - "price_momentum"
+      - "price_volatility"
+      - "price_patterns"
+    
+    volume_features:
+      - "volume_ratio"
+      - "volume_trend"
+      - "volume_volatility"
+      - "volume_patterns"
+    
+    market_features:
+      - "market_breadth"
+      - "sector_performance"
+      - "correlation_matrix"
+      - "volatility_index"
+    
+    technical_features:
+      - "rsi"
+      - "macd"
+      - "bollinger_bands"
+      - "moving_averages"
+
+# ----------------------------------------------------------------------------
+# Ensemble Adaptation
+# ----------------------------------------------------------------------------
+ensemble:
+  enabled: true
+  description: "Ensemble method-based strategy adaptation"
+  
+  # Ensemble methods
+  methods:
+    bagging:
+      enabled: true
+      num_models: 5
+      sample_size: 0.8
+      feature_size: 0.6
+    
+    boosting:
+      enabled: true
+      num_models: 3
+      learning_rate: 0.1
+      max_depth: 5
+    
+    stacking:
+      enabled: true
+      base_models: 4
+      meta_model: "logistic_regression"
+      cross_validation: 3
+  
+  # Weight allocation
+  weights:
+    adaptive: true
+    update_interval: 50  # bars
+    min_weight: 0.1
+    max_weight: 0.4
+    
+    allocation_methods:
+      - "performance_based"
+      - "confidence_based"
+      - "volatility_based"
+      - "regime_based"
+
+# ----------------------------------------------------------------------------
+# Adaptation Signals
+# ----------------------------------------------------------------------------
+signals:
+  enabled: true
+  description: "Adaptation-based trading signals"
+  
+  # Signal types
+  types:
+    adaptive_entry:
+      description: "Adaptive entry signal"
+      conditions:
+        - "regime_favorable"
+        - "volatility_optimal"
+        - "confidence_high"
+      parameters:
+        confidence_threshold: 0.7
+        position_size_multiplier: 1.0
+    
+    adaptive_exit:
+      description: "Adaptive exit signal"
+      conditions:
+        - "regime_shift"
+        - "volatility_spike"
+        - "performance_decline"
+      parameters:
+        exit_threshold: 0.3
+    
+    adaptive_hedge:
+      description: "Adaptive hedge signal"
+      conditions:
+        - "market_stress"
+        - "volatility_high"
+        - "correlation_increase"
+      parameters:
+        hedge_ratio: 0.5
+        hedge_duration: 10  # bars
+
+# ----------------------------------------------------------------------------
+# Risk Management Adaptation
+# ----------------------------------------------------------------------------
+risk_adaptation:
+  enabled: true
+  description: "Adaptive risk management"
+  
+  # Risk parameters
+  parameters:
+    max_risk_per_trade: 0.02
+    max_total_risk: 0.1
+    risk_adjustment_factor: 1.5
+    adaptation_interval: 10  # bars
+  
+  # Risk adjustment rules
+  rules:
+    increase_risk:
+      conditions:
+        - "win_rate_>_0.6"
+        - "sharpe_ratio_>_1"
+        - "volatility_<_0.2"
+      adjustment: "increase_by_0.005"
+    
+    decrease_risk:
+      conditions:
+        - "win_rate_<_0.4"
+        - "sharpe_ratio_<_0.5"
+        - "volatility_>_0.3"
+      adjustment: "decrease_by_0.005"
+    
+    max_risk_limit:
+      conditions:
+        - "drawdown_>_0.1"
+        - "consecutive_losses_>_3"
+      adjustment: "set_to_min"
+
+# ----------------------------------------------------------------------------
+# Performance Monitoring
+# ----------------------------------------------------------------------------
+performance_monitoring:
+  enabled: true
+  description: "Performance monitoring for adaptation"
+  
+  # Monitoring metrics
+  metrics:
+    - "win_rate"
+    - "profit_factor"
+    - "sharpe_ratio"
+    - "max_drawdown"
+    - "average_trade"
+    - "consecutive_wins"
+    - "consecutive_losses"
+    - "recovery_factor"
+  
+  # Monitoring intervals
+  intervals:
+    real_time: 60  # seconds
+    intraday: 3600  # 1 hour
+    daily: 86400  # 1 day
+    weekly: 604800  # 1 week
+  
+  # Alert thresholds
+  alerts:
+    win_rate_low: 0.3
+    win_rate_high: 0.7
+    profit_factor_low: 0.8
+    sharpe_ratio_low: 0.3
+    max_drawdown_high: 0.15
+    consecutive_losses_high: 5
+
+# ----------------------------------------------------------------------------
+# Backtesting Configuration
+# ----------------------------------------------------------------------------
+backtesting:
+  enabled: true
+  description: "Backtesting configuration for adaptation strategy"
+  
+  parameters:
+    start_date: "2024-01-01"
+    end_date: "2024-12-31"
+    initial_capital: 10000
+    commission: 0.001
+    slippage: 0.001
+  
+  test_scenarios:
+    - scenario: "bull_market"
+      parameters:
+        regime: "bull"
+        volatility: "low"
+    
+    - scenario: "bear_market"
+      parameters:
+        regime: "bear"
+        volatility: "high"
+    
+    - scenario: "range_market"
+      parameters:
+        regime: "range"
+        volatility: "medium"
+    
+    - scenario: "transition_market"
+      parameters:
+        regime: "transition"
+        volatility: "high"
+
+# ----------------------------------------------------------------------------
+# Logging Configuration
+# ----------------------------------------------------------------------------
+logging:
+  enabled: true
+  level: "INFO"
+  file: "logs/adaptation_bot.log"
+  rotation: "daily"
+  retention: 30  # days
+  
+  log_categories:
+    signals: true
+    trades: true
+    errors: true
+    performance: true
+    adaptation: true
+    debugging: false
