@@ -1,0 +1,463 @@
+# trading/bots/swing_bot/config/after_hours_configs.yaml
+
+# ============================================================================
+# NEXUS AI TRADING SYSTEM - Swing Bot After Hours Configuration
+# Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+# ============================================================================
+#
+# Description: Complete After Hours configuration for swing trading bot
+# Framework: Extended Hours Trading - After Hours & Pre-Market Analysis
+# Version: 3.0.0
+#
+# After Hours configuration enables the bot to trade during extended market
+# hours, capturing opportunities when regular market is closed.
+# ============================================================================
+
+# ----------------------------------------------------------------------------
+# General Configuration
+# ----------------------------------------------------------------------------
+after_hours:
+  enabled: true
+  version: "3.0.0"
+  description: "After Hours Trading for swing trading"
+  
+  # Trading sessions
+  sessions:
+    after_hours:
+      enabled: true
+      description: "After hours trading session"
+      start_time: "16:00"
+      end_time: "20:00"
+      timezone: "America/New_York"
+    
+    pre_market:
+      enabled: true
+      description: "Pre-market trading session"
+      start_time: "04:00"
+      end_time: "09:30"
+      timezone: "America/New_York"
+    
+    overnight:
+      enabled: true
+      description: "Overnight trading session"
+      start_time: "20:00"
+      end_time: "04:00"
+      timezone: "America/New_York"
+    
+    full_day:
+      enabled: true
+      description: "Full day trading session"
+      start_time: "00:00"
+      end_time: "23:59"
+      timezone: "UTC"
+  
+  # Session modes
+  modes:
+    - "active"
+    - "passive"
+    - "hybrid"
+    - "opportunistic"
+  
+  default_mode: "opportunistic"
+
+# ----------------------------------------------------------------------------
+# Trading Parameters
+# ----------------------------------------------------------------------------
+trading_parameters:
+  enabled: true
+  description: "Trading parameters for after hours"
+  
+  # Position sizing
+  position_sizing:
+    after_hours_multiplier: 0.5
+    pre_market_multiplier: 0.3
+    overnight_multiplier: 0.2
+    max_position: 0.05
+    min_position: 0.001
+  
+  # Risk parameters
+  risk:
+    max_daily_loss: 0.02
+    max_trade_loss: 0.005
+    max_open_positions: 5
+    max_correlation: 0.7
+    
+    after_hours_risk_multiplier: 1.5
+    pre_market_risk_multiplier: 2.0
+    overnight_risk_multiplier: 2.5
+  
+  # Order parameters
+  orders:
+    order_types:
+      - "limit"
+      - "stop_limit"
+      - "trailing_stop"
+    
+    time_in_force:
+      - "GTC"
+      - "GTD"
+      - "DAY"
+    
+    slippage_tolerance: 0.001
+    max_spread: 0.005
+
+# ----------------------------------------------------------------------------
+# Liquidity Analysis
+# ----------------------------------------------------------------------------
+liquidity:
+  enabled: true
+  description: "Liquidity analysis for after hours"
+  
+  # Liquidity metrics
+  metrics:
+    spread:
+      enabled: true
+      max_spread: 0.005
+      min_spread: 0.0001
+      spread_warning: 0.003
+    
+    depth:
+      enabled: true
+      min_depth: 10000
+      depth_ratio: 1.5
+      depth_warning: 5000
+    
+    volume:
+      enabled: true
+      min_volume_ratio: 0.1
+      volume_average_multiplier: 0.2
+      volume_warning: 0.05
+    
+    bid_ask_imbalance:
+      enabled: true
+      imbalance_threshold: 0.3
+      min_imbalance: 0.1
+  
+  # Liquidity rules
+  rules:
+    low_liquidity:
+      conditions:
+        - "spread_>_0.003"
+        - "depth_<_5000"
+        - "volume_<_0.05"
+      action: "reduce_position"
+    
+    moderate_liquidity:
+      conditions:
+        - "spread_<_0.003"
+        - "depth_>_5000"
+        - "volume_>_0.05"
+      action: "normal_position"
+    
+    high_liquidity:
+      conditions:
+        - "spread_<_0.001"
+        - "depth_>_10000"
+        - "volume_>_0.1"
+      action: "increase_position"
+
+# ----------------------------------------------------------------------------
+# Volatility Analysis
+# ----------------------------------------------------------------------------
+volatility:
+  enabled: true
+  description: "Volatility analysis for after hours"
+  
+  # Volatility metrics
+  metrics:
+    regular_hours_volatility:
+      enabled: true
+      lookback_periods:
+        - 10
+        - 20
+        - 50
+      calculation_method: "standard_deviation"
+    
+    after_hours_volatility:
+      enabled: true
+      lookback_periods:
+        - 10
+        - 20
+        - 50
+      calculation_method: "standard_deviation"
+    
+    volatility_ratio:
+      enabled: true
+      ratio_threshold: 2.0
+      min_ratio: 0.5
+      max_ratio: 5.0
+    
+    implied_volatility:
+      enabled: true
+      lookback_period: 10
+      calculation_method: "option_implied"
+  
+  # Volatility rules
+  rules:
+    high_volatility:
+      conditions:
+        - "volatility_>_regular_hours_*_2"
+        - "implied_volatility_>_0.3"
+      action: "reduce_position"
+    
+    low_volatility:
+      conditions:
+        - "volatility_<_regular_hours_*_0.5"
+        - "implied_volatility_<_0.1"
+      action: "increase_position"
+
+# ----------------------------------------------------------------------------
+# News and Event Analysis
+# ----------------------------------------------------------------------------
+news_events:
+  enabled: true
+  description: "News and event analysis for after hours"
+  
+  # Event types
+  event_types:
+    earnings:
+      enabled: true
+      pre_event_window: 60  # minutes
+      post_event_window: 120  # minutes
+      confidence: 0.6
+    
+    fed_meetings:
+      enabled: true
+      pre_event_window: 120  # minutes
+      post_event_window: 180  # minutes
+      confidence: 0.7
+    
+    economic_data:
+      enabled: true
+      pre_event_window: 30  # minutes
+      post_event_window: 60  # minutes
+      confidence: 0.5
+    
+    geopolitical:
+      enabled: true
+      pre_event_window: 60  # minutes
+      post_event_window: 120  # minutes
+      confidence: 0.4
+  
+  # News sources
+  sources:
+    - "reuters"
+    - "bloomberg"
+    - "cnbc"
+    - "wsj"
+    - "ft"
+    - "yahoo_finance"
+    - "marketwatch"
+  
+  # Event rules
+  rules:
+    high_impact_events:
+      conditions:
+        - "event_impact_high"
+        - "event_time_within_window"
+      action: "pause_trading"
+    
+    medium_impact_events:
+      conditions:
+        - "event_impact_medium"
+        - "event_time_within_window"
+      action: "reduce_position"
+
+# ----------------------------------------------------------------------------
+# Gap Analysis
+# ----------------------------------------------------------------------------
+gap_analysis:
+  enabled: true
+  description: "Gap analysis for after hours"
+  
+  # Gap types
+  gap_types:
+    bullish_gap:
+      description: "Bullish gap up"
+      conditions:
+        - "price_>_previous_close"
+        - "gap_percent_>_0.01"
+      confidence: 0.6
+    
+    bearish_gap:
+      description: "Bearish gap down"
+      conditions:
+        - "price_<_previous_close"
+        - "gap_percent_>_0.01"
+      confidence: 0.6
+    
+    fill_gap:
+      description: "Gap fill attempt"
+      conditions:
+        - "price_moving_towards_gap"
+        - "volume_confirmation"
+      confidence: 0.5
+  
+  # Gap rules
+  rules:
+    gap_trading:
+      conditions:
+        - "gap_detected"
+        - "volume_confirmed"
+        - "trend_direction_clear"
+      action: "trade_gap"
+    
+    gap_fill:
+      conditions:
+        - "gap_unfilled"
+        - "price_moving_to_fill"
+        - "volume_increasing"
+      action: "trade_fill"
+
+# ----------------------------------------------------------------------------
+# Signal Generation
+# ----------------------------------------------------------------------------
+signals:
+  enabled: true
+  description: "Signal generation for after hours"
+  
+  # Signal types
+  types:
+    after_hours_entry:
+      description: "After hours entry signal"
+      conditions:
+        - "liquidity_adequate"
+        - "volatility_favorable"
+        - "regime_aligned"
+      confidence: 0.6
+    
+    pre_market_entry:
+      description: "Pre-market entry signal"
+      conditions:
+        - "liquidity_adequate"
+        - "volatility_favorable"
+        - "regime_aligned"
+      confidence: 0.5
+    
+    overnight_entry:
+      description: "Overnight entry signal"
+      conditions:
+        - "liquidity_adequate"
+        - "volatility_favorable"
+        - "regime_aligned"
+      confidence: 0.4
+    
+    after_hours_exit:
+      description: "After hours exit signal"
+      conditions:
+        - "target_hit"
+        - "stop_loss_hit"
+        - "liquidity_decrease"
+      confidence: 0.7
+  
+  # Signal confirmation
+  confirmation:
+    required_confirmations: 2
+    confirmation_sources:
+      - "liquidity"
+      - "volatility"
+      - "price_action"
+      - "volume"
+
+# ----------------------------------------------------------------------------
+# Risk Management
+# ----------------------------------------------------------------------------
+risk_management:
+  enabled: true
+  description: "Risk management for after hours"
+  
+  # Risk parameters
+  parameters:
+    max_daily_loss: 0.02
+    max_trade_loss: 0.005
+    max_consecutive_losses: 3
+    max_open_positions: 5
+  
+  # Risk rules
+  rules:
+    reduce_risk:
+      conditions:
+        - "daily_loss_>_0.01"
+        - "consecutive_losses_>_2"
+      action: "reduce_position_by_50%"
+    
+    pause_trading:
+      conditions:
+        - "daily_loss_>_0.02"
+        - "consecutive_losses_>_3"
+      action: "pause_for_1h"
+    
+    increase_risk:
+      conditions:
+        - "daily_gain_>_0.02"
+        - "win_rate_>_0.6"
+      action: "increase_position_by_20%"
+
+# ----------------------------------------------------------------------------
+# Backtesting Configuration
+# ----------------------------------------------------------------------------
+backtesting:
+  enabled: true
+  description: "Backtesting configuration for after hours strategy"
+  
+  parameters:
+    start_date: "2024-01-01"
+    end_date: "2024-12-31"
+    initial_capital: 10000
+    commission: 0.001
+    slippage: 0.002
+  
+  test_scenarios:
+    - scenario: "after_hours_high_liquidity"
+      parameters:
+        liquidity: "high"
+        volatility: "medium"
+    
+    - scenario: "after_hours_low_liquidity"
+      parameters:
+        liquidity: "low"
+        volatility: "high"
+    
+    - scenario: "pre_market_trading"
+      parameters:
+        session: "pre_market"
+        liquidity: "medium"
+
+# ----------------------------------------------------------------------------
+# Performance Monitoring
+# ----------------------------------------------------------------------------
+performance_monitoring:
+  enabled: true
+  description: "Performance monitoring for after hours strategy"
+  
+  metrics:
+    - "win_rate"
+    - "avg_win_loss_ratio"
+    - "profit_factor"
+    - "max_drawdown"
+    - "sharpe_ratio"
+    - "calmar_ratio"
+    - "sortino_ratio"
+  
+  targets:
+    min_win_rate: 0.45
+    min_avg_win_loss_ratio: 1.5
+    max_max_drawdown: 0.1
+
+# ----------------------------------------------------------------------------
+# Logging Configuration
+# ----------------------------------------------------------------------------
+logging:
+  enabled: true
+  level: "INFO"
+  file: "logs/after_hours_bot.log"
+  rotation: "daily"
+  retention: 30  # days
+  
+  log_categories:
+    signals: true
+    trades: true
+    errors: true
+    performance: true
+    liquidity: true
+    debugging: false
