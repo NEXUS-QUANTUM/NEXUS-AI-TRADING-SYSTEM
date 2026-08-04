@@ -1,0 +1,471 @@
+# trading/bots/swing_bot/config/cognition_engine_configs.yaml
+
+# ============================================================================
+# NEXUS AI TRADING SYSTEM - Swing Bot Cognition Engine Configuration
+# Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+# ============================================================================
+#
+# Description: Complete Cognition Engine configuration for swing trading bot
+# Framework: Cognitive Computing - AI-Powered Trading Engine
+# Version: 3.0.0
+#
+# The Cognition Engine provides advanced cognitive computing capabilities
+# for the swing trading bot, enabling intelligent decision making,
+# pattern recognition, and adaptive learning.
+# ============================================================================
+
+# ----------------------------------------------------------------------------
+# General Configuration
+# ----------------------------------------------------------------------------
+cognition_engine:
+  enabled: true
+  version: "3.0.0"
+  description: "Cognitive Computing Engine for swing trading"
+  
+  # Engine modes
+  modes:
+    - "learning"
+    - "predicting"
+    - "deciding"
+    - "adapting"
+    - "optimizing"
+  
+  default_mode: "adaptive"
+  
+  # Cognitive levels
+  levels:
+    - "basic"
+    - "intermediate"
+    - "advanced"
+    - "expert"
+    - "genius"
+  
+  default_level: "advanced"
+
+# ----------------------------------------------------------------------------
+# Neural Networks
+# ----------------------------------------------------------------------------
+neural_networks:
+  enabled: true
+  description: "Neural Network configurations"
+  
+  # Network types
+  types:
+    - "feedforward"
+    - "recurrent"
+    - "convolutional"
+    - "transformer"
+    - "attention"
+  
+  # Feedforward Network
+  feedforward:
+    enabled: true
+    layers:
+      - type: "dense"
+        units: 128
+        activation: "relu"
+        dropout: 0.2
+      - type: "dense"
+        units: 64
+        activation: "relu"
+        dropout: 0.2
+      - type: "dense"
+        units: 32
+        activation: "relu"
+        dropout: 0.2
+      - type: "dense"
+        units: 1
+        activation: "sigmoid"
+    
+    optimizer: "adam"
+    learning_rate: 0.001
+    batch_size: 32
+    epochs: 100
+    early_stopping: true
+    patience: 10
+  
+  # Recurrent Network
+  recurrent:
+    enabled: true
+    layers:
+      - type: "lstm"
+        units: 64
+        return_sequences: true
+        dropout: 0.2
+      - type: "lstm"
+        units: 32
+        return_sequences: false
+        dropout: 0.2
+      - type: "dense"
+        units: 1
+        activation: "sigmoid"
+    
+    optimizer: "adam"
+    learning_rate: 0.001
+    batch_size: 32
+    epochs: 100
+    early_stopping: true
+    patience: 10
+  
+  # Transformer Network
+  transformer:
+    enabled: true
+    layers:
+      - type: "multi_head_attention"
+        heads: 4
+        d_model: 64
+        dropout: 0.1
+      - type: "feed_forward"
+        d_ff: 256
+        dropout: 0.1
+      - type: "layer_norm"
+        epsilon: 1e-6
+    
+    num_layers: 3
+    optimizer: "adam"
+    learning_rate: 0.001
+    batch_size: 32
+    epochs: 100
+    early_stopping: true
+    patience: 10
+
+# ----------------------------------------------------------------------------
+# Learning Algorithms
+# ----------------------------------------------------------------------------
+learning_algorithms:
+  enabled: true
+  description: "Learning Algorithm configurations"
+  
+  # Reinforcement Learning
+  reinforcement:
+    enabled: true
+    algorithm: "ppo"
+    parameters:
+      learning_rate: 0.0003
+      n_steps: 2048
+      batch_size: 64
+      n_epochs: 10
+      gamma: 0.99
+      gae_lambda: 0.95
+      clip_range: 0.2
+      ent_coef: 0.01
+    
+    environment:
+      state_space: 10
+      action_space: 5
+      max_steps: 1000
+      reward_function: "sharpe_ratio"
+  
+  # Supervised Learning
+  supervised:
+    enabled: true
+    algorithm: "gradient_boosting"
+    parameters:
+      n_estimators: 100
+      max_depth: 6
+      learning_rate: 0.1
+      subsample: 0.8
+      colsample_bytree: 0.8
+      reg_alpha: 0.1
+      reg_lambda: 1.0
+    
+    features:
+      - "price_momentum"
+      - "volume_ratio"
+      - "rsi"
+      - "macd"
+      - "volatility"
+      - "trend_strength"
+    
+    targets:
+      - "signal_label"
+      - "confidence_score"
+  
+  # Unsupervised Learning
+  unsupervised:
+    enabled: true
+    algorithm: "autoencoder"
+    parameters:
+      encoding_dim: 16
+      hidden_layers:
+        - 64
+        - 32
+        - 16
+      activation: "relu"
+      dropout: 0.2
+      learning_rate: 0.001
+      batch_size: 32
+      epochs: 100
+    
+    features:
+      - "technical_indicators"
+      - "price_action"
+      - "volume_metrics"
+
+# ----------------------------------------------------------------------------
+# Pattern Recognition
+# ----------------------------------------------------------------------------
+pattern_recognition:
+  enabled: true
+  description: "Pattern Recognition configurations"
+  
+  # Pattern types
+  types:
+    - "price_patterns"
+    - "volume_patterns"
+    - "indicator_patterns"
+    - "combined_patterns"
+  
+  # Pattern detection
+  detection:
+    enabled: true
+    methods:
+      - "template_matching"
+      - "neural_networks"
+      - "statistical_analysis"
+      - "machine_learning"
+    
+    parameters:
+      min_confidence: 0.7
+      max_patterns: 10
+      lookback_period: 50
+      pattern_size: 20
+  
+  # Pattern learning
+  learning:
+    enabled: true
+    methods:
+      - "supervised"
+      - "unsupervised"
+      - "reinforcement"
+    
+    parameters:
+      learning_rate: 0.01
+      adaptation_interval: 10  # bars
+      memory_size: 1000
+
+# ----------------------------------------------------------------------------
+# Decision Making
+# ----------------------------------------------------------------------------
+decision_making:
+  enabled: true
+  description: "Decision Making configurations"
+  
+  # Decision types
+  types:
+    - "binary"
+    - "multi_class"
+    - "continuous"
+    - "probabilistic"
+  
+  # Decision methods
+  methods:
+    - "bayesian"
+    - "fuzzy_logic"
+    - "neural_network"
+    - "rule_based"
+    - "ensemble"
+  
+  # Decision parameters
+  parameters:
+    decision_threshold: 0.6
+    confidence_threshold: 0.7
+    risk_threshold: 0.3
+    max_decisions: 10
+    decision_interval: 5  # bars
+
+# ----------------------------------------------------------------------------
+# Memory Systems
+# ----------------------------------------------------------------------------
+memory_systems:
+  enabled: true
+  description: "Memory System configurations"
+  
+  # Memory types
+  types:
+    - "short_term"
+    - "long_term"
+    - "working_memory"
+    - "episodic_memory"
+    - "procedural_memory"
+  
+  # Short Term Memory
+  short_term:
+    enabled: true
+    capacity: 100
+    decay_rate: 0.1
+    retention_period: 10  # bars
+  
+  # Long Term Memory
+  long_term:
+    enabled: true
+    capacity: 10000
+    consolidation_rate: 0.01
+    retention_period: 1000  # bars
+  
+  # Working Memory
+  working_memory:
+    enabled: true
+    capacity: 20
+    attention_span: 10  # bars
+    update_interval: 1  # bar
+
+# ----------------------------------------------------------------------------
+# Attention Mechanisms
+# ----------------------------------------------------------------------------
+attention_mechanisms:
+  enabled: true
+  description: "Attention Mechanism configurations"
+  
+  # Attention types
+  types:
+    - "self_attention"
+    - "cross_attention"
+    - "multi_head_attention"
+    - "scaled_dot_product"
+  
+  # Self Attention
+  self_attention:
+    enabled: true
+    num_heads: 4
+    attention_scale: 0.1
+    dropout: 0.1
+    update_interval: 5  # bars
+  
+  # Cross Attention
+  cross_attention:
+    enabled: true
+    num_heads: 4
+    attention_scale: 0.1
+    dropout: 0.1
+    update_interval: 5  # bars
+  
+  # Multi-Head Attention
+  multi_head_attention:
+    enabled: true
+    num_heads: 8
+    attention_scale: 0.1
+    dropout: 0.1
+    update_interval: 5  # bars
+
+# ----------------------------------------------------------------------------
+# Reasoning Systems
+# ----------------------------------------------------------------------------
+reasoning_systems:
+  enabled: true
+  description: "Reasoning System configurations"
+  
+  # Reasoning types
+  types:
+    - "deductive"
+    - "inductive"
+    - "abductive"
+    - "analogical"
+    - "causal"
+  
+  # Deductive Reasoning
+  deductive:
+    enabled: true
+    logic_type: "first_order"
+    inference_chain: true
+    max_depth: 5
+  
+  # Inductive Reasoning
+  inductive:
+    enabled: true
+    generalization: true
+    pattern_learning: true
+    min_confidence: 0.7
+  
+  # Abductive Reasoning
+  abductive:
+    enabled: true
+    explanation_generation: true
+    hypothesis_testing: true
+    max_hypotheses: 10
+
+# ----------------------------------------------------------------------------
+# Cognitive Signals
+# ----------------------------------------------------------------------------
+signals:
+  enabled: true
+  description: "Cognitive trading signals"
+  
+  # Signal types
+  types:
+    cognitive_buy:
+      description: "Cognitive buy signal"
+      conditions:
+        - "pattern_bullish"
+        - "confidence_high"
+        - "risk_low"
+        - "attention_positive"
+      confidence: 0.8
+    
+    cognitive_sell:
+      description: "Cognitive sell signal"
+      conditions:
+        - "pattern_bearish"
+        - "confidence_high"
+        - "risk_high"
+        - "attention_negative"
+      confidence: 0.8
+    
+    cognitive_hedge:
+      description: "Cognitive hedge signal"
+      conditions:
+        - "pattern_uncertain"
+        - "confidence_medium"
+        - "risk_medium"
+        - "attention_mixed"
+      confidence: 0.6
+  
+  # Signal confirmation
+  confirmation:
+    required_confirmations: 2
+    confirmation_sources:
+      - "price_action"
+      - "volume"
+      - "technical_indicators"
+
+# ----------------------------------------------------------------------------
+# Performance Monitoring
+# ----------------------------------------------------------------------------
+performance_monitoring:
+  enabled: true
+  description: "Performance monitoring for cognition engine"
+  
+  metrics:
+    - "accuracy"
+    - "precision"
+    - "recall"
+    - "f1_score"
+    - "mse"
+    - "mae"
+    - "r2_score"
+    - "confidence"
+    - "learning_rate"
+  
+  targets:
+    min_accuracy: 0.7
+    min_precision: 0.7
+    min_recall: 0.7
+    min_f1_score: 0.7
+
+# ----------------------------------------------------------------------------
+# Logging Configuration
+# ----------------------------------------------------------------------------
+logging:
+  enabled: true
+  level: "INFO"
+  file: "logs/cognition_engine.log"
+  rotation: "daily"
+  retention: 30  # days
+  
+  log_categories:
+    signals: true
+    trades: true
+    errors: true
+    performance: true
+    cognition: true
+    debugging: false
