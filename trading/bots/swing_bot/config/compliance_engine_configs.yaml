@@ -1,0 +1,402 @@
+# trading/bots/swing_bot/config/compliance_engine_configs.yaml
+
+# ============================================================================
+# NEXUS AI TRADING SYSTEM - Swing Bot Compliance Engine Configuration
+# Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+# ============================================================================
+#
+# Description: Complete Compliance Engine configuration for swing trading bot
+# Framework: Regulatory Compliance - Trading Rules & Regulations
+# Version: 3.0.0
+#
+# The Compliance Engine ensures all trading activities adhere to regulatory
+# requirements, internal policies, and risk management guidelines.
+# ============================================================================
+
+# ----------------------------------------------------------------------------
+# General Configuration
+# ----------------------------------------------------------------------------
+compliance_engine:
+  enabled: true
+  version: "3.0.0"
+  description: "Compliance Engine for swing trading"
+  
+  # Compliance modes
+  modes:
+    - "strict"
+    - "moderate"
+    - "flexible"
+    - "custom"
+  
+  default_mode: "strict"
+  
+  # Regulatory frameworks
+  frameworks:
+    - "MiFID_II"
+    - "SEC"
+    - "CFTC"
+    - "FCA"
+    - "ESMA"
+    - "FINRA"
+    - "MAS"
+    - "HKMA"
+  
+  default_framework: "MiFID_II"
+
+# ----------------------------------------------------------------------------
+# Position Limits
+# ----------------------------------------------------------------------------
+position_limits:
+  enabled: true
+  description: "Position limits configuration"
+  
+  # Position limits
+  limits:
+    max_position_size: 100000
+    max_position_percentage: 0.1
+    min_position_size: 10
+    max_daily_trades: 100
+    max_weekly_trades: 500
+    max_monthly_trades: 2000
+  
+  # Position monitoring
+  monitoring:
+    enabled: true
+    check_interval: 60  # seconds
+    alert_threshold: 0.8
+    emergency_threshold: 0.95
+  
+  # Position rules
+  rules:
+    position_size_rule:
+      description: "Position size limit"
+      conditions:
+        - "position_size_<_max_position_size"
+        - "position_percentage_<_max_position_percentage"
+      action: "allow"
+    
+    position_size_exceeded:
+      description: "Position size exceeded"
+      conditions:
+        - "position_size_>_max_position_size"
+        - "position_percentage_>_max_position_percentage"
+      action: "block"
+
+# ----------------------------------------------------------------------------
+# Trading Hours
+# ----------------------------------------------------------------------------
+trading_hours:
+  enabled: true
+  description: "Trading hours configuration"
+  
+  # Trading sessions
+  sessions:
+    regular:
+      start: "09:30"
+      end: "16:00"
+      timezone: "America/New_York"
+    
+    extended:
+      start: "16:00"
+      end: "20:00"
+      timezone: "America/New_York"
+    
+    pre_market:
+      start: "04:00"
+      end: "09:30"
+      timezone: "America/New_York"
+  
+  # Trading days
+  days:
+    - "Monday"
+    - "Tuesday"
+    - "Wednesday"
+    - "Thursday"
+    - "Friday"
+  
+  # Holiday calendar
+  holidays:
+    - "2024-01-01"
+    - "2024-07-04"
+    - "2024-12-25"
+  
+  # Trading rules
+  rules:
+    regular_hours_only:
+      description: "Trade only during regular hours"
+      conditions:
+        - "time_in_regular_hours"
+        - "day_in_trading_days"
+      action: "allow"
+    
+    extended_hours_restricted:
+      description: "Restricted trading in extended hours"
+      conditions:
+        - "time_in_extended_hours"
+        - "risk_level_low"
+      action: "allow"
+
+# ----------------------------------------------------------------------------
+# Risk Limits
+# ----------------------------------------------------------------------------
+risk_limits:
+  enabled: true
+  description: "Risk limits configuration"
+  
+  # Risk limits
+  limits:
+    max_daily_loss: 1000
+    max_weekly_loss: 5000
+    max_monthly_loss: 20000
+    max_drawdown: 0.1
+    max_var_95: 1000
+    max_var_99: 2000
+    max_cvar: 1500
+  
+  # Risk monitoring
+  monitoring:
+    enabled: true
+    check_interval: 60  # seconds
+    alert_threshold: 0.8
+    emergency_threshold: 0.95
+  
+  # Risk rules
+  rules:
+    daily_loss_rule:
+      description: "Daily loss limit"
+      conditions:
+        - "daily_loss_<_max_daily_loss"
+      action: "allow"
+    
+    daily_loss_exceeded:
+      description: "Daily loss exceeded"
+      conditions:
+        - "daily_loss_>_max_daily_loss"
+      action: "pause_trading"
+
+# ----------------------------------------------------------------------------
+# Asset Restrictions
+# ----------------------------------------------------------------------------
+asset_restrictions:
+  enabled: true
+  description: "Asset restrictions configuration"
+  
+  # Allowed assets
+  allowed_assets:
+    - "BTCUSDT"
+    - "ETHUSDT"
+    - "SOLUSDT"
+    - "ADAUSDT"
+    - "DOTUSDT"
+    - "AVAXUSDT"
+    - "MATICUSDT"
+    - "LINKUSDT"
+  
+  # Restricted assets
+  restricted_assets:
+    - "DOGEUSDT"
+    - "SHIBUSDT"
+    - "PEPEUSDT"
+  
+  # Asset classes
+  asset_classes:
+    crypto:
+      enabled: true
+      min_liquidity: 10000000
+      max_volatility: 0.5
+    
+    stable:
+      enabled: true
+      min_liquidity: 10000000
+      max_volatility: 0.02
+  
+  # Asset rules
+  rules:
+    asset_allowed:
+      description: "Asset is allowed"
+      conditions:
+        - "asset_in_allowed_list"
+        - "asset_meets_min_liquidity"
+        - "asset_meets_max_volatility"
+      action: "allow"
+    
+    asset_restricted:
+      description: "Asset is restricted"
+      conditions:
+        - "asset_in_restricted_list"
+      action: "block"
+
+# ----------------------------------------------------------------------------
+# Order Restrictions
+# ----------------------------------------------------------------------------
+order_restrictions:
+  enabled: true
+  description: "Order restrictions configuration"
+  
+  # Order types
+  allowed_order_types:
+    - "market"
+    - "limit"
+    - "stop_limit"
+    - "trailing_stop"
+  
+  # Order sizes
+  order_sizes:
+    min_order_size: 10
+    max_order_size: 10000
+    max_order_value: 100000
+  
+  # Order rules
+  rules:
+    order_type_allowed:
+      description: "Order type is allowed"
+      conditions:
+        - "order_type_in_allowed_list"
+      action: "allow"
+    
+    order_size_valid:
+      description: "Order size is valid"
+      conditions:
+        - "order_size_>_min_order_size"
+        - "order_size_<_max_order_size"
+        - "order_value_<_max_order_value"
+      action: "allow"
+
+# ----------------------------------------------------------------------------
+# Reporting
+# ----------------------------------------------------------------------------
+reporting:
+  enabled: true
+  description: "Reporting configuration"
+  
+  # Report types
+  types:
+    - "daily_activity"
+    - "weekly_summary"
+    - "monthly_report"
+    - "quarterly_report"
+    - "annual_report"
+  
+  # Report frequency
+  frequency:
+    daily: "23:59"
+    weekly: "Sunday 23:59"
+    monthly: "Last day of month 23:59"
+    quarterly: "Last day of quarter 23:59"
+    annual: "December 31 23:59"
+  
+  # Report format
+  format: "pdf"
+  
+  # Report delivery
+  delivery:
+    email:
+      enabled: true
+      recipients:
+        - "compliance@nexus.com"
+        - "risk@nexus.com"
+    
+    storage:
+      enabled: true
+      path: "/reports/compliance/"
+
+# ----------------------------------------------------------------------------
+# Audit Trail
+# ----------------------------------------------------------------------------
+audit_trail:
+  enabled: true
+  description: "Audit trail configuration"
+  
+  # Audit events
+  events:
+    - "trade_execution"
+    - "order_placement"
+    - "position_change"
+    - "risk_event"
+    - "compliance_event"
+    - "system_event"
+  
+  # Audit storage
+  storage:
+    enabled: true
+    retention: 365  # days
+    path: "/audit/"
+  
+  # Audit rules
+  rules:
+    log_all_trades:
+      description: "Log all trades"
+      conditions:
+        - "trade_executed"
+      action: "log"
+    
+    log_risk_events:
+      description: "Log risk events"
+      conditions:
+        - "risk_threshold_exceeded"
+      action: "log_and_alert"
+
+# ----------------------------------------------------------------------------
+# Compliance Signals
+# ----------------------------------------------------------------------------
+signals:
+  enabled: true
+  description: "Compliance-based trading signals"
+  
+  # Signal types
+  types:
+    compliance_allow:
+      description: "Compliance allow signal"
+      conditions:
+        - "all_compliance_checks_passed"
+        - "risk_limits_ok"
+        - "position_limits_ok"
+      confidence: 1.0
+    
+    compliance_restrict:
+      description: "Compliance restrict signal"
+      conditions:
+        - "any_compliance_check_failed"
+        - "risk_limit_exceeded"
+        - "position_limit_exceeded"
+      confidence: 1.0
+
+# ----------------------------------------------------------------------------
+# Performance Monitoring
+# ----------------------------------------------------------------------------
+performance_monitoring:
+  enabled: true
+  description: "Performance monitoring for compliance"
+  
+  metrics:
+    - "compliance_checks_passed"
+    - "compliance_checks_failed"
+    - "risk_limit_breaches"
+    - "position_limit_breaches"
+    - "order_rejections"
+    - "audit_events"
+  
+  targets:
+    min_compliance_rate: 0.99
+    max_risk_breaches: 0
+    max_position_breaches: 0
+
+# ----------------------------------------------------------------------------
+# Logging Configuration
+# ----------------------------------------------------------------------------
+logging:
+  enabled: true
+  level: "INFO"
+  file: "logs/compliance_engine.log"
+  rotation: "daily"
+  retention: 30  # days
+  
+  log_categories:
+    compliance: true
+    risk: true
+    positions: true
+    orders: true
+    errors: true
+    performance: true
+    auditing: true
+    debugging: false
