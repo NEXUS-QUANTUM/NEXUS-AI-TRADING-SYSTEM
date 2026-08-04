@@ -1,0 +1,419 @@
+# trading/bots/swing_bot/config/commercial_configs.yaml
+
+# ============================================================================
+# NEXUS AI TRADING SYSTEM - Swing Bot Commercial Configuration
+# Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+# ============================================================================
+#
+# Description: Complete Commercial configuration for swing trading bot
+# Framework: Commercial Trading - Institutional & Commercial Analysis
+# Version: 3.0.0
+#
+# The Commercial configuration enables the bot to analyze and trade
+# based on commercial and institutional activity in the market.
+# ============================================================================
+
+# ----------------------------------------------------------------------------
+# General Configuration
+# ----------------------------------------------------------------------------
+commercial:
+  enabled: true
+  version: "3.0.0"
+  description: "Commercial Trading Analysis for swing trading"
+  
+  # Commercial types
+  types:
+    - "institutional"
+    - "commercial"
+    - "hedge_fund"
+    - "proprietary"
+    - "retail"
+    - "market_maker"
+  
+  # Timeframes
+  timeframes:
+    - "1m"
+    - "5m"
+    - "15m"
+    - "30m"
+    - "1h"
+    - "4h"
+    - "1d"
+  
+  default_timeframe: "1h"
+
+# ----------------------------------------------------------------------------
+# Institutional Activity
+# ----------------------------------------------------------------------------
+institutional_activity:
+  enabled: true
+  description: "Institutional Activity configuration"
+  
+  # Parameters
+  parameters:
+    lookback_period: 50
+    min_position_size: 100000
+    max_position_size: 10000000
+    activity_threshold: 0.3
+    confidence_threshold: 0.7
+  
+  # Activity metrics
+  metrics:
+    institutional_volume:
+      enabled: true
+      calculation: "volume_weighted"
+      lookback_period: 10
+    
+    institutional_trades:
+      enabled: true
+      calculation: "count"
+      lookback_period: 10
+    
+    institutional_pressure:
+      enabled: true
+      calculation: "ratio"
+      lookback_period: 10
+    
+    institutional_net:
+      enabled: true
+      calculation: "difference"
+      lookback_period: 10
+  
+  # Signals
+  signals:
+    institutional_buying:
+      description: "Institutional buying signal"
+      conditions:
+        - "net_positive"
+        - "pressure_>_0.5"
+        - "volume_increasing"
+      confidence: 0.8
+    
+    institutional_selling:
+      description: "Institutional selling signal"
+      conditions:
+        - "net_negative"
+        - "pressure_<_0.5"
+        - "volume_increasing"
+      confidence: 0.8
+
+# ----------------------------------------------------------------------------
+# Commercial Activity
+# ----------------------------------------------------------------------------
+commercial_activity:
+  enabled: true
+  description: "Commercial Activity configuration"
+  
+  # Parameters
+  parameters:
+    lookback_period: 50
+    min_trade_size: 10000
+    max_trade_size: 1000000
+    activity_threshold: 0.3
+    confidence_threshold: 0.7
+  
+  # Activity metrics
+  metrics:
+    commercial_volume:
+      enabled: true
+      calculation: "volume_weighted"
+      lookback_period: 10
+    
+    commercial_trades:
+      enabled: true
+      calculation: "count"
+      lookback_period: 10
+    
+    commercial_pressure:
+      enabled: true
+      calculation: "ratio"
+      lookback_period: 10
+    
+    commercial_net:
+      enabled: true
+      calculation: "difference"
+      lookback_period: 10
+  
+  # Signals
+  signals:
+    commercial_buying:
+      description: "Commercial buying signal"
+      conditions:
+        - "net_positive"
+        - "pressure_>_0.5"
+        - "volume_increasing"
+      confidence: 0.75
+    
+    commercial_selling:
+      description: "Commercial selling signal"
+      conditions:
+        - "net_negative"
+        - "pressure_<_0.5"
+        - "volume_increasing"
+      confidence: 0.75
+
+# ----------------------------------------------------------------------------
+# Hedge Fund Activity
+# ----------------------------------------------------------------------------
+hedge_fund:
+  enabled: true
+  description: "Hedge Fund Activity configuration"
+  
+  # Parameters
+  parameters:
+    lookback_period: 50
+    min_trade_size: 50000
+    max_trade_size: 5000000
+    activity_threshold: 0.3
+    confidence_threshold: 0.7
+  
+  # Activity metrics
+  metrics:
+    hedge_fund_volume:
+      enabled: true
+      calculation: "volume_weighted"
+      lookback_period: 10
+    
+    hedge_fund_trades:
+      enabled: true
+      calculation: "count"
+      lookback_period: 10
+    
+    hedge_fund_pressure:
+      enabled: true
+      calculation: "ratio"
+      lookback_period: 10
+    
+    hedge_fund_net:
+      enabled: true
+      calculation: "difference"
+      lookback_period: 10
+  
+  # Signals
+  signals:
+    hedge_fund_buying:
+      description: "Hedge fund buying signal"
+      conditions:
+        - "net_positive"
+        - "pressure_>_0.5"
+        - "volume_increasing"
+      confidence: 0.8
+    
+    hedge_fund_selling:
+      description: "Hedge fund selling signal"
+      conditions:
+        - "net_negative"
+        - "pressure_<_0.5"
+        - "volume_increasing"
+      confidence: 0.8
+
+# ----------------------------------------------------------------------------
+# Proprietary Trading
+# ----------------------------------------------------------------------------
+proprietary:
+  enabled: true
+  description: "Proprietary Trading configuration"
+  
+  # Parameters
+  parameters:
+    lookback_period: 50
+    min_trade_size: 10000
+    max_trade_size: 1000000
+    activity_threshold: 0.3
+    confidence_threshold: 0.7
+  
+  # Activity metrics
+  metrics:
+    proprietary_volume:
+      enabled: true
+      calculation: "volume_weighted"
+      lookback_period: 10
+    
+    proprietary_trades:
+      enabled: true
+      calculation: "count"
+      lookback_period: 10
+    
+    proprietary_pressure:
+      enabled: true
+      calculation: "ratio"
+      lookback_period: 10
+    
+    proprietary_net:
+      enabled: true
+      calculation: "difference"
+      lookback_period: 10
+  
+  # Signals
+  signals:
+    proprietary_buying:
+      description: "Proprietary buying signal"
+      conditions:
+        - "net_positive"
+        - "pressure_>_0.5"
+        - "volume_increasing"
+      confidence: 0.75
+    
+    proprietary_selling:
+      description: "Proprietary selling signal"
+      conditions:
+        - "net_negative"
+        - "pressure_<_0.5"
+        - "volume_increasing"
+      confidence: 0.75
+
+# ----------------------------------------------------------------------------
+# Retail Activity
+# ----------------------------------------------------------------------------
+retail_activity:
+  enabled: true
+  description: "Retail Activity configuration"
+  
+  # Parameters
+  parameters:
+    lookback_period: 50
+    min_trade_size: 100
+    max_trade_size: 10000
+    activity_threshold: 0.3
+    confidence_threshold: 0.7
+  
+  # Activity metrics
+  metrics:
+    retail_volume:
+      enabled: true
+      calculation: "volume_weighted"
+      lookback_period: 10
+    
+    retail_trades:
+      enabled: true
+      calculation: "count"
+      lookback_period: 10
+    
+    retail_pressure:
+      enabled: true
+      calculation: "ratio"
+      lookback_period: 10
+    
+    retail_net:
+      enabled: true
+      calculation: "difference"
+      lookback_period: 10
+  
+  # Signals
+  signals:
+    retail_buying:
+      description: "Retail buying signal"
+      conditions:
+        - "net_positive"
+        - "pressure_>_0.5"
+        - "volume_increasing"
+      confidence: 0.6
+    
+    retail_selling:
+      description: "Retail selling signal"
+      conditions:
+        - "net_negative"
+        - "pressure_<_0.5"
+        - "volume_increasing"
+      confidence: 0.6
+
+# ----------------------------------------------------------------------------
+# Commercial Signals
+# ----------------------------------------------------------------------------
+signals:
+  enabled: true
+  description: "Commercial-based trading signals"
+  
+  # Signal types
+  types:
+    commercial_buy:
+      description: "Commercial buy signal"
+      conditions:
+        - "institutional_buying"
+        - "commercial_buying"
+        - "hedge_fund_buying"
+      confidence: 0.85
+    
+    commercial_sell:
+      description: "Commercial sell signal"
+      conditions:
+        - "institutional_selling"
+        - "commercial_selling"
+        - "hedge_fund_selling"
+      confidence: 0.85
+    
+    commercial_hedge:
+      description: "Commercial hedge signal"
+      conditions:
+        - "mixed_activity"
+        - "uncertain_direction"
+        - "volume_increasing"
+      confidence: 0.6
+  
+  # Signal confirmation
+  confirmation:
+    required_confirmations: 2
+    confirmation_sources:
+      - "price_action"
+      - "volume"
+      - "technical_indicators"
+
+# ----------------------------------------------------------------------------
+# Risk Management
+# ----------------------------------------------------------------------------
+risk_management:
+  enabled: true
+  description: "Risk management for commercial trading"
+  
+  # Risk parameters
+  parameters:
+    max_position: 0.05
+    max_daily_loss: 0.02
+    max_drawdown: 0.1
+    risk_per_trade: 0.01
+    
+    # Commercial-based stop loss
+    stop_loss:
+      type: "commercial_based"
+      threshold: 0.5
+      update_interval: 10  # bars
+
+# ----------------------------------------------------------------------------
+# Performance Monitoring
+# ----------------------------------------------------------------------------
+performance_monitoring:
+  enabled: true
+  description: "Performance monitoring for commercial trading"
+  
+  metrics:
+    - "win_rate"
+    - "profit_factor"
+    - "sharpe_ratio"
+    - "max_drawdown"
+    - "average_trade"
+    - "consecutive_wins"
+    - "consecutive_losses"
+  
+  targets:
+    min_win_rate: 0.5
+    min_profit_factor: 1.5
+    min_sharpe_ratio: 0.6
+    max_max_drawdown: 0.1
+
+# ----------------------------------------------------------------------------
+# Logging Configuration
+# ----------------------------------------------------------------------------
+logging:
+  enabled: true
+  level: "INFO"
+  file: "logs/commercial_bot.log"
+  rotation: "daily"
+  retention: 30  # days
+  
+  log_categories:
+    signals: true
+    trades: true
+    errors: true
+    performance: true
+    commercial: true
+    debugging: false
