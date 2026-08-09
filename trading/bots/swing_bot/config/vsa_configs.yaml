@@ -1,0 +1,419 @@
+# trading/bots/swing_bot/config/vsa_configs.yaml
+
+# ============================================================================
+# NEXUS AI TRADING SYSTEM - Swing Bot VSA Configuration
+# Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+# ============================================================================
+#
+# Description: Complete VSA (Volume Spread Analysis) configuration for swing trading bot
+# Framework: VSA Analysis - Volume Spread & Market Psychology
+# Version: 3.0.0
+#
+# The VSA configuration enables the bot to analyze volume spread patterns,
+# identify supply and demand imbalances, and make trading decisions
+# based on market psychology.
+# ============================================================================
+
+# ----------------------------------------------------------------------------
+# General Configuration
+# ----------------------------------------------------------------------------
+vsa:
+  enabled: true
+  version: "3.0.0"
+  description: "VSA Analysis for swing trading"
+  
+  # VSA types
+  types:
+    - "supply_demand"
+    - "volume_spread"
+    - "price_volume"
+    - "market_psychology"
+    - "smart_money"
+  
+  # Timeframes
+  timeframes:
+    - "1m"
+    - "5m"
+    - "15m"
+    - "30m"
+    - "1h"
+    - "4h"
+    - "1d"
+  
+  default_timeframe: "15m"
+
+# ----------------------------------------------------------------------------
+# Supply Demand Analysis
+# ----------------------------------------------------------------------------
+supply_demand:
+  enabled: true
+  description: "Supply demand analysis configuration"
+  
+  # Parameters
+  parameters:
+    lookback_period: 50
+    volume_threshold: 1.5
+    spread_threshold: 0.5
+    confidence_threshold: 0.7
+  
+  # Supply demand metrics
+  metrics:
+    supply_volume:
+      enabled: true
+      calculation: "sum"
+      lookback_period: 10
+    
+    demand_volume:
+      enabled: true
+      calculation: "sum"
+      lookback_period: 10
+    
+    supply_demand_ratio:
+      enabled: true
+      calculation: "ratio"
+      lookback_period: 10
+    
+    supply_demand_imbalance:
+      enabled: true
+      calculation: "difference"
+      lookback_period: 10
+  
+  # Signals
+  signals:
+    supply_demand_buy:
+      description: "Supply demand buy signal"
+      conditions:
+        - "demand_volume_>_supply_volume"
+        - "imbalance_positive"
+        - "volume_confirmation"
+      confidence: 0.75
+    
+    supply_demand_sell:
+      description: "Supply demand sell signal"
+      conditions:
+        - "supply_volume_>_demand_volume"
+        - "imbalance_negative"
+        - "volume_confirmation"
+      confidence: 0.75
+
+# ----------------------------------------------------------------------------
+# Volume Spread Analysis
+# ----------------------------------------------------------------------------
+volume_spread:
+  enabled: true
+  description: "Volume spread analysis configuration"
+  
+  # Parameters
+  parameters:
+    lookback_period: 50
+    volume_threshold: 1.5
+    spread_threshold: 0.5
+    confidence_threshold: 0.7
+  
+  # VSA bar types
+  bar_types:
+    high_volume_wide_spread:
+      enabled: true
+      conditions:
+        - "volume_>_average"
+        - "spread_>_average"
+      confidence: 0.8
+    
+    high_volume_narrow_spread:
+      enabled: true
+      conditions:
+        - "volume_>_average"
+        - "spread_<_average"
+      confidence: 0.7
+    
+    low_volume_wide_spread:
+      enabled: true
+      conditions:
+        - "volume_<_average"
+        - "spread_>_average"
+      confidence: 0.6
+    
+    low_volume_narrow_spread:
+      enabled: true
+      conditions:
+        - "volume_<_average"
+        - "spread_<_average"
+      confidence: 0.5
+  
+  # Signals
+  signals:
+    vsa_buy:
+      description: "VSA buy signal"
+      conditions:
+        - "high_volume_wide_spread_up"
+        - "demand_confirmation"
+        - "price_support"
+      confidence: 0.8
+    
+    vsa_sell:
+      description: "VSA sell signal"
+      conditions:
+        - "high_volume_wide_spread_down"
+        - "supply_confirmation"
+        - "price_resistance"
+      confidence: 0.8
+
+# ----------------------------------------------------------------------------
+# Price Volume Analysis
+# ----------------------------------------------------------------------------
+price_volume:
+  enabled: true
+  description: "Price volume analysis configuration"
+  
+  # Parameters
+  parameters:
+    lookback_period: 50
+    volume_threshold: 1.5
+    price_threshold: 0.01
+    confidence_threshold: 0.7
+  
+  # Price volume metrics
+  metrics:
+    volume_price_trend:
+      enabled: true
+      calculation: "trend"
+      lookback_period: 20
+    
+    volume_price_divergence:
+      enabled: true
+      calculation: "divergence"
+      lookback_period: 20
+    
+    volume_price_confirmation:
+      enabled: true
+      calculation: "confirmation"
+      lookback_period: 20
+  
+  # Signals
+  signals:
+    volume_price_buy:
+      description: "Volume price buy signal"
+      conditions:
+        - "volume_price_trend_up"
+        - "volume_price_divergence_bullish"
+        - "price_support"
+      confidence: 0.75
+    
+    volume_price_sell:
+      description: "Volume price sell signal"
+      conditions:
+        - "volume_price_trend_down"
+        - "volume_price_divergence_bearish"
+        - "price_resistance"
+      confidence: 0.75
+
+# ----------------------------------------------------------------------------
+# Market Psychology
+# ----------------------------------------------------------------------------
+market_psychology:
+  enabled: true
+  description: "Market psychology analysis configuration"
+  
+  # Parameters
+  parameters:
+    lookback_period: 50
+    volume_threshold: 1.5
+    spread_threshold: 0.5
+    confidence_threshold: 0.7
+  
+  # Psychology metrics
+  metrics:
+    fear_greed:
+      enabled: true
+      calculation: "index"
+      lookback_period: 20
+    
+    buying_selling_pressure:
+      enabled: true
+      calculation: "pressure"
+      lookback_period: 20
+    
+    market_sentiment:
+      enabled: true
+      calculation: "sentiment"
+      lookback_period: 20
+  
+  # Signals
+  signals:
+    fear_greed_buy:
+      description: "Fear greed buy signal"
+      conditions:
+        - "fear_greed_index_<_30"
+        - "buying_pressure_increasing"
+        - "volume_confirmation"
+      confidence: 0.7
+    
+    fear_greed_sell:
+      description: "Fear greed sell signal"
+      conditions:
+        - "fear_greed_index_>_70"
+        - "selling_pressure_increasing"
+        - "volume_confirmation"
+      confidence: 0.7
+
+# ----------------------------------------------------------------------------
+# Smart Money Analysis
+# ----------------------------------------------------------------------------
+smart_money:
+  enabled: true
+  description: "Smart money analysis configuration"
+  
+  # Parameters
+  parameters:
+    lookback_period: 50
+    volume_threshold: 1.5
+    spread_threshold: 0.5
+    confidence_threshold: 0.7
+  
+  # Smart money metrics
+  metrics:
+    smart_money_flow:
+      enabled: true
+      calculation: "flow"
+      lookback_period: 20
+    
+    smart_money_accumulation:
+      enabled: true
+      calculation: "accumulation"
+      lookback_period: 20
+    
+    smart_money_distribution:
+      enabled: true
+      calculation: "distribution"
+      lookback_period: 20
+  
+  # Signals
+  signals:
+    smart_money_buy:
+      description: "Smart money buy signal"
+      conditions:
+        - "smart_money_flow_positive"
+        - "accumulation_increasing"
+        - "volume_confirmation"
+      confidence: 0.8
+    
+    smart_money_sell:
+      description: "Smart money sell signal"
+      conditions:
+        - "smart_money_flow_negative"
+        - "distribution_increasing"
+        - "volume_confirmation"
+      confidence: 0.8
+
+# ----------------------------------------------------------------------------
+# VSA Signals
+# ----------------------------------------------------------------------------
+signals:
+  enabled: true
+  description: "VSA-based trading signals"
+  
+  # Signal types
+  types:
+    vsa_buy:
+      description: "VSA buy signal"
+      conditions:
+        - "vsa_buy_signal"
+        - "volume_confirmation"
+        - "price_support"
+        - "momentum_increasing"
+      confidence: 0.85
+    
+    vsa_sell:
+      description: "VSA sell signal"
+      conditions:
+        - "vsa_sell_signal"
+        - "volume_confirmation"
+        - "price_resistance"
+        - "momentum_decreasing"
+      confidence: 0.85
+    
+    vsa_hedge:
+      description: "VSA hedge signal"
+      conditions:
+        - "mixed_vsa_signals"
+        - "uncertain_direction"
+        - "volume_confirmation"
+      confidence: 0.6
+  
+  # Signal confirmation
+  confirmation:
+    required_confirmations: 2
+    confirmation_sources:
+      - "price_action"
+      - "volume"
+      - "technical_indicators"
+
+# ----------------------------------------------------------------------------
+# Risk Management
+# ----------------------------------------------------------------------------
+risk_management:
+  enabled: true
+  description: "Risk management for VSA trading"
+  
+  # Risk parameters
+  parameters:
+    max_position: 0.05
+    max_daily_loss: 0.02
+    max_drawdown: 0.1
+    risk_per_trade: 0.01
+    
+    # VSA-based stop loss
+    stop_loss:
+      type: "vsa_based"
+      distance: 0.01
+      atr_multiplier: 1.5
+      min: 0.005
+      max: 0.02
+    
+    # VSA-based take profit
+    take_profit:
+      type: "vsa_based"
+      multiplier: 2.5
+      min: 0.01
+      max: 0.05
+
+# ----------------------------------------------------------------------------
+# Performance Monitoring
+# ----------------------------------------------------------------------------
+performance_monitoring:
+  enabled: true
+  description: "Performance monitoring for VSA trading"
+  
+  metrics:
+    - "win_rate"
+    - "profit_factor"
+    - "sharpe_ratio"
+    - "max_drawdown"
+    - "average_trade"
+    - "consecutive_wins"
+    - "consecutive_losses"
+    - "vsa_accuracy"
+  
+  targets:
+    min_win_rate: 0.5
+    min_profit_factor: 1.5
+    min_sharpe_ratio: 0.6
+    max_max_drawdown: 0.1
+
+# ----------------------------------------------------------------------------
+# Logging Configuration
+# ----------------------------------------------------------------------------
+logging:
+  enabled: true
+  level: "INFO"
+  file: "logs/vsa_bot.log"
+  rotation: "daily"
+  retention: 30  # days
+  
+  log_categories:
+    signals: true
+    trades: true
+    errors: true
+    performance: true
+    vsa: true
+    debugging: false
