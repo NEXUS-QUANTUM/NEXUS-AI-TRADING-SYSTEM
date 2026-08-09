@@ -1,0 +1,427 @@
+# trading/bots/swing_bot/config/vwap_configs.yaml
+
+# ============================================================================
+# NEXUS AI TRADING SYSTEM - Swing Bot VWAP Configuration
+# Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+# ============================================================================
+#
+# Description: Complete VWAP (Volume-Weighted Average Price) configuration for swing trading bot
+# Framework: VWAP Analysis - Volume-Weighted Price Benchmark
+# Version: 3.0.0
+#
+# The VWAP configuration enables the bot to analyze and trade using
+# Volume-Weighted Average Price as a benchmark for execution and
+# market sentiment analysis.
+# ============================================================================
+
+# ----------------------------------------------------------------------------
+# General Configuration
+# ----------------------------------------------------------------------------
+vwap:
+  enabled: true
+  version: "3.0.0"
+  description: "VWAP Analysis for swing trading"
+  
+  # VWAP types
+  types:
+    - "standard"
+    - "anchored"
+    - "rolling"
+    - "cumulative"
+    - "banded"
+  
+  # Timeframes
+  timeframes:
+    - "1m"
+    - "5m"
+    - "15m"
+    - "30m"
+    - "1h"
+    - "4h"
+    - "1d"
+  
+  default_timeframe: "1h"
+
+# ----------------------------------------------------------------------------
+# Standard VWAP
+# ----------------------------------------------------------------------------
+standard_vwap:
+  enabled: true
+  description: "Standard VWAP configuration"
+  
+  # Parameters
+  parameters:
+    lookback_period: 20
+    calculation_method: "cumulative"
+    reset_time: "daily"
+    min_volume: 100
+    max_volume: 10000
+    confidence_threshold: 0.7
+  
+  # VWAP metrics
+  metrics:
+    vwap:
+      enabled: true
+      calculation: "cumulative"
+      lookback_period: 20
+    
+    vwap_deviation:
+      enabled: true
+      calculation: "percentage"
+      lookback_period: 20
+    
+    vwap_volume:
+      enabled: true
+      calculation: "sum"
+      lookback_period: 20
+  
+  # VWAP bands
+  bands:
+    enabled: true
+    deviation_levels:
+      - 1
+      - 2
+      - 3
+    calculation_method: "standard_deviation"
+  
+  # Signals
+  signals:
+    vwap_below:
+      description: "Price below VWAP signal"
+      conditions:
+        - "price_<_vwap"
+        - "vwap_deviation_>_threshold"
+        - "volume_confirmation"
+      confidence: 0.6
+    
+    vwap_above:
+      description: "Price above VWAP signal"
+      conditions:
+        - "price_>_vwap"
+        - "vwap_deviation_>_threshold"
+        - "volume_confirmation"
+      confidence: 0.6
+    
+    vwap_touch:
+      description: "VWAP touch signal"
+      conditions:
+        - "price_touching_vwap"
+        - "volume_confirmation"
+        - "support_resistance_confirmed"
+      confidence: 0.7
+
+# ----------------------------------------------------------------------------
+# Anchored VWAP
+# ----------------------------------------------------------------------------
+anchored_vwap:
+  enabled: true
+  description: "Anchored VWAP configuration"
+  
+  # Parameters
+  parameters:
+    lookback_period: 50
+    anchor_method: "event_based"
+    anchor_events:
+      - "high"
+      - "low"
+      - "breakout"
+      - "reversal"
+    min_volume: 100
+    max_volume: 10000
+    confidence_threshold: 0.7
+  
+  # Anchor events
+  events:
+    - "price_high"
+    - "price_low"
+    - "breakout"
+    - "reversal"
+    - "gap"
+    - "volume_spike"
+  
+  # Signals
+  signals:
+    anchored_vwap_support:
+      description: "Anchored VWAP support signal"
+      conditions:
+        - "price_at_anchored_vwap"
+        - "volume_confirmation"
+        - "support_confirmed"
+      confidence: 0.75
+    
+    anchored_vwap_resistance:
+      description: "Anchored VWAP resistance signal"
+      conditions:
+        - "price_at_anchored_vwap"
+        - "volume_confirmation"
+        - "resistance_confirmed"
+      confidence: 0.75
+
+# ----------------------------------------------------------------------------
+# Rolling VWAP
+# ----------------------------------------------------------------------------
+rolling_vwap:
+  enabled: true
+  description: "Rolling VWAP configuration"
+  
+  # Parameters
+  parameters:
+    lookback_period: 20
+    rolling_window: 10
+    calculation_method: "rolling"
+    min_volume: 100
+    max_volume: 10000
+    confidence_threshold: 0.7
+  
+  # Rolling metrics
+  metrics:
+    rolling_vwap:
+      enabled: true
+      calculation: "rolling"
+      lookback_period: 20
+    
+    rolling_volume:
+      enabled: true
+      calculation: "sum"
+      lookback_period: 20
+    
+    rolling_deviation:
+      enabled: true
+      calculation: "percentage"
+      lookback_period: 20
+  
+  # Signals
+  signals:
+    rolling_vwap_breakout:
+      description: "Rolling VWAP breakout signal"
+      conditions:
+        - "price_above_rolling_vwap"
+        - "volume_confirmation"
+        - "momentum_increasing"
+      confidence: 0.75
+    
+    rolling_vwap_breakdown:
+      description: "Rolling VWAP breakdown signal"
+      conditions:
+        - "price_below_rolling_vwap"
+        - "volume_confirmation"
+        - "momentum_decreasing"
+      confidence: 0.75
+
+# ----------------------------------------------------------------------------
+# Cumulative VWAP
+# ----------------------------------------------------------------------------
+cumulative_vwap:
+  enabled: true
+  description: "Cumulative VWAP configuration"
+  
+  # Parameters
+  parameters:
+    lookback_period: 50
+    calculation_method: "cumulative"
+    reset_time: "session"
+    min_volume: 100
+    max_volume: 10000
+    confidence_threshold: 0.7
+  
+  # Cumulative metrics
+  metrics:
+    cumulative_vwap:
+      enabled: true
+      calculation: "cumulative"
+      lookback_period: 50
+    
+    cumulative_volume:
+      enabled: true
+      calculation: "sum"
+      lookback_period: 50
+    
+    cumulative_deviation:
+      enabled: true
+      calculation: "percentage"
+      lookback_period: 50
+  
+  # Signals
+  signals:
+    cumulative_vwap_support:
+      description: "Cumulative VWAP support signal"
+      conditions:
+        - "price_at_cumulative_vwap"
+        - "volume_confirmation"
+        - "support_confirmed"
+      confidence: 0.7
+    
+    cumulative_vwap_resistance:
+      description: "Cumulative VWAP resistance signal"
+      conditions:
+        - "price_at_cumulative_vwap"
+        - "volume_confirmation"
+        - "resistance_confirmed"
+      confidence: 0.7
+
+# ----------------------------------------------------------------------------
+# Banded VWAP
+# ----------------------------------------------------------------------------
+banded_vwap:
+  enabled: true
+  description: "Banded VWAP configuration"
+  
+  # Parameters
+  parameters:
+    lookback_period: 20
+    band_width: 0.02
+    band_method: "standard_deviation"
+    min_volume: 100
+    max_volume: 10000
+    confidence_threshold: 0.7
+  
+  # Bands
+  bands:
+    upper_band:
+      enabled: true
+      calculation: "vwap_plus_std"
+      multiplier: 2
+    
+    lower_band:
+      enabled: true
+      calculation: "vwap_minus_std"
+      multiplier: 2
+  
+  # Signals
+  signals:
+    banded_vwap_breakout:
+      description: "Banded VWAP breakout signal"
+      conditions:
+        - "price_above_upper_band"
+        - "volume_confirmation"
+        - "momentum_increasing"
+      confidence: 0.8
+    
+    banded_vwap_breakdown:
+      description: "Banded VWAP breakdown signal"
+      conditions:
+        - "price_below_lower_band"
+        - "volume_confirmation"
+        - "momentum_decreasing"
+      confidence: 0.8
+    
+    banded_vwap_reversal:
+      description: "Banded VWAP reversal signal"
+      conditions:
+        - "price_touching_bands"
+        - "volume_confirmation"
+        - "support_resistance_confirmed"
+      confidence: 0.75
+
+# ----------------------------------------------------------------------------
+# VWAP Signals
+# ----------------------------------------------------------------------------
+signals:
+  enabled: true
+  description: "VWAP-based trading signals"
+  
+  # Signal types
+  types:
+    vwap_buy:
+      description: "VWAP buy signal"
+      conditions:
+        - "vwap_support_confirmed"
+        - "volume_confirmation"
+        - "momentum_increasing"
+        - "price_above_vwap"
+      confidence: 0.75
+    
+    vwap_sell:
+      description: "VWAP sell signal"
+      conditions:
+        - "vwap_resistance_confirmed"
+        - "volume_confirmation"
+        - "momentum_decreasing"
+        - "price_below_vwap"
+      confidence: 0.75
+    
+    vwap_hedge:
+      description: "VWAP hedge signal"
+      conditions:
+        - "vwap_deviation_high"
+        - "uncertain_direction"
+        - "volume_confirmation"
+      confidence: 0.6
+  
+  # Signal confirmation
+  confirmation:
+    required_confirmations: 2
+    confirmation_sources:
+      - "price_action"
+      - "volume"
+      - "technical_indicators"
+
+# ----------------------------------------------------------------------------
+# Risk Management
+# ----------------------------------------------------------------------------
+risk_management:
+  enabled: true
+  description: "Risk management for VWAP trading"
+  
+  # Risk parameters
+  parameters:
+    max_position: 0.05
+    max_daily_loss: 0.02
+    max_drawdown: 0.1
+    risk_per_trade: 0.01
+    
+    # VWAP-based stop loss
+    stop_loss:
+      type: "vwap_based"
+      distance: 0.01
+      atr_multiplier: 1.5
+      min: 0.005
+      max: 0.02
+    
+    # VWAP-based take profit
+    take_profit:
+      type: "vwap_based"
+      multiplier: 2.5
+      min: 0.01
+      max: 0.05
+
+# ----------------------------------------------------------------------------
+# Performance Monitoring
+# ----------------------------------------------------------------------------
+performance_monitoring:
+  enabled: true
+  description: "Performance monitoring for VWAP trading"
+  
+  metrics:
+    - "win_rate"
+    - "profit_factor"
+    - "sharpe_ratio"
+    - "max_drawdown"
+    - "average_trade"
+    - "consecutive_wins"
+    - "consecutive_losses"
+    - "vwap_accuracy"
+  
+  targets:
+    min_win_rate: 0.5
+    min_profit_factor: 1.5
+    min_sharpe_ratio: 0.6
+    max_max_drawdown: 0.1
+
+# ----------------------------------------------------------------------------
+# Logging Configuration
+# ----------------------------------------------------------------------------
+logging:
+  enabled: true
+  level: "INFO"
+  file: "logs/vwap_bot.log"
+  rotation: "daily"
+  retention: 30  # days
+  
+  log_categories:
+    signals: true
+    trades: true
+    errors: true
+    performance: true
+    vwap: true
+    debugging: false
