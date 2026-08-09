@@ -1,0 +1,436 @@
+# trading/bots/swing_bot/config/decision_configs.yaml
+
+# ============================================================================
+# NEXUS AI TRADING SYSTEM - Swing Bot Decision Configuration
+# Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+# ============================================================================
+#
+# Description: Complete Decision configuration for swing trading bot
+# Framework: Decision Making - Trading Decision Analysis & Optimization
+# Version: 3.0.0
+#
+# The Decision configuration enables the bot to make optimal trading
+# decisions using advanced decision-making frameworks and analysis.
+# ============================================================================
+
+# ----------------------------------------------------------------------------
+# General Configuration
+# ----------------------------------------------------------------------------
+decision:
+  enabled: true
+  version: "3.0.0"
+  description: "Decision Making for swing trading"
+  
+  # Decision types
+  types:
+    - "entry"
+    - "exit"
+    - "hedge"
+    - "scale"
+    - "pause"
+  
+  # Decision modes
+  modes:
+    - "aggressive"
+    - "moderate"
+    - "conservative"
+    - "defensive"
+  
+  default_mode: "moderate"
+  
+  # Decision intervals
+  intervals:
+    - 1  # bar
+    - 5  # bars
+    - 10  # bars
+    - 20  # bars
+  
+  default_interval: 1
+
+# ----------------------------------------------------------------------------
+# Entry Decisions
+# ----------------------------------------------------------------------------
+entry_decisions:
+  enabled: true
+  description: "Entry decision configuration"
+  
+  # Parameters
+  parameters:
+    lookback_period: 50
+    min_confidence: 0.6
+    max_confidence: 0.9
+    decision_threshold: 0.5
+    risk_reward_ratio: 2.0
+  
+  # Entry signals
+  signals:
+    bullish_entry:
+      description: "Bullish entry signal"
+      conditions:
+        - "trend_up"
+        - "momentum_increasing"
+        - "volume_confirmation"
+        - "support_confirmed"
+      confidence: 0.8
+    
+    bearish_entry:
+      description: "Bearish entry signal"
+      conditions:
+        - "trend_down"
+        - "momentum_decreasing"
+        - "volume_confirmation"
+        - "resistance_confirmed"
+      confidence: 0.8
+    
+    neutral_entry:
+      description: "Neutral entry signal"
+      conditions:
+        - "trend_sideways"
+        - "momentum_uncertain"
+        - "volume_uncertain"
+        - "no_clear_support_resistance"
+      confidence: 0.5
+  
+  # Decision rules
+  rules:
+    entry_rule_bullish:
+      description: "Bullish entry rule"
+      conditions:
+        - "bullish_entry"
+        - "risk_reward_>_2.0"
+        - "position_size_<_max"
+      action: "enter_long"
+    
+    entry_rule_bearish:
+      description: "Bearish entry rule"
+      conditions:
+        - "bearish_entry"
+        - "risk_reward_>_2.0"
+        - "position_size_<_max"
+      action: "enter_short"
+
+# ----------------------------------------------------------------------------
+# Exit Decisions
+# ----------------------------------------------------------------------------
+exit_decisions:
+  enabled: true
+  description: "Exit decision configuration"
+  
+  # Parameters
+  parameters:
+    lookback_period: 50
+    min_confidence: 0.6
+    max_confidence: 0.9
+    decision_threshold: 0.5
+    risk_reward_ratio: 2.0
+  
+  # Exit signals
+  signals:
+    bullish_exit:
+      description: "Bullish exit signal"
+      conditions:
+        - "trend_reversing_down"
+        - "momentum_decreasing"
+        - "volume_confirmation"
+        - "resistance_confirmed"
+      confidence: 0.8
+    
+    bearish_exit:
+      description: "Bearish exit signal"
+      conditions:
+        - "trend_reversing_up"
+        - "momentum_increasing"
+        - "volume_confirmation"
+        - "support_confirmed"
+      confidence: 0.8
+    
+    neutral_exit:
+      description: "Neutral exit signal"
+      conditions:
+        - "trend_sideways"
+        - "momentum_uncertain"
+        - "volume_uncertain"
+        - "no_clear_reversal"
+      confidence: 0.5
+  
+  # Decision rules
+  rules:
+    exit_rule_bullish:
+      description: "Bullish exit rule"
+      conditions:
+        - "bullish_exit"
+        - "profit_target_hit"
+        - "stop_loss_hit"
+      action: "exit_long"
+    
+    exit_rule_bearish:
+      description: "Bearish exit rule"
+      conditions:
+        - "bearish_exit"
+        - "profit_target_hit"
+        - "stop_loss_hit"
+      action: "exit_short"
+
+# ----------------------------------------------------------------------------
+# Hedge Decisions
+# ----------------------------------------------------------------------------
+hedge_decisions:
+  enabled: true
+  description: "Hedge decision configuration"
+  
+  # Parameters
+  parameters:
+    lookback_period: 50
+    min_confidence: 0.6
+    max_confidence: 0.9
+    decision_threshold: 0.5
+    hedge_ratio: 0.5
+  
+  # Hedge signals
+  signals:
+    hedge_required:
+      description: "Hedge required signal"
+      conditions:
+        - "risk_high"
+        - "volatility_high"
+        - "correlation_high"
+        - "drawdown_high"
+      confidence: 0.7
+    
+    hedge_not_required:
+      description: "Hedge not required signal"
+      conditions:
+        - "risk_low"
+        - "volatility_low"
+        - "correlation_low"
+        - "drawdown_low"
+      confidence: 0.7
+  
+  # Decision rules
+  rules:
+    hedge_rule:
+      description: "Hedge rule"
+      conditions:
+        - "hedge_required"
+        - "hedge_ratio_>_0.3"
+        - "position_size_>_threshold"
+      action: "apply_hedge"
+    
+    no_hedge_rule:
+      description: "No hedge rule"
+      conditions:
+        - "hedge_not_required"
+        - "hedge_ratio_<_0.3"
+        - "position_size_<_threshold"
+      action: "no_hedge"
+
+# ----------------------------------------------------------------------------
+# Scale Decisions
+# ----------------------------------------------------------------------------
+scale_decisions:
+  enabled: true
+  description: "Scale decision configuration"
+  
+  # Parameters
+  parameters:
+    lookback_period: 50
+    min_confidence: 0.6
+    max_confidence: 0.9
+    decision_threshold: 0.5
+    scale_factor: 0.5
+  
+  # Scale signals
+  signals:
+    scale_in_signal:
+      description: "Scale in signal"
+      conditions:
+        - "trend_strong"
+        - "momentum_increasing"
+        - "volume_confirmation"
+        - "support_confirmed"
+      confidence: 0.8
+    
+    scale_out_signal:
+      description: "Scale out signal"
+      conditions:
+        - "trend_weakening"
+        - "momentum_decreasing"
+        - "volume_confirmation"
+        - "resistance_confirmed"
+      confidence: 0.8
+  
+  # Decision rules
+  rules:
+    scale_in_rule:
+      description: "Scale in rule"
+      conditions:
+        - "scale_in_signal"
+        - "position_size_<_max"
+        - "risk_<_threshold"
+      action: "scale_in"
+    
+    scale_out_rule:
+      description: "Scale out rule"
+      conditions:
+        - "scale_out_signal"
+        - "position_size_>_min"
+        - "profit_>_threshold"
+      action: "scale_out"
+
+# ----------------------------------------------------------------------------
+# Pause Decisions
+# ----------------------------------------------------------------------------
+pause_decisions:
+  enabled: true
+  description: "Pause decision configuration"
+  
+  # Parameters
+  parameters:
+    lookback_period: 50
+    min_confidence: 0.6
+    max_confidence: 0.9
+    decision_threshold: 0.5
+    pause_duration: 60  # minutes
+  
+  # Pause signals
+  signals:
+    pause_required:
+      description: "Pause required signal"
+      conditions:
+        - "consecutive_losses_>_3"
+        - "drawdown_>_threshold"
+        - "volatility_high"
+        - "uncertainty_high"
+      confidence: 0.8
+    
+    resume_required:
+      description: "Resume required signal"
+      conditions:
+        - "consecutive_wins_>_2"
+        - "drawdown_<_threshold"
+        - "volatility_low"
+        - "certainty_high"
+      confidence: 0.8
+  
+  # Decision rules
+  rules:
+    pause_rule:
+      description: "Pause rule"
+      conditions:
+        - "pause_required"
+        - "pause_duration_<max"
+        - "recovery_needed"
+      action: "pause_trading"
+    
+    resume_rule:
+      description: "Resume rule"
+      conditions:
+        - "resume_required"
+        - "pause_duration_>min"
+        - "recovery_complete"
+      action: "resume_trading"
+
+# ----------------------------------------------------------------------------
+# Decision Signals
+# ----------------------------------------------------------------------------
+signals:
+  enabled: true
+  description: "Decision-based trading signals"
+  
+  # Signal types
+  types:
+    decision_buy:
+      description: "Decision buy signal"
+      conditions:
+        - "bullish_entry"
+        - "exit_signal_false"
+        - "hedge_not_required"
+        - "scale_in_signal"
+      confidence: 0.85
+    
+    decision_sell:
+      description: "Decision sell signal"
+      conditions:
+        - "bearish_entry"
+        - "exit_signal_true"
+        - "hedge_required"
+        - "scale_out_signal"
+      confidence: 0.85
+    
+    decision_hedge:
+      description: "Decision hedge signal"
+      conditions:
+        - "hedge_required"
+        - "risk_high"
+        - "volatility_high"
+        - "drawdown_high"
+      confidence: 0.7
+  
+  # Signal confirmation
+  confirmation:
+    required_confirmations: 2
+    confirmation_sources:
+      - "price_action"
+      - "volume"
+      - "technical_indicators"
+
+# ----------------------------------------------------------------------------
+# Risk Management
+# ----------------------------------------------------------------------------
+risk_management:
+  enabled: true
+  description: "Risk management for decision trading"
+  
+  # Risk parameters
+  parameters:
+    max_position: 0.05
+    max_daily_loss: 0.02
+    max_drawdown: 0.1
+    risk_per_trade: 0.01
+    
+    # Decision-based stop loss
+    stop_loss:
+      type: "decision_based"
+      threshold: 0.02
+      update_interval: 10  # bars
+
+# ----------------------------------------------------------------------------
+# Performance Monitoring
+# ----------------------------------------------------------------------------
+performance_monitoring:
+  enabled: true
+  description: "Performance monitoring for decision trading"
+  
+  metrics:
+    - "win_rate"
+    - "profit_factor"
+    - "sharpe_ratio"
+    - "max_drawdown"
+    - "average_trade"
+    - "consecutive_wins"
+    - "consecutive_losses"
+    - "decision_accuracy"
+  
+  targets:
+    min_win_rate: 0.5
+    min_profit_factor: 1.5
+    min_sharpe_ratio: 0.6
+    max_max_drawdown: 0.1
+
+# ----------------------------------------------------------------------------
+# Logging Configuration
+# ----------------------------------------------------------------------------
+logging:
+  enabled: true
+  level: "INFO"
+  file: "logs/decision_bot.log"
+  rotation: "daily"
+  retention: 30  # days
+  
+  log_categories:
+    signals: true
+    trades: true
+    errors: true
+    performance: true
+    decisions: true
+    debugging: false
