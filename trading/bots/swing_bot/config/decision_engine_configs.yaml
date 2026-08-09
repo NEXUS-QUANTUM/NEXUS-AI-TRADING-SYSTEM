@@ -1,0 +1,390 @@
+# trading/bots/swing_bot/config/decision_engine_configs.yaml
+
+# ============================================================================
+# NEXUS AI TRADING SYSTEM - Swing Bot Decision Engine Configuration
+# Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+# ============================================================================
+#
+# Description: Complete Decision Engine configuration for swing trading bot
+# Framework: Decision Engine - Advanced Trading Decision Making
+# Version: 3.0.0
+#
+# The Decision Engine provides advanced decision-making capabilities for
+# the swing trading bot, enabling optimal trading decisions based on
+# multiple factors and analysis frameworks.
+# ============================================================================
+
+# ----------------------------------------------------------------------------
+# General Configuration
+# ----------------------------------------------------------------------------
+decision_engine:
+  enabled: true
+  version: "3.0.0"
+  description: "Decision Engine for swing trading"
+  
+  # Engine modes
+  modes:
+    - "rule_based"
+    - "ml_based"
+    - "hybrid"
+    - "ensemble"
+  
+  default_mode: "hybrid"
+  
+  # Decision types
+  types:
+    - "entry"
+    - "exit"
+    - "hedge"
+    - "scale"
+    - "pause"
+    - "rebalance"
+  
+  # Confidence levels
+  confidence_levels:
+    low: 0.3
+    medium: 0.6
+    high: 0.8
+    very_high: 0.9
+
+# ----------------------------------------------------------------------------
+# Rule-Based Engine
+# ----------------------------------------------------------------------------
+rule_based_engine:
+  enabled: true
+  description: "Rule-based decision engine configuration"
+  
+  # Parameters
+  parameters:
+    lookback_period: 50
+    min_confidence: 0.6
+    max_confidence: 0.9
+    decision_threshold: 0.5
+  
+  # Rule types
+  rules:
+    entry_rules:
+      enabled: true
+      rules:
+        - name: "bullish_trend_entry"
+          conditions:
+            - "trend_strength_>_0.3"
+            - "momentum_>_0.5"
+            - "volume_>_average"
+          confidence: 0.8
+        
+        - name: "bearish_trend_entry"
+          conditions:
+            - "trend_strength_<_-0.3"
+            - "momentum_<_-0.5"
+            - "volume_>_average"
+          confidence: 0.8
+        
+        - name: "breakout_entry"
+          conditions:
+            - "price_above_resistance"
+            - "volume_>_2x_average"
+            - "momentum_increasing"
+          confidence: 0.85
+    
+    exit_rules:
+      enabled: true
+      rules:
+        - name: "profit_target_exit"
+          conditions:
+            - "profit_>_target"
+            - "momentum_decreasing"
+          confidence: 0.9
+        
+        - name: "stop_loss_exit"
+          conditions:
+            - "loss_>_stop_loss"
+            - "momentum_decreasing"
+          confidence: 0.9
+        
+        - name: "trend_reversal_exit"
+          conditions:
+            - "trend_reversing"
+            - "momentum_changing"
+            - "volume_confirmation"
+          confidence: 0.85
+    
+    hedge_rules:
+      enabled: true
+      rules:
+        - name: "risk_hedge"
+          conditions:
+            - "risk_>_threshold"
+            - "volatility_high"
+            - "correlation_high"
+          confidence: 0.7
+        
+        - name: "drawdown_hedge"
+          conditions:
+            - "drawdown_>_threshold"
+            - "consecutive_losses_>_3"
+          confidence: 0.8
+  
+  # Rule priority
+  priority:
+    - "entry_rules"
+    - "exit_rules"
+    - "hedge_rules"
+
+# ----------------------------------------------------------------------------
+# ML-Based Engine
+# ----------------------------------------------------------------------------
+ml_based_engine:
+  enabled: true
+  description: "ML-based decision engine configuration"
+  
+  # Parameters
+  parameters:
+    lookback_period: 100
+    min_confidence: 0.6
+    max_confidence: 0.9
+    decision_threshold: 0.5
+    model_update_interval: 50  # bars
+  
+  # ML models
+  models:
+    classification:
+      enabled: true
+      type: "random_forest"
+      features:
+        - "technical_indicators"
+        - "price_action"
+        - "volume_metrics"
+      target: "signal_label"
+      confidence_threshold: 0.7
+    
+    regression:
+      enabled: true
+      type: "xgboost"
+      features:
+        - "technical_indicators"
+        - "price_action"
+        - "volume_metrics"
+      target: "price_change"
+      confidence_threshold: 0.6
+    
+    ensemble:
+      enabled: true
+      models:
+        - "classification"
+        - "regression"
+      weights:
+        classification: 0.6
+        regression: 0.4
+  
+  # Decision rules
+  rules:
+    ml_entry:
+      conditions:
+        - "ml_prediction_>_threshold"
+        - "confidence_>_min_confidence"
+      action: "enter"
+    
+    ml_exit:
+      conditions:
+        - "ml_prediction_<_threshold"
+        - "confidence_>_min_confidence"
+      action: "exit"
+    
+    ml_hedge:
+      conditions:
+        - "ml_prediction_uncertain"
+        - "risk_high"
+      action: "hedge"
+
+# ----------------------------------------------------------------------------
+# Hybrid Engine
+# ----------------------------------------------------------------------------
+hybrid_engine:
+  enabled: true
+  description: "Hybrid decision engine configuration"
+  
+  # Parameters
+  parameters:
+    lookback_period: 50
+    min_confidence: 0.6
+    max_confidence: 0.9
+    decision_threshold: 0.5
+    rule_weight: 0.5
+    ml_weight: 0.5
+  
+  # Combination methods
+  methods:
+    - "weighted_average"
+    - "voting"
+    - "stacking"
+  
+  default_method: "weighted_average"
+  
+  # Decision rules
+  rules:
+    hybrid_entry:
+      conditions:
+        - "rule_based_entry"
+        - "ml_based_entry"
+        - "combined_confidence_>_threshold"
+      action: "enter"
+    
+    hybrid_exit:
+      conditions:
+        - "rule_based_exit"
+        - "ml_based_exit"
+        - "combined_confidence_>_threshold"
+      action: "exit"
+    
+    hybrid_hedge:
+      conditions:
+        - "rule_based_hedge"
+        - "ml_based_hedge"
+        - "combined_confidence_>_threshold"
+      action: "hedge"
+
+# ----------------------------------------------------------------------------
+# Ensemble Engine
+# ----------------------------------------------------------------------------
+ensemble_engine:
+  enabled: true
+  description: "Ensemble decision engine configuration"
+  
+  # Parameters
+  parameters:
+    lookback_period: 50
+    min_confidence: 0.6
+    max_confidence: 0.9
+    decision_threshold: 0.5
+    num_models: 5
+  
+  # Ensemble methods
+  methods:
+    - "bagging"
+    - "boosting"
+    - "stacking"
+  
+  default_method: "stacking"
+  
+  # Decision rules
+  rules:
+    ensemble_entry:
+      conditions:
+        - "ensemble_confidence_>_threshold"
+        - "majority_vote_entry"
+        - "risk_low"
+      action: "enter"
+    
+    ensemble_exit:
+      conditions:
+        - "ensemble_confidence_>_threshold"
+        - "majority_vote_exit"
+        - "risk_high"
+      action: "exit"
+
+# ----------------------------------------------------------------------------
+# Decision Signals
+# ----------------------------------------------------------------------------
+signals:
+  enabled: true
+  description: "Decision engine signals"
+  
+  # Signal types
+  types:
+    engine_buy:
+      description: "Engine buy signal"
+      conditions:
+        - "decision_engine_buy"
+        - "confidence_high"
+        - "risk_low"
+        - "reward_high"
+      confidence: 0.85
+    
+    engine_sell:
+      description: "Engine sell signal"
+      conditions:
+        - "decision_engine_sell"
+        - "confidence_high"
+        - "risk_high"
+        - "reward_low"
+      confidence: 0.85
+    
+    engine_hedge:
+      description: "Engine hedge signal"
+      conditions:
+        - "decision_engine_hedge"
+        - "confidence_medium"
+        - "risk_medium"
+        - "uncertainty_high"
+      confidence: 0.7
+  
+  # Signal confirmation
+  confirmation:
+    required_confirmations: 2
+    confirmation_sources:
+      - "price_action"
+      - "volume"
+      - "technical_indicators"
+
+# ----------------------------------------------------------------------------
+# Risk Management
+# ----------------------------------------------------------------------------
+risk_management:
+  enabled: true
+  description: "Risk management for decision engine"
+  
+  # Risk parameters
+  parameters:
+    max_position: 0.05
+    max_daily_loss: 0.02
+    max_drawdown: 0.1
+    risk_per_trade: 0.01
+    
+    # Engine-based stop loss
+    stop_loss:
+      type: "engine_based"
+      threshold: 0.02
+      update_interval: 10  # bars
+
+# ----------------------------------------------------------------------------
+# Performance Monitoring
+# ----------------------------------------------------------------------------
+performance_monitoring:
+  enabled: true
+  description: "Performance monitoring for decision engine"
+  
+  metrics:
+    - "win_rate"
+    - "profit_factor"
+    - "sharpe_ratio"
+    - "max_drawdown"
+    - "average_trade"
+    - "consecutive_wins"
+    - "consecutive_losses"
+    - "decision_accuracy"
+    - "model_accuracy"
+  
+  targets:
+    min_win_rate: 0.5
+    min_profit_factor: 1.5
+    min_sharpe_ratio: 0.6
+    max_max_drawdown: 0.1
+
+# ----------------------------------------------------------------------------
+# Logging Configuration
+# ----------------------------------------------------------------------------
+logging:
+  enabled: true
+  level: "INFO"
+  file: "logs/decision_engine.log"
+  rotation: "daily"
+  retention: 30  # days
+  
+  log_categories:
+    signals: true
+    trades: true
+    errors: true
+    performance: true
+    decisions: true
+    debugging: false
