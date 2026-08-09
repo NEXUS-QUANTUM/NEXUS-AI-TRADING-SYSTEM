@@ -1,0 +1,429 @@
+# trading/bots/swing_bot/config/whale_tracking_configs.yaml
+
+# ============================================================================
+# NEXUS AI TRADING SYSTEM - Swing Bot Whale Tracking Configuration
+# Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+# ============================================================================
+#
+# Description: Complete Whale Tracking configuration for swing trading bot
+# Framework: Whale Activity Analysis - Large Holder & Smart Money Tracking
+# Version: 3.0.0
+#
+# The Whale Tracking configuration enables the bot to track and analyze
+# large holder (whale) activity, including wallet movements, balance changes,
+# and accumulation/distribution patterns.
+# ============================================================================
+
+# ----------------------------------------------------------------------------
+# General Configuration
+# ----------------------------------------------------------------------------
+whale_tracking:
+  enabled: true
+  version: "3.0.0"
+  description: "Whale Tracking Analysis for swing trading"
+  
+  # Whale tracking types
+  types:
+    - "wallet_activity"
+    - "balance_changes"
+    - "accumulation_distribution"
+    - "exchange_flows"
+    - "large_transactions"
+  
+  # Timeframes
+  timeframes:
+    - "1m"
+    - "5m"
+    - "15m"
+    - "30m"
+    - "1h"
+    - "4h"
+    - "1d"
+    - "1w"
+  
+  default_timeframe: "1h"
+
+# ----------------------------------------------------------------------------
+# Wallet Activity Tracking
+# ----------------------------------------------------------------------------
+wallet_activity:
+  enabled: true
+  description: "Wallet activity tracking configuration"
+  
+  # Parameters
+  parameters:
+    lookback_period: 100
+    min_balance: 100000
+    max_balance: 10000000
+    min_activity: 1
+    max_activity: 100
+    confidence_threshold: 0.7
+  
+  # Wallet metrics
+  metrics:
+    active_wallets:
+      enabled: true
+      calculation: "count"
+      lookback_period: 10
+    
+    transaction_volume:
+      enabled: true
+      calculation: "sum"
+      lookback_period: 10
+    
+    average_transaction:
+      enabled: true
+      calculation: "mean"
+      lookback_period: 10
+    
+    wallet_concentration:
+      enabled: true
+      calculation: "concentration_ratio"
+      lookback_period: 10
+  
+  # Signals
+  signals:
+    whale_accumulation:
+      description: "Whale accumulation signal"
+      conditions:
+        - "active_wallets_increasing"
+        - "transaction_volume_increasing"
+        - "wallet_concentration_increasing"
+        - "price_confirmation"
+      confidence: 0.8
+    
+    whale_distribution:
+      description: "Whale distribution signal"
+      conditions:
+        - "active_wallets_decreasing"
+        - "transaction_volume_decreasing"
+        - "wallet_concentration_decreasing"
+        - "price_confirmation"
+      confidence: 0.8
+
+# ----------------------------------------------------------------------------
+# Balance Changes
+# ----------------------------------------------------------------------------
+balance_changes:
+  enabled: true
+  description: "Balance changes tracking configuration"
+  
+  # Parameters
+  parameters:
+    lookback_period: 100
+    min_change: 1000
+    max_change: 1000000
+    change_threshold: 0.1
+    confidence_threshold: 0.7
+  
+  # Balance metrics
+  metrics:
+    balance_increase:
+      enabled: true
+      calculation: "sum"
+      lookback_period: 10
+    
+    balance_decrease:
+      enabled: true
+      calculation: "sum"
+      lookback_period: 10
+    
+    net_balance_change:
+      enabled: true
+      calculation: "difference"
+      lookback_period: 10
+    
+    balance_volatility:
+      enabled: true
+      calculation: "std_dev"
+      lookback_period: 10
+  
+  # Signals
+  signals:
+    balance_increasing:
+      description: "Balance increasing signal"
+      conditions:
+        - "net_balance_positive"
+        - "balance_volatility_low"
+        - "volume_confirmation"
+      confidence: 0.75
+    
+    balance_decreasing:
+      description: "Balance decreasing signal"
+      conditions:
+        - "net_balance_negative"
+        - "balance_volatility_high"
+        - "volume_confirmation"
+      confidence: 0.75
+
+# ----------------------------------------------------------------------------
+# Accumulation Distribution
+# ----------------------------------------------------------------------------
+accumulation_distribution:
+  enabled: true
+  description: "Accumulation distribution tracking configuration"
+  
+  # Parameters
+  parameters:
+    lookback_period: 50
+    min_accumulation: 0.1
+    max_accumulation: 0.9
+    distribution_threshold: 0.3
+    confidence_threshold: 0.7
+  
+  # Accumulation metrics
+  metrics:
+    accumulation_score:
+      enabled: true
+      calculation: "weighted_score"
+      lookback_period: 20
+    
+    distribution_score:
+      enabled: true
+      calculation: "weighted_score"
+      lookback_period: 20
+    
+    accumulation_ratio:
+      enabled: true
+      calculation: "ratio"
+      lookback_period: 20
+  
+  # Signals
+  signals:
+    accumulation_phase:
+      description: "Accumulation phase signal"
+      conditions:
+        - "accumulation_score_>_0.6"
+        - "distribution_score_<_0.3"
+        - "volume_confirmation"
+      confidence: 0.8
+    
+    distribution_phase:
+      description: "Distribution phase signal"
+      conditions:
+        - "distribution_score_>_0.6"
+        - "accumulation_score_<_0.3"
+        - "volume_confirmation"
+      confidence: 0.8
+
+# ----------------------------------------------------------------------------
+# Exchange Flows
+# ----------------------------------------------------------------------------
+exchange_flows:
+  enabled: true
+  description: "Exchange flows tracking configuration"
+  
+  # Parameters
+  parameters:
+    lookback_period: 50
+    min_flow: 1000
+    max_flow: 1000000
+    flow_threshold: 0.3
+    confidence_threshold: 0.7
+  
+  # Exchanges
+  exchanges:
+    - "binance"
+    - "bybit"
+    - "okx"
+    - "kraken"
+    - "coinbase"
+  
+  # Flow metrics
+  metrics:
+    inflow:
+      enabled: true
+      calculation: "sum"
+      lookback_period: 10
+    
+    outflow:
+      enabled: true
+      calculation: "sum"
+      lookback_period: 10
+    
+    net_flow:
+      enabled: true
+      calculation: "difference"
+      lookback_period: 10
+    
+    flow_ratio:
+      enabled: true
+      calculation: "ratio"
+      lookback_period: 10
+  
+  # Signals
+  signals:
+    exchange_inflow:
+      description: "Exchange inflow signal"
+      conditions:
+        - "inflow_>_outflow"
+        - "flow_ratio_>_1.5"
+        - "volume_confirmation"
+      confidence: 0.7
+    
+    exchange_outflow:
+      description: "Exchange outflow signal"
+      conditions:
+        - "outflow_>_inflow"
+        - "flow_ratio_<_0.5"
+        - "volume_confirmation"
+      confidence: 0.7
+
+# ----------------------------------------------------------------------------
+# Large Transactions
+# ----------------------------------------------------------------------------
+large_transactions:
+  enabled: true
+  description: "Large transactions tracking configuration"
+  
+  # Parameters
+  parameters:
+    lookback_period: 50
+    min_transaction: 10000
+    max_transaction: 1000000
+    transaction_threshold: 0.3
+    confidence_threshold: 0.7
+  
+  # Transaction metrics
+  metrics:
+    transaction_count:
+      enabled: true
+      calculation: "count"
+      lookback_period: 10
+    
+    transaction_volume:
+      enabled: true
+      calculation: "sum"
+      lookback_period: 10
+    
+    average_transaction:
+      enabled: true
+      calculation: "mean"
+      lookback_period: 10
+    
+    transaction_concentration:
+      enabled: true
+      calculation: "concentration_ratio"
+      lookback_period: 10
+  
+  # Signals
+  signals:
+    large_buy:
+      description: "Large buy signal"
+      conditions:
+        - "transaction_volume_increasing"
+        - "large_transactions_dominating"
+        - "price_confirmation"
+      confidence: 0.8
+    
+    large_sell:
+      description: "Large sell signal"
+      conditions:
+        - "transaction_volume_decreasing"
+        - "large_transactions_ending"
+        - "price_confirmation"
+      confidence: 0.8
+
+# ----------------------------------------------------------------------------
+# Whale Signals
+# ----------------------------------------------------------------------------
+signals:
+  enabled: true
+  description: "Whale-based trading signals"
+  
+  # Signal types
+  types:
+    whale_buy:
+      description: "Whale buy signal"
+      conditions:
+        - "whale_accumulation"
+        - "balance_increasing"
+        - "accumulation_phase"
+        - "exchange_outflow"
+      confidence: 0.85
+    
+    whale_sell:
+      description: "Whale sell signal"
+      conditions:
+        - "whale_distribution"
+        - "balance_decreasing"
+        - "distribution_phase"
+        - "exchange_inflow"
+      confidence: 0.85
+    
+    whale_hedge:
+      description: "Whale hedge signal"
+      conditions:
+        - "mixed_whale_activity"
+        - "uncertain_direction"
+        - "volume_confirmation"
+      confidence: 0.6
+  
+  # Signal confirmation
+  confirmation:
+    required_confirmations: 2
+    confirmation_sources:
+      - "price_action"
+      - "volume"
+      - "technical_indicators"
+
+# ----------------------------------------------------------------------------
+# Risk Management
+# ----------------------------------------------------------------------------
+risk_management:
+  enabled: true
+  description: "Risk management for whale trading"
+  
+  # Risk parameters
+  parameters:
+    max_position: 0.05
+    max_daily_loss: 0.02
+    max_drawdown: 0.1
+    risk_per_trade: 0.01
+    
+    # Whale-based stop loss
+    stop_loss:
+      type: "whale_based"
+      threshold: 0.3
+      update_interval: 10  # bars
+
+# ----------------------------------------------------------------------------
+# Performance Monitoring
+# ----------------------------------------------------------------------------
+performance_monitoring:
+  enabled: true
+  description: "Performance monitoring for whale trading"
+  
+  metrics:
+    - "win_rate"
+    - "profit_factor"
+    - "sharpe_ratio"
+    - "max_drawdown"
+    - "average_trade"
+    - "consecutive_wins"
+    - "consecutive_losses"
+    - "whale_accuracy"
+  
+  targets:
+    min_win_rate: 0.5
+    min_profit_factor: 1.5
+    min_sharpe_ratio: 0.6
+    max_max_drawdown: 0.1
+
+# ----------------------------------------------------------------------------
+# Logging Configuration
+# ----------------------------------------------------------------------------
+logging:
+  enabled: true
+  level: "INFO"
+  file: "logs/whale_tracking.log"
+  rotation: "daily"
+  retention: 30  # days
+  
+  log_categories:
+    signals: true
+    trades: true
+    errors: true
+    performance: true
+    whale: true
+    debugging: false
