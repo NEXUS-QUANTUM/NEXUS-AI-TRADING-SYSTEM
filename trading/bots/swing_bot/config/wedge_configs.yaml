@@ -1,0 +1,336 @@
+# trading/bots/swing_bot/config/wedge_configs.yaml
+
+# ============================================================================
+# NEXUS AI TRADING SYSTEM - Swing Bot Wedge Configuration
+# Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+# ============================================================================
+#
+# Description: Complete Wedge Pattern configuration for swing trading bot
+# Framework: Wedge Pattern Analysis - Rising & Falling Wedges
+# Version: 3.0.0
+#
+# The Wedge configuration enables the bot to identify and trade
+# wedge patterns including rising wedges, falling wedges, and
+# symmetrical wedges.
+# ============================================================================
+
+# ----------------------------------------------------------------------------
+# General Configuration
+# ----------------------------------------------------------------------------
+wedge:
+  enabled: true
+  version: "3.0.0"
+  description: "Wedge Pattern Analysis for swing trading"
+  
+  # Wedge types
+  types:
+    - "rising"
+    - "falling"
+    - "symmetrical"
+    - "expanding"
+    - "contracting"
+  
+  # Timeframes
+  timeframes:
+    - "1m"
+    - "5m"
+    - "15m"
+    - "30m"
+    - "1h"
+    - "4h"
+    - "1d"
+  
+  default_timeframe: "1h"
+
+# ----------------------------------------------------------------------------
+# Rising Wedge
+# ----------------------------------------------------------------------------
+rising_wedge:
+  enabled: true
+  description: "Rising wedge configuration"
+  
+  # Parameters
+  parameters:
+    lookback_period: 50
+    min_wedge_duration: 10  # bars
+    max_wedge_duration: 30  # bars
+    wedge_slope: 0.2
+    wedge_width: 0.02
+    volume_threshold: 0.5
+    confidence_threshold: 0.7
+  
+  # Pattern detection
+  detection:
+    min_touches: 2
+    max_touches: 5
+    resistance_slope: 0.1
+    support_slope: 0.05
+    convergence_threshold: 0.01
+  
+  # Signals
+  signals:
+    rising_wedge_breakdown:
+      description: "Rising wedge breakdown signal"
+      conditions:
+        - "rising_wedge_detected"
+        - "volume_confirmation"
+        - "breakdown_detected"
+        - "momentum_decreasing"
+      confidence: 0.8
+    
+    rising_wedge_false:
+      description: "Rising wedge false breakout"
+      conditions:
+        - "rising_wedge_detected"
+        - "false_breakout"
+        - "volume_decreasing"
+        - "price_returning"
+      confidence: 0.6
+
+# ----------------------------------------------------------------------------
+# Falling Wedge
+# ----------------------------------------------------------------------------
+falling_wedge:
+  enabled: true
+  description: "Falling wedge configuration"
+  
+  # Parameters
+  parameters:
+    lookback_period: 50
+    min_wedge_duration: 10  # bars
+    max_wedge_duration: 30  # bars
+    wedge_slope: 0.2
+    wedge_width: 0.02
+    volume_threshold: 0.5
+    confidence_threshold: 0.7
+  
+  # Pattern detection
+  detection:
+    min_touches: 2
+    max_touches: 5
+    resistance_slope: 0.05
+    support_slope: 0.1
+    convergence_threshold: 0.01
+  
+  # Signals
+  signals:
+    falling_wedge_breakout:
+      description: "Falling wedge breakout signal"
+      conditions:
+        - "falling_wedge_detected"
+        - "volume_confirmation"
+        - "breakout_detected"
+        - "momentum_increasing"
+      confidence: 0.8
+    
+    falling_wedge_false:
+      description: "Falling wedge false breakdown"
+      conditions:
+        - "falling_wedge_detected"
+        - "false_breakdown"
+        - "volume_decreasing"
+        - "price_returning"
+      confidence: 0.6
+
+# ----------------------------------------------------------------------------
+# Symmetrical Wedge
+# ----------------------------------------------------------------------------
+symmetrical_wedge:
+  enabled: true
+  description: "Symmetrical wedge configuration"
+  
+  # Parameters
+  parameters:
+    lookback_period: 50
+    min_wedge_duration: 10  # bars
+    max_wedge_duration: 30  # bars
+    wedge_slope: 0.2
+    wedge_width: 0.02
+    volume_threshold: 0.5
+    confidence_threshold: 0.7
+  
+  # Pattern detection
+  detection:
+    min_touches: 2
+    max_touches: 5
+    resistance_slope: 0.1
+    support_slope: 0.1
+    convergence_threshold: 0.01
+  
+  # Signals
+  signals:
+    symmetrical_wedge_breakout:
+      description: "Symmetrical wedge breakout"
+      conditions:
+        - "symmetrical_wedge_detected"
+        - "volume_confirmation"
+        - "breakout_detected"
+        - "momentum_confirmed"
+      confidence: 0.75
+    
+    symmetrical_wedge_breakdown:
+      description: "Symmetrical wedge breakdown"
+      conditions:
+        - "symmetrical_wedge_detected"
+        - "volume_confirmation"
+        - "breakdown_detected"
+        - "momentum_confirmed"
+      confidence: 0.75
+
+# ----------------------------------------------------------------------------
+# Expanding Wedge
+# ----------------------------------------------------------------------------
+expanding_wedge:
+  enabled: true
+  description: "Expanding wedge configuration"
+  
+  # Parameters
+  parameters:
+    lookback_period: 50
+    min_wedge_duration: 10  # bars
+    max_wedge_duration: 30  # bars
+    wedge_slope: 0.3
+    wedge_width: 0.03
+    volume_threshold: 0.5
+    confidence_threshold: 0.7
+  
+  # Pattern detection
+  detection:
+    min_touches: 2
+    max_touches: 5
+    resistance_slope: 0.15
+    support_slope: 0.15
+    divergence_threshold: 0.02
+  
+  # Signals
+  signals:
+    expanding_wedge_breakout:
+      description: "Expanding wedge breakout"
+      conditions:
+        - "expanding_wedge_detected"
+        - "volume_confirmation"
+        - "breakout_detected"
+        - "momentum_confirmed"
+      confidence: 0.7
+    
+    expanding_wedge_breakdown:
+      description: "Expanding wedge breakdown"
+      conditions:
+        - "expanding_wedge_detected"
+        - "volume_confirmation"
+        - "breakdown_detected"
+        - "momentum_confirmed"
+      confidence: 0.7
+
+# ----------------------------------------------------------------------------
+# Wedge Signals
+# ----------------------------------------------------------------------------
+signals:
+  enabled: true
+  description: "Wedge-based trading signals"
+  
+  # Signal types
+  types:
+    wedge_buy:
+      description: "Wedge buy signal"
+      conditions:
+        - "falling_wedge_breakout"
+        - "volume_confirmation"
+        - "momentum_increasing"
+        - "support_confirmed"
+      confidence: 0.8
+    
+    wedge_sell:
+      description: "Wedge sell signal"
+      conditions:
+        - "rising_wedge_breakdown"
+        - "volume_confirmation"
+        - "momentum_decreasing"
+        - "resistance_confirmed"
+      confidence: 0.8
+    
+    wedge_hedge:
+      description: "Wedge hedge signal"
+      conditions:
+        - "wedge_detected"
+        - "uncertain_direction"
+        - "volume_confirmation"
+      confidence: 0.6
+  
+  # Signal confirmation
+  confirmation:
+    required_confirmations: 2
+    confirmation_sources:
+      - "volume"
+      - "momentum"
+      - "price_action"
+
+# ----------------------------------------------------------------------------
+# Risk Management
+# ----------------------------------------------------------------------------
+risk_management:
+  enabled: true
+  description: "Risk management for wedge trading"
+  
+  # Risk parameters
+  parameters:
+    max_position: 0.05
+    max_daily_loss: 0.02
+    max_drawdown: 0.1
+    risk_per_trade: 0.01
+    
+    # Wedge-based stop loss
+    stop_loss:
+      type: "wedge_based"
+      distance: 0.01
+      atr_multiplier: 1.5
+      min: 0.005
+      max: 0.02
+    
+    # Wedge-based take profit
+    take_profit:
+      type: "wedge_based"
+      multiplier: 2.5
+      min: 0.01
+      max: 0.05
+
+# ----------------------------------------------------------------------------
+# Performance Monitoring
+# ----------------------------------------------------------------------------
+performance_monitoring:
+  enabled: true
+  description: "Performance monitoring for wedge trading"
+  
+  metrics:
+    - "win_rate"
+    - "profit_factor"
+    - "sharpe_ratio"
+    - "max_drawdown"
+    - "average_trade"
+    - "consecutive_wins"
+    - "consecutive_losses"
+    - "pattern_accuracy"
+  
+  targets:
+    min_win_rate: 0.5
+    min_profit_factor: 1.5
+    min_sharpe_ratio: 0.6
+    max_max_drawdown: 0.1
+
+# ----------------------------------------------------------------------------
+# Logging Configuration
+# ----------------------------------------------------------------------------
+logging:
+  enabled: true
+  level: "INFO"
+  file: "logs/wedge_bot.log"
+  rotation: "daily"
+  retention: 30  # days
+  
+  log_categories:
+    signals: true
+    trades: true
+    errors: true
+    performance: true
+    patterns: true
+    debugging: false
