@@ -1,0 +1,376 @@
+# trading/bots/swing_bot/config/current_account_configs.yaml
+
+# ============================================================================
+# NEXUS AI TRADING SYSTEM - Swing Bot Current Account Configuration
+# Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+# ============================================================================
+#
+# Description: Complete Current Account configuration for swing trading bot
+# Framework: Current Account Analysis - Account Management & Performance
+# Version: 3.0.0
+#
+# The Current Account configuration enables the bot to manage and analyze
+# the current trading account, including balance, equity, and performance.
+# ============================================================================
+
+# ----------------------------------------------------------------------------
+# General Configuration
+# ----------------------------------------------------------------------------
+current_account:
+  enabled: true
+  version: "3.0.0"
+  description: "Current Account Management for swing trading"
+  
+  # Account types
+  types:
+    - "spot"
+    - "futures"
+    - "margin"
+    - "options"
+    - "combined"
+  
+  # Account modes
+  modes:
+    - "active"
+    - "passive"
+    - "hybrid"
+  
+  default_mode: "hybrid"
+  
+  # Account currencies
+  currencies:
+    - "USD"
+    - "EUR"
+    - "GBP"
+    - "BTC"
+    - "ETH"
+
+# ----------------------------------------------------------------------------
+# Account Balance
+# ----------------------------------------------------------------------------
+account_balance:
+  enabled: true
+  description: "Account balance configuration"
+  
+  # Parameters
+  parameters:
+    lookback_period: 100
+    min_balance: 100
+    max_balance: 1000000
+    balance_threshold: 0.1
+    confidence_threshold: 0.7
+  
+  # Balance metrics
+  metrics:
+    total_balance:
+      enabled: true
+      calculation: "sum"
+      lookback_period: 10
+    
+    available_balance:
+      enabled: true
+      calculation: "current"
+      lookback_period: 1
+    
+    locked_balance:
+      enabled: true
+      calculation: "current"
+      lookback_period: 1
+    
+    balance_change:
+      enabled: true
+      calculation: "percentage_change"
+      lookback_period: 10
+  
+  # Signals
+  signals:
+    balance_increasing:
+      description: "Balance increasing signal"
+      conditions:
+        - "balance_change_>_0"
+        - "available_balance_>_threshold"
+        - "performance_positive"
+      confidence: 0.7
+    
+    balance_decreasing:
+      description: "Balance decreasing signal"
+      conditions:
+        - "balance_change_<_0"
+        - "available_balance_<_threshold"
+        - "performance_negative"
+      confidence: 0.7
+
+# ----------------------------------------------------------------------------
+# Account Equity
+# ----------------------------------------------------------------------------
+account_equity:
+  enabled: true
+  description: "Account equity configuration"
+  
+  # Parameters
+  parameters:
+    lookback_period: 100
+    min_equity: 100
+    max_equity: 1000000
+    equity_threshold: 0.1
+    confidence_threshold: 0.7
+  
+  # Equity metrics
+  metrics:
+    total_equity:
+      enabled: true
+      calculation: "sum"
+      lookback_period: 10
+    
+    realized_pnl:
+      enabled: true
+      calculation: "sum"
+      lookback_period: 10
+    
+    unrealized_pnl:
+      enabled: true
+      calculation: "current"
+      lookback_period: 1
+    
+    equity_change:
+      enabled: true
+      calculation: "percentage_change"
+      lookback_period: 10
+  
+  # Signals
+  signals:
+    equity_increasing:
+      description: "Equity increasing signal"
+      conditions:
+        - "equity_change_>_0"
+        - "realized_pnl_positive"
+        - "unrealized_pnl_positive"
+      confidence: 0.75
+    
+    equity_decreasing:
+      description: "Equity decreasing signal"
+      conditions:
+        - "equity_change_<_0"
+        - "realized_pnl_negative"
+        - "unrealized_pnl_negative"
+      confidence: 0.75
+
+# ----------------------------------------------------------------------------
+# Account Performance
+# ----------------------------------------------------------------------------
+account_performance:
+  enabled: true
+  description: "Account performance configuration"
+  
+  # Parameters
+  parameters:
+    lookback_period: 100
+    min_return: 0.01
+    max_return: 1.0
+    performance_threshold: 0.1
+    confidence_threshold: 0.7
+  
+  # Performance metrics
+  metrics:
+    total_return:
+      enabled: true
+      calculation: "percentage"
+      lookback_period: 100
+    
+    daily_return:
+      enabled: true
+      calculation: "percentage"
+      lookback_period: 1
+    
+    weekly_return:
+      enabled: true
+      calculation: "percentage"
+      lookback_period: 7
+    
+    monthly_return:
+      enabled: true
+      calculation: "percentage"
+      lookback_period: 30
+  
+  # Signals
+  signals:
+    performance_good:
+      description: "Good performance signal"
+      conditions:
+        - "total_return_>_0.05"
+        - "daily_return_>_0"
+        - "weekly_return_>_0"
+        - "monthly_return_>_0"
+      confidence: 0.8
+    
+    performance_poor:
+      description: "Poor performance signal"
+      conditions:
+        - "total_return_<_0.05"
+        - "daily_return_<_0"
+        - "weekly_return_<_0"
+        - "monthly_return_<_0"
+      confidence: 0.8
+
+# ----------------------------------------------------------------------------
+# Account Risk
+# ----------------------------------------------------------------------------
+account_risk:
+  enabled: true
+  description: "Account risk configuration"
+  
+  # Parameters
+  parameters:
+    lookback_period: 100
+    min_risk: 0.01
+    max_risk: 0.5
+    risk_threshold: 0.1
+    confidence_threshold: 0.7
+  
+  # Risk metrics
+  metrics:
+    current_risk:
+      enabled: true
+      calculation: "percentage"
+      lookback_period: 1
+    
+    var_95:
+      enabled: true
+      calculation: "value_at_risk"
+      lookback_period: 100
+    
+    var_99:
+      enabled: true
+      calculation: "value_at_risk"
+      lookback_period: 100
+    
+    expected_shortfall:
+      enabled: true
+      calculation: "cvar"
+      lookback_period: 100
+  
+  # Signals
+  signals:
+    risk_high:
+      description: "High risk signal"
+      conditions:
+        - "current_risk_>_threshold"
+        - "var_95_>_threshold"
+        - "var_99_>_threshold"
+        - "expected_shortfall_>_threshold"
+      action: "reduce_position"
+    
+    risk_low:
+      description: "Low risk signal"
+      conditions:
+        - "current_risk_<_threshold"
+        - "var_95_<_threshold"
+        - "var_99_<_threshold"
+        - "expected_shortfall_<_threshold"
+      action: "increase_position"
+
+# ----------------------------------------------------------------------------
+# Account Signals
+# ----------------------------------------------------------------------------
+signals:
+  enabled: true
+  description: "Account-based trading signals"
+  
+  # Signal types
+  types:
+    account_buy:
+      description: "Account buy signal"
+      conditions:
+        - "balance_increasing"
+        - "equity_increasing"
+        - "performance_good"
+        - "risk_low"
+      confidence: 0.8
+    
+    account_sell:
+      description: "Account sell signal"
+      conditions:
+        - "balance_decreasing"
+        - "equity_decreasing"
+        - "performance_poor"
+        - "risk_high"
+      confidence: 0.8
+    
+    account_adjust:
+      description: "Account adjust signal"
+      conditions:
+        - "balance_stable"
+        - "equity_stable"
+        - "performance_medium"
+        - "risk_medium"
+      confidence: 0.6
+  
+  # Signal confirmation
+  confirmation:
+    required_confirmations: 2
+    confirmation_sources:
+      - "price_action"
+      - "volume"
+      - "technical_indicators"
+
+# ----------------------------------------------------------------------------
+# Risk Management
+# ----------------------------------------------------------------------------
+risk_management:
+  enabled: true
+  description: "Risk management for account trading"
+  
+  # Risk parameters
+  parameters:
+    max_position: 0.05
+    max_daily_loss: 0.02
+    max_drawdown: 0.1
+    risk_per_trade: 0.01
+    
+    # Account-based stop loss
+    stop_loss:
+      type: "account_based"
+      threshold: 0.02
+      update_interval: 10  # bars
+
+# ----------------------------------------------------------------------------
+# Performance Monitoring
+# ----------------------------------------------------------------------------
+performance_monitoring:
+  enabled: true
+  description: "Performance monitoring for account trading"
+  
+  metrics:
+    - "balance_growth"
+    - "equity_growth"
+    - "total_return"
+    - "sharpe_ratio"
+    - "max_drawdown"
+    - "win_rate"
+    - "profit_factor"
+    - "average_trade"
+  
+  targets:
+    min_balance_growth: 0.05
+    min_equity_growth: 0.05
+    min_total_return: 0.05
+    min_sharpe_ratio: 0.5
+    max_max_drawdown: 0.1
+
+# ----------------------------------------------------------------------------
+# Logging Configuration
+# ----------------------------------------------------------------------------
+logging:
+  enabled: true
+  level: "INFO"
+  file: "logs/current_account.log"
+  rotation: "daily"
+  retention: 30  # days
+  
+  log_categories:
+    signals: true
+    trades: true
+    errors: true
+    performance: true
+    account: true
+    debugging: false
