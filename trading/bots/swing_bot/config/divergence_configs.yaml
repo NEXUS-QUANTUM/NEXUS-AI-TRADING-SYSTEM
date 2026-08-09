@@ -1,0 +1,370 @@
+# trading/bots/swing_bot/config/divergence_configs.yaml
+
+# ============================================================================
+# NEXUS AI TRADING SYSTEM - Swing Bot Divergence Configuration
+# Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+# ============================================================================
+#
+# Description: Complete Divergence configuration for swing trading bot
+# Framework: Divergence Analysis - Price & Indicator Divergence
+# Version: 3.0.0
+#
+# The Divergence configuration enables the bot to identify and trade
+# divergences between price and indicators, providing early reversal signals.
+# ============================================================================
+
+# ----------------------------------------------------------------------------
+# General Configuration
+# ----------------------------------------------------------------------------
+divergence:
+  enabled: true
+  version: "3.0.0"
+  description: "Divergence Analysis for swing trading"
+  
+  # Divergence types
+  types:
+    - "regular"
+    - "hidden"
+    - "extended"
+    - "reverse"
+    - "composite"
+  
+  # Timeframes
+  timeframes:
+    - "1m"
+    - "5m"
+    - "15m"
+    - "30m"
+    - "1h"
+    - "4h"
+    - "1d"
+  
+  default_timeframe: "1h"
+
+# ----------------------------------------------------------------------------
+# RSI Divergence
+# ----------------------------------------------------------------------------
+rsi_divergence:
+  enabled: true
+  description: "RSI divergence configuration"
+  
+  # Parameters
+  parameters:
+    lookback_period: 20
+    rsi_period: 14
+    min_confidence: 0.7
+    max_confidence: 0.9
+    divergence_threshold: 0.3
+  
+  # Divergence types
+  types:
+    bullish:
+      enabled: true
+      conditions:
+        - "price_makes_lower_low"
+        - "rsi_makes_higher_low"
+      confidence: 0.8
+    
+    bearish:
+      enabled: true
+      conditions:
+        - "price_makes_higher_high"
+        - "rsi_makes_lower_high"
+      confidence: 0.8
+    
+    hidden_bullish:
+      enabled: true
+      conditions:
+        - "price_makes_higher_low"
+        - "rsi_makes_lower_low"
+      confidence: 0.7
+    
+    hidden_bearish:
+      enabled: true
+      conditions:
+        - "price_makes_lower_high"
+        - "rsi_makes_higher_high"
+      confidence: 0.7
+  
+  # Signals
+  signals:
+    rsi_bullish_divergence:
+      description: "RSI bullish divergence signal"
+      conditions:
+        - "bullish_divergence"
+        - "volume_confirmation"
+        - "support_confirmed"
+      confidence: 0.8
+    
+    rsi_bearish_divergence:
+      description: "RSI bearish divergence signal"
+      conditions:
+        - "bearish_divergence"
+        - "volume_confirmation"
+        - "resistance_confirmed"
+      confidence: 0.8
+
+# ----------------------------------------------------------------------------
+# MACD Divergence
+# ----------------------------------------------------------------------------
+macd_divergence:
+  enabled: true
+  description: "MACD divergence configuration"
+  
+  # Parameters
+  parameters:
+    lookback_period: 20
+    fast_period: 12
+    slow_period: 26
+    signal_period: 9
+    min_confidence: 0.7
+    max_confidence: 0.9
+  
+  # Divergence types
+  types:
+    bullish:
+      enabled: true
+      conditions:
+        - "price_makes_lower_low"
+        - "macd_makes_higher_low"
+      confidence: 0.8
+    
+    bearish:
+      enabled: true
+      conditions:
+        - "price_makes_higher_high"
+        - "macd_makes_lower_high"
+      confidence: 0.8
+    
+    hidden_bullish:
+      enabled: true
+      conditions:
+        - "price_makes_higher_low"
+        - "macd_makes_lower_low"
+      confidence: 0.7
+    
+    hidden_bearish:
+      enabled: true
+      conditions:
+        - "price_makes_lower_high"
+        - "macd_makes_higher_high"
+      confidence: 0.7
+  
+  # Signals
+  signals:
+    macd_bullish_divergence:
+      description: "MACD bullish divergence signal"
+      conditions:
+        - "bullish_divergence"
+        - "volume_confirmation"
+        - "support_confirmed"
+      confidence: 0.8
+    
+    macd_bearish_divergence:
+      description: "MACD bearish divergence signal"
+      conditions:
+        - "bearish_divergence"
+        - "volume_confirmation"
+        - "resistance_confirmed"
+      confidence: 0.8
+
+# ----------------------------------------------------------------------------
+# Volume Divergence
+# ----------------------------------------------------------------------------
+volume_divergence:
+  enabled: true
+  description: "Volume divergence configuration"
+  
+  # Parameters
+  parameters:
+    lookback_period: 20
+    volume_period: 14
+    min_confidence: 0.7
+    max_confidence: 0.9
+  
+  # Divergence types
+  types:
+    bullish:
+      enabled: true
+      conditions:
+        - "price_makes_lower_low"
+        - "volume_makes_higher_low"
+      confidence: 0.75
+    
+    bearish:
+      enabled: true
+      conditions:
+        - "price_makes_higher_high"
+        - "volume_makes_lower_high"
+      confidence: 0.75
+  
+  # Signals
+  signals:
+    volume_bullish_divergence:
+      description: "Volume bullish divergence signal"
+      conditions:
+        - "bullish_divergence"
+        - "price_confirmation"
+        - "support_confirmed"
+      confidence: 0.75
+    
+    volume_bearish_divergence:
+      description: "Volume bearish divergence signal"
+      conditions:
+        - "bearish_divergence"
+        - "price_confirmation"
+        - "resistance_confirmed"
+      confidence: 0.75
+
+# ----------------------------------------------------------------------------
+# Composite Divergence
+# ----------------------------------------------------------------------------
+composite_divergence:
+  enabled: true
+  description: "Composite divergence configuration"
+  
+  # Parameters
+  parameters:
+    lookback_period: 20
+    min_confidence: 0.7
+    max_confidence: 0.9
+    divergence_threshold: 0.3
+  
+  # Indicators
+  indicators:
+    - "rsi"
+    - "macd"
+    - "volume"
+    - "stochastic"
+    - "cci"
+  
+  # Signals
+  signals:
+    composite_bullish:
+      description: "Composite bullish divergence"
+      conditions:
+        - "multiple_bullish_divergences"
+        - "volume_confirmation"
+        - "support_confirmed"
+      confidence: 0.85
+    
+    composite_bearish:
+      description: "Composite bearish divergence"
+      conditions:
+        - "multiple_bearish_divergences"
+        - "volume_confirmation"
+        - "resistance_confirmed"
+      confidence: 0.85
+
+# ----------------------------------------------------------------------------
+# Divergence Signals
+# ----------------------------------------------------------------------------
+signals:
+  enabled: true
+  description: "Divergence-based trading signals"
+  
+  # Signal types
+  types:
+    divergence_buy:
+      description: "Divergence buy signal"
+      conditions:
+        - "bullish_divergence"
+        - "volume_confirmation"
+        - "support_confirmed"
+        - "momentum_increasing"
+      confidence: 0.85
+    
+    divergence_sell:
+      description: "Divergence sell signal"
+      conditions:
+        - "bearish_divergence"
+        - "volume_confirmation"
+        - "resistance_confirmed"
+        - "momentum_decreasing"
+      confidence: 0.85
+    
+    divergence_hedge:
+      description: "Divergence hedge signal"
+      conditions:
+        - "divergence_detected"
+        - "uncertain_direction"
+        - "volume_confirmation"
+      confidence: 0.6
+  
+  # Signal confirmation
+  confirmation:
+    required_confirmations: 2
+    confirmation_sources:
+      - "volume"
+      - "momentum"
+      - "price_action"
+
+# ----------------------------------------------------------------------------
+# Risk Management
+# ----------------------------------------------------------------------------
+risk_management:
+  enabled: true
+  description: "Risk management for divergence trading"
+  
+  # Risk parameters
+  parameters:
+    max_position: 0.05
+    max_daily_loss: 0.02
+    max_drawdown: 0.1
+    risk_per_trade: 0.01
+    
+    # Divergence-based stop loss
+    stop_loss:
+      type: "divergence_based"
+      distance: 0.01
+      atr_multiplier: 1.5
+      min: 0.005
+      max: 0.02
+    
+    # Divergence-based take profit
+    take_profit:
+      type: "divergence_based"
+      multiplier: 2.5
+      min: 0.01
+      max: 0.05
+
+# ----------------------------------------------------------------------------
+# Performance Monitoring
+# ----------------------------------------------------------------------------
+performance_monitoring:
+  enabled: true
+  description: "Performance monitoring for divergence trading"
+  
+  metrics:
+    - "win_rate"
+    - "profit_factor"
+    - "sharpe_ratio"
+    - "max_drawdown"
+    - "average_trade"
+    - "consecutive_wins"
+    - "consecutive_losses"
+    - "divergence_accuracy"
+  
+  targets:
+    min_win_rate: 0.5
+    min_profit_factor: 1.5
+    min_sharpe_ratio: 0.6
+    max_max_drawdown: 0.1
+
+# ----------------------------------------------------------------------------
+# Logging Configuration
+# ----------------------------------------------------------------------------
+logging:
+  enabled: true
+  level: "INFO"
+  file: "logs/divergence_bot.log"
+  rotation: "daily"
+  retention: 30  # days
+  
+  log_categories:
+    signals: true
+    trades: true
+    errors: true
+    performance: true
+    divergence: true
+    debugging: false
