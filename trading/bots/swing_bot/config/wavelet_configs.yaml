@@ -1,0 +1,321 @@
+# trading/bots/swing_bot/config/wavelet_configs.yaml
+
+# ============================================================================
+# NEXUS AI TRADING SYSTEM - Swing Bot Wavelet Configuration
+# Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+# ============================================================================
+#
+# Description: Complete Wavelet configuration for swing trading bot
+# Framework: Wavelet Analysis - Time-Frequency Signal Processing
+# Version: 3.0.0
+#
+# The Wavelet configuration enables the bot to analyze market data using
+# wavelet transforms for time-frequency analysis, denoising, and
+# pattern detection.
+# ============================================================================
+
+# ----------------------------------------------------------------------------
+# General Configuration
+# ----------------------------------------------------------------------------
+wavelet:
+  enabled: true
+  version: "3.0.0"
+  description: "Wavelet Analysis for swing trading"
+  
+  # Wavelet types
+  types:
+    - "haar"
+    - "db4"
+    - "sym4"
+    - "coif4"
+    - "bior4.4"
+    - "rbio4.4"
+  
+  default_type: "db4"
+  
+  # Timeframes
+  timeframes:
+    - "1m"
+    - "5m"
+    - "15m"
+    - "30m"
+    - "1h"
+    - "4h"
+    - "1d"
+  
+  default_timeframe: "1h"
+
+# ----------------------------------------------------------------------------
+# Wavelet Transform
+# ----------------------------------------------------------------------------
+wavelet_transform:
+  enabled: true
+  description: "Wavelet transform configuration"
+  
+  # Parameters
+  parameters:
+    lookback_period: 100
+    level: 4
+    min_level: 1
+    max_level: 6
+    confidence_threshold: 0.7
+  
+  # Transform types
+  types:
+    - "continuous"
+    - "discrete"
+    - "stationary"
+    - "modulated"
+  
+  default_type: "discrete"
+  
+  # Metrics
+  metrics:
+    approximation:
+      enabled: true
+      calculation: "low_pass"
+      lookback_period: 100
+    
+    details:
+      enabled: true
+      calculation: "high_pass"
+      lookback_period: 100
+    
+    energy:
+      enabled: true
+      calculation: "sum_squares"
+      lookback_period: 100
+  
+  # Signals
+  signals:
+    wavelet_breakout:
+      description: "Wavelet breakout signal"
+      conditions:
+        - "detail_energy_>_threshold"
+        - "approximation_trend_strong"
+        - "volume_confirmation"
+      confidence: 0.75
+    
+    wavelet_reversal:
+      description: "Wavelet reversal signal"
+      conditions:
+        - "detail_energy_increasing"
+        - "approximation_trend_weakening"
+        - "volume_confirmation"
+      confidence: 0.7
+
+# ----------------------------------------------------------------------------
+# Denoising
+# ----------------------------------------------------------------------------
+denoising:
+  enabled: true
+  description: "Wavelet denoising configuration"
+  
+  # Parameters
+  parameters:
+    lookback_period: 100
+    threshold_method: "soft"
+    noise_estimation: "standard_deviation"
+    confidence_threshold: 0.7
+  
+  # Threshold methods
+  methods:
+    - "hard"
+    - "soft"
+    - "universal"
+    - "minimax"
+  
+  default_method: "soft"
+  
+  # Metrics
+  metrics:
+    noise_level:
+      enabled: true
+      calculation: "std_dev"
+      lookback_period: 50
+    
+    signal_level:
+      enabled: true
+      calculation: "mean"
+      lookback_period: 50
+    
+    snr:
+      enabled: true
+      calculation: "signal_noise_ratio"
+      lookback_period: 50
+  
+  # Signals
+  signals:
+    denoised_breakout:
+      description: "Denoised breakout signal"
+      conditions:
+        - "snr_>_threshold"
+        - "price_breakout"
+        - "volume_confirmation"
+      confidence: 0.75
+    
+    denoised_reversal:
+      description: "Denoised reversal signal"
+      conditions:
+        - "noise_decreasing"
+        - "signal_increasing"
+        - "volume_confirmation"
+      confidence: 0.7
+
+# ----------------------------------------------------------------------------
+# Feature Extraction
+# ----------------------------------------------------------------------------
+feature_extraction:
+  enabled: true
+  description: "Wavelet feature extraction configuration"
+  
+  # Parameters
+  parameters:
+    lookback_period: 100
+    level: 4
+    min_level: 1
+    max_level: 6
+    confidence_threshold: 0.7
+  
+  # Features
+  features:
+    - "energy_ratios"
+    - "entropy"
+    - "variance"
+    - "skewness"
+    - "kurtosis"
+    - "momentum"
+  
+  # Metrics
+  metrics:
+    energy_ratio:
+      enabled: true
+      calculation: "percentage"
+      lookback_period: 100
+    
+    wavelet_entropy:
+      enabled: true
+      calculation: "shannon_entropy"
+      lookback_period: 100
+  
+  # Signals
+  signals:
+    feature_breakout:
+      description: "Feature breakout signal"
+      conditions:
+        - "energy_ratio_increasing"
+        - "entropy_decreasing"
+        - "volume_confirmation"
+      confidence: 0.7
+    
+    feature_reversal:
+      description: "Feature reversal signal"
+      conditions:
+        - "energy_ratio_decreasing"
+        - "entropy_increasing"
+        - "volume_confirmation"
+      confidence: 0.7
+
+# ----------------------------------------------------------------------------
+# Wavelet Signals
+# ----------------------------------------------------------------------------
+signals:
+  enabled: true
+  description: "Wavelet-based trading signals"
+  
+  # Signal types
+  types:
+    wavelet_buy:
+      description: "Wavelet buy signal"
+      conditions:
+        - "wavelet_breakout"
+        - "denoised_breakout"
+        - "feature_breakout"
+        - "volume_confirmation"
+      confidence: 0.8
+    
+    wavelet_sell:
+      description: "Wavelet sell signal"
+      conditions:
+        - "wavelet_reversal"
+        - "denoised_reversal"
+        - "feature_reversal"
+        - "volume_confirmation"
+      confidence: 0.8
+    
+    wavelet_hedge:
+      description: "Wavelet hedge signal"
+      conditions:
+        - "mixed_wavelet_signals"
+        - "uncertain_direction"
+        - "volume_confirmation"
+      confidence: 0.6
+  
+  # Signal confirmation
+  confirmation:
+    required_confirmations: 2
+    confirmation_sources:
+      - "price_action"
+      - "volume"
+      - "technical_indicators"
+
+# ----------------------------------------------------------------------------
+# Risk Management
+# ----------------------------------------------------------------------------
+risk_management:
+  enabled: true
+  description: "Risk management for wavelet trading"
+  
+  # Risk parameters
+  parameters:
+    max_position: 0.05
+    max_daily_loss: 0.02
+    max_drawdown: 0.1
+    risk_per_trade: 0.01
+    
+    # Wavelet-based stop loss
+    stop_loss:
+      type: "wavelet_based"
+      threshold: 0.3
+      update_interval: 10  # bars
+
+# ----------------------------------------------------------------------------
+# Performance Monitoring
+# ----------------------------------------------------------------------------
+performance_monitoring:
+  enabled: true
+  description: "Performance monitoring for wavelet trading"
+  
+  metrics:
+    - "win_rate"
+    - "profit_factor"
+    - "sharpe_ratio"
+    - "max_drawdown"
+    - "average_trade"
+    - "consecutive_wins"
+    - "consecutive_losses"
+    - "wavelet_accuracy"
+  
+  targets:
+    min_win_rate: 0.5
+    min_profit_factor: 1.5
+    min_sharpe_ratio: 0.6
+    max_max_drawdown: 0.1
+
+# ----------------------------------------------------------------------------
+# Logging Configuration
+# ----------------------------------------------------------------------------
+logging:
+  enabled: true
+  level: "INFO"
+  file: "logs/wavelet_bot.log"
+  rotation: "daily"
+  retention: 30  # days
+  
+  log_categories:
+    signals: true
+    trades: true
+    errors: true
+    performance: true
+    wavelet: true
+    debugging: false
