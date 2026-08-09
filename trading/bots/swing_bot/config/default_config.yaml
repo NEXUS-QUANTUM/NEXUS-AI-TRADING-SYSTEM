@@ -1,0 +1,380 @@
+# trading/bots/swing_bot/config/default_config.yaml
+
+# ============================================================================
+# NEXUS AI TRADING SYSTEM - Swing Bot Default Configuration
+# Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+# ============================================================================
+#
+# Description: Complete Default configuration for swing trading bot
+# Framework: Base Configuration - All Default Parameters
+# Version: 3.0.0
+#
+# This is the master default configuration file that all other configs
+# inherit from. Contains all base parameters and settings.
+# ============================================================================
+
+# ----------------------------------------------------------------------------
+# General Bot Configuration
+# ----------------------------------------------------------------------------
+bot:
+  name: "NEXUS Swing Bot"
+  version: "3.0.0"
+  description: "Advanced swing trading bot with AI capabilities"
+  enabled: true
+  
+  # Trading modes
+  modes:
+    - "paper_trading"
+    - "live_trading"
+    - "backtesting"
+    - "hybrid"
+  
+  default_mode: "paper_trading"
+  
+  # Logging
+  logging:
+    level: "INFO"
+    format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+    file: "logs/swing_bot.log"
+    rotation: "daily"
+    retention: 30
+
+# ----------------------------------------------------------------------------
+# Exchange Configuration
+# ----------------------------------------------------------------------------
+exchange:
+  name: "binance"
+  type: "spot"
+  testnet: false
+  sandbox: false
+  
+  # API settings
+  api:
+    key: ""
+    secret: ""
+    passphrase: ""
+  
+  # Rate limits
+  rate_limits:
+    requests_per_second: 10
+    requests_per_minute: 600
+    requests_per_hour: 36000
+  
+  # Timeouts
+  timeouts:
+    connection: 30
+    read: 30
+    write: 30
+
+# ----------------------------------------------------------------------------
+# Trading Parameters
+# ----------------------------------------------------------------------------
+trading:
+  enabled: true
+  
+  # Position sizing
+  position_sizing:
+    method: "fixed"
+    size: 0.02
+    max_size: 0.05
+    min_size: 0.001
+  
+  # Risk management
+  risk_management:
+    max_daily_loss: 0.02
+    max_drawdown: 0.1
+    risk_per_trade: 0.01
+    max_positions: 5
+    max_correlation: 0.7
+  
+  # Order management
+  order_management:
+    order_types:
+      - "market"
+      - "limit"
+      - "stop_limit"
+      - "trailing_stop"
+    
+    time_in_force:
+      - "GTC"
+      - "IOC"
+      - "FOK"
+      - "DAY"
+    
+    slippage_tolerance: 0.001
+    max_spread: 0.002
+
+# ----------------------------------------------------------------------------
+# Strategy Configuration
+# ----------------------------------------------------------------------------
+strategy:
+  name: "swing_trading"
+  type: "hybrid"
+  
+  # Strategy parameters
+  parameters:
+    lookback_period: 50
+    min_confidence: 0.6
+    max_confidence: 0.9
+    decision_threshold: 0.5
+    risk_reward_ratio: 2.0
+  
+  # Indicators
+  indicators:
+    - "rsi"
+    - "macd"
+    - "bb"
+    - "ma"
+    - "volume"
+    - "momentum"
+  
+  # Timeframes
+  timeframes:
+    - "1m"
+    - "5m"
+    - "15m"
+    - "30m"
+    - "1h"
+    - "4h"
+    - "1d"
+  
+  default_timeframe: "1h"
+
+# ----------------------------------------------------------------------------
+# Risk Configuration
+# ----------------------------------------------------------------------------
+risk:
+  enabled: true
+  
+  # Risk metrics
+  metrics:
+    - "var_95"
+    - "var_99"
+    - "cvar_95"
+    - "cvar_99"
+    - "max_drawdown"
+    - "sharpe_ratio"
+    - "sortino_ratio"
+    - "calmar_ratio"
+  
+  # Risk limits
+  limits:
+    max_var_95: 0.02
+    max_var_99: 0.05
+    max_cvar_95: 0.03
+    max_cvar_99: 0.07
+    max_drawdown: 0.1
+    min_sharpe_ratio: 0.5
+    min_sortino_ratio: 0.6
+    min_calmar_ratio: 1.0
+  
+  # Risk monitoring
+  monitoring:
+    enabled: true
+    check_interval: 60
+    alert_threshold: 0.8
+    emergency_threshold: 0.95
+
+# ----------------------------------------------------------------------------
+# Data Configuration
+# ----------------------------------------------------------------------------
+data:
+  enabled: true
+  
+  # Data sources
+  sources:
+    - "exchange"
+    - "file"
+    - "database"
+    - "websocket"
+  
+  # Data storage
+  storage:
+    type: "parquet"
+    path: "data/"
+    compression: "snappy"
+  
+  # Data retention
+  retention:
+    market_data: 365
+    trade_data: 365
+    order_data: 365
+    position_data: 365
+    performance_data: 365
+
+# ----------------------------------------------------------------------------
+# Performance Configuration
+# ----------------------------------------------------------------------------
+performance:
+  enabled: true
+  
+  # Performance metrics
+  metrics:
+    - "total_return"
+    - "daily_return"
+    - "weekly_return"
+    - "monthly_return"
+    - "annual_return"
+    - "sharpe_ratio"
+    - "sortino_ratio"
+    - "calmar_ratio"
+    - "max_drawdown"
+    - "win_rate"
+    - "profit_factor"
+    - "average_trade"
+  
+  # Performance monitoring
+  monitoring:
+    enabled: true
+    check_interval: 3600
+    alert_threshold: 0.8
+    emergency_threshold: 0.95
+
+# ----------------------------------------------------------------------------
+# Notification Configuration
+# ----------------------------------------------------------------------------
+notification:
+  enabled: true
+  
+  # Notification channels
+  channels:
+    - "email"
+    - "telegram"
+    - "slack"
+    - "discord"
+  
+  # Notification settings
+  settings:
+    email:
+      enabled: true
+      smtp_server: "smtp.gmail.com"
+      smtp_port: 587
+      sender: "notifications@nexus.com"
+      recipients: []
+    
+    telegram:
+      enabled: false
+      bot_token: ""
+      chat_id: ""
+    
+    slack:
+      enabled: false
+      webhook_url: ""
+      channel: "#trading-alerts"
+    
+    discord:
+      enabled: false
+      webhook_url: ""
+
+# ----------------------------------------------------------------------------
+# Security Configuration
+# ----------------------------------------------------------------------------
+security:
+  enabled: true
+  
+  # Authentication
+  auth:
+    type: "jwt"
+    secret: ""
+    expiration: 3600
+  
+  # Encryption
+  encryption:
+    enabled: true
+    algorithm: "aes-256-gcm"
+    key: ""
+  
+  # SSL/TLS
+  ssl:
+    enabled: true
+    cert_file: ""
+    key_file: ""
+
+# ----------------------------------------------------------------------------
+# Testing Configuration
+# ----------------------------------------------------------------------------
+testing:
+  enabled: true
+  
+  # Test data
+  test_data:
+    path: "tests/data/"
+    format: "csv"
+    period: "1y"
+  
+  # Backtesting
+  backtesting:
+    enabled: true
+    start_date: "2024-01-01"
+    end_date: "2024-12-31"
+    initial_capital: 10000
+    commission: 0.001
+    slippage: 0.001
+    benchmark: "BTCUSDT"
+  
+  # Paper trading
+  paper_trading:
+    enabled: true
+    initial_capital: 10000
+    execution_delay: 100
+    slippage_model: "fixed"
+
+# ----------------------------------------------------------------------------
+# Debugging Configuration
+# ----------------------------------------------------------------------------
+debugging:
+  enabled: false
+  
+  # Debug options
+  options:
+    verbose_logging: false
+    performance_profiling: false
+    memory_profiling: false
+    cpu_profiling: false
+  
+  # Debug tools
+  tools:
+    - "pdb"
+    - "ipdb"
+    - "py-spy"
+    - "memory_profiler"
+
+# ----------------------------------------------------------------------------
+# Advanced Configuration
+# ----------------------------------------------------------------------------
+advanced:
+  enabled: false
+  
+  # Advanced options
+  options:
+    parallel_processing: false
+    async_execution: false
+    load_balancing: false
+    failover: false
+  
+  # Advanced settings
+  settings:
+    max_workers: 4
+    queue_size: 1000
+    timeout: 300
+    retry_attempts: 3
+    retry_delay: 1
+
+# ----------------------------------------------------------------------------
+# Development Configuration
+# ----------------------------------------------------------------------------
+development:
+  enabled: false
+  
+  # Development options
+  options:
+    hot_reload: false
+    debug_mode: false
+    mock_data: false
+    fake_data: false
+  
+  # Development settings
+  settings:
+    reload_interval: 5
+    mock_volume: 1000
+    fake_seed: 42
