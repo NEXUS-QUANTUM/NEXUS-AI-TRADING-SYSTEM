@@ -1,0 +1,383 @@
+# trading/bots/swing_bot/config/development_config.yaml
+
+# ============================================================================
+# NEXUS AI TRADING SYSTEM - Swing Bot Development Configuration
+# Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+# ============================================================================
+#
+# Description: Complete Development configuration for swing trading bot
+# Framework: Development Environment - Testing & Debugging
+# Version: 3.0.0
+#
+# This configuration is specifically for development and testing purposes.
+# It overrides default settings with development-friendly parameters.
+# ============================================================================
+
+# ----------------------------------------------------------------------------
+# General Development Settings
+# ----------------------------------------------------------------------------
+development:
+  enabled: true
+  environment: "development"
+  debug: true
+  testing: true
+  
+  # Development modes
+  modes:
+    - "local"
+    - "docker"
+    - "cloud"
+  
+  default_mode: "local"
+  
+  # Development features
+  features:
+    hot_reload: true
+    auto_migrate: true
+    seed_data: true
+    mock_apis: true
+    fake_data_generation: true
+
+# ----------------------------------------------------------------------------
+# Logging Configuration
+# ----------------------------------------------------------------------------
+logging:
+  level: "DEBUG"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file: "logs/development.log"
+  console: true
+  rotation: "hourly"
+  retention: 7
+  
+  # Log categories
+  categories:
+    debug: true
+    info: true
+    warning: true
+    error: true
+    critical: true
+  
+  # Log filters
+  filters:
+    - "development"
+    - "debug"
+    - "testing"
+
+# ----------------------------------------------------------------------------
+# Database Configuration
+# ----------------------------------------------------------------------------
+database:
+  type: "sqlite"
+  path: "data/development.db"
+  pool_size: 5
+  max_overflow: 10
+  echo: true
+  
+  # SQLite settings
+  sqlite:
+    journal_mode: "WAL"
+    synchronous: "OFF"
+    cache_size: 10000
+  
+  # Migration settings
+  migration:
+    enabled: true
+    auto_migrate: true
+    seed_data: true
+    seed_path: "data/seeds/"
+
+# ----------------------------------------------------------------------------
+# Redis Configuration
+# ----------------------------------------------------------------------------
+redis:
+  enabled: true
+  host: "localhost"
+  port: 6379
+  db: 0
+  decode_responses: true
+  
+  # Redis settings
+  settings:
+    max_connections: 10
+    socket_timeout: 5
+    socket_connect_timeout: 5
+    retry_on_timeout: true
+
+# ----------------------------------------------------------------------------
+# API Configuration
+# ----------------------------------------------------------------------------
+api:
+  enabled: true
+  host: "0.0.0.0"
+  port: 8000
+  workers: 1
+  reload: true
+  
+  # API settings
+  settings:
+    debug: true
+    docs: true
+    redoc: true
+    cors: true
+    rate_limit: false
+  
+  # Endpoints
+  endpoints:
+    - "/api/v1"
+    - "/api/v2"
+    - "/docs"
+    - "/redoc"
+
+# ----------------------------------------------------------------------------
+# Exchange Configuration
+# ----------------------------------------------------------------------------
+exchange:
+  name: "binance"
+  type: "spot"
+  testnet: true
+  sandbox: true
+  
+  # API settings
+  api:
+    key: "test_api_key"
+    secret: "test_api_secret"
+    passphrase: "test_passphrase"
+  
+  # Rate limits
+  rate_limits:
+    requests_per_second: 100
+    requests_per_minute: 6000
+  
+  # Mock data
+  mock:
+    enabled: true
+    delay: 0
+    error_rate: 0.01
+    volume: 1000
+
+# ----------------------------------------------------------------------------
+# Trading Configuration
+# ----------------------------------------------------------------------------
+trading:
+  enabled: true
+  mode: "paper_trading"
+  
+  # Position sizing
+  position_sizing:
+    method: "fixed"
+    size: 0.01
+    max_size: 0.1
+    min_size: 0.001
+  
+  # Risk management
+  risk_management:
+    max_daily_loss: 0.05
+    max_drawdown: 0.2
+    risk_per_trade: 0.02
+    max_positions: 10
+  
+  # Order management
+  order_management:
+    order_types:
+      - "market"
+      - "limit"
+    time_in_force:
+      - "GTC"
+      - "IOC"
+
+# ----------------------------------------------------------------------------
+# Strategy Configuration
+# ----------------------------------------------------------------------------
+strategy:
+  name: "test_strategy"
+  type: "test"
+  
+  # Strategy parameters
+  parameters:
+    lookback_period: 10
+    min_confidence: 0.3
+    max_confidence: 0.9
+  
+  # Indicators
+  indicators:
+    - "rsi"
+    - "macd"
+    - "volume"
+  
+  # Timeframes
+  timeframes:
+    - "1m"
+    - "5m"
+    - "15m"
+
+# ----------------------------------------------------------------------------
+# Testing Configuration
+# ----------------------------------------------------------------------------
+testing:
+  enabled: true
+  
+  # Unit tests
+  unit_tests:
+    enabled: true
+    path: "tests/unit/"
+    coverage: true
+    coverage_report: "htmlcov/"
+  
+  # Integration tests
+  integration_tests:
+    enabled: true
+    path: "tests/integration/"
+    coverage: true
+  
+  # Performance tests
+  performance_tests:
+    enabled: false
+    path: "tests/performance/"
+    iterations: 100
+  
+  # Load tests
+  load_tests:
+    enabled: false
+    path: "tests/load/"
+    users: 10
+    duration: 60
+
+# ----------------------------------------------------------------------------
+# Mock Data Configuration
+# ----------------------------------------------------------------------------
+mock_data:
+  enabled: true
+  
+  # Market data
+  market_data:
+    symbols:
+      - "BTCUSDT"
+      - "ETHUSDT"
+      - "SOLUSDT"
+    timeframe: "1m"
+    bars: 1000
+    volatility: 0.02
+  
+  # Order data
+  order_data:
+    orders: 100
+    types:
+      - "market"
+      - "limit"
+    sides:
+      - "buy"
+      - "sell"
+  
+  # Trade data
+  trade_data:
+    trades: 100
+    volume: 1000
+    pnl: 0.01
+
+# ----------------------------------------------------------------------------
+# Debugging Configuration
+# ----------------------------------------------------------------------------
+debugging:
+  enabled: true
+  
+  # Debug tools
+  tools:
+    - "pdb"
+    - "ipdb"
+    - "py-spy"
+    - "memory_profiler"
+  
+  # Debug options
+  options:
+    verbose_logging: true
+    performance_profiling: true
+    memory_profiling: true
+    cpu_profiling: true
+  
+  # Debug settings
+  settings:
+    breakpoint: false
+    trace: false
+    profile: false
+
+# ----------------------------------------------------------------------------
+# Development Tools
+# ----------------------------------------------------------------------------
+dev_tools:
+  enabled: true
+  
+  # Tools
+  tools:
+    - "jupyter"
+    - "notebook"
+    - "console"
+    - "shell"
+  
+  # Settings
+  settings:
+    notebook_dir: "notebooks/"
+    console_history: true
+    shell_autocomplete: true
+
+# ----------------------------------------------------------------------------
+# Security Configuration
+# ----------------------------------------------------------------------------
+security:
+  enabled: true
+  
+  # Authentication
+  auth:
+    type: "jwt"
+    secret: "development_secret"
+    expiration: 3600
+  
+  # Encryption
+  encryption:
+    enabled: false
+    algorithm: "aes-256-gcm"
+    key: "development_key"
+  
+  # SSL/TLS
+  ssl:
+    enabled: false
+    cert_file: ""
+    key_file: ""
+
+# ----------------------------------------------------------------------------
+# Performance Monitoring
+# ----------------------------------------------------------------------------
+performance_monitoring:
+  enabled: true
+  
+  # Metrics
+  metrics:
+    - "response_time"
+    - "throughput"
+    - "error_rate"
+    - "memory_usage"
+    - "cpu_usage"
+  
+  # Monitoring settings
+  settings:
+    check_interval: 10
+    alert_threshold: 0.8
+    emergency_threshold: 0.95
+
+# ----------------------------------------------------------------------------
+# Deployment Configuration
+# ----------------------------------------------------------------------------
+deployment:
+  enabled: false
+  
+  # Deployment options
+  options:
+    docker: false
+    kubernetes: false
+    cloud: false
+  
+  # Deployment settings
+  settings:
+    image: "nexus/swing-bot:dev"
+    replicas: 1
+    port: 8000
+    env: "development"
