@@ -1,0 +1,407 @@
+# trading/bots/swing_bot/config/distribution_configs.yaml
+
+# ============================================================================
+# NEXUS AI TRADING SYSTEM - Swing Bot Distribution Configuration
+# Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+# ============================================================================
+#
+# Description: Complete Distribution configuration for swing trading bot
+# Framework: Distribution Analysis - Market Distribution & Wyckoff Analysis
+# Version: 3.0.0
+#
+# The Distribution configuration enables the bot to identify and trade
+# distribution patterns, including Wyckoff distribution phases and
+# market distribution analysis.
+# ============================================================================
+
+# ----------------------------------------------------------------------------
+# General Configuration
+# ----------------------------------------------------------------------------
+distribution:
+  enabled: true
+  version: "3.0.0"
+  description: "Distribution Analysis for swing trading"
+  
+  # Distribution types
+  types:
+    - "wyckoff"
+    - "normal"
+    - "bimodal"
+    - "skewed"
+    - "uniform"
+    - "log_normal"
+  
+  # Timeframes
+  timeframes:
+    - "1m"
+    - "5m"
+    - "15m"
+    - "30m"
+    - "1h"
+    - "4h"
+    - "1d"
+  
+  default_timeframe: "1h"
+
+# ----------------------------------------------------------------------------
+# Wyckoff Distribution
+# ----------------------------------------------------------------------------
+wyckoff_distribution:
+  enabled: true
+  description: "Wyckoff distribution configuration"
+  
+  # Parameters
+  parameters:
+    lookback_period: 100
+    min_volume_threshold: 1.5
+    max_volume_threshold: 3.0
+    confidence_threshold: 0.7
+  
+  # Wyckoff phases
+  phases:
+    preliminary_supply:
+      enabled: true
+      conditions:
+        - "volume_spike"
+        - "price_rally"
+        - "wide_spread"
+      confidence: 0.6
+    
+    buying_climax:
+      enabled: true
+      conditions:
+        - "volume_spike_max"
+        - "price_rally_max"
+        - "wide_spread_max"
+      confidence: 0.7
+    
+    automatic_reaction:
+      enabled: true
+      conditions:
+        - "price_drop"
+        - "volume_decrease"
+        - "narrow_spread"
+      confidence: 0.65
+    
+    secondary_test:
+      enabled: true
+      conditions:
+        - "price_rally_retest"
+        - "volume_decrease"
+        - "narrow_spread"
+      confidence: 0.7
+    
+    upthrust:
+      enabled: true
+      conditions:
+        - "price_break_above"
+        - "volume_spike"
+        - "quick_rejection"
+      confidence: 0.75
+    
+    test_of_upthrust:
+      enabled: true
+      conditions:
+        - "price_retest"
+        - "volume_below_average"
+        - "narrow_spread"
+      confidence: 0.7
+    
+    sign_of_weakness:
+      enabled: true
+      conditions:
+        - "price_breakdown"
+        - "volume_confirm"
+        - "wide_spread"
+      confidence: 0.8
+    
+    last_point_of_supply:
+      enabled: true
+      conditions:
+        - "rally"
+        - "volume_decrease"
+        - "resistance_hold"
+      confidence: 0.75
+  
+  # Signals
+  signals:
+    wyckoff_sell:
+      description: "Wyckoff sell signal"
+      conditions:
+        - "distribution_phase_complete"
+        - "volume_confirmation"
+        - "price_breakdown"
+      confidence: 0.8
+    
+    wyckoff_short:
+      description: "Wyckoff short signal"
+      conditions:
+        - "distribution_detected"
+        - "volume_confirmation"
+        - "price_resistance"
+      confidence: 0.75
+
+# ----------------------------------------------------------------------------
+# Normal Distribution
+# ----------------------------------------------------------------------------
+normal_distribution:
+  enabled: true
+  description: "Normal distribution configuration"
+  
+  # Parameters
+  parameters:
+    lookback_period: 50
+    confidence_level: 0.95
+    min_data_points: 20
+    max_data_points: 200
+  
+  # Distribution metrics
+  metrics:
+    mean:
+      enabled: true
+      calculation: "arithmetic_mean"
+      lookback_period: 50
+    
+    std_dev:
+      enabled: true
+      calculation: "standard_deviation"
+      lookback_period: 50
+    
+    skewness:
+      enabled: true
+      calculation: "moment_skewness"
+      lookback_period: 50
+    
+    kurtosis:
+      enabled: true
+      calculation: "moment_kurtosis"
+      lookback_period: 50
+  
+  # Signals
+  signals:
+    normal_buy:
+      description: "Normal distribution buy signal"
+      conditions:
+        - "price_below_mean_minus_2std"
+        - "volume_confirmation"
+        - "support_confirmed"
+      confidence: 0.7
+    
+    normal_sell:
+      description: "Normal distribution sell signal"
+      conditions:
+        - "price_above_mean_plus_2std"
+        - "volume_confirmation"
+        - "resistance_confirmed"
+      confidence: 0.7
+
+# ----------------------------------------------------------------------------
+# Bimodal Distribution
+# ----------------------------------------------------------------------------
+bimodal_distribution:
+  enabled: true
+  description: "Bimodal distribution configuration"
+  
+  # Parameters
+  parameters:
+    lookback_period: 50
+    confidence_level: 0.95
+    min_data_points: 30
+    max_data_points: 200
+  
+  # Distribution metrics
+  metrics:
+    mode1:
+      enabled: true
+      calculation: "mode_estimation"
+      lookback_period: 50
+    
+    mode2:
+      enabled: true
+      calculation: "mode_estimation"
+      lookback_period: 50
+    
+    gap:
+      enabled: true
+      calculation: "mode_difference"
+      lookback_period: 50
+  
+  # Signals
+  signals:
+    bimodal_buy:
+      description: "Bimodal distribution buy signal"
+      conditions:
+        - "price_at_mode1"
+        - "volume_confirmation"
+        - "support_confirmed"
+      confidence: 0.7
+    
+    bimodal_sell:
+      description: "Bimodal distribution sell signal"
+      conditions:
+        - "price_at_mode2"
+        - "volume_confirmation"
+        - "resistance_confirmed"
+      confidence: 0.7
+
+# ----------------------------------------------------------------------------
+# Skewed Distribution
+# ----------------------------------------------------------------------------
+skewed_distribution:
+  enabled: true
+  description: "Skewed distribution configuration"
+  
+  # Parameters
+  parameters:
+    lookback_period: 50
+    confidence_level: 0.95
+    min_data_points: 20
+    max_data_points: 200
+  
+  # Distribution metrics
+  metrics:
+    skewness:
+      enabled: true
+      calculation: "moment_skewness"
+      lookback_period: 50
+    
+    tail_risk:
+      enabled: true
+      calculation: "extreme_value"
+      lookback_period: 50
+    
+    concentration:
+      enabled: true
+      calculation: "herfindahl"
+      lookback_period: 50
+  
+  # Signals
+  signals:
+    skewed_buy:
+      description: "Skewed distribution buy signal"
+      conditions:
+        - "positive_skew"
+        - "volume_confirmation"
+        - "support_confirmed"
+      confidence: 0.7
+    
+    skewed_sell:
+      description: "Skewed distribution sell signal"
+      conditions:
+        - "negative_skew"
+        - "volume_confirmation"
+        - "resistance_confirmed"
+      confidence: 0.7
+
+# ----------------------------------------------------------------------------
+# Distribution Signals
+# ----------------------------------------------------------------------------
+signals:
+  enabled: true
+  description: "Distribution-based trading signals"
+  
+  # Signal types
+  types:
+    distribution_sell:
+      description: "Distribution sell signal"
+      conditions:
+        - "wyckoff_distribution"
+        - "volume_confirmation"
+        - "price_resistance"
+        - "momentum_decreasing"
+      confidence: 0.8
+    
+    distribution_short:
+      description: "Distribution short signal"
+      conditions:
+        - "distribution_detected"
+        - "volume_confirmation"
+        - "price_breakdown"
+        - "momentum_decreasing"
+      confidence: 0.75
+    
+    distribution_hedge:
+      description: "Distribution hedge signal"
+      conditions:
+        - "distribution_uncertain"
+        - "volume_confirmation"
+        - "price_consolidation"
+        - "momentum_uncertain"
+      confidence: 0.6
+  
+  # Signal confirmation
+  confirmation:
+    required_confirmations: 2
+    confirmation_sources:
+      - "volume"
+      - "momentum"
+      - "price_action"
+
+# ----------------------------------------------------------------------------
+# Risk Management
+# ----------------------------------------------------------------------------
+risk_management:
+  enabled: true
+  description: "Risk management for distribution trading"
+  
+  # Risk parameters
+  parameters:
+    max_position: 0.05
+    max_daily_loss: 0.02
+    max_drawdown: 0.1
+    risk_per_trade: 0.01
+    
+    # Distribution-based stop loss
+    stop_loss:
+      type: "distribution_based"
+      distance: 0.01
+      atr_multiplier: 1.5
+      min: 0.005
+      max: 0.02
+    
+    # Distribution-based take profit
+    take_profit:
+      type: "distribution_based"
+      multiplier: 2.5
+      min: 0.01
+      max: 0.05
+
+# ----------------------------------------------------------------------------
+# Performance Monitoring
+# ----------------------------------------------------------------------------
+performance_monitoring:
+  enabled: true
+  description: "Performance monitoring for distribution trading"
+  
+  metrics:
+    - "win_rate"
+    - "profit_factor"
+    - "sharpe_ratio"
+    - "max_drawdown"
+    - "average_trade"
+    - "consecutive_wins"
+    - "consecutive_losses"
+  
+  targets:
+    min_win_rate: 0.5
+    min_profit_factor: 1.5
+    min_sharpe_ratio: 0.6
+    max_max_drawdown: 0.1
+
+# ----------------------------------------------------------------------------
+# Logging Configuration
+# ----------------------------------------------------------------------------
+logging:
+  enabled: true
+  level: "INFO"
+  file: "logs/distribution_bot.log"
+  rotation: "daily"
+  retention: 30  # days
+  
+  log_categories:
+    signals: true
+    trades: true
+    errors: true
+    performance: true
+    distribution: true
+    debugging: false
