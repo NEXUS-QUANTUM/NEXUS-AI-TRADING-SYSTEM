@@ -1,0 +1,339 @@
+# trading/bots/swing_bot/config/convergence_configs.yaml
+
+# ============================================================================
+# NEXUS AI TRADING SYSTEM - Swing Bot Convergence Configuration
+# Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+# ============================================================================
+#
+# Description: Complete Convergence configuration for swing trading bot
+# Framework: Convergence Trading - Mean Reversion & Convergence Analysis
+# Version: 3.0.0
+#
+# The Convergence configuration enables the bot to identify and trade
+# convergence patterns where prices and indicators move toward equilibrium.
+# ============================================================================
+
+# ----------------------------------------------------------------------------
+# General Configuration
+# ----------------------------------------------------------------------------
+convergence:
+  enabled: true
+  version: "3.0.0"
+  description: "Convergence Trading for swing trading"
+  
+  # Convergence types
+  types:
+    - "price_indicator"
+    - "indicator_indicator"
+    - "price_price"
+    - "asset_asset"
+    - "regression"
+  
+  # Timeframes
+  timeframes:
+    - "1m"
+    - "5m"
+    - "15m"
+    - "30m"
+    - "1h"
+    - "4h"
+    - "1d"
+  
+  default_timeframe: "1h"
+
+# ----------------------------------------------------------------------------
+# Price-Indicator Convergence
+# ----------------------------------------------------------------------------
+price_indicator_convergence:
+  enabled: true
+  description: "Price-Indicator convergence configuration"
+  
+  # Parameters
+  parameters:
+    lookback_period: 50
+    convergence_threshold: 0.3
+    divergence_threshold: 0.7
+    confidence_threshold: 0.7
+  
+  # Indicators
+  indicators:
+    - "rsi"
+    - "macd"
+    - "bb"
+    - "ma"
+    - "stochastic"
+    - "cci"
+  
+  # Detection
+  detection:
+    method: "ratio"
+    min_data_points: 20
+    max_data_points: 100
+  
+  # Signals
+  signals:
+    bullish_convergence:
+      description: "Bullish price-indicator convergence"
+      conditions:
+        - "price_low"
+        - "indicator_high"
+        - "convergence_detected"
+      confidence: 0.75
+    
+    bearish_convergence:
+      description: "Bearish price-indicator convergence"
+      conditions:
+        - "price_high"
+        - "indicator_low"
+        - "convergence_detected"
+      confidence: 0.75
+
+# ----------------------------------------------------------------------------
+# Indicator-Indicator Convergence
+# ----------------------------------------------------------------------------
+indicator_convergence:
+  enabled: true
+  description: "Indicator-Indicator convergence configuration"
+  
+  # Parameters
+  parameters:
+    lookback_period: 50
+    convergence_threshold: 0.3
+    divergence_threshold: 0.7
+    confidence_threshold: 0.7
+  
+  # Indicator pairs
+  pairs:
+    - indicator1: "rsi"
+      indicator2: "macd"
+    - indicator1: "bb"
+      indicator2: "ma"
+    - indicator1: "stochastic"
+      indicator2: "cci"
+  
+  # Detection
+  detection:
+    method: "correlation"
+    min_data_points: 20
+    max_data_points: 100
+  
+  # Signals
+  signals:
+    bullish_indicator_convergence:
+      description: "Bullish indicator convergence"
+      conditions:
+        - "indicator1_oversold"
+        - "indicator2_oversold"
+        - "convergence_detected"
+      confidence: 0.7
+    
+    bearish_indicator_convergence:
+      description: "Bearish indicator convergence"
+      conditions:
+        - "indicator1_overbought"
+        - "indicator2_overbought"
+        - "convergence_detected"
+      confidence: 0.7
+
+# ----------------------------------------------------------------------------
+# Price-Price Convergence
+# ----------------------------------------------------------------------------
+price_convergence:
+  enabled: true
+  description: "Price-Price convergence configuration"
+  
+  # Parameters
+  parameters:
+    lookback_period: 50
+    convergence_threshold: 0.01
+    divergence_threshold: 0.05
+    confidence_threshold: 0.7
+  
+  # Asset pairs
+  pairs:
+    - asset1: "BTCUSDT"
+      asset2: "ETHUSDT"
+    - asset1: "SOLUSDT"
+      asset2: "ADAUSDT"
+    - asset1: "DOTUSDT"
+      asset2: "LINKUSDT"
+  
+  # Detection
+  detection:
+    method: "ratio"
+    min_data_points: 20
+    max_data_points: 100
+  
+  # Signals
+  signals:
+    price_convergence_buy:
+      description: "Price convergence buy"
+      conditions:
+        - "asset1_undervalued"
+        - "asset2_overvalued"
+        - "convergence_detected"
+      confidence: 0.7
+    
+    price_convergence_sell:
+      description: "Price convergence sell"
+      conditions:
+        - "asset1_overvalued"
+        - "asset2_undervalued"
+        - "convergence_detected"
+      confidence: 0.7
+
+# ----------------------------------------------------------------------------
+# Regression Convergence
+# ----------------------------------------------------------------------------
+regression_convergence:
+  enabled: true
+  description: "Regression convergence configuration"
+  
+  # Parameters
+  parameters:
+    lookback_period: 50
+    convergence_threshold: 0.5
+    divergence_threshold: 2.0
+    confidence_threshold: 0.7
+  
+  # Regression types
+  types:
+    - "linear"
+    - "polynomial"
+    - "logarithmic"
+  
+  # Detection
+  detection:
+    method: "standard_deviation"
+    min_data_points: 20
+    max_data_points: 100
+  
+  # Signals
+  signals:
+    regression_convergence_buy:
+      description: "Regression convergence buy"
+      conditions:
+        - "price_below_regression"
+        - "volume_confirmation"
+        - "convergence_detected"
+      confidence: 0.7
+    
+    regression_convergence_sell:
+      description: "Regression convergence sell"
+      conditions:
+        - "price_above_regression"
+        - "volume_confirmation"
+        - "convergence_detected"
+      confidence: 0.7
+
+# ----------------------------------------------------------------------------
+# Convergence Signals
+# ----------------------------------------------------------------------------
+signals:
+  enabled: true
+  description: "Convergence-based trading signals"
+  
+  # Signal types
+  types:
+    convergence_buy:
+      description: "Convergence buy signal"
+      conditions:
+        - "convergence_detected"
+        - "undervalued"
+        - "volume_confirmation"
+        - "momentum_increasing"
+      confidence: 0.75
+    
+    convergence_sell:
+      description: "Convergence sell signal"
+      conditions:
+        - "convergence_detected"
+        - "overvalued"
+        - "volume_confirmation"
+        - "momentum_decreasing"
+      confidence: 0.75
+    
+    convergence_hedge:
+      description: "Convergence hedge signal"
+      conditions:
+        - "convergence_detected"
+        - "uncertain_direction"
+        - "volume_confirmation"
+      confidence: 0.6
+  
+  # Signal confirmation
+  confirmation:
+    required_confirmations: 2
+    confirmation_sources:
+      - "volume"
+      - "momentum"
+      - "price_action"
+
+# ----------------------------------------------------------------------------
+# Risk Management
+# ----------------------------------------------------------------------------
+risk_management:
+  enabled: true
+  description: "Risk management for convergence trading"
+  
+  # Risk parameters
+  parameters:
+    max_position: 0.05
+    max_daily_loss: 0.02
+    max_drawdown: 0.1
+    risk_per_trade: 0.01
+    
+    # Convergence-based stop loss
+    stop_loss:
+      type: "convergence_based"
+      distance: 0.01
+      atr_multiplier: 1.5
+      min: 0.005
+      max: 0.02
+    
+    # Convergence-based take profit
+    take_profit:
+      type: "convergence_based"
+      multiplier: 2.5
+      min: 0.01
+      max: 0.05
+
+# ----------------------------------------------------------------------------
+# Performance Monitoring
+# ----------------------------------------------------------------------------
+performance_monitoring:
+  enabled: true
+  description: "Performance monitoring for convergence trading"
+  
+  metrics:
+    - "win_rate"
+    - "profit_factor"
+    - "sharpe_ratio"
+    - "max_drawdown"
+    - "average_trade"
+    - "consecutive_wins"
+    - "consecutive_losses"
+  
+  targets:
+    min_win_rate: 0.5
+    min_profit_factor: 1.5
+    min_sharpe_ratio: 0.6
+    max_max_drawdown: 0.1
+
+# ----------------------------------------------------------------------------
+# Logging Configuration
+# ----------------------------------------------------------------------------
+logging:
+  enabled: true
+  level: "INFO"
+  file: "logs/convergence_bot.log"
+  rotation: "daily"
+  retention: 30  # days
+  
+  log_categories:
+    signals: true
+    trades: true
+    errors: true
+    performance: true
+    convergence: true
+    debugging: false
