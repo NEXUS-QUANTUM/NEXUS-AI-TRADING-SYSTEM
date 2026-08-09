@@ -1,0 +1,396 @@
+# trading/bots/swing_bot/config/volume_profile_configs.yaml
+
+# ============================================================================
+# NEXUS AI TRADING SYSTEM - Swing Bot Volume Profile Configuration
+# Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+# ============================================================================
+#
+# Description: Complete Volume Profile configuration for swing trading bot
+# Framework: Volume Profile Analysis - Market Structure & Volume Distribution
+# Version: 3.0.0
+#
+# The Volume Profile configuration enables the bot to analyze volume
+# distribution across price levels, identify key support/resistance
+# levels, and make trading decisions based on volume nodes.
+# ============================================================================
+
+# ----------------------------------------------------------------------------
+# General Configuration
+# ----------------------------------------------------------------------------
+volume_profile:
+  enabled: true
+  version: "3.0.0"
+  description: "Volume Profile Analysis for swing trading"
+  
+  # Profile types
+  types:
+    - "standard"
+    - "composite"
+    - "session"
+    - "periodic"
+    - "cumulative"
+  
+  # Timeframes
+  timeframes:
+    - "1m"
+    - "5m"
+    - "15m"
+    - "30m"
+    - "1h"
+    - "4h"
+    - "1d"
+  
+  default_timeframe: "1h"
+
+# ----------------------------------------------------------------------------
+# Standard Profile
+# ----------------------------------------------------------------------------
+standard_profile:
+  enabled: true
+  description: "Standard volume profile configuration"
+  
+  # Parameters
+  parameters:
+    lookback_period: 50
+    volume_bins: 30
+    value_area_volume: 0.7
+    poc_method: "highest_volume"
+    min_volume: 100
+    confidence_threshold: 0.7
+  
+  # Profile metrics
+  metrics:
+    poc:
+      enabled: true
+      calculation: "highest_volume"
+      lookback_period: 50
+    
+    value_area:
+      enabled: true
+      calculation: "cumulative_volume"
+      lookback_period: 50
+    
+    low_volume_node:
+      enabled: true
+      calculation: "volume_ratio"
+      lookback_period: 50
+    
+    high_volume_node:
+      enabled: true
+      calculation: "volume_ratio"
+      lookback_period: 50
+  
+  # Signals
+  signals:
+    poc_support:
+      description: "POC support signal"
+      conditions:
+        - "price_at_poc"
+        - "volume_confirmation"
+        - "support_confirmed"
+      confidence: 0.75
+    
+    poc_resistance:
+      description: "POC resistance signal"
+      conditions:
+        - "price_at_poc"
+        - "volume_confirmation"
+        - "resistance_confirmed"
+      confidence: 0.75
+    
+    value_area_breakout:
+      description: "Value area breakout signal"
+      conditions:
+        - "price_above_value_area"
+        - "volume_confirmation"
+        - "momentum_increasing"
+      confidence: 0.8
+    
+    value_area_breakdown:
+      description: "Value area breakdown signal"
+      conditions:
+        - "price_below_value_area"
+        - "volume_confirmation"
+        - "momentum_decreasing"
+      confidence: 0.8
+
+# ----------------------------------------------------------------------------
+# Composite Profile
+# ----------------------------------------------------------------------------
+composite_profile:
+  enabled: true
+  description: "Composite volume profile configuration"
+  
+  # Parameters
+  parameters:
+    lookback_period: 100
+    volume_bins: 30
+    value_area_volume: 0.7
+    poc_method: "highest_volume"
+    min_volume: 100
+    confidence_threshold: 0.7
+  
+  # Composite metrics
+  metrics:
+    composite_poc:
+      enabled: true
+      calculation: "highest_volume"
+      lookback_period: 100
+    
+    composite_value_area:
+      enabled: true
+      calculation: "cumulative_volume"
+      lookback_period: 100
+    
+    composite_low_volume_node:
+      enabled: true
+      calculation: "volume_ratio"
+      lookback_period: 100
+    
+    composite_high_volume_node:
+      enabled: true
+      calculation: "volume_ratio"
+      lookback_period: 100
+  
+  # Signals
+  signals:
+    composite_poc_support:
+      description: "Composite POC support signal"
+      conditions:
+        - "price_at_composite_poc"
+        - "volume_confirmation"
+        - "support_confirmed"
+      confidence: 0.8
+    
+    composite_poc_resistance:
+      description: "Composite POC resistance signal"
+      conditions:
+        - "price_at_composite_poc"
+        - "volume_confirmation"
+        - "resistance_confirmed"
+      confidence: 0.8
+
+# ----------------------------------------------------------------------------
+# Session Profile
+# ----------------------------------------------------------------------------
+session_profile:
+  enabled: true
+  description: "Session volume profile configuration"
+  
+  # Parameters
+  parameters:
+    lookback_period: 20
+    volume_bins: 30
+    value_area_volume: 0.7
+    poc_method: "highest_volume"
+    min_volume: 100
+    confidence_threshold: 0.7
+  
+  # Session metrics
+  metrics:
+    session_poc:
+      enabled: true
+      calculation: "highest_volume"
+      lookback_period: 20
+    
+    session_value_area:
+      enabled: true
+      calculation: "cumulative_volume"
+      lookback_period: 20
+    
+    session_low_volume_node:
+      enabled: true
+      calculation: "volume_ratio"
+      lookback_period: 20
+    
+    session_high_volume_node:
+      enabled: true
+      calculation: "volume_ratio"
+      lookback_period: 20
+  
+  # Signals
+  signals:
+    session_poc_support:
+      description: "Session POC support signal"
+      conditions:
+        - "price_at_session_poc"
+        - "volume_confirmation"
+        - "support_confirmed"
+      confidence: 0.75
+    
+    session_poc_resistance:
+      description: "Session POC resistance signal"
+      conditions:
+        - "price_at_session_poc"
+        - "volume_confirmation"
+        - "resistance_confirmed"
+      confidence: 0.75
+
+# ----------------------------------------------------------------------------
+# Periodic Profile
+# ----------------------------------------------------------------------------
+periodic_profile:
+  enabled: true
+  description: "Periodic volume profile configuration"
+  
+  # Parameters
+  parameters:
+    lookback_period: 50
+    volume_bins: 30
+    value_area_volume: 0.7
+    poc_method: "highest_volume"
+    min_volume: 100
+    confidence_threshold: 0.7
+  
+  # Periodic metrics
+  metrics:
+    periodic_poc:
+      enabled: true
+      calculation: "highest_volume"
+      lookback_period: 50
+    
+    periodic_value_area:
+      enabled: true
+      calculation: "cumulative_volume"
+      lookback_period: 50
+    
+    periodic_low_volume_node:
+      enabled: true
+      calculation: "volume_ratio"
+      lookback_period: 50
+    
+    periodic_high_volume_node:
+      enabled: true
+      calculation: "volume_ratio"
+      lookback_period: 50
+  
+  # Signals
+  signals:
+    periodic_poc_support:
+      description: "Periodic POC support signal"
+      conditions:
+        - "price_at_periodic_poc"
+        - "volume_confirmation"
+        - "support_confirmed"
+      confidence: 0.75
+    
+    periodic_poc_resistance:
+      description: "Periodic POC resistance signal"
+      conditions:
+        - "price_at_periodic_poc"
+        - "volume_confirmation"
+        - "resistance_confirmed"
+      confidence: 0.75
+
+# ----------------------------------------------------------------------------
+# Volume Profile Signals
+# ----------------------------------------------------------------------------
+signals:
+  enabled: true
+  description: "Volume profile-based trading signals"
+  
+  # Signal types
+  types:
+    profile_buy:
+      description: "Volume profile buy signal"
+      conditions:
+        - "poc_support"
+        - "value_area_support"
+        - "volume_confirmation"
+        - "momentum_increasing"
+      confidence: 0.8
+    
+    profile_sell:
+      description: "Volume profile sell signal"
+      conditions:
+        - "poc_resistance"
+        - "value_area_resistance"
+        - "volume_confirmation"
+        - "momentum_decreasing"
+      confidence: 0.8
+    
+    profile_hedge:
+      description: "Volume profile hedge signal"
+      conditions:
+        - "mixed_profile_signals"
+        - "uncertain_direction"
+        - "volume_confirmation"
+      confidence: 0.6
+  
+  # Signal confirmation
+  confirmation:
+    required_confirmations: 2
+    confirmation_sources:
+      - "price_action"
+      - "volume"
+      - "technical_indicators"
+
+# ----------------------------------------------------------------------------
+# Risk Management
+# ----------------------------------------------------------------------------
+risk_management:
+  enabled: true
+  description: "Risk management for volume profile trading"
+  
+  # Risk parameters
+  parameters:
+    max_position: 0.05
+    max_daily_loss: 0.02
+    max_drawdown: 0.1
+    risk_per_trade: 0.01
+    
+    # Profile-based stop loss
+    stop_loss:
+      type: "profile_based"
+      distance: 0.01
+      atr_multiplier: 1.5
+      min: 0.005
+      max: 0.02
+    
+    # Profile-based take profit
+    take_profit:
+      type: "profile_based"
+      multiplier: 2.5
+      min: 0.01
+      max: 0.05
+
+# ----------------------------------------------------------------------------
+# Performance Monitoring
+# ----------------------------------------------------------------------------
+performance_monitoring:
+  enabled: true
+  description: "Performance monitoring for volume profile trading"
+  
+  metrics:
+    - "win_rate"
+    - "profit_factor"
+    - "sharpe_ratio"
+    - "max_drawdown"
+    - "average_trade"
+    - "consecutive_wins"
+    - "consecutive_losses"
+    - "profile_accuracy"
+  
+  targets:
+    min_win_rate: 0.5
+    min_profit_factor: 1.5
+    min_sharpe_ratio: 0.6
+    max_max_drawdown: 0.1
+
+# ----------------------------------------------------------------------------
+# Logging Configuration
+# ----------------------------------------------------------------------------
+logging:
+  enabled: true
+  level: "INFO"
+  file: "logs/volume_profile.log"
+  rotation: "daily"
+  retention: 30  # days
+  
+  log_categories:
+    signals: true
+    trades: true
+    errors: true
+    performance: true
+    profile: true
+    debugging: false
