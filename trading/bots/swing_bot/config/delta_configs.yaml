@@ -1,0 +1,351 @@
+# trading/bots/swing_bot/config/delta_configs.yaml
+
+# ============================================================================
+# NEXUS AI TRADING SYSTEM - Swing Bot Delta Configuration
+# Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+# ============================================================================
+#
+# Description: Complete Delta configuration for swing trading bot
+# Framework: Delta Analysis - Price Change & Momentum Analysis
+# Version: 3.0.0
+#
+# The Delta configuration enables the bot to analyze and trade based on
+# price changes, momentum, and rate of change indicators.
+# ============================================================================
+
+# ----------------------------------------------------------------------------
+# General Configuration
+# ----------------------------------------------------------------------------
+delta:
+  enabled: true
+  version: "3.0.0"
+  description: "Delta Analysis for swing trading"
+  
+  # Delta types
+  types:
+    - "price_delta"
+    - "volume_delta"
+    - "momentum_delta"
+    - "rate_of_change"
+    - "acceleration"
+  
+  # Timeframes
+  timeframes:
+    - "1m"
+    - "5m"
+    - "15m"
+    - "30m"
+    - "1h"
+    - "4h"
+    - "1d"
+  
+  default_timeframe: "1h"
+
+# ----------------------------------------------------------------------------
+# Price Delta
+# ----------------------------------------------------------------------------
+price_delta:
+  enabled: true
+  description: "Price delta configuration"
+  
+  # Parameters
+  parameters:
+    lookback_period: 20
+    delta_threshold: 0.01
+    min_delta: -0.05
+    max_delta: 0.05
+    confidence_threshold: 0.7
+  
+  # Delta metrics
+  metrics:
+    price_change:
+      enabled: true
+      calculation: "percentage"
+      lookback_period: 1
+    
+    price_momentum:
+      enabled: true
+      calculation: "rate_of_change"
+      lookback_period: 5
+    
+    price_acceleration:
+      enabled: true
+      calculation: "second_derivative"
+      lookback_period: 5
+  
+  # Signals
+  signals:
+    delta_increasing:
+      description: "Delta increasing signal"
+      conditions:
+        - "price_change_>_0"
+        - "momentum_>_0"
+        - "acceleration_>_0"
+        - "volume_confirmation"
+      confidence: 0.75
+    
+    delta_decreasing:
+      description: "Delta decreasing signal"
+      conditions:
+        - "price_change_<_0"
+        - "momentum_<_0"
+        - "acceleration_<_0"
+        - "volume_confirmation"
+      confidence: 0.75
+    
+    delta_reversal:
+      description: "Delta reversal signal"
+      conditions:
+        - "price_change_reversing"
+        - "momentum_reversing"
+        - "volume_confirmation"
+      confidence: 0.7
+
+# ----------------------------------------------------------------------------
+# Volume Delta
+# ----------------------------------------------------------------------------
+volume_delta:
+  enabled: true
+  description: "Volume delta configuration"
+  
+  # Parameters
+  parameters:
+    lookback_period: 20
+    delta_threshold: 0.1
+    min_delta: -0.5
+    max_delta: 0.5
+    confidence_threshold: 0.7
+  
+  # Delta metrics
+  metrics:
+    volume_change:
+      enabled: true
+      calculation: "percentage"
+      lookback_period: 1
+    
+    volume_momentum:
+      enabled: true
+      calculation: "rate_of_change"
+      lookback_period: 5
+    
+    volume_acceleration:
+      enabled: true
+      calculation: "second_derivative"
+      lookback_period: 5
+  
+  # Signals
+  signals:
+    volume_delta_increasing:
+      description: "Volume delta increasing"
+      conditions:
+        - "volume_change_>_0"
+        - "volume_momentum_>_0"
+        - "price_confirmation"
+      confidence: 0.7
+    
+    volume_delta_decreasing:
+      description: "Volume delta decreasing"
+      conditions:
+        - "volume_change_<_0"
+        - "volume_momentum_<_0"
+        - "price_confirmation"
+      confidence: 0.7
+
+# ----------------------------------------------------------------------------
+# Momentum Delta
+# ----------------------------------------------------------------------------
+momentum_delta:
+  enabled: true
+  description: "Momentum delta configuration"
+  
+  # Parameters
+  parameters:
+    lookback_period: 20
+    delta_threshold: 0.1
+    min_delta: -0.5
+    max_delta: 0.5
+    confidence_threshold: 0.7
+  
+  # Delta metrics
+  metrics:
+    momentum_change:
+      enabled: true
+      calculation: "percentage"
+      lookback_period: 1
+    
+    momentum_acceleration:
+      enabled: true
+      calculation: "second_derivative"
+      lookback_period: 5
+  
+  # Signals
+  signals:
+    momentum_delta_increasing:
+      description: "Momentum delta increasing"
+      conditions:
+        - "momentum_change_>_0"
+        - "momentum_acceleration_>_0"
+        - "price_confirmation"
+      confidence: 0.75
+    
+    momentum_delta_decreasing:
+      description: "Momentum delta decreasing"
+      conditions:
+        - "momentum_change_<_0"
+        - "momentum_acceleration_<_0"
+        - "price_confirmation"
+      confidence: 0.75
+
+# ----------------------------------------------------------------------------
+# Rate of Change
+# ----------------------------------------------------------------------------
+rate_of_change:
+  enabled: true
+  description: "Rate of change configuration"
+  
+  # Parameters
+  parameters:
+    lookback_period: 20
+    roc_threshold: 0.05
+    min_roc: -0.2
+    max_roc: 0.2
+    confidence_threshold: 0.7
+  
+  # ROC metrics
+  metrics:
+    roc:
+      enabled: true
+      calculation: "percentage"
+      lookback_period: 5
+    
+    roc_momentum:
+      enabled: true
+      calculation: "rate_of_change"
+      lookback_period: 5
+    
+    roc_acceleration:
+      enabled: true
+      calculation: "second_derivative"
+      lookback_period: 5
+  
+  # Signals
+  signals:
+    roc_increasing:
+      description: "ROC increasing signal"
+      conditions:
+        - "roc_>_0"
+        - "roc_momentum_>_0"
+        - "volume_confirmation"
+      confidence: 0.7
+    
+    roc_decreasing:
+      description: "ROC decreasing signal"
+      conditions:
+        - "roc_<_0"
+        - "roc_momentum_<_0"
+        - "volume_confirmation"
+      confidence: 0.7
+
+# ----------------------------------------------------------------------------
+# Delta Signals
+# ----------------------------------------------------------------------------
+signals:
+  enabled: true
+  description: "Delta-based trading signals"
+  
+  # Signal types
+  types:
+    delta_buy:
+      description: "Delta buy signal"
+      conditions:
+        - "price_delta_increasing"
+        - "volume_delta_increasing"
+        - "momentum_delta_increasing"
+        - "roc_increasing"
+      confidence: 0.8
+    
+    delta_sell:
+      description: "Delta sell signal"
+      conditions:
+        - "price_delta_decreasing"
+        - "volume_delta_decreasing"
+        - "momentum_delta_decreasing"
+        - "roc_decreasing"
+      confidence: 0.8
+    
+    delta_hedge:
+      description: "Delta hedge signal"
+      conditions:
+        - "mixed_delta_signals"
+        - "uncertain_direction"
+        - "volume_confirmation"
+      confidence: 0.6
+  
+  # Signal confirmation
+  confirmation:
+    required_confirmations: 2
+    confirmation_sources:
+      - "price_action"
+      - "volume"
+      - "technical_indicators"
+
+# ----------------------------------------------------------------------------
+# Risk Management
+# ----------------------------------------------------------------------------
+risk_management:
+  enabled: true
+  description: "Risk management for delta trading"
+  
+  # Risk parameters
+  parameters:
+    max_position: 0.05
+    max_daily_loss: 0.02
+    max_drawdown: 0.1
+    risk_per_trade: 0.01
+    
+    # Delta-based stop loss
+    stop_loss:
+      type: "delta_based"
+      threshold: 0.02
+      update_interval: 10  # bars
+
+# ----------------------------------------------------------------------------
+# Performance Monitoring
+# ----------------------------------------------------------------------------
+performance_monitoring:
+  enabled: true
+  description: "Performance monitoring for delta trading"
+  
+  metrics:
+    - "win_rate"
+    - "profit_factor"
+    - "sharpe_ratio"
+    - "max_drawdown"
+    - "average_trade"
+    - "consecutive_wins"
+    - "consecutive_losses"
+    - "delta_accuracy"
+  
+  targets:
+    min_win_rate: 0.5
+    min_profit_factor: 1.5
+    min_sharpe_ratio: 0.6
+    max_max_drawdown: 0.1
+
+# ----------------------------------------------------------------------------
+# Logging Configuration
+# ----------------------------------------------------------------------------
+logging:
+  enabled: true
+  level: "INFO"
+  file: "logs/delta_bot.log"
+  rotation: "daily"
+  retention: 30  # days
+  
+  log_categories:
+    signals: true
+    trades: true
+    errors: true
+    performance: true
+    delta: true
+    debugging: false
