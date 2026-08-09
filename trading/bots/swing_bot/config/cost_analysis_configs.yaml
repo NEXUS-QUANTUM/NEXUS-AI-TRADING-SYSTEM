@@ -1,0 +1,376 @@
+# trading/bots/swing_bot/config/cost_analysis_configs.yaml
+
+# ============================================================================
+# NEXUS AI TRADING SYSTEM - Swing Bot Cost Analysis Configuration
+# Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+# ============================================================================
+#
+# Description: Complete Cost Analysis configuration for swing trading bot
+# Framework: Cost Analysis - Trading Costs & Efficiency Optimization
+# Version: 3.0.0
+#
+# The Cost Analysis configuration enables the bot to analyze and optimize
+# trading costs including commissions, slippage, and spread costs.
+# ============================================================================
+
+# ----------------------------------------------------------------------------
+# General Configuration
+# ----------------------------------------------------------------------------
+cost_analysis:
+  enabled: true
+  version: "3.0.0"
+  description: "Cost Analysis for swing trading"
+  
+  # Cost types
+  types:
+    - "commission"
+    - "slippage"
+    - "spread"
+    - "execution"
+    - "opportunity"
+    - "tax"
+  
+  # Cost components
+  components:
+    - "trading_fees"
+    - "spread_costs"
+    - "slippage_costs"
+    - "opportunity_costs"
+    - "tax_impact"
+
+# ----------------------------------------------------------------------------
+# Commission Analysis
+# ----------------------------------------------------------------------------
+commission_analysis:
+  enabled: true
+  description: "Commission analysis configuration"
+  
+  # Parameters
+  parameters:
+    lookback_period: 100
+    commission_rate: 0.001
+    min_commission: 0.01
+    max_commission: 100
+  
+  # Commission types
+  types:
+    - "maker"
+    - "taker"
+    - "flat"
+    - "tiered"
+  
+  # Analysis
+  analysis:
+    total_commission:
+      enabled: true
+      calculation: "sum"
+      lookback_period: 100
+    
+    average_commission:
+      enabled: true
+      calculation: "mean"
+      lookback_period: 100
+    
+    commission_ratio:
+      enabled: true
+      calculation: "commission_pnl_ratio"
+      lookback_period: 100
+  
+  # Optimization
+  optimization:
+    enabled: true
+    target: "minimize"
+    constraints:
+      - "commission_rate_<_0.001"
+      - "min_commission_>_0.01"
+
+# ----------------------------------------------------------------------------
+# Slippage Analysis
+# ----------------------------------------------------------------------------
+slippage_analysis:
+  enabled: true
+  description: "Slippage analysis configuration"
+  
+  # Parameters
+  parameters:
+    lookback_period: 100
+    max_slippage: 0.002
+    min_slippage: 0.0001
+    slippage_tolerance: 0.001
+  
+  # Slippage types
+  types:
+    - "price_slippage"
+    - "volume_slippage"
+    - "time_slippage"
+  
+  # Analysis
+  analysis:
+    total_slippage:
+      enabled: true
+      calculation: "sum"
+      lookback_period: 100
+    
+    average_slippage:
+      enabled: true
+      calculation: "mean"
+      lookback_period: 100
+    
+    slippage_ratio:
+      enabled: true
+      calculation: "slippage_pnl_ratio"
+      lookback_period: 100
+  
+  # Optimization
+  optimization:
+    enabled: true
+    target: "minimize"
+    constraints:
+      - "slippage_<_0.001"
+      - "execution_speed_>_0.1"
+
+# ----------------------------------------------------------------------------
+# Spread Analysis
+# ----------------------------------------------------------------------------
+spread_analysis:
+  enabled: true
+  description: "Spread analysis configuration"
+  
+  # Parameters
+  parameters:
+    lookback_period: 100
+    max_spread: 0.002
+    min_spread: 0.0001
+    spread_tolerance: 0.001
+  
+  # Spread types
+  types:
+    - "bid_ask"
+    - "weighted"
+    - "effective"
+    - "realized"
+  
+  # Analysis
+  analysis:
+    total_spread:
+      enabled: true
+      calculation: "sum"
+      lookback_period: 100
+    
+    average_spread:
+      enabled: true
+      calculation: "mean"
+      lookback_period: 100
+    
+    spread_ratio:
+      enabled: true
+      calculation: "spread_pnl_ratio"
+      lookback_period: 100
+  
+  # Optimization
+  optimization:
+    enabled: true
+    target: "minimize"
+    constraints:
+      - "spread_<_0.001"
+      - "liquidity_>_1000"
+
+# ----------------------------------------------------------------------------
+# Execution Analysis
+# ----------------------------------------------------------------------------
+execution_analysis:
+  enabled: true
+  description: "Execution analysis configuration"
+  
+  # Parameters
+  parameters:
+    lookback_period: 100
+    max_execution_time: 1.0  # seconds
+    min_execution_time: 0.001  # seconds
+    execution_tolerance: 0.1  # seconds
+  
+  # Execution metrics
+  metrics:
+    execution_time:
+      enabled: true
+      calculation: "mean"
+      lookback_period: 100
+    
+    fill_rate:
+      enabled: true
+      calculation: "ratio"
+      lookback_period: 100
+    
+    execution_quality:
+      enabled: true
+      calculation: "quality_score"
+      lookback_period: 100
+  
+  # Optimization
+  optimization:
+    enabled: true
+    target: "maximize"
+    constraints:
+      - "execution_time_<_1.0"
+      - "fill_rate_>_0.9"
+
+# ----------------------------------------------------------------------------
+# Opportunity Cost Analysis
+# ----------------------------------------------------------------------------
+opportunity_cost:
+  enabled: true
+  description: "Opportunity cost analysis configuration"
+  
+  # Parameters
+  parameters:
+    lookback_period: 100
+    risk_free_rate: 0.02
+    benchmark_return: 0.05
+    opportunity_tolerance: 0.01
+  
+  # Analysis
+  analysis:
+    missed_opportunities:
+      enabled: true
+      calculation: "count"
+      lookback_period: 100
+    
+    opportunity_cost:
+      enabled: true
+      calculation: "cost"
+      lookback_period: 100
+    
+    opportunity_ratio:
+      enabled: true
+      calculation: "opportunity_pnl_ratio"
+      lookback_period: 100
+  
+  # Optimization
+  optimization:
+    enabled: true
+    target: "minimize"
+    constraints:
+      - "opportunity_cost_<_0.01"
+      - "missed_opportunities_<10"
+
+# ----------------------------------------------------------------------------
+# Tax Impact Analysis
+# ----------------------------------------------------------------------------
+tax_analysis:
+  enabled: true
+  description: "Tax impact analysis configuration"
+  
+  # Parameters
+  parameters:
+    lookback_period: 100
+    tax_rate: 0.2
+    short_term_rate: 0.3
+    long_term_rate: 0.15
+  
+  # Tax types
+  types:
+    - "short_term"
+    - "long_term"
+    - "capital_gains"
+    - "income"
+  
+  # Analysis
+  analysis:
+    total_tax:
+      enabled: true
+      calculation: "sum"
+      lookback_period: 100
+    
+    average_tax:
+      enabled: true
+      calculation: "mean"
+      lookback_period: 100
+    
+    tax_ratio:
+      enabled: true
+      calculation: "tax_pnl_ratio"
+      lookback_period: 100
+  
+  # Optimization
+  optimization:
+    enabled: true
+    target: "minimize"
+    constraints:
+      - "tax_rate_<_0.2"
+      - "holding_period_>_365"
+
+# ----------------------------------------------------------------------------
+# Cost Signals
+# ----------------------------------------------------------------------------
+signals:
+  enabled: true
+  description: "Cost-based trading signals"
+  
+  # Signal types
+  types:
+    cost_high:
+      description: "High cost signal"
+      conditions:
+        - "total_cost_>_threshold"
+        - "cost_ratio_>_0.1"
+        - "pnl_negative"
+      action: "reduce_trading"
+    
+    cost_low:
+      description: "Low cost signal"
+      conditions:
+        - "total_cost_<_threshold"
+        - "cost_ratio_<_0.05"
+        - "pnl_positive"
+      action: "increase_trading"
+    
+    cost_optimize:
+      description: "Cost optimization signal"
+      conditions:
+        - "cost_ratio_>_0.08"
+        - "opportunity_cost_>_threshold"
+        - "execution_quality_low"
+      action: "optimize"
+
+# ----------------------------------------------------------------------------
+# Performance Monitoring
+# ----------------------------------------------------------------------------
+performance_monitoring:
+  enabled: true
+  description: "Performance monitoring for cost analysis"
+  
+  metrics:
+    - "total_cost"
+    - "average_cost"
+    - "cost_ratio"
+    - "commission_impact"
+    - "slippage_impact"
+    - "spread_impact"
+    - "opportunity_cost"
+    - "tax_impact"
+  
+  targets:
+    max_total_cost: 0.05
+    max_cost_ratio: 0.1
+    max_commission_impact: 0.02
+    max_slippage_impact: 0.01
+
+# ----------------------------------------------------------------------------
+# Logging Configuration
+# ----------------------------------------------------------------------------
+logging:
+  enabled: true
+  level: "INFO"
+  file: "logs/cost_analysis.log"
+  rotation: "daily"
+  retention: 30  # days
+  
+  log_categories:
+    costs: true
+    commissions: true
+    slippage: true
+    spreads: true
+    execution: true
+    optimization: true
+    errors: true
+    debugging: false
