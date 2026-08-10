@@ -1,0 +1,825 @@
+# var_configs.yaml
+# Configuration complète pour la Value at Risk (VaR) dans Swing Bot
+# Version: 4.0.0 - Production Ready
+
+# Paramètres généraux
+general:
+  enabled: true
+  mode: "comprehensive"
+  calculate_in_real_time: true
+  update_frequency_seconds: 1
+  lookback_periods:
+    - 5
+    - 10
+    - 20
+    - 50
+    - 100
+    - 200
+    - 500
+  history_length_days: 730
+  min_data_points: 100
+  max_data_points: 100000
+  confidence_levels:
+    - 90
+    - 95
+    - 97.5
+    - 99
+    - 99.9
+  time_horizons:
+    - 1
+    - 5
+    - 10
+    - 20
+    - 50
+  base_currency: "USD"
+
+# Types de VaR
+var_types:
+  historical:
+    enabled: true
+    calculation_method: "historical_simulation"
+    confidence_levels:
+      - 90
+      - 95
+      - 97.5
+      - 99
+    time_horizons:
+      - 1
+      - 5
+      - 10
+      - 20
+    smoothing: 0
+    bootstrap_iterations: 1000
+    random_seed: 42
+  parametric:
+    enabled: true
+    calculation_method: "variance_covariance"
+    distribution: "normal"  # normal | student_t | skewed_t
+    confidence_levels:
+      - 90
+      - 95
+      - 97.5
+      - 99
+    time_horizons:
+      - 1
+      - 5
+      - 10
+      - 20
+    smoothing: 3
+    use_correlation: true
+    correlation_method: "pearson"
+  monte_carlo:
+    enabled: true
+    calculation_method: "monte_carlo_simulation"
+    simulations: 100000
+    confidence_levels:
+      - 90
+      - 95
+      - 97.5
+      - 99
+    time_horizons:
+      - 1
+      - 5
+      - 10
+      - 20
+    distribution: "normal"
+    random_seed: 42
+    smoothing: 0
+    convergence_iterations: 1000
+    convergence_threshold: 0.001
+  conditional_var:
+    enabled: true
+    calculation_method: "expected_shortfall"
+    confidence_levels:
+      - 95
+      - 97.5
+      - 99
+    time_horizons:
+      - 1
+      - 5
+      - 10
+    smoothing: 0
+    tail_method: "historical"
+  incremental_var:
+    enabled: true
+    calculation_method: "incremental_var"
+    confidence_level: 95
+    time_horizon: 1
+    smoothing: 0
+  marginal_var:
+    enabled: true
+    calculation_method: "marginal_var"
+    confidence_level: 95
+    time_horizon: 1
+    smoothing: 0
+  component_var:
+    enabled: true
+    calculation_method: "component_var"
+    confidence_level: 95
+    time_horizon: 1
+    smoothing: 0
+
+# Seuils de VaR
+thresholds:
+  warning:
+    percent: 50.0
+    action: "monitor"
+    description: "VaR approaching limit"
+  danger:
+    percent: 75.0
+    action: "alert"
+    description: "VaR exceeding safe limit"
+  critical:
+    percent: 90.0
+    action: "reduce_exposure"
+    description: "VaR at critical level"
+  emergency:
+    percent: 100.0
+    action: "stop_trading"
+    description: "VaR limit reached"
+  hard_limit:
+    percent: 120.0
+    action: "emergency_stop"
+    description: "Hard VaR limit breached"
+
+# Limites de VaR
+limits:
+  daily:
+    max_var: 10000
+    max_var_percent: 2.0
+    max_cvar: 15000
+    max_cvar_percent: 3.0
+  weekly:
+    max_var: 50000
+    max_var_percent: 5.0
+    max_cvar: 75000
+    max_cvar_percent: 7.5
+  monthly:
+    max_var: 100000
+    max_var_percent: 10.0
+    max_cvar: 150000
+    max_cvar_percent: 15.0
+  portfolio:
+    max_var: 20000
+    max_var_percent: 3.0
+    max_cvar: 30000
+    max_cvar_percent: 4.5
+
+# Indicateurs de VaR
+indicators:
+  var_trend:
+    enabled: true
+    period: 14
+    smoothing: 3
+    confidence_level: 95
+  var_momentum:
+    enabled: true
+    period: 14
+    smoothing: 3
+    confidence_level: 95
+  var_velocity:
+    enabled: true
+    period: 5
+    smoothing: 0
+    confidence_level: 95
+  var_acceleration:
+    enabled: true
+    period: 10
+    smoothing: 0
+    confidence_level: 95
+  var_volatility:
+    enabled: true
+    period: 20
+    smoothing: 3
+    confidence_level: 95
+  var_spike:
+    enabled: true
+    multiplier: 2.0
+    confidence_level: 95
+  var_ratio:
+    enabled: true
+    period: 14
+    smoothing: 0
+    compare_to_baseline: true
+
+# Analyse de VaR
+analysis:
+  historical:
+    enabled: true
+    lookback_years: 5
+    compute_var_history: true
+    compute_cvar_history: true
+    compute_var_distribution: true
+    compute_cvar_distribution: true
+    compute_var_percentiles: true
+    percentile_values:
+      - 1
+      - 5
+      - 10
+      - 25
+      - 50
+      - 75
+      - 90
+      - 95
+      - 99
+    compute_var_trend: true
+    compute_var_seasonality: true
+  real_time:
+    enabled: true
+    update_frequency_ms: 100
+    compute_instantaneous_var: true
+    compute_moving_average_var: true
+    compute_exponential_var: true
+    compute_weighted_var: true
+    compute_conditional_var: true
+    compute_stressed_var: true
+  predictive:
+    enabled: true
+    model_type: "ensemble"
+    models:
+      - "garch"
+      - "egarch"
+      - "gjr_garch"
+      - "lstm"
+      - "gru"
+    features:
+      - "var_historical"
+      - "var_parametric"
+      - "var_monte_carlo"
+      - "cvar"
+      - "volatility"
+      - "volatility_sma_20"
+      - "volatility_ema_20"
+      - "atr_14"
+      - "price_change"
+      - "volume"
+      - "time_of_day"
+      - "day_of_week"
+      - "market_condition"
+    forecast_horizons:
+      - 1
+      - 5
+      - 10
+      - 20
+    confidence_interval: 95
+    confidence_threshold: 0.7
+    retrain_frequency_hours: 12
+  scenario_analysis:
+    enabled: true
+    scenarios:
+      - name: "normal_market"
+        multiplier: 1.0
+        description: "Normal market conditions"
+      - name: "stress_market"
+        multiplier: 1.5
+        description: "Stress market conditions"
+      - name: "extreme_market"
+        multiplier: 2.0
+        description: "Extreme market conditions"
+      - name: "crisis_market"
+        multiplier: 3.0
+        description: "Crisis market conditions"
+      - name: "black_swan"
+        multiplier: 5.0
+        description: "Black swan event"
+    calculate_scenario_var: true
+    calculate_scenario_cvar: true
+    calculate_scenario_impact: true
+
+# Gestion des risques basée sur VaR
+risk_management:
+  position_sizing:
+    enabled: true
+    method: "var_based"
+    max_var_per_position: 1000
+    max_var_percent_per_position: 1.0
+    position_size_multiplier: 1.0
+    kelly_criterion: true
+    kelly_fraction: 0.25
+  stop_loss:
+    enabled: true
+    method: "var_based"
+    var_multiplier: 1.5
+    min_stop_loss: 1.0
+    max_stop_loss: 10.0
+    update_frequency_seconds: 10
+    use_dynamic_stop_loss: true
+  take_profit:
+    enabled: true
+    method: "var_based"
+    var_multiplier: 3.0
+    min_take_profit: 2.0
+    max_take_profit: 20.0
+    update_frequency_seconds: 10
+    use_dynamic_take_profit: true
+  exposure_limits:
+    enabled: true
+    max_exposure_per_symbol: 5000
+    max_exposure_percent_per_symbol: 5.0
+    max_exposure_portfolio: 50000
+    max_exposure_percent_portfolio: 20.0
+    reduce_exposure_on_var_exceed: true
+    reduction_factor: 0.5
+  hedging:
+    enabled: true
+    var_threshold: 80.0
+    hedge_instruments:
+      - "BTCUSDT_PERP"
+      - "ETHUSDT_PERP"
+      - "GOLD_SPOT"
+      - "USDT"
+    hedge_ratio: 0.3
+    max_hedge_position: 10000
+    dynamic_hedging: true
+
+# Paramètres avancés
+advanced:
+  machine_learning:
+    enabled: true
+    model_type: "ensemble"
+    models:
+      - "random_forest"
+      - "xgboost"
+      - "lightgbm"
+      - "lstm"
+      - "gru"
+    features:
+      - "var_historical_90"
+      - "var_historical_95"
+      - "var_historical_99"
+      - "var_parametric_90"
+      - "var_parametric_95"
+      - "var_parametric_99"
+      - "var_monte_carlo_90"
+      - "var_monte_carlo_95"
+      - "var_monte_carlo_99"
+      - "cvar_95"
+      - "cvar_99"
+      - "volatility_sma_20"
+      - "volatility_ema_20"
+      - "atr_14"
+      - "price_change"
+      - "volume"
+      - "time_of_day"
+      - "day_of_week"
+      - "market_condition"
+    training_frequency_hours: 6
+    retrain_threshold: 0.9
+    validation_split: 0.2
+    random_seed: 42
+    ensemble_weights:
+      - 0.25
+      - 0.25
+      - 0.25
+      - 0.125
+      - 0.125
+  statistical_analysis:
+    enabled: true
+    calculate_descriptive_stats: true
+    calculate_inferential_stats: true
+    calculate_distribution_fitting: true
+    calculate_tail_analysis: true
+    calculate_extreme_value_theory: true
+    confidence_level: 95
+    p_value_threshold: 0.05
+  backtesting_validation:
+    enabled: true
+    validation_methods:
+      - "kupiec"
+      - "christoffersen"
+      - "brown_forsythe"
+      - "berkowitz"
+    confidence_level: 95
+    validation_periods:
+      - 250
+      - 500
+      - 1000
+    backtesting_frequency: "daily"
+
+# Monitoring et journalisation
+monitoring:
+  logging:
+    enabled: true
+    level: "debug"
+    format: "json"
+    include_context: true
+    include_timestamp: true
+    include_metadata: true
+  metrics:
+    enabled: true
+    collect_every_seconds: 1
+    metrics_to_collect:
+      - "var_95"
+      - "var_99"
+      - "cvar_95"
+      - "cvar_99"
+      - "var_percent_95"
+      - "var_percent_99"
+      - "cvar_percent_95"
+      - "cvar_percent_99"
+      - "var_trend"
+      - "var_momentum"
+      - "var_velocity"
+      - "var_acceleration"
+      - "var_volatility"
+      - "var_spike_multiplier"
+      - "var_ratio"
+      - "exposure_used"
+      - "exposure_limit"
+      - "hedge_ratio"
+  dashboard:
+    enabled: true
+    update_interval_seconds: 1
+    charts:
+      - "var_chart"
+      - "cvar_chart"
+      - "var_distribution"
+      - "var_percentiles"
+      - "var_trend"
+      - "exposure_chart"
+      - "hedge_ratio"
+      - "var_backtesting"
+      - "scenario_analysis"
+      - "position_risk"
+
+# Backtesting
+backtesting:
+  enabled: true
+  use_historical_var: true
+  compute_var_accuracy: true
+  compute_cvar_accuracy: true
+  compute_exceedance_count: true
+  compute_exceedance_rate: true
+  compute_backtest_results: true
+  compute_risk_adjusted_returns: true
+  report_metrics:
+    - "var_accuracy"
+    - "cvar_accuracy"
+    - "exceedance_rate"
+    - "kupiec_test"
+    - "christoffersen_test"
+    - "brown_forsythe_test"
+    - "berkowitz_test"
+    - "risk_adjusted_return"
+    - "sharpe_ratio"
+    - "sortino_ratio"
+
+# Distribution des métriques
+metrics_distribution:
+  enabled: true
+  distribution:
+    - metric: "var_95"
+      bins: 100
+      update_frequency: "realtime"
+    - metric: "var_99"
+      bins: 100
+      update_frequency: "realtime"
+    - metric: "cvar_95"
+      bins: 50
+      update_frequency: "realtime"
+    - metric: "var_percent_95"
+      bins: 50
+      update_frequency: "realtime"
+  percentiles:
+    - 1
+    - 5
+    - 10
+    - 25
+    - 50
+    - 75
+    - 90
+    - 95
+    - 99
+
+# Configuration de la base de données
+database:
+  enabled: true
+  table_name: "var_metrics"
+  retention_days: 730
+  aggregation:
+    enabled: true
+    intervals:
+      - "1s"
+      - "5s"
+      - "15s"
+      - "30s"
+      - "1m"
+      - "5m"
+      - "15m"
+      - "1h"
+      - "4h"
+      - "24h"
+      - "7d"
+      - "30d"
+  compression: true
+  backup:
+    enabled: true
+    frequency: "daily"
+    retention_days: 30
+
+# Webhooks
+webhooks:
+  enabled: true
+  endpoints:
+    - url: "https://nexustradingia.com/api/webhooks/var"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      payload_template: "var_alert"
+    - url: "https://nexustradingia.com/api/webhooks/var_exceedance"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      payload_template: "var_exceedance"
+    - url: "https://nexustradingia.com/api/webhooks/var_backtest"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      payload_template: "var_backtest"
+  retry:
+    enabled: true
+    max_attempts: 5
+    backoff_seconds: 30
+
+# Logging avancé
+advanced_logging:
+  enabled: true
+  levels:
+    - "info"
+    - "warning"
+    - "error"
+    - "critical"
+    - "debug"
+  output: "var_logs"
+  rotation:
+    enabled: true
+    max_size_mb: 100
+    max_files: 10
+  remote_logging:
+    enabled: true
+    endpoints:
+      - "https://nexustradingia.com/logs/var"
+  include_trace: true
+  include_stack_trace: true
+  include_context: true
+
+# Threading et performances
+performance:
+  thread_pool_size: 8
+  queue_size: 10000
+  batch_size: 1000
+  async_processing: true
+  cache_size: 10000
+  cache_ttl_seconds: 30
+  database_pool_size: 10
+  database_pool_max_overflow: 20
+  use_multiprocessing: true
+  max_workers: 8
+  use_cython: true
+  use_numba: true
+  use_gpu: false
+  gpu_device: 0
+
+# API de gestion
+management_api:
+  enabled: true
+  endpoints:
+    - "/api/v1/var/current"
+    - "/api/v1/var/history"
+    - "/api/v1/var/metrics"
+    - "/api/v1/var/status"
+    - "/api/v1/var/limits"
+    - "/api/v1/var/exposure"
+    - "/api/v1/var/backtest"
+    - "/api/v1/var/scenario"
+    - "/api/v1/var/forecast"
+  authentication_required: true
+  rate_limit: 100
+  rate_limit_interval_seconds: 60
+  version: "v1.0.0"
+
+# Export des données
+data_export:
+  enabled: true
+  formats:
+    - "csv"
+    - "json"
+    - "parquet"
+    - "avro"
+    - "feather"
+  schedule: "realtime"
+  batch_size: 1000
+  retention_days: 30
+  compression: "gzip"
+  destination: "s3://nexus-data/var/"
+  encrypt: true
+  encryption_key_id: "nexus-var-key"
+  partition_by:
+    - "symbol"
+    - "year"
+    - "month"
+    - "day"
+
+# Intégration avec d'autres modules
+integrations:
+  risk_engine:
+    enabled: true
+    sync_frequency_seconds: 1
+    share_metrics: true
+  execution_engine:
+    enabled: true
+    share_signals: true
+    require_confirmation: true
+  portfolio_manager:
+    enabled: true
+    share_positions: true
+    share_allocation: true
+  ai_engine:
+    enabled: true
+    use_ai_predictions: true
+    confidence_threshold: 0.7
+    model_endpoint: "http://ai-engine:8000/predict/var"
+  market_data:
+    enabled: true
+    sync_frequency_ms: 100
+    data_endpoint: "ws://market-data:8080/ws"
+  volatility_engine:
+    enabled: true
+    sync_frequency_seconds: 1
+    data_endpoint: "http://volatility-engine:8000/api/v1/volatility"
+
+# Tests et validation
+testing:
+  unit_tests:
+    enabled: true
+    coverage_threshold: 90
+  integration_tests:
+    enabled: true
+  stress_tests:
+    enabled: true
+    scenarios:
+      - "high_volatility"
+      - "low_volatility"
+      - "volatility_spike"
+      - "flash_crash"
+      - "black_swan"
+      - "market_crisis"
+      - "liquidity_crisis"
+      - "regime_change"
+  validation:
+    enabled: true
+    validate_on_startup: true
+    validate_on_config_change: true
+    validation_rules:
+      - "thresholds.warning.percent < thresholds.danger.percent"
+      - "thresholds.danger.percent < thresholds.critical.percent"
+      - "thresholds.critical.percent < thresholds.emergency.percent"
+      - "thresholds.emergency.percent < thresholds.hard_limit.percent"
+      - "limits.daily.max_var > 0"
+      - "limits.daily.max_cvar > limits.daily.max_var"
+      - "confidence_levels[0] < confidence_levels[1]"
+      - "confidence_levels[1] < confidence_levels[2]"
+      - "time_horizons[0] > 0"
+      - "min_data_points > 0"
+
+# Market conditions adaptation
+market_adaptation:
+  enabled: true
+  volatility_adjustment: true
+  regime_detection:
+    enabled: true
+    lookback_periods:
+      - 20
+      - 50
+      - 200
+    regimes:
+      - "bull"
+      - "bear"
+      - "sideways"
+      - "volatile"
+      - "low_volatility"
+      - "high_volatility"
+      - "crisis"
+      - "recovery"
+  regime_parameters:
+    bull:
+      var_multiplier: 0.7
+      threshold_multiplier: 0.8
+      risk_multiplier: 0.8
+    bear:
+      var_multiplier: 1.5
+      threshold_multiplier: 1.2
+      risk_multiplier: 1.5
+    sideways:
+      var_multiplier: 1.0
+      threshold_multiplier: 1.0
+      risk_multiplier: 1.0
+    volatile:
+      var_multiplier: 2.0
+      threshold_multiplier: 1.5
+      risk_multiplier: 2.0
+    low_volatility:
+      var_multiplier: 0.6
+      threshold_multiplier: 1.2
+      risk_multiplier: 0.6
+    high_volatility:
+      var_multiplier: 1.8
+      threshold_multiplier: 1.3
+      risk_multiplier: 1.8
+    crisis:
+      var_multiplier: 3.0
+      threshold_multiplier: 2.0
+      risk_multiplier: 3.0
+    recovery:
+      var_multiplier: 1.2
+      threshold_multiplier: 1.1
+      risk_multiplier: 1.2
+
+# Time-based configurations
+time_based:
+  enabled: true
+  sessions:
+    asia:
+      start: "00:00"
+      end: "08:00"
+      var_multiplier: 0.8
+      threshold_multiplier: 1.2
+      risk_multiplier: 0.8
+    london:
+      start: "08:00"
+      end: "16:00"
+      var_multiplier: 1.2
+      threshold_multiplier: 0.8
+      risk_multiplier: 1.2
+    newyork:
+      start: "13:00"
+      end: "22:00"
+      var_multiplier: 1.0
+      threshold_multiplier: 1.0
+      risk_multiplier: 1.0
+    overlap:
+      start: "13:00"
+      end: "16:00"
+      var_multiplier: 1.5
+      threshold_multiplier: 0.7
+      risk_multiplier: 1.5
+  day_of_week:
+    monday:
+      var_multiplier: 0.9
+      threshold_multiplier: 1.1
+    tuesday:
+      var_multiplier: 1.1
+      threshold_multiplier: 0.9
+    wednesday:
+      var_multiplier: 1.0
+      threshold_multiplier: 1.0
+    thursday:
+      var_multiplier: 1.1
+      threshold_multiplier: 0.9
+    friday:
+      var_multiplier: 0.9
+      threshold_multiplier: 1.1
+    saturday:
+      var_multiplier: 0.5
+      threshold_multiplier: 2.0
+    sunday:
+      var_multiplier: 0.6
+      threshold_multiplier: 1.8
+
+# Symbol-specific configurations
+symbol_configs:
+  BTCUSDT:
+    var_multiplier: 1.0
+    threshold_multiplier: 1.0
+    risk_multiplier: 1.0
+    max_var_per_position: 1000
+    max_var_percent_per_position: 1.0
+    max_exposure: 50000
+  ETHUSDT:
+    var_multiplier: 1.1
+    threshold_multiplier: 0.9
+    risk_multiplier: 1.1
+    max_var_per_position: 800
+    max_var_percent_per_position: 1.0
+    max_exposure: 40000
+  SOLUSDT:
+    var_multiplier: 1.2
+    threshold_multiplier: 0.8
+    risk_multiplier: 1.2
+    max_var_per_position: 600
+    max_var_percent_per_position: 1.0
+    max_exposure: 30000
+  ADAUSDT:
+    var_multiplier: 0.9
+    threshold_multiplier: 1.1
+    risk_multiplier: 0.9
+    max_var_per_position: 400
+    max_var_percent_per_position: 1.0
+    max_exposure: 20000
+  XRPUSDT:
+    var_multiplier: 1.0
+    threshold_multiplier: 1.0
+    risk_multiplier: 1.0
+    max_var_per_position: 400
+    max_var_percent_per_position: 1.0
+    max_exposure: 20000
