@@ -1,0 +1,738 @@
+# economic_calendar_configs.yaml
+# Configuration complète pour le calendrier économique dans Swing Bot
+# Version: 4.0.0 - Production Ready
+
+# Paramètres généraux
+general:
+  enabled: true
+  mode: "comprehensive"
+  calculate_in_real_time: true
+  update_frequency_seconds: 30
+  lookback_days: 30
+  forecast_days: 30
+  history_length_days: 365
+  timezone: "UTC"
+  base_currency: "USD"
+
+# Sources de données
+data_sources:
+  primary:
+    - "forexfactory"
+    - "investing_com"
+    - "trading_economics"
+    - "bloomberg"
+    - "reuters"
+    - "yahoo_finance"
+  secondary:
+    - "federal_reserve"
+    - "ecb"
+    - "boj"
+    - "bank_of_england"
+    - "pboc"
+    - "snb"
+  update_frequency_minutes: 5
+  cache_duration_seconds: 300
+  max_retries: 5
+  retry_delay_seconds: 10
+
+# Types d'événements économiques
+event_types:
+  monetary_policy:
+    enabled: true
+    events:
+      - "interest_rate_decision"
+      - "monetary_policy_statement"
+      - "central_bank_speech"
+      - "minutes_release"
+      - "quantitative_easing"
+      - "taper_talk"
+    impact_levels:
+      - "high"
+      - "medium"
+      - "low"
+  employment:
+    enabled: true
+    events:
+      - "non_farm_payrolls"
+      - "unemployment_rate"
+      - "average_hourly_earnings"
+      - "jobless_claims"
+      - "employment_change"
+      - "participation_rate"
+      - "adp_employment"
+    impact_levels:
+      - "high"
+      - "medium"
+      - "low"
+  inflation:
+    enabled: true
+    events:
+      - "cpi"
+      - "core_cpi"
+      - "ppi"
+      - "core_ppi"
+      - "pce"
+      - "core_pce"
+      - "wpi"
+      - "import_prices"
+      - "export_prices"
+    impact_levels:
+      - "high"
+      - "medium"
+      - "low"
+  gdp:
+    enabled: true
+    events:
+      - "gdp_growth"
+      - "gdp_annualized"
+      - "gdp_quarterly"
+      - "gdp_annual"
+      - "gdp_forecast"
+    impact_levels:
+      - "high"
+      - "medium"
+  trade:
+    enabled: true
+    events:
+      - "trade_balance"
+      - "current_account"
+      - "imports"
+      - "exports"
+      - "capital_flows"
+    impact_levels:
+      - "medium"
+      - "low"
+  consumer:
+    enabled: true
+    events:
+      - "consumer_confidence"
+      - "retail_sales"
+      - "personal_income"
+      - "personal_spending"
+      - "consumer_credit"
+    impact_levels:
+      - "medium"
+      - "low"
+  manufacturing:
+    enabled: true
+    events:
+      - "ism_manufacturing"
+      - "ism_services"
+      - "factory_orders"
+      - "durable_goods"
+      - "industrial_production"
+      - "capacity_utilization"
+    impact_levels:
+      - "medium"
+      - "low"
+  housing:
+    enabled: true
+    events:
+      - "housing_starts"
+      - "building_permits"
+      - "existing_home_sales"
+      - "new_home_sales"
+      - "home_prices"
+    impact_levels:
+      - "medium"
+      - "low"
+  sentiment:
+    enabled: true
+    events:
+      - "consumer_sentiment"
+      - "business_confidence"
+      - "economic_confidence"
+      - "investor_sentiment"
+      - "pmi"
+    impact_levels:
+      - "medium"
+      - "low"
+
+# Pays et régions
+countries:
+  united_states:
+    enabled: true
+    currency: "USD"
+    timezone: "America/New_York"
+    importance: 5
+    events:
+      - "interest_rate_decision"
+      - "non_farm_payrolls"
+      - "cpi"
+      - "gdp_growth"
+      - "ism_manufacturing"
+      - "retail_sales"
+      - "consumer_confidence"
+  european_union:
+    enabled: true
+    currency: "EUR"
+    timezone: "Europe/London"
+    importance: 4
+    events:
+      - "ecb_interest_rate"
+      - "gdp_growth"
+      - "cpi"
+      - "employment_change"
+      - "manufacturing_pmi"
+      - "services_pmi"
+      - "consumer_confidence"
+  united_kingdom:
+    enabled: true
+    currency: "GBP"
+    timezone: "Europe/London"
+    importance: 4
+    events:
+      - "bank_of_england_rate"
+      - "gdp_growth"
+      - "cpi"
+      - "unemployment_rate"
+      - "retail_sales"
+      - "manufacturing_pmi"
+      - "services_pmi"
+  japan:
+    enabled: true
+    currency: "JPY"
+    timezone: "Asia/Tokyo"
+    importance: 3
+    events:
+      - "boj_rate_decision"
+      - "gdp_growth"
+      - "cpi"
+      - "unemployment_rate"
+      - "industrial_production"
+      - "retail_sales"
+      - "trade_balance"
+  china:
+    enabled: true
+    currency: "CNY"
+    timezone: "Asia/Shanghai"
+    importance: 3
+    events:
+      - "pboc_rate_decision"
+      - "gdp_growth"
+      - "cpi"
+      - "ppi"
+      - "manufacturing_pmi"
+      - "services_pmi"
+      - "trade_balance"
+      - "retail_sales"
+      - "industrial_production"
+  switzerland:
+    enabled: true
+    currency: "CHF"
+    timezone: "Europe/Zurich"
+    importance: 2
+    events:
+      - "snb_rate_decision"
+      - "cpi"
+      - "gdp_growth"
+      - "unemployment_rate"
+      - "trade_balance"
+  canada:
+    enabled: true
+    currency: "CAD"
+    timezone: "America/Toronto"
+    importance: 2
+    events:
+      - "bank_of_canada_rate"
+      - "gdp_growth"
+      - "cpi"
+      - "employment_change"
+      - "retail_sales"
+      - "trade_balance"
+  australia:
+    enabled: true
+    currency: "AUD"
+    timezone: "Australia/Sydney"
+    importance: 2
+    events:
+      - "reserve_bank_rate"
+      - "gdp_growth"
+      - "cpi"
+      - "employment_change"
+      - "retail_sales"
+      - "trade_balance"
+  new_zealand:
+    enabled: true
+    currency: "NZD"
+    timezone: "Pacific/Auckland"
+    importance: 1
+    events:
+      - "rbnz_rate_decision"
+      - "gdp_growth"
+      - "cpi"
+      - "employment_change"
+      - "retail_sales"
+      - "trade_balance"
+
+# Seuils d'impact
+impact_thresholds:
+  high:
+    score: 8.0
+    volatility_multiplier: 2.0
+    position_multiplier: 0.3
+    stop_loss_multiplier: 1.5
+    take_profit_multiplier: 2.0
+    description: "High impact events"
+  medium:
+    score: 5.0
+    volatility_multiplier: 1.5
+    position_multiplier: 0.6
+    stop_loss_multiplier: 1.2
+    take_profit_multiplier: 1.5
+    description: "Medium impact events"
+  low:
+    score: 2.0
+    volatility_multiplier: 1.0
+    position_multiplier: 1.0
+    stop_loss_multiplier: 1.0
+    take_profit_multiplier: 1.0
+    description: "Low impact events"
+  minimal:
+    score: 0.5
+    volatility_multiplier: 0.8
+    position_multiplier: 1.2
+    stop_loss_multiplier: 0.8
+    take_profit_multiplier: 0.8
+    description: "Minimal impact events"
+
+# Alertes et notifications
+alerts:
+  event_reminder:
+    enabled: true
+    lead_time_minutes: 30
+    channels:
+      - "email"
+      - "telegram"
+      - "slack"
+      - "push_notification"
+    severity: "info"
+  event_high_impact:
+    enabled: true
+    lead_time_minutes: 60
+    channels:
+      - "email"
+      - "telegram"
+      - "slack"
+      - "push_notification"
+    severity: "critical"
+  event_medium_impact:
+    enabled: true
+    lead_time_minutes: 30
+    channels:
+      - "telegram"
+      - "push_notification"
+    severity: "warning"
+  event_actual:
+    enabled: true
+    channels:
+      - "telegram"
+      - "push_notification"
+    severity: "info"
+  event_deviation:
+    enabled: true
+    deviation_threshold: 10.0
+    channels:
+      - "telegram"
+      - "slack"
+      - "push_notification"
+    severity: "warning"
+  event_surprise:
+    enabled: true
+    surprise_threshold: 20.0
+    channels:
+      - "telegram"
+      - "push_notification"
+    severity: "critical"
+
+# Actions automatiques
+auto_actions:
+  pre_event:
+    enabled: true
+    lead_time_minutes: 15
+    actions:
+      - "reduce_position_size"
+      - "tighten_stop_loss"
+      - "hedge_positions"
+      - "close_volatile_positions"
+    reduction_factor: 0.5
+    hedge_ratio: 0.3
+    tighten_factor: 0.7
+  during_event:
+    enabled: true
+    actions:
+      - "pause_trading"
+      - "monitor_volatility"
+      - "wait_for_stabilization"
+    pause_duration_minutes: 5
+    stabilization_threshold: 0.5
+  post_event:
+    enabled: true
+    actions:
+      - "resume_trading"
+      - "adjust_positions"
+      - "rebalance_portfolio"
+      - "analyze_impact"
+    resume_delay_minutes: 1
+    rebalance_threshold: 2.0
+  position_adjustment:
+    enabled: true
+    adjustment_types:
+      - "reduce_exposure"
+      - "increase_hedge"
+      - "adjust_stop_loss"
+      - "adjust_take_profit"
+    adjustment_multiplier: 0.5
+    max_adjustment_percent: 50.0
+
+# Analyse d'impact
+impact_analysis:
+  historical:
+    enabled: true
+    lookback_events: 100
+    compute_average_impact: true
+    compute_median_impact: true
+    compute_impact_distribution: true
+    compute_impact_percentiles: true
+    compute_impact_volatility: true
+    compute_impact_duration: true
+    compute_correlation: true
+  real_time:
+    enabled: true
+    compute_instantaneous_impact: true
+    compute_moving_average_impact: true
+    compute_impact_velocity: true
+    compute_impact_acceleration: true
+    compute_impact_probability: true
+    compute_impact_confidence: true
+  predictive:
+    enabled: true
+    model_type: "ensemble"
+    models:
+      - "random_forest"
+      - "xgboost"
+      - "lightgbm"
+      - "lstm"
+    features:
+      - "event_type"
+      - "country"
+      - "impact_level"
+      - "previous_value"
+      - "forecast_value"
+      - "deviation"
+      - "surprise"
+      - "time_of_day"
+      - "day_of_week"
+      - "market_condition"
+      - "volatility"
+      - "liquidity"
+    forecast_horizon: 60
+    confidence_threshold: 0.7
+
+# Indicateurs de marché
+market_indicators:
+  volatility_index:
+    enabled: true
+    period: 14
+    smoothing: 3
+    threshold: 20.0
+  volume_index:
+    enabled: true
+    period: 14
+    smoothing: 3
+    threshold: 1.5
+  spread_index:
+    enabled: true
+    period: 14
+    smoothing: 3
+    threshold: 2.0
+  liquidity_index:
+    enabled: true
+    period: 14
+    smoothing: 3
+    threshold: 0.5
+  sentiment_index:
+    enabled: true
+    period: 14
+    smoothing: 3
+    threshold: 0.5
+
+# Monitoring et journalisation
+monitoring:
+  logging:
+    enabled: true
+    level: "debug"
+    format: "json"
+    include_context: true
+    include_timestamp: true
+    include_metadata: true
+  metrics:
+    enabled: true
+    collect_every_seconds: 5
+    metrics_to_collect:
+      - "event_count"
+      - "high_impact_count"
+      - "medium_impact_count"
+      - "low_impact_count"
+      - "average_impact"
+      - "impact_volatility"
+      - "impact_duration"
+      - "deviation_count"
+      - "surprise_count"
+      - "position_adjustments"
+      - "hedge_ratio"
+      - "exposure_level"
+  dashboard:
+    enabled: true
+    update_interval_seconds: 5
+    charts:
+      - "event_calendar"
+      - "impact_analysis"
+      - "volatility_impact"
+      - "market_indicators"
+      - "event_distribution"
+      - "historical_impact"
+      - "position_exposure"
+      - "hedge_status"
+
+# Backtesting
+backtesting:
+  enabled: true
+  use_historical_events: true
+  compute_impact_accuracy: true
+  compute_strategy_performance: true
+  compute_risk_adjusted_returns: true
+  compute_event_effectiveness: true
+  report_metrics:
+    - "win_rate"
+    - "profit_factor"
+    - "sharpe_ratio"
+    - "max_drawdown"
+    - "impact_accuracy"
+    - "event_effectiveness"
+    - "risk_adjusted_return"
+
+# Configuration de la base de données
+database:
+  enabled: true
+  table_name: "economic_events"
+  retention_days: 365
+  aggregation:
+    enabled: true
+    intervals:
+      - "1h"
+      - "4h"
+      - "24h"
+      - "7d"
+      - "30d"
+  compression: true
+  backup:
+    enabled: true
+    frequency: "daily"
+    retention_days: 30
+
+# Webhooks
+webhooks:
+  enabled: true
+  endpoints:
+    - url: "https://nexustradingia.com/api/webhooks/economic_event"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      payload_template: "event_alert"
+    - url: "https://nexustradingia.com/api/webhooks/economic_impact"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      payload_template: "impact_alert"
+  retry:
+    enabled: true
+    max_attempts: 5
+    backoff_seconds: 30
+
+# Logging avancé
+advanced_logging:
+  enabled: true
+  levels:
+    - "info"
+    - "warning"
+    - "error"
+    - "critical"
+    - "debug"
+  output: "economic_calendar_logs"
+  rotation:
+    enabled: true
+    max_size_mb: 100
+    max_files: 10
+  remote_logging:
+    enabled: true
+    endpoints:
+      - "https://nexustradingia.com/logs/economic_calendar"
+  include_trace: true
+  include_stack_trace: true
+  include_context: true
+
+# Threading et performances
+performance:
+  thread_pool_size: 4
+  queue_size: 1000
+  batch_size: 100
+  async_processing: true
+  cache_size: 10000
+  cache_ttl_seconds: 300
+  database_pool_size: 5
+  database_pool_max_overflow: 10
+  use_multiprocessing: false
+  max_workers: 4
+
+# API de gestion
+management_api:
+  enabled: true
+  endpoints:
+    - "/api/v1/economic-calendar/events"
+    - "/api/v1/economic-calendar/upcoming"
+    - "/api/v1/economic-calendar/history"
+    - "/api/v1/economic-calendar/impact"
+    - "/api/v1/economic-calendar/status"
+    - "/api/v1/economic-calendar/countries"
+  authentication_required: true
+  rate_limit: 100
+  rate_limit_interval_seconds: 60
+  version: "v1.0.0"
+
+# Export des données
+data_export:
+  enabled: true
+  formats:
+    - "csv"
+    - "json"
+    - "parquet"
+  schedule: "daily"
+  retention_days: 30
+  compression: "gzip"
+  destination: "s3://nexus-data/economic-calendar/"
+  encrypt: true
+  encryption_key_id: "nexus-economic-key"
+  partition_by:
+    - "year"
+    - "month"
+    - "country"
+
+# Intégration avec d'autres modules
+integrations:
+  risk_engine:
+    enabled: true
+    sync_frequency_seconds: 5
+    share_metrics: true
+  execution_engine:
+    enabled: true
+    share_signals: true
+    require_confirmation: true
+  portfolio_manager:
+    enabled: true
+    share_positions: true
+    share_allocation: true
+  ai_engine:
+    enabled: true
+    use_ai_predictions: true
+    confidence_threshold: 0.7
+    model_endpoint: "http://ai-engine:8000/predict/economic-impact"
+  market_data:
+    enabled: true
+    sync_frequency_ms: 100
+    data_endpoint: "ws://market-data:8080/ws"
+
+# Tests et validation
+testing:
+  unit_tests:
+    enabled: true
+    coverage_threshold: 90
+  integration_tests:
+    enabled: true
+  stress_tests:
+    enabled: true
+    scenarios:
+      - "high_event_density"
+      - "multiple_high_impact"
+      - "event_overlap"
+      - "surprise_events"
+      - "holiday_periods"
+  validation:
+    enabled: true
+    validate_on_startup: true
+    validate_on_config_change: true
+    validation_rules:
+      - "impact_thresholds.high.score > impact_thresholds.medium.score"
+      - "impact_thresholds.medium.score > impact_thresholds.low.score"
+      - "impact_thresholds.low.score > impact_thresholds.minimal.score"
+      - "lead_time_minutes > 0"
+      - "reduction_factor >= 0.0"
+      - "reduction_factor <= 1.0"
+
+# Time-based configurations
+time_based:
+  enabled: true
+  sessions:
+    asia:
+      start: "00:00"
+      end: "08:00"
+      event_multiplier: 0.8
+      impact_multiplier: 0.8
+    london:
+      start: "08:00"
+      end: "16:00"
+      event_multiplier: 1.2
+      impact_multiplier: 1.2
+    newyork:
+      start: "13:00"
+      end: "22:00"
+      event_multiplier: 1.0
+      impact_multiplier: 1.0
+    overlap:
+      start: "13:00"
+      end: "16:00"
+      event_multiplier: 1.5
+      impact_multiplier: 1.5
+  holidays:
+    enabled: true
+    holiday_impact_multiplier: 0.5
+    pre_holiday_impact_multiplier: 0.7
+    post_holiday_impact_multiplier: 1.2
+  weekends:
+    enabled: true
+    weekend_impact_multiplier: 0.3
+    friday_afternoon_multiplier: 0.6
+    monday_morning_multiplier: 0.8
+
+# Symbol-specific configurations
+symbol_configs:
+  BTCUSDT:
+    event_multiplier: 1.0
+    impact_multiplier: 1.0
+    high_impact_volatility: 2.0
+    medium_impact_volatility: 1.2
+    low_impact_volatility: 0.8
+  ETHUSDT:
+    event_multiplier: 1.1
+    impact_multiplier: 1.1
+    high_impact_volatility: 1.8
+    medium_impact_volatility: 1.1
+    low_impact_volatility: 0.7
+  SOLUSDT:
+    event_multiplier: 1.2
+    impact_multiplier: 1.2
+    high_impact_volatility: 2.2
+    medium_impact_volatility: 1.3
+    low_impact_volatility: 0.9
+  ADAUSDT:
+    event_multiplier: 0.9
+    impact_multiplier: 0.9
+    high_impact_volatility: 1.5
+    medium_impact_volatility: 1.0
+    low_impact_volatility: 0.6
+  XRPUSDT:
+    event_multiplier: 1.0
+    impact_multiplier: 1.0
+    high_impact_volatility: 1.6
+    medium_impact_volatility: 1.0
+    low_impact_volatility: 0.6
