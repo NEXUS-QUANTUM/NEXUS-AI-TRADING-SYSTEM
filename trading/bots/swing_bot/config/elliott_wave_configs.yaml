@@ -1,0 +1,759 @@
+# elliott_wave_configs.yaml
+# Configuration complète pour l'analyse des vagues d'Elliott dans Swing Bot
+# Version: 4.0.0 - Production Ready
+
+# Paramètres généraux
+general:
+  enabled: true
+  mode: "comprehensive"
+  calculate_in_real_time: true
+  update_frequency_seconds: 1
+  lookback_periods:
+    - 50
+    - 100
+    - 200
+    - 500
+    - 1000
+  history_length_days: 365
+  min_data_points: 100
+  max_data_points: 100000
+  timeframes:
+    - "1m"
+    - "5m"
+    - "15m"
+    - "30m"
+    - "1h"
+    - "4h"
+    - "1d"
+    - "1w"
+
+# Types de vagues
+wave_types:
+  impulse:
+    enabled: true
+    structures:
+      - "five_wave"
+    sub_waves:
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+    rules:
+      - "wave_2_does_not_retrace_100_percent_of_wave_1"
+      - "wave_3_is_not_shortest"
+      - "wave_4_does_not_overlap_wave_1"
+  corrective:
+    enabled: true
+    structures:
+      - "zigzag"
+      - "flat"
+      - "triangle"
+      - "complex"
+    sub_waves:
+      - "a"
+      - "b"
+      - "c"
+      - "d"
+      - "e"
+    types:
+      - "simple"
+      - "complex"
+      - "double_three"
+      - "triple_three"
+  diagonal:
+    enabled: true
+    structures:
+      - "leading_diagonal"
+      - "ending_diagonal"
+    sub_waves:
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+    rules:
+      - "wave_3_is_not_shortest"
+      - "wave_4_overlaps_wave_1"
+  combined:
+    enabled: true
+    structures:
+      - "wxy"
+      - "wxyz"
+      - "wxyxz"
+    sub_waves:
+      - "w"
+      - "x"
+      - "y"
+      - "z"
+      - "xx"
+
+# Seuils de reconnaissance
+thresholds:
+  fibonacci:
+    retracements:
+      - 0.236
+      - 0.382
+      - 0.5
+      - 0.618
+      - 0.786
+    extensions:
+      - 1.0
+      - 1.272
+      - 1.382
+      - 1.618
+      - 2.0
+      - 2.618
+      - 4.236
+  accuracy:
+    min_confidence: 0.6
+    wave_accuracy_threshold: 0.7
+    structure_accuracy_threshold: 0.8
+    pattern_accuracy_threshold: 0.75
+  validation:
+    price_validation_threshold: 0.02
+    time_validation_threshold: 0.1
+    volume_validation_threshold: 0.3
+
+# Indicateurs d'analyse
+indicators:
+  fibonacci_retracement:
+    enabled: true
+    levels:
+      - 0.0
+      - 0.236
+      - 0.382
+      - 0.5
+      - 0.618
+      - 0.786
+      - 1.0
+    smoothing: 0
+  fibonacci_extension:
+    enabled: true
+    levels:
+      - 1.0
+      - 1.272
+      - 1.382
+      - 1.618
+      - 2.0
+      - 2.618
+      - 3.0
+      - 4.236
+    smoothing: 0
+  fibonacci_time:
+    enabled: true
+    levels:
+      - 1.0
+      - 1.618
+      - 2.0
+      - 2.618
+      - 3.0
+    smoothing: 0
+  relative_strength:
+    enabled: true
+    period: 14
+    smoothing: 3
+    overbought: 70
+    oversold: 30
+  macd:
+    enabled: true
+    fast_period: 12
+    slow_period: 26
+    signal_period: 9
+    smoothing: 5
+  stochastic:
+    enabled: true
+    k_period: 14
+    d_period: 3
+    smoothing: 3
+  volume:
+    enabled: true
+    period: 14
+    smoothing: 3
+  wave_momentum:
+    enabled: true
+    period: 14
+    smoothing: 3
+
+# Analyse des vagues
+analysis:
+  wave_counting:
+    enabled: true
+    methods:
+      - "manual"
+      - "automated"
+      - "hybrid"
+    min_wave_length: 5
+    max_wave_length: 1000
+    confluence_threshold: 0.7
+    alternative_counts: 5
+  pattern_recognition:
+    enabled: true
+    patterns:
+      - "impulse"
+      - "corrective"
+      - "diagonal"
+      - "triangle"
+      - "zigzag"
+      - "flat"
+      - "double_three"
+      - "triple_three"
+      - "wxy"
+      - "wxyz"
+    min_confidence: 0.6
+    confluence_required: true
+  projection:
+    enabled: true
+    methods:
+      - "fibonacci_projection"
+      - "price_projection"
+      - "time_projection"
+      - "volume_projection"
+    projection_confidence: 0.7
+    projection_horizon: 20
+  validation:
+    enabled: true
+    methods:
+      - "price_validation"
+      - "time_validation"
+      - "volume_validation"
+      - "momentum_validation"
+      - "sentiment_validation"
+    validation_threshold: 0.7
+
+# Prévision des vagues
+forecasting:
+  wave_forecast:
+    enabled: true
+    model_type: "ensemble"
+    models:
+      - "lstm"
+      - "gru"
+      - "transformer"
+      - "xgboost"
+    features:
+      - "wave_count"
+      - "wave_structure"
+      - "wave_degree"
+      - "fibonacci_levels"
+      - "price_pattern"
+      - "time_pattern"
+      - "volume_pattern"
+      - "momentum"
+      - "sentiment"
+      - "market_condition"
+    forecast_horizons:
+      - 1
+      - 5
+      - 10
+      - 20
+    confidence_threshold: 0.7
+    retrain_frequency_hours: 24
+  price_target:
+    enabled: true
+    methods:
+      - "fibonacci_projection"
+      - "price_channel"
+      - "parallel_channel"
+      - "trend_channel"
+    target_confidence: 0.7
+    target_accuracy: 0.8
+  time_target:
+    enabled: true
+    methods:
+      - "fibonacci_time"
+      - "time_cycle"
+      - "seasonality"
+    target_confidence: 0.6
+    target_accuracy: 0.7
+
+# Alertes et notifications
+alerts:
+  wave_completion:
+    enabled: true
+    channels:
+      - "email"
+      - "telegram"
+      - "slack"
+      - "push_notification"
+    severity: "info"
+    include_wave_details: true
+  wave_pattern_detected:
+    enabled: true
+    channels:
+      - "telegram"
+      - "push_notification"
+    severity: "warning"
+    include_pattern_details: true
+  wave_forecast:
+    enabled: true
+    channels:
+      - "email"
+      - "telegram"
+      - "slack"
+    severity: "info"
+    include_forecast_details: true
+  wave_target_reached:
+    enabled: true
+    channels:
+      - "telegram"
+      - "push_notification"
+    severity: "critical"
+    include_target_details: true
+  wave_invalidation:
+    enabled: true
+    channels:
+      - "email"
+      - "telegram"
+      - "slack"
+    severity: "warning"
+    include_invalidation_details: true
+
+# Actions automatiques
+auto_actions:
+  trade_entry:
+    enabled: true
+    action_types:
+      - "enter_long_on_wave_3"
+      - "enter_short_on_wave_c"
+      - "enter_on_breakout"
+      - "enter_on_retracement"
+    require_wave_confirmation: true
+    require_confidence: 0.7
+    max_position_size: 10000
+    min_position_size: 100
+  stop_loss:
+    enabled: true
+    methods:
+      - "wave_based"
+      - "fibonacci_based"
+      - "structure_based"
+    wave_multiplier: 1.0
+    fibonacci_multiplier: 1.5
+    structure_multiplier: 1.2
+    min_stop_percent: 0.5
+    max_stop_percent: 10.0
+  take_profit:
+    enabled: true
+    methods:
+      - "fibonacci_projection"
+      - "wave_projection"
+      - "price_target"
+    projection_multiplier: 1.0
+    min_profit_percent: 1.0
+    max_profit_percent: 20.0
+  position_adjustment:
+    enabled: true
+    adjustment_types:
+      - "add_on_retracement"
+      - "add_on_breakout"
+      - "add_on_confirmation"
+      - "reduce_on_completion"
+    adjustment_factor: 0.5
+    max_adjustment_percent: 50.0
+
+# Paramètres avancés
+advanced:
+  machine_learning:
+    enabled: true
+    model_type: "ensemble"
+    models:
+      - "lstm"
+      - "gru"
+      - "transformer"
+      - "attention"
+      - "cnn"
+    features:
+      - "wave_count"
+      - "wave_structure"
+      - "wave_degree"
+      - "fibonacci_retracement"
+      - "fibonacci_extension"
+      - "fibonacci_time"
+      - "price_pattern"
+      - "time_pattern"
+      - "volume_pattern"
+      - "momentum"
+      - "sentiment"
+      - "market_condition"
+      - "time_of_day"
+      - "day_of_week"
+    training_frequency_hours: 12
+    retrain_threshold: 0.9
+    validation_split: 0.2
+    random_seed: 42
+    ensemble_weights:
+      - 0.25
+      - 0.25
+      - 0.20
+      - 0.15
+      - 0.15
+  wave_theory:
+    enabled: true
+    theory_types:
+      - "classic_elliott"
+      - "neo_wave"
+      - "global_wave"
+      - "micro_wave"
+      - "macro_wave"
+    degree_levels:
+      - "grand_supercycle"
+      - "supercycle"
+      - "cycle"
+      - "primary"
+      - "intermediate"
+      - "minor"
+      - "minute"
+      - "minuette"
+      - "sub_minuette"
+    confluence_analysis: true
+  statistical_analysis:
+    enabled: true
+    calculate_wave_probability: true
+    calculate_success_rate: true
+    calculate_expected_value: true
+    calculate_risk_adjusted_return: true
+    calculate_optimal_entry: true
+    calculate_optimal_exit: true
+
+# Monitoring et journalisation
+monitoring:
+  logging:
+    enabled: true
+    level: "debug"
+    format: "json"
+    include_context: true
+    include_timestamp: true
+    include_metadata: true
+  metrics:
+    enabled: true
+    collect_every_seconds: 1
+    metrics_to_collect:
+      - "current_wave_count"
+      - "wave_structure"
+      - "wave_degree"
+      - "wave_confidence"
+      - "fibonacci_level"
+      - "projected_target"
+      - "price_pattern"
+      - "time_pattern"
+      - "volume_pattern"
+      - "momentum"
+      - "sentiment"
+      - "success_rate"
+  dashboard:
+    enabled: true
+    update_interval_seconds: 1
+    charts:
+      - "wave_analysis"
+      - "wave_pattern"
+      - "fibonacci_levels"
+      - "wave_forecast"
+      - "price_targets"
+      - "time_targets"
+      - "confidence_levels"
+      - "wave_validation"
+
+# Backtesting
+backtesting:
+  enabled: true
+  use_historical_waves: true
+  compute_wave_accuracy: true
+  compute_pattern_accuracy: true
+  compute_strategy_performance: true
+  compute_risk_adjusted_returns: true
+  compute_confidence_metrics: true
+  report_metrics:
+    - "win_rate"
+    - "profit_factor"
+    - "sharpe_ratio"
+    - "max_drawdown"
+    - "wave_accuracy"
+    - "pattern_accuracy"
+    - "forecast_accuracy"
+    - "confidence_score"
+
+# Configuration de la base de données
+database:
+  enabled: true
+  table_name: "elliott_wave_metrics"
+  retention_days: 365
+  aggregation:
+    enabled: true
+    intervals:
+      - "1m"
+      - "5m"
+      - "15m"
+      - "30m"
+      - "1h"
+      - "4h"
+      - "24h"
+      - "7d"
+  compression: true
+  backup:
+    enabled: true
+    frequency: "daily"
+    retention_days: 30
+
+# Webhooks
+webhooks:
+  enabled: true
+  endpoints:
+    - url: "https://nexustradingia.com/api/webhooks/elliott-wave"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      payload_template: "wave_alert"
+    - url: "https://nexustradingia.com/api/webhooks/wave-pattern"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      payload_template: "wave_pattern"
+    - url: "https://nexustradingia.com/api/webhooks/wave-forecast"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      payload_template: "wave_forecast"
+  retry:
+    enabled: true
+    max_attempts: 5
+    backoff_seconds: 30
+
+# Logging avancé
+advanced_logging:
+  enabled: true
+  levels:
+    - "info"
+    - "warning"
+    - "error"
+    - "critical"
+    - "debug"
+  output: "elliott_wave_logs"
+  rotation:
+    enabled: true
+    max_size_mb: 100
+    max_files: 10
+  remote_logging:
+    enabled: true
+    endpoints:
+      - "https://nexustradingia.com/logs/elliott-wave"
+  include_trace: true
+  include_stack_trace: true
+  include_context: true
+
+# Threading et performances
+performance:
+  thread_pool_size: 8
+  queue_size: 10000
+  batch_size: 1000
+  async_processing: true
+  cache_size: 10000
+  cache_ttl_seconds: 30
+  database_pool_size: 10
+  database_pool_max_overflow: 20
+  use_multiprocessing: true
+  max_workers: 8
+  use_cython: true
+  use_numba: true
+  use_gpu: false
+  gpu_device: 0
+
+# API de gestion
+management_api:
+  enabled: true
+  endpoints:
+    - "/api/v1/elliott-wave/current"
+    - "/api/v1/elliott-wave/history"
+    - "/api/v1/elliott-wave/metrics"
+    - "/api/v1/elliott-wave/status"
+    - "/api/v1/elliott-wave/patterns"
+    - "/api/v1/elliott-wave/forecast"
+    - "/api/v1/elliott-wave/targets"
+    - "/api/v1/elliott-wave/validation"
+  authentication_required: true
+  rate_limit: 100
+  rate_limit_interval_seconds: 60
+  version: "v1.0.0"
+
+# Export des données
+data_export:
+  enabled: true
+  formats:
+    - "csv"
+    - "json"
+    - "parquet"
+    - "avro"
+    - "feather"
+  schedule: "realtime"
+  batch_size: 1000
+  retention_days: 30
+  compression: "gzip"
+  destination: "s3://nexus-data/elliott-wave/"
+  encrypt: true
+  encryption_key_id: "nexus-elliott-key"
+  partition_by:
+    - "symbol"
+    - "timeframe"
+    - "year"
+    - "month"
+    - "day"
+
+# Intégration avec d'autres modules
+integrations:
+  risk_engine:
+    enabled: true
+    sync_frequency_seconds: 1
+    share_metrics: true
+  execution_engine:
+    enabled: true
+    share_signals: true
+    require_confirmation: true
+  portfolio_manager:
+    enabled: true
+    share_positions: true
+    share_allocation: true
+  ai_engine:
+    enabled: true
+    use_ai_predictions: true
+    confidence_threshold: 0.7
+    model_endpoint: "http://ai-engine:8000/predict/elliott-wave"
+  market_data:
+    enabled: true
+    sync_frequency_ms: 100
+    data_endpoint: "ws://market-data:8080/ws"
+
+# Tests et validation
+testing:
+  unit_tests:
+    enabled: true
+    coverage_threshold: 90
+  integration_tests:
+    enabled: true
+  stress_tests:
+    enabled: true
+    scenarios:
+      - "high_volatility"
+      - "low_volatility"
+      - "trending_market"
+      - "ranging_market"
+      - "market_crash"
+      - "bull_market"
+      - "bear_market"
+  validation:
+    enabled: true
+    validate_on_startup: true
+    validate_on_config_change: true
+    validation_rules:
+      - "thresholds.accuracy.min_confidence < 1.0"
+      - "thresholds.accuracy.wave_accuracy_threshold < 1.0"
+      - "thresholds.accuracy.structure_accuracy_threshold < 1.0"
+      - "thresholds.accuracy.pattern_accuracy_threshold < 1.0"
+      - "forecasting.forecast_horizons[0] > 0"
+      - "analysis.wave_counting.min_wave_length > 0"
+      - "analysis.wave_counting.max_wave_length > min_wave_length"
+      - "min_data_points > 0"
+
+# Market conditions adaptation
+market_adaptation:
+  enabled: true
+  volatility_adjustment: true
+  regime_detection:
+    enabled: true
+    lookback_periods:
+      - 20
+      - 50
+      - 200
+    regimes:
+      - "impulsive"
+      - "corrective"
+      - "trending"
+      - "ranging"
+      - "volatile"
+      - "stable"
+  regime_parameters:
+    impulsive:
+      wave_multiplier: 1.2
+      confidence_multiplier: 1.1
+      accuracy_multiplier: 1.0
+    corrective:
+      wave_multiplier: 0.8
+      confidence_multiplier: 0.9
+      accuracy_multiplier: 0.8
+    trending:
+      wave_multiplier: 1.1
+      confidence_multiplier: 1.0
+      accuracy_multiplier: 1.1
+    ranging:
+      wave_multiplier: 0.7
+      confidence_multiplier: 0.8
+      accuracy_multiplier: 0.7
+    volatile:
+      wave_multiplier: 0.6
+      confidence_multiplier: 0.7
+      accuracy_multiplier: 0.6
+    stable:
+      wave_multiplier: 1.0
+      confidence_multiplier: 1.2
+      accuracy_multiplier: 1.2
+
+# Time-based configurations
+time_based:
+  enabled: true
+  sessions:
+    asia:
+      start: "00:00"
+      end: "08:00"
+      wave_multiplier: 0.8
+      confidence_multiplier: 0.9
+      accuracy_multiplier: 0.8
+    london:
+      start: "08:00"
+      end: "16:00"
+      wave_multiplier: 1.2
+      confidence_multiplier: 1.1
+      accuracy_multiplier: 1.2
+    newyork:
+      start: "13:00"
+      end: "22:00"
+      wave_multiplier: 1.0
+      confidence_multiplier: 1.0
+      accuracy_multiplier: 1.0
+    overlap:
+      start: "13:00"
+      end: "16:00"
+      wave_multiplier: 1.5
+      confidence_multiplier: 1.2
+      accuracy_multiplier: 1.5
+
+# Symbol-specific configurations
+symbol_configs:
+  BTCUSDT:
+    wave_multiplier: 1.0
+    confidence_multiplier: 1.0
+    accuracy_multiplier: 1.0
+    min_wave_length: 5
+    max_wave_length: 500
+  ETHUSDT:
+    wave_multiplier: 1.1
+    confidence_multiplier: 1.0
+    accuracy_multiplier: 1.0
+    min_wave_length: 5
+    max_wave_length: 400
+  SOLUSDT:
+    wave_multiplier: 1.2
+    confidence_multiplier: 0.9
+    accuracy_multiplier: 0.9
+    min_wave_length: 5
+    max_wave_length: 300
+  ADAUSDT:
+    wave_multiplier: 0.9
+    confidence_multiplier: 1.0
+    accuracy_multiplier: 1.0
+    min_wave_length: 5
+    max_wave_length: 300
+  XRPUSDT:
+    wave_multiplier: 1.0
+    confidence_multiplier: 1.0
+    accuracy_multiplier: 1.0
+    min_wave_length: 5
+    max_wave_length: 300
