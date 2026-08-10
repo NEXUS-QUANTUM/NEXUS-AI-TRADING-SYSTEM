@@ -1,0 +1,765 @@
+# excellence_engine_configs.yaml
+# Configuration complète pour le moteur d'excellence dans Swing Bot
+# Version: 4.0.0 - Production Ready
+
+# Paramètres généraux
+general:
+  enabled: true
+  mode: "comprehensive"
+  calculate_in_real_time: true
+  update_frequency_seconds: 1
+  lookback_periods:
+    - 5
+    - 10
+    - 20
+    - 50
+    - 100
+    - 200
+    - 500
+  history_length_days: 730
+  min_data_points: 100
+  max_data_points: 100000
+  excellence_engine_version: "4.0.0"
+  environment: "production"
+
+# Types de moteurs d'excellence
+engine_types:
+  performance_engine:
+    enabled: true
+    description: "Performance Excellence Engine"
+    metrics:
+      - "win_rate"
+      - "profit_factor"
+      - "sharpe_ratio"
+      - "sortino_ratio"
+      - "calmar_ratio"
+    targets:
+      win_rate: 0.65
+      profit_factor: 2.0
+      sharpe_ratio: 2.5
+      sortino_ratio: 3.0
+      calmar_ratio: 2.0
+    weights:
+      - 0.25
+      - 0.25
+      - 0.20
+      - 0.15
+      - 0.15
+    update_frequency_seconds: 60
+  risk_engine:
+    enabled: true
+    description: "Risk Excellence Engine"
+    metrics:
+      - "max_drawdown"
+      - "var_95"
+      - "cvar_95"
+      - "volatility"
+      - "beta"
+    targets:
+      max_drawdown: 0.10
+      var_95: 0.02
+      cvar_95: 0.03
+      volatility: 0.15
+      beta: 1.0
+    weights:
+      - 0.30
+      - 0.25
+      - 0.20
+      - 0.15
+      - 0.10
+    update_frequency_seconds: 60
+  efficiency_engine:
+    enabled: true
+    description: "Efficiency Excellence Engine"
+    metrics:
+      - "execution_speed"
+      - "latency"
+      - "throughput"
+      - "resource_usage"
+      - "cost_efficiency"
+    targets:
+      execution_speed: 0.001
+      latency: 0.0001
+      throughput: 1000
+      resource_usage: 0.5
+      cost_efficiency: 0.8
+    weights:
+      - 0.30
+      - 0.25
+      - 0.20
+      - 0.15
+      - 0.10
+    update_frequency_seconds: 60
+  quality_engine:
+    enabled: true
+    description: "Quality Excellence Engine"
+    metrics:
+      - "accuracy"
+      - "precision"
+      - "recall"
+      - "f1_score"
+      - "auc"
+    targets:
+      accuracy: 0.85
+      precision: 0.80
+      recall: 0.80
+      f1_score: 0.80
+      auc: 0.90
+    weights:
+      - 0.25
+      - 0.20
+      - 0.20
+      - 0.20
+      - 0.15
+    update_frequency_seconds: 60
+  innovation_engine:
+    enabled: true
+    description: "Innovation Excellence Engine"
+    metrics:
+      - "novelty"
+      - "creativity"
+      - "adaptability"
+      - "evolution_rate"
+      - "learning_rate"
+    targets:
+      novelty: 0.7
+      creativity: 0.7
+      adaptability: 0.8
+      evolution_rate: 0.1
+      learning_rate: 0.05
+    weights:
+      - 0.25
+      - 0.25
+      - 0.20
+      - 0.15
+      - 0.15
+    update_frequency_seconds: 60
+  composite_engine:
+    enabled: true
+    description: "Composite Excellence Engine"
+    engines:
+      - "performance_engine"
+      - "risk_engine"
+      - "efficiency_engine"
+      - "quality_engine"
+      - "innovation_engine"
+    engine_weights:
+      performance_engine: 0.30
+      risk_engine: 0.25
+      efficiency_engine: 0.20
+      quality_engine: 0.15
+      innovation_engine: 0.10
+    update_frequency_seconds: 60
+
+# Algorithmes d'excellence
+algorithms:
+  excellence_scoring:
+    enabled: true
+    method: "weighted_average"
+    normalization: "min_max"
+    score_range: [0, 1]
+    threshold: 0.7
+  excellence_ranking:
+    enabled: true
+    method: "pareto"
+    ranking_criteria:
+      - "performance"
+      - "risk"
+      - "efficiency"
+      - "quality"
+      - "innovation"
+    ranking_weights:
+      - 0.30
+      - 0.25
+      - 0.20
+      - 0.15
+      - 0.10
+  excellence_optimization:
+    enabled: true
+    method: "multi_objective"
+    objectives:
+      - "maximize_performance"
+      - "minimize_risk"
+      - "maximize_efficiency"
+      - "maximize_quality"
+      - "maximize_innovation"
+    weights:
+      - 0.30
+      - 0.25
+      - 0.20
+      - 0.15
+      - 0.10
+  excellence_validation:
+    enabled: true
+    method: "cross_validation"
+    n_folds: 5
+    validation_metrics:
+      - "accuracy"
+      - "precision"
+      - "recall"
+      - "f1_score"
+    confidence_threshold: 0.95
+
+# Stratégies d'amélioration
+improvement_strategies:
+  continuous_improvement:
+    enabled: true
+    method: "pdca"
+    cycle_duration_hours: 24
+    review_frequency_hours: 12
+    action_frequency_hours: 6
+    metrics_for_improvement:
+      - "excellence_score"
+      - "domain_scores"
+      - "indicator_scores"
+  breakthrough_improvement:
+    enabled: true
+    method: "innovation"
+    breakthrough_threshold: 0.15
+    exploration_rate: 0.3
+    exploitation_rate: 0.7
+    random_state: 42
+  adaptive_improvement:
+    enabled: true
+    method: "reinforcement_learning"
+    learning_rate: 0.001
+    discount_factor: 0.95
+    exploration_rate: 0.1
+    batch_size: 32
+    memory_size: 10000
+  ensemble_improvement:
+    enabled: true
+    method: "ensemble"
+    n_estimators: 10
+    improvement_methods:
+      - "continuous"
+      - "breakthrough"
+      - "adaptive"
+    weights:
+      - 0.4
+      - 0.3
+      - 0.3
+
+# Métriques d'excellence
+excellence_metrics:
+  primary:
+    enabled: true
+    metrics:
+      - "excellence_score"
+      - "performance_score"
+      - "risk_score"
+      - "efficiency_score"
+      - "quality_score"
+      - "innovation_score"
+    update_frequency_seconds: 60
+  secondary:
+    enabled: true
+    metrics:
+      - "excellence_trend"
+      - "excellence_momentum"
+      - "excellence_velocity"
+      - "excellence_acceleration"
+      - "excellence_stability"
+      - "excellence_volatility"
+    update_frequency_seconds: 60
+  tertiary:
+    enabled: true
+    metrics:
+      - "improvement_rate"
+      - "adaptation_rate"
+      - "learning_rate"
+      - "evolution_rate"
+      - "innovation_rate"
+    update_frequency_seconds: 60
+
+# Analyse d'excellence
+analysis:
+  historical:
+    enabled: true
+    lookback_years: 5
+    compute_mean_excellence: true
+    compute_median_excellence: true
+    compute_std_excellence: true
+    compute_percentiles: true
+    percentile_values:
+      - 1
+      - 5
+      - 10
+      - 25
+      - 50
+      - 75
+      - 90
+      - 95
+      - 99
+    compute_excellence_distribution: true
+    compute_excellence_patterns: true
+    compute_excellence_cycles: true
+  real_time:
+    enabled: true
+    update_frequency_ms: 100
+    compute_instantaneous_excellence: true
+    compute_moving_average_excellence: true
+    compute_exponential_excellence: true
+    compute_weighted_excellence: true
+    compute_excellence_velocity: true
+    compute_excellence_acceleration: true
+  predictive:
+    enabled: true
+    model_type: "ensemble"
+    models:
+      - "lstm"
+      - "gru"
+      - "xgboost"
+      - "lightgbm"
+      - "random_forest"
+    features:
+      - "excellence_score"
+      - "performance_score"
+      - "risk_score"
+      - "efficiency_score"
+      - "quality_score"
+      - "innovation_score"
+      - "excellence_trend"
+      - "excellence_momentum"
+      - "excellence_velocity"
+      - "excellence_acceleration"
+      - "improvement_rate"
+      - "adaptation_rate"
+      - "time_of_day"
+      - "day_of_week"
+      - "market_condition"
+    forecast_horizons:
+      - 1
+      - 5
+      - 10
+      - 20
+    confidence_threshold: 0.7
+    retrain_frequency_hours: 24
+
+# Alertes et notifications
+alerts:
+  excellence_change:
+    enabled: true
+    threshold: 0.05
+    channels:
+      - "email"
+      - "telegram"
+      - "slack"
+      - "push_notification"
+    severity: "warning"
+  excellence_threshold:
+    enabled: true
+    threshold: 0.8
+    channels:
+      - "email"
+      - "telegram"
+      - "slack"
+    severity: "critical"
+  excellence_improvement:
+    enabled: true
+    threshold: 0.1
+    channels:
+      - "telegram"
+      - "push_notification"
+    severity: "success"
+  excellence_decline:
+    enabled: true
+    threshold: 0.1
+    channels:
+      - "email"
+      - "telegram"
+      - "slack"
+    severity: "emergency"
+  excellence_breakthrough:
+    enabled: true
+    threshold: 0.2
+    channels:
+      - "telegram"
+      - "push_notification"
+    severity: "success"
+
+# Actions automatiques
+auto_actions:
+  improvement_actions:
+    enabled: true
+    action_types:
+      - "adjust_parameters"
+      - "adapt_strategy"
+      - "optimize_models"
+      - "improve_execution"
+      - "enhance_quality"
+    improvement_factor: 0.1
+    max_adjustment_percent: 20.0
+    action_frequency_seconds: 60
+  optimization_actions:
+    enabled: true
+    action_types:
+      - "rebalance_portfolio"
+      - "adjust_position_sizing"
+      - "modify_entry_exit"
+      - "enhance_risk_management"
+    optimization_factor: 0.1
+    max_optimization_percent: 15.0
+    action_frequency_seconds: 300
+  correction_actions:
+    enabled: true
+    action_types:
+      - "correct_deviations"
+      - "restore_targets"
+      - "reset_parameters"
+      - "recalibrate_models"
+    correction_factor: 0.1
+    max_correction_percent: 10.0
+    action_frequency_seconds: 600
+
+# Monitoring et journalisation
+monitoring:
+  logging:
+    enabled: true
+    level: "debug"
+    format: "json"
+    include_context: true
+    include_timestamp: true
+    include_metadata: true
+  metrics:
+    enabled: true
+    collect_every_seconds: 1
+    metrics_to_collect:
+      - "excellence_score"
+      - "performance_score"
+      - "risk_score"
+      - "efficiency_score"
+      - "quality_score"
+      - "innovation_score"
+      - "excellence_trend"
+      - "excellence_momentum"
+      - "excellence_velocity"
+      - "excellence_acceleration"
+      - "excellence_stability"
+      - "excellence_volatility"
+      - "improvement_rate"
+      - "adaptation_rate"
+      - "learning_rate"
+      - "evolution_rate"
+  dashboard:
+    enabled: true
+    update_interval_seconds: 1
+    charts:
+      - "excellence_score_chart"
+      - "domain_scores_chart"
+      - "trend_analysis_chart"
+      - "improvement_tracking_chart"
+      - "distribution_analysis_chart"
+      - "predictive_analysis_chart"
+      - "alert_status_chart"
+      - "action_status_chart"
+
+# Backtesting
+backtesting:
+  enabled: true
+  use_historical_excellence: true
+  compute_excellence_accuracy: true
+  compute_improvement_effectiveness: true
+  compute_optimization_effectiveness: true
+  compute_correction_effectiveness: true
+  report_metrics:
+    - "excellence_accuracy"
+    - "improvement_rate"
+    - "optimization_effectiveness"
+    - "correction_effectiveness"
+    - "win_rate"
+    - "profit_factor"
+    - "sharpe_ratio"
+    - "max_drawdown"
+
+# Configuration de la base de données
+database:
+  enabled: true
+  table_name: "excellence_engine_metrics"
+  retention_days: 730
+  aggregation:
+    enabled: true
+    intervals:
+      - "1s"
+      - "5s"
+      - "15s"
+      - "30s"
+      - "1m"
+      - "5m"
+      - "15m"
+      - "1h"
+      - "4h"
+      - "24h"
+      - "7d"
+  compression: true
+  backup:
+    enabled: true
+    frequency: "daily"
+    retention_days: 30
+
+# Webhooks
+webhooks:
+  enabled: true
+  endpoints:
+    - url: "https://nexustradingia.com/api/webhooks/excellence-engine"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      payload_template: "excellence_engine_alert"
+    - url: "https://nexustradingia.com/api/webhooks/excellence-improvement"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      payload_template: "improvement_alert"
+  retry:
+    enabled: true
+    max_attempts: 5
+    backoff_seconds: 30
+
+# Logging avancé
+advanced_logging:
+  enabled: true
+  levels:
+    - "info"
+    - "warning"
+    - "error"
+    - "critical"
+    - "debug"
+  output: "excellence_engine_logs"
+  rotation:
+    enabled: true
+    max_size_mb: 100
+    max_files: 10
+  remote_logging:
+    enabled: true
+    endpoints:
+      - "https://nexustradingia.com/logs/excellence-engine"
+  include_trace: true
+  include_stack_trace: true
+  include_context: true
+
+# Threading et performances
+performance:
+  thread_pool_size: 8
+  queue_size: 10000
+  batch_size: 1000
+  async_processing: true
+  cache_size: 10000
+  cache_ttl_seconds: 30
+  database_pool_size: 10
+  database_pool_max_overflow: 20
+  use_multiprocessing: true
+  max_workers: 8
+  use_cython: true
+  use_numba: true
+  use_gpu: true
+  gpu_device: 0
+
+# API de gestion
+management_api:
+  enabled: true
+  endpoints:
+    - "/api/v1/excellence-engine/current"
+    - "/api/v1/excellence-engine/history"
+    - "/api/v1/excellence-engine/metrics"
+    - "/api/v1/excellence-engine/status"
+    - "/api/v1/excellence-engine/engines"
+    - "/api/v1/excellence-engine/algorithms"
+    - "/api/v1/excellence-engine/improvement"
+    - "/api/v1/excellence-engine/optimization"
+    - "/api/v1/excellence-engine/forecast"
+  authentication_required: true
+  rate_limit: 100
+  rate_limit_interval_seconds: 60
+  version: "v1.0.0"
+
+# Export des données
+data_export:
+  enabled: true
+  formats:
+    - "csv"
+    - "json"
+    - "parquet"
+    - "avro"
+    - "feather"
+  schedule: "realtime"
+  batch_size: 1000
+  retention_days: 30
+  compression: "gzip"
+  destination: "s3://nexus-data/excellence-engine/"
+  encrypt: true
+  encryption_key_id: "nexus-excellence-engine-key"
+  partition_by:
+    - "symbol"
+    - "year"
+    - "month"
+    - "day"
+
+# Intégration avec d'autres modules
+integrations:
+  risk_engine:
+    enabled: true
+    sync_frequency_seconds: 1
+    share_metrics: true
+  execution_engine:
+    enabled: true
+    share_signals: true
+    require_confirmation: true
+  portfolio_manager:
+    enabled: true
+    share_positions: true
+    share_allocation: true
+  ai_engine:
+    enabled: true
+    use_ai_predictions: true
+    confidence_threshold: 0.7
+    model_endpoint: "http://ai-engine:8000/predict/excellence-engine"
+  market_data:
+    enabled: true
+    sync_frequency_ms: 100
+    data_endpoint: "ws://market-data:8080/ws"
+
+# Tests et validation
+testing:
+  unit_tests:
+    enabled: true
+    coverage_threshold: 90
+  integration_tests:
+    enabled: true
+  stress_tests:
+    enabled: true
+    scenarios:
+      - "high_data_volume"
+      - "low_data_quality"
+      - "performance_decline"
+      - "risk_increase"
+      - "efficiency_drop"
+  validation:
+    enabled: true
+    validate_on_startup: true
+    validate_on_config_change: true
+    validation_rules:
+      - "engine_types.performance_engine.weights.sum() == 1.0"
+      - "engine_types.risk_engine.weights.sum() == 1.0"
+      - "engine_types.efficiency_engine.weights.sum() == 1.0"
+      - "engine_types.quality_engine.weights.sum() == 1.0"
+      - "engine_types.innovation_engine.weights.sum() == 1.0"
+      - "engine_types.composite_engine.engine_weights.sum() == 1.0"
+      - "algorithms.excellence_ranking.ranking_weights.sum() == 1.0"
+      - "algorithms.excellence_optimization.weights.sum() == 1.0"
+      - "improvement_strategies.ensemble_improvement.weights.sum() == 1.0"
+      - "min_data_points > 0"
+
+# Market conditions adaptation
+market_adaptation:
+  enabled: true
+  regime_detection:
+    enabled: true
+    lookback_periods:
+      - 20
+      - 50
+      - 200
+    regimes:
+      - "bull"
+      - "bear"
+      - "sideways"
+      - "volatile"
+      - "stable"
+      - "transitional"
+  regime_parameters:
+    bull:
+      excellence_multiplier: 1.2
+      threshold_multiplier: 0.8
+      performance_weight: 1.2
+      risk_weight: 0.8
+    bear:
+      excellence_multiplier: 0.8
+      threshold_multiplier: 1.2
+      performance_weight: 0.8
+      risk_weight: 1.2
+    sideways:
+      excellence_multiplier: 1.0
+      threshold_multiplier: 1.0
+      performance_weight: 1.0
+      risk_weight: 1.0
+    volatile:
+      excellence_multiplier: 0.7
+      threshold_multiplier: 1.3
+      performance_weight: 0.7
+      risk_weight: 1.3
+    stable:
+      excellence_multiplier: 1.0
+      threshold_multiplier: 0.9
+      performance_weight: 1.1
+      risk_weight: 0.9
+    transitional:
+      excellence_multiplier: 1.3
+      threshold_multiplier: 1.1
+      performance_weight: 1.3
+      risk_weight: 1.1
+
+# Time-based configurations
+time_based:
+  enabled: true
+  sessions:
+    asia:
+      start: "00:00"
+      end: "08:00"
+      excellence_multiplier: 0.8
+      threshold_multiplier: 1.2
+      performance_weight: 0.8
+      risk_weight: 1.2
+    london:
+      start: "08:00"
+      end: "16:00"
+      excellence_multiplier: 1.2
+      threshold_multiplier: 0.8
+      performance_weight: 1.2
+      risk_weight: 0.8
+    newyork:
+      start: "13:00"
+      end: "22:00"
+      excellence_multiplier: 1.0
+      threshold_multiplier: 1.0
+      performance_weight: 1.0
+      risk_weight: 1.0
+    overlap:
+      start: "13:00"
+      end: "16:00"
+      excellence_multiplier: 1.5
+      threshold_multiplier: 0.7
+      performance_weight: 1.5
+      risk_weight: 0.7
+
+# Symbol-specific configurations
+symbol_configs:
+  BTCUSDT:
+    excellence_multiplier: 1.0
+    threshold_multiplier: 1.0
+    performance_weight: 1.0
+    risk_weight: 1.0
+    excellence_threshold: 0.95
+  ETHUSDT:
+    excellence_multiplier: 1.1
+    threshold_multiplier: 0.9
+    performance_weight: 1.1
+    risk_weight: 0.9
+    excellence_threshold: 0.94
+  SOLUSDT:
+    excellence_multiplier: 1.2
+    threshold_multiplier: 0.8
+    performance_weight: 1.2
+    risk_weight: 0.8
+    excellence_threshold: 0.93
+  ADAUSDT:
+    excellence_multiplier: 0.9
+    threshold_multiplier: 1.1
+    performance_weight: 0.9
+    risk_weight: 1.1
+    excellence_threshold: 0.92
+  XRPUSDT:
+    excellence_multiplier: 1.0
+    threshold_multiplier: 1.0
+    performance_weight: 1.0
+    risk_weight: 1.0
+    excellence_threshold: 0.94
