@@ -1,0 +1,639 @@
+# ems_configs.yaml
+# Configuration complète pour le système de gestion d'exécution (EMS) dans Swing Bot
+# Version: 4.0.0 - Production Ready
+
+# Paramètres généraux
+general:
+  enabled: true
+  mode: "comprehensive"
+  calculate_in_real_time: true
+  update_frequency_seconds: 1
+  execution_types:
+    - "market"
+    - "limit"
+    - "stop"
+    - "stop_limit"
+    - "trailing_stop"
+    - "iceberg"
+    - "twap"
+    - "vwap"
+    - "pov"
+    - "implementation_shortfall"
+  order_types:
+    - "market"
+    - "limit"
+    - "stop_market"
+    - "stop_limit"
+    - "take_profit_market"
+    - "take_profit_limit"
+    - "trailing_stop_market"
+    - "trailing_stop_limit"
+  time_in_force:
+    - "GTC"
+    - "IOC"
+    - "FOK"
+    - "DAY"
+    - "GTD"
+    - "GTE"
+  max_orders_per_second: 10
+  max_orders_per_minute: 100
+  max_orders_per_hour: 1000
+  max_position_size: 100000
+  min_position_size: 10
+
+# Types d'exécution
+execution_types:
+  market:
+    enabled: true
+    description: "Market execution"
+    slippage_tolerance: 0.001
+    max_slippage: 0.005
+    urgency: "high"
+  limit:
+    enabled: true
+    description: "Limit execution"
+    price_offset: 0.0005
+    max_price_offset: 0.002
+    urgency: "medium"
+  stop:
+    enabled: true
+    description: "Stop execution"
+    trigger_offset: 0.001
+    max_trigger_offset: 0.005
+    urgency: "high"
+  stop_limit:
+    enabled: true
+    description: "Stop limit execution"
+    trigger_offset: 0.001
+    price_offset: 0.0005
+    max_offset: 0.005
+    urgency: "medium"
+  trailing_stop:
+    enabled: true
+    description: "Trailing stop execution"
+    trailing_percent: 0.5
+    min_trailing_percent: 0.1
+    max_trailing_percent: 2.0
+    urgency: "medium"
+  iceberg:
+    enabled: true
+    description: "Iceberg execution"
+    display_quantity: 1000
+    min_display_quantity: 100
+    max_display_quantity: 10000
+    urgency: "low"
+  twap:
+    enabled: true
+    description: "TWAP execution"
+    duration_seconds: 300
+    min_duration_seconds: 60
+    max_duration_seconds: 3600
+    urgency: "low"
+  vwap:
+    enabled: true
+    description: "VWAP execution"
+    duration_seconds: 300
+    min_duration_seconds: 60
+    max_duration_seconds: 3600
+    urgency: "low"
+  pov:
+    enabled: true
+    description: "POV execution"
+    participation_rate: 0.1
+    min_participation_rate: 0.05
+    max_participation_rate: 0.5
+    urgency: "low"
+  implementation_shortfall:
+    enabled: true
+    description: "Implementation shortfall execution"
+    urgency: "medium"
+    aggressiveness: 0.5
+
+# Algorithmes d'exécution
+algorithms:
+  market_order:
+    enabled: true
+    max_order_size: 10000
+    min_order_size: 10
+    urgency: "high"
+    slippage_tolerance: 0.001
+  limit_order:
+    enabled: true
+    max_order_size: 50000
+    min_order_size: 10
+    urgency: "medium"
+    price_offset: 0.0005
+    max_price_offset: 0.002
+  stop_order:
+    enabled: true
+    max_order_size: 10000
+    min_order_size: 10
+    urgency: "high"
+    trigger_offset: 0.001
+  iceberging:
+    enabled: true
+    max_order_size: 100000
+    min_order_size: 1000
+    urgency: "low"
+    display_quantity: 1000
+    min_display_quantity: 100
+  twap_algorithm:
+    enabled: true
+    max_order_size: 100000
+    min_order_size: 1000
+    urgency: "low"
+    duration_seconds: 300
+    slice_count: 10
+  vwap_algorithm:
+    enabled: true
+    max_order_size: 100000
+    min_order_size: 1000
+    urgency: "low"
+    duration_seconds: 300
+    slice_count: 10
+    use_volume_profile: true
+  pov_algorithm:
+    enabled: true
+    max_order_size: 100000
+    min_order_size: 1000
+    urgency: "low"
+    participation_rate: 0.1
+    min_participation: 0.05
+    max_participation: 0.5
+  adaptive_algorithm:
+    enabled: true
+    max_order_size: 100000
+    min_order_size: 1000
+    urgency: "medium"
+    adaptation_factor: 0.5
+    market_impact_model: true
+    liquidity_sensitivity: 0.5
+
+# Gestion des ordres
+order_management:
+  order_routing:
+    enabled: true
+    routing_method: "smart"
+    smart_routing:
+      - "best_price"
+      - "best_execution"
+      - "fastest_execution"
+      - "lowest_fee"
+    primary_brokers:
+      - "binance"
+      - "bybit"
+      - "coinbase"
+    secondary_brokers:
+      - "kraken"
+      - "okx"
+  order_cancellation:
+    enabled: true
+    cancel_on_error: true
+    cancel_on_timeout: true
+    cancel_on_trigger: true
+    max_cancellation_attempts: 3
+    cancellation_timeout_seconds: 5
+  order_amendment:
+    enabled: true
+    max_amendments: 5
+    amendment_timeout_seconds: 5
+    allow_price_update: true
+    allow_quantity_update: true
+    allow_type_update: true
+
+# Stratégies d'exécution
+strategies:
+  aggressive:
+    enabled: true
+    description: "Aggressive execution"
+    execution_type: "market"
+    urgency: "high"
+    slippage_tolerance: 0.002
+    market_impact: "high"
+  moderate:
+    enabled: true
+    description: "Moderate execution"
+    execution_type: "limit"
+    urgency: "medium"
+    price_offset: 0.0005
+    market_impact: "medium"
+    duration_seconds: 300
+  passive:
+    enabled: true
+    description: "Passive execution"
+    execution_type: "limit"
+    urgency: "low"
+    price_offset: 0.001
+    market_impact: "low"
+    duration_seconds: 600
+  stealth:
+    enabled: true
+    description: "Stealth execution"
+    execution_type: "iceberg"
+    urgency: "low"
+    display_quantity: 500
+    market_impact: "very_low"
+    duration_seconds: 900
+  smart:
+    enabled: true
+    description: "Smart execution"
+    execution_type: "adaptive"
+    urgency: "medium"
+    adaptation_factor: 0.5
+    market_impact_model: true
+    liquidity_sensitivity: 0.5
+
+# Optimisation d'exécution
+optimization:
+  slippage_optimization:
+    enabled: true
+    minimize_slippage: true
+    max_slippage: 0.005
+    optimization_factor: 0.5
+  market_impact:
+    enabled: true
+    minimize_market_impact: true
+    impact_model: "linear"
+    impact_factor: 0.5
+  timing_optimization:
+    enabled: true
+    optimize_timing: true
+    time_horizon_seconds: 300
+    optimization_factor: 0.5
+  price_optimization:
+    enabled: true
+    optimize_price: true
+    price_improvement: true
+    optimization_factor: 0.5
+
+# Paramètres avancés
+advanced:
+  machine_learning:
+    enabled: true
+    model_type: "ensemble"
+    models:
+      - "random_forest"
+      - "xgboost"
+      - "lightgbm"
+      - "lstm"
+    features:
+      - "order_type"
+      - "order_size"
+      - "price_level"
+      - "spread"
+      - "volume"
+      - "volatility"
+      - "liquidity"
+      - "time_of_day"
+      - "day_of_week"
+      - "market_condition"
+    training_frequency_hours: 6
+    retrain_threshold: 0.9
+    validation_split: 0.2
+    random_seed: 42
+    ensemble_weights:
+      - 0.25
+      - 0.25
+      - 0.25
+      - 0.25
+  execution_quality:
+    enabled: true
+    measure_execution_quality: true
+    quality_metrics:
+      - "slippage"
+      - "market_impact"
+      - "timing"
+      - "price_improvement"
+      - "execution_speed"
+      - "fill_rate"
+    quality_threshold: 0.8
+  risk_management:
+    enabled: true
+    max_exposure: 100000
+    max_position_per_symbol: 50000
+    max_order_size: 10000
+    max_orders_per_minute: 100
+    max_orders_per_hour: 1000
+    risk_check_frequency_seconds: 5
+
+# Monitoring et journalisation
+monitoring:
+  logging:
+    enabled: true
+    level: "debug"
+    format: "json"
+    include_context: true
+    include_timestamp: true
+    include_metadata: true
+  metrics:
+    enabled: true
+    collect_every_seconds: 1
+    metrics_to_collect:
+      - "order_count"
+      - "executed_orders"
+      - "filled_volume"
+      - "slippage"
+      - "market_impact"
+      - "execution_speed"
+      - "fill_rate"
+      - "execution_quality"
+      - "order_failures"
+      - "order_cancellations"
+      - "order_amendments"
+  dashboard:
+    enabled: true
+    update_interval_seconds: 1
+    charts:
+      - "order_flow"
+      - "execution_quality"
+      - "slippage_analysis"
+      - "market_impact"
+      - "fill_rate"
+      - "order_distribution"
+      - "execution_speed"
+      - "risk_metrics"
+
+# Backtesting
+backtesting:
+  enabled: true
+  use_historical_execution: true
+  compute_execution_quality: true
+  compute_strategy_performance: true
+  compute_risk_adjusted_returns: true
+  compute_slippage_analysis: true
+  report_metrics:
+    - "win_rate"
+    - "profit_factor"
+    - "sharpe_ratio"
+    - "max_drawdown"
+    - "execution_quality"
+    - "slippage_avg"
+    - "market_impact"
+    - "fill_rate"
+
+# Configuration de la base de données
+database:
+  enabled: true
+  table_name: "execution_metrics"
+  retention_days: 365
+  aggregation:
+    enabled: true
+    intervals:
+      - "1s"
+      - "5s"
+      - "15s"
+      - "30s"
+      - "1m"
+      - "5m"
+      - "15m"
+      - "1h"
+      - "4h"
+      - "24h"
+  compression: true
+  backup:
+    enabled: true
+    frequency: "daily"
+    retention_days: 30
+
+# Webhooks
+webhooks:
+  enabled: true
+  endpoints:
+    - url: "https://nexustradingia.com/api/webhooks/execution"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      payload_template: "execution_alert"
+    - url: "https://nexustradingia.com/api/webhooks/execution-quality"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      payload_template: "execution_quality"
+  retry:
+    enabled: true
+    max_attempts: 5
+    backoff_seconds: 30
+
+# Logging avancé
+advanced_logging:
+  enabled: true
+  levels:
+    - "info"
+    - "warning"
+    - "error"
+    - "critical"
+    - "debug"
+  output: "execution_logs"
+  rotation:
+    enabled: true
+    max_size_mb: 100
+    max_files: 10
+  remote_logging:
+    enabled: true
+    endpoints:
+      - "https://nexustradingia.com/logs/execution"
+  include_trace: true
+  include_stack_trace: true
+  include_context: true
+
+# Threading et performances
+performance:
+  thread_pool_size: 8
+  queue_size: 10000
+  batch_size: 1000
+  async_processing: true
+  cache_size: 10000
+  cache_ttl_seconds: 30
+  database_pool_size: 10
+  database_pool_max_overflow: 20
+  use_multiprocessing: true
+  max_workers: 8
+  use_cython: true
+  use_numba: true
+  use_gpu: false
+  gpu_device: 0
+
+# API de gestion
+management_api:
+  enabled: true
+  endpoints:
+    - "/api/v1/ems/orders"
+    - "/api/v1/ems/executions"
+    - "/api/v1/ems/metrics"
+    - "/api/v1/ems/status"
+    - "/api/v1/ems/algorithms"
+    - "/api/v1/ems/strategies"
+    - "/api/v1/ems/quality"
+  authentication_required: true
+  rate_limit: 100
+  rate_limit_interval_seconds: 60
+  version: "v1.0.0"
+
+# Export des données
+data_export:
+  enabled: true
+  formats:
+    - "csv"
+    - "json"
+    - "parquet"
+    - "avro"
+    - "feather"
+  schedule: "realtime"
+  batch_size: 1000
+  retention_days: 30
+  compression: "gzip"
+  destination: "s3://nexus-data/execution/"
+  encrypt: true
+  encryption_key_id: "nexus-execution-key"
+  partition_by:
+    - "symbol"
+    - "year"
+    - "month"
+    - "day"
+
+# Intégration avec d'autres modules
+integrations:
+  risk_engine:
+    enabled: true
+    sync_frequency_seconds: 1
+    share_metrics: true
+  portfolio_manager:
+    enabled: true
+    share_positions: true
+    share_allocation: true
+  market_data:
+    enabled: true
+    sync_frequency_ms: 100
+    data_endpoint: "ws://market-data:8080/ws"
+  broker_api:
+    enabled: true
+    sync_frequency_seconds: 1
+    data_endpoint: "ws://broker-api:8080/ws"
+
+# Tests et validation
+testing:
+  unit_tests:
+    enabled: true
+    coverage_threshold: 90
+  integration_tests:
+    enabled: true
+  stress_tests:
+    enabled: true
+    scenarios:
+      - "high_order_volume"
+      - "low_liquidity"
+      - "high_volatility"
+      - "system_errors"
+      - "broker_errors"
+  validation:
+    enabled: true
+    validate_on_startup: true
+    validate_on_config_change: true
+    validation_rules:
+      - "max_orders_per_second > 0"
+      - "max_orders_per_minute > max_orders_per_second"
+      - "max_orders_per_hour > max_orders_per_minute"
+      - "max_position_size > 0"
+      - "min_position_size < max_position_size"
+      - "min_position_size > 0"
+
+# Market conditions adaptation
+market_adaptation:
+  enabled: true
+  volatility_adjustment: true
+  regime_detection:
+    enabled: true
+    lookback_periods:
+      - 20
+      - 50
+      - 200
+    regimes:
+      - "low_volatility"
+      - "normal_volatility"
+      - "high_volatility"
+      - "extreme_volatility"
+      - "low_liquidity"
+      - "high_liquidity"
+  regime_parameters:
+    low_volatility:
+      urgency_multiplier: 0.8
+      slippage_tolerance: 0.5
+      market_impact: 0.5
+    normal_volatility:
+      urgency_multiplier: 1.0
+      slippage_tolerance: 1.0
+      market_impact: 1.0
+    high_volatility:
+      urgency_multiplier: 1.2
+      slippage_tolerance: 1.5
+      market_impact: 1.5
+    extreme_volatility:
+      urgency_multiplier: 1.5
+      slippage_tolerance: 2.0
+      market_impact: 2.0
+    low_liquidity:
+      urgency_multiplier: 0.6
+      slippage_tolerance: 2.0
+      market_impact: 2.0
+    high_liquidity:
+      urgency_multiplier: 1.2
+      slippage_tolerance: 0.5
+      market_impact: 0.5
+
+# Time-based configurations
+time_based:
+  enabled: true
+  sessions:
+    asia:
+      start: "00:00"
+      end: "08:00"
+      urgency_multiplier: 0.8
+      market_impact: 1.2
+    london:
+      start: "08:00"
+      end: "16:00"
+      urgency_multiplier: 1.2
+      market_impact: 0.8
+    newyork:
+      start: "13:00"
+      end: "22:00"
+      urgency_multiplier: 1.0
+      market_impact: 1.0
+    overlap:
+      start: "13:00"
+      end: "16:00"
+      urgency_multiplier: 1.5
+      market_impact: 0.7
+
+# Symbol-specific configurations
+symbol_configs:
+  BTCUSDT:
+    urgency_multiplier: 1.0
+    slippage_tolerance: 1.0
+    market_impact: 1.0
+    max_order_size: 10000
+    min_order_size: 10
+  ETHUSDT:
+    urgency_multiplier: 1.1
+    slippage_tolerance: 0.9
+    market_impact: 1.1
+    max_order_size: 8000
+    min_order_size: 10
+  SOLUSDT:
+    urgency_multiplier: 1.2
+    slippage_tolerance: 0.8
+    market_impact: 1.2
+    max_order_size: 6000
+    min_order_size: 10
+  ADAUSDT:
+    urgency_multiplier: 0.9
+    slippage_tolerance: 1.1
+    market_impact: 0.9
+    max_order_size: 4000
+    min_order_size: 10
+  XRPUSDT:
+    urgency_multiplier: 1.0
+    slippage_tolerance: 1.0
+    market_impact: 1.0
+    max_order_size: 4000
+    min_order_size: 10
