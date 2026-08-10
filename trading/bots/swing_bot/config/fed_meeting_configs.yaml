@@ -1,0 +1,570 @@
+# fed_meeting_configs.yaml
+# Configuration complète pour les réunions de la Fed dans Swing Bot
+# Version: 4.0.0 - Production Ready
+
+# Paramètres généraux
+general:
+  enabled: true
+  mode: "comprehensive"
+  calculate_in_real_time: true
+  update_frequency_seconds: 30
+  lookback_years: 10
+  history_length_days: 365
+  min_data_points: 10
+  max_data_points: 1000
+  meeting_year: 2026
+  schedule_meetings: true
+  timezone: "America/New_York"
+
+# Types de réunions
+meeting_types:
+  fomc:
+    enabled: true
+    description: "FOMC Meetings"
+    frequency: "8_per_year"
+    meetings_per_year: 8
+    duration_days: 2
+    importance: "critical"
+  emergency:
+    enabled: true
+    description: "Emergency Meetings"
+    trigger_conditions:
+      - "market_crisis"
+      - "economic_shock"
+      - "liquidity_crisis"
+    importance: "critical"
+  press_conference:
+    enabled: true
+    description: "Press Conferences"
+    frequency: "4_per_year"
+    meetings_per_year: 4
+    duration_hours: 1
+    importance: "high"
+  testimonies:
+    enabled: true
+    description: "Fed Testimonies"
+    frequency: "2_per_year"
+    meetings_per_year: 2
+    duration_hours: 3
+    importance: "high"
+
+# Dates des réunions FOMC 2026
+meeting_dates:
+  january:
+    start: "2026-01-27"
+    end: "2026-01-28"
+    press_conference: true
+    importance: "critical"
+  march:
+    start: "2026-03-17"
+    end: "2026-03-18"
+    press_conference: true
+    importance: "critical"
+  may:
+    start: "2026-05-05"
+    end: "2026-05-06"
+    press_conference: false
+    importance: "high"
+  june:
+    start: "2026-06-16"
+    end: "2026-06-17"
+    press_conference: true
+    importance: "critical"
+  july:
+    start: "2026-07-28"
+    end: "2026-07-29"
+    press_conference: false
+    importance: "high"
+  september:
+    start: "2026-09-15"
+    end: "2026-09-16"
+    press_conference: true
+    importance: "critical"
+  november:
+    start: "2026-11-03"
+    end: "2026-11-04"
+    press_conference: false
+    importance: "high"
+  december:
+    start: "2026-12-15"
+    end: "2026-12-16"
+    press_conference: true
+    importance: "critical"
+
+# Impact des réunions
+impact_levels:
+  critical:
+    volatility_multiplier: 3.0
+    position_multiplier: 0.2
+    stop_loss_multiplier: 2.0
+    take_profit_multiplier: 3.0
+    description: "Critical impact"
+  high:
+    volatility_multiplier: 2.0
+    position_multiplier: 0.4
+    stop_loss_multiplier: 1.5
+    take_profit_multiplier: 2.0
+    description: "High impact"
+  medium:
+    volatility_multiplier: 1.5
+    position_multiplier: 0.6
+    stop_loss_multiplier: 1.2
+    take_profit_multiplier: 1.5
+    description: "Medium impact"
+  low:
+    volatility_multiplier: 1.0
+    position_multiplier: 0.8
+    stop_loss_multiplier: 1.0
+    take_profit_multiplier: 1.0
+    description: "Low impact"
+
+# Stratégies de trading
+strategies:
+  pre_meeting:
+    enabled: true
+    lead_time_hours: 24
+    actions:
+      - "reduce_position_size"
+      - "tighten_stop_loss"
+      - "increase_cash_position"
+      - "hedge_portfolio"
+    reduction_factor: 0.5
+    hedge_ratio: 0.3
+    stop_loss_tighten: 0.5
+  during_meeting:
+    enabled: true
+    actions:
+      - "pause_trading"
+      - "monitor_volatility"
+      - "wait_for_decision"
+      - "prepare_for_volatility"
+    pause_duration_hours: 2
+    volatility_threshold: 0.5
+  post_meeting:
+    enabled: true
+    actions:
+      - "resume_trading"
+      - "adjust_positions"
+      - "rebalance_portfolio"
+      - "take_profit_on_volatility"
+    resume_delay_minutes: 15
+    rebalance_threshold: 0.2
+  press_conference:
+    enabled: true
+    actions:
+      - "monitor_speech"
+      - "analyze_keywords"
+      - "adjust_on_sentiment"
+      - "react_to_guidance"
+    sentiment_threshold: 0.6
+    keyword_impact: true
+
+# Indicateurs de volatilité
+volatility_indicators:
+  vix:
+    enabled: true
+    period: 14
+    threshold: 20.0
+    smoothing: 3
+  implied_volatility:
+    enabled: true
+    period: 14
+    threshold: 0.3
+    smoothing: 3
+  realized_volatility:
+    enabled: true
+    period: 14
+    threshold: 0.2
+    smoothing: 3
+  option_volume:
+    enabled: true
+    period: 14
+    threshold: 10000
+    smoothing: 3
+
+# Alertes et notifications
+alerts:
+  meeting_reminder:
+    enabled: true
+    lead_time_hours: 48
+    channels:
+      - "email"
+      - "telegram"
+      - "slack"
+      - "push_notification"
+    severity: "info"
+  meeting_start:
+    enabled: true
+    channels:
+      - "email"
+      - "telegram"
+      - "push_notification"
+    severity: "warning"
+  meeting_decision:
+    enabled: true
+    channels:
+      - "email"
+      - "telegram"
+      - "slack"
+      - "push_notification"
+    severity: "critical"
+  press_conference:
+    enabled: true
+    channels:
+      - "telegram"
+      - "push_notification"
+    severity: "high"
+  volatility_spike:
+    enabled: true
+    threshold: 0.5
+    channels:
+      - "email"
+      - "telegram"
+      - "slack"
+    severity: "critical"
+
+# Actions automatiques
+auto_actions:
+  position_adjustment:
+    enabled: true
+    action_types:
+      - "reduce_exposure"
+      - "increase_cash"
+      - "hedge_positions"
+      - "tighten_stops"
+    adjustment_factor: 0.5
+    max_adjustment_percent: 50.0
+  risk_management:
+    enabled: true
+    action_types:
+      - "reduce_leverage"
+      - "increase_hedge_ratio"
+      - "pause_trading"
+      - "rebalance_portfolio"
+    risk_multiplier: 2.0
+    pause_duration_hours: 2
+  volatility_response:
+    enabled: true
+    action_types:
+      - "adjust_stop_loss"
+      - "adjust_take_profit"
+      - "add_hedge"
+      - "reduce_position"
+    volatility_threshold: 0.5
+    response_factor: 0.5
+
+# Analyse des réunions
+analysis:
+  historical:
+    enabled: true
+    lookback_years: 10
+    compute_impact_metrics: true
+    compute_volatility_patterns: true
+    compute_sentiment_correlation: true
+    compute_market_reaction: true
+    compute_decision_accuracy: true
+  real_time:
+    enabled: true
+    update_frequency_seconds: 5
+    compute_instantaneous_impact: true
+    compute_volatility_change: true
+    compute_sentiment_change: true
+    compute_market_reaction: true
+  predictive:
+    enabled: true
+    model_type: "ensemble"
+    models:
+      - "lstm"
+      - "xgboost"
+      - "lightgbm"
+    features:
+      - "meeting_type"
+      - "meeting_importance"
+      - "time_to_meeting"
+      - "vix"
+      - "implied_volatility"
+      - "realized_volatility"
+      - "option_volume"
+      - "market_sentiment"
+      - "economic_data"
+      - "inflation_data"
+      - "employment_data"
+    forecast_horizon_hours: 24
+    confidence_threshold: 0.7
+
+# Monitoring et journalisation
+monitoring:
+  logging:
+    enabled: true
+    level: "debug"
+    format: "json"
+    include_context: true
+    include_timestamp: true
+    include_metadata: true
+  metrics:
+    enabled: true
+    collect_every_seconds: 5
+    metrics_to_collect:
+      - "meeting_count"
+      - "meeting_type"
+      - "time_to_meeting"
+      - "volatility_level"
+      - "sentiment_score"
+      - "position_exposure"
+      - "hedge_ratio"
+      - "risk_level"
+      - "volatility_multiplier"
+  dashboard:
+    enabled: true
+    update_interval_seconds: 5
+    charts:
+      - "meeting_calendar"
+      - "volatility_impact"
+      - "sentiment_analysis"
+      - "position_management"
+      - "historical_impact"
+      - "market_reaction"
+
+# Backtesting
+backtesting:
+  enabled: true
+  use_historical_meetings: true
+  compute_impact_accuracy: true
+  compute_volatility_predictions: true
+  compute_strategy_performance: true
+  compute_risk_adjusted_returns: true
+  report_metrics:
+    - "impact_accuracy"
+    - "volatility_prediction_accuracy"
+    - "win_rate"
+    - "profit_factor"
+    - "sharpe_ratio"
+    - "max_drawdown"
+
+# Configuration de la base de données
+database:
+  enabled: true
+  table_name: "fed_meeting_metrics"
+  retention_days: 365
+  aggregation:
+    enabled: true
+    intervals:
+      - "1h"
+      - "4h"
+      - "24h"
+      - "7d"
+      - "30d"
+  compression: true
+  backup:
+    enabled: true
+    frequency: "daily"
+    retention_days: 30
+
+# Webhooks
+webhooks:
+  enabled: true
+  endpoints:
+    - url: "https://nexustradingia.com/api/webhooks/fed-meeting"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      payload_template: "fed_meeting_alert"
+    - url: "https://nexustradingia.com/api/webhooks/fed-decision"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      payload_template: "fed_decision"
+  retry:
+    enabled: true
+    max_attempts: 5
+    backoff_seconds: 30
+
+# Logging avancé
+advanced_logging:
+  enabled: true
+  levels:
+    - "info"
+    - "warning"
+    - "error"
+    - "critical"
+    - "debug"
+  output: "fed_meeting_logs"
+  rotation:
+    enabled: true
+    max_size_mb: 100
+    max_files: 10
+  remote_logging:
+    enabled: true
+    endpoints:
+      - "https://nexustradingia.com/logs/fed-meeting"
+  include_trace: true
+  include_stack_trace: true
+  include_context: true
+
+# Threading et performances
+performance:
+  thread_pool_size: 4
+  queue_size: 1000
+  batch_size: 100
+  async_processing: true
+  cache_size: 5000
+  cache_ttl_seconds: 300
+  database_pool_size: 5
+  database_pool_max_overflow: 10
+  use_multiprocessing: false
+  max_workers: 4
+
+# API de gestion
+management_api:
+  enabled: true
+  endpoints:
+    - "/api/v1/fed-meeting/current"
+    - "/api/v1/fed-meeting/history"
+    - "/api/v1/fed-meeting/metrics"
+    - "/api/v1/fed-meeting/status"
+    - "/api/v1/fed-meeting/schedule"
+    - "/api/v1/fed-meeting/impact"
+    - "/api/v1/fed-meeting/forecast"
+  authentication_required: true
+  rate_limit: 100
+  rate_limit_interval_seconds: 60
+  version: "v1.0.0"
+
+# Export des données
+data_export:
+  enabled: true
+  formats:
+    - "csv"
+    - "json"
+    - "parquet"
+  schedule: "daily"
+  retention_days: 30
+  compression: "gzip"
+  destination: "s3://nexus-data/fed-meeting/"
+  encrypt: true
+  encryption_key_id: "nexus-fed-key"
+  partition_by:
+    - "year"
+    - "month"
+    - "meeting_type"
+
+# Intégration avec d'autres modules
+integrations:
+  risk_engine:
+    enabled: true
+    sync_frequency_seconds: 5
+    share_metrics: true
+  execution_engine:
+    enabled: true
+    share_signals: true
+    require_confirmation: true
+  portfolio_manager:
+    enabled: true
+    share_positions: true
+    share_allocation: true
+  ai_engine:
+    enabled: true
+    use_ai_predictions: true
+    confidence_threshold: 0.7
+    model_endpoint: "http://ai-engine:8000/predict/fed-meeting"
+  market_data:
+    enabled: true
+    sync_frequency_seconds: 5
+    data_endpoint: "ws://market-data:8080/ws"
+
+# Tests et validation
+testing:
+  unit_tests:
+    enabled: true
+    coverage_threshold: 90
+  integration_tests:
+    enabled: true
+  stress_tests:
+    enabled: true
+    scenarios:
+      - "multiple_meetings"
+      - "emergency_meeting"
+      - "volatility_spike"
+      - "market_crash"
+  validation:
+    enabled: true
+    validate_on_startup: true
+    validate_on_config_change: true
+    validation_rules:
+      - "impact_levels.critical.volatility_multiplier > impact_levels.high.volatility_multiplier"
+      - "impact_levels.high.volatility_multiplier > impact_levels.medium.volatility_multiplier"
+      - "impact_levels.medium.volatility_multiplier > impact_levels.low.volatility_multiplier"
+      - "strategies.pre_meeting.lead_time_hours > 0"
+      - "strategies.during_meeting.pause_duration_hours > 0"
+      - "strategies.post_meeting.resume_delay_minutes >= 0"
+      - "volatility_indicators.vix.threshold > 0"
+
+# Market conditions adaptation
+market_adaptation:
+  enabled: true
+  regime_detection:
+    enabled: true
+    lookback_periods:
+      - 20
+      - 50
+      - 200
+    regimes:
+      - "bull"
+      - "bear"
+      - "sideways"
+      - "volatile"
+      - "stable"
+  regime_parameters:
+    bull:
+      meeting_multiplier: 1.2
+      volatility_multiplier: 0.8
+      risk_multiplier: 0.8
+    bear:
+      meeting_multiplier: 0.8
+      volatility_multiplier: 1.2
+      risk_multiplier: 1.5
+    sideways:
+      meeting_multiplier: 1.0
+      volatility_multiplier: 1.0
+      risk_multiplier: 1.0
+    volatile:
+      meeting_multiplier: 0.7
+      volatility_multiplier: 1.5
+      risk_multiplier: 2.0
+    stable:
+      meeting_multiplier: 1.0
+      volatility_multiplier: 0.7
+      risk_multiplier: 0.6
+
+# Symbol-specific configurations
+symbol_configs:
+  BTCUSDT:
+    meeting_multiplier: 1.0
+    volatility_multiplier: 1.0
+    risk_multiplier: 1.0
+    position_reduction: 0.5
+    hedge_ratio: 0.3
+  ETHUSDT:
+    meeting_multiplier: 1.1
+    volatility_multiplier: 1.1
+    risk_multiplier: 1.1
+    position_reduction: 0.4
+    hedge_ratio: 0.4
+  SOLUSDT:
+    meeting_multiplier: 1.2
+    volatility_multiplier: 1.2
+    risk_multiplier: 1.2
+    position_reduction: 0.3
+    hedge_ratio: 0.5
+  ADAUSDT:
+    meeting_multiplier: 0.9
+    volatility_multiplier: 0.9
+    risk_multiplier: 0.9
+    position_reduction: 0.6
+    hedge_ratio: 0.2
+  XRPUSDT:
+    meeting_multiplier: 1.0
+    volatility_multiplier: 1.0
+    risk_multiplier: 1.0
+    position_reduction: 0.5
+    hedge_ratio: 0.3
