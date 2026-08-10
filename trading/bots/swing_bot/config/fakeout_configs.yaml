@@ -1,0 +1,670 @@
+# fakeout_configs.yaml
+# Configuration complète pour la détection des faux signaux (fakeouts) dans Swing Bot
+# Version: 4.0.0 - Production Ready
+
+# Paramètres généraux
+general:
+  enabled: true
+  mode: "comprehensive"
+  calculate_in_real_time: true
+  update_frequency_seconds: 1
+  lookback_periods:
+    - 5
+    - 10
+    - 20
+    - 50
+    - 100
+    - 200
+    - 500
+  history_length_days: 365
+  min_data_points: 50
+  max_data_points: 100000
+  confidence_threshold: 0.7
+  fakeout_detection_version: "4.0.0"
+
+# Types de fakeouts
+fakeout_types:
+  breakout_fakeout:
+    enabled: true
+    description: "Breakout Fakeout Detection"
+    patterns:
+      - "breakout_above_resistance"
+      - "breakout_below_support"
+      - "breakout_above_moving_average"
+      - "breakout_below_moving_average"
+    detection_method: "volume_confirmation"
+    min_confidence: 0.6
+  reversal_fakeout:
+    enabled: true
+    description: "Reversal Fakeout Detection"
+    patterns:
+      - "reversal_after_breakout"
+      - "reversal_after_breakdown"
+      - "reversal_after_trend_line_break"
+      - "reversal_after_pattern_break"
+    detection_method: "price_action"
+    min_confidence: 0.6
+  pattern_fakeout:
+    enabled: true
+    description: "Pattern Fakeout Detection"
+    patterns:
+      - "flag_breakout_fake"
+      - "pennant_breakout_fake"
+      - "triangle_breakout_fake"
+      - "wedge_breakout_fake"
+    detection_method: "pattern_analysis"
+    min_confidence: 0.6
+  indicator_fakeout:
+    enabled: true
+    description: "Indicator Fakeout Detection"
+    patterns:
+      - "rsi_breakout_fake"
+      - "macd_breakout_fake"
+      - "stochastic_breakout_fake"
+      - "bollinger_breakout_fake"
+    detection_method: "indicator_divergence"
+    min_confidence: 0.6
+  volume_fakeout:
+    enabled: true
+    description: "Volume Fakeout Detection"
+    patterns:
+      - "high_volume_breakout"
+      - "low_volume_breakout"
+      - "volume_divergence"
+      - "volume_climax"
+    detection_method: "volume_analysis"
+    min_confidence: 0.6
+
+# Seuils de détection
+thresholds:
+  breakout:
+    price_multiplier: 0.01
+    volume_multiplier: 1.5
+    time_window: 5
+    min_breakout_bars: 3
+    max_breakout_bars: 10
+  reversal:
+    price_multiplier: 0.02
+    volume_multiplier: 1.0
+    time_window: 3
+    min_reversal_bars: 2
+    max_reversal_bars: 8
+  pattern:
+    price_multiplier: 0.015
+    volume_multiplier: 1.2
+    time_window: 10
+    min_pattern_bars: 5
+    max_pattern_bars: 20
+  indicator:
+    price_multiplier: 0.01
+    volume_multiplier: 1.0
+    time_window: 5
+    min_indicator_bars: 3
+    max_indicator_bars: 10
+  volume:
+    price_multiplier: 0.0
+    volume_multiplier: 2.0
+    time_window: 5
+    min_volume_bars: 3
+    max_volume_bars: 10
+
+# Indicateurs de fakeout
+indicators:
+  fakeout_probability:
+    enabled: true
+    calculation: "weighted_average"
+    factors:
+      - "breakout_strength"
+      - "volume_confirmation"
+      - "price_reversal"
+      - "pattern_quality"
+      - "indicator_divergence"
+    factor_weights:
+      breakout_strength: 0.25
+      volume_confirmation: 0.25
+      price_reversal: 0.20
+      pattern_quality: 0.15
+      indicator_divergence: 0.15
+  fakeout_strength:
+    enabled: true
+    period: 5
+    smoothing: 3
+    threshold: 0.7
+  fakeout_momentum:
+    enabled: true
+    period: 14
+    smoothing: 3
+    threshold: 0.3
+  fakeout_velocity:
+    enabled: true
+    period: 5
+    smoothing: 0
+    threshold: 0.2
+  fakeout_acceleration:
+    enabled: true
+    period: 10
+    smoothing: 0
+    threshold: 0.1
+  fakeout_confidence:
+    enabled: true
+    period: 14
+    smoothing: 0
+    threshold: 0.6
+
+# Analyse des fakeouts
+analysis:
+  historical:
+    enabled: true
+    lookback_years: 5
+    compute_fakeout_frequency: true
+    compute_fakeout_probability: true
+    compute_fakeout_accuracy: true
+    compute_fakeout_distribution: true
+    compute_fakeout_patterns: true
+    compute_fakeout_cycles: true
+    compute_fakeout_seasonality: true
+  real_time:
+    enabled: true
+    update_frequency_ms: 100
+    compute_instantaneous_fakeout: true
+    compute_moving_average_fakeout: true
+    compute_exponential_fakeout: true
+    compute_weighted_fakeout: true
+    compute_fakeout_velocity: true
+    compute_fakeout_acceleration: true
+  predictive:
+    enabled: true
+    model_type: "ensemble"
+    models:
+      - "lstm"
+      - "gru"
+      - "xgboost"
+      - "lightgbm"
+    features:
+      - "fakeout_probability"
+      - "fakeout_strength"
+      - "fakeout_momentum"
+      - "fakeout_velocity"
+      - "fakeout_acceleration"
+      - "fakeout_confidence"
+      - "breakout_strength"
+      - "volume_confirmation"
+      - "price_reversal"
+      - "pattern_quality"
+      - "indicator_divergence"
+      - "price_change"
+      - "volume"
+      - "volatility"
+      - "time_of_day"
+      - "day_of_week"
+      - "market_condition"
+    forecast_horizons:
+      - 1
+      - 5
+      - 10
+      - 20
+    confidence_threshold: 0.7
+    retrain_frequency_hours: 24
+
+# Alertes et notifications
+alerts:
+  fakeout_detected:
+    enabled: true
+    confidence_threshold: 0.7
+    channels:
+      - "email"
+      - "telegram"
+      - "slack"
+      - "push_notification"
+    severity: "critical"
+  fakeout_probable:
+    enabled: true
+    confidence_threshold: 0.5
+    channels:
+      - "telegram"
+      - "push_notification"
+    severity: "warning"
+  fakeout_confirmed:
+    enabled: true
+    confidence_threshold: 0.9
+    channels:
+      - "email"
+      - "telegram"
+      - "slack"
+    severity: "critical"
+  fakeout_avoided:
+    enabled: true
+    confidence_threshold: 0.8
+    channels:
+      - "telegram"
+      - "push_notification"
+    severity: "info"
+
+# Actions automatiques
+auto_actions:
+  trade_avoidance:
+    enabled: true
+    action_types:
+      - "avoid_entry"
+      - "delay_entry"
+      - "reduce_position"
+      - "cancel_order"
+    confidence_threshold: 0.7
+    max_avoidance_percent: 100.0
+  position_adjustment:
+    enabled: true
+    action_types:
+      - "reduce_exposure"
+      - "tighten_stop_loss"
+      - "move_take_profit"
+      - "add_hedge"
+    adjustment_factor: 0.5
+    max_adjustment_percent: 50.0
+  trade_reversal:
+    enabled: true
+    action_types:
+      - "reverse_position"
+      - "close_position"
+      - "enter_opposite"
+    confidence_threshold: 0.8
+    reversal_factor: 0.5
+
+# Paramètres avancés
+advanced:
+  machine_learning:
+    enabled: true
+    model_type: "ensemble"
+    models:
+      - "random_forest"
+      - "xgboost"
+      - "lightgbm"
+      - "lstm"
+    features:
+      - "fakeout_probability"
+      - "fakeout_strength"
+      - "fakeout_momentum"
+      - "fakeout_velocity"
+      - "fakeout_acceleration"
+      - "fakeout_confidence"
+      - "breakout_strength"
+      - "volume_confirmation"
+      - "price_reversal"
+      - "pattern_quality"
+      - "indicator_divergence"
+      - "rsi"
+      - "macd"
+      - "bollinger_width"
+      - "atr"
+      - "volume"
+      - "price_change"
+      - "time_of_day"
+      - "day_of_week"
+      - "market_condition"
+    training_frequency_hours: 6
+    retrain_threshold: 0.9
+    validation_split: 0.2
+    random_seed: 42
+    ensemble_weights:
+      - 0.25
+      - 0.25
+      - 0.25
+      - 0.25
+  statistical_analysis:
+    enabled: true
+    calculate_fakeout_probability: true
+    calculate_fakeout_accuracy: true
+    calculate_fakeout_frequency: true
+    calculate_fakeout_distribution: true
+    calculate_fakeout_correlation: true
+    confidence_level: 95
+    p_value_threshold: 0.05
+  pattern_recognition:
+    enabled: true
+    patterns:
+      - "bull_trap"
+      - "bear_trap"
+      - "false_breakout"
+      - "false_breakdown"
+      - "head_fake"
+      - "shakeout"
+      - "spring"
+      - "upthrust"
+    pattern_confidence_threshold: 0.7
+    pattern_accuracy_threshold: 0.8
+
+# Monitoring et journalisation
+monitoring:
+  logging:
+    enabled: true
+    level: "debug"
+    format: "json"
+    include_context: true
+    include_timestamp: true
+    include_metadata: true
+  metrics:
+    enabled: true
+    collect_every_seconds: 1
+    metrics_to_collect:
+      - "fakeout_probability"
+      - "fakeout_strength"
+      - "fakeout_momentum"
+      - "fakeout_velocity"
+      - "fakeout_acceleration"
+      - "fakeout_confidence"
+      - "breakout_strength"
+      - "volume_confirmation"
+      - "price_reversal"
+      - "pattern_quality"
+      - "indicator_divergence"
+      - "fakeout_count"
+      - "fakeout_accuracy"
+      - "avoided_trades"
+  dashboard:
+    enabled: true
+    update_interval_seconds: 1
+    charts:
+      - "fakeout_probability_chart"
+      - "fakeout_analysis"
+      - "fakeout_patterns"
+      - "fakeout_distribution"
+      - "fakeout_accuracy"
+      - "avoided_trades"
+      - "pattern_recognition"
+
+# Backtesting
+backtesting:
+  enabled: true
+  use_historical_fakeout: true
+  compute_fakeout_accuracy: true
+  compute_avoidance_effectiveness: true
+  compute_pattern_accuracy: true
+  compute_risk_adjusted_returns: true
+  report_metrics:
+    - "fakeout_accuracy"
+    - "avoidance_effectiveness"
+    - "pattern_accuracy"
+    - "win_rate"
+    - "profit_factor"
+    - "sharpe_ratio"
+    - "max_drawdown"
+
+# Configuration de la base de données
+database:
+  enabled: true
+  table_name: "fakeout_metrics"
+  retention_days: 365
+  aggregation:
+    enabled: true
+    intervals:
+      - "1s"
+      - "5s"
+      - "15s"
+      - "30s"
+      - "1m"
+      - "5m"
+      - "15m"
+      - "1h"
+      - "4h"
+      - "24h"
+  compression: true
+  backup:
+    enabled: true
+    frequency: "daily"
+    retention_days: 30
+
+# Webhooks
+webhooks:
+  enabled: true
+  endpoints:
+    - url: "https://nexustradingia.com/api/webhooks/fakeout"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      payload_template: "fakeout_alert"
+    - url: "https://nexustradingia.com/api/webhooks/fakeout-pattern"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      payload_template: "fakeout_pattern"
+  retry:
+    enabled: true
+    max_attempts: 5
+    backoff_seconds: 30
+
+# Logging avancé
+advanced_logging:
+  enabled: true
+  levels:
+    - "info"
+    - "warning"
+    - "error"
+    - "critical"
+    - "debug"
+  output: "fakeout_logs"
+  rotation:
+    enabled: true
+    max_size_mb: 100
+    max_files: 10
+  remote_logging:
+    enabled: true
+    endpoints:
+      - "https://nexustradingia.com/logs/fakeout"
+  include_trace: true
+  include_stack_trace: true
+  include_context: true
+
+# Threading et performances
+performance:
+  thread_pool_size: 8
+  queue_size: 10000
+  batch_size: 1000
+  async_processing: true
+  cache_size: 10000
+  cache_ttl_seconds: 30
+  database_pool_size: 10
+  database_pool_max_overflow: 20
+  use_multiprocessing: true
+  max_workers: 8
+  use_cython: true
+  use_numba: true
+  use_gpu: false
+  gpu_device: 0
+
+# API de gestion
+management_api:
+  enabled: true
+  endpoints:
+    - "/api/v1/fakeout/current"
+    - "/api/v1/fakeout/history"
+    - "/api/v1/fakeout/metrics"
+    - "/api/v1/fakeout/status"
+    - "/api/v1/fakeout/patterns"
+    - "/api/v1/fakeout/probability"
+    - "/api/v1/fakeout/accuracy"
+    - "/api/v1/fakeout/forecast"
+  authentication_required: true
+  rate_limit: 100
+  rate_limit_interval_seconds: 60
+  version: "v1.0.0"
+
+# Export des données
+data_export:
+  enabled: true
+  formats:
+    - "csv"
+    - "json"
+    - "parquet"
+    - "avro"
+    - "feather"
+  schedule: "realtime"
+  batch_size: 1000
+  retention_days: 30
+  compression: "gzip"
+  destination: "s3://nexus-data/fakeout/"
+  encrypt: true
+  encryption_key_id: "nexus-fakeout-key"
+  partition_by:
+    - "symbol"
+    - "year"
+    - "month"
+    - "day"
+
+# Intégration avec d'autres modules
+integrations:
+  risk_engine:
+    enabled: true
+    sync_frequency_seconds: 1
+    share_metrics: true
+  execution_engine:
+    enabled: true
+    share_signals: true
+    require_confirmation: true
+  portfolio_manager:
+    enabled: true
+    share_positions: true
+    share_allocation: true
+  ai_engine:
+    enabled: true
+    use_ai_predictions: true
+    confidence_threshold: 0.7
+    model_endpoint: "http://ai-engine:8000/predict/fakeout"
+  market_data:
+    enabled: true
+    sync_frequency_ms: 100
+    data_endpoint: "ws://market-data:8080/ws"
+
+# Tests et validation
+testing:
+  unit_tests:
+    enabled: true
+    coverage_threshold: 90
+  integration_tests:
+    enabled: true
+  stress_tests:
+    enabled: true
+    scenarios:
+      - "high_fakeout_volume"
+      - "low_fakeout_volume"
+      - "pattern_volume"
+      - "accuracy_validation"
+      - "false_positive"
+  validation:
+    enabled: true
+    validate_on_startup: true
+    validate_on_config_change: true
+    validation_rules:
+      - "confidence_threshold > 0.0"
+      - "confidence_threshold <= 1.0"
+      - "thresholds.breakout.price_multiplier >= 0.0"
+      - "thresholds.breakout.volume_multiplier >= 0.0"
+      - "thresholds.breakout.time_window > 0"
+      - "thresholds.reversal.price_multiplier >= 0.0"
+      - "thresholds.reversal.volume_multiplier >= 0.0"
+      - "thresholds.reversal.time_window > 0"
+      - "indicators.fakeout_probability.factor_weights.sum() == 1.0"
+      - "min_data_points > 0"
+
+# Market conditions adaptation
+market_adaptation:
+  enabled: true
+  volatility_adjustment: true
+  regime_detection:
+    enabled: true
+    lookback_periods:
+      - 20
+      - 50
+      - 200
+    regimes:
+      - "bull"
+      - "bear"
+      - "sideways"
+      - "volatile"
+      - "stable"
+      - "transitional"
+  regime_parameters:
+    bull:
+      fakeout_multiplier: 1.2
+      threshold_multiplier: 0.8
+      confidence_multiplier: 1.1
+    bear:
+      fakeout_multiplier: 0.8
+      threshold_multiplier: 1.2
+      confidence_multiplier: 0.9
+    sideways:
+      fakeout_multiplier: 1.0
+      threshold_multiplier: 1.0
+      confidence_multiplier: 1.0
+    volatile:
+      fakeout_multiplier: 1.5
+      threshold_multiplier: 1.3
+      confidence_multiplier: 0.8
+    stable:
+      fakeout_multiplier: 0.7
+      threshold_multiplier: 0.9
+      confidence_multiplier: 1.2
+    transitional:
+      fakeout_multiplier: 1.3
+      threshold_multiplier: 1.1
+      confidence_multiplier: 1.1
+
+# Time-based configurations
+time_based:
+  enabled: true
+  sessions:
+    asia:
+      start: "00:00"
+      end: "08:00"
+      fakeout_multiplier: 0.8
+      threshold_multiplier: 1.2
+      confidence_multiplier: 0.9
+    london:
+      start: "08:00"
+      end: "16:00"
+      fakeout_multiplier: 1.2
+      threshold_multiplier: 0.8
+      confidence_multiplier: 1.1
+    newyork:
+      start: "13:00"
+      end: "22:00"
+      fakeout_multiplier: 1.0
+      threshold_multiplier: 1.0
+      confidence_multiplier: 1.0
+    overlap:
+      start: "13:00"
+      end: "16:00"
+      fakeout_multiplier: 1.5
+      threshold_multiplier: 0.7
+      confidence_multiplier: 1.2
+
+# Symbol-specific configurations
+symbol_configs:
+  BTCUSDT:
+    fakeout_multiplier: 1.0
+    threshold_multiplier: 1.0
+    confidence_multiplier: 1.0
+    confidence_threshold: 0.7
+    pattern_confidence: 0.6
+  ETHUSDT:
+    fakeout_multiplier: 1.1
+    threshold_multiplier: 0.9
+    confidence_multiplier: 1.0
+    confidence_threshold: 0.7
+    pattern_confidence: 0.6
+  SOLUSDT:
+    fakeout_multiplier: 1.2
+    threshold_multiplier: 0.8
+    confidence_multiplier: 0.9
+    confidence_threshold: 0.7
+    pattern_confidence: 0.6
+  ADAUSDT:
+    fakeout_multiplier: 0.9
+    threshold_multiplier: 1.1
+    confidence_multiplier: 1.1
+    confidence_threshold: 0.7
+    pattern_confidence: 0.6
+  XRPUSDT:
+    fakeout_multiplier: 1.0
+    threshold_multiplier: 1.0
+    confidence_multiplier: 1.0
+    confidence_threshold: 0.7
+    pattern_confidence: 0.6
