@@ -1,0 +1,619 @@
+# evolutionary_configs.yaml
+# Configuration complète pour l'algorithme évolutionnaire dans Swing Bot
+# Version: 4.0.0 - Production Ready
+
+# Paramètres généraux
+general:
+  enabled: true
+  mode: "comprehensive"
+  calculate_in_real_time: true
+  update_frequency_seconds: 1
+  lookback_periods:
+    - 5
+    - 10
+    - 20
+    - 50
+    - 100
+    - 200
+    - 500
+  history_length_days: 730
+  min_data_points: 100
+  max_data_points: 100000
+  evolutionary_algorithm_version: "4.0.0"
+  environment: "production"
+
+# Algorithmes évolutionnaires
+evolutionary_algorithms:
+  genetic_algorithm:
+    enabled: true
+    description: "Genetic Algorithm"
+    population_size: 100
+    generations: 100
+    mutation_rate: 0.1
+    crossover_rate: 0.8
+    selection_method: "tournament"
+    tournament_size: 5
+    elite_size: 2
+    random_state: 42
+    parallel_processing: true
+    n_jobs: -1
+  genetic_programming:
+    enabled: true
+    description: "Genetic Programming"
+    population_size: 100
+    generations: 50
+    mutation_rate: 0.1
+    crossover_rate: 0.8
+    selection_method: "tournament"
+    tournament_size: 5
+    elite_size: 2
+    max_depth: 6
+    random_state: 42
+    function_set:
+      - "add"
+      - "subtract"
+      - "multiply"
+      - "divide"
+      - "sin"
+      - "cos"
+      - "exp"
+      - "log"
+  evolutionary_strategy:
+    enabled: true
+    description: "Evolutionary Strategy"
+    population_size: 50
+    generations: 100
+    mutation_rate: 0.15
+    crossover_rate: 0.7
+    selection_method: "plus"
+    elite_size: 3
+    random_state: 42
+    recombination_method: "intermediate"
+    lambda: 100
+  differential_evolution:
+    enabled: true
+    description: "Differential Evolution"
+    population_size: 100
+    generations: 100
+    mutation_factor: 0.5
+    crossover_factor: 0.7
+    strategy: "best1bin"
+    random_state: 42
+    convergence_tolerance: 0.01
+  particle_swarm:
+    enabled: true
+    description: "Particle Swarm Optimization"
+    population_size: 50
+    generations: 100
+    inertia_weight: 0.8
+    cognitive_weight: 1.5
+    social_weight: 1.5
+    random_state: 42
+    convergence_tolerance: 0.01
+    velocity_clamp: 0.5
+
+# Fonctions d'évolution
+evolution_functions:
+  fitness:
+    enabled: true
+    function: "multi_objective"
+    objectives:
+      - "maximize_return"
+      - "minimize_risk"
+      - "maximize_sharpe"
+      - "minimize_drawdown"
+    weights:
+      - 0.30
+      - 0.25
+      - 0.25
+      - 0.20
+    constraints:
+      - "max_drawdown < 0.20"
+      - "min_sharpe > 1.0"
+      - "max_risk < 0.15"
+  selection:
+    enabled: true
+    methods:
+      - "tournament"
+      - "roulette"
+      - "rank"
+      - "elite"
+    current_method: "tournament"
+    tournament_size: 5
+    elite_ratio: 0.1
+    selection_pressure: 1.5
+  crossover:
+    enabled: true
+    methods:
+      - "single_point"
+      - "two_point"
+      - "uniform"
+      - "arithmetic"
+    current_method: "uniform"
+    crossover_probability: 0.8
+    crossover_rate: 0.7
+  mutation:
+    enabled: true
+    methods:
+      - "gaussian"
+      - "uniform"
+      - "non_uniform"
+      - "polynomial"
+    current_method: "gaussian"
+    mutation_probability: 0.1
+    mutation_rate: 0.15
+    sigma: 0.1
+
+# Optimisation évolutionnaire
+optimization:
+  hyperparameter_optimization:
+    enabled: true
+    method: "evolutionary"
+    population_size: 50
+    generations: 50
+    mutation_rate: 0.1
+    crossover_rate: 0.7
+    random_state: 42
+    early_stopping: true
+    early_stopping_rounds: 10
+    convergence_tolerance: 0.001
+  multi_objective:
+    enabled: true
+    method: "nsga2"
+    population_size: 100
+    generations: 100
+    crossover_rate: 0.8
+    mutation_rate: 0.1
+    tournament_size: 5
+    random_state: 42
+    objectives:
+      - "maximize_return"
+      - "minimize_risk"
+      - "maximize_sharpe"
+  constraint_handling:
+    enabled: true
+    methods:
+      - "penalty"
+      - "repair"
+      - "death"
+    current_method: "penalty"
+    penalty_factor: 1000
+    constraint_tolerance: 0.001
+
+# Stratégies évolutionnaires
+evolutionary_strategies:
+  parameter_evolution:
+    enabled: true
+    parameters:
+      - "stop_loss"
+      - "take_profit"
+      - "position_size"
+      - "entry_threshold"
+      - "exit_threshold"
+      - "volatility_multiplier"
+    bounds:
+      stop_loss: [0.01, 0.10]
+      take_profit: [0.02, 0.20]
+      position_size: [0.01, 0.10]
+      entry_threshold: [0.01, 0.05]
+      exit_threshold: [0.01, 0.05]
+      volatility_multiplier: [0.5, 2.0]
+    mutation_step: 0.01
+    crossover_point: 0.5
+  strategy_evolution:
+    enabled: true
+    strategies:
+      - "momentum"
+      - "mean_reversion"
+      - "breakout"
+      - "scalping"
+      - "swing"
+    combination_method: "hybrid"
+    adaptation_rate: 0.1
+    strategy_weights:
+      momentum: 0.25
+      mean_reversion: 0.25
+      breakout: 0.20
+      scalping: 0.15
+      swing: 0.15
+    mutation_rate: 0.1
+  rule_evolution:
+    enabled: true
+    rule_types:
+      - "if_then"
+      - "if_then_else"
+      - "and"
+      - "or"
+      - "not"
+    conditions:
+      - "price_above_ma"
+      - "price_below_ma"
+      - "rsi_overbought"
+      - "rsi_oversold"
+      - "volume_above_average"
+      - "volatility_above_threshold"
+    actions:
+      - "buy"
+      - "sell"
+      - "hold"
+      - "close_position"
+    max_rule_length: 10
+
+# Fitness landscape
+fitness_landscape:
+  exploration:
+    enabled: true
+    exploration_rate: 0.2
+    exploration_method: "random"
+    diversity_maintenance: true
+    niche_radius: 0.5
+    fitness_sharing: true
+  exploitation:
+    enabled: true
+    exploitation_rate: 0.8
+    exploitation_method: "local_search"
+    local_search_steps: 5
+    gradient_descent: true
+  convergence:
+    enabled: true
+    convergence_detection: true
+    convergence_threshold: 0.001
+    convergence_generations: 10
+    stagnation_detection: true
+    stagnation_threshold: 5
+
+# Monitoring et journalisation
+monitoring:
+  logging:
+    enabled: true
+    level: "debug"
+    format: "json"
+    include_context: true
+    include_timestamp: true
+    include_metadata: true
+  metrics:
+    enabled: true
+    collect_every_seconds: 1
+    metrics_to_collect:
+      - "generation_count"
+      - "population_size"
+      - "best_fitness"
+      - "average_fitness"
+      - "worst_fitness"
+      - "fitness_variance"
+      - "mutation_rate"
+      - "crossover_rate"
+      - "convergence_rate"
+      - "diversity_score"
+      - "exploration_rate"
+      - "exploitation_rate"
+      - "selection_pressure"
+      - "evolution_speed"
+  dashboard:
+    enabled: true
+    update_interval_seconds: 1
+    charts:
+      - "fitness_evolution"
+      - "population_diversity"
+      - "convergence_analysis"
+      - "parameter_evolution"
+      - "fitness_distribution"
+      - "selection_pressure"
+      - "mutation_analysis"
+      - "crossover_analysis"
+
+# Backtesting
+backtesting:
+  enabled: true
+  use_historical_data: true
+  compute_evolutionary_performance: true
+  compute_convergence_speed: true
+  compute_diversity_metrics: true
+  compute_robustness: true
+  compute_generalization: true
+  report_metrics:
+    - "evolution_success_rate"
+    - "convergence_rate"
+    - "diversity_score"
+    - "robustness_score"
+    - "generalization_score"
+    - "win_rate"
+    - "profit_factor"
+    - "sharpe_ratio"
+    - "max_drawdown"
+
+# Configuration de la base de données
+database:
+  enabled: true
+  table_name: "evolutionary_metrics"
+  retention_days: 730
+  aggregation:
+    enabled: true
+    intervals:
+      - "1s"
+      - "5s"
+      - "15s"
+      - "30s"
+      - "1m"
+      - "5m"
+      - "15m"
+      - "1h"
+      - "4h"
+      - "24h"
+      - "7d"
+  compression: true
+  backup:
+    enabled: true
+    frequency: "daily"
+    retention_days: 30
+
+# Webhooks
+webhooks:
+  enabled: true
+  endpoints:
+    - url: "https://nexustradingia.com/api/webhooks/evolutionary"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      payload_template: "evolutionary_alert"
+    - url: "https://nexustradingia.com/api/webhooks/evolutionary-convergence"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      payload_template: "convergence_alert"
+  retry:
+    enabled: true
+    max_attempts: 5
+    backoff_seconds: 30
+
+# Logging avancé
+advanced_logging:
+  enabled: true
+  levels:
+    - "info"
+    - "warning"
+    - "error"
+    - "critical"
+    - "debug"
+  output: "evolutionary_logs"
+  rotation:
+    enabled: true
+    max_size_mb: 100
+    max_files: 10
+  remote_logging:
+    enabled: true
+    endpoints:
+      - "https://nexustradingia.com/logs/evolutionary"
+  include_trace: true
+  include_stack_trace: true
+  include_context: true
+
+# Threading et performances
+performance:
+  thread_pool_size: 8
+  queue_size: 10000
+  batch_size: 1000
+  async_processing: true
+  cache_size: 10000
+  cache_ttl_seconds: 30
+  database_pool_size: 10
+  database_pool_max_overflow: 20
+  use_multiprocessing: true
+  max_workers: 8
+  use_cython: true
+  use_numba: true
+  use_gpu: true
+  gpu_device: 0
+
+# API de gestion
+management_api:
+  enabled: true
+  endpoints:
+    - "/api/v1/evolutionary/current"
+    - "/api/v1/evolutionary/history"
+    - "/api/v1/evolutionary/metrics"
+    - "/api/v1/evolutionary/status"
+    - "/api/v1/evolutionary/parameters"
+    - "/api/v1/evolutionary/fitness"
+    - "/api/v1/evolutionary/convergence"
+    - "/api/v1/evolutionary/diversity"
+    - "/api/v1/evolutionary/optimization"
+  authentication_required: true
+  rate_limit: 100
+  rate_limit_interval_seconds: 60
+  version: "v1.0.0"
+
+# Export des données
+data_export:
+  enabled: true
+  formats:
+    - "csv"
+    - "json"
+    - "parquet"
+    - "avro"
+    - "feather"
+  schedule: "realtime"
+  batch_size: 1000
+  retention_days: 30
+  compression: "gzip"
+  destination: "s3://nexus-data/evolutionary/"
+  encrypt: true
+  encryption_key_id: "nexus-evolutionary-key"
+  partition_by:
+    - "symbol"
+    - "year"
+    - "month"
+    - "day"
+
+# Intégration avec d'autres modules
+integrations:
+  risk_engine:
+    enabled: true
+    sync_frequency_seconds: 1
+    share_metrics: true
+  execution_engine:
+    enabled: true
+    share_signals: true
+    require_confirmation: true
+  portfolio_manager:
+    enabled: true
+    share_positions: true
+    share_allocation: true
+  ai_engine:
+    enabled: true
+    use_ai_predictions: true
+    confidence_threshold: 0.7
+    model_endpoint: "http://ai-engine:8000/predict/evolutionary"
+  market_data:
+    enabled: true
+    sync_frequency_ms: 100
+    data_endpoint: "ws://market-data:8080/ws"
+
+# Tests et validation
+testing:
+  unit_tests:
+    enabled: true
+    coverage_threshold: 90
+  integration_tests:
+    enabled: true
+  stress_tests:
+    enabled: true
+    scenarios:
+      - "high_data_volume"
+      - "low_data_quality"
+      - "complex_landscape"
+      - "local_optima"
+      - "convergence_failures"
+  validation:
+    enabled: true
+    validate_on_startup: true
+    validate_on_config_change: true
+    validation_rules:
+      - "evolutionary_algorithms.genetic_algorithm.population_size > 0"
+      - "evolutionary_algorithms.genetic_algorithm.generations > 0"
+      - "evolutionary_algorithms.genetic_programming.population_size > 0"
+      - "evolutionary_algorithms.evolutionary_strategy.population_size > 0"
+      - "evolution_functions.fitness.weights.sum() == 1.0"
+      - "optimization.hyperparameter_optimization.population_size > 0"
+      - "fitness_landscape.exploration.exploration_rate >= 0.0"
+      - "fitness_landscape.exploration.exploration_rate <= 1.0"
+      - "min_data_points > 0"
+
+# Market conditions adaptation
+market_adaptation:
+  enabled: true
+  regime_detection:
+    enabled: true
+    lookback_periods:
+      - 20
+      - 50
+      - 200
+    regimes:
+      - "bull"
+      - "bear"
+      - "sideways"
+      - "volatile"
+      - "stable"
+      - "transitional"
+  regime_parameters:
+    bull:
+      mutation_rate_multiplier: 1.2
+      crossover_rate_multiplier: 1.1
+      selection_pressure_multiplier: 0.9
+      diversity_multiplier: 0.8
+    bear:
+      mutation_rate_multiplier: 0.7
+      crossover_rate_multiplier: 0.8
+      selection_pressure_multiplier: 1.3
+      diversity_multiplier: 1.2
+    sideways:
+      mutation_rate_multiplier: 1.0
+      crossover_rate_multiplier: 1.0
+      selection_pressure_multiplier: 1.0
+      diversity_multiplier: 1.0
+    volatile:
+      mutation_rate_multiplier: 0.6
+      crossover_rate_multiplier: 0.7
+      selection_pressure_multiplier: 1.5
+      diversity_multiplier: 1.5
+    stable:
+      mutation_rate_multiplier: 1.0
+      crossover_rate_multiplier: 1.2
+      selection_pressure_multiplier: 0.8
+      diversity_multiplier: 0.7
+    transitional:
+      mutation_rate_multiplier: 1.5
+      crossover_rate_multiplier: 1.3
+      selection_pressure_multiplier: 1.1
+      diversity_multiplier: 1.3
+
+# Time-based configurations
+time_based:
+  enabled: true
+  sessions:
+    asia:
+      start: "00:00"
+      end: "08:00"
+      mutation_rate_multiplier: 0.8
+      crossover_rate_multiplier: 0.9
+      selection_pressure_multiplier: 1.2
+      diversity_multiplier: 1.2
+    london:
+      start: "08:00"
+      end: "16:00"
+      mutation_rate_multiplier: 1.2
+      crossover_rate_multiplier: 1.1
+      selection_pressure_multiplier: 0.8
+      diversity_multiplier: 0.8
+    newyork:
+      start: "13:00"
+      end: "22:00"
+      mutation_rate_multiplier: 1.0
+      crossover_rate_multiplier: 1.0
+      selection_pressure_multiplier: 1.0
+      diversity_multiplier: 1.0
+    overlap:
+      start: "13:00"
+      end: "16:00"
+      mutation_rate_multiplier: 1.5
+      crossover_rate_multiplier: 1.3
+      selection_pressure_multiplier: 0.7
+      diversity_multiplier: 0.7
+
+# Symbol-specific configurations
+symbol_configs:
+  BTCUSDT:
+    mutation_rate_multiplier: 1.0
+    crossover_rate_multiplier: 1.0
+    selection_pressure_multiplier: 1.0
+    diversity_multiplier: 1.0
+    population_size: 100
+    generations: 100
+  ETHUSDT:
+    mutation_rate_multiplier: 1.1
+    crossover_rate_multiplier: 0.9
+    selection_pressure_multiplier: 1.1
+    diversity_multiplier: 0.9
+    population_size: 90
+    generations: 90
+  SOLUSDT:
+    mutation_rate_multiplier: 1.2
+    crossover_rate_multiplier: 0.8
+    selection_pressure_multiplier: 1.2
+    diversity_multiplier: 0.8
+    population_size: 80
+    generations: 80
+  ADAUSDT:
+    mutation_rate_multiplier: 0.9
+    crossover_rate_multiplier: 1.1
+    selection_pressure_multiplier: 0.9
+    diversity_multiplier: 1.1
+    population_size: 70
+    generations: 70
+  XRPUSDT:
+    mutation_rate_multiplier: 1.0
+    crossover_rate_multiplier: 1.0
+    selection_pressure_multiplier: 1.0
+    diversity_multiplier: 1.0
+    population_size: 80
+    generations: 80
