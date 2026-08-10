@@ -1,0 +1,755 @@
+# twap_configs.yaml
+# Configuration complète pour TWAP (Time-Weighted Average Price) dans Swing Bot
+# Version: 4.0.0 - Production Ready
+
+# Paramètres généraux
+general:
+  enabled: true
+  mode: "comprehensive"
+  calculate_in_real_time: true
+  update_frequency_seconds: 1
+  lookback_periods:
+    - 5
+    - 10
+    - 20
+    - 50
+    - 100
+    - 200
+    - 500
+  history_length_days: 365
+  min_data_points: 50
+  max_data_points: 100000
+  default_duration_seconds: 300
+  min_duration_seconds: 60
+  max_duration_seconds: 3600
+  default_slices: 10
+  min_slices: 5
+  max_slices: 100
+
+# Types de TWAP
+twap_types:
+  standard:
+    enabled: true
+    description: "Standard TWAP"
+    slice_type: "equal"
+    update_frequency_seconds: 1
+    randomization: false
+  weighted:
+    enabled: true
+    description: "Weighted TWAP"
+    slice_type: "weighted"
+    weight_method: "volume"
+    update_frequency_seconds: 1
+    randomization: false
+  adaptive:
+    enabled: true
+    description: "Adaptive TWAP"
+    slice_type: "adaptive"
+    adaptation_factor: 0.5
+    update_frequency_seconds: 1
+    randomization: true
+  smart:
+    enabled: true
+    description: "Smart TWAP"
+    slice_type: "smart"
+    market_impact_model: true
+    liquidity_sensitivity: 0.5
+    update_frequency_seconds: 1
+    randomization: true
+  aggressive:
+    enabled: true
+    description: "Aggressive TWAP"
+    slice_type: "aggressive"
+    urgency: "high"
+    update_frequency_seconds: 1
+    randomization: false
+  passive:
+    enabled: true
+    description: "Passive TWAP"
+    slice_type: "passive"
+    urgency: "low"
+    update_frequency_seconds: 1
+    randomization: false
+
+# Paramètres de TWAP
+parameters:
+  duration:
+    enabled: true
+    default: 300
+    min: 60
+    max: 3600
+    adjustment_factor: 1.0
+  slices:
+    enabled: true
+    default: 10
+    min: 5
+    max: 100
+    slice_size_adjustment: 1.0
+  randomization:
+    enabled: true
+    randomize_order: true
+    randomize_timing: true
+    randomize_size: true
+    random_seed: 42
+    randomization_factor: 0.1
+  timing:
+    enabled: true
+    timing_method: "equal"
+    timing_adjustment: 1.0
+    min_interval_seconds: 1
+    max_interval_seconds: 60
+  size:
+    enabled: true
+    size_method: "equal"
+    size_adjustment: 1.0
+    min_slice_size: 10
+    max_slice_size: 10000
+
+# Stratégies de TWAP
+strategies:
+  time_balanced:
+    enabled: true
+    description: "Time Balanced TWAP"
+    slice_distribution: "uniform"
+    size_distribution: "uniform"
+    urgency: "medium"
+  volume_balanced:
+    enabled: true
+    description: "Volume Balanced TWAP"
+    slice_distribution: "volume_weighted"
+    size_distribution: "volume_weighted"
+    urgency: "medium"
+  adaptive_balance:
+    enabled: true
+    description: "Adaptive Balanced TWAP"
+    slice_distribution: "adaptive"
+    size_distribution: "adaptive"
+    urgency: "medium"
+    adaptation_factor: 0.5
+  aggressive_execution:
+    enabled: true
+    description: "Aggressive Execution TWAP"
+    slice_distribution: "front_loaded"
+    size_distribution: "front_loaded"
+    urgency: "high"
+  passive_execution:
+    enabled: true
+    description: "Passive Execution TWAP"
+    slice_distribution: "back_loaded"
+    size_distribution: "back_loaded"
+    urgency: "low"
+  hybrid_execution:
+    enabled: true
+    description: "Hybrid Execution TWAP"
+    slice_distribution: "hybrid"
+    size_distribution: "hybrid"
+    urgency: "medium"
+    hybrid_ratio: 0.5
+
+# Indicateurs TWAP
+indicators:
+  twap_price:
+    enabled: true
+    period: 20
+    smoothing: 3
+    calculation: "time_weighted"
+  twap_volume:
+    enabled: true
+    period: 20
+    smoothing: 3
+    calculation: "volume_weighted"
+  twap_spread:
+    enabled: true
+    period: 20
+    smoothing: 3
+    calculation: "spread_weighted"
+  twap_deviation:
+    enabled: true
+    period: 20
+    smoothing: 0
+    calculation: "price_deviation"
+  twap_velocity:
+    enabled: true
+    period: 5
+    smoothing: 3
+    calculation: "velocity"
+  twap_acceleration:
+    enabled: true
+    period: 10
+    smoothing: 5
+    calculation: "acceleration"
+  twap_efficiency:
+    enabled: true
+    period: 20
+    smoothing: 0
+    calculation: "execution_efficiency"
+
+# Analyse TWAP
+analysis:
+  historical:
+    enabled: true
+    lookback_years: 5
+    compute_mean_twap: true
+    compute_median_twap: true
+    compute_std_twap: true
+    compute_percentiles: true
+    percentile_values:
+      - 1
+      - 5
+      - 10
+      - 25
+      - 50
+      - 75
+      - 90
+      - 95
+      - 99
+    compute_twap_distribution: true
+    compute_twap_patterns: true
+    compute_twap_efficiency: true
+  real_time:
+    enabled: true
+    update_frequency_ms: 100
+    compute_instantaneous_twap: true
+    compute_moving_average_twap: true
+    compute_exponential_twap: true
+    compute_weighted_twap: true
+    compute_twap_velocity: true
+    compute_twap_acceleration: true
+    compute_twap_deviation: true
+  predictive:
+    enabled: true
+    model_type: "ensemble"
+    models:
+      - "lstm"
+      - "gru"
+      - "xgboost"
+      - "lightgbm"
+    features:
+      - "twap_price"
+      - "twap_volume"
+      - "twap_spread"
+      - "twap_deviation"
+      - "twap_velocity"
+      - "twap_acceleration"
+      - "twap_efficiency"
+      - "price"
+      - "volume"
+      - "spread"
+      - "time_of_day"
+      - "day_of_week"
+      - "market_condition"
+    forecast_horizons:
+      - 1
+      - 5
+      - 10
+      - 20
+    confidence_threshold: 0.7
+    retrain_frequency_hours: 24
+  comparative:
+    enabled: true
+    compare_to_vwap: true
+    compare_to_market: true
+    compare_to_historical: true
+    compare_to_benchmark: true
+    benchmark_symbols:
+      - "BTCUSDT"
+      - "ETHUSDT"
+      - "SP500"
+
+# Alertes et notifications
+alerts:
+  twap_deviation:
+    enabled: true
+    threshold: 0.01
+    channels:
+      - "email"
+      - "telegram"
+      - "slack"
+      - "push_notification"
+    severity: "warning"
+  twap_completion:
+    enabled: true
+    channels:
+      - "telegram"
+      - "push_notification"
+    severity: "info"
+  twap_error:
+    enabled: true
+    channels:
+      - "email"
+      - "telegram"
+      - "slack"
+    severity: "critical"
+  twap_efficiency:
+    enabled: true
+    threshold: 0.8
+    channels:
+      - "telegram"
+      - "push_notification"
+    severity: "info"
+  twap_slice_executed:
+    enabled: true
+    channels:
+      - "telegram"
+      - "push_notification"
+    severity: "info"
+
+# Actions automatiques
+auto_actions:
+  twap_execution:
+    enabled: true
+    action_types:
+      - "start_twap"
+      - "pause_twap"
+      - "resume_twap"
+      - "cancel_twap"
+      - "adjust_twap"
+    require_confirmation: true
+    max_position_size: 100000
+    min_position_size: 100
+  slice_adjustment:
+    enabled: true
+    adjustment_types:
+      - "adjust_slice_size"
+      - "adjust_slice_timing"
+      - "adjust_slice_price"
+    adjustment_factor: 0.5
+    max_adjustment_percent: 50.0
+  error_handling:
+    enabled: true
+    error_types:
+      - "connection_error"
+      - "execution_error"
+      - "timeout_error"
+    max_retries: 5
+    retry_delay_seconds: 5
+    fallback_strategy: "market_order"
+
+# Paramètres avancés
+advanced:
+  machine_learning:
+    enabled: true
+    model_type: "ensemble"
+    models:
+      - "lstm"
+      - "gru"
+      - "transformer"
+      - "xgboost"
+      - "lightgbm"
+    features:
+      - "twap_price"
+      - "twap_volume"
+      - "twap_spread"
+      - "twap_deviation"
+      - "twap_velocity"
+      - "twap_acceleration"
+      - "twap_efficiency"
+      - "price"
+      - "volume"
+      - "spread"
+      - "order_flow"
+      - "time_of_day"
+      - "day_of_week"
+      - "market_condition"
+    training_frequency_hours: 6
+    retrain_threshold: 0.9
+    validation_split: 0.2
+    random_seed: 42
+    ensemble_weights:
+      - 0.20
+      - 0.20
+      - 0.20
+      - 0.20
+      - 0.20
+  optimization:
+    enabled: true
+    optimize_slice_size: true
+    optimize_slice_timing: true
+    optimize_price_level: true
+    optimization_method: "bayesian"
+    optimization_objective: "minimize_slippage"
+    optimization_iterations: 100
+    optimization_random_state: 42
+  risk_management:
+    enabled: true
+    max_twap_exposure: 100000
+    max_slice_exposure: 10000
+    risk_check_frequency_seconds: 5
+    risk_threshold: 0.5
+    risk_action: "pause_twap"
+
+# Monitoring et journalisation
+monitoring:
+  logging:
+    enabled: true
+    level: "debug"
+    format: "json"
+    include_context: true
+    include_timestamp: true
+    include_metadata: true
+  metrics:
+    enabled: true
+    collect_every_seconds: 1
+    metrics_to_collect:
+      - "twap_price"
+      - "twap_volume"
+      - "twap_spread"
+      - "twap_deviation"
+      - "twap_velocity"
+      - "twap_acceleration"
+      - "twap_efficiency"
+      - "slice_count"
+      - "completed_slices"
+      - "remaining_slices"
+      - "execution_quality"
+      - "slippage"
+      - "market_impact"
+  dashboard:
+    enabled: true
+    update_interval_seconds: 1
+    charts:
+      - "twap_chart"
+      - "twap_vs_price"
+      - "slice_execution"
+      - "twap_distribution"
+      - "twap_efficiency"
+      - "slippage_analysis"
+      - "execution_quality"
+      - "risk_metrics"
+
+# Backtesting
+backtesting:
+  enabled: true
+  use_historical_twap: true
+  compute_twap_accuracy: true
+  compute_slice_accuracy: true
+  compute_strategy_performance: true
+  compute_risk_adjusted_returns: true
+  compute_execution_quality: true
+  report_metrics:
+    - "win_rate"
+    - "profit_factor"
+    - "sharpe_ratio"
+    - "max_drawdown"
+    - "twap_accuracy"
+    - "slice_accuracy"
+    - "execution_quality"
+    - "slippage_avg"
+
+# Distribution des métriques
+metrics_distribution:
+  enabled: true
+  distribution:
+    - metric: "twap_price"
+      bins: 100
+      update_frequency: "realtime"
+    - metric: "twap_deviation"
+      bins: 50
+      update_frequency: "realtime"
+    - metric: "twap_efficiency"
+      bins: 30
+      update_frequency: "realtime"
+  percentiles:
+    - 1
+    - 5
+    - 10
+    - 25
+    - 50
+    - 75
+    - 90
+    - 95
+    - 99
+
+# Configuration de la base de données
+database:
+  enabled: true
+  table_name: "twap_metrics"
+  retention_days: 365
+  aggregation:
+    enabled: true
+    intervals:
+      - "1s"
+      - "5s"
+      - "15s"
+      - "30s"
+      - "1m"
+      - "5m"
+      - "15m"
+      - "1h"
+      - "4h"
+      - "24h"
+      - "7d"
+  compression: true
+  backup:
+    enabled: true
+    frequency: "daily"
+    retention_days: 30
+
+# Webhooks
+webhooks:
+  enabled: true
+  endpoints:
+    - url: "https://nexustradingia.com/api/webhooks/twap"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      payload_template: "twap_alert"
+    - url: "https://nexustradingia.com/api/webhooks/twap-execution"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      payload_template: "twap_execution"
+  retry:
+    enabled: true
+    max_attempts: 5
+    backoff_seconds: 30
+
+# Logging avancé
+advanced_logging:
+  enabled: true
+  levels:
+    - "info"
+    - "warning"
+    - "error"
+    - "critical"
+    - "debug"
+  output: "twap_logs"
+  rotation:
+    enabled: true
+    max_size_mb: 100
+    max_files: 10
+  remote_logging:
+    enabled: true
+    endpoints:
+      - "https://nexustradingia.com/logs/twap"
+  include_trace: true
+  include_stack_trace: true
+  include_context: true
+
+# Threading et performances
+performance:
+  thread_pool_size: 8
+  queue_size: 10000
+  batch_size: 1000
+  async_processing: true
+  cache_size: 10000
+  cache_ttl_seconds: 30
+  database_pool_size: 10
+  database_pool_max_overflow: 20
+  use_multiprocessing: true
+  max_workers: 8
+  use_cython: true
+  use_numba: true
+  use_gpu: false
+  gpu_device: 0
+
+# API de gestion
+management_api:
+  enabled: true
+  endpoints:
+    - "/api/v1/twap/current"
+    - "/api/v1/twap/history"
+    - "/api/v1/twap/metrics"
+    - "/api/v1/twap/status"
+    - "/api/v1/twap/execute"
+    - "/api/v1/twap/pause"
+    - "/api/v1/twap/resume"
+    - "/api/v1/twap/cancel"
+    - "/api/v1/twap/adjust"
+  authentication_required: true
+  rate_limit: 100
+  rate_limit_interval_seconds: 60
+  version: "v1.0.0"
+
+# Export des données
+data_export:
+  enabled: true
+  formats:
+    - "csv"
+    - "json"
+    - "parquet"
+    - "avro"
+    - "feather"
+  schedule: "realtime"
+  batch_size: 1000
+  retention_days: 30
+  compression: "gzip"
+  destination: "s3://nexus-data/twap/"
+  encrypt: true
+  encryption_key_id: "nexus-twap-key"
+  partition_by:
+    - "symbol"
+    - "year"
+    - "month"
+    - "day"
+
+# Intégration avec d'autres modules
+integrations:
+  risk_engine:
+    enabled: true
+    sync_frequency_seconds: 1
+    share_metrics: true
+  execution_engine:
+    enabled: true
+    share_signals: true
+    require_confirmation: true
+  portfolio_manager:
+    enabled: true
+    share_positions: true
+    share_allocation: true
+  ai_engine:
+    enabled: true
+    use_ai_predictions: true
+    confidence_threshold: 0.7
+    model_endpoint: "http://ai-engine:8000/predict/twap"
+  market_data:
+    enabled: true
+    sync_frequency_ms: 100
+    data_endpoint: "ws://market-data:8080/ws"
+
+# Tests et validation
+testing:
+  unit_tests:
+    enabled: true
+    coverage_threshold: 90
+  integration_tests:
+    enabled: true
+  stress_tests:
+    enabled: true
+    scenarios:
+      - "high_volume"
+      - "low_volume"
+      - "high_volatility"
+      - "low_volatility"
+      - "system_errors"
+      - "execution_errors"
+  validation:
+    enabled: true
+    validate_on_startup: true
+    validate_on_config_change: true
+    validation_rules:
+      - "default_duration_seconds > 0"
+      - "min_duration_seconds > 0"
+      - "max_duration_seconds > min_duration_seconds"
+      - "default_slices > 0"
+      - "min_slices > 0"
+      - "max_slices > min_slices"
+      - "min_slice_size > 0"
+      - "max_slice_size > min_slice_size"
+      - "confidence_threshold > 0.0"
+      - "confidence_threshold <= 1.0"
+
+# Market conditions adaptation
+market_adaptation:
+  enabled: true
+  volatility_adjustment: true
+  regime_detection:
+    enabled: true
+    lookback_periods:
+      - 20
+      - 50
+      - 200
+    regimes:
+      - "liquid"
+      - "illiquid"
+      - "volatile"
+      - "stable"
+      - "trending"
+      - "ranging"
+  regime_parameters:
+    liquid:
+      twap_multiplier: 1.2
+      slice_multiplier: 1.0
+      urgency_multiplier: 1.0
+    illiquid:
+      twap_multiplier: 0.6
+      slice_multiplier: 0.5
+      urgency_multiplier: 0.5
+    volatile:
+      twap_multiplier: 0.8
+      slice_multiplier: 0.7
+      urgency_multiplier: 0.8
+    stable:
+      twap_multiplier: 1.0
+      slice_multiplier: 1.2
+      urgency_multiplier: 1.2
+    trending:
+      twap_multiplier: 1.1
+      slice_multiplier: 1.0
+      urgency_multiplier: 1.1
+    ranging:
+      twap_multiplier: 0.9
+      slice_multiplier: 0.9
+      urgency_multiplier: 0.9
+
+# Time-based configurations
+time_based:
+  enabled: true
+  sessions:
+    asia:
+      start: "00:00"
+      end: "08:00"
+      twap_multiplier: 0.8
+      slice_multiplier: 0.8
+      urgency_multiplier: 0.8
+    london:
+      start: "08:00"
+      end: "16:00"
+      twap_multiplier: 1.2
+      slice_multiplier: 1.2
+      urgency_multiplier: 1.2
+    newyork:
+      start: "13:00"
+      end: "22:00"
+      twap_multiplier: 1.0
+      slice_multiplier: 1.0
+      urgency_multiplier: 1.0
+    overlap:
+      start: "13:00"
+      end: "16:00"
+      twap_multiplier: 1.5
+      slice_multiplier: 1.5
+      urgency_multiplier: 1.5
+
+# Symbol-specific configurations
+symbol_configs:
+  BTCUSDT:
+    twap_multiplier: 1.0
+    slice_multiplier: 1.0
+    urgency_multiplier: 1.0
+    default_duration: 300
+    default_slices: 10
+    min_slice_size: 100
+    max_slice_size: 10000
+  ETHUSDT:
+    twap_multiplier: 1.1
+    slice_multiplier: 0.9
+    urgency_multiplier: 1.1
+    default_duration: 300
+    default_slices: 10
+    min_slice_size: 80
+    max_slice_size: 8000
+  SOLUSDT:
+    twap_multiplier: 1.2
+    slice_multiplier: 0.8
+    urgency_multiplier: 1.2
+    default_duration: 300
+    default_slices: 10
+    min_slice_size: 60
+    max_slice_size: 6000
+  ADAUSDT:
+    twap_multiplier: 0.9
+    slice_multiplier: 1.1
+    urgency_multiplier: 0.9
+    default_duration: 300
+    default_slices: 10
+    min_slice_size: 40
+    max_slice_size: 4000
+  XRPUSDT:
+    twap_multiplier: 1.0
+    slice_multiplier: 1.0
+    urgency_multiplier: 1.0
+    default_duration: 300
+    default_slices: 10
+    min_slice_size: 40
+    max_slice_size: 4000
