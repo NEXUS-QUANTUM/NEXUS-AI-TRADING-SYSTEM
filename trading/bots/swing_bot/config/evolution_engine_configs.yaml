@@ -1,0 +1,702 @@
+# evolution_engine_configs.yaml
+# Configuration complète pour le moteur d'évolution dans Swing Bot
+# Version: 4.0.0 - Production Ready
+
+# Paramètres généraux
+general:
+  enabled: true
+  mode: "comprehensive"
+  calculate_in_real_time: true
+  update_frequency_seconds: 1
+  lookback_periods:
+    - 5
+    - 10
+    - 20
+    - 50
+    - 100
+    - 200
+    - 500
+  history_length_days: 730
+  min_data_points: 100
+  max_data_points: 100000
+  evolution_engine_version: "4.0.0"
+  environment: "production"
+
+# Types de moteurs d'évolution
+engine_types:
+  genetic_engine:
+    enabled: true
+    description: "Genetic Algorithm Engine"
+    population_size: 100
+    generations: 100
+    mutation_rate: 0.1
+    crossover_rate: 0.8
+    selection_method: "tournament"
+    tournament_size: 5
+    elite_size: 2
+    random_state: 42
+    parallel_processing: true
+    n_jobs: -1
+  neuroevolution_engine:
+    enabled: true
+    description: "Neuroevolution Engine"
+    population_size: 50
+    generations: 50
+    mutation_rate: 0.2
+    crossover_rate: 0.7
+    selection_method: "fitness_proportional"
+    elite_size: 3
+    random_state: 42
+    network_architecture: "adaptive"
+    hidden_layers: 3
+    neurons_per_layer: 64
+    activation_function: "relu"
+  reinforcement_engine:
+    enabled: true
+    description: "Reinforcement Learning Engine"
+    episodes: 1000
+    max_steps: 100
+    learning_rate: 0.001
+    discount_factor: 0.95
+    exploration_rate: 0.1
+    exploration_decay: 0.995
+    min_exploration_rate: 0.01
+    batch_size: 32
+    memory_size: 10000
+    target_update_frequency: 100
+    random_state: 42
+  ensemble_engine:
+    enabled: true
+    description: "Ensemble Evolution Engine"
+    n_estimators: 10
+    evolution_method: "genetic"
+    selection_method: "weighted"
+    diversity_penalty: 0.1
+    adaptation_rate: 0.1
+    random_state: 42
+  hybrid_engine:
+    enabled: true
+    description: "Hybrid Evolution Engine"
+    engine_types:
+      - "genetic"
+      - "neuroevolution"
+      - "reinforcement"
+    combination_method: "weighted"
+    weights:
+      - 0.4
+      - 0.3
+      - 0.3
+    adaptation_rate: 0.1
+    random_state: 42
+
+# Stratégies d'évolution
+evolution_strategies:
+  parameter_evolution:
+    enabled: true
+    description: "Parameter Evolution"
+    parameters:
+      - "stop_loss"
+      - "take_profit"
+      - "position_size"
+      - "entry_threshold"
+      - "exit_threshold"
+    bounds:
+      stop_loss: [0.01, 0.10]
+      take_profit: [0.02, 0.20]
+      position_size: [0.01, 0.10]
+      entry_threshold: [0.01, 0.05]
+      exit_threshold: [0.01, 0.05]
+    mutation_factor: 0.1
+    crossover_factor: 0.5
+  strategy_evolution:
+    enabled: true
+    description: "Strategy Evolution"
+    strategy_types:
+      - "momentum"
+      - "mean_reversion"
+      - "breakout"
+      - "scalping"
+      - "swing"
+    combination_method: "hybrid"
+    adaptation_rate: 0.1
+    strategy_weights:
+      momentum: 0.25
+      mean_reversion: 0.25
+      breakout: 0.20
+      scalping: 0.15
+      swing: 0.15
+  model_evolution:
+    enabled: true
+    description: "Model Evolution"
+    model_types:
+      - "lstm"
+      - "gru"
+      - "transformer"
+      - "xgboost"
+      - "random_forest"
+    ensemble_method: "stacking"
+    meta_model: "xgboost"
+    adaptation_rate: 0.1
+    model_weights:
+      lstm: 0.25
+      gru: 0.20
+      transformer: 0.20
+      xgboost: 0.20
+      random_forest: 0.15
+  weight_evolution:
+    enabled: true
+    description: "Weight Evolution"
+    weight_update_method: "gradient_descent"
+    learning_rate: 0.001
+    momentum: 0.9
+    weight_decay: 0.0001
+    batch_size: 32
+    epochs: 100
+    random_state: 42
+
+# Mécanismes d'adaptation
+adaptation_mechanisms:
+  online_learning:
+    enabled: true
+    description: "Online Learning Mechanism"
+    learning_rate: 0.001
+    update_frequency_seconds: 60
+    batch_size: 32
+    memory_size: 1000
+    forgetting_factor: 0.9
+    adaptation_threshold: 0.5
+  incremental_learning:
+    enabled: true
+    description: "Incremental Learning Mechanism"
+    learning_rate: 0.01
+    update_frequency_seconds: 300
+    batch_size: 100
+    memory_size: 5000
+    forgetting_factor: 0.8
+    incremental_step: 10
+  transfer_learning:
+    enabled: true
+    description: "Transfer Learning Mechanism"
+    source_domain: "historical"
+    target_domain: "current"
+    transfer_rate: 0.5
+    adaptation_rate: 0.1
+    fine_tuning_epochs: 10
+    freeze_layers: 2
+  meta_learning:
+    enabled: true
+    description: "Meta-Learning Mechanism"
+    learning_rate: 0.001
+    update_frequency_seconds: 3600
+    inner_steps: 5
+    outer_steps: 10
+    adaptation_rate: 0.1
+    meta_batch_size: 16
+
+# Fonctions d'objectif
+objective_functions:
+  performance:
+    enabled: true
+    metrics:
+      - "win_rate"
+      - "profit_factor"
+      - "sharpe_ratio"
+      - "sortino_ratio"
+      - "calmar_ratio"
+    weights:
+      - 0.25
+      - 0.25
+      - 0.25
+      - 0.15
+      - 0.10
+    maximize: true
+  risk_adjusted:
+    enabled: true
+    metrics:
+      - "sharpe_ratio"
+      - "sortino_ratio"
+      - "calmar_ratio"
+      - "omega_ratio"
+      - "upside_potential"
+    weights:
+      - 0.30
+      - 0.25
+      - 0.20
+      - 0.15
+      - 0.10
+    maximize: true
+  robustness:
+    enabled: true
+    metrics:
+      - "stability"
+      - "consistency"
+      - "reliability"
+      - "drawdown_recovery"
+      - "stress_test_score"
+    weights:
+      - 0.30
+      - 0.25
+      - 0.20
+      - 0.15
+      - 0.10
+    maximize: true
+  efficiency:
+    enabled: true
+    metrics:
+      - "computational_efficiency"
+      - "memory_efficiency"
+      - "execution_speed"
+      - "resource_usage"
+      - "scalability"
+    weights:
+      - 0.30
+      - 0.25
+      - 0.20
+      - 0.15
+      - 0.10
+    maximize: true
+
+# Évaluation et validation
+evaluation:
+  cross_validation:
+    enabled: true
+    method: "k_fold"
+    n_folds: 5
+    shuffle: true
+    random_state: 42
+    stratified: true
+  out_of_sample:
+    enabled: true
+    test_size: 0.3
+    validation_size: 0.1
+    random_state: 42
+  walk_forward:
+    enabled: true
+    window_size: 100
+    step_size: 10
+    n_folds: 5
+    random_state: 42
+  stress_testing:
+    enabled: true
+    scenarios:
+      - name: "market_crash"
+        factor: 0.3
+        description: "Market crash scenario"
+      - name: "flash_crash"
+        factor: 0.5
+        description: "Flash crash scenario"
+      - name: "black_swan"
+        factor: 0.2
+        description: "Black swan scenario"
+      - name: "liquidity_crisis"
+        factor: 0.4
+        description: "Liquidity crisis scenario"
+      - name: "regime_change"
+        factor: 0.6
+        description: "Regime change scenario"
+    confidence_threshold: 0.7
+
+# Optimisation
+optimization:
+  hyperparameter_optimization:
+    enabled: true
+    method: "bayesian"
+    n_iterations: 100
+    n_jobs: -1
+    random_state: 42
+    early_stopping: true
+    early_stopping_rounds: 10
+    initial_points: 20
+  architecture_optimization:
+    enabled: true
+    method: "neural_architecture_search"
+    n_iterations: 50
+    population_size: 20
+    mutation_rate: 0.1
+    crossover_rate: 0.7
+    random_state: 42
+    max_layers: 10
+    min_layers: 2
+  feature_optimization:
+    enabled: true
+    method: "genetic_algorithm"
+    n_iterations: 50
+    population_size: 30
+    mutation_rate: 0.1
+    crossover_rate: 0.7
+    random_state: 42
+    max_features: 50
+    min_features: 5
+  weight_optimization:
+    enabled: true
+    method: "gradient_descent"
+    learning_rate: 0.001
+    momentum: 0.9
+    weight_decay: 0.0001
+    batch_size: 32
+    epochs: 100
+    random_state: 42
+    early_stopping: true
+
+# Monitoring et journalisation
+monitoring:
+  logging:
+    enabled: true
+    level: "debug"
+    format: "json"
+    include_context: true
+    include_timestamp: true
+    include_metadata: true
+  metrics:
+    enabled: true
+    collect_every_seconds: 1
+    metrics_to_collect:
+      - "engine_type"
+      - "generation_count"
+      - "population_size"
+      - "best_fitness"
+      - "average_fitness"
+      - "worst_fitness"
+      - "fitness_variance"
+      - "mutation_rate"
+      - "crossover_rate"
+      - "convergence_rate"
+      - "diversity_score"
+      - "adaptation_rate"
+      - "learning_rate"
+      - "evolution_speed"
+      - "optimization_score"
+  dashboard:
+    enabled: true
+    update_interval_seconds: 1
+    charts:
+      - "fitness_evolution"
+      - "population_diversity"
+      - "parameter_evolution"
+      - "convergence_analysis"
+      - "adaptation_metrics"
+      - "performance_comparison"
+      - "strategy_distribution"
+      - "fitness_distribution"
+      - "optimization_progress"
+      - "engine_health"
+
+# Backtesting
+backtesting:
+  enabled: true
+  use_historical_data: true
+  compute_evolution_performance: true
+  compute_adaptation_effectiveness: true
+  compute_robustness: true
+  compute_generalization: true
+  compute_convergence_speed: true
+  report_metrics:
+    - "evolution_success_rate"
+    - "adaptation_speed"
+    - "generalization_score"
+    - "robustness_score"
+    - "convergence_rate"
+    - "win_rate"
+    - "profit_factor"
+    - "sharpe_ratio"
+    - "max_drawdown"
+
+# Configuration de la base de données
+database:
+  enabled: true
+  table_name: "evolution_engine_metrics"
+  retention_days: 730
+  aggregation:
+    enabled: true
+    intervals:
+      - "1s"
+      - "5s"
+      - "15s"
+      - "30s"
+      - "1m"
+      - "5m"
+      - "15m"
+      - "1h"
+      - "4h"
+      - "24h"
+      - "7d"
+  compression: true
+  backup:
+    enabled: true
+    frequency: "daily"
+    retention_days: 30
+
+# Webhooks
+webhooks:
+  enabled: true
+  endpoints:
+    - url: "https://nexustradingia.com/api/webhooks/evolution-engine"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      payload_template: "evolution_engine_alert"
+    - url: "https://nexustradingia.com/api/webhooks/evolution-adaptation"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      payload_template: "adaptation_alert"
+  retry:
+    enabled: true
+    max_attempts: 5
+    backoff_seconds: 30
+
+# Logging avancé
+advanced_logging:
+  enabled: true
+  levels:
+    - "info"
+    - "warning"
+    - "error"
+    - "critical"
+    - "debug"
+  output: "evolution_engine_logs"
+  rotation:
+    enabled: true
+    max_size_mb: 100
+    max_files: 10
+  remote_logging:
+    enabled: true
+    endpoints:
+      - "https://nexustradingia.com/logs/evolution-engine"
+  include_trace: true
+  include_stack_trace: true
+  include_context: true
+
+# Threading et performances
+performance:
+  thread_pool_size: 8
+  queue_size: 10000
+  batch_size: 1000
+  async_processing: true
+  cache_size: 10000
+  cache_ttl_seconds: 30
+  database_pool_size: 10
+  database_pool_max_overflow: 20
+  use_multiprocessing: true
+  max_workers: 8
+  use_cython: true
+  use_numba: true
+  use_gpu: true
+  gpu_device: 0
+  gpu_memory_fraction: 0.8
+
+# API de gestion
+management_api:
+  enabled: true
+  endpoints:
+    - "/api/v1/evolution-engine/current"
+    - "/api/v1/evolution-engine/history"
+    - "/api/v1/evolution-engine/metrics"
+    - "/api/v1/evolution-engine/status"
+    - "/api/v1/evolution-engine/parameters"
+    - "/api/v1/evolution-engine/fitness"
+    - "/api/v1/evolution-engine/adaptation"
+    - "/api/v1/evolution-engine/optimization"
+    - "/api/v1/evolution-engine/strategy"
+    - "/api/v1/evolution-engine/model"
+  authentication_required: true
+  rate_limit: 100
+  rate_limit_interval_seconds: 60
+  version: "v1.0.0"
+
+# Export des données
+data_export:
+  enabled: true
+  formats:
+    - "csv"
+    - "json"
+    - "parquet"
+    - "avro"
+    - "feather"
+  schedule: "realtime"
+  batch_size: 1000
+  retention_days: 30
+  compression: "gzip"
+  destination: "s3://nexus-data/evolution-engine/"
+  encrypt: true
+  encryption_key_id: "nexus-evolution-engine-key"
+  partition_by:
+    - "symbol"
+    - "year"
+    - "month"
+    - "day"
+
+# Intégration avec d'autres modules
+integrations:
+  risk_engine:
+    enabled: true
+    sync_frequency_seconds: 1
+    share_metrics: true
+  execution_engine:
+    enabled: true
+    share_signals: true
+    require_confirmation: true
+  portfolio_manager:
+    enabled: true
+    share_positions: true
+    share_allocation: true
+  ai_engine:
+    enabled: true
+    use_ai_predictions: true
+    confidence_threshold: 0.7
+    model_endpoint: "http://ai-engine:8000/predict/evolution-engine"
+  market_data:
+    enabled: true
+    sync_frequency_ms: 100
+    data_endpoint: "ws://market-data:8080/ws"
+
+# Tests et validation
+testing:
+  unit_tests:
+    enabled: true
+    coverage_threshold: 90
+  integration_tests:
+    enabled: true
+  stress_tests:
+    enabled: true
+    scenarios:
+      - "high_data_volume"
+      - "low_data_quality"
+      - "regime_changes"
+      - "model_failures"
+      - "adaptation_failures"
+      - "convergence_failures"
+  validation:
+    enabled: true
+    validate_on_startup: true
+    validate_on_config_change: true
+    validation_rules:
+      - "engine_types.genetic_engine.population_size > 0"
+      - "engine_types.genetic_engine.generations > 0"
+      - "engine_types.neuroevolution_engine.population_size > 0"
+      - "engine_types.reinforcement_engine.episodes > 0"
+      - "adaptation_mechanisms.online_learning.learning_rate > 0"
+      - "adaptation_mechanisms.online_learning.learning_rate <= 1.0"
+      - "objective_functions.performance.weights.sum() == 1.0"
+      - "min_data_points > 0"
+      - "confidence_threshold > 0.0"
+      - "confidence_threshold <= 1.0"
+
+# Market conditions adaptation
+market_adaptation:
+  enabled: true
+  regime_detection:
+    enabled: true
+    lookback_periods:
+      - 20
+      - 50
+      - 200
+    regimes:
+      - "bull"
+      - "bear"
+      - "sideways"
+      - "volatile"
+      - "stable"
+      - "transitional"
+  regime_parameters:
+    bull:
+      evolution_rate_multiplier: 1.2
+      adaptation_rate_multiplier: 1.1
+      learning_rate_multiplier: 1.0
+      convergence_rate_multiplier: 1.1
+    bear:
+      evolution_rate_multiplier: 0.7
+      adaptation_rate_multiplier: 0.8
+      learning_rate_multiplier: 0.8
+      convergence_rate_multiplier: 0.7
+    sideways:
+      evolution_rate_multiplier: 1.0
+      adaptation_rate_multiplier: 1.0
+      learning_rate_multiplier: 1.0
+      convergence_rate_multiplier: 1.0
+    volatile:
+      evolution_rate_multiplier: 0.6
+      adaptation_rate_multiplier: 0.7
+      learning_rate_multiplier: 0.7
+      convergence_rate_multiplier: 0.6
+    stable:
+      evolution_rate_multiplier: 1.0
+      adaptation_rate_multiplier: 1.2
+      learning_rate_multiplier: 1.2
+      convergence_rate_multiplier: 1.2
+    transitional:
+      evolution_rate_multiplier: 1.5
+      adaptation_rate_multiplier: 1.4
+      learning_rate_multiplier: 1.3
+      convergence_rate_multiplier: 1.5
+
+# Time-based configurations
+time_based:
+  enabled: true
+  sessions:
+    asia:
+      start: "00:00"
+      end: "08:00"
+      evolution_rate_multiplier: 0.8
+      adaptation_rate_multiplier: 0.9
+      learning_rate_multiplier: 0.8
+      convergence_rate_multiplier: 0.8
+    london:
+      start: "08:00"
+      end: "16:00"
+      evolution_rate_multiplier: 1.2
+      adaptation_rate_multiplier: 1.1
+      learning_rate_multiplier: 1.2
+      convergence_rate_multiplier: 1.2
+    newyork:
+      start: "13:00"
+      end: "22:00"
+      evolution_rate_multiplier: 1.0
+      adaptation_rate_multiplier: 1.0
+      learning_rate_multiplier: 1.0
+      convergence_rate_multiplier: 1.0
+    overlap:
+      start: "13:00"
+      end: "16:00"
+      evolution_rate_multiplier: 1.5
+      adaptation_rate_multiplier: 1.3
+      learning_rate_multiplier: 1.5
+      convergence_rate_multiplier: 1.5
+
+# Symbol-specific configurations
+symbol_configs:
+  BTCUSDT:
+    evolution_rate_multiplier: 1.0
+    adaptation_rate_multiplier: 1.0
+    learning_rate_multiplier: 1.0
+    convergence_rate_multiplier: 1.0
+    population_size: 100
+    generations: 100
+  ETHUSDT:
+    evolution_rate_multiplier: 1.1
+    adaptation_rate_multiplier: 1.0
+    learning_rate_multiplier: 1.1
+    convergence_rate_multiplier: 1.1
+    population_size: 90
+    generations: 90
+  SOLUSDT:
+    evolution_rate_multiplier: 1.2
+    adaptation_rate_multiplier: 0.9
+    learning_rate_multiplier: 1.2
+    convergence_rate_multiplier: 1.2
+    population_size: 80
+    generations: 80
+  ADAUSDT:
+    evolution_rate_multiplier: 0.9
+    adaptation_rate_multiplier: 1.1
+    learning_rate_multiplier: 0.9
+    convergence_rate_multiplier: 0.9
+    population_size: 70
+    generations: 70
+  XRPUSDT:
+    evolution_rate_multiplier: 1.0
+    adaptation_rate_multiplier: 1.0
+    learning_rate_multiplier: 1.0
+    convergence_rate_multiplier: 1.0
+    population_size: 80
+    generations: 80
