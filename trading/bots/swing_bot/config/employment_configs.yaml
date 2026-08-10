@@ -1,0 +1,657 @@
+# employment_configs.yaml
+# Configuration complète pour l'analyse de l'emploi dans Swing Bot
+# Version: 4.0.0 - Production Ready
+
+# Paramètres généraux
+general:
+  enabled: true
+  mode: "comprehensive"
+  calculate_in_real_time: true
+  update_frequency_seconds: 30
+  lookback_days: 365
+  history_length_days: 730
+  min_data_points: 50
+  max_data_points: 10000
+  base_currency: "USD"
+
+# Types de données d'emploi
+employment_types:
+  non_farm_payrolls:
+    enabled: true
+    countries:
+      - "united_states"
+    frequency: "monthly"
+    importance: "high"
+    smoothing: 3
+    seasonally_adjusted: true
+  unemployment_rate:
+    enabled: true
+    countries:
+      - "united_states"
+      - "european_union"
+      - "united_kingdom"
+      - "japan"
+      - "canada"
+      - "australia"
+    frequency: "monthly"
+    importance: "high"
+    smoothing: 3
+    seasonally_adjusted: true
+  average_hourly_earnings:
+    enabled: true
+    countries:
+      - "united_states"
+    frequency: "monthly"
+    importance: "high"
+    smoothing: 3
+    seasonally_adjusted: true
+  initial_jobless_claims:
+    enabled: true
+    countries:
+      - "united_states"
+    frequency: "weekly"
+    importance: "medium"
+    smoothing: 5
+    seasonally_adjusted: true
+  continuing_jobless_claims:
+    enabled: true
+    countries:
+      - "united_states"
+    frequency: "weekly"
+    importance: "medium"
+    smoothing: 5
+    seasonally_adjusted: true
+  adp_employment:
+    enabled: true
+    countries:
+      - "united_states"
+    frequency: "monthly"
+    importance: "medium"
+    smoothing: 3
+    seasonally_adjusted: true
+  employment_change:
+    enabled: true
+    countries:
+      - "united_states"
+      - "european_union"
+      - "united_kingdom"
+      - "japan"
+      - "canada"
+      - "australia"
+    frequency: "monthly"
+    importance: "medium"
+    smoothing: 3
+    seasonally_adjusted: true
+  participation_rate:
+    enabled: true
+    countries:
+      - "united_states"
+    frequency: "monthly"
+    importance: "medium"
+    smoothing: 3
+    seasonally_adjusted: true
+  job_openings:
+    enabled: true
+    countries:
+      - "united_states"
+    frequency: "monthly"
+    importance: "medium"
+    smoothing: 3
+    seasonally_adjusted: true
+  quits_rate:
+    enabled: true
+    countries:
+      - "united_states"
+    frequency: "monthly"
+    importance: "low"
+    smoothing: 3
+    seasonally_adjusted: true
+
+# Pays et régions
+countries:
+  united_states:
+    enabled: true
+    currency: "USD"
+    timezone: "America/New_York"
+    importance: 5
+    data_sources:
+      - "bls"
+      - "adp"
+      - "dol"
+    metrics:
+      - "non_farm_payrolls"
+      - "unemployment_rate"
+      - "average_hourly_earnings"
+      - "initial_jobless_claims"
+      - "continuing_jobless_claims"
+      - "participation_rate"
+      - "job_openings"
+      - "quits_rate"
+  european_union:
+    enabled: true
+    currency: "EUR"
+    timezone: "Europe/London"
+    importance: 4
+    data_sources:
+      - "eurostat"
+    metrics:
+      - "unemployment_rate"
+      - "employment_change"
+  united_kingdom:
+    enabled: true
+    currency: "GBP"
+    timezone: "Europe/London"
+    importance: 4
+    data_sources:
+      - "ons"
+    metrics:
+      - "unemployment_rate"
+      - "employment_change"
+      - "average_earnings"
+  japan:
+    enabled: true
+    currency: "JPY"
+    timezone: "Asia/Tokyo"
+    importance: 3
+    data_sources:
+      - "stat_japan"
+    metrics:
+      - "unemployment_rate"
+      - "employment_change"
+  canada:
+    enabled: true
+    currency: "CAD"
+    timezone: "America/Toronto"
+    importance: 2
+    data_sources:
+      - "stats_can"
+    metrics:
+      - "unemployment_rate"
+      - "employment_change"
+  australia:
+    enabled: true
+    currency: "AUD"
+    timezone: "Australia/Sydney"
+    importance: 2
+    data_sources:
+      - "abs"
+    metrics:
+      - "unemployment_rate"
+      - "employment_change"
+
+# Seuils d'impact
+impact_thresholds:
+  non_farm_payrolls:
+    high_impact_deviation: 100000
+    medium_impact_deviation: 50000
+    low_impact_deviation: 20000
+  unemployment_rate:
+    high_impact_deviation: 0.2
+    medium_impact_deviation: 0.1
+    low_impact_deviation: 0.05
+  average_hourly_earnings:
+    high_impact_deviation: 0.2
+    medium_impact_deviation: 0.1
+    low_impact_deviation: 0.05
+  initial_jobless_claims:
+    high_impact_deviation: 20000
+    medium_impact_deviation: 10000
+    low_impact_deviation: 5000
+  continuing_jobless_claims:
+    high_impact_deviation: 50000
+    medium_impact_deviation: 25000
+    low_impact_deviation: 10000
+
+# Indicateurs d'analyse
+indicators:
+  employment_trend:
+    enabled: true
+    period: 6
+    smoothing: 3
+    threshold: 0.5
+  employment_momentum:
+    enabled: true
+    period: 3
+    smoothing: 3
+    threshold: 0.3
+  employment_velocity:
+    enabled: true
+    period: 3
+    smoothing: 0
+    threshold: 0.2
+  employment_acceleration:
+    enabled: true
+    period: 6
+    smoothing: 0
+    threshold: 0.1
+  employment_stability:
+    enabled: true
+    period: 12
+    smoothing: 0
+    threshold: 0.5
+  employment_surprise:
+    enabled: true
+    period: 6
+    smoothing: 0
+    threshold: 0.3
+  employment_consistency:
+    enabled: true
+    period: 12
+    smoothing: 0
+    threshold: 0.7
+  employment_volatility:
+    enabled: true
+    period: 12
+    smoothing: 0
+    threshold: 0.3
+
+# Analyse des données d'emploi
+analysis:
+  historical:
+    enabled: true
+    lookback_years: 10
+    compute_mean: true
+    compute_median: true
+    compute_std: true
+    compute_percentiles: true
+    percentile_values:
+      - 5
+      - 10
+      - 25
+      - 50
+      - 75
+      - 90
+      - 95
+    compute_trend: true
+    compute_seasonality: true
+    compute_cycles: true
+  real_time:
+    enabled: true
+    update_frequency_seconds: 5
+    compute_instantaneous: true
+    compute_moving_average: true
+    compute_exponential_average: true
+    compute_momentum: true
+    compute_velocity: true
+    compute_acceleration: true
+    compute_divergence: true
+  predictive:
+    enabled: true
+    model_type: "ensemble"
+    models:
+      - "lstm"
+      - "gru"
+      - "xgboost"
+      - "lightgbm"
+    features:
+      - "non_farm_payrolls"
+      - "unemployment_rate"
+      - "average_hourly_earnings"
+      - "initial_jobless_claims"
+      - "continuing_jobless_claims"
+      - "participation_rate"
+      - "job_openings"
+      - "quits_rate"
+      - "gdp_growth"
+      - "cpi"
+      - "time_of_year"
+    forecast_horizons:
+      - 1
+      - 3
+      - 6
+      - 12
+    confidence_threshold: 0.7
+    retrain_frequency_hours: 24
+  comparative:
+    enabled: true
+    compare_to_forecast: true
+    compare_to_previous: true
+    compare_to_consensus: true
+    compare_to_historical: true
+    compare_to_other_countries: true
+
+# Alertes et notifications
+alerts:
+  employment_data_released:
+    enabled: true
+    channels:
+      - "email"
+      - "telegram"
+      - "slack"
+      - "push_notification"
+    severity: "info"
+  employment_surprise:
+    enabled: true
+    channels:
+      - "email"
+      - "telegram"
+      - "slack"
+      - "push_notification"
+    severity: "critical"
+  employment_beat:
+    enabled: true
+    channels:
+      - "telegram"
+      - "push_notification"
+    severity: "warning"
+  employment_miss:
+    enabled: true
+    channels:
+      - "telegram"
+      - "push_notification"
+    severity: "warning"
+  employment_trend_change:
+    enabled: true
+    channels:
+      - "email"
+      - "telegram"
+      - "slack"
+    severity: "warning"
+
+# Actions automatiques
+auto_actions:
+  trade_adjustment:
+    enabled: true
+    action_types:
+      - "adjust_position_size"
+      - "adjust_stop_loss"
+      - "adjust_take_profit"
+      - "hedge_position"
+    adjustment_factor: 0.5
+    max_adjustment_percent: 50.0
+  risk_management:
+    enabled: true
+    action_types:
+      - "reduce_exposure"
+      - "increase_hedge"
+      - "pause_trading"
+      - "reset_parameters"
+    risk_multiplier: 1.5
+    pause_duration_minutes: 30
+  portfolio_rebalancing:
+    enabled: true
+    rebalance_on_employment_data: true
+    rebalance_threshold: 0.5
+    rebalance_frequency: "monthly"
+
+# Monitoring et journalisation
+monitoring:
+  logging:
+    enabled: true
+    level: "debug"
+    format: "json"
+    include_context: true
+    include_timestamp: true
+    include_metadata: true
+  metrics:
+    enabled: true
+    collect_every_seconds: 5
+    metrics_to_collect:
+      - "non_farm_payrolls"
+      - "unemployment_rate"
+      - "average_hourly_earnings"
+      - "initial_jobless_claims"
+      - "continuing_jobless_claims"
+      - "participation_rate"
+      - "job_openings"
+      - "quits_rate"
+      - "employment_surprise"
+      - "employment_trend"
+      - "employment_momentum"
+      - "employment_volatility"
+  dashboard:
+    enabled: true
+    update_interval_seconds: 5
+    charts:
+      - "employment_chart"
+      - "unemployment_chart"
+      - "jobless_claims"
+      - "earnings_chart"
+      - "employment_surprise"
+      - "employment_trend"
+      - "international_comparison"
+      - "historical_analysis"
+
+# Backtesting
+backtesting:
+  enabled: true
+  use_historical_employment: true
+  compute_correlation: true
+  compute_impact_metrics: true
+  compute_strategy_performance: true
+  compute_risk_adjusted_returns: true
+  report_metrics:
+    - "correlation_coefficient"
+    - "impact_factor"
+    - "win_rate"
+    - "profit_factor"
+    - "sharpe_ratio"
+    - "max_drawdown"
+
+# Configuration de la base de données
+database:
+  enabled: true
+  table_name: "employment_metrics"
+  retention_days: 730
+  aggregation:
+    enabled: true
+    intervals:
+      - "1d"
+      - "7d"
+      - "30d"
+      - "90d"
+      - "365d"
+  compression: true
+  backup:
+    enabled: true
+    frequency: "daily"
+    retention_days: 30
+
+# Webhooks
+webhooks:
+  enabled: true
+  endpoints:
+    - url: "https://nexustradingia.com/api/webhooks/employment"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      payload_template: "employment_alert"
+    - url: "https://nexustradingia.com/api/webhooks/employment-surprise"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      payload_template: "employment_surprise"
+  retry:
+    enabled: true
+    max_attempts: 5
+    backoff_seconds: 30
+
+# Logging avancé
+advanced_logging:
+  enabled: true
+  levels:
+    - "info"
+    - "warning"
+    - "error"
+    - "critical"
+    - "debug"
+  output: "employment_logs"
+  rotation:
+    enabled: true
+    max_size_mb: 100
+    max_files: 10
+  remote_logging:
+    enabled: true
+    endpoints:
+      - "https://nexustradingia.com/logs/employment"
+  include_trace: true
+  include_stack_trace: true
+  include_context: true
+
+# Threading et performances
+performance:
+  thread_pool_size: 4
+  queue_size: 1000
+  batch_size: 100
+  async_processing: true
+  cache_size: 5000
+  cache_ttl_seconds: 300
+  database_pool_size: 5
+  database_pool_max_overflow: 10
+  use_multiprocessing: false
+  max_workers: 4
+
+# API de gestion
+management_api:
+  enabled: true
+  endpoints:
+    - "/api/v1/employment/current"
+    - "/api/v1/employment/history"
+    - "/api/v1/employment/metrics"
+    - "/api/v1/employment/status"
+    - "/api/v1/employment/forecast"
+    - "/api/v1/employment/countries"
+    - "/api/v1/employment/surprise"
+  authentication_required: true
+  rate_limit: 100
+  rate_limit_interval_seconds: 60
+  version: "v1.0.0"
+
+# Export des données
+data_export:
+  enabled: true
+  formats:
+    - "csv"
+    - "json"
+    - "parquet"
+  schedule: "daily"
+  retention_days: 30
+  compression: "gzip"
+  destination: "s3://nexus-data/employment/"
+  encrypt: true
+  encryption_key_id: "nexus-employment-key"
+  partition_by:
+    - "country"
+    - "year"
+    - "month"
+
+# Intégration avec d'autres modules
+integrations:
+  risk_engine:
+    enabled: true
+    sync_frequency_seconds: 5
+    share_metrics: true
+  execution_engine:
+    enabled: true
+    share_signals: true
+    require_confirmation: true
+  portfolio_manager:
+    enabled: true
+    share_positions: true
+    share_allocation: true
+  ai_engine:
+    enabled: true
+    use_ai_predictions: true
+    confidence_threshold: 0.7
+    model_endpoint: "http://ai-engine:8000/predict/employment"
+  market_data:
+    enabled: true
+    sync_frequency_seconds: 5
+    data_endpoint: "ws://market-data:8080/ws"
+
+# Tests et validation
+testing:
+  unit_tests:
+    enabled: true
+    coverage_threshold: 90
+  integration_tests:
+    enabled: true
+  stress_tests:
+    enabled: true
+    scenarios:
+      - "high_employment_data_volume"
+      - "multiple_country_data"
+      - "surprise_events"
+      - "holiday_periods"
+  validation:
+    enabled: true
+    validate_on_startup: true
+    validate_on_config_change: true
+    validation_rules:
+      - "impact_thresholds.non_farm_payrolls.high_impact_deviation > impact_thresholds.non_farm_payrolls.medium_impact_deviation"
+      - "impact_thresholds.non_farm_payrolls.medium_impact_deviation > impact_thresholds.non_farm_payrolls.low_impact_deviation"
+      - "impact_thresholds.unemployment_rate.high_impact_deviation > impact_thresholds.unemployment_rate.medium_impact_deviation"
+      - "impact_thresholds.unemployment_rate.medium_impact_deviation > impact_thresholds.unemployment_rate.low_impact_deviation"
+      - "min_data_points > 0"
+      - "confidence_threshold > 0.0"
+      - "confidence_threshold <= 1.0"
+
+# Market conditions adaptation
+market_adaptation:
+  enabled: true
+  regime_detection:
+    enabled: true
+    lookback_periods:
+      - 6
+      - 12
+      - 24
+    regimes:
+      - "strong_employment"
+      - "weak_employment"
+      - "stable_employment"
+      - "volatile_employment"
+      - "recovery"
+      - "recession"
+  regime_parameters:
+    strong_employment:
+      employment_multiplier: 1.2
+      threshold_multiplier: 0.8
+      risk_multiplier: 0.8
+    weak_employment:
+      employment_multiplier: 0.7
+      threshold_multiplier: 1.3
+      risk_multiplier: 1.5
+    stable_employment:
+      employment_multiplier: 1.0
+      threshold_multiplier: 1.0
+      risk_multiplier: 1.0
+    volatile_employment:
+      employment_multiplier: 0.6
+      threshold_multiplier: 1.5
+      risk_multiplier: 2.0
+    recovery:
+      employment_multiplier: 1.1
+      threshold_multiplier: 0.9
+      risk_multiplier: 1.0
+    recession:
+      employment_multiplier: 0.5
+      threshold_multiplier: 2.0
+      risk_multiplier: 2.5
+
+# Symbol-specific configurations
+symbol_configs:
+  BTCUSDT:
+    employment_multiplier: 1.0
+    threshold_multiplier: 1.0
+    risk_multiplier: 1.0
+    impact_volatility: 2.0
+  ETHUSDT:
+    employment_multiplier: 1.1
+    threshold_multiplier: 0.9
+    risk_multiplier: 1.1
+    impact_volatility: 1.8
+  SOLUSDT:
+    employment_multiplier: 1.2
+    threshold_multiplier: 0.8
+    risk_multiplier: 1.2
+    impact_volatility: 2.2
+  ADAUSDT:
+    employment_multiplier: 0.9
+    threshold_multiplier: 1.1
+    risk_multiplier: 0.9
+    impact_volatility: 1.5
+  XRPUSDT:
+    employment_multiplier: 1.0
+    threshold_multiplier: 1.0
+    risk_multiplier: 1.0
+    impact_volatility: 1.6
