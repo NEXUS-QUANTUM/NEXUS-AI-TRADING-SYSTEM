@@ -1,0 +1,392 @@
+# trading/bots/swing_bot/config/volume_node_configs.yaml
+
+# ============================================================================
+# NEXUS AI TRADING SYSTEM - Swing Bot Volume Node Configuration
+# Copyright © 2026 NEXUS QUANTUM LTD - All Rights Reserved
+# ============================================================================
+#
+# Description: Complete Volume Node configuration for swing trading bot
+# Framework: Volume Node Analysis - High & Low Volume Nodes
+# Version: 3.0.0
+#
+# The Volume Node configuration enables the bot to identify and trade
+# based on volume nodes, including high volume nodes (support/resistance)
+# and low volume nodes (breakout/breakdown points).
+# ============================================================================
+
+# ----------------------------------------------------------------------------
+# General Configuration
+# ----------------------------------------------------------------------------
+volume_node:
+  enabled: true
+  version: "3.0.0"
+  description: "Volume Node Analysis for swing trading"
+  
+  # Node types
+  types:
+    - "high_volume"
+    - "low_volume"
+    - "poc"
+    - "value_area"
+    - "composite"
+  
+  # Timeframes
+  timeframes:
+    - "1m"
+    - "5m"
+    - "15m"
+    - "30m"
+    - "1h"
+    - "4h"
+    - "1d"
+  
+  default_timeframe: "1h"
+
+# ----------------------------------------------------------------------------
+# High Volume Nodes
+# ----------------------------------------------------------------------------
+high_volume_nodes:
+  enabled: true
+  description: "High volume node configuration"
+  
+  # Parameters
+  parameters:
+    lookback_period: 50
+    volume_threshold: 1.5
+    node_width: 0.01
+    min_volume: 100
+    max_volume: 10000
+    confidence_threshold: 0.7
+  
+  # Node metrics
+  metrics:
+    high_volume_levels:
+      enabled: true
+      calculation: "volume_weighted"
+      lookback_period: 50
+    
+    node_strength:
+      enabled: true
+      calculation: "volume_ratio"
+      lookback_period: 50
+    
+    node_touches:
+      enabled: true
+      calculation: "count"
+      lookback_period: 50
+  
+  # Signals
+  signals:
+    hvn_support:
+      description: "High volume node support signal"
+      conditions:
+        - "price_at_hvn"
+        - "volume_confirmation"
+        - "support_confirmed"
+      confidence: 0.8
+    
+    hvn_resistance:
+      description: "High volume node resistance signal"
+      conditions:
+        - "price_at_hvn"
+        - "volume_confirmation"
+        - "resistance_confirmed"
+      confidence: 0.8
+    
+    hvn_breakout:
+      description: "High volume node breakout signal"
+      conditions:
+        - "price_above_hvn"
+        - "volume_confirmation"
+        - "momentum_increasing"
+      confidence: 0.75
+    
+    hvn_breakdown:
+      description: "High volume node breakdown signal"
+      conditions:
+        - "price_below_hvn"
+        - "volume_confirmation"
+        - "momentum_decreasing"
+      confidence: 0.75
+
+# ----------------------------------------------------------------------------
+# Low Volume Nodes
+# ----------------------------------------------------------------------------
+low_volume_nodes:
+  enabled: true
+  description: "Low volume node configuration"
+  
+  # Parameters
+  parameters:
+    lookback_period: 50
+    volume_threshold: 0.5
+    node_width: 0.01
+    min_volume: 100
+    max_volume: 10000
+    confidence_threshold: 0.7
+  
+  # Node metrics
+  metrics:
+    low_volume_levels:
+      enabled: true
+      calculation: "volume_weighted"
+      lookback_period: 50
+    
+    node_strength:
+      enabled: true
+      calculation: "volume_ratio"
+      lookback_period: 50
+    
+    node_touches:
+      enabled: true
+      calculation: "count"
+      lookback_period: 50
+  
+  # Signals
+  signals:
+    lvn_breakout:
+      description: "Low volume node breakout signal"
+      conditions:
+        - "price_above_lvn"
+        - "volume_confirmation"
+        - "momentum_increasing"
+      confidence: 0.8
+    
+    lvn_breakdown:
+      description: "Low volume node breakdown signal"
+      conditions:
+        - "price_below_lvn"
+        - "volume_confirmation"
+        - "momentum_decreasing"
+      confidence: 0.8
+    
+    lvn_reversal:
+      description: "Low volume node reversal signal"
+      conditions:
+        - "price_at_lvn"
+        - "volume_confirmation"
+        - "reversal_confirmed"
+      confidence: 0.7
+
+# ----------------------------------------------------------------------------
+# POC Nodes
+# ----------------------------------------------------------------------------
+poc_nodes:
+  enabled: true
+  description: "POC node configuration"
+  
+  # Parameters
+  parameters:
+    lookback_period: 50
+    poc_threshold: 1.5
+    node_width: 0.01
+    min_volume: 100
+    max_volume: 10000
+    confidence_threshold: 0.7
+  
+  # Node metrics
+  metrics:
+    poc_levels:
+      enabled: true
+      calculation: "highest_volume"
+      lookback_period: 50
+    
+    poc_strength:
+      enabled: true
+      calculation: "volume_ratio"
+      lookback_period: 50
+    
+    poc_touches:
+      enabled: true
+      calculation: "count"
+      lookback_period: 50
+  
+  # Signals
+  signals:
+    poc_support:
+      description: "POC support signal"
+      conditions:
+        - "price_at_poc"
+        - "volume_confirmation"
+        - "support_confirmed"
+      confidence: 0.8
+    
+    poc_resistance:
+      description: "POC resistance signal"
+      conditions:
+        - "price_at_poc"
+        - "volume_confirmation"
+        - "resistance_confirmed"
+      confidence: 0.8
+
+# ----------------------------------------------------------------------------
+# Composite Nodes
+# ----------------------------------------------------------------------------
+composite_nodes:
+  enabled: true
+  description: "Composite node configuration"
+  
+  # Parameters
+  parameters:
+    lookback_period: 100
+    volume_threshold: 1.5
+    node_width: 0.01
+    min_volume: 100
+    max_volume: 10000
+    confidence_threshold: 0.7
+  
+  # Composite metrics
+  metrics:
+    composite_levels:
+      enabled: true
+      calculation: "volume_weighted"
+      lookback_period: 100
+    
+    composite_strength:
+      enabled: true
+      calculation: "volume_ratio"
+      lookback_period: 100
+    
+    composite_touches:
+      enabled: true
+      calculation: "count"
+      lookback_period: 100
+  
+  # Signals
+  signals:
+    composite_support:
+      description: "Composite support signal"
+      conditions:
+        - "price_at_composite"
+        - "volume_confirmation"
+        - "support_confirmed"
+      confidence: 0.8
+    
+    composite_resistance:
+      description: "Composite resistance signal"
+      conditions:
+        - "price_at_composite"
+        - "volume_confirmation"
+        - "resistance_confirmed"
+      confidence: 0.8
+
+# ----------------------------------------------------------------------------
+# Volume Node Signals
+# ----------------------------------------------------------------------------
+signals:
+  enabled: true
+  description: "Volume node-based trading signals"
+  
+  # Signal types
+  types:
+    node_buy:
+      description: "Volume node buy signal"
+      conditions:
+        - "hvn_support"
+        - "poc_support"
+        - "volume_confirmation"
+        - "momentum_increasing"
+      confidence: 0.85
+    
+    node_sell:
+      description: "Volume node sell signal"
+      conditions:
+        - "hvn_resistance"
+        - "poc_resistance"
+        - "volume_confirmation"
+        - "momentum_decreasing"
+      confidence: 0.85
+    
+    node_breakout:
+      description: "Volume node breakout signal"
+      conditions:
+        - "lvn_breakout"
+        - "volume_confirmation"
+        - "momentum_increasing"
+      confidence: 0.8
+    
+    node_breakdown:
+      description: "Volume node breakdown signal"
+      conditions:
+        - "lvn_breakdown"
+        - "volume_confirmation"
+        - "momentum_decreasing"
+      confidence: 0.8
+  
+  # Signal confirmation
+  confirmation:
+    required_confirmations: 2
+    confirmation_sources:
+      - "price_action"
+      - "volume"
+      - "technical_indicators"
+
+# ----------------------------------------------------------------------------
+# Risk Management
+# ----------------------------------------------------------------------------
+risk_management:
+  enabled: true
+  description: "Risk management for volume node trading"
+  
+  # Risk parameters
+  parameters:
+    max_position: 0.05
+    max_daily_loss: 0.02
+    max_drawdown: 0.1
+    risk_per_trade: 0.01
+    
+    # Node-based stop loss
+    stop_loss:
+      type: "node_based"
+      distance: 0.01
+      atr_multiplier: 1.5
+      min: 0.005
+      max: 0.02
+    
+    # Node-based take profit
+    take_profit:
+      type: "node_based"
+      multiplier: 2.5
+      min: 0.01
+      max: 0.05
+
+# ----------------------------------------------------------------------------
+# Performance Monitoring
+# ----------------------------------------------------------------------------
+performance_monitoring:
+  enabled: true
+  description: "Performance monitoring for volume node trading"
+  
+  metrics:
+    - "win_rate"
+    - "profit_factor"
+    - "sharpe_ratio"
+    - "max_drawdown"
+    - "average_trade"
+    - "consecutive_wins"
+    - "consecutive_losses"
+    - "node_accuracy"
+  
+  targets:
+    min_win_rate: 0.5
+    min_profit_factor: 1.5
+    min_sharpe_ratio: 0.6
+    max_max_drawdown: 0.1
+
+# ----------------------------------------------------------------------------
+# Logging Configuration
+# ----------------------------------------------------------------------------
+logging:
+  enabled: true
+  level: "INFO"
+  file: "logs/volume_node.log"
+  rotation: "daily"
+  retention: 30  # days
+  
+  log_categories:
+    signals: true
+    trades: true
+    errors: true
+    performance: true
+    nodes: true
+    debugging: false
