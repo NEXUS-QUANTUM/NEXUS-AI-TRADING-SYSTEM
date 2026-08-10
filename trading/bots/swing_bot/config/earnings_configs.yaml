@@ -1,0 +1,825 @@
+# earnings_configs.yaml
+# Configuration complète pour la gestion des bénéfices dans Swing Bot
+# Version: 4.0.0 - Production Ready
+
+# Paramètres généraux
+general:
+  enabled: true
+  mode: "comprehensive"
+  calculate_in_real_time: true
+  update_frequency_seconds: 1
+  lookback_periods:
+    - 5
+    - 10
+    - 20
+    - 50
+    - 100
+    - 200
+    - 500
+  history_length_days: 365
+  min_data_points: 50
+  max_data_points: 100000
+  base_currency: "USD"
+
+# Types de bénéfices
+earnings_types:
+  realized:
+    enabled: true
+    calculate_realized_pnl: true
+    calculate_realized_roi: true
+    calculate_realized_percent: true
+    smoothing: 0
+  unrealized:
+    enabled: true
+    calculate_unrealized_pnl: true
+    calculate_unrealized_roi: true
+    calculate_unrealized_percent: true
+    smoothing: 0
+  total:
+    enabled: true
+    calculate_total_pnl: true
+    calculate_total_roi: true
+    calculate_total_percent: true
+    smoothing: 0
+  daily:
+    enabled: true
+    calculate_daily_pnl: true
+    calculate_daily_roi: true
+    calculate_daily_percent: true
+    smoothing: 3
+  weekly:
+    enabled: true
+    calculate_weekly_pnl: true
+    calculate_weekly_roi: true
+    calculate_weekly_percent: true
+    smoothing: 5
+  monthly:
+    enabled: true
+    calculate_monthly_pnl: true
+    calculate_monthly_roi: true
+    calculate_monthly_percent: true
+    smoothing: 7
+  quarterly:
+    enabled: true
+    calculate_quarterly_pnl: true
+    calculate_quarterly_roi: true
+    calculate_quarterly_percent: true
+    smoothing: 10
+  yearly:
+    enabled: true
+    calculate_yearly_pnl: true
+    calculate_yearly_roi: true
+    calculate_yearly_percent: true
+    smoothing: 15
+
+# Seuils de bénéfices
+thresholds:
+  positive:
+    low:
+      percent: 1.0
+      action: "monitor"
+      description: "Small positive earnings"
+    medium:
+      percent: 5.0
+      action: "take_profit"
+      description: "Medium positive earnings"
+    high:
+      percent: 10.0
+      action: "take_profit_aggressive"
+      description: "High positive earnings"
+    extreme:
+      percent: 20.0
+      action: "lock_profit"
+      description: "Extreme positive earnings"
+  negative:
+    low:
+      percent: -1.0
+      action: "monitor"
+      description: "Small negative earnings"
+    medium:
+      percent: -5.0
+      action: "stop_loss"
+      description: "Medium negative earnings"
+    high:
+      percent: -10.0
+      action: "stop_loss_aggressive"
+      description: "High negative earnings"
+    extreme:
+      percent: -20.0
+      action: "emergency_stop"
+      description: "Extreme negative earnings"
+
+# Indicateurs de bénéfices
+indicators:
+  earnings_velocity:
+    enabled: true
+    period: 5
+    smoothing: 3
+  earnings_acceleration:
+    enabled: true
+    period: 10
+    smoothing: 5
+  earnings_momentum:
+    enabled: true
+    period: 14
+    smoothing: 3
+  earnings_trend:
+    enabled: true
+    period: 20
+    smoothing: 5
+  earnings_volatility:
+    enabled: true
+    period: 20
+    smoothing: 3
+  earnings_stability:
+    enabled: true
+    period: 50
+    smoothing: 7
+  earnings_consistency:
+    enabled: true
+    period: 30
+    smoothing: 5
+  earnings_growth:
+    enabled: true
+    period: 20
+    smoothing: 3
+  earnings_decline:
+    enabled: true
+    period: 20
+    smoothing: 3
+  earnings_recovery:
+    enabled: true
+    period: 30
+    smoothing: 5
+  earnings_breakthrough:
+    enabled: true
+    period: 10
+    smoothing: 0
+
+# Analyse des bénéfices
+analysis:
+  historical:
+    enabled: true
+    lookback_years: 5
+    compute_mean_earnings: true
+    compute_median_earnings: true
+    compute_std_earnings: true
+    compute_percentiles: true
+    percentile_values:
+      - 1
+      - 5
+      - 10
+      - 25
+      - 50
+      - 75
+      - 90
+      - 95
+      - 99
+    compute_skewness: true
+    compute_kurtosis: true
+    compute_earnings_patterns: true
+    compute_seasonality: true
+  real_time:
+    enabled: true
+    update_frequency_ms: 100
+    compute_instantaneous_earnings: true
+    compute_moving_average_earnings: true
+    compute_exponential_earnings: true
+    compute_weighted_earnings: true
+    compute_earnings_velocity: true
+    compute_earnings_acceleration: true
+  predictive:
+    enabled: true
+    model_type: "ensemble"
+    models:
+      - "random_forest"
+      - "xgboost"
+      - "lightgbm"
+      - "lstm"
+      - "gru"
+    features:
+      - "earnings_realized"
+      - "earnings_unrealized"
+      - "earnings_total"
+      - "earnings_daily"
+      - "earnings_weekly"
+      - "earnings_monthly"
+      - "earnings_velocity"
+      - "earnings_acceleration"
+      - "earnings_momentum"
+      - "earnings_trend"
+      - "earnings_volatility"
+      - "price_change"
+      - "volume"
+      - "time_of_day"
+      - "day_of_week"
+      - "market_condition"
+    forecast_horizons:
+      - 1
+      - 5
+      - 10
+      - 20
+    confidence_interval: 95
+    confidence_threshold: 0.7
+    retrain_frequency_hours: 12
+  comparative:
+    enabled: true
+    compare_to_benchmark: true
+    compare_to_sector: true
+    compare_to_peers: true
+    compare_to_historical: true
+    benchmark_symbols:
+      - "SP500"
+      - "NASDAQ"
+      - "BTCUSDT"
+      - "ETHUSDT"
+    sector_symbols:
+      - "TECH"
+      - "FINANCE"
+      - "HEALTHCARE"
+      - "ENERGY"
+
+# Gestion des bénéfices
+profit_management:
+  take_profit:
+    enabled: true
+    methods:
+      - "fixed_percent"
+      - "trailing_stop"
+      - "volatility_based"
+      - "earnings_based"
+    fixed_percent:
+      - 2.0
+      - 5.0
+      - 10.0
+      - 20.0
+    trailing_stop:
+      enabled: true
+      activation_percent: 2.0
+      trailing_percent: 1.0
+      trailing_step: 0.5
+      min_trailing_percent: 0.5
+      max_trailing_percent: 5.0
+    volatility_based:
+      enabled: true
+      atr_multiplier: 2.0
+      volatility_multiplier: 1.5
+      min_profit_percent: 1.0
+      max_profit_percent: 20.0
+    earnings_based:
+      enabled: true
+      earnings_multiplier: 1.0
+      min_profit_percent: 1.0
+      max_profit_percent: 15.0
+      use_earnings_velocity: true
+  stop_loss:
+    enabled: true
+    methods:
+      - "fixed_percent"
+      - "volatility_based"
+      - "earnings_based"
+      - "atr_based"
+    fixed_percent:
+      - 1.0
+      - 2.0
+      - 5.0
+      - 10.0
+    volatility_based:
+      enabled: true
+      atr_multiplier: 1.5
+      volatility_multiplier: 1.0
+      min_stop_percent: 0.5
+      max_stop_percent: 10.0
+    earnings_based:
+      enabled: true
+      earnings_multiplier: 0.5
+      min_stop_percent: 0.5
+      max_stop_percent: 8.0
+      use_earnings_decline: true
+    atr_based:
+      enabled: true
+      atr_multiplier: 1.5
+      min_stop_percent: 0.5
+      max_stop_percent: 10.0
+  profit_locking:
+    enabled: true
+    locking_methods:
+      - "partial"
+      - "full"
+      - "scaled"
+    partial_locking:
+      enabled: true
+      lock_percent: 50.0
+      lock_threshold: 5.0
+    full_locking:
+      enabled: true
+      lock_threshold: 10.0
+    scaled_locking:
+      enabled: true
+      thresholds:
+        - earnings: 2.0
+          lock_percent: 25.0
+        - earnings: 5.0
+          lock_percent: 50.0
+        - earnings: 10.0
+          lock_percent: 75.0
+        - earnings: 20.0
+          lock_percent: 100.0
+
+# Paramètres avancés
+advanced:
+  machine_learning:
+    enabled: true
+    model_type: "ensemble"
+    models:
+      - "random_forest"
+      - "xgboost"
+      - "lightgbm"
+      - "lstm"
+      - "gru"
+    features:
+      - "earnings_realized"
+      - "earnings_unrealized"
+      - "earnings_total"
+      - "earnings_daily"
+      - "earnings_weekly"
+      - "earnings_monthly"
+      - "earnings_velocity"
+      - "earnings_acceleration"
+      - "earnings_momentum"
+      - "earnings_trend"
+      - "earnings_volatility"
+      - "earnings_stability"
+      - "earnings_consistency"
+      - "earnings_growth"
+      - "earnings_decline"
+      - "earnings_recovery"
+      - "earnings_breakthrough"
+      - "price_change"
+      - "volume"
+      - "time_of_day"
+      - "day_of_week"
+      - "market_condition"
+    training_frequency_hours: 6
+    retrain_threshold: 0.9
+    validation_split: 0.2
+    random_seed: 42
+    ensemble_weights:
+      - 0.20
+      - 0.20
+      - 0.20
+      - 0.20
+      - 0.20
+  risk_adjusted_earnings:
+    enabled: true
+    calculate_sharpe_ratio: true
+    calculate_sortino_ratio: true
+    calculate_calmar_ratio: true
+    calculate_sterling_ratio: true
+    calculate_ulcer_index: true
+    calculate_risk_adjusted_return: true
+    risk_free_rate: 0.02
+    periods:
+      - 30
+      - 90
+      - 180
+      - 365
+  earnings_attribution:
+    enabled: true
+    attribution_methods:
+      - "market_timing"
+      - "stock_selection"
+      - "sector_allocation"
+      - "currency_effect"
+      - "leverage_effect"
+    calculate_attribution: true
+    attribution_periods:
+      - 30
+      - 90
+      - 180
+      - 365
+
+# Monitoring et journalisation
+monitoring:
+  logging:
+    enabled: true
+    level: "debug"
+    format: "json"
+    include_context: true
+    include_timestamp: true
+    include_metadata: true
+  metrics:
+    enabled: true
+    collect_every_seconds: 1
+    metrics_to_collect:
+      - "earnings_realized"
+      - "earnings_unrealized"
+      - "earnings_total"
+      - "earnings_daily"
+      - "earnings_weekly"
+      - "earnings_monthly"
+      - "earnings_velocity"
+      - "earnings_acceleration"
+      - "earnings_momentum"
+      - "earnings_trend"
+      - "earnings_volatility"
+      - "earnings_stability"
+      - "earnings_consistency"
+      - "earnings_growth"
+      - "earnings_decline"
+      - "earnings_recovery"
+      - "earnings_breakthrough"
+      - "sharpe_ratio"
+      - "sortino_ratio"
+      - "calmar_ratio"
+  dashboard:
+    enabled: true
+    update_interval_seconds: 1
+    charts:
+      - "earnings_chart"
+      - "earnings_distribution"
+      - "earnings_velocity"
+      - "earnings_acceleration"
+      - "earnings_trend"
+      - "earnings_volatility"
+      - "risk_adjusted_earnings"
+      - "earnings_attribution"
+      - "take_profit_status"
+      - "stop_loss_status"
+
+# Backtesting
+backtesting:
+  enabled: true
+  use_historical_earnings: true
+  compute_earnings_distribution: true
+  compute_signal_accuracy: true
+  compute_strategy_performance: true
+  compute_risk_adjusted_returns: true
+  compute_drawdown_analysis: true
+  report_metrics:
+    - "win_rate"
+    - "profit_factor"
+    - "sharpe_ratio"
+    - "sortino_ratio"
+    - "calmar_ratio"
+    - "max_drawdown"
+    - "average_win_loss"
+    - "earnings_accuracy"
+    - "risk_adjusted_return"
+
+# Distribution des métriques
+metrics_distribution:
+  enabled: true
+  distribution:
+    - metric: "earnings_total"
+      bins: 100
+      update_frequency: "realtime"
+    - metric: "earnings_daily"
+      bins: 50
+      update_frequency: "realtime"
+    - metric: "earnings_velocity"
+      bins: 30
+      update_frequency: "realtime"
+    - metric: "earnings_acceleration"
+      bins: 30
+      update_frequency: "realtime"
+  percentiles:
+    - 1
+    - 5
+    - 10
+    - 25
+    - 50
+    - 75
+    - 90
+    - 95
+    - 99
+
+# Configuration de la base de données
+database:
+  enabled: true
+  table_name: "earnings_metrics"
+  retention_days: 365
+  aggregation:
+    enabled: true
+    intervals:
+      - "1s"
+      - "5s"
+      - "15s"
+      - "30s"
+      - "1m"
+      - "5m"
+      - "15m"
+      - "1h"
+      - "4h"
+      - "24h"
+      - "7d"
+      - "30d"
+  compression: true
+  backup:
+    enabled: true
+    frequency: "daily"
+    retention_days: 30
+
+# Webhooks
+webhooks:
+  enabled: true
+  endpoints:
+    - url: "https://nexustradingia.com/api/webhooks/earnings"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      payload_template: "earnings_alert"
+    - url: "https://nexustradingia.com/api/webhooks/earnings_target"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      payload_template: "earnings_target_reached"
+    - url: "https://nexustradingia.com/api/webhooks/earnings_loss"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      payload_template: "earnings_loss_alert"
+  retry:
+    enabled: true
+    max_attempts: 5
+    backoff_seconds: 30
+
+# Logging avancé
+advanced_logging:
+  enabled: true
+  levels:
+    - "info"
+    - "warning"
+    - "error"
+    - "critical"
+    - "debug"
+  output: "earnings_logs"
+  rotation:
+    enabled: true
+    max_size_mb: 100
+    max_files: 10
+  remote_logging:
+    enabled: true
+    endpoints:
+      - "https://nexustradingia.com/logs/earnings"
+  include_trace: true
+  include_stack_trace: true
+  include_context: true
+
+# Threading et performances
+performance:
+  thread_pool_size: 8
+  queue_size: 10000
+  batch_size: 1000
+  async_processing: true
+  cache_size: 10000
+  cache_ttl_seconds: 30
+  database_pool_size: 10
+  database_pool_max_overflow: 20
+  use_multiprocessing: true
+  max_workers: 8
+  use_cython: true
+  use_numba: true
+  use_gpu: false
+  gpu_device: 0
+
+# API de gestion
+management_api:
+  enabled: true
+  endpoints:
+    - "/api/v1/earnings/current"
+    - "/api/v1/earnings/history"
+    - "/api/v1/earnings/metrics"
+    - "/api/v1/earnings/status"
+    - "/api/v1/earnings/indicators"
+    - "/api/v1/earnings/profit_management"
+    - "/api/v1/earnings/attribution"
+    - "/api/v1/earnings/risk_adjusted"
+    - "/api/v1/earnings/forecast"
+  authentication_required: true
+  rate_limit: 100
+  rate_limit_interval_seconds: 60
+  version: "v1.0.0"
+
+# Export des données
+data_export:
+  enabled: true
+  formats:
+    - "csv"
+    - "json"
+    - "parquet"
+    - "avro"
+    - "feather"
+  schedule: "realtime"
+  batch_size: 1000
+  retention_days: 30
+  compression: "gzip"
+  destination: "s3://nexus-data/earnings/"
+  encrypt: true
+  encryption_key_id: "nexus-earnings-key"
+  partition_by:
+    - "symbol"
+    - "year"
+    - "month"
+    - "day"
+
+# Intégration avec d'autres modules
+integrations:
+  risk_engine:
+    enabled: true
+    sync_frequency_seconds: 1
+    share_metrics: true
+  execution_engine:
+    enabled: true
+    share_signals: true
+    require_confirmation: true
+  portfolio_manager:
+    enabled: true
+    share_positions: true
+    share_allocation: true
+  ai_engine:
+    enabled: true
+    use_ai_predictions: true
+    confidence_threshold: 0.7
+    model_endpoint: "http://ai-engine:8000/predict/earnings"
+  market_data:
+    enabled: true
+    sync_frequency_ms: 100
+    data_endpoint: "ws://market-data:8080/ws"
+  volatility_engine:
+    enabled: true
+    sync_frequency_seconds: 1
+    data_endpoint: "http://volatility-engine:8000/api/v1/volatility"
+
+# Tests et validation
+testing:
+  unit_tests:
+    enabled: true
+    coverage_threshold: 90
+  integration_tests:
+    enabled: true
+  stress_tests:
+    enabled: true
+    scenarios:
+      - "high_volatility"
+      - "low_volatility"
+      - "market_crash"
+      - "bull_market"
+      - "bear_market"
+      - "sideways_market"
+  validation:
+    enabled: true
+    validate_on_startup: true
+    validate_on_config_change: true
+    validation_rules:
+      - "thresholds.positive.low.percent < thresholds.positive.medium.percent"
+      - "thresholds.positive.medium.percent < thresholds.positive.high.percent"
+      - "thresholds.positive.high.percent < thresholds.positive.extreme.percent"
+      - "thresholds.negative.low.percent > thresholds.negative.medium.percent"
+      - "thresholds.negative.medium.percent > thresholds.negative.high.percent"
+      - "thresholds.negative.high.percent > thresholds.negative.extreme.percent"
+      - "min_data_points > 0"
+      - "confidence_threshold > 0.0"
+      - "confidence_threshold <= 1.0"
+
+# Market conditions adaptation
+market_adaptation:
+  enabled: true
+  volatility_adjustment: true
+  regime_detection:
+    enabled: true
+    lookback_periods:
+      - 20
+      - 50
+      - 200
+    regimes:
+      - "bull"
+      - "bear"
+      - "sideways"
+      - "volatile"
+      - "low_volatility"
+      - "high_volatility"
+      - "crisis"
+      - "recovery"
+  regime_parameters:
+    bull:
+      earnings_multiplier: 1.2
+      threshold_multiplier: 0.8
+      risk_multiplier: 0.8
+    bear:
+      earnings_multiplier: 0.7
+      threshold_multiplier: 1.3
+      risk_multiplier: 1.5
+    sideways:
+      earnings_multiplier: 1.0
+      threshold_multiplier: 1.0
+      risk_multiplier: 1.0
+    volatile:
+      earnings_multiplier: 0.6
+      threshold_multiplier: 1.5
+      risk_multiplier: 2.0
+    low_volatility:
+      earnings_multiplier: 0.8
+      threshold_multiplier: 0.8
+      risk_multiplier: 0.6
+    high_volatility:
+      earnings_multiplier: 0.6
+      threshold_multiplier: 1.5
+      risk_multiplier: 2.0
+    crisis:
+      earnings_multiplier: 0.4
+      threshold_multiplier: 2.0
+      risk_multiplier: 3.0
+    recovery:
+      earnings_multiplier: 1.1
+      threshold_multiplier: 0.9
+      risk_multiplier: 1.0
+
+# Time-based configurations
+time_based:
+  enabled: true
+  sessions:
+    asia:
+      start: "00:00"
+      end: "08:00"
+      earnings_multiplier: 0.8
+      threshold_multiplier: 1.2
+      risk_multiplier: 0.8
+    london:
+      start: "08:00"
+      end: "16:00"
+      earnings_multiplier: 1.2
+      threshold_multiplier: 0.8
+      risk_multiplier: 1.2
+    newyork:
+      start: "13:00"
+      end: "22:00"
+      earnings_multiplier: 1.0
+      threshold_multiplier: 1.0
+      risk_multiplier: 1.0
+    overlap:
+      start: "13:00"
+      end: "16:00"
+      earnings_multiplier: 1.5
+      threshold_multiplier: 0.7
+      risk_multiplier: 1.5
+  day_of_week:
+    monday:
+      earnings_multiplier: 0.9
+      threshold_multiplier: 1.1
+    tuesday:
+      earnings_multiplier: 1.1
+      threshold_multiplier: 0.9
+    wednesday:
+      earnings_multiplier: 1.0
+      threshold_multiplier: 1.0
+    thursday:
+      earnings_multiplier: 1.1
+      threshold_multiplier: 0.9
+    friday:
+      earnings_multiplier: 0.9
+      threshold_multiplier: 1.1
+    saturday:
+      earnings_multiplier: 0.5
+      threshold_multiplier: 2.0
+    sunday:
+      earnings_multiplier: 0.6
+      threshold_multiplier: 1.8
+
+# Symbol-specific configurations
+symbol_configs:
+  BTCUSDT:
+    earnings_multiplier: 1.0
+    threshold_multiplier: 1.0
+    risk_multiplier: 1.0
+    take_profit_percent: 5.0
+    stop_loss_percent: 2.5
+    max_position_size: 10000
+  ETHUSDT:
+    earnings_multiplier: 1.1
+    threshold_multiplier: 0.9
+    risk_multiplier: 1.1
+    take_profit_percent: 4.5
+    stop_loss_percent: 2.0
+    max_position_size: 8000
+  SOLUSDT:
+    earnings_multiplier: 1.2
+    threshold_multiplier: 0.8
+    risk_multiplier: 1.2
+    take_profit_percent: 6.0
+    stop_loss_percent: 3.0
+    max_position_size: 6000
+  ADAUSDT:
+    earnings_multiplier: 0.9
+    threshold_multiplier: 1.1
+    risk_multiplier: 0.9
+    take_profit_percent: 3.5
+    stop_loss_percent: 1.5
+    max_position_size: 4000
+  XRPUSDT:
+    earnings_multiplier: 1.0
+    threshold_multiplier: 1.0
+    risk_multiplier: 1.0
+    take_profit_percent: 4.0
+    stop_loss_percent: 2.0
+    max_position_size: 4000
