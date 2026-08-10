@@ -1,0 +1,597 @@
+# drawdown_configs.yaml
+# Configuration complète pour la gestion du drawdown dans Swing Bot
+# Version: 4.0.0 - Production Ready
+
+# Paramètres généraux de drawdown
+general:
+  enabled: true
+  mode: "adaptive"  # adaptive | fixed | dynamic | hybrid
+  currency: "USD"
+  calculate_in_real_time: true
+  update_frequency_seconds: 5
+  history_length_days: 365
+  max_drawdown_percent: 25.0
+  critical_drawdown_percent: 40.0
+  recovery_timeout_hours: 24
+  auto_hedge_on_drawdown: true
+
+# Seuils de drawdown
+thresholds:
+  warning:
+    percent: 10.0
+    action: "reduce_position_size"
+    reduction_factor: 0.5
+  danger:
+    percent: 20.0
+    action: "pause_trading"
+    pause_duration_minutes: 60
+  critical:
+    percent: 35.0
+    action: "emergency_stop"
+    close_all_positions: true
+    liquidate_portfolio: false
+  recovery:
+    percent: 5.0
+    action: "resume_trading"
+    gradual_resume: true
+    resume_step_percent: 2.0
+
+# Stratégies de gestion du drawdown
+strategies:
+  reduction:
+    enabled: true
+    method: "proportional"  # proportional | linear | exponential
+    reduction_factor_min: 0.1
+    reduction_factor_max: 0.9
+    scaling_factor: 0.5
+  hedging:
+    enabled: true
+    hedge_instruments:
+      - "BTCUSDT_PERP"
+      - "ETHUSDT_PERP"
+      - "GOLD_SPOT"
+    hedge_ratio: 0.3
+    hedge_threshold: 15.0
+    max_hedge_position: 10000
+  stop_loss_enhancement:
+    enabled: true
+    tighten_factor: 0.5
+    min_stop_distance: 0.005
+    max_stop_distance: 0.15
+  take_profit_adjustment:
+    enabled: true
+    reduce_target_factor: 0.7
+    min_profit_target: 0.01
+    max_profit_target: 0.20
+  position_reduction:
+    enabled: true
+    reduction_steps:
+      - drawdown: 5.0
+        reduce_by: 0.1
+      - drawdown: 10.0
+        reduce_by: 0.25
+      - drawdown: 15.0
+        reduce_by: 0.50
+      - drawdown: 20.0
+        reduce_by: 0.75
+      - drawdown: 30.0
+        reduce_by: 1.0
+
+# Types de drawdown
+drawdown_types:
+  peak_to_valley:
+    enabled: true
+    lookback_periods:
+      - 10
+      - 20
+      - 50
+      - 100
+      - 200
+  running:
+    enabled: true
+    window_sizes:
+      - 10
+      - 30
+      - 60
+      - 120
+      - 240
+  annualized:
+    enabled: true
+    calculation_method: "compound"
+    annualization_factor: 252
+  underwater:
+    enabled: true
+    track_duration: true
+    max_underwater_days: 30
+  high_watermark:
+    enabled: true
+    reset_on_high: true
+    persistence: true
+
+# Analyse de drawdown
+analysis:
+  historical_analysis:
+    enabled: true
+    lookback_years: 5
+    compute_max_drawdown: true
+    compute_average_drawdown: true
+    compute_median_drawdown: true
+    compute_standard_deviation: true
+    compute_var: true
+    compute_cvar: true
+  monte_carlo:
+    enabled: true
+    simulations: 10000
+    confidence_level: 95
+    time_horizon_days: 30
+    random_seed: 42
+  stress_testing:
+    enabled: true
+    scenarios:
+      - name: "crypto_crash_2022"
+        factor: 0.7
+      - name: "covid_crash"
+        factor: 0.6
+      - name: "2008_financial_crisis"
+        factor: 0.5
+      - name: "flash_crash"
+        factor: 0.3
+      - name: "bear_market"
+        factor: 0.4
+  recovery_analysis:
+    enabled: true
+    compute_recovery_time: true
+    compute_recovery_factor: true
+    compute_recovery_confidence: true
+
+# Paramètres de risque
+risk_parameters:
+  value_at_risk:
+    enabled: true
+    confidence_level: 99
+    time_horizon_days: 1
+    method: "historical"  # historical | parametric | monte_carlo
+  expected_shortfall:
+    enabled: true
+    confidence_level: 97.5
+    time_horizon_days: 1
+    method: "historical"
+  maximum_loss:
+    enabled: true
+    daily_limit_percent: 5.0
+    weekly_limit_percent: 10.0
+    monthly_limit_percent: 20.0
+  stop_loss_limits:
+    enabled: true
+    daily_stop_loss: 3.0
+    weekly_stop_loss: 7.0
+    monthly_stop_loss: 15.0
+    hard_stop_loss: 25.0
+
+# Indicateurs de drawdown
+indicators:
+  calmar_ratio:
+    enabled: true
+    min_acceptable: 0.5
+    target: 1.5
+  sterling_ratio:
+    enabled: true
+    min_acceptable: 0.3
+    target: 1.0
+  burke_ratio:
+    enabled: true
+    min_acceptable: 0.4
+    target: 1.2
+  ulcer_index:
+    enabled: true
+    max_acceptable: 15.0
+    target: 5.0
+  pain_index:
+    enabled: true
+    max_acceptable: 20.0
+    target: 8.0
+  martin_ratio:
+    enabled: true
+    min_acceptable: 0.8
+    target: 2.0
+
+# Alertes et notifications
+alerts:
+  drawdown_threshold:
+    enabled: true
+    channels:
+      - "email"
+      - "telegram"
+      - "slack"
+      - "push_notification"
+    severity_levels:
+      warning: "info"
+      danger: "critical"
+      critical: "emergency"
+  recovery:
+    enabled: true
+    channels:
+      - "email"
+      - "telegram"
+      - "push_notification"
+    notify_on_recovery: true
+    notify_on_new_high: true
+  daily_report:
+    enabled: true
+    time: "00:00"
+    include_drawdown_stats: true
+    include_risk_metrics: true
+    include_recommendations: true
+
+# Actions automatiques
+auto_actions:
+  stop_loss:
+    enabled: true
+    action_types:
+      - "close_position"
+      - "reduce_position"
+      - "hedge_position"
+    priority: "high"
+  position_sizing:
+    enabled: true
+    dynamic_sizing: true
+    kelly_fraction: 0.25
+    risk_per_trade: 1.0
+    max_risk_per_day: 3.0
+  portfolio_rebalancing:
+    enabled: true
+    rebalance_frequency_hours: 4
+    target_allocation_adjustment: true
+    max_adjustment_percent: 10.0
+
+# Paramètres avancés
+advanced:
+  correlation_adjustment:
+    enabled: true
+    adjust_for_correlation: true
+    correlation_threshold: 0.7
+    diversification_factor: 0.3
+  volatility_adjustment:
+    enabled: true
+    use_atr: true
+    use_bollinger: true
+    volatility_scaling: 0.5
+    lookback_period: 14
+  dynamic_stop_loss:
+    enabled: true
+    atr_multiplier: 2.0
+    bollinger_multiplier: 2.5
+    min_stop_percent: 0.5
+    max_stop_percent: 8.0
+    update_frequency_seconds: 10
+  machine_learning:
+    enabled: true
+    model_type: "xgboost"
+    features:
+      - "drawdown_percent"
+      - "volatility"
+      - "volume"
+      - "rsi"
+      - "macd"
+      - "bb_width"
+    prediction_threshold: 0.7
+    retrain_frequency_hours: 24
+
+# Monitoring et journalisation
+monitoring:
+  logging:
+    enabled: true
+    level: "debug"
+    format: "json"
+    include_context: true
+  metrics:
+    enabled: true
+    collect_every_seconds: 5
+    metrics_to_collect:
+      - "current_drawdown"
+      - "peak_drawdown"
+      - "max_drawdown"
+      - "recovery_time"
+      - "underwater_days"
+      - "drawdown_count"
+      - "risk_score"
+  dashboard:
+    enabled: true
+    update_interval_seconds: 1
+    charts:
+      - "drawdown_chart"
+      - "underwater_chart"
+      - "risk_metrics"
+      - "recovery_progress"
+
+# Backtesting
+backtesting:
+  enabled: true
+  use_historical_drawdown: true
+  compute_max_drawdown: true
+  compute_average_drawdown: true
+  compute_recovery_time: true
+  compute_risk_adjusted_returns: true
+  report_metrics:
+    - "max_drawdown"
+    - "avg_drawdown"
+    - "recovery_factor"
+    - "calmar_ratio"
+    - "sterling_ratio"
+    - "ulcer_index"
+
+# Recovery plan
+recovery_plan:
+  enabled: true
+  phases:
+    - name: "immediate"
+      duration_minutes: 5
+      actions:
+        - "stop_new_entries"
+        - "reduce_existing_positions"
+        - "enable_hedging"
+    - name: "short_term"
+      duration_hours: 4
+      actions:
+        - "close_high_risk_positions"
+        - "rebalance_portfolio"
+        - "increase_cash_position"
+    - name: "medium_term"
+      duration_days: 3
+      actions:
+        - "gradual_resume_trading"
+        - "increase_position_sizing"
+        - "reassess_risk_parameters"
+    - name: "long_term"
+      duration_days: 7
+      actions:
+        - "full_resume_trading"
+        - "normalize_position_sizing"
+        - "review_strategy_performance"
+  recovery_triggers:
+    - type: "drawdown_percent"
+      threshold: 5.0
+      phase: "short_term"
+    - type: "drawdown_percent"
+      threshold: 2.0
+      phase: "medium_term"
+    - type: "drawdown_percent"
+      threshold: 0.5
+      phase: "long_term"
+    - type: "new_high"
+      trigger_phase: "long_term"
+  fail_safe:
+    enabled: true
+    max_recovery_attempts: 3
+    cooldown_hours: 12
+    emergency_contact: "ceo@nexustradingia.com"
+
+# Performance tracking
+performance_tracking:
+  enabled: true
+  metrics:
+    - "drawdown_duration"
+    - "drawdown_severity"
+    - "recovery_rate"
+    - "drawdown_frequency"
+    - "risk_adjusted_returns"
+  comparison:
+    enabled: true
+    benchmark: "SP500"
+    period: "monthly"
+  reporting:
+    enabled: true
+    frequency: "daily"
+    format: "pdf"
+    include_recommendations: true
+
+# Limites de sécurité
+security_limits:
+  max_drawdown_absolute: 50000
+  max_drawdown_percent: 30.0
+  max_recovery_time_hours: 48
+  max_underwater_days: 15
+  circuit_breaker:
+    enabled: true
+    drawdown_threshold: 25.0
+    cooldown_minutes: 120
+    require_manual_reset: true
+  daily_limits:
+    max_loss_percent: 5.0
+    max_loss_absolute: 10000
+    max_risk_exposure: 20000
+
+# Market conditions adaptation
+market_adaptation:
+  enabled: true
+  volatility_adjustment: true
+  regime_detection:
+    enabled: true
+    lookback_periods:
+      - 20
+      - 50
+      - 200
+    regimes:
+      - "bull"
+      - "bear"
+      - "sideways"
+      - "volatile"
+  regime_parameters:
+    bull:
+      drawdown_multiplier: 1.0
+      risk_multiplier: 1.0
+    bear:
+      drawdown_multiplier: 0.5
+      risk_multiplier: 0.3
+    sideways:
+      drawdown_multiplier: 0.8
+      risk_multiplier: 0.7
+    volatile:
+      drawdown_multiplier: 0.4
+      risk_multiplier: 0.2
+
+# Distribution des métriques
+metrics_distribution:
+  enabled: true
+  distribution:
+    - metric: "daily_drawdown"
+      bins: 50
+      update_frequency: "daily"
+    - metric: "weekly_drawdown"
+      bins: 30
+      update_frequency: "weekly"
+    - metric: "monthly_drawdown"
+      bins: 20
+      update_frequency: "monthly"
+  percentiles:
+    - 1
+    - 5
+    - 10
+    - 25
+    - 50
+    - 75
+    - 90
+    - 95
+    - 99
+
+# Configuration de la base de données
+database:
+  enabled: true
+  table_name: "drawdown_metrics"
+  retention_days: 365
+  aggregation:
+    enabled: true
+    intervals:
+      - "1h"
+      - "4h"
+      - "24h"
+      - "7d"
+      - "30d"
+  compression: true
+  backup:
+    enabled: true
+    frequency: "daily"
+    retention_days: 30
+
+# Webhooks
+webhooks:
+  enabled: true
+  endpoints:
+    - url: "https://nexustradingia.com/api/webhooks/drawdown"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      payload_template: "drawdown_alert"
+  retry:
+    enabled: true
+    max_attempts: 5
+    backoff_seconds: 30
+
+# Logging avancé
+advanced_logging:
+  enabled: true
+  levels:
+    - "info"
+    - "warning"
+    - "error"
+    - "critical"
+    - "debug"
+  output: "drawdown_logs"
+  rotation:
+    enabled: true
+    max_size_mb: 100
+    max_files: 10
+  remote_logging:
+    enabled: true
+    endpoints:
+      - "https://nexustradingia.com/logs/drawdown"
+  include_trace: true
+  include_stack_trace: true
+  include_context: true
+
+# Threading et performances
+performance:
+  thread_pool_size: 4
+  queue_size: 1000
+  batch_size: 100
+  async_processing: true
+  cache_size: 1000
+  cache_ttl_seconds: 60
+  database_pool_size: 10
+  database_pool_max_overflow: 20
+  use_multiprocessing: false
+  max_workers: 4
+
+# API de gestion
+management_api:
+  enabled: true
+  endpoints:
+    - "/api/v1/drawdown/current"
+    - "/api/v1/drawdown/history"
+    - "/api/v1/drawdown/metrics"
+    - "/api/v1/drawdown/status"
+    - "/api/v1/drawdown/recovery"
+  authentication_required: true
+  rate_limit: 100
+  rate_limit_interval_seconds: 60
+  version: "v1.0.0"
+
+# Export des données
+data_export:
+  enabled: true
+  formats:
+    - "csv"
+    - "json"
+    - "parquet"
+  schedule: "daily"
+  retention_days: 30
+  compression: "gzip"
+  destination: "s3://nexus-data/drawdown/"
+  encrypt: true
+  encryption_key_id: "nexus-drawdown-key"
+
+# Intégration avec d'autres modules
+integrations:
+  risk_engine:
+    enabled: true
+    sync_frequency_seconds: 5
+    share_metrics: true
+  execution_engine:
+    enabled: true
+    share_actions: true
+    require_confirmation: true
+  portfolio_manager:
+    enabled: true
+    share_positions: true
+    share_allocation: true
+  ai_engine:
+    enabled: true
+    use_ai_predictions: true
+    confidence_threshold: 0.8
+    model_endpoint: "http://ai-engine:8000/predict/drawdown"
+
+# Tests et validation
+testing:
+  unit_tests:
+    enabled: true
+    coverage_threshold: 90
+  integration_tests:
+    enabled: true
+  stress_tests:
+    enabled: true
+    scenarios:
+      - "high_volatility"
+      - "flash_crash"
+      - "black_swan"
+      - "liquidity_crisis"
+  validation:
+    enabled: true
+    validate_on_startup: true
+    validate_on_config_change: true
+    validation_rules:
+      - "max_drawdown_percent > 0"
+      - "max_drawdown_percent <= 100"
+      - "critical_drawdown_percent > max_drawdown_percent"
+      - "recovery_timeout_hours > 0"
+      - "thresholds.warning.percent < thresholds.danger.percent"
+      - "thresholds.danger.percent < thresholds.critical.percent"
