@@ -1,0 +1,724 @@
+# ensemble_configs.yaml
+# Configuration complète pour les modèles d'ensemble dans Swing Bot
+# Version: 4.0.0 - Production Ready
+
+# Paramètres généraux
+general:
+  enabled: true
+  mode: "adaptive"
+  calculate_in_real_time: true
+  update_frequency_seconds: 1
+  lookback_periods:
+    - 5
+    - 10
+    - 20
+    - 50
+    - 100
+    - 200
+    - 500
+  history_length_days: 730
+  min_data_points: 100
+  max_data_points: 100000
+  ensemble_types:
+    - "bagging"
+    - "boosting"
+    - "stacking"
+    - "voting"
+    - "averaging"
+    - "weighted"
+
+# Types d'ensembles
+ensemble_types:
+  bagging:
+    enabled: true
+    description: "Bootstrap Aggregating"
+    base_estimators: 10
+    max_samples: 1.0
+    max_features: 1.0
+    bootstrap: true
+    bootstrap_features: false
+    oob_score: true
+    random_state: 42
+  boosting:
+    enabled: true
+    description: "Boosting Ensemble"
+    base_estimators: 100
+    learning_rate: 0.1
+    max_depth: 3
+    min_samples_split: 2
+    min_samples_leaf: 1
+    subsample: 1.0
+    random_state: 42
+  stacking:
+    enabled: true
+    description: "Stacking Ensemble"
+    base_estimators:
+      - "random_forest"
+      - "xgboost"
+      - "lightgbm"
+      - "catboost"
+      - "lstm"
+    final_estimator: "logistic_regression"
+    cv: 5
+    passthrough: false
+    random_state: 42
+  voting:
+    enabled: true
+    description: "Voting Ensemble"
+    estimators:
+      - "random_forest"
+      - "xgboost"
+      - "lightgbm"
+      - "catboost"
+    voting_type: "soft"
+    weights:
+      - 1
+      - 1
+      - 1
+      - 1
+    random_state: 42
+  averaging:
+    enabled: true
+    description: "Averaging Ensemble"
+    estimators:
+      - "random_forest"
+      - "xgboost"
+      - "lightgbm"
+      - "catboost"
+    averaging_type: "mean"
+    weights:
+      - 0.25
+      - 0.25
+      - 0.25
+      - 0.25
+  weighted:
+    enabled: true
+    description: "Weighted Ensemble"
+    estimators:
+      - "random_forest"
+      - "xgboost"
+      - "lightgbm"
+      - "catboost"
+      - "lstm"
+      - "gru"
+    weights:
+      - 0.20
+      - 0.20
+      - 0.20
+      - 0.15
+      - 0.15
+      - 0.10
+    weight_optimization: true
+    optimization_method: "grid_search"
+
+# Modèles de base
+base_models:
+  random_forest:
+    enabled: true
+    n_estimators: 100
+    max_depth: 10
+    min_samples_split: 2
+    min_samples_leaf: 1
+    max_features: "sqrt"
+    bootstrap: true
+    oob_score: true
+    random_state: 42
+    n_jobs: -1
+  xgboost:
+    enabled: true
+    n_estimators: 100
+    max_depth: 6
+    learning_rate: 0.1
+    subsample: 0.8
+    colsample_bytree: 0.8
+    min_child_weight: 1
+    gamma: 0
+    reg_alpha: 0
+    reg_lambda: 1
+    random_state: 42
+    n_jobs: -1
+  lightgbm:
+    enabled: true
+    n_estimators: 100
+    max_depth: 6
+    learning_rate: 0.1
+    num_leaves: 31
+    subsample: 0.8
+    colsample_bytree: 0.8
+    min_child_weight: 1
+    reg_alpha: 0
+    reg_lambda: 1
+    random_state: 42
+    n_jobs: -1
+  catboost:
+    enabled: true
+    iterations: 100
+    depth: 6
+    learning_rate: 0.1
+    l2_leaf_reg: 3
+    random_seed: 42
+    thread_count: -1
+  lstm:
+    enabled: true
+    units: 64
+    layers: 2
+    dropout: 0.2
+    recurrent_dropout: 0.2
+    activation: "tanh"
+    recurrent_activation: "sigmoid"
+    optimizer: "adam"
+    learning_rate: 0.001
+    batch_size: 32
+    epochs: 50
+    random_state: 42
+  gru:
+    enabled: true
+    units: 64
+    layers: 2
+    dropout: 0.2
+    recurrent_dropout: 0.2
+    activation: "tanh"
+    recurrent_activation: "sigmoid"
+    optimizer: "adam"
+    learning_rate: 0.001
+    batch_size: 32
+    epochs: 50
+    random_state: 42
+  transformer:
+    enabled: true
+    d_model: 64
+    n_heads: 4
+    d_ff: 128
+    n_layers: 2
+    dropout: 0.1
+    optimizer: "adam"
+    learning_rate: 0.001
+    batch_size: 32
+    epochs: 50
+    random_state: 42
+  cnn:
+    enabled: true
+    filters: 64
+    kernel_size: 3
+    layers: 2
+    pool_size: 2
+    dropout: 0.2
+    optimizer: "adam"
+    learning_rate: 0.001
+    batch_size: 32
+    epochs: 50
+    random_state: 42
+
+# Stratégies d'ensemble
+strategies:
+  feature_bagging:
+    enabled: true
+    description: "Feature Bagging"
+    n_subsets: 5
+    subset_size: 0.7
+    random_state: 42
+  time_series_bagging:
+    enabled: true
+    description: "Time Series Bagging"
+    n_blocks: 5
+    block_size: 0.5
+    overlap: 0.2
+    random_state: 42
+  model_bagging:
+    enabled: true
+    description: "Model Bagging"
+    n_models: 5
+    model_types:
+      - "random_forest"
+      - "xgboost"
+      - "lightgbm"
+      - "catboost"
+      - "lstm"
+    random_state: 42
+  weighted_voting:
+    enabled: true
+    description: "Weighted Voting"
+    weight_methods:
+      - "accuracy"
+      - "f1_score"
+      - "auc"
+      - "log_loss"
+    weight_optimization: true
+  meta_learning:
+    enabled: true
+    description: "Meta-Learning"
+    meta_model: "xgboost"
+    base_models:
+      - "random_forest"
+      - "xgboost"
+      - "lightgbm"
+      - "catboost"
+    cv_folds: 5
+    random_state: 42
+
+# Optimisation
+optimization:
+  hyperparameter_tuning:
+    enabled: true
+    method: "bayesian"
+    n_iterations: 100
+    n_jobs: -1
+    random_state: 42
+    early_stopping: true
+    early_stopping_rounds: 10
+  weight_optimization:
+    enabled: true
+    method: "genetic_algorithm"
+    population_size: 50
+    generations: 100
+    mutation_rate: 0.1
+    crossover_rate: 0.8
+    random_state: 42
+  feature_selection:
+    enabled: true
+    method: "recursive_elimination"
+    n_features: 20
+    cv_folds: 5
+    random_state: 42
+  model_selection:
+    enabled: true
+    method: "cross_validation"
+    cv_folds: 5
+    scoring: "neg_log_loss"
+    random_state: 42
+
+# Gestion des poids
+weights:
+  dynamic_weighting:
+    enabled: true
+    update_frequency_seconds: 60
+    weight_metrics:
+      - "accuracy"
+      - "f1_score"
+      - "auc"
+      - "log_loss"
+    weight_decay: 0.9
+    min_weight: 0.05
+    max_weight: 0.95
+  adaptive_weighting:
+    enabled: true
+    update_frequency_seconds: 300
+    adaptation_method: "bayesian"
+    confidence_threshold: 0.7
+    learning_rate: 0.01
+  performance_weighting:
+    enabled: true
+    performance_window: 100
+    weight_calculation: "relative_performance"
+    min_weight: 0.05
+    max_weight: 0.95
+
+# Validation et évaluation
+validation:
+  cross_validation:
+    enabled: true
+    method: "time_series_split"
+    n_splits: 5
+    gap: 0
+    test_size: 0.2
+    random_state: 42
+  backtesting:
+    enabled: true
+    method: "walk_forward"
+    n_folds: 5
+    train_size: 0.7
+    test_size: 0.3
+    random_state: 42
+  out_of_sample:
+    enabled: true
+    test_size: 0.3
+    random_state: 42
+  rolling_window:
+    enabled: true
+    window_size: 100
+    step_size: 10
+    random_state: 42
+
+# Métriques d'évaluation
+metrics:
+  classification:
+    enabled: true
+    metrics:
+      - "accuracy"
+      - "precision"
+      - "recall"
+      - "f1_score"
+      - "roc_auc"
+      - "log_loss"
+      - "brier_score"
+  regression:
+    enabled: true
+    metrics:
+      - "mse"
+      - "rmse"
+      - "mae"
+      - "mape"
+      - "r2_score"
+      - "adjusted_r2"
+      - "explained_variance"
+  trading:
+    enabled: true
+    metrics:
+      - "win_rate"
+      - "profit_factor"
+      - "sharpe_ratio"
+      - "sortino_ratio"
+      - "calmar_ratio"
+      - "max_drawdown"
+      - "risk_adjusted_return"
+  ensemble:
+    enabled: true
+    metrics:
+      - "diversity_score"
+      - "correlation"
+      - "model_agreement"
+      - "ensemble_variance"
+      - "individual_performance"
+
+# Sélection de modèles
+model_selection:
+  diversity:
+    enabled: true
+    diversity_measure: "correlation"
+    min_diversity: 0.3
+    max_correlation: 0.7
+  performance:
+    enabled: true
+    min_performance: 0.5
+    ranking_method: "average_rank"
+    weight_performance: true
+  risk:
+    enabled: true
+    risk_metrics:
+      - "volatility"
+      - "max_drawdown"
+      - "var"
+      - "cvar"
+    risk_tolerance: 0.5
+
+# Monitoring et journalisation
+monitoring:
+  logging:
+    enabled: true
+    level: "debug"
+    format: "json"
+    include_context: true
+    include_timestamp: true
+    include_metadata: true
+  metrics:
+    enabled: true
+    collect_every_seconds: 1
+    metrics_to_collect:
+      - "ensemble_type"
+      - "model_count"
+      - "current_weights"
+      - "performance_metrics"
+      - "diversity_score"
+      - "confidence_score"
+      - "prediction_variance"
+      - "model_agreement"
+      - "win_rate"
+      - "profit_factor"
+      - "sharpe_ratio"
+  dashboard:
+    enabled: true
+    update_interval_seconds: 1
+    charts:
+      - "ensemble_performance"
+      - "model_weights"
+      - "diversity_metrics"
+      - "prediction_distribution"
+      - "performance_comparison"
+      - "risk_metrics"
+      - "model_correlation"
+
+# Backtesting
+backtesting:
+  enabled: true
+  use_historical_data: true
+  compute_ensemble_performance: true
+  compute_model_comparison: true
+  compute_risk_adjusted_returns: true
+  compute_diversity_analysis: true
+  report_metrics:
+    - "ensemble_accuracy"
+    - "ensemble_f1"
+    - "ensemble_auc"
+    - "win_rate"
+    - "profit_factor"
+    - "sharpe_ratio"
+    - "max_drawdown"
+    - "diversity_score"
+    - "model_correlation"
+
+# Configuration de la base de données
+database:
+  enabled: true
+  table_name: "ensemble_metrics"
+  retention_days: 365
+  aggregation:
+    enabled: true
+    intervals:
+      - "1s"
+      - "5s"
+      - "15s"
+      - "30s"
+      - "1m"
+      - "5m"
+      - "15m"
+      - "1h"
+      - "4h"
+      - "24h"
+  compression: true
+  backup:
+    enabled: true
+    frequency: "daily"
+    retention_days: 30
+
+# Webhooks
+webhooks:
+  enabled: true
+  endpoints:
+    - url: "https://nexustradingia.com/api/webhooks/ensemble"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      payload_template: "ensemble_alert"
+    - url: "https://nexustradingia.com/api/webhooks/ensemble-performance"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      payload_template: "ensemble_performance"
+  retry:
+    enabled: true
+    max_attempts: 5
+    backoff_seconds: 30
+
+# Logging avancé
+advanced_logging:
+  enabled: true
+  levels:
+    - "info"
+    - "warning"
+    - "error"
+    - "critical"
+    - "debug"
+  output: "ensemble_logs"
+  rotation:
+    enabled: true
+    max_size_mb: 100
+    max_files: 10
+  remote_logging:
+    enabled: true
+    endpoints:
+      - "https://nexustradingia.com/logs/ensemble"
+  include_trace: true
+  include_stack_trace: true
+  include_context: true
+
+# Threading et performances
+performance:
+  thread_pool_size: 8
+  queue_size: 10000
+  batch_size: 1000
+  async_processing: true
+  cache_size: 10000
+  cache_ttl_seconds: 30
+  database_pool_size: 10
+  database_pool_max_overflow: 20
+  use_multiprocessing: true
+  max_workers: 8
+  use_cython: true
+  use_numba: true
+  use_gpu: true
+  gpu_device: 0
+
+# API de gestion
+management_api:
+  enabled: true
+  endpoints:
+    - "/api/v1/ensemble/current"
+    - "/api/v1/ensemble/history"
+    - "/api/v1/ensemble/metrics"
+    - "/api/v1/ensemble/status"
+    - "/api/v1/ensemble/models"
+    - "/api/v1/ensemble/weights"
+    - "/api/v1/ensemble/performance"
+  authentication_required: true
+  rate_limit: 100
+  rate_limit_interval_seconds: 60
+  version: "v1.0.0"
+
+# Export des données
+data_export:
+  enabled: true
+  formats:
+    - "csv"
+    - "json"
+    - "parquet"
+    - "avro"
+    - "feather"
+  schedule: "realtime"
+  batch_size: 1000
+  retention_days: 30
+  compression: "gzip"
+  destination: "s3://nexus-data/ensemble/"
+  encrypt: true
+  encryption_key_id: "nexus-ensemble-key"
+  partition_by:
+    - "symbol"
+    - "year"
+    - "month"
+    - "day"
+
+# Intégration avec d'autres modules
+integrations:
+  risk_engine:
+    enabled: true
+    sync_frequency_seconds: 1
+    share_metrics: true
+  execution_engine:
+    enabled: true
+    share_signals: true
+    require_confirmation: true
+  portfolio_manager:
+    enabled: true
+    share_positions: true
+    share_allocation: true
+  ai_engine:
+    enabled: true
+    use_ai_predictions: true
+    confidence_threshold: 0.7
+    model_endpoint: "http://ai-engine:8000/predict/ensemble"
+  market_data:
+    enabled: true
+    sync_frequency_ms: 100
+    data_endpoint: "ws://market-data:8080/ws"
+
+# Tests et validation
+testing:
+  unit_tests:
+    enabled: true
+    coverage_threshold: 90
+  integration_tests:
+    enabled: true
+  stress_tests:
+    enabled: true
+    scenarios:
+      - "high_data_volume"
+      - "low_data_quality"
+      - "model_failures"
+      - "ensemble_rebuilding"
+      - "weight_updates"
+  validation:
+    enabled: true
+    validate_on_startup: true
+    validate_on_config_change: true
+    validation_rules:
+      - "ensemble_types.bagging.base_estimators > 0"
+      - "ensemble_types.boosting.base_estimators > 0"
+      - "ensemble_types.stacking.cv > 0"
+      - "ensemble_types.voting.estimators.length > 0"
+      - "optimization.hyperparameter_tuning.n_iterations > 0"
+      - "validation.cross_validation.n_splits > 0"
+      - "min_data_points > 0"
+
+# Market conditions adaptation
+market_adaptation:
+  enabled: true
+  regime_detection:
+    enabled: true
+    lookback_periods:
+      - 20
+      - 50
+      - 200
+    regimes:
+      - "trending"
+      - "ranging"
+      - "volatile"
+      - "stable"
+      - "bull"
+      - "bear"
+  regime_parameters:
+    trending:
+      ensemble_multiplier: 1.2
+      confidence_multiplier: 1.1
+      weight_multiplier: 1.0
+    ranging:
+      ensemble_multiplier: 0.8
+      confidence_multiplier: 0.9
+      weight_multiplier: 0.8
+    volatile:
+      ensemble_multiplier: 0.6
+      confidence_multiplier: 0.7
+      weight_multiplier: 0.6
+    stable:
+      ensemble_multiplier: 1.0
+      confidence_multiplier: 1.2
+      weight_multiplier: 1.2
+    bull:
+      ensemble_multiplier: 1.1
+      confidence_multiplier: 1.0
+      weight_multiplier: 1.1
+    bear:
+      ensemble_multiplier: 0.7
+      confidence_multiplier: 0.8
+      weight_multiplier: 0.7
+
+# Time-based configurations
+time_based:
+  enabled: true
+  sessions:
+    asia:
+      start: "00:00"
+      end: "08:00"
+      ensemble_multiplier: 0.8
+      confidence_multiplier: 0.9
+    london:
+      start: "08:00"
+      end: "16:00"
+      ensemble_multiplier: 1.2
+      confidence_multiplier: 1.1
+    newyork:
+      start: "13:00"
+      end: "22:00"
+      ensemble_multiplier: 1.0
+      confidence_multiplier: 1.0
+    overlap:
+      start: "13:00"
+      end: "16:00"
+      ensemble_multiplier: 1.5
+      confidence_multiplier: 1.2
+
+# Symbol-specific configurations
+symbol_configs:
+  BTCUSDT:
+    ensemble_multiplier: 1.0
+    confidence_multiplier: 1.0
+    weight_multiplier: 1.0
+    model_complexity: "medium"
+  ETHUSDT:
+    ensemble_multiplier: 1.1
+    confidence_multiplier: 0.9
+    weight_multiplier: 1.1
+    model_complexity: "medium"
+  SOLUSDT:
+    ensemble_multiplier: 1.2
+    confidence_multiplier: 0.8
+    weight_multiplier: 1.2
+    model_complexity: "high"
+  ADAUSDT:
+    ensemble_multiplier: 0.9
+    confidence_multiplier: 1.1
+    weight_multiplier: 0.9
+    model_complexity: "low"
+  XRPUSDT:
+    ensemble_multiplier: 1.0
+    confidence_multiplier: 1.0
+    weight_multiplier: 1.0
+    model_complexity: "medium"
