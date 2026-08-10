@@ -1,0 +1,745 @@
+# exposure_configs.yaml
+# Configuration complète pour la gestion de l'exposition dans Swing Bot
+# Version: 4.0.0 - Production Ready
+
+# Paramètres généraux
+general:
+  enabled: true
+  mode: "comprehensive"
+  calculate_in_real_time: true
+  update_frequency_seconds: 1
+  lookback_periods:
+    - 5
+    - 10
+    - 20
+    - 50
+    - 100
+    - 200
+    - 500
+  history_length_days: 365
+  min_data_points: 50
+  max_data_points: 100000
+  base_currency: "USD"
+  exposure_limit: 100000
+  exposure_percent_limit: 20.0
+
+# Types d'exposition
+exposure_types:
+  portfolio_exposure:
+    enabled: true
+    description: "Portfolio Exposure"
+    calculation_method: "total_value"
+    include_cash: true
+    include_positions: true
+    include_derivatives: true
+    include_hedges: true
+    update_frequency_seconds: 60
+  symbol_exposure:
+    enabled: true
+    description: "Symbol Exposure"
+    calculation_method: "position_value"
+    include_spot: true
+    include_futures: true
+    include_options: true
+    include_perpetual: true
+    update_frequency_seconds: 60
+  sector_exposure:
+    enabled: true
+    description: "Sector Exposure"
+    calculation_method: "sector_allocation"
+    sectors:
+      - "cryptocurrency"
+      - "technology"
+      - "finance"
+      - "healthcare"
+      - "energy"
+      - "commodities"
+      - "forex"
+    update_frequency_seconds: 300
+  market_exposure:
+    enabled: true
+    description: "Market Exposure"
+    calculation_method: "beta_adjusted"
+    benchmark: "SP500"
+    beta_calculation: "historical"
+    update_frequency_seconds: 300
+  net_exposure:
+    enabled: true
+    description: "Net Exposure"
+    calculation_method: "long_short_difference"
+    include_derivatives: true
+    include_hedges: true
+    update_frequency_seconds: 60
+  gross_exposure:
+    enabled: true
+    description: "Gross Exposure"
+    calculation_method: "long_short_sum"
+    include_derivatives: true
+    include_hedges: true
+    update_frequency_seconds: 60
+
+# Seuils d'exposition
+thresholds:
+  portfolio:
+    warning: 15.0
+    danger: 18.0
+    critical: 20.0
+    emergency: 25.0
+  symbol:
+    warning: 5.0
+    danger: 8.0
+    critical: 10.0
+    emergency: 15.0
+  sector:
+    warning: 10.0
+    danger: 15.0
+    critical: 20.0
+    emergency: 25.0
+  market:
+    warning: 10.0
+    danger: 15.0
+    critical: 20.0
+    emergency: 25.0
+  net:
+    warning: 10.0
+    danger: 15.0
+    critical: 20.0
+    emergency: 25.0
+  gross:
+    warning: 20.0
+    danger: 30.0
+    critical: 40.0
+    emergency: 50.0
+
+# Indicateurs d'exposition
+indicators:
+  exposure_velocity:
+    enabled: true
+    period: 5
+    smoothing: 3
+    threshold: 0.1
+  exposure_acceleration:
+    enabled: true
+    period: 10
+    smoothing: 5
+    threshold: 0.05
+  exposure_momentum:
+    enabled: true
+    period: 14
+    smoothing: 3
+    threshold: 0.15
+  exposure_trend:
+    enabled: true
+    period: 20
+    smoothing: 5
+    threshold: 0.2
+  exposure_volatility:
+    enabled: true
+    period: 20
+    smoothing: 3
+    threshold: 0.1
+  exposure_concentration:
+    enabled: true
+    period: 14
+    smoothing: 0
+    threshold: 0.3
+  exposure_diversification:
+    enabled: true
+    period: 14
+    smoothing: 0
+    threshold: 0.7
+
+# Analyse d'exposition
+analysis:
+  historical:
+    enabled: true
+    lookback_years: 5
+    compute_mean_exposure: true
+    compute_median_exposure: true
+    compute_std_exposure: true
+    compute_percentiles: true
+    percentile_values:
+      - 1
+      - 5
+      - 10
+      - 25
+      - 50
+      - 75
+      - 90
+      - 95
+      - 99
+    compute_exposure_distribution: true
+    compute_exposure_patterns: true
+    compute_exposure_cycles: true
+  real_time:
+    enabled: true
+    update_frequency_ms: 100
+    compute_instantaneous_exposure: true
+    compute_moving_average_exposure: true
+    compute_exponential_exposure: true
+    compute_weighted_exposure: true
+    compute_exposure_velocity: true
+    compute_exposure_acceleration: true
+  predictive:
+    enabled: true
+    model_type: "ensemble"
+    models:
+      - "lstm"
+      - "gru"
+      - "xgboost"
+      - "lightgbm"
+    features:
+      - "exposure_total"
+      - "exposure_symbol"
+      - "exposure_sector"
+      - "exposure_market"
+      - "exposure_net"
+      - "exposure_gross"
+      - "exposure_velocity"
+      - "exposure_acceleration"
+      - "exposure_momentum"
+      - "exposure_trend"
+      - "exposure_volatility"
+      - "price_change"
+      - "volume"
+      - "time_of_day"
+      - "day_of_week"
+      - "market_condition"
+    forecast_horizons:
+      - 1
+      - 5
+      - 10
+      - 20
+    confidence_threshold: 0.7
+    retrain_frequency_hours: 24
+  comparative:
+    enabled: true
+    compare_to_benchmark: true
+    compare_to_historical: true
+    compare_to_peers: true
+    compare_to_sector: true
+
+# Gestion de l'exposition
+exposure_management:
+  portfolio_management:
+    enabled: true
+    methods:
+      - "diversification"
+      - "hedging"
+      - "position_sizing"
+      - "stop_loss"
+      - "take_profit"
+    diversification_target: 0.7
+    hedging_ratio: 0.3
+    position_size_limit: 0.1
+  symbol_management:
+    enabled: true
+    max_exposure_per_symbol: 10000
+    max_exposure_percent_per_symbol: 5.0
+    symbol_limits:
+      BTCUSDT: 20000
+      ETHUSDT: 15000
+      SOLUSDT: 10000
+      ADAUSDT: 5000
+      XRPUSDT: 5000
+  sector_management:
+    enabled: true
+    sector_limits:
+      cryptocurrency: 0.3
+      technology: 0.2
+      finance: 0.15
+      healthcare: 0.1
+      energy: 0.1
+      commodities: 0.1
+      forex: 0.05
+  market_management:
+    enabled: true
+    beta_limits:
+      min_beta: 0.5
+      max_beta: 2.0
+    correlation_limits:
+      max_correlation: 0.8
+
+# Alertes et notifications
+alerts:
+  exposure_limit:
+    enabled: true
+    threshold: 80.0
+    channels:
+      - "email"
+      - "telegram"
+      - "slack"
+      - "push_notification"
+    severity: "warning"
+  exposure_exceeded:
+    enabled: true
+    threshold: 100.0
+    channels:
+      - "email"
+      - "telegram"
+      - "slack"
+    severity: "critical"
+  exposure_change:
+    enabled: true
+    threshold: 5.0
+    channels:
+      - "telegram"
+      - "push_notification"
+    severity: "info"
+  exposure_concentration:
+    enabled: true
+    threshold: 50.0
+    channels:
+      - "email"
+      - "telegram"
+      - "slack"
+    severity: "warning"
+
+# Actions automatiques
+auto_actions:
+  exposure_reduction:
+    enabled: true
+    action_types:
+      - "reduce_position"
+      - "close_position"
+      - "hedge_position"
+      - "diversify_portfolio"
+    reduction_factor: 0.5
+    max_reduction_percent: 50.0
+  exposure_optimization:
+    enabled: true
+    action_types:
+      - "rebalance_portfolio"
+      - "adjust_position_sizing"
+      - "modify_hedge_ratio"
+      - "diversify_sectors"
+    optimization_factor: 0.1
+    max_optimization_percent: 20.0
+  exposure_hedging:
+    enabled: true
+    action_types:
+      - "add_hedge"
+      - "increase_hedge"
+      - "decrease_hedge"
+      - "remove_hedge"
+    hedge_ratio: 0.3
+    max_hedge_percent: 50.0
+
+# Paramètres avancés
+advanced:
+  machine_learning:
+    enabled: true
+    model_type: "ensemble"
+    models:
+      - "random_forest"
+      - "xgboost"
+      - "lightgbm"
+      - "lstm"
+    features:
+      - "exposure_total"
+      - "exposure_symbol"
+      - "exposure_sector"
+      - "exposure_market"
+      - "exposure_net"
+      - "exposure_gross"
+      - "exposure_velocity"
+      - "exposure_acceleration"
+      - "exposure_momentum"
+      - "exposure_trend"
+      - "exposure_volatility"
+      - "exposure_concentration"
+      - "exposure_diversification"
+      - "price"
+      - "price_change"
+      - "volume"
+      - "volatility"
+      - "time_of_day"
+      - "day_of_week"
+      - "market_condition"
+    training_frequency_hours: 6
+    retrain_threshold: 0.9
+    validation_split: 0.2
+    random_seed: 42
+    ensemble_weights:
+      - 0.25
+      - 0.25
+      - 0.25
+      - 0.25
+  stress_testing:
+    enabled: true
+    scenarios:
+      - name: "market_crash"
+        factor: 0.3
+        description: "Market crash scenario"
+      - name: "volatility_spike"
+        factor: 2.0
+        description: "Volatility spike scenario"
+      - name: "liquidity_crisis"
+        factor: 0.4
+        description: "Liquidity crisis scenario"
+      - name: "sector_rotation"
+        factor: 0.6
+        description: "Sector rotation scenario"
+    compute_stress_exposure: true
+    compute_stress_loss: true
+    compute_stress_hedging: true
+
+# Monitoring et journalisation
+monitoring:
+  logging:
+    enabled: true
+    level: "debug"
+    format: "json"
+    include_context: true
+    include_timestamp: true
+    include_metadata: true
+  metrics:
+    enabled: true
+    collect_every_seconds: 1
+    metrics_to_collect:
+      - "exposure_total"
+      - "exposure_percent"
+      - "exposure_symbol"
+      - "exposure_sector"
+      - "exposure_market"
+      - "exposure_net"
+      - "exposure_gross"
+      - "exposure_velocity"
+      - "exposure_acceleration"
+      - "exposure_momentum"
+      - "exposure_trend"
+      - "exposure_volatility"
+      - "exposure_concentration"
+      - "exposure_diversification"
+      - "hedge_ratio"
+      - "beta"
+      - "correlation"
+  dashboard:
+    enabled: true
+    update_interval_seconds: 1
+    charts:
+      - "exposure_chart"
+      - "exposure_distribution"
+      - "exposure_velocity"
+      - "exposure_acceleration"
+      - "exposure_trend"
+      - "exposure_concentration"
+      - "hedge_ratio"
+      - "beta_analysis"
+
+# Backtesting
+backtesting:
+  enabled: true
+  use_historical_exposure: true
+  compute_exposure_accuracy: true
+  compute_risk_adjusted_returns: true
+  compute_hedging_effectiveness: true
+  compute_diversification_effectiveness: true
+  report_metrics:
+    - "win_rate"
+    - "profit_factor"
+    - "sharpe_ratio"
+    - "max_drawdown"
+    - "exposure_accuracy"
+    - "hedging_effectiveness"
+    - "diversification_effectiveness"
+
+# Configuration de la base de données
+database:
+  enabled: true
+  table_name: "exposure_metrics"
+  retention_days: 365
+  aggregation:
+    enabled: true
+    intervals:
+      - "1s"
+      - "5s"
+      - "15s"
+      - "30s"
+      - "1m"
+      - "5m"
+      - "15m"
+      - "1h"
+      - "4h"
+      - "24h"
+  compression: true
+  backup:
+    enabled: true
+    frequency: "daily"
+    retention_days: 30
+
+# Webhooks
+webhooks:
+  enabled: true
+  endpoints:
+    - url: "https://nexustradingia.com/api/webhooks/exposure"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      payload_template: "exposure_alert"
+    - url: "https://nexustradingia.com/api/webhooks/exposure-hedge"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      payload_template: "exposure_hedge"
+  retry:
+    enabled: true
+    max_attempts: 5
+    backoff_seconds: 30
+
+# Logging avancé
+advanced_logging:
+  enabled: true
+  levels:
+    - "info"
+    - "warning"
+    - "error"
+    - "critical"
+    - "debug"
+  output: "exposure_logs"
+  rotation:
+    enabled: true
+    max_size_mb: 100
+    max_files: 10
+  remote_logging:
+    enabled: true
+    endpoints:
+      - "https://nexustradingia.com/logs/exposure"
+  include_trace: true
+  include_stack_trace: true
+  include_context: true
+
+# Threading et performances
+performance:
+  thread_pool_size: 8
+  queue_size: 10000
+  batch_size: 1000
+  async_processing: true
+  cache_size: 10000
+  cache_ttl_seconds: 30
+  database_pool_size: 10
+  database_pool_max_overflow: 20
+  use_multiprocessing: true
+  max_workers: 8
+  use_cython: true
+  use_numba: true
+  use_gpu: false
+  gpu_device: 0
+
+# API de gestion
+management_api:
+  enabled: true
+  endpoints:
+    - "/api/v1/exposure/current"
+    - "/api/v1/exposure/history"
+    - "/api/v1/exposure/metrics"
+    - "/api/v1/exposure/status"
+    - "/api/v1/exposure/limits"
+    - "/api/v1/exposure/management"
+    - "/api/v1/exposure/hedging"
+    - "/api/v1/exposure/forecast"
+  authentication_required: true
+  rate_limit: 100
+  rate_limit_interval_seconds: 60
+  version: "v1.0.0"
+
+# Export des données
+data_export:
+  enabled: true
+  formats:
+    - "csv"
+    - "json"
+    - "parquet"
+    - "avro"
+    - "feather"
+  schedule: "realtime"
+  batch_size: 1000
+  retention_days: 30
+  compression: "gzip"
+  destination: "s3://nexus-data/exposure/"
+  encrypt: true
+  encryption_key_id: "nexus-exposure-key"
+  partition_by:
+    - "symbol"
+    - "year"
+    - "month"
+    - "day"
+
+# Intégration avec d'autres modules
+integrations:
+  risk_engine:
+    enabled: true
+    sync_frequency_seconds: 1
+    share_metrics: true
+  execution_engine:
+    enabled: true
+    share_signals: true
+    require_confirmation: true
+  portfolio_manager:
+    enabled: true
+    share_positions: true
+    share_allocation: true
+  ai_engine:
+    enabled: true
+    use_ai_predictions: true
+    confidence_threshold: 0.7
+    model_endpoint: "http://ai-engine:8000/predict/exposure"
+  market_data:
+    enabled: true
+    sync_frequency_ms: 100
+    data_endpoint: "ws://market-data:8080/ws"
+
+# Tests et validation
+testing:
+  unit_tests:
+    enabled: true
+    coverage_threshold: 90
+  integration_tests:
+    enabled: true
+  stress_tests:
+    enabled: true
+    scenarios:
+      - "high_exposure"
+      - "low_exposure"
+      - "exposure_spike"
+      - "exposure_drop"
+      - "market_crash"
+      - "volatility_spike"
+  validation:
+    enabled: true
+    validate_on_startup: true
+    validate_on_config_change: true
+    validation_rules:
+      - "exposure_limit > 0"
+      - "exposure_percent_limit > 0"
+      - "exposure_percent_limit <= 100.0"
+      - "thresholds.portfolio.warning < thresholds.portfolio.danger"
+      - "thresholds.portfolio.danger < thresholds.portfolio.critical"
+      - "thresholds.portfolio.critical < thresholds.portfolio.emergency"
+      - "thresholds.symbol.warning < thresholds.symbol.danger"
+      - "thresholds.symbol.danger < thresholds.symbol.critical"
+      - "thresholds.symbol.critical < thresholds.symbol.emergency"
+      - "exposure_management.symbol_management.max_exposure_per_symbol > 0"
+      - "exposure_management.portfolio_management.diversification_target > 0"
+      - "exposure_management.portfolio_management.hedging_ratio >= 0.0"
+      - "exposure_management.portfolio_management.hedging_ratio <= 1.0"
+
+# Market conditions adaptation
+market_adaptation:
+  enabled: true
+  volatility_adjustment: true
+  regime_detection:
+    enabled: true
+    lookback_periods:
+      - 20
+      - 50
+      - 200
+    regimes:
+      - "bull"
+      - "bear"
+      - "sideways"
+      - "volatile"
+      - "stable"
+      - "transitional"
+  regime_parameters:
+    bull:
+      exposure_multiplier: 1.2
+      threshold_multiplier: 0.8
+      hedge_ratio_multiplier: 0.7
+      diversification_multiplier: 0.8
+    bear:
+      exposure_multiplier: 0.7
+      threshold_multiplier: 1.3
+      hedge_ratio_multiplier: 1.5
+      diversification_multiplier: 1.2
+    sideways:
+      exposure_multiplier: 1.0
+      threshold_multiplier: 1.0
+      hedge_ratio_multiplier: 1.0
+      diversification_multiplier: 1.0
+    volatile:
+      exposure_multiplier: 0.6
+      threshold_multiplier: 1.4
+      hedge_ratio_multiplier: 1.8
+      diversification_multiplier: 1.3
+    stable:
+      exposure_multiplier: 1.0
+      threshold_multiplier: 0.9
+      hedge_ratio_multiplier: 0.6
+      diversification_multiplier: 0.7
+    transitional:
+      exposure_multiplier: 1.3
+      threshold_multiplier: 1.1
+      hedge_ratio_multiplier: 1.2
+      diversification_multiplier: 1.2
+
+# Time-based configurations
+time_based:
+  enabled: true
+  sessions:
+    asia:
+      start: "00:00"
+      end: "08:00"
+      exposure_multiplier: 0.8
+      threshold_multiplier: 1.2
+      hedge_ratio_multiplier: 1.2
+      diversification_multiplier: 1.2
+    london:
+      start: "08:00"
+      end: "16:00"
+      exposure_multiplier: 1.2
+      threshold_multiplier: 0.8
+      hedge_ratio_multiplier: 0.8
+      diversification_multiplier: 0.8
+    newyork:
+      start: "13:00"
+      end: "22:00"
+      exposure_multiplier: 1.0
+      threshold_multiplier: 1.0
+      hedge_ratio_multiplier: 1.0
+      diversification_multiplier: 1.0
+    overlap:
+      start: "13:00"
+      end: "16:00"
+      exposure_multiplier: 1.5
+      threshold_multiplier: 0.7
+      hedge_ratio_multiplier: 0.6
+      diversification_multiplier: 0.7
+
+# Symbol-specific configurations
+symbol_configs:
+  BTCUSDT:
+    exposure_multiplier: 1.0
+    threshold_multiplier: 1.0
+    hedge_ratio_multiplier: 1.0
+    diversification_multiplier: 1.0
+    max_exposure: 20000
+    max_exposure_percent: 5.0
+  ETHUSDT:
+    exposure_multiplier: 1.1
+    threshold_multiplier: 0.9
+    hedge_ratio_multiplier: 0.9
+    diversification_multiplier: 1.1
+    max_exposure: 15000
+    max_exposure_percent: 5.0
+  SOLUSDT:
+    exposure_multiplier: 1.2
+    threshold_multiplier: 0.8
+    hedge_ratio_multiplier: 0.8
+    diversification_multiplier: 1.2
+    max_exposure: 10000
+    max_exposure_percent: 5.0
+  ADAUSDT:
+    exposure_multiplier: 0.9
+    threshold_multiplier: 1.1
+    hedge_ratio_multiplier: 1.1
+    diversification_multiplier: 0.9
+    max_exposure: 5000
+    max_exposure_percent: 5.0
+  XRPUSDT:
+    exposure_multiplier: 1.0
+    threshold_multiplier: 1.0
+    hedge_ratio_multiplier: 1.0
+    diversification_multiplier: 1.0
+    max_exposure: 5000
+    max_exposure_percent: 5.0
