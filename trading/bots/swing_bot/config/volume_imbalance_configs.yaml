@@ -1,0 +1,679 @@
+# volume_imbalance_configs.yaml
+# Configuration complète pour la gestion des déséquilibres de volume dans Swing Bot
+# Version: 4.0.0 - Production Ready
+
+# Paramètres généraux
+general:
+  enabled: true
+  mode: "adaptive"  # adaptive | fixed | dynamic | hybrid
+  calculate_in_real_time: true
+  update_frequency_seconds: 1
+  lookback_periods:
+    - 5
+    - 10
+    - 20
+    - 50
+    - 100
+    - 200
+  history_length_days: 365
+  min_volume_threshold: 1000
+  max_volume_threshold: 10000000
+  symbol: "BTCUSDT"
+
+# Types de déséquilibre de volume
+imbalance_types:
+  bid_ask:
+    enabled: true
+    calculation_method: "delta"  # delta | ratio | percentage
+    sensitivity: 0.5
+  buying_selling:
+    enabled: true
+    calculation_method: "volume_delta"
+    sensitivity: 0.6
+  aggressive_passive:
+    enabled: true
+    calculation_method: "aggressor_volume"
+    sensitivity: 0.4
+  large_small:
+    enabled: true
+    calculation_method: "tier_volume"
+    sensitivity: 0.7
+    tier_size: 10000
+  cumulative:
+    enabled: true
+    calculation_method: "cumulative_delta"
+    window_sizes:
+      - 10
+      - 30
+      - 60
+      - 120
+      - 240
+  vwap_imbalance:
+    enabled: true
+    calculation_method: "vwap_delta"
+    sensitivity: 0.5
+  delta_imbalance:
+    enabled: true
+    calculation_method: "delta_per_volume"
+    sensitivity: 0.6
+
+# Seuils de déséquilibre
+thresholds:
+  low:
+    percent: 5.0
+    action: "monitor"
+    confidence: 0.3
+  medium:
+    percent: 15.0
+    action: "alert"
+    confidence: 0.5
+    description: "Significant imbalance detected"
+  high:
+    percent: 30.0
+    action: "take_action"
+    confidence: 0.7
+    description: "Strong imbalance detected"
+  extreme:
+    percent: 50.0
+    action: "emergency"
+    confidence: 0.9
+    description: "Extreme imbalance detected"
+  critical:
+    percent: 70.0
+    action: "stop_trading"
+    confidence: 0.95
+    description: "Critical imbalance detected"
+
+# Stratégies de trading basées sur les déséquilibres
+strategies:
+  mean_reversion:
+    enabled: true
+    imbalance_threshold: 25.0
+    position_size: "proportional"
+    profit_target: 0.5
+    stop_loss: 0.3
+    confidence_required: 0.6
+  momentum:
+    enabled: true
+    imbalance_threshold: 20.0
+    position_size: "aggressive"
+    profit_target: 1.0
+    stop_loss: 0.5
+    confidence_required: 0.7
+  reversal:
+    enabled: true
+    imbalance_threshold: 40.0
+    position_size: "conservative"
+    profit_target: 0.8
+    stop_loss: 0.4
+    confidence_required: 0.8
+  breakout:
+    enabled: true
+    imbalance_threshold: 35.0
+    position_size: "moderate"
+    profit_target: 1.5
+    stop_loss: 0.6
+    confidence_required: 0.75
+  scalping:
+    enabled: true
+    imbalance_threshold: 15.0
+    position_size: "small"
+    profit_target: 0.2
+    stop_loss: 0.15
+    confidence_required: 0.5
+
+# Indicateurs de déséquilibre
+indicators:
+  delta_ratio:
+    enabled: true
+    calculation: "buy_volume / sell_volume"
+    smoothing: 3
+    threshold_high: 1.5
+    threshold_low: 0.67
+  delta_percentage:
+    enabled: true
+    calculation: "((buy_volume - sell_volume) / total_volume) * 100"
+    smoothing: 5
+    threshold_high: 20.0
+    threshold_low: -20.0
+  cumulative_delta:
+    enabled: true
+    calculation: "cumulative_buy_volume - cumulative_sell_volume"
+    smoothing: 10
+    threshold_high: 100000
+    threshold_low: -100000
+  volume_delta:
+    enabled: true
+    calculation: "buy_volume - sell_volume"
+    smoothing: 2
+    threshold_high: 50000
+    threshold_low: -50000
+  delta_vwap:
+    enabled: true
+    calculation: "delta / vwap"
+    smoothing: 5
+    threshold_high: 0.01
+    threshold_low: -0.01
+  delta_momentum:
+    enabled: true
+    calculation: "rate_of_change(delta, period=5)"
+    smoothing: 3
+    threshold_high: 0.5
+    threshold_low: -0.5
+  delta_volatility:
+    enabled: true
+    calculation: "standard_deviation(delta, period=20)"
+    smoothing: 0
+    threshold_high: 0.8
+    threshold_low: 0.2
+
+# Analyse de déséquilibre
+analysis:
+  historical:
+    enabled: true
+    lookback_years: 3
+    compute_mean: true
+    compute_median: true
+    compute_std: true
+    compute_percentiles: true
+    percentile_values:
+      - 5
+      - 25
+      - 50
+      - 75
+      - 95
+    compute_skewness: true
+    compute_kurtosis: true
+  real_time:
+    enabled: true
+    update_frequency_ms: 100
+    compute_instantaneous: true
+    compute_moving_average: true
+    compute_weighted_average: true
+    compute_exponential_average: true
+    compute_momentum: true
+    compute_acceleration: true
+  predictive:
+    enabled: true
+    model_type: "xgboost"
+    features:
+      - "delta_ratio"
+      - "delta_percentage"
+      - "cumulative_delta"
+      - "volume_delta"
+      - "delta_vwap"
+      - "delta_momentum"
+      - "delta_volatility"
+    prediction_horizon: 5
+    confidence_threshold: 0.7
+  pattern_recognition:
+    enabled: true
+    patterns:
+      - "bullish_imbalance"
+      - "bearish_imbalance"
+      - "divergence"
+      - "convergence"
+      - "accumulation"
+      - "distribution"
+      - "exhaustion"
+      - "reversal"
+    min_confidence: 0.6
+
+# Alertes et notifications
+alerts:
+  imbalance_detected:
+    enabled: true
+    channels:
+      - "email"
+      - "telegram"
+      - "slack"
+      - "push_notification"
+    severity_levels:
+      low: "info"
+      medium: "warning"
+      high: "critical"
+      extreme: "emergency"
+      critical: "disaster"
+  pattern_detected:
+    enabled: true
+    channels:
+      - "telegram"
+      - "push_notification"
+    severity_levels:
+      bullish: "info"
+      bearish: "warning"
+      divergence: "critical"
+  cumulative_threshold:
+    enabled: true
+    channels:
+      - "email"
+      - "telegram"
+      - "slack"
+    threshold: 100000
+    alert_on_exceed: true
+    alert_on_return: false
+
+# Actions automatiques
+auto_actions:
+  trade_execution:
+    enabled: true
+    action_types:
+      - "enter_long"
+      - "enter_short"
+      - "exit_long"
+      - "exit_short"
+      - "increase_position"
+      - "decrease_position"
+    require_imbalance_signal: true
+    require_confidence: 0.6
+    max_position_size: 10000
+    min_position_size: 100
+  hedging:
+    enabled: true
+    hedge_types:
+      - "partial_hedge"
+      - "full_hedge"
+      - "dynamic_hedge"
+    hedge_threshold: 30.0
+    max_hedge_ratio: 0.5
+    min_hedge_ratio: 0.1
+  position_adjustment:
+    enabled: true
+    adjustment_types:
+      - "increase_by_imbalance"
+      - "decrease_by_imbalance"
+      - "scale_in"
+      - "scale_out"
+    adjustment_factor: 0.5
+    max_adjustment_percent: 50.0
+
+# Paramètres avancés
+advanced:
+  machine_learning:
+    enabled: true
+    model_type: "random_forest"
+    features:
+      - "delta_ratio"
+      - "delta_percentage"
+      - "cumulative_delta"
+      - "volume_delta"
+      - "delta_vwap"
+      - "delta_momentum"
+      - "delta_volatility"
+      - "bid_ask_spread"
+      - "trade_size"
+      - "time_of_day"
+      - "day_of_week"
+      - "market_condition"
+    training_frequency_hours: 6
+    retrain_threshold: 0.9
+    validation_split: 0.2
+    random_seed: 42
+  correlation_analysis:
+    enabled: true
+    calculate_correlations: true
+    correlation_matrix: true
+    threshold: 0.5
+    feature_correlations:
+      - "delta_ratio_price"
+      - "delta_percentage_volume"
+      - "cumulative_delta_trend"
+  volume_profile:
+    enabled: true
+    bin_size: 100
+    max_bins: 200
+    min_volume_profile: 10
+    volume_profile_update: "realtime"
+    volume_points_of_control: true
+    value_area: true
+
+# Monitoring et journalisation
+monitoring:
+  logging:
+    enabled: true
+    level: "debug"
+    format: "json"
+    include_context: true
+    include_timestamp: true
+    include_metadata: true
+  metrics:
+    enabled: true
+    collect_every_seconds: 1
+    metrics_to_collect:
+      - "current_delta"
+      - "cumulative_delta"
+      - "delta_ratio"
+      - "delta_percentage"
+      - "volume_delta"
+      - "delta_momentum"
+      - "delta_volatility"
+      - "total_buy_volume"
+      - "total_sell_volume"
+      - "total_volume"
+      - "buy_sell_ratio"
+  dashboard:
+    enabled: true
+    update_interval_seconds: 1
+    charts:
+      - "delta_imbalance"
+      - "cumulative_delta"
+      - "buy_sell_ratio"
+      - "volume_distribution"
+      - "delta_momentum"
+      - "pattern_detection"
+
+# Backtesting
+backtesting:
+  enabled: true
+  use_historical_imbalance: true
+  compute_imbalance_distribution: true
+  compute_pattern_accuracy: true
+  compute_signal_accuracy: true
+  compute_strategy_performance: true
+  report_metrics:
+    - "win_rate"
+    - "profit_factor"
+    - "sharpe_ratio"
+    - "max_drawdown"
+    - "average_win_loss"
+    - "imbalance_accuracy"
+
+# Distribution des métriques
+metrics_distribution:
+  enabled: true
+  distribution:
+    - metric: "delta_percentage"
+      bins: 50
+      update_frequency: "realtime"
+    - metric: "delta_ratio"
+      bins: 40
+      update_frequency: "realtime"
+    - metric: "cumulative_delta"
+      bins: 30
+      update_frequency: "realtime"
+  percentiles:
+    - 1
+    - 5
+    - 10
+    - 25
+    - 50
+    - 75
+    - 90
+    - 95
+    - 99
+
+# Configuration de la base de données
+database:
+  enabled: true
+  table_name: "volume_imbalance_metrics"
+  retention_days: 365
+  aggregation:
+    enabled: true
+    intervals:
+      - "1s"
+      - "5s"
+      - "15s"
+      - "30s"
+      - "1m"
+      - "5m"
+      - "15m"
+      - "1h"
+      - "4h"
+      - "24h"
+      - "7d"
+  compression: true
+  backup:
+    enabled: true
+    frequency: "daily"
+    retention_days: 30
+
+# Webhooks
+webhooks:
+  enabled: true
+  endpoints:
+    - url: "https://nexustradingia.com/api/webhooks/imbalance"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      payload_template: "imbalance_alert"
+    - url: "https://nexustradingia.com/api/webhooks/pattern"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      payload_template: "pattern_detected"
+  retry:
+    enabled: true
+    max_attempts: 5
+    backoff_seconds: 30
+
+# Logging avancé
+advanced_logging:
+  enabled: true
+  levels:
+    - "info"
+    - "warning"
+    - "error"
+    - "critical"
+    - "debug"
+  output: "imbalance_logs"
+  rotation:
+    enabled: true
+    max_size_mb: 100
+    max_files: 10
+  remote_logging:
+    enabled: true
+    endpoints:
+      - "https://nexustradingia.com/logs/imbalance"
+  include_trace: true
+  include_stack_trace: true
+  include_context: true
+
+# Threading et performances
+performance:
+  thread_pool_size: 4
+  queue_size: 5000
+  batch_size: 500
+  async_processing: true
+  cache_size: 5000
+  cache_ttl_seconds: 30
+  database_pool_size: 10
+  database_pool_max_overflow: 20
+  use_multiprocessing: true
+  max_workers: 4
+  use_cython: true
+  use_numba: true
+
+# API de gestion
+management_api:
+  enabled: true
+  endpoints:
+    - "/api/v1/imbalance/current"
+    - "/api/v1/imbalance/history"
+    - "/api/v1/imbalance/metrics"
+    - "/api/v1/imbalance/status"
+    - "/api/v1/imbalance/patterns"
+    - "/api/v1/imbalance/statistics"
+  authentication_required: true
+  rate_limit: 100
+  rate_limit_interval_seconds: 60
+  version: "v1.0.0"
+
+# Export des données
+data_export:
+  enabled: true
+  formats:
+    - "csv"
+    - "json"
+    - "parquet"
+    - "avro"
+  schedule: "realtime"
+  batch_size: 1000
+  retention_days: 30
+  compression: "gzip"
+  destination: "s3://nexus-data/imbalance/"
+  encrypt: true
+  encryption_key_id: "nexus-imbalance-key"
+  partition_by:
+    - "symbol"
+    - "date"
+
+# Intégration avec d'autres modules
+integrations:
+  risk_engine:
+    enabled: true
+    sync_frequency_seconds: 1
+    share_metrics: true
+  execution_engine:
+    enabled: true
+    share_signals: true
+    require_confirmation: true
+  portfolio_manager:
+    enabled: true
+    share_positions: true
+    share_allocation: true
+  ai_engine:
+    enabled: true
+    use_ai_predictions: true
+    confidence_threshold: 0.7
+    model_endpoint: "http://ai-engine:8000/predict/imbalance"
+  market_data:
+    enabled: true
+    sync_frequency_ms: 100
+    data_endpoint: "ws://market-data:8080/ws"
+  order_book:
+    enabled: true
+    sync_frequency_ms: 50
+    depth_levels: 10
+
+# Tests et validation
+testing:
+  unit_tests:
+    enabled: true
+    coverage_threshold: 90
+  integration_tests:
+    enabled: true
+  stress_tests:
+    enabled: true
+    scenarios:
+      - "high_volatility"
+      - "low_liquidity"
+      - "flash_crash"
+      - "black_swan"
+      - "high_frequency"
+  validation:
+    enabled: true
+    validate_on_startup: true
+    validate_on_config_change: true
+    validation_rules:
+      - "thresholds.low.percent < thresholds.medium.percent"
+      - "thresholds.medium.percent < thresholds.high.percent"
+      - "thresholds.high.percent < thresholds.extreme.percent"
+      - "thresholds.extreme.percent < thresholds.critical.percent"
+      - "min_volume_threshold > 0"
+      - "max_volume_threshold > min_volume_threshold"
+      - "lookback_periods[0] > 0"
+      - "confidence_threshold > 0.0"
+      - "confidence_threshold <= 1.0"
+
+# Market conditions adaptation
+market_adaptation:
+  enabled: true
+  volatility_adjustment: true
+  regime_detection:
+    enabled: true
+    lookback_periods:
+      - 20
+      - 50
+      - 200
+    regimes:
+      - "bull"
+      - "bear"
+      - "sideways"
+      - "volatile"
+      - "low_volatility"
+  regime_parameters:
+    bull:
+      imbalance_multiplier: 1.2
+      threshold_multiplier: 0.8
+    bear:
+      imbalance_multiplier: 0.8
+      threshold_multiplier: 1.2
+    sideways:
+      imbalance_multiplier: 1.0
+      threshold_multiplier: 1.0
+    volatile:
+      imbalance_multiplier: 0.6
+      threshold_multiplier: 1.5
+    low_volatility:
+      imbalance_multiplier: 1.5
+      threshold_multiplier: 0.6
+
+# Time-based configurations
+time_based:
+  enabled: true
+  sessions:
+    asia:
+      start: "00:00"
+      end: "08:00"
+      imbalance_multiplier: 0.8
+      threshold_multiplier: 1.2
+    london:
+      start: "08:00"
+      end: "16:00"
+      imbalance_multiplier: 1.2
+      threshold_multiplier: 0.8
+    newyork:
+      start: "13:00"
+      end: "22:00"
+      imbalance_multiplier: 1.0
+      threshold_multiplier: 1.0
+  day_of_week:
+    monday:
+      imbalance_multiplier: 0.9
+      threshold_multiplier: 1.1
+    tuesday:
+      imbalance_multiplier: 1.1
+      threshold_multiplier: 0.9
+    wednesday:
+      imbalance_multiplier: 1.0
+      threshold_multiplier: 1.0
+    thursday:
+      imbalance_multiplier: 1.1
+      threshold_multiplier: 0.9
+    friday:
+      imbalance_multiplier: 0.9
+      threshold_multiplier: 1.1
+    saturday:
+      imbalance_multiplier: 0.5
+      threshold_multiplier: 2.0
+    sunday:
+      imbalance_multiplier: 0.6
+      threshold_multiplier: 1.8
+
+# Symbol-specific configurations
+symbol_configs:
+  BTCUSDT:
+    imbalance_multiplier: 1.0
+    threshold_multiplier: 1.0
+    min_volume: 1000
+    max_volume: 10000000
+  ETHUSDT:
+    imbalance_multiplier: 1.1
+    threshold_multiplier: 0.9
+    min_volume: 500
+    max_volume: 5000000
+  SOLUSDT:
+    imbalance_multiplier: 1.2
+    threshold_multiplier: 0.8
+    min_volume: 200
+    max_volume: 2000000
+  ADAUSDT:
+    imbalance_multiplier: 0.9
+    threshold_multiplier: 1.1
+    min_volume: 100
+    max_volume: 1000000
+  XRPUSDT:
+    imbalance_multiplier: 1.0
+    threshold_multiplier: 1.0
+    min_volume: 100
+    max_volume: 1000000
