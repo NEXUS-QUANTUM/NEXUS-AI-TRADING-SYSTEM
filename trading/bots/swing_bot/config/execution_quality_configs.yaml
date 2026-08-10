@@ -1,0 +1,730 @@
+# execution_quality_configs.yaml
+# Configuration complète pour la qualité d'exécution dans Swing Bot
+# Version: 4.0.0 - Production Ready
+
+# Paramètres généraux
+general:
+  enabled: true
+  mode: "comprehensive"
+  calculate_in_real_time: true
+  update_frequency_seconds: 1
+  lookback_periods:
+    - 5
+    - 10
+    - 20
+    - 50
+    - 100
+    - 200
+    - 500
+  history_length_days: 365
+  min_data_points: 50
+  max_data_points: 100000
+  quality_threshold: 0.8
+  execution_quality_version: "4.0.0"
+
+# Dimensions de qualité
+quality_dimensions:
+  slippage:
+    enabled: true
+    description: "Slippage Quality"
+    metrics:
+      - "executed_price_vs_expected"
+      - "executed_price_vs_market"
+      - "slippage_absolute"
+      - "slippage_percentage"
+    targets:
+      executed_price_vs_expected: 0.001
+      executed_price_vs_market: 0.001
+      slippage_absolute: 0.5
+      slippage_percentage: 0.1
+    weights:
+      - 0.30
+      - 0.30
+      - 0.20
+      - 0.20
+  market_impact:
+    enabled: true
+    description: "Market Impact Quality"
+    metrics:
+      - "price_movement"
+      - "volume_impact"
+      - "spread_widening"
+      - "liquidity_consumption"
+    targets:
+      price_movement: 0.002
+      volume_impact: 0.1
+      spread_widening: 0.001
+      liquidity_consumption: 0.2
+    weights:
+      - 0.30
+      - 0.25
+      - 0.25
+      - 0.20
+  timing:
+    enabled: true
+    description: "Timing Quality"
+    metrics:
+      - "execution_latency"
+      - "order_placement_speed"
+      - "confirmation_time"
+      - "fill_time"
+    targets:
+      execution_latency: 0.001
+      order_placement_speed: 0.0005
+      confirmation_time: 0.001
+      fill_time: 0.01
+    weights:
+      - 0.30
+      - 0.25
+      - 0.25
+      - 0.20
+  price_improvement:
+    enabled: true
+    description: "Price Improvement Quality"
+    metrics:
+      - "price_improvement_amount"
+      - "price_improvement_percentage"
+      - "execution_price_vs_mid"
+      - "execution_price_vs_best"
+    targets:
+      price_improvement_amount: 0.01
+      price_improvement_percentage: 0.05
+      execution_price_vs_mid: 0.001
+      execution_price_vs_best: 0.001
+    weights:
+      - 0.30
+      - 0.25
+      - 0.25
+      - 0.20
+  execution_speed:
+    enabled: true
+    description: "Execution Speed Quality"
+    metrics:
+      - "order_to_fill"
+      - "fill_to_confirmation"
+      - "total_execution_time"
+      - "average_slice_time"
+    targets:
+      order_to_fill: 0.005
+      fill_to_confirmation: 0.001
+      total_execution_time: 0.01
+      average_slice_time: 0.002
+    weights:
+      - 0.30
+      - 0.25
+      - 0.25
+      - 0.20
+  fill_rate:
+    enabled: true
+    description: "Fill Rate Quality"
+    metrics:
+      - "fill_rate_percentage"
+      - "partial_fill_rate"
+      - "full_fill_rate"
+      - "fill_ratio"
+    targets:
+      fill_rate_percentage: 95.0
+      partial_fill_rate: 5.0
+      full_fill_rate: 95.0
+      fill_ratio: 0.95
+    weights:
+      - 0.30
+      - 0.25
+      - 0.25
+      - 0.20
+
+# Indicateurs de qualité
+indicators:
+  quality_score:
+    enabled: true
+    calculation: "weighted_average"
+    dimensions:
+      - "slippage"
+      - "market_impact"
+      - "timing"
+      - "price_improvement"
+      - "execution_speed"
+      - "fill_rate"
+    dimension_weights:
+      slippage: 0.20
+      market_impact: 0.20
+      timing: 0.15
+      price_improvement: 0.15
+      execution_speed: 0.15
+      fill_rate: 0.15
+  quality_trend:
+    enabled: true
+    period: 14
+    smoothing: 3
+    threshold: 0.05
+  quality_momentum:
+    enabled: true
+    period: 14
+    smoothing: 3
+    threshold: 0.05
+  quality_velocity:
+    enabled: true
+    period: 5
+    smoothing: 0
+    threshold: 0.02
+  quality_acceleration:
+    enabled: true
+    period: 10
+    smoothing: 0
+    threshold: 0.01
+  quality_stability:
+    enabled: true
+    period: 20
+    smoothing: 0
+    threshold: 0.05
+
+# Analyse de qualité
+analysis:
+  historical:
+    enabled: true
+    lookback_years: 5
+    compute_mean_quality: true
+    compute_median_quality: true
+    compute_std_quality: true
+    compute_percentiles: true
+    percentile_values:
+      - 1
+      - 5
+      - 10
+      - 25
+      - 50
+      - 75
+      - 90
+      - 95
+      - 99
+    compute_quality_distribution: true
+    compute_quality_patterns: true
+    compute_quality_cycles: true
+  real_time:
+    enabled: true
+    update_frequency_ms: 100
+    compute_instantaneous_quality: true
+    compute_moving_average_quality: true
+    compute_exponential_quality: true
+    compute_weighted_quality: true
+    compute_quality_velocity: true
+    compute_quality_acceleration: true
+  predictive:
+    enabled: true
+    model_type: "ensemble"
+    models:
+      - "lstm"
+      - "gru"
+      - "xgboost"
+      - "lightgbm"
+    features:
+      - "quality_score"
+      - "quality_trend"
+      - "quality_momentum"
+      - "quality_velocity"
+      - "quality_acceleration"
+      - "slippage_score"
+      - "market_impact_score"
+      - "timing_score"
+      - "price_improvement_score"
+      - "execution_speed_score"
+      - "fill_rate_score"
+      - "time_of_day"
+      - "day_of_week"
+      - "market_condition"
+    forecast_horizons:
+      - 1
+      - 5
+      - 10
+      - 20
+    confidence_threshold: 0.7
+    retrain_frequency_hours: 24
+  comparative:
+    enabled: true
+    compare_to_benchmark: true
+    compare_to_historical: true
+    compare_to_industry: true
+    compare_to_competitors: true
+    benchmark_symbols:
+      - "SP500"
+      - "NASDAQ"
+      - "BTCUSDT"
+      - "ETHUSDT"
+
+# Alertes et notifications
+alerts:
+  quality_degradation:
+    enabled: true
+    threshold: 0.1
+    channels:
+      - "email"
+      - "telegram"
+      - "slack"
+      - "push_notification"
+    severity: "critical"
+  quality_improvement:
+    enabled: true
+    threshold: 0.05
+    channels:
+      - "telegram"
+      - "push_notification"
+    severity: "info"
+  quality_threshold:
+    enabled: true
+    threshold: 0.7
+    channels:
+      - "email"
+      - "telegram"
+      - "slack"
+    severity: "warning"
+  quality_breakthrough:
+    enabled: true
+    threshold: 0.1
+    channels:
+      - "telegram"
+      - "push_notification"
+    severity: "success"
+  quality_anomaly:
+    enabled: true
+    threshold: 0.2
+    channels:
+      - "email"
+      - "telegram"
+      - "slack"
+    severity: "critical"
+
+# Actions automatiques
+auto_actions:
+  quality_improvement:
+    enabled: true
+    action_types:
+      - "adjust_slippage_tolerance"
+      - "modify_execution_algorithm"
+      - "change_routing_strategy"
+      - "optimize_timing"
+    improvement_factor: 0.1
+    max_adjustment_percent: 20.0
+  quality_optimization:
+    enabled: true
+    action_types:
+      - "rebalance_execution_weights"
+      - "adjust_quality_parameters"
+      - "update_execution_strategy"
+      - "enhance_monitoring"
+    optimization_factor: 0.1
+    max_optimization_percent: 15.0
+  quality_correction:
+    enabled: true
+    action_types:
+      - "correct_quality_deviations"
+      - "restore_quality_targets"
+      - "reset_execution_parameters"
+      - "recalibrate_quality_models"
+    correction_factor: 0.1
+    max_correction_percent: 10.0
+
+# Paramètres avancés
+advanced:
+  machine_learning:
+    enabled: true
+    model_type: "ensemble"
+    models:
+      - "random_forest"
+      - "xgboost"
+      - "lightgbm"
+      - "lstm"
+    features:
+      - "quality_score"
+      - "slippage_score"
+      - "market_impact_score"
+      - "timing_score"
+      - "price_improvement_score"
+      - "execution_speed_score"
+      - "fill_rate_score"
+      - "quality_trend"
+      - "quality_momentum"
+      - "quality_velocity"
+      - "quality_acceleration"
+      - "order_size"
+      - "volatility"
+      - "liquidity"
+      - "time_of_day"
+      - "day_of_week"
+      - "market_condition"
+    training_frequency_hours: 6
+    retrain_threshold: 0.9
+    validation_split: 0.2
+    random_seed: 42
+    ensemble_weights:
+      - 0.25
+      - 0.25
+      - 0.25
+      - 0.25
+  statistical_analysis:
+    enabled: true
+    calculate_descriptive_stats: true
+    calculate_inferential_stats: true
+    calculate_quality_control_limits: true
+    calculate_quality_capability: true
+    calculate_quality_improvement: true
+    confidence_level: 95
+    p_value_threshold: 0.05
+  benchmarking:
+    enabled: true
+    benchmarks:
+      - "industry_standard"
+      - "competitor_performance"
+      - "historical_best"
+      - "theoretical_optimal"
+    compare_to_benchmark: true
+    benchmark_update_frequency: "daily"
+    benchmark_tolerance: 0.1
+
+# Monitoring et journalisation
+monitoring:
+  logging:
+    enabled: true
+    level: "debug"
+    format: "json"
+    include_context: true
+    include_timestamp: true
+    include_metadata: true
+  metrics:
+    enabled: true
+    collect_every_seconds: 1
+    metrics_to_collect:
+      - "quality_score"
+      - "quality_trend"
+      - "quality_momentum"
+      - "quality_velocity"
+      - "quality_acceleration"
+      - "quality_stability"
+      - "slippage_score"
+      - "market_impact_score"
+      - "timing_score"
+      - "price_improvement_score"
+      - "execution_speed_score"
+      - "fill_rate_score"
+      - "dimension_scores"
+      - "indicator_scores"
+  dashboard:
+    enabled: true
+    update_interval_seconds: 1
+    charts:
+      - "quality_score_chart"
+      - "dimension_scores_chart"
+      - "quality_trend_analysis"
+      - "quality_distribution"
+      - "benchmark_comparison"
+      - "anomaly_detection"
+      - "improvement_tracking"
+      - "predictive_analysis"
+
+# Backtesting
+backtesting:
+  enabled: true
+  use_historical_quality: true
+  compute_quality_accuracy: true
+  compute_improvement_effectiveness: true
+  compute_benchmark_performance: true
+  compute_quality_capability: true
+  report_metrics:
+    - "quality_accuracy"
+    - "improvement_rate"
+    - "benchmark_comparison"
+    - "quality_capability"
+    - "win_rate"
+    - "profit_factor"
+    - "sharpe_ratio"
+    - "max_drawdown"
+
+# Configuration de la base de données
+database:
+  enabled: true
+  table_name: "execution_quality_metrics"
+  retention_days: 365
+  aggregation:
+    enabled: true
+    intervals:
+      - "1s"
+      - "5s"
+      - "15s"
+      - "30s"
+      - "1m"
+      - "5m"
+      - "15m"
+      - "1h"
+      - "4h"
+      - "24h"
+  compression: true
+  backup:
+    enabled: true
+    frequency: "daily"
+    retention_days: 30
+
+# Webhooks
+webhooks:
+  enabled: true
+  endpoints:
+    - url: "https://nexustradingia.com/api/webhooks/execution-quality"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      payload_template: "execution_quality_alert"
+    - url: "https://nexustradingia.com/api/webhooks/quality-improvement"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      payload_template: "quality_improvement"
+  retry:
+    enabled: true
+    max_attempts: 5
+    backoff_seconds: 30
+
+# Logging avancé
+advanced_logging:
+  enabled: true
+  levels:
+    - "info"
+    - "warning"
+    - "error"
+    - "critical"
+    - "debug"
+  output: "execution_quality_logs"
+  rotation:
+    enabled: true
+    max_size_mb: 100
+    max_files: 10
+  remote_logging:
+    enabled: true
+    endpoints:
+      - "https://nexustradingia.com/logs/execution-quality"
+  include_trace: true
+  include_stack_trace: true
+  include_context: true
+
+# Threading et performances
+performance:
+  thread_pool_size: 8
+  queue_size: 10000
+  batch_size: 1000
+  async_processing: true
+  cache_size: 10000
+  cache_ttl_seconds: 30
+  database_pool_size: 10
+  database_pool_max_overflow: 20
+  use_multiprocessing: true
+  max_workers: 8
+  use_cython: true
+  use_numba: true
+  use_gpu: false
+  gpu_device: 0
+
+# API de gestion
+management_api:
+  enabled: true
+  endpoints:
+    - "/api/v1/execution-quality/current"
+    - "/api/v1/execution-quality/history"
+    - "/api/v1/execution-quality/metrics"
+    - "/api/v1/execution-quality/status"
+    - "/api/v1/execution-quality/dimensions"
+    - "/api/v1/execution-quality/indicators"
+    - "/api/v1/execution-quality/benchmark"
+    - "/api/v1/execution-quality/forecast"
+  authentication_required: true
+  rate_limit: 100
+  rate_limit_interval_seconds: 60
+  version: "v1.0.0"
+
+# Export des données
+data_export:
+  enabled: true
+  formats:
+    - "csv"
+    - "json"
+    - "parquet"
+    - "avro"
+    - "feather"
+  schedule: "realtime"
+  batch_size: 1000
+  retention_days: 30
+  compression: "gzip"
+  destination: "s3://nexus-data/execution-quality/"
+  encrypt: true
+  encryption_key_id: "nexus-execution-quality-key"
+  partition_by:
+    - "symbol"
+    - "year"
+    - "month"
+    - "day"
+
+# Intégration avec d'autres modules
+integrations:
+  risk_engine:
+    enabled: true
+    sync_frequency_seconds: 1
+    share_metrics: true
+  execution_engine:
+    enabled: true
+    share_signals: true
+    require_confirmation: true
+  portfolio_manager:
+    enabled: true
+    share_positions: true
+    share_allocation: true
+  ai_engine:
+    enabled: true
+    use_ai_predictions: true
+    confidence_threshold: 0.7
+    model_endpoint: "http://ai-engine:8000/predict/execution-quality"
+  market_data:
+    enabled: true
+    sync_frequency_ms: 100
+    data_endpoint: "ws://market-data:8080/ws"
+
+# Tests et validation
+testing:
+  unit_tests:
+    enabled: true
+    coverage_threshold: 90
+  integration_tests:
+    enabled: true
+  stress_tests:
+    enabled: true
+    scenarios:
+      - "high_quality_volume"
+      - "low_quality_volume"
+      - "quality_degradation"
+      - "quality_improvement"
+      - "benchmark_comparison"
+  validation:
+    enabled: true
+    validate_on_startup: true
+    validate_on_config_change: true
+    validation_rules:
+      - "quality_threshold > 0.0"
+      - "quality_threshold <= 1.0"
+      - "quality_dimensions.slippage.weights.sum() == 1.0"
+      - "quality_dimensions.market_impact.weights.sum() == 1.0"
+      - "quality_dimensions.timing.weights.sum() == 1.0"
+      - "quality_dimensions.price_improvement.weights.sum() == 1.0"
+      - "quality_dimensions.execution_speed.weights.sum() == 1.0"
+      - "quality_dimensions.fill_rate.weights.sum() == 1.0"
+      - "indicators.quality_score.dimension_weights.sum() == 1.0"
+      - "min_data_points > 0"
+
+# Market conditions adaptation
+market_adaptation:
+  enabled: true
+  volatility_adjustment: true
+  regime_detection:
+    enabled: true
+    lookback_periods:
+      - 20
+      - 50
+      - 200
+    regimes:
+      - "low_volatility"
+      - "normal_volatility"
+      - "high_volatility"
+      - "extreme_volatility"
+      - "low_liquidity"
+      - "high_liquidity"
+  regime_parameters:
+    low_volatility:
+      quality_multiplier: 1.2
+      threshold_multiplier: 0.8
+      slippage_weight: 0.8
+      market_impact_weight: 0.8
+    normal_volatility:
+      quality_multiplier: 1.0
+      threshold_multiplier: 1.0
+      slippage_weight: 1.0
+      market_impact_weight: 1.0
+    high_volatility:
+      quality_multiplier: 0.8
+      threshold_multiplier: 1.2
+      slippage_weight: 1.2
+      market_impact_weight: 1.2
+    extreme_volatility:
+      quality_multiplier: 0.7
+      threshold_multiplier: 1.3
+      slippage_weight: 1.3
+      market_impact_weight: 1.3
+    low_liquidity:
+      quality_multiplier: 0.7
+      threshold_multiplier: 1.3
+      slippage_weight: 1.3
+      market_impact_weight: 1.3
+    high_liquidity:
+      quality_multiplier: 1.2
+      threshold_multiplier: 0.8
+      slippage_weight: 0.8
+      market_impact_weight: 0.8
+
+# Time-based configurations
+time_based:
+  enabled: true
+  sessions:
+    asia:
+      start: "00:00"
+      end: "08:00"
+      quality_multiplier: 0.8
+      threshold_multiplier: 1.2
+      slippage_weight: 1.2
+      market_impact_weight: 1.2
+    london:
+      start: "08:00"
+      end: "16:00"
+      quality_multiplier: 1.2
+      threshold_multiplier: 0.8
+      slippage_weight: 0.8
+      market_impact_weight: 0.8
+    newyork:
+      start: "13:00"
+      end: "22:00"
+      quality_multiplier: 1.0
+      threshold_multiplier: 1.0
+      slippage_weight: 1.0
+      market_impact_weight: 1.0
+    overlap:
+      start: "13:00"
+      end: "16:00"
+      quality_multiplier: 1.5
+      threshold_multiplier: 0.7
+      slippage_weight: 0.7
+      market_impact_weight: 0.7
+
+# Symbol-specific configurations
+symbol_configs:
+  BTCUSDT:
+    quality_multiplier: 1.0
+    threshold_multiplier: 1.0
+    slippage_weight: 1.0
+    market_impact_weight: 1.0
+    quality_threshold: 0.8
+  ETHUSDT:
+    quality_multiplier: 1.1
+    threshold_multiplier: 0.9
+    slippage_weight: 0.9
+    market_impact_weight: 0.9
+    quality_threshold: 0.8
+  SOLUSDT:
+    quality_multiplier: 1.2
+    threshold_multiplier: 0.8
+    slippage_weight: 0.8
+    market_impact_weight: 0.8
+    quality_threshold: 0.8
+  ADAUSDT:
+    quality_multiplier: 0.9
+    threshold_multiplier: 1.1
+    slippage_weight: 1.1
+    market_impact_weight: 1.1
+    quality_threshold: 0.8
+  XRPUSDT:
+    quality_multiplier: 1.0
+    threshold_multiplier: 1.0
+    slippage_weight: 1.0
+    market_impact_weight: 1.0
+    quality_threshold: 0.8
