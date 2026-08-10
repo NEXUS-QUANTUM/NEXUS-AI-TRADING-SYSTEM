@@ -1,0 +1,739 @@
+# volume_configs.yaml
+# Configuration complète pour la gestion du volume dans Swing Bot
+# Version: 4.0.0 - Production Ready
+
+# Paramètres généraux
+general:
+  enabled: true
+  mode: "adaptive"  # adaptive | fixed | dynamic | hybrid
+  calculate_in_real_time: true
+  update_frequency_seconds: 1
+  lookback_periods:
+    - 5
+    - 10
+    - 20
+    - 50
+    - 100
+    - 200
+    - 500
+  history_length_days: 365
+  min_volume_threshold: 100
+  max_volume_threshold: 10000000
+  min_trades: 10
+  max_trades: 10000
+
+# Types de volume
+volume_types:
+  absolute:
+    enabled: true
+    calculation: "sum"
+    smoothing: 0
+  relative:
+    enabled: true
+    calculation: "percentage_of_total"
+    smoothing: 3
+  average:
+    enabled: true
+    calculation: "mean"
+    smoothing: 5
+  weighted:
+    enabled: true
+    calculation: "vwap"
+    smoothing: 5
+  exponential:
+    enabled: true
+    calculation: "ema"
+    smoothing: 10
+    alpha: 0.2
+  volatility_adjusted:
+    enabled: true
+    calculation: "standardized"
+    smoothing: 5
+  market_cap_adjusted:
+    enabled: true
+    calculation: "normalized"
+    smoothing: 0
+
+# Seuils de volume
+thresholds:
+  low:
+    percent: 10.0
+    action: "monitor"
+    description: "Below average volume"
+  medium:
+    percent: 25.0
+    action: "alert"
+    description: "Above average volume"
+  high:
+    percent: 50.0
+    action: "take_action"
+    description: "High volume detected"
+  extreme:
+    percent: 100.0
+    action: "emergency"
+    description: "Extreme volume detected"
+  critical:
+    percent: 200.0
+    action: "stop_trading"
+    description: "Critical volume detected"
+
+# Indicateurs de volume
+indicators:
+  volume_sma:
+    enabled: true
+    periods:
+      - 5
+      - 10
+      - 20
+      - 50
+      - 200
+    smoothing: 0
+  volume_ema:
+    enabled: true
+    periods:
+      - 5
+      - 10
+      - 20
+      - 50
+      - 200
+    smoothing: 0
+    alpha: 0.2
+  volume_rsi:
+    enabled: true
+    period: 14
+    overbought: 70
+    oversold: 30
+    smoothing: 3
+  volume_macd:
+    enabled: true
+    fast_period: 12
+    slow_period: 26
+    signal_period: 9
+    smoothing: 5
+  volume_oscillator:
+    enabled: true
+    period: 14
+    smoothing: 3
+  volume_std:
+    enabled: true
+    period: 20
+    smoothing: 0
+  volume_bb:
+    enabled: true
+    period: 20
+    std_dev: 2
+    smoothing: 0
+  volume_obv:
+    enabled: true
+    period: 14
+    smoothing: 3
+  volume_force:
+    enabled: true
+    period: 14
+    smoothing: 5
+  volume_velocity:
+    enabled: true
+    period: 5
+    smoothing: 3
+  volume_acceleration:
+    enabled: true
+    period: 10
+    smoothing: 5
+
+# Analyse de volume
+analysis:
+  historical:
+    enabled: true
+    lookback_years: 5
+    compute_mean: true
+    compute_median: true
+    compute_std: true
+    compute_percentiles: true
+    percentile_values:
+      - 5
+      - 10
+      - 25
+      - 50
+      - 75
+      - 90
+      - 95
+      - 99
+    compute_skewness: true
+    compute_kurtosis: true
+    compute_daily_patterns: true
+    compute_weekly_patterns: true
+    compute_monthly_patterns: true
+  real_time:
+    enabled: true
+    update_frequency_ms: 100
+    compute_instantaneous: true
+    compute_moving_average: true
+    compute_weighted_average: true
+    compute_exponential_average: true
+    compute_momentum: true
+    compute_acceleration: true
+    compute_velocity: true
+    compute_divergence: true
+  predictive:
+    enabled: true
+    model_type: "xgboost"
+    features:
+      - "volume_sma_5"
+      - "volume_sma_10"
+      - "volume_sma_20"
+      - "volume_sma_50"
+      - "volume_sma_200"
+      - "volume_ema_5"
+      - "volume_ema_10"
+      - "volume_ema_20"
+      - "volume_rsi"
+      - "volume_macd"
+      - "volume_bb_upper"
+      - "volume_bb_lower"
+      - "obv"
+      - "volume_velocity"
+      - "volume_acceleration"
+    prediction_horizon: 5
+    confidence_threshold: 0.7
+  pattern_recognition:
+    enabled: true
+    patterns:
+      - "volume_spike"
+      - "volume_climax"
+      - "volume_divergence"
+      - "volume_confirmation"
+      - "volume_exhaustion"
+      - "volume_accumulation"
+      - "volume_distribution"
+      - "volume_breakout"
+      - "volume_fade"
+    min_confidence: 0.6
+
+# Volume profiles
+volume_profiles:
+  fixed_range:
+    enabled: true
+    bin_size: 100
+    max_bins: 200
+    min_volume: 10
+    update_frequency: "realtime"
+  rolling:
+    enabled: true
+    window_size: 20
+    bin_size: 100
+    max_bins: 200
+    update_frequency: "realtime"
+  market:
+    enabled: true
+    value_area: true
+    poc: true
+    high_volume_nodes: true
+    low_volume_nodes: true
+    node_threshold: 10
+    volume_profile_update: "realtime"
+
+# Points de contrôle de volume
+volume_nodes:
+  high_volume_node:
+    enabled: true
+    min_volume: 1000
+    min_trades: 50
+    node_width: 50
+    significance_threshold: 2.0
+  low_volume_node:
+    enabled: true
+    max_volume: 100
+    max_trades: 10
+    node_width: 50
+    significance_threshold: 2.0
+  poc:
+    enabled: true
+    update_frequency: "realtime"
+    persistence: true
+
+# Alertes et notifications
+alerts:
+  volume_spike:
+    enabled: true
+    multiplier: 3.0
+    channels:
+      - "email"
+      - "telegram"
+      - "slack"
+      - "push_notification"
+    severity: "warning"
+  volume_dry_up:
+    enabled: true
+    multiplier: 0.3
+    channels:
+      - "email"
+      - "telegram"
+    severity: "info"
+  volume_breakout:
+    enabled: true
+    threshold: 2.0
+    channels:
+      - "telegram"
+      - "push_notification"
+    severity: "critical"
+  volume_divergence:
+    enabled: true
+    channels:
+      - "email"
+      - "telegram"
+      - "slack"
+    severity: "warning"
+  volume_pattern:
+    enabled: true
+    channels:
+      - "telegram"
+      - "push_notification"
+    severity: "info"
+
+# Actions automatiques
+auto_actions:
+  trade_execution:
+    enabled: true
+    action_types:
+      - "enter_long"
+      - "enter_short"
+      - "exit_long"
+      - "exit_short"
+      - "increase_position"
+      - "decrease_position"
+    require_volume_signal: true
+    require_confidence: 0.6
+    max_position_size: 10000
+    min_position_size: 100
+    volume_multiplier: 1.5
+  position_sizing:
+    enabled: true
+    method: "volume_based"  # volume_based | volatility_based | hybrid
+    volume_factor: 0.1
+    max_position_percent: 10.0
+    min_position_percent: 0.5
+    scaling_function: "linear"  # linear | square_root | logarithmic
+  market_making:
+    enabled: true
+    volume_threshold: 500
+    min_spread: 0.001
+    max_spread: 0.01
+    position_limit: 5000
+
+# Paramètres avancés
+advanced:
+  machine_learning:
+    enabled: true
+    model_type: "random_forest"
+    features:
+      - "volume_sma_5"
+      - "volume_sma_10"
+      - "volume_sma_20"
+      - "volume_sma_50"
+      - "volume_sma_200"
+      - "volume_ema_5"
+      - "volume_ema_10"
+      - "volume_ema_20"
+      - "volume_rsi"
+      - "volume_macd"
+      - "volume_bb_upper"
+      - "volume_bb_lower"
+      - "obv"
+      - "volume_velocity"
+      - "volume_acceleration"
+      - "time_of_day"
+      - "day_of_week"
+      - "market_condition"
+    training_frequency_hours: 6
+    retrain_threshold: 0.9
+    validation_split: 0.2
+    random_seed: 42
+  correlation_analysis:
+    enabled: true
+    calculate_correlations: true
+    correlation_matrix: true
+    threshold: 0.7
+    feature_correlations:
+      - "volume_price_correlation"
+      - "volume_trend_correlation"
+      - "volume_volatility_correlation"
+  volume_weighted:
+    enabled: true
+    vwap_enabled: true
+    vwap_period: 20
+    vwap_smoothing: 3
+    twap_enabled: true
+    twap_period: 10
+    twap_smoothing: 3
+
+# Monitoring et journalisation
+monitoring:
+  logging:
+    enabled: true
+    level: "debug"
+    format: "json"
+    include_context: true
+    include_timestamp: true
+    include_metadata: true
+  metrics:
+    enabled: true
+    collect_every_seconds: 1
+    metrics_to_collect:
+      - "current_volume"
+      - "volume_sma_5"
+      - "volume_sma_10"
+      - "volume_sma_20"
+      - "volume_sma_50"
+      - "volume_sma_200"
+      - "volume_rsi"
+      - "volume_macd"
+      - "obv"
+      - "volume_velocity"
+      - "volume_acceleration"
+      - "volume_spike_multiplier"
+      - "volume_divergence"
+      - "volume_poc"
+  dashboard:
+    enabled: true
+    update_interval_seconds: 1
+    charts:
+      - "volume_chart"
+      - "volume_profile"
+      - "volume_indicators"
+      - "volume_distribution"
+      - "volume_patterns"
+      - "volume_poc"
+      - "volume_velocity"
+      - "volume_divergence"
+
+# Backtesting
+backtesting:
+  enabled: true
+  use_historical_volume: true
+  compute_volume_distribution: true
+  compute_pattern_accuracy: true
+  compute_signal_accuracy: true
+  compute_strategy_performance: true
+  report_metrics:
+    - "win_rate"
+    - "profit_factor"
+    - "sharpe_ratio"
+    - "max_drawdown"
+    - "average_win_loss"
+    - "volume_accuracy"
+    - "pattern_accuracy"
+
+# Distribution des métriques
+metrics_distribution:
+  enabled: true
+  distribution:
+    - metric: "volume"
+      bins: 100
+      update_frequency: "realtime"
+    - metric: "volume_sma_20"
+      bins: 50
+      update_frequency: "realtime"
+    - metric: "volume_velocity"
+      bins: 30
+      update_frequency: "realtime"
+  percentiles:
+    - 1
+    - 5
+    - 10
+    - 25
+    - 50
+    - 75
+    - 90
+    - 95
+    - 99
+
+# Configuration de la base de données
+database:
+  enabled: true
+  table_name: "volume_metrics"
+  retention_days: 365
+  aggregation:
+    enabled: true
+    intervals:
+      - "1s"
+      - "5s"
+      - "15s"
+      - "30s"
+      - "1m"
+      - "5m"
+      - "15m"
+      - "1h"
+      - "4h"
+      - "24h"
+      - "7d"
+  compression: true
+  backup:
+    enabled: true
+    frequency: "daily"
+    retention_days: 30
+
+# Webhooks
+webhooks:
+  enabled: true
+  endpoints:
+    - url: "https://nexustradingia.com/api/webhooks/volume"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      payload_template: "volume_alert"
+    - url: "https://nexustradingia.com/api/webhooks/volume_pattern"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      payload_template: "volume_pattern"
+  retry:
+    enabled: true
+    max_attempts: 5
+    backoff_seconds: 30
+
+# Logging avancé
+advanced_logging:
+  enabled: true
+  levels:
+    - "info"
+    - "warning"
+    - "error"
+    - "critical"
+    - "debug"
+  output: "volume_logs"
+  rotation:
+    enabled: true
+    max_size_mb: 100
+    max_files: 10
+  remote_logging:
+    enabled: true
+    endpoints:
+      - "https://nexustradingia.com/logs/volume"
+  include_trace: true
+  include_stack_trace: true
+  include_context: true
+
+# Threading et performances
+performance:
+  thread_pool_size: 4
+  queue_size: 5000
+  batch_size: 500
+  async_processing: true
+  cache_size: 5000
+  cache_ttl_seconds: 30
+  database_pool_size: 10
+  database_pool_max_overflow: 20
+  use_multiprocessing: true
+  max_workers: 4
+  use_cython: true
+  use_numba: true
+
+# API de gestion
+management_api:
+  enabled: true
+  endpoints:
+    - "/api/v1/volume/current"
+    - "/api/v1/volume/history"
+    - "/api/v1/volume/metrics"
+    - "/api/v1/volume/status"
+    - "/api/v1/volume/indicators"
+    - "/api/v1/volume/profile"
+    - "/api/v1/volume/poc"
+  authentication_required: true
+  rate_limit: 100
+  rate_limit_interval_seconds: 60
+  version: "v1.0.0"
+
+# Export des données
+data_export:
+  enabled: true
+  formats:
+    - "csv"
+    - "json"
+    - "parquet"
+    - "avro"
+  schedule: "realtime"
+  batch_size: 1000
+  retention_days: 30
+  compression: "gzip"
+  destination: "s3://nexus-data/volume/"
+  encrypt: true
+  encryption_key_id: "nexus-volume-key"
+  partition_by:
+    - "symbol"
+    - "date"
+
+# Intégration avec d'autres modules
+integrations:
+  risk_engine:
+    enabled: true
+    sync_frequency_seconds: 1
+    share_metrics: true
+  execution_engine:
+    enabled: true
+    share_signals: true
+    require_confirmation: true
+  portfolio_manager:
+    enabled: true
+    share_positions: true
+    share_allocation: true
+  ai_engine:
+    enabled: true
+    use_ai_predictions: true
+    confidence_threshold: 0.7
+    model_endpoint: "http://ai-engine:8000/predict/volume"
+  market_data:
+    enabled: true
+    sync_frequency_ms: 100
+    data_endpoint: "ws://market-data:8080/ws"
+  order_book:
+    enabled: true
+    sync_frequency_ms: 50
+    depth_levels: 10
+
+# Tests et validation
+testing:
+  unit_tests:
+    enabled: true
+    coverage_threshold: 90
+  integration_tests:
+    enabled: true
+  stress_tests:
+    enabled: true
+    scenarios:
+      - "high_volume"
+      - "low_volume"
+      - "volume_spike"
+      - "volume_dry_up"
+      - "flash_crash"
+  validation:
+    enabled: true
+    validate_on_startup: true
+    validate_on_config_change: true
+    validation_rules:
+      - "thresholds.low.percent < thresholds.medium.percent"
+      - "thresholds.medium.percent < thresholds.high.percent"
+      - "thresholds.high.percent < thresholds.extreme.percent"
+      - "thresholds.extreme.percent < thresholds.critical.percent"
+      - "min_volume_threshold > 0"
+      - "max_volume_threshold > min_volume_threshold"
+      - "lookback_periods[0] > 0"
+      - "confidence_threshold > 0.0"
+      - "confidence_threshold <= 1.0"
+
+# Market conditions adaptation
+market_adaptation:
+  enabled: true
+  volatility_adjustment: true
+  regime_detection:
+    enabled: true
+    lookback_periods:
+      - 20
+      - 50
+      - 200
+    regimes:
+      - "bull"
+      - "bear"
+      - "sideways"
+      - "volatile"
+      - "low_volume"
+      - "high_volume"
+  regime_parameters:
+    bull:
+      volume_multiplier: 1.2
+      threshold_multiplier: 0.8
+    bear:
+      volume_multiplier: 0.8
+      threshold_multiplier: 1.2
+    sideways:
+      volume_multiplier: 1.0
+      threshold_multiplier: 1.0
+    volatile:
+      volume_multiplier: 0.6
+      threshold_multiplier: 1.5
+    low_volume:
+      volume_multiplier: 0.5
+      threshold_multiplier: 2.0
+    high_volume:
+      volume_multiplier: 1.5
+      threshold_multiplier: 0.7
+
+# Time-based configurations
+time_based:
+  enabled: true
+  sessions:
+    asia:
+      start: "00:00"
+      end: "08:00"
+      volume_multiplier: 0.8
+      threshold_multiplier: 1.2
+    london:
+      start: "08:00"
+      end: "16:00"
+      volume_multiplier: 1.2
+      threshold_multiplier: 0.8
+    newyork:
+      start: "13:00"
+      end: "22:00"
+      volume_multiplier: 1.0
+      threshold_multiplier: 1.0
+  day_of_week:
+    monday:
+      volume_multiplier: 0.9
+      threshold_multiplier: 1.1
+    tuesday:
+      volume_multiplier: 1.1
+      threshold_multiplier: 0.9
+    wednesday:
+      volume_multiplier: 1.0
+      threshold_multiplier: 1.0
+    thursday:
+      volume_multiplier: 1.1
+      threshold_multiplier: 0.9
+    friday:
+      volume_multiplier: 0.9
+      threshold_multiplier: 1.1
+    saturday:
+      volume_multiplier: 0.5
+      threshold_multiplier: 2.0
+    sunday:
+      volume_multiplier: 0.6
+      threshold_multiplier: 1.8
+
+# Symbol-specific configurations
+symbol_configs:
+  BTCUSDT:
+    volume_multiplier: 1.0
+    threshold_multiplier: 1.0
+    min_volume: 1000
+    max_volume: 10000000
+    min_trades: 100
+    max_trades: 10000
+  ETHUSDT:
+    volume_multiplier: 1.1
+    threshold_multiplier: 0.9
+    min_volume: 500
+    max_volume: 5000000
+    min_trades: 50
+    max_trades: 5000
+  SOLUSDT:
+    volume_multiplier: 1.2
+    threshold_multiplier: 0.8
+    min_volume: 200
+    max_volume: 2000000
+    min_trades: 20
+    max_trades: 2000
+  ADAUSDT:
+    volume_multiplier: 0.9
+    threshold_multiplier: 1.1
+    min_volume: 100
+    max_volume: 1000000
+    min_trades: 10
+    max_trades: 1000
+  XRPUSDT:
+    volume_multiplier: 1.0
+    threshold_multiplier: 1.0
+    min_volume: 100
+    max_volume: 1000000
+    min_trades: 10
+    max_trades: 1000
