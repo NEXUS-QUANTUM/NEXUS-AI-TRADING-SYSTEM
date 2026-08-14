@@ -1,0 +1,794 @@
+# fibonacci_configs.yaml
+# Configuration complète pour l'analyse de Fibonacci dans Swing Bot
+# Version: 4.0.0 - Production Ready
+
+# Paramètres généraux
+general:
+  enabled: true
+  mode: "comprehensive"
+  calculate_in_real_time: true
+  update_frequency_seconds: 1
+  lookback_periods:
+    - 5
+    - 10
+    - 20
+    - 50
+    - 100
+    - 200
+    - 500
+  history_length_days: 365
+  min_data_points: 50
+  max_data_points: 100000
+  fibonacci_analysis_version: "4.0.0"
+  environment: "production"
+
+# Types d'analyse de Fibonacci
+fibonacci_types:
+  retracement:
+    enabled: true
+    description: "Fibonacci Retracement"
+    levels:
+      - 0.0
+      - 0.236
+      - 0.382
+      - 0.5
+      - 0.618
+      - 0.786
+      - 1.0
+    extended_levels:
+      - 1.272
+      - 1.618
+      - 2.0
+      - 2.618
+      - 3.0
+      - 4.236
+    calculation_method: "swing_high_low"
+    update_frequency_seconds: 60
+  extension:
+    enabled: true
+    description: "Fibonacci Extension"
+    levels:
+      - 0.0
+      - 0.382
+      - 0.5
+      - 0.618
+      - 1.0
+      - 1.272
+      - 1.382
+      - 1.5
+      - 1.618
+      - 2.0
+      - 2.618
+      - 3.0
+      - 4.236
+    calculation_method: "wave_extension"
+    update_frequency_seconds: 60
+  time_zones:
+    enabled: true
+    description: "Fibonacci Time Zones"
+    levels:
+      - 1
+      - 2
+      - 3
+      - 5
+      - 8
+      - 13
+      - 21
+      - 34
+      - 55
+      - 89
+      - 144
+      - 233
+      - 377
+    calculation_method: "time_ratios"
+    update_frequency_seconds: 300
+  circles:
+    enabled: true
+    description: "Fibonacci Circles"
+    levels:
+      - 0.236
+      - 0.382
+      - 0.5
+      - 0.618
+      - 0.786
+      - 1.0
+      - 1.272
+      - 1.618
+    calculation_method: "price_time_circles"
+    update_frequency_seconds: 300
+  arcs:
+    enabled: true
+    description: "Fibonacci Arcs"
+    levels:
+      - 0.236
+      - 0.382
+      - 0.5
+      - 0.618
+      - 0.786
+      - 1.0
+    calculation_method: "price_arcs"
+    update_frequency_seconds: 300
+  fans:
+    enabled: true
+    description: "Fibonacci Fans"
+    levels:
+      - 0.236
+      - 0.382
+      - 0.5
+      - 0.618
+      - 0.786
+    calculation_method: "angle_fans"
+    update_frequency_seconds: 300
+  channels:
+    enabled: true
+    description: "Fibonacci Channels"
+    levels:
+      - 0.0
+      - 0.236
+      - 0.382
+      - 0.5
+      - 0.618
+      - 0.786
+      - 1.0
+    calculation_method: "channel_projection"
+    update_frequency_seconds: 300
+
+# Seuils de Fibonacci
+thresholds:
+  retracement:
+    strong: 0.618
+    medium: 0.5
+    weak: 0.382
+    rejection: 0.786
+    breakout: 1.0
+  extension:
+    target_1: 1.272
+    target_2: 1.618
+    target_3: 2.0
+    target_4: 2.618
+    extreme: 4.236
+  time_zones:
+    short_term: 13
+    medium_term: 55
+    long_term: 233
+    extreme_term: 377
+
+# Indicateurs de Fibonacci
+indicators:
+  fib_retracement_level:
+    enabled: true
+    calculation: "price_position"
+    smoothing: 0
+    update_frequency: "realtime"
+  fib_extension_level:
+    enabled: true
+    calculation: "projected_target"
+    smoothing: 0
+    update_frequency: "realtime"
+  fib_time_zone:
+    enabled: true
+    calculation: "time_projection"
+    smoothing: 0
+    update_frequency: "realtime"
+  fib_channel:
+    enabled: true
+    calculation: "channel_boundary"
+    smoothing: 0
+    update_frequency: "realtime"
+  fib_cluster:
+    enabled: true
+    calculation: "confluence_zone"
+    smoothing: 3
+    update_frequency: "realtime"
+  fib_strength:
+    enabled: true
+    calculation: "level_importance"
+    smoothing: 0
+    update_frequency: "realtime"
+
+# Analyse de Fibonacci
+analysis:
+  historical:
+    enabled: true
+    lookback_years: 5
+    compute_fib_accuracy: true
+    compute_fib_reliability: true
+    compute_fib_distribution: true
+    compute_fib_patterns: true
+    compute_fib_cycles: true
+    compute_fib_confluence: true
+  real_time:
+    enabled: true
+    update_frequency_ms: 100
+    compute_instantaneous_levels: true
+    compute_moving_average_levels: true
+    compute_exponential_levels: true
+    compute_weighted_levels: true
+    compute_level_velocity: true
+    compute_level_acceleration: true
+  predictive:
+    enabled: true
+    model_type: "ensemble"
+    models:
+      - "lstm"
+      - "gru"
+      - "xgboost"
+      - "lightgbm"
+    features:
+      - "fib_retracement_0_382"
+      - "fib_retracement_0_5"
+      - "fib_retracement_0_618"
+      - "fib_retracement_0_786"
+      - "fib_extension_1_272"
+      - "fib_extension_1_618"
+      - "fib_extension_2_0"
+      - "fib_extension_2_618"
+      - "fib_time_zone"
+      - "fib_cluster"
+      - "fib_strength"
+      - "price"
+      - "price_change"
+      - "volume"
+      - "volatility"
+      - "time_of_day"
+      - "day_of_week"
+      - "market_condition"
+    forecast_horizons:
+      - 1
+      - 5
+      - 10
+      - 20
+    confidence_threshold: 0.7
+    retrain_frequency_hours: 24
+  comparative:
+    enabled: true
+    compare_to_historical_accuracy: true
+    compare_to_market: true
+    compare_to_benchmark: true
+    compare_to_other_indicators: true
+
+# Alertes et notifications
+alerts:
+  fib_level_reached:
+    enabled: true
+    levels:
+      - 0.382
+      - 0.5
+      - 0.618
+      - 0.786
+      - 1.0
+      - 1.272
+      - 1.618
+    channels:
+      - "email"
+      - "telegram"
+      - "slack"
+      - "push_notification"
+    severity: "warning"
+  fib_breakout:
+    enabled: true
+    levels:
+      - 0.786
+      - 1.0
+      - 1.272
+      - 1.618
+    channels:
+      - "telegram"
+      - "push_notification"
+    severity: "critical"
+  fib_rejection:
+    enabled: true
+    levels:
+      - 0.382
+      - 0.5
+      - 0.618
+      - 0.786
+    channels:
+      - "telegram"
+      - "push_notification"
+    severity: "info"
+  fib_cluster:
+    enabled: true
+    confluence_threshold: 3
+    channels:
+      - "telegram"
+      - "push_notification"
+    severity: "info"
+  fib_extension_target:
+    enabled: true
+    channels:
+      - "telegram"
+      - "push_notification"
+    severity: "critical"
+
+# Actions automatiques
+auto_actions:
+  trade_entry:
+    enabled: true
+    action_types:
+      - "enter_on_retracement"
+      - "enter_on_extension"
+      - "enter_on_breakout"
+      - "enter_on_rejection"
+    require_fib_confirmation: true
+    require_confidence: 0.6
+    max_position_size: 10000
+    min_position_size: 100
+  stop_loss:
+    enabled: true
+    methods:
+      - "fib_retracement_based"
+      - "fib_extension_based"
+      - "fib_channel_based"
+    fib_multiplier: 1.0
+    min_stop_percent: 0.5
+    max_stop_percent: 10.0
+    update_frequency_seconds: 10
+  take_profit:
+    enabled: true
+    methods:
+      - "fib_extension_projection"
+      - "fib_retracement_projection"
+      - "fib_channel_projection"
+    projection_multiplier: 1.0
+    min_profit_percent: 1.0
+    max_profit_percent: 20.0
+    update_frequency_seconds: 10
+  position_sizing:
+    enabled: true
+    method: "fib_level_based"
+    fib_scale: 0.5
+    max_position_percent: 10.0
+    min_position_percent: 0.5
+    scaling_function: "fibonacci_sequence"
+
+# Paramètres avancés
+advanced:
+  machine_learning:
+    enabled: true
+    model_type: "ensemble"
+    models:
+      - "lstm"
+      - "gru"
+      - "transformer"
+      - "xgboost"
+      - "lightgbm"
+    features:
+      - "fib_retracement_0_382"
+      - "fib_retracement_0_5"
+      - "fib_retracement_0_618"
+      - "fib_retracement_0_786"
+      - "fib_extension_1_272"
+      - "fib_extension_1_618"
+      - "fib_extension_2_0"
+      - "fib_extension_2_618"
+      - "fib_time_zone"
+      - "fib_cluster"
+      - "fib_strength"
+      - "price"
+      - "price_change"
+      - "volume"
+      - "volatility"
+      - "rsi"
+      - "macd"
+      - "bollinger_width"
+      - "atr"
+      - "time_of_day"
+      - "day_of_week"
+      - "market_condition"
+    training_frequency_hours: 6
+    retrain_threshold: 0.9
+    validation_split: 0.2
+    random_seed: 42
+    ensemble_weights:
+      - 0.20
+      - 0.20
+      - 0.20
+      - 0.20
+      - 0.20
+  statistical_analysis:
+    enabled: true
+    calculate_fib_accuracy: true
+    calculate_fib_reliability: true
+    calculate_fib_significance: true
+    calculate_fib_correlation: true
+    calculate_fib_probability: true
+    confidence_level: 95
+    p_value_threshold: 0.05
+  confluence_analysis:
+    enabled: true
+    confluence_levels:
+      - 0.382
+      - 0.5
+      - 0.618
+      - 0.786
+      - 1.0
+      - 1.272
+      - 1.618
+    confluence_threshold: 3
+    confluence_strength: 0.7
+    confluence_radius: 0.05
+
+# Monitoring et journalisation
+monitoring:
+  logging:
+    enabled: true
+    level: "debug"
+    format: "json"
+    include_context: true
+    include_timestamp: true
+    include_metadata: true
+  metrics:
+    enabled: true
+    collect_every_seconds: 1
+    metrics_to_collect:
+      - "fib_retracement_current"
+      - "fib_extension_current"
+      - "fib_time_zone_current"
+      - "fib_cluster_count"
+      - "fib_strength_score"
+      - "fib_level_accuracy"
+      - "fib_reliability"
+      - "fib_confluence"
+      - "fib_breakout_count"
+      - "fib_rejection_count"
+  dashboard:
+    enabled: true
+    update_interval_seconds: 1
+    charts:
+      - "fibonacci_analysis"
+      - "fibonacci_levels"
+      - "fibonacci_clusters"
+      - "fibonacci_accuracy"
+      - "fibonacci_distribution"
+      - "fibonacci_confluence"
+      - "fibonacci_breakout"
+      - "fibonacci_predictive"
+
+# Backtesting
+backtesting:
+  enabled: true
+  use_historical_fib: true
+  compute_fib_accuracy: true
+  compute_fib_reliability: true
+  compute_strategy_performance: true
+  compute_risk_adjusted_returns: true
+  compute_confluence_effectiveness: true
+  report_metrics:
+    - "fib_accuracy"
+    - "fib_reliability"
+    - "confluence_effectiveness"
+    - "win_rate"
+    - "profit_factor"
+    - "sharpe_ratio"
+    - "max_drawdown"
+
+# Configuration de la base de données
+database:
+  enabled: true
+  table_name: "fibonacci_metrics"
+  retention_days: 365
+  aggregation:
+    enabled: true
+    intervals:
+      - "1s"
+      - "5s"
+      - "15s"
+      - "30s"
+      - "1m"
+      - "5m"
+      - "15m"
+      - "1h"
+      - "4h"
+      - "24h"
+  compression: true
+  backup:
+    enabled: true
+    frequency: "daily"
+    retention_days: 30
+
+# Webhooks
+webhooks:
+  enabled: true
+  endpoints:
+    - url: "https://nexustradingia.com/api/webhooks/fibonacci"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      payload_template: "fibonacci_alert"
+    - url: "https://nexustradingia.com/api/webhooks/fibonacci-breakout"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      payload_template: "fibonacci_breakout"
+  retry:
+    enabled: true
+    max_attempts: 5
+    backoff_seconds: 30
+
+# Logging avancé
+advanced_logging:
+  enabled: true
+  levels:
+    - "info"
+    - "warning"
+    - "error"
+    - "critical"
+    - "debug"
+  output: "fibonacci_logs"
+  rotation:
+    enabled: true
+    max_size_mb: 100
+    max_files: 10
+  remote_logging:
+    enabled: true
+    endpoints:
+      - "https://nexustradingia.com/logs/fibonacci"
+  include_trace: true
+  include_stack_trace: true
+  include_context: true
+
+# Threading et performances
+performance:
+  thread_pool_size: 8
+  queue_size: 10000
+  batch_size: 1000
+  async_processing: true
+  cache_size: 10000
+  cache_ttl_seconds: 30
+  database_pool_size: 10
+  database_pool_max_overflow: 20
+  use_multiprocessing: true
+  max_workers: 8
+  use_cython: true
+  use_numba: true
+  use_gpu: false
+  gpu_device: 0
+
+# API de gestion
+management_api:
+  enabled: true
+  endpoints:
+    - "/api/v1/fibonacci/current"
+    - "/api/v1/fibonacci/history"
+    - "/api/v1/fibonacci/metrics"
+    - "/api/v1/fibonacci/status"
+    - "/api/v1/fibonacci/levels"
+    - "/api/v1/fibonacci/clusters"
+    - "/api/v1/fibonacci/confluence"
+    - "/api/v1/fibonacci/forecast"
+  authentication_required: true
+  rate_limit: 100
+  rate_limit_interval_seconds: 60
+  version: "v1.0.0"
+
+# Export des données
+data_export:
+  enabled: true
+  formats:
+    - "csv"
+    - "json"
+    - "parquet"
+    - "avro"
+    - "feather"
+  schedule: "realtime"
+  batch_size: 1000
+  retention_days: 30
+  compression: "gzip"
+  destination: "s3://nexus-data/fibonacci/"
+  encrypt: true
+  encryption_key_id: "nexus-fibonacci-key"
+  partition_by:
+    - "symbol"
+    - "year"
+    - "month"
+    - "day"
+
+# Intégration avec d'autres modules
+integrations:
+  risk_engine:
+    enabled: true
+    sync_frequency_seconds: 1
+    share_metrics: true
+  execution_engine:
+    enabled: true
+    share_signals: true
+    require_confirmation: true
+  portfolio_manager:
+    enabled: true
+    share_positions: true
+    share_allocation: true
+  ai_engine:
+    enabled: true
+    use_ai_predictions: true
+    confidence_threshold: 0.7
+    model_endpoint: "http://ai-engine:8000/predict/fibonacci"
+  market_data:
+    enabled: true
+    sync_frequency_ms: 100
+    data_endpoint: "ws://market-data:8080/ws"
+
+# Tests et validation
+testing:
+  unit_tests:
+    enabled: true
+    coverage_threshold: 90
+  integration_tests:
+    enabled: true
+  stress_tests:
+    enabled: true
+    scenarios:
+      - "high_volume"
+      - "low_volume"
+      - "volatile_market"
+      - "stable_market"
+      - "trending_market"
+      - "ranging_market"
+  validation:
+    enabled: true
+    validate_on_startup: true
+    validate_on_config_change: true
+    validation_rules:
+      - "fibonacci_types.retracement.levels[0] < fibonacci_types.retracement.levels[1]"
+      - "fibonacci_types.retracement.levels[1] < fibonacci_types.retracement.levels[2]"
+      - "fibonacci_types.retracement.levels[2] < fibonacci_types.retracement.levels[3]"
+      - "fibonacci_types.retracement.levels[3] < fibonacci_types.retracement.levels[4]"
+      - "fibonacci_types.retracement.levels[4] < fibonacci_types.retracement.levels[5]"
+      - "fibonacci_types.retracement.levels[5] < fibonacci_types.retracement.levels[6]"
+      - "fibonacci_types.extension.levels[0] < fibonacci_types.extension.levels[1]"
+      - "fibonacci_types.extension.levels[1] < fibonacci_types.extension.levels[2]"
+      - "thresholds.retracement.strong < thresholds.retracement.medium"
+      - "thresholds.retracement.medium < thresholds.retracement.weak"
+      - "min_data_points > 0"
+      - "confidence_threshold > 0.0"
+      - "confidence_threshold <= 1.0"
+
+# Market conditions adaptation
+market_adaptation:
+  enabled: true
+  volatility_adjustment: true
+  regime_detection:
+    enabled: true
+    lookback_periods:
+      - 20
+      - 50
+      - 200
+    regimes:
+      - "trending"
+      - "ranging"
+      - "volatile"
+      - "stable"
+      - "bull"
+      - "bear"
+  regime_parameters:
+    trending:
+      fib_multiplier: 1.2
+      threshold_multiplier: 0.8
+      confidence_multiplier: 1.1
+    ranging:
+      fib_multiplier: 0.8
+      threshold_multiplier: 1.2
+      confidence_multiplier: 0.9
+    volatile:
+      fib_multiplier: 0.7
+      threshold_multiplier: 1.3
+      confidence_multiplier: 0.8
+    stable:
+      fib_multiplier: 1.0
+      threshold_multiplier: 0.9
+      confidence_multiplier: 1.2
+    bull:
+      fib_multiplier: 1.1
+      threshold_multiplier: 0.9
+      confidence_multiplier: 1.0
+    bear:
+      fib_multiplier: 0.9
+      threshold_multiplier: 1.1
+      confidence_multiplier: 0.9
+
+# Time-based configurations
+time_based:
+  enabled: true
+  sessions:
+    asia:
+      start: "00:00"
+      end: "08:00"
+      fib_multiplier: 0.8
+      threshold_multiplier: 1.2
+      confidence_multiplier: 0.9
+    london:
+      start: "08:00"
+      end: "16:00"
+      fib_multiplier: 1.2
+      threshold_multiplier: 0.8
+      confidence_multiplier: 1.1
+    newyork:
+      start: "13:00"
+      end: "22:00"
+      fib_multiplier: 1.0
+      threshold_multiplier: 1.0
+      confidence_multiplier: 1.0
+    overlap:
+      start: "13:00"
+      end: "16:00"
+      fib_multiplier: 1.5
+      threshold_multiplier: 0.7
+      confidence_multiplier: 1.2
+
+# Symbol-specific configurations
+symbol_configs:
+  BTCUSDT:
+    fib_multiplier: 1.0
+    threshold_multiplier: 1.0
+    confidence_multiplier: 1.0
+    retracement_levels:
+      - 0.236
+      - 0.382
+      - 0.5
+      - 0.618
+      - 0.786
+    extension_levels:
+      - 1.272
+      - 1.618
+      - 2.0
+      - 2.618
+  ETHUSDT:
+    fib_multiplier: 1.1
+    threshold_multiplier: 0.9
+    confidence_multiplier: 1.0
+    retracement_levels:
+      - 0.236
+      - 0.382
+      - 0.5
+      - 0.618
+      - 0.786
+    extension_levels:
+      - 1.272
+      - 1.618
+      - 2.0
+      - 2.618
+  SOLUSDT:
+    fib_multiplier: 1.2
+    threshold_multiplier: 0.8
+    confidence_multiplier: 0.9
+    retracement_levels:
+      - 0.236
+      - 0.382
+      - 0.5
+      - 0.618
+      - 0.786
+    extension_levels:
+      - 1.272
+      - 1.618
+      - 2.0
+      - 2.618
+  ADAUSDT:
+    fib_multiplier: 0.9
+    threshold_multiplier: 1.1
+    confidence_multiplier: 1.1
+    retracement_levels:
+      - 0.236
+      - 0.382
+      - 0.5
+      - 0.618
+      - 0.786
+    extension_levels:
+      - 1.272
+      - 1.618
+      - 2.0
+      - 2.618
+  XRPUSDT:
+    fib_multiplier: 1.0
+    threshold_multiplier: 1.0
+    confidence_multiplier: 1.0
+    retracement_levels:
+      - 0.236
+      - 0.382
+      - 0.5
+      - 0.618
+      - 0.786
+    extension_levels:
+      - 1.272
+      - 1.618
+      - 2.0
+      - 2.618
