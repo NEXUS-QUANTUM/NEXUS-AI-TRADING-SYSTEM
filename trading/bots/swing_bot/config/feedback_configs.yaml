@@ -1,0 +1,679 @@
+# feedback_configs.yaml
+# Configuration complète pour le système de feedback dans Swing Bot
+# Version: 4.0.0 - Production Ready
+
+# Paramètres généraux
+general:
+  enabled: true
+  mode: "comprehensive"
+  calculate_in_real_time: true
+  update_frequency_seconds: 1
+  lookback_periods:
+    - 5
+    - 10
+    - 20
+    - 50
+    - 100
+    - 200
+    - 500
+  history_length_days: 365
+  min_data_points: 50
+  max_data_points: 100000
+  feedback_loop_version: "4.0.0"
+  environment: "production"
+
+# Types de feedback
+feedback_types:
+  performance_feedback:
+    enabled: true
+    description: "Performance Feedback Loop"
+    metrics:
+      - "win_rate"
+      - "profit_factor"
+      - "sharpe_ratio"
+      - "sortino_ratio"
+      - "calmar_ratio"
+    update_frequency_seconds: 60
+    feedback_weight: 0.3
+  risk_feedback:
+    enabled: true
+    description: "Risk Feedback Loop"
+    metrics:
+      - "max_drawdown"
+      - "var_95"
+      - "cvar_95"
+      - "volatility"
+      - "beta"
+    update_frequency_seconds: 60
+    feedback_weight: 0.25
+  execution_feedback:
+    enabled: true
+    description: "Execution Feedback Loop"
+    metrics:
+      - "slippage"
+      - "market_impact"
+      - "execution_speed"
+      - "fill_rate"
+      - "execution_quality"
+    update_frequency_seconds: 60
+    feedback_weight: 0.2
+  quality_feedback:
+    enabled: true
+    description: "Quality Feedback Loop"
+    metrics:
+      - "accuracy"
+      - "precision"
+      - "recall"
+      - "f1_score"
+      - "auc"
+    update_frequency_seconds: 60
+    feedback_weight: 0.15
+  innovation_feedback:
+    enabled: true
+    description: "Innovation Feedback Loop"
+    metrics:
+      - "novelty"
+      - "creativity"
+      - "adaptability"
+      - "evolution_rate"
+      - "learning_rate"
+    update_frequency_seconds: 60
+    feedback_weight: 0.1
+
+# Mécanismes de feedback
+feedback_mechanisms:
+  positive_feedback:
+    enabled: true
+    description: "Positive Reinforcement"
+    trigger_conditions:
+      - "performance_improvement"
+      - "risk_reduction"
+      - "quality_increase"
+    reinforcement_factor: 0.1
+    max_reinforcement: 0.5
+  negative_feedback:
+    enabled: true
+    description: "Negative Correction"
+    trigger_conditions:
+      - "performance_decline"
+      - "risk_increase"
+      - "quality_decrease"
+    correction_factor: 0.1
+    max_correction: 0.5
+  adaptive_feedback:
+    enabled: true
+    description: "Adaptive Feedback"
+    adaptation_method: "reinforcement_learning"
+    learning_rate: 0.001
+    discount_factor: 0.95
+    exploration_rate: 0.1
+    batch_size: 32
+    memory_size: 10000
+  ensemble_feedback:
+    enabled: true
+    description: "Ensemble Feedback"
+    feedback_methods:
+      - "positive"
+      - "negative"
+      - "adaptive"
+    ensemble_weights:
+      - 0.4
+      - 0.3
+      - 0.3
+
+# Signaux de feedback
+feedback_signals:
+  performance_signals:
+    enabled: true
+    signals:
+      - "win_rate_increase"
+      - "profit_factor_increase"
+      - "sharpe_ratio_increase"
+      - "sortino_ratio_increase"
+    threshold: 0.05
+    confidence: 0.7
+  risk_signals:
+    enabled: true
+    signals:
+      - "drawdown_decrease"
+      - "var_decrease"
+      - "cvar_decrease"
+      - "volatility_decrease"
+    threshold: 0.05
+    confidence: 0.7
+  execution_signals:
+    enabled: true
+    signals:
+      - "slippage_decrease"
+      - "market_impact_decrease"
+      - "execution_speed_increase"
+      - "fill_rate_increase"
+    threshold: 0.05
+    confidence: 0.7
+  quality_signals:
+    enabled: true
+    signals:
+      - "accuracy_increase"
+      - "precision_increase"
+      - "recall_increase"
+      - "f1_score_increase"
+    threshold: 0.05
+    confidence: 0.7
+
+# Analyse des feedbacks
+analysis:
+  historical:
+    enabled: true
+    lookback_years: 5
+    compute_feedback_effectiveness: true
+    compute_feedback_efficiency: true
+    compute_feedback_distribution: true
+    compute_feedback_patterns: true
+    compute_feedback_cycles: true
+  real_time:
+    enabled: true
+    update_frequency_ms: 100
+    compute_instantaneous_feedback: true
+    compute_moving_average_feedback: true
+    compute_exponential_feedback: true
+    compute_weighted_feedback: true
+    compute_feedback_velocity: true
+    compute_feedback_acceleration: true
+  predictive:
+    enabled: true
+    model_type: "ensemble"
+    models:
+      - "lstm"
+      - "gru"
+      - "xgboost"
+      - "lightgbm"
+    features:
+      - "feedback_performance"
+      - "feedback_risk"
+      - "feedback_execution"
+      - "feedback_quality"
+      - "feedback_innovation"
+      - "feedback_velocity"
+      - "feedback_acceleration"
+      - "performance_score"
+      - "risk_score"
+      - "execution_score"
+      - "quality_score"
+      - "innovation_score"
+      - "time_of_day"
+      - "day_of_week"
+      - "market_condition"
+    forecast_horizons:
+      - 1
+      - 5
+      - 10
+      - 20
+    confidence_threshold: 0.7
+    retrain_frequency_hours: 24
+
+# Alertes et notifications
+alerts:
+  feedback_positive:
+    enabled: true
+    threshold: 0.05
+    channels:
+      - "email"
+      - "telegram"
+      - "slack"
+      - "push_notification"
+    severity: "success"
+  feedback_negative:
+    enabled: true
+    threshold: 0.05
+    channels:
+      - "email"
+      - "telegram"
+      - "slack"
+    severity: "critical"
+  feedback_breakthrough:
+    enabled: true
+    threshold: 0.1
+    channels:
+      - "telegram"
+      - "push_notification"
+    severity: "success"
+  feedback_stagnation:
+    enabled: true
+    threshold: 0.02
+    channels:
+      - "email"
+      - "telegram"
+    severity: "warning"
+
+# Actions automatiques
+auto_actions:
+  feedback_implementation:
+    enabled: true
+    action_types:
+      - "adjust_parameters"
+      - "modify_strategy"
+      - "optimize_models"
+      - "improve_execution"
+    implementation_factor: 0.1
+    max_implementation_percent: 20.0
+  feedback_optimization:
+    enabled: true
+    action_types:
+      - "rebalance_weights"
+      - "adjust_learning_rate"
+      - "modify_adaptation"
+      - "enhance_feedback"
+    optimization_factor: 0.1
+    max_optimization_percent: 15.0
+  feedback_correction:
+    enabled: true
+    action_types:
+      - "correct_errors"
+      - "adjust_deviations"
+      - "reset_parameters"
+      - "recalibrate_models"
+    correction_factor: 0.1
+    max_correction_percent: 10.0
+
+# Paramètres avancés
+advanced:
+  machine_learning:
+    enabled: true
+    model_type: "ensemble"
+    models:
+      - "random_forest"
+      - "xgboost"
+      - "lightgbm"
+      - "lstm"
+    features:
+      - "feedback_performance"
+      - "feedback_risk"
+      - "feedback_execution"
+      - "feedback_quality"
+      - "feedback_innovation"
+      - "feedback_velocity"
+      - "feedback_acceleration"
+      - "performance_score"
+      - "risk_score"
+      - "execution_score"
+      - "quality_score"
+      - "innovation_score"
+      - "win_rate"
+      - "profit_factor"
+      - "sharpe_ratio"
+      - "max_drawdown"
+      - "slippage"
+      - "accuracy"
+      - "time_of_day"
+      - "day_of_week"
+      - "market_condition"
+    training_frequency_hours: 6
+    retrain_threshold: 0.9
+    validation_split: 0.2
+    random_seed: 42
+    ensemble_weights:
+      - 0.25
+      - 0.25
+      - 0.25
+      - 0.25
+  statistical_analysis:
+    enabled: true
+    calculate_feedback_effectiveness: true
+    calculate_feedback_efficiency: true
+    calculate_feedback_significance: true
+    calculate_feedback_correlation: true
+    calculate_feedback_improvement: true
+    confidence_level: 95
+    p_value_threshold: 0.05
+  optimization:
+    enabled: true
+    optimize_feedback_loops: true
+    optimization_method: "bayesian"
+    optimization_iterations: 100
+    optimization_random_state: 42
+    optimization_early_stopping: true
+
+# Monitoring et journalisation
+monitoring:
+  logging:
+    enabled: true
+    level: "debug"
+    format: "json"
+    include_context: true
+    include_timestamp: true
+    include_metadata: true
+  metrics:
+    enabled: true
+    collect_every_seconds: 1
+    metrics_to_collect:
+      - "feedback_performance"
+      - "feedback_risk"
+      - "feedback_execution"
+      - "feedback_quality"
+      - "feedback_innovation"
+      - "feedback_velocity"
+      - "feedback_acceleration"
+      - "feedback_effectiveness"
+      - "feedback_efficiency"
+      - "feedback_significance"
+      - "feedback_improvement"
+  dashboard:
+    enabled: true
+    update_interval_seconds: 1
+    charts:
+      - "feedback_score_chart"
+      - "feedback_analysis"
+      - "feedback_velocity"
+      - "feedback_acceleration"
+      - "feedback_distribution"
+      - "feedback_effectiveness"
+      - "feedback_improvement"
+      - "feedback_predictive"
+
+# Backtesting
+backtesting:
+  enabled: true
+  use_historical_feedback: true
+  compute_feedback_accuracy: true
+  compute_improvement_effectiveness: true
+  compute_optimization_effectiveness: true
+  compute_correction_effectiveness: true
+  report_metrics:
+    - "feedback_accuracy"
+    - "improvement_rate"
+    - "optimization_effectiveness"
+    - "correction_effectiveness"
+    - "win_rate"
+    - "profit_factor"
+    - "sharpe_ratio"
+    - "max_drawdown"
+
+# Configuration de la base de données
+database:
+  enabled: true
+  table_name: "feedback_metrics"
+  retention_days: 365
+  aggregation:
+    enabled: true
+    intervals:
+      - "1s"
+      - "5s"
+      - "15s"
+      - "30s"
+      - "1m"
+      - "5m"
+      - "15m"
+      - "1h"
+      - "4h"
+      - "24h"
+  compression: true
+  backup:
+    enabled: true
+    frequency: "daily"
+    retention_days: 30
+
+# Webhooks
+webhooks:
+  enabled: true
+  endpoints:
+    - url: "https://nexustradingia.com/api/webhooks/feedback"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      payload_template: "feedback_alert"
+    - url: "https://nexustradingia.com/api/webhooks/feedback-improvement"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      payload_template: "feedback_improvement"
+  retry:
+    enabled: true
+    max_attempts: 5
+    backoff_seconds: 30
+
+# Logging avancé
+advanced_logging:
+  enabled: true
+  levels:
+    - "info"
+    - "warning"
+    - "error"
+    - "critical"
+    - "debug"
+  output: "feedback_logs"
+  rotation:
+    enabled: true
+    max_size_mb: 100
+    max_files: 10
+  remote_logging:
+    enabled: true
+    endpoints:
+      - "https://nexustradingia.com/logs/feedback"
+  include_trace: true
+  include_stack_trace: true
+  include_context: true
+
+# Threading et performances
+performance:
+  thread_pool_size: 8
+  queue_size: 10000
+  batch_size: 1000
+  async_processing: true
+  cache_size: 10000
+  cache_ttl_seconds: 30
+  database_pool_size: 10
+  database_pool_max_overflow: 20
+  use_multiprocessing: true
+  max_workers: 8
+  use_cython: true
+  use_numba: true
+  use_gpu: true
+  gpu_device: 0
+
+# API de gestion
+management_api:
+  enabled: true
+  endpoints:
+    - "/api/v1/feedback/current"
+    - "/api/v1/feedback/history"
+    - "/api/v1/feedback/metrics"
+    - "/api/v1/feedback/status"
+    - "/api/v1/feedback/signals"
+    - "/api/v1/feedback/effectiveness"
+    - "/api/v1/feedback/improvement"
+    - "/api/v1/feedback/forecast"
+  authentication_required: true
+  rate_limit: 100
+  rate_limit_interval_seconds: 60
+  version: "v1.0.0"
+
+# Export des données
+data_export:
+  enabled: true
+  formats:
+    - "csv"
+    - "json"
+    - "parquet"
+    - "avro"
+    - "feather"
+  schedule: "realtime"
+  batch_size: 1000
+  retention_days: 30
+  compression: "gzip"
+  destination: "s3://nexus-data/feedback/"
+  encrypt: true
+  encryption_key_id: "nexus-feedback-key"
+  partition_by:
+    - "symbol"
+    - "year"
+    - "month"
+    - "day"
+
+# Intégration avec d'autres modules
+integrations:
+  risk_engine:
+    enabled: true
+    sync_frequency_seconds: 1
+    share_metrics: true
+  execution_engine:
+    enabled: true
+    share_signals: true
+    require_confirmation: true
+  portfolio_manager:
+    enabled: true
+    share_positions: true
+    share_allocation: true
+  ai_engine:
+    enabled: true
+    use_ai_predictions: true
+    confidence_threshold: 0.7
+    model_endpoint: "http://ai-engine:8000/predict/feedback"
+  market_data:
+    enabled: true
+    sync_frequency_ms: 100
+    data_endpoint: "ws://market-data:8080/ws"
+
+# Tests et validation
+testing:
+  unit_tests:
+    enabled: true
+    coverage_threshold: 90
+  integration_tests:
+    enabled: true
+  stress_tests:
+    enabled: true
+    scenarios:
+      - "high_feedback_volume"
+      - "low_feedback_quality"
+      - "feedback_loop_failure"
+      - "adaptation_failure"
+      - "optimization_failure"
+  validation:
+    enabled: true
+    validate_on_startup: true
+    validate_on_config_change: true
+    validation_rules:
+      - "feedback_types.performance_feedback.feedback_weight >= 0.0"
+      - "feedback_types.performance_feedback.feedback_weight <= 1.0"
+      - "feedback_types.risk_feedback.feedback_weight >= 0.0"
+      - "feedback_types.risk_feedback.feedback_weight <= 1.0"
+      - "feedback_mechanisms.positive_feedback.reinforcement_factor >= 0.0"
+      - "feedback_mechanisms.positive_feedback.reinforcement_factor <= 1.0"
+      - "feedback_mechanisms.negative_feedback.correction_factor >= 0.0"
+      - "feedback_mechanisms.negative_feedback.correction_factor <= 1.0"
+      - "feedback_mechanisms.ensemble_feedback.ensemble_weights.sum() == 1.0"
+      - "min_data_points > 0"
+
+# Market conditions adaptation
+market_adaptation:
+  enabled: true
+  regime_detection:
+    enabled: true
+    lookback_periods:
+      - 20
+      - 50
+      - 200
+    regimes:
+      - "bull"
+      - "bear"
+      - "sideways"
+      - "volatile"
+      - "stable"
+      - "transitional"
+  regime_parameters:
+    bull:
+      feedback_multiplier: 1.2
+      threshold_multiplier: 0.8
+      reinforcement_multiplier: 1.2
+      correction_multiplier: 0.8
+    bear:
+      feedback_multiplier: 0.8
+      threshold_multiplier: 1.2
+      reinforcement_multiplier: 0.8
+      correction_multiplier: 1.2
+    sideways:
+      feedback_multiplier: 1.0
+      threshold_multiplier: 1.0
+      reinforcement_multiplier: 1.0
+      correction_multiplier: 1.0
+    volatile:
+      feedback_multiplier: 0.7
+      threshold_multiplier: 1.3
+      reinforcement_multiplier: 0.7
+      correction_multiplier: 1.3
+    stable:
+      feedback_multiplier: 1.0
+      threshold_multiplier: 0.9
+      reinforcement_multiplier: 1.1
+      correction_multiplier: 0.9
+    transitional:
+      feedback_multiplier: 1.3
+      threshold_multiplier: 1.1
+      reinforcement_multiplier: 1.3
+      correction_multiplier: 1.1
+
+# Time-based configurations
+time_based:
+  enabled: true
+  sessions:
+    asia:
+      start: "00:00"
+      end: "08:00"
+      feedback_multiplier: 0.8
+      threshold_multiplier: 1.2
+      reinforcement_multiplier: 0.8
+      correction_multiplier: 1.2
+    london:
+      start: "08:00"
+      end: "16:00"
+      feedback_multiplier: 1.2
+      threshold_multiplier: 0.8
+      reinforcement_multiplier: 1.2
+      correction_multiplier: 0.8
+    newyork:
+      start: "13:00"
+      end: "22:00"
+      feedback_multiplier: 1.0
+      threshold_multiplier: 1.0
+      reinforcement_multiplier: 1.0
+      correction_multiplier: 1.0
+    overlap:
+      start: "13:00"
+      end: "16:00"
+      feedback_multiplier: 1.5
+      threshold_multiplier: 0.7
+      reinforcement_multiplier: 1.5
+      correction_multiplier: 0.7
+
+# Symbol-specific configurations
+symbol_configs:
+  BTCUSDT:
+    feedback_multiplier: 1.0
+    threshold_multiplier: 1.0
+    reinforcement_multiplier: 1.0
+    correction_multiplier: 1.0
+    feedback_weight: 0.5
+  ETHUSDT:
+    feedback_multiplier: 1.1
+    threshold_multiplier: 0.9
+    reinforcement_multiplier: 1.1
+    correction_multiplier: 0.9
+    feedback_weight: 0.5
+  SOLUSDT:
+    feedback_multiplier: 1.2
+    threshold_multiplier: 0.8
+    reinforcement_multiplier: 1.2
+    correction_multiplier: 0.8
+    feedback_weight: 0.5
+  ADAUSDT:
+    feedback_multiplier: 0.9
+    threshold_multiplier: 1.1
+    reinforcement_multiplier: 0.9
+    correction_multiplier: 1.1
+    feedback_weight: 0.5
+  XRPUSDT:
+    feedback_multiplier: 1.0
+    threshold_multiplier: 1.0
+    reinforcement_multiplier: 1.0
+    correction_multiplier: 1.0
+    feedback_weight: 0.5
