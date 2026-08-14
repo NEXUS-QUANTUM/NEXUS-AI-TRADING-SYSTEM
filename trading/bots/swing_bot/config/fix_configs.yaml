@@ -1,0 +1,600 @@
+# fix_configs.yaml
+# Configuration complète pour FIX (Financial Information eXchange) dans Swing Bot
+# Version: 4.0.0 - Production Ready
+
+# Paramètres généraux
+general:
+  enabled: true
+  mode: "comprehensive"
+  calculate_in_real_time: true
+  update_frequency_seconds: 1
+  lookback_periods:
+    - 5
+    - 10
+    - 20
+    - 50
+    - 100
+    - 200
+    - 500
+  history_length_days: 365
+  min_data_points: 50
+  max_data_points: 100000
+  fix_protocol_version: "FIX.4.4"
+  fix_engine_version: "4.0.0"
+  environment: "production"
+
+# Paramètres de connexion FIX
+connection_settings:
+  host: "fix.nexustradingia.com"
+  port: 443
+  ssl_enabled: true
+  heartbeat_interval_seconds: 30
+  reconnect_attempts: 10
+  reconnect_delay_seconds: 5
+  max_reconnect_attempts: 100
+  logon_timeout_seconds: 10
+  logout_timeout_seconds: 5
+  test_request_timeout_seconds: 5
+  sequence_number_reset: true
+  reset_on_logon: true
+
+# Types de messages FIX
+message_types:
+  admin:
+    enabled: true
+    messages:
+      - "Logon"
+      - "Logout"
+      - "Heartbeat"
+      - "TestRequest"
+      - "ResendRequest"
+      - "Reject"
+      - "SequenceReset"
+      - "SessionReject"
+    include_timestamp: true
+    include_sequence_numbers: true
+  application:
+    enabled: true
+    messages:
+      - "NewOrderSingle"
+      - "OrderCancelRequest"
+      - "OrderCancelReplaceRequest"
+      - "OrderStatusRequest"
+      - "ExecutionReport"
+      - "OrderCancelReject"
+      - "NewOrderList"
+      - "OrderMassCancelRequest"
+      - "OrderMassCancelReport"
+      - "QuoteRequest"
+      - "QuoteResponse"
+      - "MarketDataRequest"
+      - "MarketDataSnapshot"
+      - "SecurityListRequest"
+      - "SecurityList"
+    include_timestamp: true
+    include_sequence_numbers: true
+  session:
+    enabled: true
+    messages:
+      - "SessionStatus"
+      - "SessionReject"
+      - "SequenceReset"
+      - "ResendRequest"
+    include_timestamp: true
+    include_sequence_numbers: true
+
+# Types d'ordres FIX
+order_types:
+  new_order_single:
+    enabled: true
+    required_fields:
+      - "ClOrdID"
+      - "Symbol"
+      - "Side"
+      - "OrdType"
+      - "OrderQty"
+      - "Price"
+      - "TimeInForce"
+      - "TransactTime"
+    optional_fields:
+      - "StopPx"
+      - "MinQty"
+      - "MaxFloor"
+      - "ExDestination"
+      - "OrdType"
+      - "CashMargin"
+      - "SettlType"
+      - "SettlDate"
+    field_defaults:
+      TimeInForce: "DAY"
+      OrdType: "LIMIT"
+      SettlType: "T+1"
+  order_cancel:
+    enabled: true
+    required_fields:
+      - "ClOrdID"
+      - "OrigClOrdID"
+      - "Symbol"
+      - "Side"
+      - "TransactTime"
+    optional_fields:
+      - "OrderQty"
+      - "Price"
+      - "CxlType"
+  order_replace:
+    enabled: true
+    required_fields:
+      - "ClOrdID"
+      - "OrigClOrdID"
+      - "Symbol"
+      - "Side"
+      - "OrderQty"
+      - "Price"
+      - "TransactTime"
+    optional_fields:
+      - "StopPx"
+      - "MinQty"
+      - "MaxFloor"
+  order_mass_cancel:
+    enabled: true
+    required_fields:
+      - "ClOrdID"
+      - "MassCancelRequestType"
+      - "TransactTime"
+    optional_fields:
+      - "Symbol"
+      - "SecurityID"
+      - "SecurityIDSource"
+      - "Side"
+      - "TradingSessionID"
+
+# Champs FIX personnalisés
+custom_fields:
+  - tag: 1000
+    name: "NexusOrderID"
+    type: "String"
+    description: "Nexus Trading IA Order ID"
+  - tag: 1001
+    name: "NexusStrategyID"
+    type: "String"
+    description: "Nexus Trading IA Strategy ID"
+  - tag: 1002
+    name: "NexusRiskCheck"
+    type: "String"
+    description: "Nexus Trading IA Risk Check"
+  - tag: 1003
+    name: "NexusPredictionID"
+    type: "String"
+    description: "Nexus Trading IA Prediction ID"
+  - tag: 1004
+    name: "NexusConfidenceScore"
+    type: "Double"
+    description: "Nexus Trading IA Confidence Score"
+  - tag: 1005
+    name: "NexusAIOutcome"
+    type: "String"
+    description: "Nexus Trading IA Outcome"
+  - tag: 1006
+    name: "NexusModelVersion"
+    type: "String"
+    description: "Nexus Trading IA Model Version"
+  - tag: 1007
+    name: "NexusExecutionAlgo"
+    type: "String"
+    description: "Nexus Trading IA Execution Algorithm"
+  - tag: 1008
+    name: "NexusRiskLimit"
+    type: "Double"
+    description: "Nexus Trading IA Risk Limit"
+  - tag: 1009
+    name: "NexusSlippageTolerance"
+    type: "Double"
+    description: "Nexus Trading IA Slippage Tolerance"
+  - tag: 1010
+    name: "NexusMarketCondition"
+    type: "String"
+    description: "Nexus Trading IA Market Condition"
+
+# Gestion des sessions
+session_management:
+  session_validation:
+    enabled: true
+    validate_comp_id: true
+    validate_sender_comp_id: true
+    validate_target_comp_id: true
+    validate_sequence_numbers: true
+    validate_timestamp: true
+  sequence_numbers:
+    enabled: true
+    reset_on_logon: true
+    store_sequence_numbers: true
+    sequence_number_persistence: true
+    max_sequence_number_gap: 100
+  heartbeats:
+    enabled: true
+    heartbeat_interval_seconds: 30
+    test_request_frequency: 60
+    heartbeat_timeout_seconds: 60
+
+# Sécurité
+security:
+  authentication:
+    enabled: true
+    username: "nexus_quantum"
+    password: "${FIX_PASSWORD}"
+    encryption_method: "TLSv1.2"
+    key_store: "nexus_fix_keystore.p12"
+    key_store_password: "${KEYSTORE_PASSWORD}"
+    trust_store: "nexus_fix_truststore.p12"
+    trust_store_password: "${TRUSTSTORE_PASSWORD}"
+  encryption:
+    enabled: true
+    algorithm: "AES-256-GCM"
+    key_rotation_hours: 24
+    iv_length: 12
+    authentication_tag_length: 16
+  message_signing:
+    enabled: true
+    algorithm: "SHA256withRSA"
+    private_key: "${PRIVATE_KEY}"
+    public_key: "${PUBLIC_KEY}"
+    include_signature_in_message: true
+
+# Performance
+performance:
+  threading:
+    enabled: true
+    thread_pool_size: 8
+    queue_size: 10000
+    max_concurrent_connections: 50
+    connection_timeout_seconds: 10
+  buffering:
+    enabled: true
+    buffer_size: 1024
+    send_buffer_size: 2048
+    receive_buffer_size: 2048
+    flush_on_disconnect: true
+  logging:
+    enabled: true
+    log_level: "debug"
+    log_messages: true
+    log_errors: true
+    log_heartbeats: false
+    log_sequence_numbers: true
+    log_timestamps: true
+
+# Monitoring et journalisation
+monitoring:
+  logging:
+    enabled: true
+    level: "debug"
+    format: "json"
+    include_context: true
+    include_timestamp: true
+    include_metadata: true
+  metrics:
+    enabled: true
+    collect_every_seconds: 1
+    metrics_to_collect:
+      - "fix_connection_status"
+      - "fix_messages_sent"
+      - "fix_messages_received"
+      - "fix_sequence_numbers"
+      - "fix_heartbeat_count"
+      - "fix_reconnect_count"
+      - "fix_session_status"
+      - "fix_orders_sent"
+      - "fix_orders_received"
+      - "fix_execution_reports"
+      - "fix_error_count"
+  dashboard:
+    enabled: true
+    update_interval_seconds: 1
+    charts:
+      - "fix_connection_status"
+      - "fix_message_volume"
+      - "fix_sequence_numbers"
+      - "fix_order_flow"
+      - "fix_execution_reports"
+      - "fix_error_analysis"
+      - "fix_performance"
+      - "fix_security_status"
+
+# Backtesting
+backtesting:
+  enabled: true
+  use_historical_fix: true
+  compute_fix_accuracy: true
+  compute_fix_reliability: true
+  compute_fix_performance: true
+  compute_fix_error_rate: true
+  report_metrics:
+    - "fix_accuracy"
+    - "fix_reliability"
+    - "fix_performance"
+    - "fix_error_rate"
+    - "message_throughput"
+    - "latency_avg"
+    - "connection_stability"
+
+# Configuration de la base de données
+database:
+  enabled: true
+  table_name: "fix_metrics"
+  retention_days: 365
+  aggregation:
+    enabled: true
+    intervals:
+      - "1s"
+      - "5s"
+      - "15s"
+      - "30s"
+      - "1m"
+      - "5m"
+      - "15m"
+      - "1h"
+      - "4h"
+      - "24h"
+  compression: true
+  backup:
+    enabled: true
+    frequency: "daily"
+    retention_days: 30
+
+# Webhooks
+webhooks:
+  enabled: true
+  endpoints:
+    - url: "https://nexustradingia.com/api/webhooks/fix"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      payload_template: "fix_alert"
+    - url: "https://nexustradingia.com/api/webhooks/fix-error"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      payload_template: "fix_error"
+  retry:
+    enabled: true
+    max_attempts: 5
+    backoff_seconds: 30
+
+# Logging avancé
+advanced_logging:
+  enabled: true
+  levels:
+    - "info"
+    - "warning"
+    - "error"
+    - "critical"
+    - "debug"
+  output: "fix_logs"
+  rotation:
+    enabled: true
+    max_size_mb: 100
+    max_files: 10
+  remote_logging:
+    enabled: true
+    endpoints:
+      - "https://nexustradingia.com/logs/fix"
+  include_trace: true
+  include_stack_trace: true
+  include_context: true
+
+# Threading et performances
+performance_advanced:
+  thread_pool_size: 8
+  queue_size: 10000
+  batch_size: 1000
+  async_processing: true
+  cache_size: 10000
+  cache_ttl_seconds: 30
+  database_pool_size: 10
+  database_pool_max_overflow: 20
+  use_multiprocessing: true
+  max_workers: 8
+  use_cython: true
+  use_numba: true
+  use_gpu: false
+  gpu_device: 0
+
+# API de gestion
+management_api:
+  enabled: true
+  endpoints:
+    - "/api/v1/fix/status"
+    - "/api/v1/fix/metrics"
+    - "/api/v1/fix/messages"
+    - "/api/v1/fix/session"
+    - "/api/v1/fix/orders"
+    - "/api/v1/fix/executions"
+    - "/api/v1/fix/errors"
+    - "/api/v1/fix/performance"
+  authentication_required: true
+  rate_limit: 100
+  rate_limit_interval_seconds: 60
+  version: "v1.0.0"
+
+# Export des données
+data_export:
+  enabled: true
+  formats:
+    - "csv"
+    - "json"
+    - "parquet"
+    - "avro"
+    - "feather"
+  schedule: "realtime"
+  batch_size: 1000
+  retention_days: 30
+  compression: "gzip"
+  destination: "s3://nexus-data/fix/"
+  encrypt: true
+  encryption_key_id: "nexus-fix-key"
+  partition_by:
+    - "symbol"
+    - "year"
+    - "month"
+    - "day"
+
+# Intégration avec d'autres modules
+integrations:
+  risk_engine:
+    enabled: true
+    sync_frequency_seconds: 1
+    share_metrics: true
+  execution_engine:
+    enabled: true
+    share_signals: true
+    require_confirmation: true
+  portfolio_manager:
+    enabled: true
+    share_positions: true
+    share_allocation: true
+  market_data:
+    enabled: true
+    sync_frequency_ms: 100
+    data_endpoint: "ws://market-data:8080/ws"
+
+# Tests et validation
+testing:
+  unit_tests:
+    enabled: true
+    coverage_threshold: 90
+  integration_tests:
+    enabled: true
+  stress_tests:
+    enabled: true
+    scenarios:
+      - "high_message_volume"
+      - "connection_interruption"
+      - "sequence_number_gap"
+      - "session_recovery"
+      - "message_timeout"
+  validation:
+    enabled: true
+    validate_on_startup: true
+    validate_on_config_change: true
+    validation_rules:
+      - "connection_settings.heartbeat_interval_seconds > 0"
+      - "connection_settings.reconnect_attempts >= 0"
+      - "connection_settings.reconnect_delay_seconds >= 0"
+      - "session_management.heartbeats.heartbeat_interval_seconds > 0"
+      - "security.authentication.encryption_method in ['TLSv1.2', 'TLSv1.3']"
+      - "performance.threading.thread_pool_size > 0"
+      - "performance.threading.queue_size > 0"
+
+# Market conditions adaptation
+market_adaptation:
+  enabled: true
+  regime_detection:
+    enabled: true
+    lookback_periods:
+      - 20
+      - 50
+      - 200
+    regimes:
+      - "normal"
+      - "high_volatility"
+      - "low_liquidity"
+      - "market_crash"
+      - "recovery"
+  regime_parameters:
+    normal:
+      message_multiplier: 1.0
+      priority_multiplier: 1.0
+      timeout_multiplier: 1.0
+    high_volatility:
+      message_multiplier: 0.8
+      priority_multiplier: 1.2
+      timeout_multiplier: 0.7
+    low_liquidity:
+      message_multiplier: 0.7
+      priority_multiplier: 1.3
+      timeout_multiplier: 0.6
+    market_crash:
+      message_multiplier: 0.5
+      priority_multiplier: 1.5
+      timeout_multiplier: 0.5
+    recovery:
+      message_multiplier: 0.9
+      priority_multiplier: 1.1
+      timeout_multiplier: 0.9
+
+# Time-based configurations
+time_based:
+  enabled: true
+  sessions:
+    asia:
+      start: "00:00"
+      end: "08:00"
+      message_multiplier: 0.8
+      priority_multiplier: 0.8
+      timeout_multiplier: 1.2
+    london:
+      start: "08:00"
+      end: "16:00"
+      message_multiplier: 1.2
+      priority_multiplier: 1.2
+      timeout_multiplier: 0.8
+    newyork:
+      start: "13:00"
+      end: "22:00"
+      message_multiplier: 1.0
+      priority_multiplier: 1.0
+      timeout_multiplier: 1.0
+    overlap:
+      start: "13:00"
+      end: "16:00"
+      message_multiplier: 1.5
+      priority_multiplier: 1.5
+      timeout_multiplier: 0.7
+
+# Symbol-specific configurations
+symbol_configs:
+  BTCUSDT:
+    message_multiplier: 1.0
+    priority_multiplier: 1.0
+    timeout_multiplier: 1.0
+    order_types_allowed:
+      - "LIMIT"
+      - "MARKET"
+      - "STOP_LIMIT"
+      - "STOP_MARKET"
+  ETHUSDT:
+    message_multiplier: 1.1
+    priority_multiplier: 1.0
+    timeout_multiplier: 1.0
+    order_types_allowed:
+      - "LIMIT"
+      - "MARKET"
+      - "STOP_LIMIT"
+      - "STOP_MARKET"
+  SOLUSDT:
+    message_multiplier: 1.2
+    priority_multiplier: 0.9
+    timeout_multiplier: 0.9
+    order_types_allowed:
+      - "LIMIT"
+      - "MARKET"
+      - "STOP_LIMIT"
+      - "STOP_MARKET"
+  ADAUSDT:
+    message_multiplier: 0.9
+    priority_multiplier: 1.1
+    timeout_multiplier: 1.1
+    order_types_allowed:
+      - "LIMIT"
+      - "MARKET"
+      - "STOP_LIMIT"
+      - "STOP_MARKET"
+  XRPUSDT:
+    message_multiplier: 1.0
+    priority_multiplier: 1.0
+    timeout_multiplier: 1.0
+    order_types_allowed:
+      - "LIMIT"
+      - "MARKET"
+      - "STOP_LIMIT"
+      - "STOP_MARKET"
