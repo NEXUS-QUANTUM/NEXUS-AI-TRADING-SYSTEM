@@ -1,0 +1,720 @@
+# trend_configs.yaml
+# Configuration complète pour l'analyse de tendance dans Swing Bot
+# Version: 4.0.0 - Production Ready
+
+# Paramètres généraux
+general:
+  enabled: true
+  mode: "comprehensive"
+  calculate_in_real_time: true
+  update_frequency_seconds: 1
+  lookback_periods:
+    - 5
+    - 10
+    - 20
+    - 50
+    - 100
+    - 200
+    - 500
+  history_length_days: 365
+  min_data_points: 50
+  max_data_points: 100000
+  trend_analysis_version: "4.0.0"
+  environment: "production"
+
+# Types de tendance
+trend_types:
+  uptrend:
+    enabled: true
+    description: "Uptrend"
+    slope: "positive"
+    min_strength: 0.6
+    min_length: 20
+    max_length: 200
+    angle_min: 10
+    angle_max: 60
+    min_confidence: 0.6
+    continuation_probability: 0.7
+  downtrend:
+    enabled: true
+    description: "Downtrend"
+    slope: "negative"
+    min_strength: 0.6
+    min_length: 20
+    max_length: 200
+    angle_min: -60
+    angle_max: -10
+    min_confidence: 0.6
+    continuation_probability: 0.7
+  sideways:
+    enabled: true
+    description: "Sideways Trend"
+    slope: "zero"
+    min_strength: 0.4
+    min_length: 20
+    max_length: 200
+    angle_min: -5
+    angle_max: 5
+    min_confidence: 0.5
+    continuation_probability: 0.5
+  consolidation:
+    enabled: true
+    description: "Consolidation"
+    slope: "zero"
+    min_strength: 0.3
+    min_length: 10
+    max_length: 100
+    angle_min: -10
+    angle_max: 10
+    min_confidence: 0.4
+    continuation_probability: 0.5
+  reversal:
+    enabled: true
+    description: "Trend Reversal"
+    slope: "variable"
+    min_strength: 0.5
+    min_length: 10
+    max_length: 50
+    angle_min: -60
+    angle_max: 60
+    min_confidence: 0.6
+    continuation_probability: 0.3
+  acceleration:
+    enabled: true
+    description: "Trend Acceleration"
+    slope: "variable"
+    min_strength: 0.7
+    min_length: 10
+    max_length: 100
+    angle_min: -60
+    angle_max: 60
+    min_confidence: 0.6
+    continuation_probability: 0.8
+
+# Seuils de tendance
+thresholds:
+  trend:
+    min_strength: 0.4
+    max_strength: 1.0
+    min_length: 10
+    max_length: 500
+    angle_min: -60
+    angle_max: 60
+    rsi_threshold: 50
+    macd_threshold: 0
+  reversal:
+    min_reversal_percent: 2.0
+    max_reversal_percent: 20.0
+    reversal_volume_multiplier: 1.5
+    reversal_confidence: 0.7
+    confirmation_bars: 3
+  continuation:
+    min_continuation_percent: 1.0
+    max_continuation_percent: 10.0
+    continuation_volume_multiplier: 1.2
+    continuation_confidence: 0.6
+    continuation_bars: 2
+
+# Indicateurs de tendance
+indicators:
+  trend_strength:
+    enabled: true
+    calculation: "weighted_average"
+    factors:
+      - "slope"
+      - "length"
+      - "volume_confirmation"
+      - "momentum"
+      - "rsi"
+      - "macd"
+    factor_weights:
+      slope: 0.20
+      length: 0.20
+      volume_confirmation: 0.20
+      momentum: 0.15
+      rsi: 0.15
+      macd: 0.10
+  trend_momentum:
+    enabled: true
+    period: 14
+    smoothing: 3
+    threshold: 0.3
+  trend_velocity:
+    enabled: true
+    period: 5
+    smoothing: 0
+    threshold: 0.2
+  trend_acceleration:
+    enabled: true
+    period: 10
+    smoothing: 0
+    threshold: 0.1
+  trend_confidence:
+    enabled: true
+    period: 14
+    smoothing: 0
+    threshold: 0.6
+  trend_consistency:
+    enabled: true
+    period: 20
+    smoothing: 0
+    threshold: 0.7
+  trend_volatility:
+    enabled: true
+    period: 20
+    smoothing: 3
+    threshold: 0.3
+
+# Analyse de tendance
+analysis:
+  historical:
+    enabled: true
+    lookback_years: 5
+    compute_trend_accuracy: true
+    compute_trend_probability: true
+    compute_trend_distribution: true
+    compute_trend_patterns: true
+    compute_trend_cycles: true
+    compute_trend_success_rate: true
+  real_time:
+    enabled: true
+    update_frequency_ms: 100
+    compute_instantaneous_trend: true
+    compute_moving_average_trend: true
+    compute_exponential_trend: true
+    compute_weighted_trend: true
+    compute_trend_velocity: true
+    compute_trend_acceleration: true
+  predictive:
+    enabled: true
+    model_type: "ensemble"
+    models:
+      - "lstm"
+      - "gru"
+      - "xgboost"
+      - "lightgbm"
+    features:
+      - "trend_strength"
+      - "trend_momentum"
+      - "trend_velocity"
+      - "trend_acceleration"
+      - "trend_confidence"
+      - "trend_consistency"
+      - "trend_volatility"
+      - "slope"
+      - "length"
+      - "volume_confirmation"
+      - "momentum"
+      - "rsi"
+      - "macd"
+      - "price_change"
+      - "volume"
+      - "volatility"
+      - "time_of_day"
+      - "day_of_week"
+      - "market_condition"
+    forecast_horizons:
+      - 1
+      - 5
+      - 10
+      - 20
+    confidence_threshold: 0.7
+    retrain_frequency_hours: 24
+
+# Alertes et notifications
+alerts:
+  trend_detected:
+    enabled: true
+    confidence_threshold: 0.7
+    channels:
+      - "email"
+      - "telegram"
+      - "slack"
+      - "push_notification"
+    severity: "warning"
+  trend_reversal:
+    enabled: true
+    confidence_threshold: 0.8
+    channels:
+      - "telegram"
+      - "push_notification"
+    severity: "critical"
+  trend_continuation:
+    enabled: true
+    confidence_threshold: 0.7
+    channels:
+      - "telegram"
+      - "push_notification"
+    severity: "info"
+  trend_weakening:
+    enabled: true
+    confidence_threshold: 0.6
+    channels:
+      - "email"
+      - "telegram"
+      - "slack"
+    severity: "warning"
+  trend_strengthening:
+    enabled: true
+    confidence_threshold: 0.8
+    channels:
+      - "telegram"
+      - "push_notification"
+    severity: "info"
+  trend_acceleration:
+    enabled: true
+    confidence_threshold: 0.7
+    channels:
+      - "telegram"
+      - "push_notification"
+    severity: "info"
+
+# Actions automatiques
+auto_actions:
+  trade_entry:
+    enabled: true
+    action_types:
+      - "enter_on_trend"
+      - "enter_on_breakout"
+      - "enter_on_retest"
+      - "enter_on_confirmation"
+    require_trend_confirmation: true
+    require_confidence: 0.7
+    max_position_size: 10000
+    min_position_size: 100
+  stop_loss:
+    enabled: true
+    methods:
+      - "trend_based"
+      - "breakout_based"
+      - "retest_based"
+    trend_multiplier: 1.0
+    min_stop_percent: 0.5
+    max_stop_percent: 10.0
+    update_frequency_seconds: 10
+  take_profit:
+    enabled: true
+    methods:
+      - "trend_projection"
+      - "breakout_projection"
+      - "channel_projection"
+    projection_multiplier: 1.0
+    min_profit_percent: 1.0
+    max_profit_percent: 20.0
+    update_frequency_seconds: 10
+  position_sizing:
+    enabled: true
+    method: "trend_strength_based"
+    trend_scale: 0.5
+    max_position_percent: 10.0
+    min_position_percent: 0.5
+    scaling_function: "linear"
+
+# Paramètres avancés
+advanced:
+  machine_learning:
+    enabled: true
+    model_type: "ensemble"
+    models:
+      - "random_forest"
+      - "xgboost"
+      - "lightgbm"
+      - "lstm"
+    features:
+      - "trend_strength"
+      - "trend_momentum"
+      - "trend_velocity"
+      - "trend_acceleration"
+      - "trend_confidence"
+      - "trend_consistency"
+      - "trend_volatility"
+      - "slope"
+      - "length"
+      - "volume_confirmation"
+      - "momentum"
+      - "rsi"
+      - "macd"
+      - "bollinger_width"
+      - "atr"
+      - "price_change"
+      - "volume"
+      - "time_of_day"
+      - "day_of_week"
+      - "market_condition"
+    training_frequency_hours: 6
+    retrain_threshold: 0.9
+    validation_split: 0.2
+    random_seed: 42
+    ensemble_weights:
+      - 0.25
+      - 0.25
+      - 0.25
+      - 0.25
+  statistical_analysis:
+    enabled: true
+    calculate_trend_accuracy: true
+    calculate_trend_probability: true
+    calculate_trend_significance: true
+    calculate_trend_correlation: true
+    calculate_trend_success_rate: true
+    confidence_level: 95
+    p_value_threshold: 0.05
+  pattern_recognition:
+    enabled: true
+    patterns:
+      - "uptrend"
+      - "downtrend"
+      - "sideways"
+      - "consolidation"
+      - "reversal"
+      - "acceleration"
+    pattern_confidence_threshold: 0.7
+    pattern_accuracy_threshold: 0.8
+
+# Monitoring et journalisation
+monitoring:
+  logging:
+    enabled: true
+    level: "debug"
+    format: "json"
+    include_context: true
+    include_timestamp: true
+    include_metadata: true
+  metrics:
+    enabled: true
+    collect_every_seconds: 1
+    metrics_to_collect:
+      - "trend_strength"
+      - "trend_momentum"
+      - "trend_velocity"
+      - "trend_acceleration"
+      - "trend_confidence"
+      - "trend_consistency"
+      - "trend_volatility"
+      - "trend_count"
+      - "trend_accuracy"
+      - "trend_success_rate"
+      - "reversal_count"
+      - "continuation_count"
+  dashboard:
+    enabled: true
+    update_interval_seconds: 1
+    charts:
+      - "trend_detection"
+      - "trend_analysis"
+      - "trend_accuracy"
+      - "trend_distribution"
+      - "trend_patterns"
+      - "reversal_analysis"
+      - "trend_success_rate"
+      - "trend_predictive"
+
+# Backtesting
+backtesting:
+  enabled: true
+  use_historical_trends: true
+  compute_trend_accuracy: true
+  compute_reversal_effectiveness: true
+  compute_pattern_accuracy: true
+  compute_risk_adjusted_returns: true
+  report_metrics:
+    - "trend_accuracy"
+    - "reversal_effectiveness"
+    - "pattern_accuracy"
+    - "win_rate"
+    - "profit_factor"
+    - "sharpe_ratio"
+    - "max_drawdown"
+
+# Configuration de la base de données
+database:
+  enabled: true
+  table_name: "trend_metrics"
+  retention_days: 365
+  aggregation:
+    enabled: true
+    intervals:
+      - "1s"
+      - "5s"
+      - "15s"
+      - "30s"
+      - "1m"
+      - "5m"
+      - "15m"
+      - "1h"
+      - "4h"
+      - "24h"
+  compression: true
+  backup:
+    enabled: true
+    frequency: "daily"
+    retention_days: 30
+
+# Webhooks
+webhooks:
+  enabled: true
+  endpoints:
+    - url: "https://nexustradingia.com/api/webhooks/trend"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      payload_template: "trend_alert"
+    - url: "https://nexustradingia.com/api/webhooks/trend-reversal"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      payload_template: "trend_reversal"
+  retry:
+    enabled: true
+    max_attempts: 5
+    backoff_seconds: 30
+
+# Logging avancé
+advanced_logging:
+  enabled: true
+  levels:
+    - "info"
+    - "warning"
+    - "error"
+    - "critical"
+    - "debug"
+  output: "trend_logs"
+  rotation:
+    enabled: true
+    max_size_mb: 100
+    max_files: 10
+  remote_logging:
+    enabled: true
+    endpoints:
+      - "https://nexustradingia.com/logs/trend"
+  include_trace: true
+  include_stack_trace: true
+  include_context: true
+
+# Threading et performances
+performance:
+  thread_pool_size: 8
+  queue_size: 10000
+  batch_size: 1000
+  async_processing: true
+  cache_size: 10000
+  cache_ttl_seconds: 30
+  database_pool_size: 10
+  database_pool_max_overflow: 20
+  use_multiprocessing: true
+  max_workers: 8
+  use_cython: true
+  use_numba: true
+  use_gpu: false
+  gpu_device: 0
+
+# API de gestion
+management_api:
+  enabled: true
+  endpoints:
+    - "/api/v1/trend/current"
+    - "/api/v1/trend/history"
+    - "/api/v1/trend/metrics"
+    - "/api/v1/trend/status"
+    - "/api/v1/trend/patterns"
+    - "/api/v1/trend/probability"
+    - "/api/v1/trend/accuracy"
+    - "/api/v1/trend/forecast"
+  authentication_required: true
+  rate_limit: 100
+  rate_limit_interval_seconds: 60
+  version: "v1.0.0"
+
+# Export des données
+data_export:
+  enabled: true
+  formats:
+    - "csv"
+    - "json"
+    - "parquet"
+    - "avro"
+    - "feather"
+  schedule: "realtime"
+  batch_size: 1000
+  retention_days: 30
+  compression: "gzip"
+  destination: "s3://nexus-data/trend/"
+  encrypt: true
+  encryption_key_id: "nexus-trend-key"
+  partition_by:
+    - "symbol"
+    - "year"
+    - "month"
+    - "day"
+
+# Intégration avec d'autres modules
+integrations:
+  risk_engine:
+    enabled: true
+    sync_frequency_seconds: 1
+    share_metrics: true
+  execution_engine:
+    enabled: true
+    share_signals: true
+    require_confirmation: true
+  portfolio_manager:
+    enabled: true
+    share_positions: true
+    share_allocation: true
+  ai_engine:
+    enabled: true
+    use_ai_predictions: true
+    confidence_threshold: 0.7
+    model_endpoint: "http://ai-engine:8000/predict/trend"
+  market_data:
+    enabled: true
+    sync_frequency_ms: 100
+    data_endpoint: "ws://market-data:8080/ws"
+
+# Tests et validation
+testing:
+  unit_tests:
+    enabled: true
+    coverage_threshold: 90
+  integration_tests:
+    enabled: true
+  stress_tests:
+    enabled: true
+    scenarios:
+      - "high_trend_volume"
+      - "low_trend_volume"
+      - "pattern_volume"
+      - "accuracy_validation"
+      - "false_positive"
+  validation:
+    enabled: true
+    validate_on_startup: true
+    validate_on_config_change: true
+    validation_rules:
+      - "confidence_threshold > 0.0"
+      - "confidence_threshold <= 1.0"
+      - "trend_types.uptrend.min_length > 0"
+      - "trend_types.uptrend.max_length > trend_types.uptrend.min_length"
+      - "trend_types.uptrend.min_strength >= 0.0"
+      - "trend_types.uptrend.min_strength <= 1.0"
+      - "thresholds.trend.min_strength >= 0.0"
+      - "thresholds.trend.min_strength <= 1.0"
+      - "thresholds.trend.min_length > 0"
+      - "thresholds.trend.max_length > threshold.trend.min_length"
+      - "indicators.trend_strength.factor_weights.sum() == 1.0"
+      - "min_data_points > 0"
+
+# Market conditions adaptation
+market_adaptation:
+  enabled: true
+  volatility_adjustment: true
+  regime_detection:
+    enabled: true
+    lookback_periods:
+      - 20
+      - 50
+      - 200
+    regimes:
+      - "trending"
+      - "ranging"
+      - "volatile"
+      - "stable"
+      - "bull"
+      - "bear"
+  regime_parameters:
+    trending:
+      trend_multiplier: 1.2
+      threshold_multiplier: 0.8
+      confidence_multiplier: 1.1
+    ranging:
+      trend_multiplier: 0.8
+      threshold_multiplier: 1.2
+      confidence_multiplier: 0.9
+    volatile:
+      trend_multiplier: 0.7
+      threshold_multiplier: 1.3
+      confidence_multiplier: 0.8
+    stable:
+      trend_multiplier: 1.0
+      threshold_multiplier: 0.9
+      confidence_multiplier: 1.2
+    bull:
+      trend_multiplier: 1.1
+      threshold_multiplier: 0.9
+      confidence_multiplier: 1.0
+    bear:
+      trend_multiplier: 0.9
+      threshold_multiplier: 1.1
+      confidence_multiplier: 0.9
+
+# Time-based configurations
+time_based:
+  enabled: true
+  sessions:
+    asia:
+      start: "00:00"
+      end: "08:00"
+      trend_multiplier: 0.8
+      threshold_multiplier: 1.2
+      confidence_multiplier: 0.9
+    london:
+      start: "08:00"
+      end: "16:00"
+      trend_multiplier: 1.2
+      threshold_multiplier: 0.8
+      confidence_multiplier: 1.1
+    newyork:
+      start: "13:00"
+      end: "22:00"
+      trend_multiplier: 1.0
+      threshold_multiplier: 1.0
+      confidence_multiplier: 1.0
+    overlap:
+      start: "13:00"
+      end: "16:00"
+      trend_multiplier: 1.5
+      threshold_multiplier: 0.7
+      confidence_multiplier: 1.2
+
+# Symbol-specific configurations
+symbol_configs:
+  BTCUSDT:
+    trend_multiplier: 1.0
+    threshold_multiplier: 1.0
+    confidence_multiplier: 1.0
+    confidence_threshold: 0.7
+    pattern_confidence: 0.6
+    min_length: 20
+    max_length: 200
+  ETHUSDT:
+    trend_multiplier: 1.1
+    threshold_multiplier: 0.9
+    confidence_multiplier: 1.0
+    confidence_threshold: 0.7
+    pattern_confidence: 0.6
+    min_length: 15
+    max_length: 150
+  SOLUSDT:
+    trend_multiplier: 1.2
+    threshold_multiplier: 0.8
+    confidence_multiplier: 0.9
+    confidence_threshold: 0.7
+    pattern_confidence: 0.6
+    min_length: 15
+    max_length: 150
+  ADAUSDT:
+    trend_multiplier: 0.9
+    threshold_multiplier: 1.1
+    confidence_multiplier: 1.1
+    confidence_threshold: 0.7
+    pattern_confidence: 0.6
+    min_length: 20
+    max_length: 200
+  XRPUSDT:
+    trend_multiplier: 1.0
+    threshold_multiplier: 1.0
+    confidence_multiplier: 1.0
+    confidence_threshold: 0.7
+    pattern_confidence: 0.6
+    min_length: 20
+    max_length: 200
