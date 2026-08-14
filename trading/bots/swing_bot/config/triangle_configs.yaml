@@ -1,0 +1,688 @@
+# triangle_configs.yaml
+# Configuration complète pour la détection des triangles dans Swing Bot
+# Version: 4.0.0 - Production Ready
+
+# Paramètres généraux
+general:
+  enabled: true
+  mode: "comprehensive"
+  calculate_in_real_time: true
+  update_frequency_seconds: 1
+  lookback_periods:
+    - 5
+    - 10
+    - 20
+    - 50
+    - 100
+    - 200
+    - 500
+  history_length_days: 365
+  min_data_points: 50
+  max_data_points: 100000
+  triangle_detection_version: "4.0.0"
+  environment: "production"
+
+# Types de triangles
+triangle_types:
+  ascending:
+    enabled: true
+    description: "Ascending Triangle"
+    min_length: 10
+    max_length: 100
+    slope_top: "horizontal"
+    slope_bottom: "upward"
+    breakout_direction: "upward"
+    min_confidence: 0.6
+    volume_requirement: "increasing_on_breakout"
+  descending:
+    enabled: true
+    description: "Descending Triangle"
+    min_length: 10
+    max_length: 100
+    slope_top: "downward"
+    slope_bottom: "horizontal"
+    breakout_direction: "downward"
+    min_confidence: 0.6
+    volume_requirement: "increasing_on_breakout"
+  symmetrical:
+    enabled: true
+    description: "Symmetrical Triangle"
+    min_length: 10
+    max_length: 100
+    slope_top: "downward"
+    slope_bottom: "upward"
+    breakout_direction: "both"
+    min_confidence: 0.6
+    volume_requirement: "decreasing_then_increasing"
+  broadening:
+    enabled: true
+    description: "Broadening Triangle"
+    min_length: 10
+    max_length: 100
+    slope_top: "upward"
+    slope_bottom: "downward"
+    breakout_direction: "both"
+    min_confidence: 0.6
+    volume_requirement: "increasing"
+  wedge:
+    enabled: true
+    description: "Wedge Triangle"
+    min_length: 10
+    max_length: 100
+    slope_top: "converging"
+    slope_bottom: "converging"
+    breakout_direction: "both"
+    min_confidence: 0.6
+    volume_requirement: "decreasing"
+
+# Seuils de détection
+thresholds:
+  triangle:
+    min_height_percent: 2.0
+    max_height_percent: 20.0
+    min_width_percent: 2.0
+    max_width_percent: 20.0
+    min_length: 10
+    max_length: 100
+    angle_min: 10
+    angle_max: 45
+  breakout:
+    min_breakout_percent: 1.0
+    max_breakout_percent: 10.0
+    breakout_volume_multiplier: 1.5
+    breakout_confidence: 0.7
+    retest_threshold: 0.5
+  volume:
+    decreasing_volume_multiplier: 0.8
+    increasing_volume_multiplier: 1.2
+    min_volume_threshold: 1000
+
+# Indicateurs de triangles
+indicators:
+  triangle_strength:
+    enabled: true
+    calculation: "weighted_average"
+    factors:
+      - "height"
+      - "width"
+      - "volume_confirmation"
+      - "breakout_momentum"
+      - "pattern_symmetry"
+      - "slope_quality"
+    factor_weights:
+      height: 0.20
+      width: 0.20
+      volume_confirmation: 0.20
+      breakout_momentum: 0.15
+      pattern_symmetry: 0.15
+      slope_quality: 0.10
+  triangle_probability:
+    enabled: true
+    period: 14
+    smoothing: 3
+    threshold: 0.6
+  triangle_momentum:
+    enabled: true
+    period: 14
+    smoothing: 3
+    threshold: 0.3
+  triangle_velocity:
+    enabled: true
+    period: 5
+    smoothing: 0
+    threshold: 0.2
+  triangle_acceleration:
+    enabled: true
+    period: 10
+    smoothing: 0
+    threshold: 0.1
+  triangle_confidence:
+    enabled: true
+    period: 14
+    smoothing: 0
+    threshold: 0.6
+
+# Analyse des triangles
+analysis:
+  historical:
+    enabled: true
+    lookback_years: 5
+    compute_triangle_accuracy: true
+    compute_triangle_probability: true
+    compute_triangle_distribution: true
+    compute_triangle_patterns: true
+    compute_triangle_cycles: true
+    compute_triangle_success_rate: true
+  real_time:
+    enabled: true
+    update_frequency_ms: 100
+    compute_instantaneous_triangle: true
+    compute_moving_average_triangle: true
+    compute_exponential_triangle: true
+    compute_weighted_triangle: true
+    compute_triangle_velocity: true
+    compute_triangle_acceleration: true
+  predictive:
+    enabled: true
+    model_type: "ensemble"
+    models:
+      - "lstm"
+      - "gru"
+      - "xgboost"
+      - "lightgbm"
+    features:
+      - "triangle_strength"
+      - "triangle_probability"
+      - "triangle_momentum"
+      - "triangle_velocity"
+      - "triangle_acceleration"
+      - "triangle_confidence"
+      - "height"
+      - "width"
+      - "volume_confirmation"
+      - "breakout_momentum"
+      - "pattern_symmetry"
+      - "slope_quality"
+      - "price_change"
+      - "volume"
+      - "volatility"
+      - "time_of_day"
+      - "day_of_week"
+      - "market_condition"
+    forecast_horizons:
+      - 1
+      - 5
+      - 10
+      - 20
+    confidence_threshold: 0.7
+    retrain_frequency_hours: 24
+
+# Alertes et notifications
+alerts:
+  triangle_detected:
+    enabled: true
+    confidence_threshold: 0.7
+    channels:
+      - "email"
+      - "telegram"
+      - "slack"
+      - "push_notification"
+    severity: "warning"
+  triangle_breakout:
+    enabled: true
+    confidence_threshold: 0.8
+    channels:
+      - "telegram"
+      - "push_notification"
+    severity: "critical"
+  triangle_confirmed:
+    enabled: true
+    confidence_threshold: 0.9
+    channels:
+      - "email"
+      - "telegram"
+      - "slack"
+    severity: "info"
+  triangle_invalid:
+    enabled: true
+    confidence_threshold: 0.5
+    channels:
+      - "telegram"
+      - "push_notification"
+    severity: "warning"
+  triangle_retest:
+    enabled: true
+    confidence_threshold: 0.7
+    channels:
+      - "telegram"
+      - "push_notification"
+    severity: "info"
+
+# Actions automatiques
+auto_actions:
+  trade_entry:
+    enabled: true
+    action_types:
+      - "enter_on_breakout"
+      - "enter_on_retest"
+      - "enter_on_confirmation"
+    require_triangle_confirmation: true
+    require_confidence: 0.7
+    max_position_size: 10000
+    min_position_size: 100
+  stop_loss:
+    enabled: true
+    methods:
+      - "triangle_height_based"
+      - "triangle_width_based"
+      - "breakout_based"
+    triangle_multiplier: 1.0
+    min_stop_percent: 0.5
+    max_stop_percent: 10.0
+    update_frequency_seconds: 10
+  take_profit:
+    enabled: true
+    methods:
+      - "triangle_projection"
+      - "height_projection"
+      - "breakout_projection"
+    projection_multiplier: 1.0
+    min_profit_percent: 1.0
+    max_profit_percent: 20.0
+    update_frequency_seconds: 10
+  position_sizing:
+    enabled: true
+    method: "triangle_strength_based"
+    triangle_scale: 0.5
+    max_position_percent: 10.0
+    min_position_percent: 0.5
+    scaling_function: "linear"
+
+# Paramètres avancés
+advanced:
+  machine_learning:
+    enabled: true
+    model_type: "ensemble"
+    models:
+      - "random_forest"
+      - "xgboost"
+      - "lightgbm"
+      - "lstm"
+    features:
+      - "triangle_strength"
+      - "triangle_probability"
+      - "triangle_momentum"
+      - "triangle_velocity"
+      - "triangle_acceleration"
+      - "triangle_confidence"
+      - "height"
+      - "width"
+      - "volume_confirmation"
+      - "breakout_momentum"
+      - "pattern_symmetry"
+      - "slope_quality"
+      - "rsi"
+      - "macd"
+      - "bollinger_width"
+      - "atr"
+      - "price_change"
+      - "volume"
+      - "time_of_day"
+      - "day_of_week"
+      - "market_condition"
+    training_frequency_hours: 6
+    retrain_threshold: 0.9
+    validation_split: 0.2
+    random_seed: 42
+    ensemble_weights:
+      - 0.25
+      - 0.25
+      - 0.25
+      - 0.25
+  statistical_analysis:
+    enabled: true
+    calculate_triangle_accuracy: true
+    calculate_triangle_probability: true
+    calculate_triangle_significance: true
+    calculate_triangle_correlation: true
+    calculate_triangle_success_rate: true
+    confidence_level: 95
+    p_value_threshold: 0.05
+  pattern_recognition:
+    enabled: true
+    patterns:
+      - "ascending_triangle"
+      - "descending_triangle"
+      - "symmetrical_triangle"
+      - "broadening_triangle"
+      - "wedge_triangle"
+    pattern_confidence_threshold: 0.7
+    pattern_accuracy_threshold: 0.8
+
+# Monitoring et journalisation
+monitoring:
+  logging:
+    enabled: true
+    level: "debug"
+    format: "json"
+    include_context: true
+    include_timestamp: true
+    include_metadata: true
+  metrics:
+    enabled: true
+    collect_every_seconds: 1
+    metrics_to_collect:
+      - "triangle_strength"
+      - "triangle_probability"
+      - "triangle_momentum"
+      - "triangle_velocity"
+      - "triangle_acceleration"
+      - "triangle_confidence"
+      - "triangle_count"
+      - "triangle_accuracy"
+      - "triangle_success_rate"
+      - "breakout_count"
+      - "confirmed_triangles"
+      - "invalid_triangles"
+  dashboard:
+    enabled: true
+    update_interval_seconds: 1
+    charts:
+      - "triangle_detection"
+      - "triangle_analysis"
+      - "triangle_accuracy"
+      - "triangle_distribution"
+      - "triangle_patterns"
+      - "breakout_analysis"
+      - "triangle_success_rate"
+      - "triangle_predictive"
+
+# Backtesting
+backtesting:
+  enabled: true
+  use_historical_triangles: true
+  compute_triangle_accuracy: true
+  compute_breakout_effectiveness: true
+  compute_pattern_accuracy: true
+  compute_risk_adjusted_returns: true
+  report_metrics:
+    - "triangle_accuracy"
+    - "breakout_effectiveness"
+    - "pattern_accuracy"
+    - "win_rate"
+    - "profit_factor"
+    - "sharpe_ratio"
+    - "max_drawdown"
+
+# Configuration de la base de données
+database:
+  enabled: true
+  table_name: "triangle_metrics"
+  retention_days: 365
+  aggregation:
+    enabled: true
+    intervals:
+      - "1s"
+      - "5s"
+      - "15s"
+      - "30s"
+      - "1m"
+      - "5m"
+      - "15m"
+      - "1h"
+      - "4h"
+      - "24h"
+  compression: true
+  backup:
+    enabled: true
+    frequency: "daily"
+    retention_days: 30
+
+# Webhooks
+webhooks:
+  enabled: true
+  endpoints:
+    - url: "https://nexustradingia.com/api/webhooks/triangle"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      payload_template: "triangle_alert"
+    - url: "https://nexustradingia.com/api/webhooks/triangle-breakout"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      payload_template: "triangle_breakout"
+  retry:
+    enabled: true
+    max_attempts: 5
+    backoff_seconds: 30
+
+# Logging avancé
+advanced_logging:
+  enabled: true
+  levels:
+    - "info"
+    - "warning"
+    - "error"
+    - "critical"
+    - "debug"
+  output: "triangle_logs"
+  rotation:
+    enabled: true
+    max_size_mb: 100
+    max_files: 10
+  remote_logging:
+    enabled: true
+    endpoints:
+      - "https://nexustradingia.com/logs/triangle"
+  include_trace: true
+  include_stack_trace: true
+  include_context: true
+
+# Threading et performances
+performance:
+  thread_pool_size: 8
+  queue_size: 10000
+  batch_size: 1000
+  async_processing: true
+  cache_size: 10000
+  cache_ttl_seconds: 30
+  database_pool_size: 10
+  database_pool_max_overflow: 20
+  use_multiprocessing: true
+  max_workers: 8
+  use_cython: true
+  use_numba: true
+  use_gpu: false
+  gpu_device: 0
+
+# API de gestion
+management_api:
+  enabled: true
+  endpoints:
+    - "/api/v1/triangle/current"
+    - "/api/v1/triangle/history"
+    - "/api/v1/triangle/metrics"
+    - "/api/v1/triangle/status"
+    - "/api/v1/triangle/patterns"
+    - "/api/v1/triangle/probability"
+    - "/api/v1/triangle/accuracy"
+    - "/api/v1/triangle/forecast"
+  authentication_required: true
+  rate_limit: 100
+  rate_limit_interval_seconds: 60
+  version: "v1.0.0"
+
+# Export des données
+data_export:
+  enabled: true
+  formats:
+    - "csv"
+    - "json"
+    - "parquet"
+    - "avro"
+    - "feather"
+  schedule: "realtime"
+  batch_size: 1000
+  retention_days: 30
+  compression: "gzip"
+  destination: "s3://nexus-data/triangle/"
+  encrypt: true
+  encryption_key_id: "nexus-triangle-key"
+  partition_by:
+    - "symbol"
+    - "year"
+    - "month"
+    - "day"
+
+# Intégration avec d'autres modules
+integrations:
+  risk_engine:
+    enabled: true
+    sync_frequency_seconds: 1
+    share_metrics: true
+  execution_engine:
+    enabled: true
+    share_signals: true
+    require_confirmation: true
+  portfolio_manager:
+    enabled: true
+    share_positions: true
+    share_allocation: true
+  ai_engine:
+    enabled: true
+    use_ai_predictions: true
+    confidence_threshold: 0.7
+    model_endpoint: "http://ai-engine:8000/predict/triangle"
+  market_data:
+    enabled: true
+    sync_frequency_ms: 100
+    data_endpoint: "ws://market-data:8080/ws"
+
+# Tests et validation
+testing:
+  unit_tests:
+    enabled: true
+    coverage_threshold: 90
+  integration_tests:
+    enabled: true
+  stress_tests:
+    enabled: true
+    scenarios:
+      - "high_triangle_volume"
+      - "low_triangle_volume"
+      - "pattern_volume"
+      - "accuracy_validation"
+      - "false_positive"
+  validation:
+    enabled: true
+    validate_on_startup: true
+    validate_on_config_change: true
+    validation_rules:
+      - "confidence_threshold > 0.0"
+      - "confidence_threshold <= 1.0"
+      - "triangle_types.ascending.min_length > 0"
+      - "triangle_types.ascending.max_length > triangle_types.ascending.min_length"
+      - "thresholds.triangle.min_height_percent >= 0.0"
+      - "thresholds.triangle.max_height_percent > threshold.triangle.min_height_percent"
+      - "thresholds.triangle.min_width_percent >= 0.0"
+      - "thresholds.triangle.max_width_percent > threshold.triangle.min_width_percent"
+      - "thresholds.triangle.min_length > 0"
+      - "thresholds.triangle.max_length > threshold.triangle.min_length"
+      - "indicators.triangle_strength.factor_weights.sum() == 1.0"
+      - "min_data_points > 0"
+
+# Market conditions adaptation
+market_adaptation:
+  enabled: true
+  volatility_adjustment: true
+  regime_detection:
+    enabled: true
+    lookback_periods:
+      - 20
+      - 50
+      - 200
+    regimes:
+      - "trending"
+      - "ranging"
+      - "volatile"
+      - "stable"
+      - "bull"
+      - "bear"
+  regime_parameters:
+    trending:
+      triangle_multiplier: 1.2
+      threshold_multiplier: 0.8
+      confidence_multiplier: 1.1
+    ranging:
+      triangle_multiplier: 0.8
+      threshold_multiplier: 1.2
+      confidence_multiplier: 0.9
+    volatile:
+      triangle_multiplier: 0.7
+      threshold_multiplier: 1.3
+      confidence_multiplier: 0.8
+    stable:
+      triangle_multiplier: 1.0
+      threshold_multiplier: 0.9
+      confidence_multiplier: 1.2
+    bull:
+      triangle_multiplier: 1.1
+      threshold_multiplier: 0.9
+      confidence_multiplier: 1.0
+    bear:
+      triangle_multiplier: 0.9
+      threshold_multiplier: 1.1
+      confidence_multiplier: 0.9
+
+# Time-based configurations
+time_based:
+  enabled: true
+  sessions:
+    asia:
+      start: "00:00"
+      end: "08:00"
+      triangle_multiplier: 0.8
+      threshold_multiplier: 1.2
+      confidence_multiplier: 0.9
+    london:
+      start: "08:00"
+      end: "16:00"
+      triangle_multiplier: 1.2
+      threshold_multiplier: 0.8
+      confidence_multiplier: 1.1
+    newyork:
+      start: "13:00"
+      end: "22:00"
+      triangle_multiplier: 1.0
+      threshold_multiplier: 1.0
+      confidence_multiplier: 1.0
+    overlap:
+      start: "13:00"
+      end: "16:00"
+      triangle_multiplier: 1.5
+      threshold_multiplier: 0.7
+      confidence_multiplier: 1.2
+
+# Symbol-specific configurations
+symbol_configs:
+  BTCUSDT:
+    triangle_multiplier: 1.0
+    threshold_multiplier: 1.0
+    confidence_multiplier: 1.0
+    confidence_threshold: 0.7
+    pattern_confidence: 0.6
+    min_length: 10
+    max_length: 100
+  ETHUSDT:
+    triangle_multiplier: 1.1
+    threshold_multiplier: 0.9
+    confidence_multiplier: 1.0
+    confidence_threshold: 0.7
+    pattern_confidence: 0.6
+    min_length: 8
+    max_length: 80
+  SOLUSDT:
+    triangle_multiplier: 1.2
+    threshold_multiplier: 0.8
+    confidence_multiplier: 0.9
+    confidence_threshold: 0.7
+    pattern_confidence: 0.6
+    min_length: 8
+    max_length: 80
+  ADAUSDT:
+    triangle_multiplier: 0.9
+    threshold_multiplier: 1.1
+    confidence_multiplier: 1.1
+    confidence_threshold: 0.7
+    pattern_confidence: 0.6
+    min_length: 10
+    max_length: 100
+  XRPUSDT:
+    triangle_multiplier: 1.0
+    threshold_multiplier: 1.0
+    confidence_multiplier: 1.0
+    confidence_threshold: 0.7
+    pattern_confidence: 0.6
+    min_length: 10
+    max_length: 100
