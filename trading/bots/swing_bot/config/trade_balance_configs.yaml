@@ -1,0 +1,661 @@
+# trade_balance_configs.yaml
+# Configuration complète pour la gestion du solde commercial dans Swing Bot
+# Version: 4.0.0 - Production Ready
+
+# Paramètres généraux
+general:
+  enabled: true
+  mode: "comprehensive"
+  calculate_in_real_time: true
+  update_frequency_seconds: 30
+  lookback_days: 365
+  history_length_days: 730
+  min_data_points: 20
+  max_data_points: 1000
+  base_currency: "USD"
+  trade_balance_version: "4.0.0"
+  environment: "production"
+
+# Types de données commerciales
+trade_data_types:
+  imports:
+    enabled: true
+    description: "Import Data"
+    frequency: "monthly"
+    importance: "medium"
+    smoothing: 3
+    seasonally_adjusted: true
+  exports:
+    enabled: true
+    description: "Export Data"
+    frequency: "monthly"
+    importance: "medium"
+    smoothing: 3
+    seasonally_adjusted: true
+  trade_balance:
+    enabled: true
+    description: "Trade Balance"
+    frequency: "monthly"
+    importance: "high"
+    smoothing: 3
+    seasonally_adjusted: true
+  current_account:
+    enabled: true
+    description: "Current Account"
+    frequency: "quarterly"
+    importance: "high"
+    smoothing: 3
+    seasonally_adjusted: true
+  capital_flows:
+    enabled: true
+    description: "Capital Flows"
+    frequency: "monthly"
+    importance: "medium"
+    smoothing: 3
+    seasonally_adjusted: true
+  foreign_direct_investment:
+    enabled: true
+    description: "Foreign Direct Investment"
+    frequency: "quarterly"
+    importance: "medium"
+    smoothing: 3
+    seasonally_adjusted: true
+  portfolio_investment:
+    enabled: true
+    description: "Portfolio Investment"
+    frequency: "monthly"
+    importance: "medium"
+    smoothing: 3
+    seasonally_adjusted: true
+  balance_of_payments:
+    enabled: true
+    description: "Balance of Payments"
+    frequency: "quarterly"
+    importance: "high"
+    smoothing: 3
+    seasonally_adjusted: true
+
+# Pays et régions
+countries:
+  united_states:
+    enabled: true
+    currency: "USD"
+    timezone: "America/New_York"
+    importance: 5
+    data_sources:
+      - "bureau_economic_analysis"
+      - "census_bureau"
+    metrics:
+      - "trade_balance"
+      - "current_account"
+      - "capital_flows"
+  china:
+    enabled: true
+    currency: "CNY"
+    timezone: "Asia/Shanghai"
+    importance: 4
+    data_sources:
+      - "general_administration_customs"
+    metrics:
+      - "trade_balance"
+      - "imports"
+      - "exports"
+  european_union:
+    enabled: true
+    currency: "EUR"
+    timezone: "Europe/London"
+    importance: 4
+    data_sources:
+      - "eurostat"
+    metrics:
+      - "trade_balance"
+      - "current_account"
+  japan:
+    enabled: true
+    currency: "JPY"
+    timezone: "Asia/Tokyo"
+    importance: 3
+    data_sources:
+      - "ministry_finance"
+    metrics:
+      - "trade_balance"
+      - "current_account"
+  germany:
+    enabled: true
+    currency: "EUR"
+    timezone: "Europe/Berlin"
+    importance: 3
+    data_sources:
+      - "destatis"
+    metrics:
+      - "trade_balance"
+  united_kingdom:
+    enabled: true
+    currency: "GBP"
+    timezone: "Europe/London"
+    importance: 3
+    data_sources:
+      - "ons"
+    metrics:
+      - "trade_balance"
+      - "current_account"
+  canada:
+    enabled: true
+    currency: "CAD"
+    timezone: "America/Toronto"
+    importance: 2
+    data_sources:
+      - "statistics_canada"
+    metrics:
+      - "trade_balance"
+  australia:
+    enabled: true
+    currency: "AUD"
+    timezone: "Australia/Sydney"
+    importance: 2
+    data_sources:
+      - "abs"
+    metrics:
+      - "trade_balance"
+
+# Seuils d'impact
+impact_thresholds:
+  trade_balance:
+    surplus_high: 10.0
+    surplus_medium: 5.0
+    surplus_low: 2.0
+    deficit_high: -10.0
+    deficit_medium: -5.0
+    deficit_low: -2.0
+  current_account:
+    surplus_high: 5.0
+    surplus_medium: 2.0
+    surplus_low: 1.0
+    deficit_high: -5.0
+    deficit_medium: -2.0
+    deficit_low: -1.0
+  capital_flows:
+    inflow_high: 10.0
+    inflow_medium: 5.0
+    inflow_low: 2.0
+    outflow_high: -10.0
+    outflow_medium: -5.0
+    outflow_low: -2.0
+
+# Indicateurs d'analyse
+indicators:
+  trade_balance_trend:
+    enabled: true
+    period: 6
+    smoothing: 3
+    threshold: 0.5
+  trade_balance_momentum:
+    enabled: true
+    period: 3
+    smoothing: 3
+    threshold: 0.3
+  trade_balance_velocity:
+    enabled: true
+    period: 3
+    smoothing: 0
+    threshold: 0.2
+  trade_balance_acceleration:
+    enabled: true
+    period: 6
+    smoothing: 0
+    threshold: 0.1
+  trade_balance_surprise:
+    enabled: true
+    period: 6
+    smoothing: 0
+    threshold: 0.3
+  trade_balance_volatility:
+    enabled: true
+    period: 12
+    smoothing: 0
+    threshold: 0.3
+  trade_openness:
+    enabled: true
+    period: 12
+    smoothing: 0
+    threshold: 0.4
+  trade_dependency:
+    enabled: true
+    period: 12
+    smoothing: 0
+    threshold: 0.3
+
+# Analyse commerciale
+analysis:
+  historical:
+    enabled: true
+    lookback_years: 10
+    compute_mean_trade: true
+    compute_median_trade: true
+    compute_std_trade: true
+    compute_percentiles: true
+    percentile_values:
+      - 5
+      - 10
+      - 25
+      - 50
+      - 75
+      - 90
+      - 95
+    compute_trend: true
+    compute_seasonality: true
+    compute_cycles: true
+    compute_correlation: true
+  real_time:
+    enabled: true
+    update_frequency_seconds: 5
+    compute_instantaneous_trade: true
+    compute_moving_average_trade: true
+    compute_exponential_trade: true
+    compute_momentum: true
+    compute_velocity: true
+    compute_acceleration: true
+    compute_divergence: true
+  predictive:
+    enabled: true
+    model_type: "ensemble"
+    models:
+      - "lstm"
+      - "gru"
+      - "xgboost"
+      - "lightgbm"
+    features:
+      - "trade_balance"
+      - "imports"
+      - "exports"
+      - "current_account"
+      - "capital_flows"
+      - "fdi"
+      - "portfolio_investment"
+      - "balance_of_payments"
+      - "trade_balance_trend"
+      - "trade_balance_momentum"
+      - "trade_balance_velocity"
+      - "trade_balance_acceleration"
+      - "gdp_growth"
+      - "inflation"
+      - "exchange_rate"
+      - "time_of_year"
+    forecast_horizons:
+      - 1
+      - 3
+      - 6
+      - 12
+    confidence_threshold: 0.7
+    retrain_frequency_hours: 24
+  comparative:
+    enabled: true
+    compare_to_forecast: true
+    compare_to_previous: true
+    compare_to_consensus: true
+    compare_to_historical: true
+    compare_to_other_countries: true
+
+# Alertes et notifications
+alerts:
+  trade_data_released:
+    enabled: true
+    channels:
+      - "email"
+      - "telegram"
+      - "slack"
+      - "push_notification"
+    severity: "info"
+  trade_surplus:
+    enabled: true
+    threshold: 5.0
+    channels:
+      - "telegram"
+      - "push_notification"
+    severity: "warning"
+  trade_deficit:
+    enabled: true
+    threshold: -5.0
+    channels:
+      - "email"
+      - "telegram"
+      - "slack"
+    severity: "critical"
+  trade_surprise:
+    enabled: true
+    threshold: 2.0
+    channels:
+      - "telegram"
+      - "push_notification"
+    severity: "warning"
+  trade_trend_change:
+    enabled: true
+    threshold: 0.5
+    channels:
+      - "email"
+      - "telegram"
+      - "slack"
+    severity: "warning"
+
+# Actions automatiques
+auto_actions:
+  trade_adjustment:
+    enabled: true
+    action_types:
+      - "adjust_exposure"
+      - "hedge_currency"
+      - "rebalance_portfolio"
+      - "modify_asset_allocation"
+    adjustment_factor: 0.5
+    max_adjustment_percent: 25.0
+  risk_management:
+    enabled: true
+    action_types:
+      - "reduce_currency_exposure"
+      - "increase_hedge"
+      - "pause_trading"
+      - "reset_parameters"
+    risk_multiplier: 1.5
+    pause_duration_minutes: 30
+  portfolio_rebalancing:
+    enabled: true
+    rebalance_on_trade_data: true
+    rebalance_threshold: 0.5
+    rebalance_frequency: "monthly"
+
+# Monitoring et journalisation
+monitoring:
+  logging:
+    enabled: true
+    level: "debug"
+    format: "json"
+    include_context: true
+    include_timestamp: true
+    include_metadata: true
+  metrics:
+    enabled: true
+    collect_every_seconds: 5
+    metrics_to_collect:
+      - "trade_balance"
+      - "imports"
+      - "exports"
+      - "current_account"
+      - "capital_flows"
+      - "fdi"
+      - "portfolio_investment"
+      - "trade_balance_surprise"
+      - "trade_balance_trend"
+      - "trade_balance_momentum"
+      - "trade_balance_volatility"
+      - "trade_openness"
+  dashboard:
+    enabled: true
+    update_interval_seconds: 5
+    charts:
+      - "trade_balance_chart"
+      - "imports_exports_chart"
+      - "current_account_chart"
+      - "trade_balance_surprise"
+      - "trade_balance_trend"
+      - "international_comparison"
+      - "historical_analysis"
+      - "predictive_analysis"
+
+# Backtesting
+backtesting:
+  enabled: true
+  use_historical_trade: true
+  compute_correlation: true
+  compute_impact_metrics: true
+  compute_strategy_performance: true
+  compute_risk_adjusted_returns: true
+  report_metrics:
+    - "correlation_coefficient"
+    - "impact_factor"
+    - "win_rate"
+    - "profit_factor"
+    - "sharpe_ratio"
+    - "max_drawdown"
+
+# Configuration de la base de données
+database:
+  enabled: true
+  table_name: "trade_balance_metrics"
+  retention_days: 730
+  aggregation:
+    enabled: true
+    intervals:
+      - "1d"
+      - "7d"
+      - "30d"
+      - "90d"
+      - "365d"
+  compression: true
+  backup:
+    enabled: true
+    frequency: "daily"
+    retention_days: 30
+
+# Webhooks
+webhooks:
+  enabled: true
+  endpoints:
+    - url: "https://nexustradingia.com/api/webhooks/trade_balance"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      payload_template: "trade_balance_alert"
+    - url: "https://nexustradingia.com/api/webhooks/trade_surprise"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      payload_template: "trade_surprise"
+  retry:
+    enabled: true
+    max_attempts: 5
+    backoff_seconds: 30
+
+# Logging avancé
+advanced_logging:
+  enabled: true
+  levels:
+    - "info"
+    - "warning"
+    - "error"
+    - "critical"
+    - "debug"
+  output: "trade_balance_logs"
+  rotation:
+    enabled: true
+    max_size_mb: 100
+    max_files: 10
+  remote_logging:
+    enabled: true
+    endpoints:
+      - "https://nexustradingia.com/logs/trade_balance"
+  include_trace: true
+  include_stack_trace: true
+  include_context: true
+
+# Threading et performances
+performance:
+  thread_pool_size: 4
+  queue_size: 1000
+  batch_size: 100
+  async_processing: true
+  cache_size: 5000
+  cache_ttl_seconds: 300
+  database_pool_size: 5
+  database_pool_max_overflow: 10
+  use_multiprocessing: false
+  max_workers: 4
+
+# API de gestion
+management_api:
+  enabled: true
+  endpoints:
+    - "/api/v1/trade_balance/current"
+    - "/api/v1/trade_balance/history"
+    - "/api/v1/trade_balance/metrics"
+    - "/api/v1/trade_balance/status"
+    - "/api/v1/trade_balance/forecast"
+    - "/api/v1/trade_balance/countries"
+    - "/api/v1/trade_balance/surprise"
+  authentication_required: true
+  rate_limit: 100
+  rate_limit_interval_seconds: 60
+  version: "v1.0.0"
+
+# Export des données
+data_export:
+  enabled: true
+  formats:
+    - "csv"
+    - "json"
+    - "parquet"
+  schedule: "daily"
+  retention_days: 30
+  compression: "gzip"
+  destination: "s3://nexus-data/trade_balance/"
+  encrypt: true
+  encryption_key_id: "nexus-trade-balance-key"
+  partition_by:
+    - "country"
+    - "year"
+    - "month"
+
+# Intégration avec d'autres modules
+integrations:
+  risk_engine:
+    enabled: true
+    sync_frequency_seconds: 5
+    share_metrics: true
+  execution_engine:
+    enabled: true
+    share_signals: true
+    require_confirmation: true
+  portfolio_manager:
+    enabled: true
+    share_positions: true
+    share_allocation: true
+  ai_engine:
+    enabled: true
+    use_ai_predictions: true
+    confidence_threshold: 0.7
+    model_endpoint: "http://ai-engine:8000/predict/trade_balance"
+  market_data:
+    enabled: true
+    sync_frequency_seconds: 5
+    data_endpoint: "ws://market-data:8080/ws"
+  currency_engine:
+    enabled: true
+    sync_frequency_seconds: 5
+    data_endpoint: "http://currency-engine:8000/api/v1/rates"
+
+# Tests et validation
+testing:
+  unit_tests:
+    enabled: true
+    coverage_threshold: 90
+  integration_tests:
+    enabled: true
+  stress_tests:
+    enabled: true
+    scenarios:
+      - "high_trade_data_volume"
+      - "multiple_country_data"
+      - "surprise_events"
+      - "holiday_periods"
+  validation:
+    enabled: true
+    validate_on_startup: true
+    validate_on_config_change: true
+    validation_rules:
+      - "impact_thresholds.trade_balance.surplus_high > impact_thresholds.trade_balance.surplus_medium"
+      - "impact_thresholds.trade_balance.surplus_medium > impact_thresholds.trade_balance.surplus_low"
+      - "impact_thresholds.trade_balance.deficit_high < impact_thresholds.trade_balance.deficit_medium"
+      - "impact_thresholds.trade_balance.deficit_medium < impact_thresholds.trade_balance.deficit_low"
+      - "min_data_points > 0"
+      - "confidence_threshold > 0.0"
+      - "confidence_threshold <= 1.0"
+
+# Market conditions adaptation
+market_adaptation:
+  enabled: true
+  regime_detection:
+    enabled: true
+    lookback_periods:
+      - 6
+      - 12
+      - 24
+    regimes:
+      - "trade_surplus"
+      - "trade_deficit"
+      - "balanced_trade"
+      - "volatile_trade"
+      - "improving_trade"
+      - "deteriorating_trade"
+  regime_parameters:
+    trade_surplus:
+      trade_multiplier: 1.2
+      threshold_multiplier: 0.8
+      risk_multiplier: 0.8
+      currency_multiplier: 1.2
+    trade_deficit:
+      trade_multiplier: 0.7
+      threshold_multiplier: 1.3
+      risk_multiplier: 1.5
+      currency_multiplier: 0.7
+    balanced_trade:
+      trade_multiplier: 1.0
+      threshold_multiplier: 1.0
+      risk_multiplier: 1.0
+      currency_multiplier: 1.0
+    volatile_trade:
+      trade_multiplier: 0.6
+      threshold_multiplier: 1.5
+      risk_multiplier: 2.0
+      currency_multiplier: 0.6
+    improving_trade:
+      trade_multiplier: 1.1
+      threshold_multiplier: 0.9
+      risk_multiplier: 1.0
+      currency_multiplier: 1.1
+    deteriorating_trade:
+      trade_multiplier: 0.5
+      threshold_multiplier: 2.0
+      risk_multiplier: 2.5
+      currency_multiplier: 0.5
+
+# Symbol-specific configurations
+symbol_configs:
+  BTCUSDT:
+    trade_multiplier: 1.0
+    threshold_multiplier: 1.0
+    risk_multiplier: 1.0
+    currency_multiplier: 1.0
+    impact_volatility: 2.0
+  ETHUSDT:
+    trade_multiplier: 1.1
+    threshold_multiplier: 0.9
+    risk_multiplier: 1.1
+    currency_multiplier: 1.1
+    impact_volatility: 1.8
+  SOLUSDT:
+    trade_multiplier: 1.2
+    threshold_multiplier: 0.8
+    risk_multiplier: 1.2
+    currency_multiplier: 1.2
+    impact_volatility: 2.2
+  ADAUSDT:
+    trade_multiplier: 0.9
+    threshold_multiplier: 1.1
+    risk_multiplier: 0.9
+    currency_multiplier: 0.9
+    impact_volatility: 1.5
+  XRPUSDT:
+    trade_multiplier: 1.0
+    threshold_multiplier: 1.0
+    risk_multiplier: 1.0
+    currency_multiplier: 1.0
+    impact_volatility: 1.6
