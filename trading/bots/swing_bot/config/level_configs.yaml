@@ -1,0 +1,358 @@
+# Swing Bot Level Analysis Configuration
+# Support, Resistance & Key Level Detection Parameters
+
+# General Level Settings
+level:
+  enabled: true
+  detection_mode: "comprehensive"  # comprehensive, basic, advanced, real-time
+  level_types:
+    - "support"
+    - "resistance"
+    - "pivot"
+    - "fibonacci"
+    - "round_number"
+    - "volume_node"
+    - "gap"
+    - "trendline"
+    - "moving_average"
+    - "vah_val"
+  update_frequency_seconds: 10
+  version: "3.0.0"
+
+# Support & Resistance Detection
+support_resistance:
+  enabled: true
+  detection_methods:
+    - "swing_high_low"
+    - "volume_profile"
+    - "market_profile"
+    - "fibonacci_retracement"
+    - "pivot_points"
+    - "round_numbers"
+    - "moving_averages"
+    - "trendlines"
+    - "order_book"
+    - "machine_learning"
+  lookback_bars: 200
+  swing_high_low_period: 20
+  min_touch_count: 2
+  max_touch_variance: 0.02
+  confirmation_bars: 3
+  strength_scoring: true
+
+# Swing High/Low Detection
+swing_high_low:
+  enabled: true
+  left_bars: 5
+  right_bars: 5
+  min_price_range: 0.01
+  min_touch_distance: 0.01
+  merge_threshold: 0.005
+  strength_metric: "touch_count"  # touch_count, volume_at_level, time_at_level
+  min_strength: 2
+  max_levels: 20
+
+# Volume Profile Levels
+volume_profile:
+  enabled: true
+  profile_period_bars: 50
+  value_area_volume_percent: 0.70
+  poc_volume_percent: 0.50
+  high_volume_node_threshold: 0.30
+  low_volume_node_threshold: 0.10
+  volume_buckets: 50
+  include_poc: true
+  include_vah_val: true
+  include_hvn_lvn: true
+
+# Market Profile Levels
+market_profile:
+  enabled: true
+  profile_period_bars: 50
+  time_frame: "session"
+  value_area_percent: 0.70
+  poc_detection: true
+  initial_balance: true
+  developing_range: true
+  volume_tape: true
+  low_volume_area: true
+  high_volume_area: true
+
+# Fibonacci Levels
+fibonacci:
+  enabled: true
+  retracement_levels:
+    - 0.0
+    - 0.236
+    - 0.382
+    - 0.500
+    - 0.618
+    - 0.786
+    - 1.0
+  extension_levels:
+    - 1.272
+    - 1.382
+    - 1.618
+    - 2.0
+    - 2.618
+  projection_levels:
+    - 0.618
+    - 1.0
+    - 1.272
+    - 1.618
+  swing_lookback_bars: 100
+  min_swing_size: 0.02
+  confluence_threshold: 0.01
+
+# Pivot Points
+pivot_points:
+  enabled: true
+  pivot_methods:
+    - "standard"
+    - "woodie"
+    - "camarilla"
+    - "demark"
+    - "fibonacci"
+  primary_method: "standard"
+  timeframe: "daily"  # daily, weekly, monthly
+  levels:
+    - "pivot"
+    - "r1"
+    - "r2"
+    - "r3"
+    - "r4"
+    - "s1"
+    - "s2"
+    - "s3"
+    - "s4"
+  include_midpoints: true
+  include_fibonacci: true
+
+# Round Number Levels
+round_numbers:
+  enabled: true
+  increment_types:
+    - "whole_number"
+    - "half_number"
+    - "quarter_number"
+    - "tenth_number"
+    - "custom"
+  psychological_levels:
+    - 100.0
+    - 1000.0
+    - 500.0
+    - 50.0
+    - 10.0
+  custom_increments:
+    - 0.001
+    - 0.005
+    - 0.01
+    - 0.05
+    - 0.1
+    - 0.5
+    - 1.0
+  significant_threshold: 2
+  price_zone_radius: 0.005
+
+# Gap Levels
+gap_detection:
+  enabled: true
+  gap_types:
+    - "breakaway"
+    - "runaway"
+    - "exhaustion"
+    - "common"
+    - "island"
+  min_gap_size: 0.005
+  max_gap_retracement: 0.50
+  gap_fill_probability: true
+  gap_confirmation_bars: 3
+  gap_analysis_lookback_bars: 100
+
+# Moving Average Levels
+moving_average_levels:
+  enabled: true
+  periods:
+    - 10
+    - 20
+    - 50
+    - 100
+    - 200
+    - 50
+    - 100
+    - 200
+  types:
+    - "sma"
+    - "ema"
+    - "wma"
+    - "hwma"
+  primary_type: "ema"
+  include_multi_timeframe: true
+  lookback_days_for_long_term: 365
+  ma_cross_detection: true
+
+# Trendline Levels
+trendline:
+  enabled: true
+  detection_method: "linear_regression"  # linear_regression, hough_transform, manual, machine_learning
+  min_points: 3
+  lookback_bars: 200
+  trendline_angle_threshold: 10
+  breakout_confirmation_bars: 3
+  retest_threshold: 0.01
+  slope_adjustment: true
+
+# Order Book Levels
+order_book_levels:
+  enabled: true
+  depth_levels: 20
+  level_types:
+    - "bid_wall"
+    - "ask_wall"
+    - "liquidity_pool"
+    - "iceberg"
+  wall_threshold: 100000
+  liquidity_pool_threshold: 500000
+  iceberg_detection: true
+  real_time_monitoring: true
+  update_frequency_ms: 100
+
+# Level Strength Scoring
+strength_scoring:
+  enabled: true
+  factors:
+    - "touch_count": 0.25
+    - "volume_at_level": 0.20
+    - "time_at_level": 0.15
+    - "distance_from_price": 0.10
+    - "confluence_count": 0.10
+    - "historical_importance": 0.10
+    - "market_profile": 0.05
+    - "order_book": 0.05
+  strength_thresholds:
+    weak: 0.30
+    moderate: 0.50
+    strong: 0.70
+    very_strong: 0.85
+  dynamic_scoring: true
+
+# Confluence Analysis
+confluence:
+  enabled: true
+  confluence_types:
+    - "support_resistance"
+    - "fibonacci"
+    - "moving_average"
+    - "trendline"
+    - "volume_node"
+    - "pivot"
+    - "round_number"
+  confluence_radius: 0.005
+  min_confluence_count: 2
+  confluence_score_weights:
+    support_resistance: 0.30
+    fibonacci: 0.20
+    moving_average: 0.15
+    trendline: 0.10
+    volume_node: 0.10
+    pivot: 0.10
+    round_number: 0.05
+  confluence_visualization: true
+
+# Level Prediction
+level_prediction:
+  enabled: true
+  prediction_methods:
+    - "statistical"
+    - "machine_learning"
+    - "deep_learning"
+    - "ensemble"
+  prediction_horizon_bars: 50
+  prediction_confidence_level: 0.80
+  feature_columns:
+    - "price_history"
+    - "volume_history"
+    - "volatility"
+    - "momentum"
+    - "previous_levels"
+  model_retrain_frequency_hours: 24
+
+# Level Validation
+validation:
+  enabled: true
+  validation_methods:
+    - "touch_test"
+    - "retest_test"
+    - "breakthrough_test"
+    - "volume_confirmation"
+    - "time_confirmation"
+  min_touches: 2
+  min_retests: 1
+  validation_window_bars: 50
+  breakthrough_threshold: 0.02
+  false_breakout_threshold: 0.01
+
+# Visualization
+visualization:
+  enabled: true
+  level_types_to_show:
+    - "support"
+    - "resistance"
+    - "pivot"
+    - "fibonacci"
+    - "trendline"
+    - "moving_average"
+    - "volume_profile"
+  level_labels: true
+  strength_colors: true
+  confluence_markers: true
+  dashboard_integration: true
+  chart_update_interval_seconds: 10
+
+# Alert Rules
+alerts:
+  enabled: true
+  alert_types:
+    - "level_break"
+    - "level_retest"
+    - "confluence_detected"
+    - "pivot_formation"
+    - "gap_detected"
+    - "strong_level_detected"
+    - "level_rejection"
+  alert_thresholds:
+    level_break_confidence: 0.70
+    level_retest_confidence: 0.60
+    confluence_confidence: 0.75
+  alert_channels:
+    - "email"
+    - "telegram"
+    - "slack"
+  alert_cooldown_seconds: 300
+
+# Storage
+storage:
+  enabled: true
+  storage_categories:
+    - "detected_levels"
+    - "level_history"
+    - "confluence_events"
+    - "strength_scores"
+    - "validation_results"
+    - "alert_history"
+  retention_days: 365
+  compression: "zstd"
+  storage_format: "parquet"
+
+# Integration
+integration:
+  enabled: true
+  webhook_endpoint: "http://localhost:8080/levels"
+  api_endpoint: "/api/v1/trading/levels"
+  dashboard_url: "http://localhost:3000/levels"
+  real_time_updates: true
+  data_sync_frequency_seconds: 5
+  external_systems:
+    - "charting_platform"
+    - "trading_platform"
+    - "risk_management"
