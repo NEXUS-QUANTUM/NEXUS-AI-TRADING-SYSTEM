@@ -1,0 +1,242 @@
+# Swing Bot Sortino Ratio Configuration
+# Sortino Ratio Analysis & Risk-Adjusted Performance Parameters
+
+# General Sortino Settings
+sortino:
+  enabled: true
+  analysis_mode: "comprehensive"  # comprehensive, basic, advanced, real-time
+  calculation_method: "standard"  # standard, modified, rolling, weighted
+  update_frequency_seconds: 60
+  version: "3.0.0"
+
+# Calculation Parameters
+calculation:
+  enabled: true
+  methods:
+    - "standard_sortino"
+    - "modified_sortino"
+    - "rolling_sortino"
+    - "weighted_sortino"
+    - "conditional_sortino"
+  primary_method: "standard_sortino"
+  secondary_method: "rolling_sortino"
+  lookback_period_days: 30
+  rolling_window_days: 30
+  minimum_observations: 20
+  annualization_factor: 252
+
+# Standard Sortino
+standard_sortino:
+  enabled: true
+  calculation: "excess_return_downside_risk"
+  target_return: 0.0  # Minimum acceptable return
+  risk_free_rate: 0.02
+  downside_deviation_method: "semi_deviation"
+  return_frequency: "daily"  # daily, weekly, monthly
+  annualization: true
+
+# Modified Sortino
+modified_sortino:
+  enabled: true
+  calculation: "modified_downside_risk"
+  target_return: 0.0
+  downside_deviation_method: "modified_semi_deviation"
+  asymmetry_adjustment: true
+  tail_weighting: true
+
+# Rolling Sortino
+rolling_sortino:
+  enabled: true
+  window_size_days: 30
+  step_size_days: 5
+  calculation_method: "rolling_window"
+  output_metrics:
+    - "current_ratio"
+    - "rolling_average"
+    - "rolling_volatility"
+    - "trend_direction"
+  visualization: true
+
+# Weighted Sortino
+weighted_sortino:
+  enabled: true
+  weighting_methods:
+    - "exponential"
+    - "linear"
+    - "performance_based"
+    - "volatility_based"
+  primary_method: "exponential"
+  decay_factor: 0.90
+  lookback_period_days: 60
+  recent_weight_multiplier: 1.5
+
+# Downside Risk Metrics
+downside_risk:
+  enabled: true
+  risk_metrics:
+    - "semi_deviation"
+    - "downside_deviation"
+    - "target_semi_deviation"
+    - "drawdown_risk"
+    - "ulcer_index"
+    - "martin_ratio"
+    - "burke_ratio"
+  calculation_method: "semi_deviation"
+  target_return: 0.0
+  downside_threshold: 0.0
+
+# Performance Metrics
+performance_metrics:
+  enabled: true
+  metrics:
+    - "sortino_ratio"
+    - "modified_sortino"
+    - "upside_potential_ratio"
+    - "omega_ratio"
+    - "k_ratio"
+    - "sterling_ratio"
+    - "burke_ratio"
+    - "martin_ratio"
+  evaluation_period_days: 30
+  rolling_window_days: 30
+  benchmark_comparison: true
+
+# Risk-Free Rate
+risk_free_rate:
+  enabled: true
+  rate_source: "treasury"  # treasury, libor, sofr, custom
+  treasury_tenor: "10y"  # 3m, 6m, 1y, 2y, 5y, 10y, 30y
+  custom_rate: 0.02
+  dynamic_rate: true
+  rate_update_frequency_hours: 24
+
+# Target Return
+target_return:
+  enabled: true
+  target_sources:
+    - "fixed"
+    - "benchmark"
+    - "custom"
+    - "dynamic"
+  fixed_target: 0.0
+  benchmark_target: "s&p_500"
+  dynamic_calculation: true
+  target_update_frequency_days: 30
+
+# Interpretation
+interpretation:
+  enabled: true
+  thresholds:
+    excellent: 2.0
+    good: 1.5
+    average: 1.0
+    poor: 0.5
+    very_poor: 0.0
+  benchmarking: true
+  percentile_ranking: true
+  peer_comparison: true
+
+# Optimization
+optimization:
+  enabled: true
+  optimization_objectives:
+    - "maximize_sortino"
+    - "maximize_modified_sortino"
+    - "maximize_omega_ratio"
+    - "maximize_upside_potential"
+  optimization_methods:
+    - "genetic_algorithm"
+    - "particle_swarm"
+    - "bayesian_optimization"
+  constraints:
+    - "max_drawdown"
+    - "max_var"
+    - "max_volatility"
+    - "min_diversification"
+  optimization_frequency_days: 7
+
+# Visualization
+visualization:
+  enabled: true
+  charts:
+    - "sortino_dashboard"
+    - "sortino_trend_chart"
+    - "downside_risk_chart"
+    - "rolling_sortino_chart"
+    - "performance_comparison"
+    - "risk_return_scatter"
+    - "optimization_results"
+  update_interval_seconds: 60
+  dashboard_integration: true
+  real_time_updates: true
+
+# Alerting
+alerting:
+  enabled: true
+  alert_conditions:
+    - "sortino_drop"
+    - "downside_risk_spike"
+    - "performance_degradation"
+    - "negative_sortino"
+    - "threshold_breach"
+    - "optimization_signal"
+  alert_thresholds:
+    sortino_drop: 0.20
+    downside_risk_spike: 0.30
+    performance_degradation: 0.10
+    sortino_threshold: 0.50
+  alert_channels:
+    - "email"
+    - "telegram"
+    - "slack"
+  alert_cooldown_seconds: 600
+
+# Reporting
+reporting:
+  enabled: true
+  report_types:
+    - "daily_sortino_summary"
+    - "weekly_sortino_analysis"
+    - "monthly_sortino_report"
+    - "quarterly_performance_review"
+    - "optimization_report"
+  report_formats:
+    - "pdf"
+    - "html"
+    - "json"
+    - "csv"
+    - "excel"
+  report_recipients:
+    - "trading@example.com"
+    - "risk@example.com"
+    - "performance@example.com"
+    - "management@example.com"
+
+# Storage
+storage:
+  enabled: true
+  storage_categories:
+    - "sortino_data"
+    - "downside_risk_data"
+    - "performance_data"
+    - "risk_free_data"
+    - "optimization_results"
+    - "alert_history"
+    - "report_history"
+  retention_days: 365
+  compression: "zstd"
+  storage_format: "parquet"
+
+# Integration
+integration:
+  enabled: true
+  webhook_endpoint: "http://localhost:8080/sortino"
+  api_endpoint: "/api/v1/risk/sortino"
+  dashboard_url: "http://localhost:3000/sortino"
+  real_time_updates: true
+  data_sync_frequency_seconds: 30
+  external_systems:
+    - "risk_management"
+    - "portfolio_management"
+    - "performance_analysis"
+    - "trading_engine"
