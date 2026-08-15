@@ -1,0 +1,745 @@
+# harmonic_configs.yaml
+# Configuration complète pour les motifs harmoniques dans Swing Bot
+# Version: 4.0.0 - Production Ready
+
+# Paramètres généraux
+general:
+  enabled: true
+  mode: "comprehensive"
+  calculate_in_real_time: true
+  update_frequency_seconds: 1
+  lookback_periods:
+    - 5
+    - 10
+    - 20
+    - 50
+    - 100
+    - 200
+    - 500
+  history_length_days: 365
+  min_data_points: 50
+  max_data_points: 100000
+  harmonic_version: "4.0.0"
+  environment: "production"
+
+# Types de motifs harmoniques
+harmonic_patterns:
+  gartley:
+    enabled: true
+    description: "Gartley Pattern"
+    fibonacci_levels:
+      x_to_a: 0.618
+      a_to_b: 0.382
+      b_to_c: 0.618
+      c_to_d: 0.786
+      x_to_d: 0.786
+    min_confidence: 0.6
+    update_frequency_seconds: 60
+  butterfly:
+    enabled: true
+    description: "Butterfly Pattern"
+    fibonacci_levels:
+      x_to_a: 0.786
+      a_to_b: 0.382
+      b_to_c: 0.618
+      c_to_d: 1.272
+      x_to_d: 1.272
+    min_confidence: 0.6
+    update_frequency_seconds: 60
+  bat:
+    enabled: true
+    description: "Bat Pattern"
+    fibonacci_levels:
+      x_to_a: 0.382
+      a_to_b: 0.382
+      b_to_c: 0.618
+      c_to_d: 0.886
+      x_to_d: 0.886
+    min_confidence: 0.6
+    update_frequency_seconds: 60
+  crab:
+    enabled: true
+    description: "Crab Pattern"
+    fibonacci_levels:
+      x_to_a: 0.382
+      a_to_b: 0.382
+      b_to_c: 0.618
+      c_to_d: 1.618
+      x_to_d: 1.618
+    min_confidence: 0.6
+    update_frequency_seconds: 60
+  shark:
+    enabled: true
+    description: "Shark Pattern"
+    fibonacci_levels:
+      x_to_a: 0.382
+      a_to_b: 0.382
+      b_to_c: 0.618
+      c_to_d: 1.130
+      x_to_d: 1.130
+    min_confidence: 0.6
+    update_frequency_seconds: 60
+  cypher:
+    enabled: true
+    description: "Cypher Pattern"
+    fibonacci_levels:
+      x_to_a: 0.382
+      a_to_b: 0.382
+      b_to_c: 1.272
+      c_to_d: 0.786
+      x_to_d: 0.786
+    min_confidence: 0.6
+    update_frequency_seconds: 60
+  abcd:
+    enabled: true
+    description: "ABCD Pattern"
+    fibonacci_levels:
+      a_to_b: 0.618
+      b_to_c: 0.786
+      c_to_d: 1.272
+      ab_to_cd: 1.272
+    min_confidence: 0.6
+    update_frequency_seconds: 60
+  three_drives:
+    enabled: true
+    description: "Three Drives Pattern"
+    fibonacci_levels:
+      drive_1: 1.272
+      drive_2: 1.272
+      drive_3: 1.272
+      x_to_a: 0.786
+      a_to_b: 0.786
+      b_to_c: 0.786
+    min_confidence: 0.6
+    update_frequency_seconds: 60
+
+# Seuils harmoniques
+thresholds:
+  fibonacci:
+    retracements:
+      - 0.236
+      - 0.382
+      - 0.5
+      - 0.618
+      - 0.786
+      - 0.886
+    extensions:
+      - 1.272
+      - 1.382
+      - 1.5
+      - 1.618
+      - 2.0
+      - 2.618
+      - 3.0
+      - 4.236
+    tolerance: 0.05
+  pattern:
+    min_length: 10
+    max_length: 100
+    min_swings: 4
+    max_swings: 10
+    min_confidence: 0.5
+    max_confidence: 1.0
+  validation:
+    price_tolerance: 0.02
+    time_tolerance: 0.1
+    volume_tolerance: 0.3
+    confidence_min: 0.6
+
+# Indicateurs harmoniques
+indicators:
+  harmonic_pattern_strength:
+    enabled: true
+    calculation: "weighted_average"
+    factors:
+      - "fibonacci_accuracy"
+      - "pattern_completeness"
+      - "volume_confirmation"
+      - "momentum"
+      - "time_symmetry"
+    factor_weights:
+      fibonacci_accuracy: 0.25
+      pattern_completeness: 0.25
+      volume_confirmation: 0.20
+      momentum: 0.15
+      time_symmetry: 0.15
+  harmonic_probability:
+    enabled: true
+    period: 14
+    smoothing: 3
+    threshold: 0.5
+  harmonic_confidence:
+    enabled: true
+    period: 14
+    smoothing: 0
+    threshold: 0.6
+  harmonic_velocity:
+    enabled: true
+    period: 5
+    smoothing: 0
+    threshold: 0.2
+  harmonic_acceleration:
+    enabled: true
+    period: 10
+    smoothing: 0
+    threshold: 0.1
+
+# Analyse harmonique
+analysis:
+  historical:
+    enabled: true
+    lookback_years: 5
+    compute_harmonic_accuracy: true
+    compute_harmonic_probability: true
+    compute_harmonic_distribution: true
+    compute_harmonic_patterns: true
+    compute_harmonic_cycles: true
+    compute_harmonic_success_rate: true
+  real_time:
+    enabled: true
+    update_frequency_ms: 100
+    compute_instantaneous_harmonic: true
+    compute_moving_average_harmonic: true
+    compute_exponential_harmonic: true
+    compute_weighted_harmonic: true
+    compute_harmonic_velocity: true
+    compute_harmonic_acceleration: true
+  predictive:
+    enabled: true
+    model_type: "ensemble"
+    models:
+      - "lstm"
+      - "gru"
+      - "xgboost"
+      - "lightgbm"
+    features:
+      - "harmonic_pattern_strength"
+      - "harmonic_probability"
+      - "harmonic_confidence"
+      - "harmonic_velocity"
+      - "harmonic_acceleration"
+      - "fibonacci_accuracy"
+      - "pattern_completeness"
+      - "volume_confirmation"
+      - "momentum"
+      - "time_symmetry"
+      - "price_change"
+      - "volume"
+      - "volatility"
+      - "time_of_day"
+      - "day_of_week"
+      - "market_condition"
+    forecast_horizons:
+      - 1
+      - 5
+      - 10
+      - 20
+    confidence_threshold: 0.7
+    retrain_frequency_hours: 24
+
+# Alertes et notifications
+alerts:
+  harmonic_pattern_detected:
+    enabled: true
+    confidence_threshold: 0.7
+    channels:
+      - "email"
+      - "telegram"
+      - "slack"
+      - "push_notification"
+    severity: "warning"
+  harmonic_pattern_completed:
+    enabled: true
+    confidence_threshold: 0.8
+    channels:
+      - "telegram"
+      - "push_notification"
+    severity: "critical"
+  harmonic_confirmed:
+    enabled: true
+    confidence_threshold: 0.9
+    channels:
+      - "email"
+      - "telegram"
+      - "slack"
+    severity: "info"
+  harmonic_invalid:
+    enabled: true
+    confidence_threshold: 0.5
+    channels:
+      - "telegram"
+      - "push_notification"
+    severity: "warning"
+  harmonic_break:
+    enabled: true
+    confidence_threshold: 0.6
+    channels:
+      - "telegram"
+      - "push_notification"
+    severity: "warning"
+
+# Actions automatiques
+auto_actions:
+  trade_entry:
+    enabled: true
+    action_types:
+      - "enter_on_pattern"
+      - "enter_on_breakout"
+      - "enter_on_retest"
+      - "enter_on_confirmation"
+    require_harmonic_confirmation: true
+    require_confidence: 0.7
+    max_position_size: 10000
+    min_position_size: 100
+  stop_loss:
+    enabled: true
+    methods:
+      - "harmonic_based"
+      - "fibonacci_based"
+      - "pattern_based"
+    harmonic_multiplier: 1.0
+    min_stop_percent: 0.5
+    max_stop_percent: 10.0
+    update_frequency_seconds: 10
+  take_profit:
+    enabled: true
+    methods:
+      - "harmonic_projection"
+      - "fibonacci_projection"
+      - "pattern_projection"
+    projection_multiplier: 1.0
+    min_profit_percent: 1.0
+    max_profit_percent: 20.0
+    update_frequency_seconds: 10
+  position_sizing:
+    enabled: true
+    method: "harmonic_strength_based"
+    harmonic_scale: 0.5
+    max_position_percent: 10.0
+    min_position_percent: 0.5
+    scaling_function: "linear"
+
+# Paramètres avancés
+advanced:
+  machine_learning:
+    enabled: true
+    model_type: "ensemble"
+    models:
+      - "random_forest"
+      - "xgboost"
+      - "lightgbm"
+      - "lstm"
+    features:
+      - "harmonic_pattern_strength"
+      - "harmonic_probability"
+      - "harmonic_confidence"
+      - "harmonic_velocity"
+      - "harmonic_acceleration"
+      - "fibonacci_accuracy"
+      - "pattern_completeness"
+      - "volume_confirmation"
+      - "momentum"
+      - "time_symmetry"
+      - "rsi"
+      - "macd"
+      - "bollinger_width"
+      - "atr"
+      - "price_change"
+      - "volume"
+      - "time_of_day"
+      - "day_of_week"
+      - "market_condition"
+    training_frequency_hours: 6
+    retrain_threshold: 0.9
+    validation_split: 0.2
+    random_seed: 42
+    ensemble_weights:
+      - 0.25
+      - 0.25
+      - 0.25
+      - 0.25
+  statistical_analysis:
+    enabled: true
+    calculate_harmonic_accuracy: true
+    calculate_harmonic_probability: true
+    calculate_harmonic_significance: true
+    calculate_harmonic_correlation: true
+    calculate_harmonic_success_rate: true
+    confidence_level: 95
+    p_value_threshold: 0.05
+  pattern_recognition:
+    enabled: true
+    patterns:
+      - "gartley"
+      - "butterfly"
+      - "bat"
+      - "crab"
+      - "shark"
+      - "cypher"
+      - "abcd"
+      - "three_drives"
+    pattern_confidence_threshold: 0.7
+    pattern_accuracy_threshold: 0.8
+
+# Monitoring et journalisation
+monitoring:
+  logging:
+    enabled: true
+    level: "debug"
+    format: "json"
+    include_context: true
+    include_timestamp: true
+    include_metadata: true
+  metrics:
+    enabled: true
+    collect_every_seconds: 1
+    metrics_to_collect:
+      - "harmonic_pattern_strength"
+      - "harmonic_probability"
+      - "harmonic_confidence"
+      - "harmonic_velocity"
+      - "harmonic_acceleration"
+      - "pattern_count"
+      - "pattern_accuracy"
+      - "pattern_success_rate"
+      - "pattern_type"
+      - "fibonacci_accuracy"
+  dashboard:
+    enabled: true
+    update_interval_seconds: 1
+    charts:
+      - "harmonic_detection"
+      - "pattern_analysis"
+      - "pattern_accuracy"
+      - "pattern_distribution"
+      - "pattern_types"
+      - "fibonacci_analysis"
+      - "harmonic_velocity"
+      - "harmonic_acceleration"
+
+# Backtesting
+backtesting:
+  enabled: true
+  use_historical_harmonics: true
+  compute_harmonic_accuracy: true
+  compute_pattern_effectiveness: true
+  compute_fibonacci_accuracy: true
+  compute_risk_adjusted_returns: true
+  report_metrics:
+    - "harmonic_accuracy"
+    - "pattern_effectiveness"
+    - "fibonacci_accuracy"
+    - "win_rate"
+    - "profit_factor"
+    - "sharpe_ratio"
+    - "max_drawdown"
+
+# Configuration de la base de données
+database:
+  enabled: true
+  table_name: "harmonic_metrics"
+  retention_days: 365
+  aggregation:
+    enabled: true
+    intervals:
+      - "1s"
+      - "5s"
+      - "15s"
+      - "30s"
+      - "1m"
+      - "5m"
+      - "15m"
+      - "1h"
+      - "4h"
+      - "24h"
+  compression: true
+  backup:
+    enabled: true
+    frequency: "daily"
+    retention_days: 30
+
+# Webhooks
+webhooks:
+  enabled: true
+  endpoints:
+    - url: "https://nexustradingia.com/api/webhooks/harmonic"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      payload_template: "harmonic_alert"
+    - url: "https://nexustradingia.com/api/webhooks/harmonic-pattern"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      payload_template: "harmonic_pattern"
+  retry:
+    enabled: true
+    max_attempts: 5
+    backoff_seconds: 30
+
+# Logging avancé
+advanced_logging:
+  enabled: true
+  levels:
+    - "info"
+    - "warning"
+    - "error"
+    - "critical"
+    - "debug"
+  output: "harmonic_logs"
+  rotation:
+    enabled: true
+    max_size_mb: 100
+    max_files: 10
+  remote_logging:
+    enabled: true
+    endpoints:
+      - "https://nexustradingia.com/logs/harmonic"
+  include_trace: true
+  include_stack_trace: true
+  include_context: true
+
+# Threading et performances
+performance:
+  thread_pool_size: 8
+  queue_size: 10000
+  batch_size: 1000
+  async_processing: true
+  cache_size: 10000
+  cache_ttl_seconds: 30
+  database_pool_size: 10
+  database_pool_max_overflow: 20
+  use_multiprocessing: true
+  max_workers: 8
+  use_cython: true
+  use_numba: true
+  use_gpu: false
+  gpu_device: 0
+
+# API de gestion
+management_api:
+  enabled: true
+  endpoints:
+    - "/api/v1/harmonic/current"
+    - "/api/v1/harmonic/history"
+    - "/api/v1/harmonic/metrics"
+    - "/api/v1/harmonic/status"
+    - "/api/v1/harmonic/patterns"
+    - "/api/v1/harmonic/probability"
+    - "/api/v1/harmonic/accuracy"
+    - "/api/v1/harmonic/forecast"
+  authentication_required: true
+  rate_limit: 100
+  rate_limit_interval_seconds: 60
+  version: "v1.0.0"
+
+# Export des données
+data_export:
+  enabled: true
+  formats:
+    - "csv"
+    - "json"
+    - "parquet"
+    - "avro"
+    - "feather"
+  schedule: "realtime"
+  batch_size: 1000
+  retention_days: 30
+  compression: "gzip"
+  destination: "s3://nexus-data/harmonic/"
+  encrypt: true
+  encryption_key_id: "nexus-harmonic-key"
+  partition_by:
+    - "symbol"
+    - "year"
+    - "month"
+    - "day"
+
+# Intégration avec d'autres modules
+integrations:
+  risk_engine:
+    enabled: true
+    sync_frequency_seconds: 1
+    share_metrics: true
+  execution_engine:
+    enabled: true
+    share_signals: true
+    require_confirmation: true
+  portfolio_manager:
+    enabled: true
+    share_positions: true
+    share_allocation: true
+  ai_engine:
+    enabled: true
+    use_ai_predictions: true
+    confidence_threshold: 0.7
+    model_endpoint: "http://ai-engine:8000/predict/harmonic"
+  market_data:
+    enabled: true
+    sync_frequency_ms: 100
+    data_endpoint: "ws://market-data:8080/ws"
+
+# Tests et validation
+testing:
+  unit_tests:
+    enabled: true
+    coverage_threshold: 90
+  integration_tests:
+    enabled: true
+  stress_tests:
+    enabled: true
+    scenarios:
+      - "high_harmonic_volume"
+      - "low_harmonic_volume"
+      - "pattern_volume"
+      - "accuracy_validation"
+      - "false_positive"
+  validation:
+    enabled: true
+    validate_on_startup: true
+    validate_on_config_change: true
+    validation_rules:
+      - "confidence_threshold > 0.0"
+      - "confidence_threshold <= 1.0"
+      - "harmonic_patterns.gartley.fibonacci_levels.x_to_a > 0"
+      - "harmonic_patterns.gartley.fibonacci_levels.x_to_a < 1"
+      - "harmonic_patterns.gartley.fibonacci_levels.a_to_b > 0"
+      - "harmonic_patterns.gartley.fibonacci_levels.a_to_b < 1"
+      - "harmonic_patterns.gartley.fibonacci_levels.b_to_c > 0"
+      - "harmonic_patterns.gartley.fibonacci_levels.b_to_c < 1"
+      - "harmonic_patterns.gartley.fibonacci_levels.c_to_d > 0"
+      - "harmonic_patterns.gartley.fibonacci_levels.c_to_d < 1"
+      - "harmonic_patterns.gartley.fibonacci_levels.x_to_d > 0"
+      - "harmonic_patterns.gartley.fibonacci_levels.x_to_d < 1"
+      - "thresholds.fibonacci.retracements[0] < thresholds.fibonacci.retracements[1]"
+      - "thresholds.fibonacci.retracements[1] < thresholds.fibonacci.retracements[2]"
+      - "thresholds.fibonacci.extensions[0] < thresholds.fibonacci.extensions[1]"
+      - "thresholds.pattern.min_length > 0"
+      - "thresholds.pattern.max_length > threshold.pattern.min_length"
+      - "indicators.harmonic_pattern_strength.factor_weights.sum() == 1.0"
+      - "min_data_points > 0"
+
+# Market conditions adaptation
+market_adaptation:
+  enabled: true
+  volatility_adjustment: true
+  regime_detection:
+    enabled: true
+    lookback_periods:
+      - 20
+      - 50
+      - 200
+    regimes:
+      - "trending"
+      - "ranging"
+      - "volatile"
+      - "stable"
+      - "bull"
+      - "bear"
+  regime_parameters:
+    trending:
+      harmonic_multiplier: 1.2
+      threshold_multiplier: 0.8
+      confidence_multiplier: 1.1
+      pattern_detection_multiplier: 1.1
+    ranging:
+      harmonic_multiplier: 0.8
+      threshold_multiplier: 1.2
+      confidence_multiplier: 0.9
+      pattern_detection_multiplier: 0.9
+    volatile:
+      harmonic_multiplier: 0.7
+      threshold_multiplier: 1.3
+      confidence_multiplier: 0.8
+      pattern_detection_multiplier: 0.8
+    stable:
+      harmonic_multiplier: 1.0
+      threshold_multiplier: 0.9
+      confidence_multiplier: 1.2
+      pattern_detection_multiplier: 1.0
+    bull:
+      harmonic_multiplier: 1.1
+      threshold_multiplier: 0.9
+      confidence_multiplier: 1.0
+      pattern_detection_multiplier: 1.0
+    bear:
+      harmonic_multiplier: 0.9
+      threshold_multiplier: 1.1
+      confidence_multiplier: 0.9
+      pattern_detection_multiplier: 0.9
+
+# Time-based configurations
+time_based:
+  enabled: true
+  sessions:
+    asia:
+      start: "00:00"
+      end: "08:00"
+      harmonic_multiplier: 0.8
+      threshold_multiplier: 1.2
+      confidence_multiplier: 0.9
+      pattern_detection_multiplier: 0.9
+    london:
+      start: "08:00"
+      end: "16:00"
+      harmonic_multiplier: 1.2
+      threshold_multiplier: 0.8
+      confidence_multiplier: 1.1
+      pattern_detection_multiplier: 1.1
+    newyork:
+      start: "13:00"
+      end: "22:00"
+      harmonic_multiplier: 1.0
+      threshold_multiplier: 1.0
+      confidence_multiplier: 1.0
+      pattern_detection_multiplier: 1.0
+    overlap:
+      start: "13:00"
+      end: "16:00"
+      harmonic_multiplier: 1.5
+      threshold_multiplier: 0.7
+      confidence_multiplier: 1.2
+      pattern_detection_multiplier: 1.2
+
+# Symbol-specific configurations
+symbol_configs:
+  BTCUSDT:
+    harmonic_multiplier: 1.0
+    threshold_multiplier: 1.0
+    confidence_multiplier: 1.0
+    pattern_detection_multiplier: 1.0
+    confidence_threshold: 0.7
+    pattern_confidence: 0.6
+    fibonacci_tolerance: 0.05
+  ETHUSDT:
+    harmonic_multiplier: 1.1
+    threshold_multiplier: 0.9
+    confidence_multiplier: 1.0
+    pattern_detection_multiplier: 1.0
+    confidence_threshold: 0.7
+    pattern_confidence: 0.6
+    fibonacci_tolerance: 0.05
+  SOLUSDT:
+    harmonic_multiplier: 1.2
+    threshold_multiplier: 0.8
+    confidence_multiplier: 0.9
+    pattern_detection_multiplier: 0.9
+    confidence_threshold: 0.7
+    pattern_confidence: 0.6
+    fibonacci_tolerance: 0.05
+  ADAUSDT:
+    harmonic_multiplier: 0.9
+    threshold_multiplier: 1.1
+    confidence_multiplier: 1.1
+    pattern_detection_multiplier: 1.1
+    confidence_threshold: 0.7
+    pattern_confidence: 0.6
+    fibonacci_tolerance: 0.05
+  XRPUSDT:
+    harmonic_multiplier: 1.0
+    threshold_multiplier: 1.0
+    confidence_multiplier: 1.0
+    pattern_detection_multiplier: 1.0
+    confidence_threshold: 0.7
+    pattern_confidence: 0.6
+    fibonacci_tolerance: 0.05
