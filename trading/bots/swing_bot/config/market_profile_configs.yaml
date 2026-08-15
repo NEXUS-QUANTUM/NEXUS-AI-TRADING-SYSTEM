@@ -1,0 +1,309 @@
+# Swing Bot Market Profile Configuration
+# Market Profile Analysis & Volume Distribution Parameters
+
+# General Market Profile Settings
+market_profile:
+  enabled: true
+  analysis_mode: "comprehensive"  # comprehensive, basic, advanced, real-time
+  profile_type: "volume"  # volume, time, volume_time, hybrid
+  timeframe: "session"  # session, daily, weekly, monthly, custom
+  version: "3.0.0"
+
+# Profile Structure
+structure:
+  enabled: true
+  components:
+    - "point_of_control"
+    - "value_area"
+    - "value_area_high"
+    - "value_area_low"
+    - "initial_balance"
+    - "developing_range"
+    - "volume_nodes"
+    - "volume_days"
+    - "tpo_profile"
+  value_area_percent: 70
+  poc_detection_method: "max_volume"  # max_volume, max_tpo, weighted
+  tpo_price_buckets: 50
+  volume_price_buckets: 50
+
+# Point of Control (POC)
+poc:
+  enabled: true
+  calculation_method: "volume"  # volume, tpo, weighted, hybrid
+  poc_validation: true
+  poc_confirmation_bars: 2
+  poc_shift_detection: true
+  poc_strength: true
+  poc_volume_percentile: 0.50
+
+# Value Area
+value_area:
+  enabled: true
+  value_area_percent: 70
+  calculation_method: "cumulative_volume"  # cumulative_volume, cumulative_tpo, hybrid
+  value_area_high: true
+  value_area_low: true
+  value_area_width: true
+  value_area_volume: true
+  value_area_confirmation_bars: 2
+
+# Volume Profile
+volume_profile:
+  enabled: true
+  profile_period_bars: 50
+  volume_buckets: 50
+  high_volume_nodes:
+    threshold: 0.30
+    identification_method: "percentile"
+  low_volume_nodes:
+    threshold: 0.10
+    identification_method: "percentile"
+  volume_node_strength: true
+  volume_node_validation: true
+
+# TPO Profile
+tpo_profile:
+  enabled: true
+  tpo_period_bars: 50
+  tpo_buckets: 50
+  initial_balance_period_bars: 30
+  developing_range: true
+  tpo_extension: true
+  tpo_rotation: true
+  tpo_correlation: true
+
+# Initial Balance
+initial_balance:
+  enabled: true
+  calculation_period: "first_hour"  # first_hour, first_30min, custom
+  custom_period_bars: 60
+  ib_range_expansion: true
+  ib_rotation: true
+  ib_breakout: true
+  ib_failure: true
+  ib_confirmation_bars: 2
+
+# Developing Range
+developing_range:
+  enabled: true
+  range_calculation: "poc_based"  # poc_based, ib_based, volume_based
+  range_expansion_factor: 1.50
+  range_contraction_factor: 0.70
+  range_shift_detection: true
+  range_breakout: true
+  range_failure: true
+
+# Market Profile Indicators
+indicators:
+  enabled: true
+  primary_indicators:
+    - "poc"
+    - "value_area_high"
+    - "value_area_low"
+    - "initial_balance_high"
+    - "initial_balance_low"
+    - "volume_nodes"
+  secondary_indicators:
+    - "poc_zone"
+    - "value_area_zone"
+    - "developing_range_high"
+    - "developing_range_low"
+    - "volume_gap"
+  indicator_weights:
+    poc: 0.30
+    value_area: 0.25
+    initial_balance: 0.20
+    volume_nodes: 0.15
+    developing_range: 0.10
+
+# Profile Patterns
+patterns:
+  enabled: true
+  pattern_types:
+    - "poc_rotation"
+    - "value_area_expansion"
+    - "value_area_contraction"
+    - "range_expansion"
+    - "range_contraction"
+    - "profile_reversal"
+    - "breakout_above_poc"
+    - "breakout_below_poc"
+    - "double_distribution"
+    - "single_distribution"
+    - "normal_distribution"
+  pattern_detection_confidence: 0.70
+  pattern_min_occurrences: 3
+  pattern_lookback_bars: 100
+
+# Volume Nodes
+volume_nodes:
+  enabled: true
+  high_volume_nodes:
+    enabled: true
+    threshold: 0.30
+    support_resistance: true
+    strength_scoring: true
+  low_volume_nodes:
+    enabled: true
+    threshold: 0.10
+    breakout_magnets: true
+    gap_fill_zones: true
+  node_strength_factors:
+    - "volume_density"
+    - "time_at_level"
+    - "touch_count"
+    - "profile_consistency"
+
+# Profile Dynamics
+dynamics:
+  enabled: true
+  dynamics_types:
+    - "poc_shift"
+    - "value_area_shift"
+    - "profile_rotation"
+    - "range_compression"
+    - "range_expansion"
+    - "profile_extreme"
+  dynamic_indicators:
+    - "poc_movement_rate"
+    - "value_area_width_change"
+    - "volume_node_density_change"
+    - "profile_symmetry"
+  dynamic_threshold: 0.30
+
+# Market Context
+context:
+  enabled: true
+  context_types:
+    - "trending"
+    - "ranging"
+    - "breakout"
+    - "reversal"
+    - "consolidation"
+  context_indicators:
+    - "poc_position"
+    - "value_area_position"
+    - "volume_distribution"
+    - "profile_symmetry"
+  context_confidence: 0.70
+  context_validation_bars: 3
+
+# Trading Strategies
+strategies:
+  enabled: true
+  profile_strategies:
+    - "poc_trading"
+    - "value_area_trading"
+    - "volume_node_trading"
+    - "initial_balance_trading"
+    - "developing_range_trading"
+    - "profile_breakout"
+    - "profile_reversal"
+  strategy_selection: "context_based"
+  strategy_confidence_threshold: 0.70
+  strategy_validation_bars: 2
+
+# Risk Management
+risk:
+  enabled: true
+  stop_loss_levels:
+    - "poc"
+    - "value_area_low"
+    - "value_area_high"
+    - "initial_balance_low"
+    - "initial_balance_high"
+  take_profit_levels:
+    - "poc"
+    - "value_area_low"
+    - "value_area_high"
+    - "developing_range_high"
+    - "developing_range_low"
+  position_sizing: "volume_node_based"
+  risk_limits:
+    max_position_size: 0.05
+    max_risk_per_trade: 0.02
+    max_daily_risk: 0.05
+
+# Visualization
+visualization:
+  enabled: true
+  charts:
+    - "market_profile"
+    - "volume_profile"
+    - "poc_tracking"
+    - "value_area_chart"
+    - "profile_patterns"
+    - "volume_distribution"
+    - "profile_dynamics"
+  update_interval_seconds: 60
+  dashboard_integration: true
+  real_time_updates: true
+
+# Alerting
+alerting:
+  enabled: true
+  alert_conditions:
+    - "poc_shift"
+    - "value_area_break"
+    - "volume_node_break"
+    - "profile_pattern_detected"
+    - "context_change"
+    - "profile_extreme"
+  alert_thresholds:
+    poc_shift_percent: 0.10
+    value_area_break_percent: 0.02
+    volume_node_break_percent: 0.01
+  alert_channels:
+    - "email"
+    - "telegram"
+    - "slack"
+  alert_cooldown_seconds: 300
+
+# Reporting
+reporting:
+  enabled: true
+  report_types:
+    - "real_time_alerts"
+    - "daily_profile_summary"
+    - "weekly_profile_analysis"
+    - "monthly_profile_report"
+    - "pattern_analysis_report"
+  report_formats:
+    - "pdf"
+    - "html"
+    - "json"
+    - "csv"
+    - "excel"
+  report_recipients:
+    - "trading@example.com"
+    - "research@example.com"
+    - "strategy@example.com"
+
+# Storage
+storage:
+  enabled: true
+  storage_categories:
+    - "profile_data"
+    - "volume_nodes"
+    - "pattern_detections"
+    - "context_classifications"
+    - "strategy_signals"
+    - "alert_history"
+  retention_days: 365
+  compression: "zstd"
+  storage_format: "parquet"
+
+# Integration
+integration:
+  enabled: true
+  webhook_endpoint: "http://localhost:8080/market-profile"
+  api_endpoint: "/api/v1/trading/market-profile"
+  dashboard_url: "http://localhost:3000/market-profile"
+  real_time_updates: true
+  data_sync_frequency_seconds: 30
+  external_systems:
+    - "trading_engine"
+    - "risk_management"
+    - "strategy_engine"
+    - "research_platform"
