@@ -1,0 +1,428 @@
+# Swing Bot Macro Analysis Configuration
+# Macroeconomic Analysis & Global Market Parameters
+
+# General Macro Settings
+macro:
+  enabled: true
+  analysis_mode: "comprehensive"  # comprehensive, basic, advanced, real-time
+  data_sources:
+    - "fred"
+    - "world_bank"
+    - "imf"
+    - "bloomberg"
+    - "reuters"
+    - "trading_economics"
+  update_frequency_hours: 6
+  version: "3.0.0"
+
+# Macro Indicators
+indicators:
+  enabled: true
+  categories:
+    economic_growth:
+      - "gdp_growth"
+      - "gdp_forecast"
+      - "industrial_production"
+      - "capacity_utilization"
+      - "business_inventories"
+      - "leading_economic_index"
+      - "coincident_economic_index"
+      - "lagging_economic_index"
+    employment:
+      - "nonfarm_payrolls"
+      - "unemployment_rate"
+      - "labor_force_participation"
+      - "average_hourly_earnings"
+      - "job_openings"
+      - "initial_jobless_claims"
+      - "continuing_claims"
+      - "employment_cost_index"
+    inflation:
+      - "cpi"
+      - "core_cpi"
+      - "ppi"
+      - "core_ppi"
+      - "pce"
+      - "core_pce"
+      - "wpi"
+      - "inflation_expectations"
+    monetary:
+      - "federal_funds_rate"
+      - "discount_rate"
+      - "money_supply_m2"
+      - "balance_sheet_size"
+      - "reserve_balances"
+      - "reverse_repo_usage"
+      - "term_funding"
+      - "quantitative_easing"
+    fiscal:
+      - "government_spending"
+      - "budget_deficit"
+      - "debt_to_gdp"
+      - "tax_revenue"
+      - "fiscal_stimulus"
+      - "infrastructure_spending"
+    trade:
+      - "trade_balance"
+      - "exports"
+      - "imports"
+      - "current_account"
+      - "capital_flows"
+      - "terms_of_trade"
+      - "trade_war_index"
+    housing:
+      - "housing_starts"
+      - "building_permits"
+      - "existing_home_sales"
+      - "new_home_sales"
+      - "case_shiller_index"
+      - "fhfa_index"
+      - "mortgage_applications"
+      - "mortgage_rates"
+    consumer:
+      - "consumer_confidence"
+      - "consumer_sentiment"
+      - "retail_sales"
+      - "personal_consumption"
+      - "disposable_income"
+      - "savings_rate"
+      - "consumer_credit"
+    business:
+      - "pmi_manufacturing"
+      - "pmi_services"
+      - "ism_manufacturing"
+      - "ism_services"
+      - "business_confidence"
+      - "capital_expenditure"
+      - "corporate_profits"
+    international:
+      - "dollar_index"
+      - "eur_usd"
+      - "usd_jpy"
+      - "gbp_usd"
+      - "usd_chf"
+      - "aud_usd"
+      - "usd_cad"
+      - "foreign_exchange_reserves"
+
+# Economic Growth
+growth:
+  enabled: true
+  gdp_metrics:
+    real_gdp_growth: true
+    nominal_gdp_growth: true
+    gdp_forecast_horizon: 4
+    gdp_components:
+      - "consumption"
+      - "investment"
+      - "government"
+      - "net_exports"
+  leading_indicators:
+    - "ism_pmi"
+    - "consumer_confidence"
+    - "building_permits"
+    - "stock_market_performance"
+    - "yield_curve"
+  recession_probability: true
+  output_gap: true
+  potential_gdp: true
+
+# Inflation Analysis
+inflation:
+  enabled: true
+  inflation_indicators:
+    - "cpi_yoy"
+    - "core_cpi_yoy"
+    - "cpi_mom"
+    - "core_cpi_mom"
+    - "pce_yoy"
+    - "core_pce_yoy"
+    - "ppi_yoy"
+    - "core_ppi_yoy"
+  inflation_expectations:
+    - "breakeven_inflation"
+    - "survey_expectations"
+    - "market_implied_inflation"
+  inflation_gap: true
+  inflation_volatility: true
+  deflation_risk: true
+  stagflation_risk: true
+
+# Monetary Policy
+monetary:
+  enabled: true
+  policy_indicators:
+    - "interest_rate"
+    - "policy_rate"
+    - "reserve_requirements"
+    - "open_market_operations"
+    - "quantitative_easing_status"
+    - "tapering_timeline"
+    - "balance_sheet_trend"
+  policy_forecast:
+    - "rate_hikes"
+    - "rate_cuts"
+    - "qt_tapering"
+    - "qe_expansion"
+  dovish_hawkish_index: true
+  policy_divergence: true
+  central_bank_communication: true
+
+# Yield Curve Analysis
+yield_curve:
+  enabled: true
+  curve_segments:
+    - "2y"
+    - "5y"
+    - "10y"
+    - "30y"
+  spreads:
+    - "2s10s"
+    - "3m10s"
+    - "5s30s"
+    - "2s30s"
+  curve_inversion_detection: true
+  recession_indicator: true
+  curve_steepening_flattening: true
+  duration_analysis: true
+
+# Market Sentiment
+sentiment:
+  enabled: true
+  sentiment_indicators:
+    - "fear_and_greed_index"
+    - "put_call_ratio"
+    - "vix_index"
+    - "margin_debt"
+    - "short_interest"
+    - "institutional_sentiment"
+    - "retail_sentiment"
+    - "smart_money_flow"
+  sentiment_analysis:
+    - "news_sentiment"
+    - "social_media_sentiment"
+    - "analyst_sentiment"
+    - "insider_sentiment"
+  sentiment_thresholds:
+    extreme_fear: 20
+    fear: 40
+    neutral: 50
+    greed: 60
+    extreme_greed: 80
+
+# Global Markets
+global_markets:
+  enabled: true
+  regions:
+    - "us"
+    - "europe"
+    - "asia"
+    - "emerging_markets"
+    - "latin_america"
+    - "middle_east"
+    - "africa"
+  key_indices:
+    - "s&p_500"
+    - "nasdaq"
+    - "dow_jones"
+    - "ftse_100"
+    - "dax"
+    - "cac_40"
+    - "nikkei_225"
+    - "hang_seng"
+    - "shanghai_composite"
+    - "sensex"
+    - "bovespa"
+  correlation_analysis: true
+  spillover_effects: true
+  global_risk_on_off: true
+
+# Commodity Markets
+commodities:
+  enabled: true
+  categories:
+    energy:
+      - "crude_oil_wti"
+      - "crude_oil_brent"
+      - "natural_gas"
+      - "heating_oil"
+      - "rbo_gasoline"
+    metals:
+      - "gold"
+      - "silver"
+      - "platinum"
+      - "palladium"
+      - "copper"
+      - "aluminum"
+      - "zinc"
+    agriculture:
+      - "corn"
+      - "wheat"
+      - "soybeans"
+      - "sugar"
+      - "coffee"
+      - "cocoa"
+      - "cotton"
+    livestock:
+      - "live_cattle"
+      - "lean_hogs"
+      - "feeder_cattle"
+  commodity_index: true
+  commodity_volatility: true
+
+# Geopolitical Risk
+geopolitical:
+  enabled: true
+  risk_indicators:
+    - "geopolitical_risk_index"
+    - "trade_policy_index"
+    - "sanctions_monitor"
+    - "conflict_escalation"
+    - "political_instability"
+    - "regulatory_risk"
+    - "tariff_monitor"
+  global_peace_index: true
+  regional_risk_scores: true
+  election_impact_analysis: true
+  policy_uncertainty: true
+
+# Macro Scoring
+scoring:
+  enabled: true
+  score_components:
+    - "growth_score": 0.25
+    - "inflation_score": 0.15
+    - "monetary_score": 0.15
+    - "sentiment_score": 0.15
+    - "global_score": 0.10
+    - "geopolitical_score": 0.10
+    - "commodity_score": 0.10
+  score_range: [-1.0, 1.0]
+  thresholds:
+    strong_bullish: 0.70
+    bullish: 0.40
+    neutral: 0.20
+    bearish: -0.40
+    strong_bearish: -0.70
+  dynamic_weighting: true
+
+# Economic Calendar
+calendar:
+  enabled: true
+  event_importance:
+    high_impact: 3
+    medium_impact: 2
+    low_impact: 1
+  event_types:
+    - "interest_rate_decisions"
+    - "employment_reports"
+    - "inflation_reports"
+    - "gdp_reports"
+    - "retail_sales"
+    - "trade_balance"
+    - "industrial_production"
+    - "consumer_confidence"
+  pre_event_positioning: true
+  post_event_analysis: true
+  event_volatility_impact: true
+
+# Macro Forecasting
+forecasting:
+  enabled: true
+  forecast_horizons:
+    - "short_term": "1m"
+    - "medium_term": "3m"
+    - "long_term": "6m"
+    - "extended": "12m"
+  forecast_models:
+    - "time_series"
+    - "machine_learning"
+    - "deep_learning"
+    - "econometric"
+    - "ensemble"
+  primary_model: "ensemble"
+  model_retrain_frequency_days: 7
+  confidence_interval: 0.90
+  scenario_analysis: true
+
+# Visualization
+visualization:
+  enabled: true
+  charts:
+    - "macro_dashboard"
+    - "economic_growth_chart"
+    - "inflation_trends"
+    - "yield_curve_plot"
+    - "sentiment_meter"
+    - "global_market_map"
+    - "commodity_indices"
+    - "geopolitical_risk_meter"
+  update_interval_seconds: 60
+  dashboard_integration: true
+  real_time_updates: true
+
+# Alerting
+alerting:
+  enabled: true
+  alert_conditions:
+    - "economic_surprise"
+    - "yield_curve_inversion"
+    - "sentiment_extreme"
+    - "geopolitical_shock"
+    - "commodity_spike"
+    - "market_correlation_break"
+    - "recession_risk"
+  alert_channels:
+    - "email"
+    - "telegram"
+    - "slack"
+  alert_cooldown_seconds: 600
+
+# Reporting
+reporting:
+  enabled: true
+  report_types:
+    - "real_time_alerts"
+    - "daily_macro_summary"
+    - "weekly_macro_analysis"
+    - "monthly_macro_report"
+    - "quarterly_outlook"
+    - "annual_review"
+  report_formats:
+    - "pdf"
+    - "html"
+    - "json"
+    - "csv"
+    - "excel"
+  report_recipients:
+    - "trading@example.com"
+    - "research@example.com"
+    - "management@example.com"
+
+# Storage
+storage:
+  enabled: true
+  storage_categories:
+    - "macro_indicators"
+    - "economic_data"
+    - "forecast_results"
+    - "sentiment_data"
+    - "calendar_events"
+    - "report_history"
+  retention_days: 365
+  compression: "zstd"
+  storage_format: "parquet"
+
+# Integration
+integration:
+  enabled: true
+  webhook_endpoint: "http://localhost:8080/macro"
+  api_endpoint: "/api/v1/trading/macro"
+  dashboard_url: "http://localhost:3000/macro"
+  real_time_updates: true
+  data_sync_frequency_seconds: 30
+  external_systems:
+    - "trading_engine"
+    - "risk_management"
+    - "research_platform"
+    - "data_feed_providers"
