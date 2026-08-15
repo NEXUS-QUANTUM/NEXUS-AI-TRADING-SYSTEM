@@ -1,0 +1,434 @@
+# Swing Bot Layered Manipulation Detection Configuration
+# Advanced Market Manipulation Detection & Prevention Parameters
+
+# General Layered Manipulation Settings
+layered_manipulation:
+  enabled: true
+  detection_mode: "comprehensive"  # comprehensive, basic, advanced, real-time
+  monitoring_level: "full"  # full, partial, critical
+  response_mechanism: "automated"  # automated, semi_automated, manual, hybrid
+  version: "3.0.0"
+
+# Detection Layers
+detection_layers:
+  enabled: true
+  layers:
+    - "order_book_layer"
+    - "spoofing_layer"
+    - "layering_layer"
+    - "quote_stuffing_layer"
+    - "wash_trading_layer"
+    - "front_running_layer"
+    - "market_painting_layer"
+    - "momentum_ignition_layer"
+    - "stop_hunting_layer"
+    - "price_manipulation_layer"
+    - "volume_manipulation_layer"
+    - "dark_pool_manipulation_layer"
+  layer_interaction: "integrated"  # integrated, sequential, parallel
+  detection_priority: "risk_based"  # risk_based, time_based, severity_based
+
+# Order Book Manipulation
+order_book:
+  enabled: true
+  detection_methods:
+    - "order_flow_analysis"
+    - "cancel_rate_analysis"
+    - "order_imbalance_analysis"
+    - "quote_rotation_detection"
+    - "order_book_snapshot_analysis"
+    - "liquidity_probing"
+    - "depth_chart_analysis"
+    - "time_and_sales_analysis"
+  thresholds:
+    cancel_rate_threshold: 0.60
+    order_modification_rate_threshold: 0.50
+    imbalance_threshold: 0.70
+    quote_rotation_threshold: 0.80
+    suspicious_depth_ratio: 3.0
+    anomalous_order_size: 100000
+  monitoring_frequency_ms: 100
+  depth_levels: 20
+
+# Spoofing Detection
+spoofing:
+  enabled: true
+  detection_methods:
+    - "order_cancel_pattern_analysis"
+    - "order_placement_cancel_timing"
+    - "quote_update_analysis"
+    - "trading_velocity_analysis"
+    - "order_to_trade_ratio_analysis"
+    - "bid_ask_spread_analysis"
+    - "order_book_imbalance_analysis"
+    - "machine_learning_classification"
+  thresholds:
+    order_to_trade_ratio: 10
+    cancel_rate: 0.70
+    quote_lifetime_ms: 50
+    suspicious_quote_updates: 100
+    spoofing_confidence_score: 0.75
+  pattern_analysis_window_seconds: 60
+  min_observations: 50
+
+# Layering Detection
+layering:
+  enabled: true
+  detection_methods:
+    - "multiple_order_placement_analysis"
+    - "cancellation_pattern_analysis"
+    - "price_level_analysis"
+    - "order_size_analysis"
+    - "order_timing_analysis"
+    - "trading_volume_analysis"
+    - "machine_learning_detection"
+  thresholds:
+    layering_order_count: 5
+    layering_cancel_rate: 0.80
+    layering_size_variance: 0.50
+    price_level_manipulation: 0.02
+    suspicious_order_count: 20
+  detection_window_seconds: 30
+  min_layers_required: 3
+
+# Quote Stuffing
+quote_stuffing:
+  enabled: true
+  detection_methods:
+    - "quote_frequency_analysis"
+    - "quote_cancel_rate_analysis"
+    - "quote_update_velocity"
+    - "message_volume_analysis"
+    - "bandwidth_consumption_analysis"
+  thresholds:
+    quote_rate_threshold: 1000
+    quote_cancel_rate: 0.90
+    stuffing_confidence_score: 0.80
+    anomalous_quote_rate: 500
+    quote_lifetime_ms: 10
+  detection_window_seconds: 5
+  min_stuffing_quotes: 50
+
+# Wash Trading
+wash_trading:
+  enabled: true
+  detection_methods:
+    - "trade_matching_analysis"
+    - "trade_timing_analysis"
+    - "trade_size_analysis"
+    - "trading_volume_analysis"
+    - "trading_frequency_analysis"
+    - "circular_trading_patterns"
+    - "self_trade_detection"
+    - "suspicious_account_analysis"
+  thresholds:
+    wash_trade_matching_threshold: 0.90
+    trade_frequency_threshold: 100
+    volume_anomaly_threshold: 0.50
+    self_trade_threshold: 5
+    circular_trade_count: 3
+  detection_window_seconds: 60
+  min_wash_trades: 10
+
+# Front Running
+front_running:
+  enabled: true
+  detection_methods:
+    - "order_anticipation_analysis"
+    - "price_movement_analysis"
+    - "trading_pattern_analysis"
+    - "execution_timing_analysis"
+    - "order_size_correlation"
+    - "market_impact_analysis"
+  thresholds:
+    front_run_confidence_score: 0.75
+    price_movement_threshold: 0.01
+    order_size_anomaly: 100000
+    execution_delay_ms: 50
+    suspicious_trading_ratio: 0.30
+  detection_window_seconds: 30
+  min_observations: 20
+
+# Market Painting
+market_painting:
+  enabled: true
+  detection_methods:
+    - "closing_price_analysis"
+    - "volume_spike_analysis"
+    - "momentum_analysis"
+    - "price_pattern_analysis"
+    - "statistical_anomaly_detection"
+    - "time_series_analysis"
+  thresholds:
+    painting_confidence_score: 0.70
+    volume_spike_threshold: 3.0
+    price_move_threshold: 0.05
+    closing_volume_ratio: 0.30
+    statistical_anomaly_score: 3.0
+  detection_window_seconds: 300
+  min_painting_events: 5
+
+# Momentum Ignition
+momentum_ignition:
+  enabled: true
+  detection_methods:
+    - "momentum_analysis"
+    - "volume_surge_analysis"
+    - "order_flow_analysis"
+    - "price_acceleration_analysis"
+    - "market_impact_analysis"
+    - "machine_learning_classification"
+  thresholds:
+    momentum_ignition_score: 0.70
+    volume_surge_threshold: 4.0
+    price_acceleration_threshold: 0.03
+    order_flow_imbalance: 0.80
+    ignition_confidence: 0.75
+  detection_window_seconds: 30
+  min_ignition_events: 3
+
+# Stop Hunting
+stop_hunting:
+  enabled: true
+  detection_methods:
+    - "stop_level_analysis"
+    - "price_trigger_analysis"
+    - "liquidity_analysis"
+    - "order_book_analysis"
+    - "support_resistance_analysis"
+    - "price_reversal_analysis"
+  thresholds:
+    stop_hunt_confidence: 0.70
+    liquidity_pool_size: 100000
+    price_trigger_distance: 0.02
+    reversal_frequency: 0.30
+    stop_hunt_pattern_score: 0.75
+  detection_window_seconds: 60
+  min_stop_hunts: 3
+
+# Price Manipulation
+price_manipulation:
+  enabled: true
+  detection_methods:
+    - "price_spike_analysis"
+    - "price_crash_analysis"
+    - "price_velocity_analysis"
+    - "price_consistency_analysis"
+    - "statistical_anomaly_detection"
+    - "machine_learning_classification"
+  thresholds:
+    price_spike_threshold: 0.10
+    price_crash_threshold: -0.10
+    price_velocity_threshold: 0.05
+    manipulation_confidence: 0.70
+    statistical_anomaly_score: 3.5
+  detection_window_seconds: 60
+  min_manipulation_events: 3
+
+# Volume Manipulation
+volume_manipulation:
+  enabled: true
+  detection_methods:
+    - "volume_spike_analysis"
+    - "volume_consistency_analysis"
+    - "volume_velocity_analysis"
+    - "volume_price_correlation"
+    - "statistical_anomaly_detection"
+    - "machine_learning_classification"
+  thresholds:
+    volume_spike_threshold: 5.0
+    volume_anomaly_score: 3.0
+    volume_price_correlation: 0.30
+    manipulation_confidence: 0.70
+    suspicious_volume_ratio: 0.40
+  detection_window_seconds: 60
+  min_manipulation_events: 3
+
+# Dark Pool Manipulation
+dark_pool_manipulation:
+  enabled: true
+  detection_methods:
+    - "dark_pool_trade_analysis"
+    - "price_movement_analysis"
+    - "volume_analysis"
+    - "execution_pattern_analysis"
+    - "order_flow_analysis"
+    - "cross_venue_analysis"
+  thresholds:
+    dark_pool_confidence: 0.70
+    trade_size_anomaly: 500000
+    price_impact_threshold: 0.02
+    dark_pool_volume_ratio: 0.30
+    manipulation_score: 0.75
+  detection_window_seconds: 300
+  min_dark_pool_trades: 5
+
+# Machine Learning Detection
+ml_detection:
+  enabled: true
+  models:
+    - "isolation_forest"
+    - "autoencoder"
+    - "one_class_svm"
+    - "random_forest"
+    - "xgboost"
+    - "neural_network"
+  ensemble_method: "voting"
+  feature_columns:
+    - "order_size"
+    - "cancel_rate"
+    - "quote_rate"
+    - "trade_frequency"
+    - "price_velocity"
+    - "volume_velocity"
+    - "order_imbalance"
+    - "quote_lifetime"
+    - "spread_width"
+    - "depth_ratio"
+    - "fill_rate"
+    - "execution_delay"
+  model_retrain_frequency_hours: 24
+  anomaly_threshold: 0.80
+  confidence_required: 0.70
+
+# Pattern Recognition
+pattern_recognition:
+  enabled: true
+  patterns:
+    - "spoofing_pattern"
+    - "layering_pattern"
+    - "quote_stuffing_pattern"
+    - "wash_trading_pattern"
+    - "front_running_pattern"
+    - "market_painting_pattern"
+    - "momentum_ignition_pattern"
+    - "stop_hunting_pattern"
+    - "price_manipulation_pattern"
+    - "volume_manipulation_pattern"
+    - "dark_pool_manipulation_pattern"
+  pattern_confidence_threshold: 0.70
+  pattern_min_occurrences: 3
+  pattern_lookback_bars: 100
+  pattern_detection_algorithm: "template_matching"
+
+# Risk Scoring
+risk_scoring:
+  enabled: true
+  scoring_components:
+    - "manipulation_probability": 0.30
+    - "severity_score": 0.25
+    - "market_impact_score": 0.20
+    - "historical_pattern_score": 0.15
+    - "confidence_score": 0.10
+  risk_thresholds:
+    low_risk: 0.30
+    medium_risk: 0.60
+    high_risk: 0.80
+    critical_risk: 0.95
+  dynamic_scoring: true
+  real_time_risk_update: true
+
+# Response Actions
+responses:
+  enabled: true
+  action_levels:
+    - "monitor_only"
+    - "alert"
+    - "investigate"
+    - "restrict"
+    - "block"
+    - "escalate"
+    - "report"
+  automated_actions:
+    - "cancel_suspicious_orders"
+    - "pause_trading"
+    - "adjust_position_size"
+    - "switch_venue"
+    - "delay_execution"
+    - "increase_monitoring"
+    - "send_alert"
+    - "generate_report"
+  action_cooldown_seconds: 300
+  max_automated_actions: 10
+
+# Alert Settings
+alerts:
+  enabled: true
+  alert_levels:
+    - "informational"
+    - "warning"
+    - "critical"
+    - "emergency"
+  alert_categories:
+    - "detection_triggered"
+    - "confirmation_completed"
+    - "action_taken"
+    - "risk_level_changed"
+    - "false_positive_correction"
+    - "system_failure"
+  alert_channels:
+    - "email"
+    - "telegram"
+    - "slack"
+    - "sms"
+    - "pagerduty"
+  alert_cooldown_seconds: 600
+  escalation_policy: true
+
+# Reporting
+reporting:
+  enabled: true
+  report_types:
+    - "real_time_alerts"
+    - "daily_summary"
+    - "weekly_analysis"
+    - "monthly_report"
+    - "quarterly_review"
+    - "annual_summary"
+    - "regulatory_reporting"
+    - "ad_hoc_reports"
+  report_formats:
+    - "pdf"
+    - "html"
+    - "json"
+    - "csv"
+    - "excel"
+  report_recipients:
+    - "compliance@example.com"
+    - "risk@example.com"
+    - "trading@example.com"
+    - "management@example.com"
+    - "regulatory@example.com"
+
+# Storage
+storage:
+  enabled: true
+  storage_categories:
+    - "detection_events"
+    - "order_book_snapshots"
+    - "trade_data"
+    - "alert_history"
+    - "pattern_history"
+    - "risk_scores"
+    - "response_actions"
+    - "investigation_data"
+    - "regulatory_data"
+  retention_days: 365
+  compression: "zstd"
+  storage_format: "parquet"
+  backup_frequency_days: 1
+
+# Integration
+integration:
+  enabled: true
+  webhook_endpoint: "http://localhost:8080/layered_manipulation"
+  api_endpoint: "/api/v1/trading/manipulation-detection"
+  dashboard_url: "http://localhost:3000/manipulation-detection"
+  real_time_updates: true
+  data_sync_frequency_seconds: 5
+  external_systems:
+    - "surveillance_system"
+    - "regulatory_reporting"
+    - "risk_management"
+    - "execution_management"
+    - "order_management"
