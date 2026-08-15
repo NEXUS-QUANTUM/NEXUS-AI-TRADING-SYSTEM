@@ -1,0 +1,253 @@
+# Swing Bot PPI Configuration
+# Producer Price Index Analysis & Trading Parameters
+
+# General PPI Settings
+ppi:
+  enabled: true
+  analysis_mode: "comprehensive"  # comprehensive, basic, advanced, real-time
+  data_sources:
+    - "bls"
+    - "fred"
+    - "eurostat"
+    - "trading_economics"
+    - "world_bank"
+  update_frequency_hours: 6
+  version: "3.0.0"
+
+# PPI Indicators
+indicators:
+  enabled: true
+  primary_indicators:
+    - "ppi_total"
+    - "ppi_final_demand"
+    - "ppi_final_demand_less_food_energy"
+    - "ppi_final_demand_goods"
+    - "ppi_final_demand_services"
+    - "ppi_final_demand_trade"
+    - "ppi_final_demand_transportation"
+  secondary_indicators:
+    - "ppi_intermediate_demand"
+    - "ppi_crude_goods"
+    - "ppi_finished_goods"
+    - "ppi_finished_consumer_goods"
+    - "ppi_finished_capital_goods"
+    - "ppi_special_indexes"
+  leading_indicators:
+    - "ppi_materials"
+    - "ppi_energy"
+    - "ppi_food"
+    - "ppi_construction"
+    - "ppi_manufacturing"
+
+# PPI Components
+components:
+  enabled: true
+  goods_components:
+    - "food"
+    - "energy"
+    - "consumer_goods"
+    - "capital_equipment"
+    - "materials"
+    - "intermediate_goods"
+    - "crude_goods"
+  services_components:
+    - "trade_services"
+    - "transportation_services"
+    - "warehousing_services"
+    - "professional_services"
+    - "business_services"
+    - "consumer_services"
+  sector_components:
+    - "manufacturing"
+    - "mining"
+    - "utilities"
+    - "construction"
+    - "services"
+    - "agriculture"
+
+# PPI Calculation
+calculation:
+  enabled: true
+  calculation_methods:
+    - "laspeyres_index"
+    - "paasche_index"
+    - "fisher_index"
+    - "chain_weighted"
+  base_year: 2015
+  weighting_method: "value_added"  # value_added, revenue, production
+  seasonal_adjustment: true
+  seasonal_adjustment_method: "x13_arima"
+  annualization: true
+
+# PPI Inflation Analysis
+inflation_analysis:
+  enabled: true
+  inflation_metrics:
+    - "ppi_inflation_rate"
+    - "core_ppi_inflation"
+    - "ppi_mom_change"
+    - "ppi_yoy_change"
+    - "ppi_goods_inflation"
+    - "ppi_services_inflation"
+  inflation_thresholds:
+    low_inflation: 0.01
+    moderate_inflation: 0.02
+    high_inflation: 0.04
+    very_high_inflation: 0.06
+  inflation_forecast: true
+  inflation_gap_analysis: true
+
+# PPI Correlation
+correlation:
+  enabled: true
+  correlation_metrics:
+    - "ppi_cpi_correlation"
+    - "ppi_commodity_correlation"
+    - "ppi_currency_correlation"
+    - "ppi_interest_rate_correlation"
+    - "ppi_equity_correlation"
+  correlation_methods:
+    - "pearson"
+    - "spearman"
+    - "kendall"
+    - "dynamic_conditional"
+  lookback_period_days: 90
+  rolling_window_days: 30
+
+# PPI Leading Indicators
+leading_indicators:
+  enabled: true
+  leading_indicators:
+    - "commodity_prices"
+    - "energy_prices"
+    - "food_prices"
+    - "manufacturing_pmi"
+    - "capacity_utilization"
+    - "unit_labor_cost"
+    - "import_prices"
+    - "export_prices"
+  forecast_horizon_days: 30
+  forecast_models:
+    - "time_series"
+    - "machine_learning"
+    - "econometric"
+    - "ensemble"
+  primary_model: "ensemble"
+
+# PPI Trading Signals
+signals:
+  enabled: true
+  signal_types:
+    - "ppi_inflation_rising"
+    - "ppi_inflation_falling"
+    - "ppi_surprise_upside"
+    - "ppi_surprise_downside"
+    - "ppi_forecast_deviation"
+    - "ppi_correlation_break"
+  signal_strength_calculation: "weighted_average"
+  min_signal_strength: 0.60
+  signal_confidence_threshold: 0.70
+
+# Trading Strategies
+strategies:
+  enabled: true
+  ppi_strategies:
+    - "inflation_protection"
+    - "commodity_trading"
+    - "currency_trading"
+    - "interest_rate_trading"
+    - "equity_sector_rotation"
+    - "bond_trading"
+  strategy_selection: "context_based"
+  strategy_confidence_threshold: 0.70
+
+# Risk Management
+risk_management:
+  enabled: true
+  risk_limits:
+    ppi_surprise_risk: 0.02
+    inflation_risk: 0.03
+    correlation_risk: 0.20
+    forecast_risk: 0.15
+  position_sizing: "risk_based"
+  stop_loss_adjustment: true
+
+# Visualization
+visualization:
+  enabled: true
+  charts:
+    - "ppi_dashboard"
+    - "ppi_trend_chart"
+    - "inflation_analysis"
+    - "correlation_heatmap"
+    - "forecast_chart"
+    - "signal_chart"
+  update_interval_seconds: 60
+  dashboard_integration: true
+  real_time_updates: true
+
+# Alerting
+alerting:
+  enabled: true
+  alert_conditions:
+    - "ppi_surprise"
+    - "inflation_threshold_breach"
+    - "correlation_break"
+    - "forecast_deviation"
+    - "signal_generation"
+  alert_thresholds:
+    ppi_surprise: 0.10
+    inflation_breach: 0.02
+    correlation_break: 0.30
+  alert_channels:
+    - "email"
+    - "telegram"
+    - "slack"
+  alert_cooldown_seconds: 600
+
+# Reporting
+reporting:
+  enabled: true
+  report_types:
+    - "daily_ppi_summary"
+    - "weekly_ppi_analysis"
+    - "monthly_ppi_report"
+    - "inflation_report"
+  report_formats:
+    - "pdf"
+    - "html"
+    - "json"
+    - "csv"
+    - "excel"
+  report_recipients:
+    - "trading@example.com"
+    - "research@example.com"
+    - "risk@example.com"
+
+# Storage
+storage:
+  enabled: true
+  storage_categories:
+    - "ppi_data"
+    - "inflation_data"
+    - "correlation_data"
+    - "forecast_data"
+    - "signal_history"
+    - "alert_history"
+  retention_days: 365
+  compression: "zstd"
+  storage_format: "parquet"
+
+# Integration
+integration:
+  enabled: true
+  webhook_endpoint: "http://localhost:8080/ppi"
+  api_endpoint: "/api/v1/trading/ppi"
+  dashboard_url: "http://localhost:3000/ppi"
+  real_time_updates: true
+  data_sync_frequency_seconds: 30
+  external_systems:
+    - "trading_engine"
+    - "risk_management"
+    - "research_platform"
+    - "economic_data_feed"
