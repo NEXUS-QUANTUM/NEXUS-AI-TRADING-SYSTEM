@@ -1,0 +1,307 @@
+# Swing Bot Stress Testing Configuration
+# Stress Testing & Scenario Analysis Parameters
+
+# General Stress Testing Settings
+stress_testing:
+  enabled: true
+  analysis_mode: "comprehensive"  # comprehensive, basic, advanced, real-time
+  stress_type: "market_stress"  # market_stress, liquidity_stress, credit_stress, operational_stress
+  scenario_generation: "multi_factor"  # multi_factor, historical, probabilistic, hybrid
+  version: "3.0.0"
+
+# Stress Scenarios
+scenarios:
+  enabled: true
+  scenario_types:
+    - "market_crash"
+    - "volatility_shock"
+    - "liquidity_crisis"
+    - "correlation_breakdown"
+    - "margin_spike"
+    - "counterparty_default"
+    - "regulatory_change"
+    - "geopolitical_event"
+    - "natural_disaster"
+    - "flash_crash"
+    - "bear_market"
+    - "bull_market_correction"
+  scenario_severity:
+    mild: 0.20
+    moderate: 0.40
+    severe: 0.60
+    extreme: 0.80
+    catastrophic: 1.00
+  scenario_probability: true
+  scenario_weighting: true
+
+# Market Crash Scenarios
+market_crash:
+  enabled: true
+  crash_types:
+    - "systemic_crash"
+    - "sector_crash"
+    - "asset_class_crash"
+    - "regional_crash"
+    - "global_crash"
+  crash_parameters:
+    magnitude_percent: -0.30
+    duration_days: 30
+    recovery_time_days: 90
+    volatility_multiplier: 2.0
+    correlation_break: true
+    liquidity_impact: true
+  crash_triggers:
+    - "economic_recession"
+    - "financial_crisis"
+    - "geopolitical_crisis"
+    - "black_swan_event"
+
+# Volatility Shock
+volatility_shock:
+  enabled: true
+  shock_parameters:
+    magnitude_multiplier: 2.0
+    duration_days: 10
+    decay_rate: 0.20
+    skew_impact: true
+    term_structure_shift: true
+  shock_triggers:
+    - "uncertainty_spike"
+    - "market_fear"
+    - "liquidity_withdrawal"
+
+# Liquidity Crisis
+liquidity_crisis:
+  enabled: true
+  crisis_parameters:
+    depth_reduction: 0.50
+    spread_widening: 2.0
+    bid_ask_multiplier: 2.0
+    order_execution_delay: 1.0
+    volume_reduction: 0.40
+    fill_rate_impact: 0.30
+  crisis_triggers:
+    - "market_shock"
+    - "counterparty_risk"
+    - "regulatory_restriction"
+
+# Correlation Breakdown
+correlation_breakdown:
+  enabled: true
+  breakdown_parameters:
+    correlation_shift: 0.50
+    market_regime_change: true
+    diversification_loss: 0.30
+    beta_flattening: true
+    factor_structure_change: true
+  breakdown_triggers:
+    - "market_stress"
+    - "regime_change"
+    - "structural_break"
+
+# Stress Metrics
+metrics:
+  enabled: true
+  stress_metrics:
+    - "drawdown_extreme"
+    - "var_maximum"
+    - "expected_shortfall"
+    - "liquidity_shortfall"
+    - "margin_call_pressure"
+    - "portfolio_impact"
+    - "exposure_impact"
+    - "concentration_impact"
+    - "correlation_impact"
+  stress_metric_calculation: "multi_scenario"
+  confidence_interval: 0.95
+  loss_distribution: true
+
+# Portfolio Impact
+portfolio_impact:
+  enabled: true
+  impact_metrics:
+    - "value_loss"
+    - "position_loss"
+    - "sector_loss"
+    - "asset_class_loss"
+    - "correlation_loss"
+    - "liquidity_loss"
+  impact_calculation: "position_based"
+  impact_thresholds:
+    minor: 0.05
+    moderate: 0.15
+    severe: 0.25
+    critical: 0.40
+
+# Risk Metrics Under Stress
+risk_under_stress:
+  enabled: true
+  risk_metrics:
+    - "var_stressed"
+    - "expected_shortfall_stressed"
+    - "drawdown_stressed"
+    - "volatility_stressed"
+    - "correlation_stressed"
+    - "beta_stressed"
+  calculation_method: "scenario_based"
+  confidence_levels: [0.90, 0.95, 0.99]
+  time_horizons_days: [1, 5, 10, 30]
+
+# Stress Testing Models
+models:
+  enabled: true
+  model_types:
+    - "historical_simulation"
+    - "monte_carlo_simulation"
+    - "scenario_analysis"
+    - "factor_analysis"
+    - "copula_based"
+    - "machine_learning"
+  primary_model: "monte_carlo_simulation"
+  secondary_model: "historical_simulation"
+  simulation_iterations: 10000
+  random_seed: 42
+
+# Scenario Generation
+scenario_generation:
+  enabled: true
+  generation_methods:
+    - "historical_scenarios"
+    - "probabilistic_scenarios"
+    - "tail_risk_scenarios"
+    - "extreme_value_scenarios"
+    - "reverse_stress_scenarios"
+    - "custom_scenarios"
+  scenario_count: 100
+  scenario_complexity: "high"  # low, medium, high
+  tail_dependence: true
+
+# Extreme Value Analysis
+extreme_value:
+  enabled: true
+  evt_methods:
+    - "block_maxima"
+    - "peaks_over_threshold"
+    - "generalized_extreme_value"
+    - "generalized_pareto_distribution"
+  threshold_selection: "automatic"  # automatic, manual, hybrid
+  confidence_interval: 0.95
+  tail_index_calculation: true
+
+# Reverse Stress Testing
+reverse_stress:
+  enabled: true
+  reverse_methods:
+    - "portfolio_decomposition"
+    - "scenario_identification"
+    - "trigger_analysis"
+    - "vulnerability_assessment"
+  loss_thresholds:
+    minor: 0.10
+    moderate: 0.20
+    severe: 0.30
+    extreme: 0.40
+
+# Stress Testing Frequency
+frequency:
+  enabled: true
+  testing_frequency:
+    daily: true
+    weekly: true
+    monthly: true
+    quarterly: true
+    on_demand: true
+  scheduled_testing: true
+  trigger_based_testing: true
+  market_condition_based: true
+
+# Visualization
+visualization:
+  enabled: true
+  charts:
+    - "stress_test_dashboard"
+    - "scenario_impact_chart"
+    - "loss_distribution_chart"
+    - "var_comparison_chart"
+    - "drawdown_simulation"
+    - "tail_risk_chart"
+    - "correlation_breakdown"
+    - "vulnerability_heatmap"
+  update_interval_seconds: 60
+  dashboard_integration: true
+  real_time_updates: true
+
+# Alerting
+alerting:
+  enabled: true
+  alert_conditions:
+    - "stress_scenario_triggered"
+    - "risk_limit_breach"
+    - "drawdown_exceeded"
+    - "var_exceeded"
+    - "liquidity_crisis_detected"
+    - "correlation_breakdown_detected"
+    - "vulnerability_identified"
+  alert_thresholds:
+    var_breach: 0.05
+    drawdown_breach: 0.10
+    correlation_break: 0.30
+    liquidity_drop: 0.30
+  alert_channels:
+    - "email"
+    - "telegram"
+    - "slack"
+    - "pagerduty"
+  alert_cooldown_seconds: 600
+
+# Reporting
+reporting:
+  enabled: true
+  report_types:
+    - "real_time_alerts"
+    - "daily_stress_summary"
+    - "weekly_stress_analysis"
+    - "monthly_stress_report"
+    - "scenario_analysis_report"
+    - "reverse_stress_report"
+  report_formats:
+    - "pdf"
+    - "html"
+    - "json"
+    - "csv"
+    - "excel"
+  report_recipients:
+    - "risk@example.com"
+    - "trading@example.com"
+    - "compliance@example.com"
+    - "management@example.com"
+
+# Storage
+storage:
+  enabled: true
+  storage_categories:
+    - "stress_scenarios"
+    - "impact_metrics"
+    - "risk_metrics"
+    - "simulation_results"
+    - "extreme_value_data"
+    - "reverse_stress_results"
+    - "alert_history"
+    - "report_history"
+  retention_days: 365
+  compression: "zstd"
+  storage_format: "parquet"
+
+# Integration
+integration:
+  enabled: true
+  webhook_endpoint: "http://localhost:8080/stress-testing"
+  api_endpoint: "/api/v1/risk/stress-testing"
+  dashboard_url: "http://localhost:3000/stress-testing"
+  real_time_updates: true
+  data_sync_frequency_seconds: 30
+  external_systems:
+    - "risk_management"
+    - "portfolio_management"
+    - "trading_engine"
+    - "compliance_system"
