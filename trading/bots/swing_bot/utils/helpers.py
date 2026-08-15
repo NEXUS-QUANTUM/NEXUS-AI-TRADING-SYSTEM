@@ -1,5 +1,5 @@
 """
-Swing Bot Helpers Module
+Swing Bot Helpers Module.
 =========================
 
 This module provides helper utilities for the Swing Bot trading system.
