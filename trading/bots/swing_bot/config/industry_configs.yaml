@@ -1,0 +1,411 @@
+# Swing Bot Industry Sector Analysis Configuration
+# Industry & Sector Analysis Parameters for Market Rotation & Sector-Based Trading
+
+# General Industry Settings
+industry:
+  enabled: true
+  classification_system: "gics"  # gics, icb, naics, sic, custom
+  update_frequency_hours: 6
+  sector_coverage: "all"  # all, major, selected
+  sub_sector_analysis: true
+  version: "3.0.0"
+
+# GICS Classification
+gics:
+  sectors:
+    - "energy"
+    - "materials"
+    - "industrials"
+    - "consumer_discretionary"
+    - "consumer_staples"
+    - "health_care"
+    - "financials"
+    - "information_technology"
+    - "communication_services"
+    - "utilities"
+    - "real_estate"
+  sub_sectors_enabled: true
+  industry_groups_enabled: true
+  mapping_data_source: "bloomberg"
+
+# ICB Classification
+icb:
+  supersectors:
+    - "oil_and_gas"
+    - "basic_materials"
+    - "industrials"
+    - "consumer_goods"
+    - "health_care"
+    - "telecommunications"
+    - "utilities"
+    - "financials"
+    - "technology"
+    - "real_estate"
+  sub_sectors_enabled: true
+  mapping_data_source: "reuters"
+
+# Sector Performance Indicators
+sector_performance:
+  indicators:
+    - "relative_strength"
+    - "sector_momentum"
+    - "sector_rotation"
+    - "sector_volatility"
+    - "sector_correlation"
+    - "sector_volume_trend"
+    - "sector_flow"
+    - "sector_valuation"
+    - "sector_earnings_growth"
+    - "sector_dividend_yield"
+  lookback_period_days: 90
+  rolling_window_days: 30
+  benchmark_comparison: true
+  weighting_method: "equal_weight"
+
+# Relative Strength Analysis
+relative_strength:
+  calculation_method: "rank"  # rank, percentile, zscore, ratio
+  lookback_period_days: 90
+  smoothing_period_days: 10
+  threshold_top_percentile: 25
+  threshold_bottom_percentile: 25
+  momentum_weights: true
+  volatility_adjustment: true
+
+# Sector Rotation
+sector_rotation:
+  enabled: true
+  rotation_indicators:
+    - "relative_strength"
+    - "momentum"
+    - "valuation"
+    - "earnings_momentum"
+    - "economic_cycle"
+    - "interest_rate_sensitivity"
+    - "inflation_sensitivity"
+  rotation_frequency_days: 30
+  max_sectors_held: 5
+  min_sectors_held: 3
+  rebalance_threshold: 0.10
+  rotation_strategy: "momentum_based"  # momentum_based, value_based, cycle_based, hybrid
+
+# Economic Cycle Analysis
+economic_cycle:
+  enabled: true
+  cycle_phases:
+    - "early_expansion"
+    - "mid_expansion"
+    - "late_expansion"
+    - "early_contraction"
+    - "mid_contraction"
+    - "late_contraction"
+    - "recovery"
+  phase_detection_indicators:
+    - "gdp_growth"
+    - "unemployment_rate"
+    - "consumer_confidence"
+    - "industrial_production"
+    - "inflation_rate"
+    - "interest_rates"
+    - "yield_curve"
+  sector_cycle_mappings:
+    early_expansion:
+      favored_sectors: ["financials", "industrials", "materials"]
+    mid_expansion:
+      favored_sectors: ["information_technology", "consumer_discretionary", "industrials"]
+    late_expansion:
+      favored_sectors: ["energy", "materials", "utilities"]
+    early_contraction:
+      favored_sectors: ["consumer_staples", "health_care", "utilities"]
+    mid_contraction:
+      favored_sectors: ["consumer_staples", "health_care", "real_estate"]
+    late_contraction:
+      favored_sectors: ["financials", "consumer_discretionary", "information_technology"]
+    recovery:
+      favored_sectors: ["financials", "industrials", "materials"]
+
+# Sector-Specific Factors
+sector_factors:
+  energy:
+    factors:
+      - "oil_prices"
+      - "natural_gas_prices"
+      - "inventory_levels"
+      - "drilling_activity"
+      - "geopolitical_risk"
+    weight: 0.25
+  materials:
+    factors:
+      - "commodity_prices"
+      - "demand_growth"
+      - "supply_constraints"
+      - "china_demand"
+    weight: 0.20
+  industrials:
+    factors:
+      - "manufacturing_pmi"
+      - "capacity_utilization"
+      - "capital_expenditure"
+      - "supply_chain_health"
+    weight: 0.20
+  consumer_discretionary:
+    factors:
+      - "consumer_confidence"
+      - "retail_sales"
+      - "wage_growth"
+      - "employment_growth"
+    weight: 0.25
+  consumer_staples:
+    factors:
+      - "inflation_rate"
+      - "consumer_spending"
+      - "price_sensitivity"
+      - "supply_chain_cost"
+    weight: 0.20
+  health_care:
+    factors:
+      - "drug_approvals"
+      - "healthcare_spending"
+      - "regulatory_environment"
+      - "innovation_pipeline"
+    weight: 0.25
+  financials:
+    factors:
+      - "interest_rates"
+      - "yield_curve"
+      - "credit_spreads"
+      - "regulatory_capital"
+      - "loan_growth"
+    weight: 0.30
+  information_technology:
+    factors:
+      - "tech_spending"
+      - "innovation_index"
+      - "semiconductor_cycle"
+      - "cloud_adoption"
+      - "cybersecurity_spending"
+    weight: 0.30
+  communication_services:
+    factors:
+      - "user_growth"
+      - "ad_spending"
+      - "subscriber_growth"
+      - "regulatory_environment"
+    weight: 0.25
+  utilities:
+    factors:
+      - "energy_prices"
+      - "regulatory_environment"
+      - "infrastructure_spending"
+      - "green_transition"
+    weight: 0.20
+  real_estate:
+    factors:
+      - "interest_rates"
+      - "property_prices"
+      - "rental_yields"
+      - "construction_activity"
+    weight: 0.25
+
+# Sector Correlation Analysis
+correlation:
+  calculation_method: "pearson"  # pearson, spearman, kendall
+  lookback_period_days: 60
+  rolling_window_days: 30
+  sector_correlation_matrix: true
+  correlation_threshold: 0.70
+  diversification_score: true
+  clustering_analysis: true
+
+# Sector Momentum
+momentum_analysis:
+  timeframes:
+    short_term: 10
+    medium_term: 30
+    long_term: 90
+  momentum_indicators:
+    - "price_momentum"
+    - "volume_momentum"
+    - "relative_momentum"
+    - "composite_momentum"
+  momentum_score_weights:
+    short_term: 0.30
+    medium_term: 0.40
+    long_term: 0.30
+  threshold_momentum_positive: 0.05
+  threshold_momentum_negative: -0.05
+
+# Sector Flow Analysis
+sector_flow:
+  flow_indicators:
+    - "etf_flows"
+    - "mutual_fund_flows"
+    - "hedge_fund_positioning"
+    - "institutional_flow"
+    - "retail_flow"
+    - "smart_money_flow"
+  lookback_period_days: 30
+  flow_threshold_percentile: 70
+  flow_data_sources:
+    - "morningstar"
+    - "refinitiv"
+    - "epfr"
+    - "bloomberg"
+
+# Sector Valuation
+valuation:
+  valuation_metrics:
+    - "pe_ratio"
+    - "pb_ratio"
+    - "ps_ratio"
+    - "peg_ratio"
+    - "ev_ebitda"
+    - "dividend_yield"
+    - "price_to_cash_flow"
+  relative_valuation: true
+  valuation_normalization: true
+  historical_percentile_ranking: true
+  valuation_threshold_high: 80
+  valuation_threshold_low: 20
+
+# Sector Earnings
+earnings:
+  earnings_metrics:
+    - "earnings_growth"
+    - "earnings_surprise"
+    - "revenue_growth"
+    - "margin_expansion"
+    - "guidance_change"
+  lookback_quarters: 8
+  forecast_horizon_quarters: 4
+  consensus_earnings: true
+  earnings_quality_score: true
+
+# Sector Weighting
+sector_weighting:
+  strategy: "dynamic"  # equal, market_cap, risk_parity, dynamic, optimized
+  constraints:
+    max_weight: 0.35
+    min_weight: 0.05
+    max_sector_exposure: 0.50
+  rebalance_frequency_days: 30
+  drift_tolerance: 0.05
+  optimization_objective: "sharpe_ratio"  # sharpe_ratio, minimum_variance, maximum_diversification
+
+# Performance Scoring
+sector_scoring:
+  score_components:
+    - "momentum": 0.25
+    - "fundamentals": 0.20
+    - "valuation": 0.15
+    - "flow": 0.15
+    - "economic_cycle": 0.15
+    - "technical": 0.10
+  scoring_method: "weighted_average"  # weighted_average, min, max, product
+  normalization: true
+  zscore_calculation: true
+  percentile_ranking: true
+
+# Technical Indicators
+technical_indicators:
+  sector_indicators:
+    - "relative_strength_index"
+    - "moving_average_crossover"
+    - "macd"
+    - "bollinger_bands"
+    - "volume_indicators"
+    - "adx"
+  lookback_period_days: 50
+  sma_periods:
+    - 20
+    - 50
+    - 200
+  rsi_period: 14
+  macd_parameters:
+    fast: 12
+    slow: 26
+    signal: 9
+
+# Alert Rules
+alerts:
+  sector_rotation_alert: true
+  relative_strength_threshold: 0.20
+  valuation_extreme_threshold: 30
+  momentum_shift_threshold: 0.15
+  flow_anomaly_threshold: 2.0
+  correlation_breakdown_threshold: 0.30
+  position_limit_alert: true
+  alert_channels:
+    - "email"
+    - "telegram"
+    - "slack"
+
+# Data Sources
+data_sources:
+  economic_data:
+    - "fred"
+    - "world_bank"
+    - "imf"
+  sector_data:
+    - "bloomberg"
+    - "reuters"
+    - "factset"
+  flow_data:
+    - "morningstar"
+    - "epfr"
+    - "refinitiv"
+  earnings_data:
+    - "ibes"
+    - "zacks"
+    - "trading_platforms"
+  real_time_data:
+    - "wsj"
+    - "marketwatch"
+    - "seeking_alpha"
+
+# Visualization
+visualization:
+  sector_rotation_heatmap: true
+  relative_strength_chart: true
+  sector_performance_dashboard: true
+  correlation_matrix: true
+  valuation_charts: true
+  flow_analysis_charts: true
+  update_interval_seconds: 60
+  dashboard_integration: true
+
+# Reporting
+reporting:
+  daily_sector_report: true
+  weekly_rotation_report: true
+  monthly_sector_analysis: true
+  quarterly_review: true
+  report_formats:
+    - "pdf"
+    - "html"
+    - "excel"
+    - "json"
+  report_recipients:
+    - "trading@example.com"
+    - "research@example.com"
+
+# Storage
+storage:
+  sector_performance: true
+  rotation_history: true
+  valuation_data: true
+  flow_data: true
+  correlation_data: true
+  retention_days: 365
+  compression: "zstd"
+  database: "timescaledb"
+
+# Integration
+integration:
+  trading_engine: true
+  portfolio_management: true
+  risk_management: true
+  research_platform: true
+  dashboard_url: "http://localhost:3000/sectors"
+  api_endpoint: "/api/v1/trading/sectors"
+  webhook_endpoint: "http://localhost:8080/sectors"
