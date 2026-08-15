@@ -1,0 +1,710 @@
+# gdp_configs.yaml
+# Configuration complète pour l'analyse du PIB dans Swing Bot
+# Version: 4.0.0 - Production Ready
+
+# Paramètres généraux
+general:
+  enabled: true
+  mode: "comprehensive"
+  calculate_in_real_time: true
+  update_frequency_seconds: 30
+  lookback_days: 365
+  history_length_days: 730
+  min_data_points: 20
+  max_data_points: 1000
+  base_currency: "USD"
+  gdp_version: "4.0.0"
+  environment: "production"
+
+# Types de données PIB
+gdp_types:
+  nominal:
+    enabled: true
+    description: "Nominal GDP"
+    frequency: "quarterly"
+    importance: "high"
+    smoothing: 3
+    seasonally_adjusted: true
+    annualized: true
+  real:
+    enabled: true
+    description: "Real GDP"
+    frequency: "quarterly"
+    importance: "high"
+    smoothing: 3
+    seasonally_adjusted: true
+    annualized: true
+    base_year: 2015
+  gdp_growth:
+    enabled: true
+    description: "GDP Growth Rate"
+    frequency: "quarterly"
+    importance: "high"
+    smoothing: 3
+    seasonally_adjusted: true
+    annualized: true
+    calculation_method: "qoq_saar"
+  gdp_per_capita:
+    enabled: true
+    description: "GDP per Capita"
+    frequency: "annual"
+    importance: "medium"
+    smoothing: 3
+    seasonally_adjusted: false
+    annualized: false
+  gdp_components:
+    enabled: true
+    description: "GDP Components"
+    components:
+      - "consumption"
+      - "investment"
+      - "government_spending"
+      - "net_exports"
+    frequency: "quarterly"
+    importance: "high"
+    smoothing: 3
+    seasonally_adjusted: true
+    annualized: true
+  gdp_deflator:
+    enabled: true
+    description: "GDP Deflator"
+    frequency: "quarterly"
+    importance: "medium"
+    smoothing: 3
+    seasonally_adjusted: true
+    annualized: true
+  gdp_forecast:
+    enabled: true
+    description: "GDP Forecast"
+    frequency: "monthly"
+    importance: "high"
+    smoothing: 3
+    seasonally_adjusted: true
+    annualized: true
+
+# Pays et régions
+countries:
+  united_states:
+    enabled: true
+    currency: "USD"
+    timezone: "America/New_York"
+    importance: 5
+    data_sources:
+      - "bea"
+      - "fred"
+    metrics:
+      - "nominal"
+      - "real"
+      - "gdp_growth"
+      - "gdp_per_capita"
+      - "gdp_components"
+      - "gdp_deflator"
+  china:
+    enabled: true
+    currency: "CNY"
+    timezone: "Asia/Shanghai"
+    importance: 4
+    data_sources:
+      - "nbs"
+      - "stats_china"
+    metrics:
+      - "nominal"
+      - "real"
+      - "gdp_growth"
+      - "gdp_per_capita"
+  european_union:
+    enabled: true
+    currency: "EUR"
+    timezone: "Europe/London"
+    importance: 4
+    data_sources:
+      - "eurostat"
+      - "ecb"
+    metrics:
+      - "nominal"
+      - "real"
+      - "gdp_growth"
+      - "gdp_components"
+  japan:
+    enabled: true
+    currency: "JPY"
+    timezone: "Asia/Tokyo"
+    importance: 3
+    data_sources:
+      - "cabinet_office"
+      - "boj"
+    metrics:
+      - "nominal"
+      - "real"
+      - "gdp_growth"
+  germany:
+    enabled: true
+    currency: "EUR"
+    timezone: "Europe/Berlin"
+    importance: 3
+    data_sources:
+      - "destatis"
+      - "bundesbank"
+    metrics:
+      - "nominal"
+      - "real"
+      - "gdp_growth"
+  united_kingdom:
+    enabled: true
+    currency: "GBP"
+    timezone: "Europe/London"
+    importance: 3
+    data_sources:
+      - "ons"
+      - "bank_of_england"
+    metrics:
+      - "nominal"
+      - "real"
+      - "gdp_growth"
+  india:
+    enabled: true
+    currency: "INR"
+    timezone: "Asia/Kolkata"
+    importance: 3
+    data_sources:
+      - "mospi"
+      - "rbi"
+    metrics:
+      - "nominal"
+      - "real"
+      - "gdp_growth"
+  canada:
+    enabled: true
+    currency: "CAD"
+    timezone: "America/Toronto"
+    importance: 2
+    data_sources:
+      - "statistics_canada"
+      - "bank_of_canada"
+    metrics:
+      - "nominal"
+      - "real"
+      - "gdp_growth"
+  australia:
+    enabled: true
+    currency: "AUD"
+    timezone: "Australia/Sydney"
+    importance: 2
+    data_sources:
+      - "abs"
+      - "rba"
+    metrics:
+      - "nominal"
+      - "real"
+      - "gdp_growth"
+
+# Seuils d'impact
+impact_thresholds:
+  gdp_growth:
+    strong_positive: 3.0
+    positive: 1.5
+    neutral: 0.5
+    negative: -0.5
+    strong_negative: -1.5
+  gdp_per_capita:
+    high: 50000
+    medium: 30000
+    low: 10000
+    very_low: 5000
+  gdp_components:
+    consumption_high: 70.0
+    consumption_low: 50.0
+    investment_high: 30.0
+    investment_low: 15.0
+    government_high: 25.0
+    government_low: 10.0
+    net_exports_high: 10.0
+    net_exports_low: -10.0
+
+# Indicateurs d'analyse
+indicators:
+  gdp_trend:
+    enabled: true
+    period: 6
+    smoothing: 3
+    threshold: 0.5
+  gdp_momentum:
+    enabled: true
+    period: 3
+    smoothing: 3
+    threshold: 0.3
+  gdp_velocity:
+    enabled: true
+    period: 3
+    smoothing: 0
+    threshold: 0.2
+  gdp_acceleration:
+    enabled: true
+    period: 6
+    smoothing: 0
+    threshold: 0.1
+  gdp_surprise:
+    enabled: true
+    period: 6
+    smoothing: 0
+    threshold: 0.3
+  gdp_volatility:
+    enabled: true
+    period: 12
+    smoothing: 0
+    threshold: 0.3
+  gdp_consistency:
+    enabled: true
+    period: 12
+    smoothing: 0
+    threshold: 0.5
+  gdp_component_balance:
+    enabled: true
+    period: 6
+    smoothing: 0
+    threshold: 0.3
+
+# Analyse du PIB
+analysis:
+  historical:
+    enabled: true
+    lookback_years: 20
+    compute_mean_gdp: true
+    compute_median_gdp: true
+    compute_std_gdp: true
+    compute_percentiles: true
+    percentile_values:
+      - 5
+      - 10
+      - 25
+      - 50
+      - 75
+      - 90
+      - 95
+    compute_trend: true
+    compute_seasonality: true
+    compute_cycles: true
+    compute_correlation: true
+  real_time:
+    enabled: true
+    update_frequency_seconds: 5
+    compute_instantaneous_gdp: true
+    compute_moving_average_gdp: true
+    compute_exponential_gdp: true
+    compute_momentum: true
+    compute_velocity: true
+    compute_acceleration: true
+    compute_divergence: true
+  predictive:
+    enabled: true
+    model_type: "ensemble"
+    models:
+      - "lstm"
+      - "gru"
+      - "xgboost"
+      - "lightgbm"
+    features:
+      - "gdp_growth"
+      - "gdp_per_capita"
+      - "consumption"
+      - "investment"
+      - "government_spending"
+      - "net_exports"
+      - "gdp_deflator"
+      - "gdp_trend"
+      - "gdp_momentum"
+      - "gdp_velocity"
+      - "gdp_acceleration"
+      - "inflation_rate"
+      - "unemployment_rate"
+      - "interest_rate"
+      - "consumer_confidence"
+      - "time_of_year"
+    forecast_horizons:
+      - 1
+      - 3
+      - 6
+      - 12
+    confidence_threshold: 0.7
+    retrain_frequency_hours: 24
+  comparative:
+    enabled: true
+    compare_to_forecast: true
+    compare_to_previous: true
+    compare_to_consensus: true
+    compare_to_historical: true
+    compare_to_other_countries: true
+
+# Alertes et notifications
+alerts:
+  gdp_data_released:
+    enabled: true
+    channels:
+      - "email"
+      - "telegram"
+      - "slack"
+      - "push_notification"
+    severity: "info"
+  gdp_surprise:
+    enabled: true
+    threshold: 0.5
+    channels:
+      - "email"
+      - "telegram"
+      - "slack"
+      - "push_notification"
+    severity: "critical"
+  gdp_beat:
+    enabled: true
+    threshold: 0.5
+    channels:
+      - "telegram"
+      - "push_notification"
+    severity: "warning"
+  gdp_miss:
+    enabled: true
+    threshold: -0.5
+    channels:
+      - "telegram"
+      - "push_notification"
+    severity: "warning"
+  gdp_trend_change:
+    enabled: true
+    threshold: 0.5
+    channels:
+      - "email"
+      - "telegram"
+      - "slack"
+    severity: "warning"
+
+# Actions automatiques
+auto_actions:
+  position_adjustment:
+    enabled: true
+    action_types:
+      - "adjust_exposure"
+      - "hedge_currency"
+      - "rebalance_portfolio"
+      - "modify_asset_allocation"
+    adjustment_factor: 0.5
+    max_adjustment_percent: 25.0
+  risk_management:
+    enabled: true
+    action_types:
+      - "reduce_currency_exposure"
+      - "increase_hedge"
+      - "pause_trading"
+      - "reset_parameters"
+    risk_multiplier: 1.5
+    pause_duration_minutes: 30
+  portfolio_rebalancing:
+    enabled: true
+    rebalance_on_gdp_data: true
+    rebalance_threshold: 0.5
+    rebalance_frequency: "quarterly"
+
+# Monitoring et journalisation
+monitoring:
+  logging:
+    enabled: true
+    level: "debug"
+    format: "json"
+    include_context: true
+    include_timestamp: true
+    include_metadata: true
+  metrics:
+    enabled: true
+    collect_every_seconds: 5
+    metrics_to_collect:
+      - "gdp_growth"
+      - "gdp_per_capita"
+      - "consumption"
+      - "investment"
+      - "government_spending"
+      - "net_exports"
+      - "gdp_deflator"
+      - "gdp_surprise"
+      - "gdp_trend"
+      - "gdp_momentum"
+      - "gdp_volatility"
+      - "gdp_component_balance"
+  dashboard:
+    enabled: true
+    update_interval_seconds: 5
+    charts:
+      - "gdp_chart"
+      - "gdp_growth_chart"
+      - "gdp_components_chart"
+      - "gdp_surprise"
+      - "gdp_trend"
+      - "international_comparison"
+      - "historical_analysis"
+      - "predictive_analysis"
+
+# Backtesting
+backtesting:
+  enabled: true
+  use_historical_gdp: true
+  compute_correlation: true
+  compute_impact_metrics: true
+  compute_strategy_performance: true
+  compute_risk_adjusted_returns: true
+  report_metrics:
+    - "correlation_coefficient"
+    - "impact_factor"
+    - "win_rate"
+    - "profit_factor"
+    - "sharpe_ratio"
+    - "max_drawdown"
+
+# Configuration de la base de données
+database:
+  enabled: true
+  table_name: "gdp_metrics"
+  retention_days: 730
+  aggregation:
+    enabled: true
+    intervals:
+      - "1d"
+      - "7d"
+      - "30d"
+      - "90d"
+      - "365d"
+  compression: true
+  backup:
+    enabled: true
+    frequency: "daily"
+    retention_days: 30
+
+# Webhooks
+webhooks:
+  enabled: true
+  endpoints:
+    - url: "https://nexustradingia.com/api/webhooks/gdp"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      payload_template: "gdp_alert"
+    - url: "https://nexustradingia.com/api/webhooks/gdp_surprise"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      payload_template: "gdp_surprise"
+  retry:
+    enabled: true
+    max_attempts: 5
+    backoff_seconds: 30
+
+# Logging avancé
+advanced_logging:
+  enabled: true
+  levels:
+    - "info"
+    - "warning"
+    - "error"
+    - "critical"
+    - "debug"
+  output: "gdp_logs"
+  rotation:
+    enabled: true
+    max_size_mb: 100
+    max_files: 10
+  remote_logging:
+    enabled: true
+    endpoints:
+      - "https://nexustradingia.com/logs/gdp"
+  include_trace: true
+  include_stack_trace: true
+  include_context: true
+
+# Threading et performances
+performance:
+  thread_pool_size: 4
+  queue_size: 1000
+  batch_size: 100
+  async_processing: true
+  cache_size: 5000
+  cache_ttl_seconds: 300
+  database_pool_size: 5
+  database_pool_max_overflow: 10
+  use_multiprocessing: false
+  max_workers: 4
+
+# API de gestion
+management_api:
+  enabled: true
+  endpoints:
+    - "/api/v1/gdp/current"
+    - "/api/v1/gdp/history"
+    - "/api/v1/gdp/metrics"
+    - "/api/v1/gdp/status"
+    - "/api/v1/gdp/forecast"
+    - "/api/v1/gdp/countries"
+    - "/api/v1/gdp/surprise"
+    - "/api/v1/gdp/components"
+  authentication_required: true
+  rate_limit: 100
+  rate_limit_interval_seconds: 60
+  version: "v1.0.0"
+
+# Export des données
+data_export:
+  enabled: true
+  formats:
+    - "csv"
+    - "json"
+    - "parquet"
+  schedule: "daily"
+  retention_days: 30
+  compression: "gzip"
+  destination: "s3://nexus-data/gdp/"
+  encrypt: true
+  encryption_key_id: "nexus-gdp-key"
+  partition_by:
+    - "country"
+    - "year"
+    - "quarter"
+
+# Intégration avec d'autres modules
+integrations:
+  risk_engine:
+    enabled: true
+    sync_frequency_seconds: 5
+    share_metrics: true
+  execution_engine:
+    enabled: true
+    share_signals: true
+    require_confirmation: true
+  portfolio_manager:
+    enabled: true
+    share_positions: true
+    share_allocation: true
+  ai_engine:
+    enabled: true
+    use_ai_predictions: true
+    confidence_threshold: 0.7
+    model_endpoint: "http://ai-engine:8000/predict/gdp"
+  market_data:
+    enabled: true
+    sync_frequency_seconds: 5
+    data_endpoint: "ws://market-data:8080/ws"
+  currency_engine:
+    enabled: true
+    sync_frequency_seconds: 5
+    data_endpoint: "http://currency-engine:8000/api/v1/rates"
+
+# Tests et validation
+testing:
+  unit_tests:
+    enabled: true
+    coverage_threshold: 90
+  integration_tests:
+    enabled: true
+  stress_tests:
+    enabled: true
+    scenarios:
+      - "high_gdp_data_volume"
+      - "multiple_country_data"
+      - "surprise_events"
+      - "holiday_periods"
+  validation:
+    enabled: true
+    validate_on_startup: true
+    validate_on_config_change: true
+    validation_rules:
+      - "impact_thresholds.gdp_growth.strong_positive > impact_thresholds.gdp_growth.positive"
+      - "impact_thresholds.gdp_growth.positive > impact_thresholds.gdp_growth.neutral"
+      - "impact_thresholds.gdp_growth.neutral > impact_thresholds.gdp_growth.negative"
+      - "impact_thresholds.gdp_growth.negative > impact_thresholds.gdp_growth.strong_negative"
+      - "impact_thresholds.gdp_per_capita.high > impact_thresholds.gdp_per_capita.medium"
+      - "impact_thresholds.gdp_per_capita.medium > impact_thresholds.gdp_per_capita.low"
+      - "impact_thresholds.gdp_per_capita.low > impact_thresholds.gdp_per_capita.very_low"
+      - "min_data_points > 0"
+      - "confidence_threshold > 0.0"
+      - "confidence_threshold <= 1.0"
+
+# Market conditions adaptation
+market_adaptation:
+  enabled: true
+  regime_detection:
+    enabled: true
+    lookback_periods:
+      - 6
+      - 12
+      - 24
+    regimes:
+      - "gdp_expansion"
+      - "gdp_contraction"
+      - "gdp_recovery"
+      - "gdp_recession"
+      - "gdp_stable"
+      - "gdp_volatile"
+  regime_parameters:
+    gdp_expansion:
+      gdp_multiplier: 1.2
+      threshold_multiplier: 0.8
+      risk_multiplier: 0.8
+      currency_multiplier: 1.2
+    gdp_contraction:
+      gdp_multiplier: 0.7
+      threshold_multiplier: 1.3
+      risk_multiplier: 1.5
+      currency_multiplier: 0.7
+    gdp_recovery:
+      gdp_multiplier: 1.1
+      threshold_multiplier: 0.9
+      risk_multiplier: 1.0
+      currency_multiplier: 1.1
+    gdp_recession:
+      gdp_multiplier: 0.5
+      threshold_multiplier: 2.0
+      risk_multiplier: 2.5
+      currency_multiplier: 0.5
+    gdp_stable:
+      gdp_multiplier: 1.0
+      threshold_multiplier: 1.0
+      risk_multiplier: 1.0
+      currency_multiplier: 1.0
+    gdp_volatile:
+      gdp_multiplier: 0.6
+      threshold_multiplier: 1.5
+      risk_multiplier: 2.0
+      currency_multiplier: 0.6
+
+# Symbol-specific configurations
+symbol_configs:
+  BTCUSDT:
+    gdp_multiplier: 1.0
+    threshold_multiplier: 1.0
+    risk_multiplier: 1.0
+    currency_multiplier: 1.0
+    impact_volatility: 2.0
+    gdp_sensitivity: 0.6
+  ETHUSDT:
+    gdp_multiplier: 1.1
+    threshold_multiplier: 0.9
+    risk_multiplier: 1.1
+    currency_multiplier: 1.1
+    impact_volatility: 1.8
+    gdp_sensitivity: 0.7
+  SOLUSDT:
+    gdp_multiplier: 1.2
+    threshold_multiplier: 0.8
+    risk_multiplier: 1.2
+    currency_multiplier: 1.2
+    impact_volatility: 2.2
+    gdp_sensitivity: 0.5
+  ADAUSDT:
+    gdp_multiplier: 0.9
+    threshold_multiplier: 1.1
+    risk_multiplier: 0.9
+    currency_multiplier: 0.9
+    impact_volatility: 1.5
+    gdp_sensitivity: 0.4
+  XRPUSDT:
+    gdp_multiplier: 1.0
+    threshold_multiplier: 1.0
+    risk_multiplier: 1.0
+    currency_multiplier: 1.0
+    impact_volatility: 1.6
+    gdp_sensitivity: 0.6
