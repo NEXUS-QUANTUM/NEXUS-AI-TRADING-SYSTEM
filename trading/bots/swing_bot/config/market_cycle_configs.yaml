@@ -1,0 +1,361 @@
+# Swing Bot Market Cycle Configuration
+# Market Cycle Analysis & Phases Detection Parameters
+
+# General Market Cycle Settings
+market_cycle:
+  enabled: true
+  analysis_mode: "comprehensive"  # comprehensive, basic, advanced, real-time
+  cycle_detection_method: "multi_factor"  # multi_factor, statistical, ml_based, hybrid
+  timeframe: "multi"  # short, medium, long, multi
+  version: "3.0.0"
+
+# Cycle Phases
+phases:
+  enabled: true
+  primary_phases:
+    - "accumulation"
+    - "markup"
+    - "distribution"
+    - "markdown"
+  sub_phases:
+    - "early_accumulation"
+    - "late_accumulation"
+    - "early_markup"
+    - "late_markup"
+    - "early_distribution"
+    - "late_distribution"
+    - "early_markdown"
+    - "late_markdown"
+  phase_transitions:
+    - "accumulation_to_markup"
+    - "markup_to_distribution"
+    - "distribution_to_markdown"
+    - "markdown_to_accumulation"
+  transition_smoothness: "gradient"  # gradient, abrupt, mixed
+
+# Cycle Indicators
+indicators:
+  enabled: true
+  primary_indicators:
+    - "price_momentum"
+    - "volume_trend"
+    - "volatility_regime"
+    - "market_breadth"
+    - "sentiment"
+    - "valuation"
+  secondary_indicators:
+    - "adx"
+    - "rsi"
+    - "moving_average_convergence"
+    - "bollinger_bands"
+    - "volume_profile"
+    - "support_resistance"
+    - "trend_lines"
+  cycle_score_weights:
+    price_momentum: 0.20
+    volume_trend: 0.15
+    volatility_regime: 0.15
+    market_breadth: 0.15
+    sentiment: 0.15
+    valuation: 0.10
+    technical: 0.10
+
+# Accumulation Phase
+accumulation:
+  enabled: true
+  detection_indicators:
+    - "price_consolidation"
+    - "volume_decline"
+    - "volatility_decrease"
+    - "support_testing"
+    - "range_contraction"
+    - "low_sentiment"
+    - "insider_buying"
+    - "smart_money_flow"
+  thresholds:
+    price_consolidation_range: 0.05
+    volume_decline_percent: 30
+    volatility_decrease_percent: 20
+    support_touch_count: 3
+    range_duration_bars: 20
+  confirmation_bars: 5
+  reliability_score: 0.70
+
+# Markup Phase
+markup:
+  enabled: true
+  detection_indicators:
+    - "price_uptrend"
+    - "volume_increase"
+    - "momentum_strength"
+    - "breakout_above_resistance"
+    - "increasing_breadth"
+    - "rising_confidence"
+    - "institutional_flow"
+    - "strong_fundamentals"
+  thresholds:
+    uptrend_min_percent: 10
+    volume_increase_percent: 20
+    momentum_threshold: 0.50
+    breadth_expansion: 0.60
+    confidence_rise: 0.20
+  confirmation_bars: 3
+  reliability_score: 0.75
+
+# Distribution Phase
+distribution:
+  enabled: true
+  detection_indicators:
+    - "price_resistance"
+    - "volume_divergence"
+    - "volatility_increase"
+    - "resistance_testing"
+    - "range_expansion"
+    - "high_sentiment"
+    - "insider_selling"
+    - "smart_money_exit"
+  thresholds:
+    price_resistance_tests: 3
+    volume_divergence: 0.20
+    volatility_increase_percent: 30
+    range_expansion_percent: 20
+    sentiment_extreme: 0.80
+  confirmation_bars: 5
+  reliability_score: 0.70
+
+# Markdown Phase
+markdown:
+  enabled: true
+  detection_indicators:
+    - "price_downtrend"
+    - "volume_spike"
+    - "momentum_weakening"
+    - "breakdown_below_support"
+    - "declining_breadth"
+    - "fear_rising"
+    - "institutional_selling"
+    - "weak_fundamentals"
+  thresholds:
+    downtrend_min_percent: -10
+    volume_spike_threshold: 2.0
+    momentum_threshold: -0.50
+    breadth_contraction: 0.60
+    fear_index_rise: 0.30
+  confirmation_bars: 3
+  reliability_score: 0.75
+
+# Cycle Duration
+duration:
+  enabled: true
+  cycle_lengths:
+    short_cycle_bars: 20
+    medium_cycle_bars: 50
+    long_cycle_bars: 100
+    ultra_cycle_bars: 200
+  phase_duration_ratios:
+    accumulation: 0.25
+    markup: 0.30
+    distribution: 0.25
+    markdown: 0.20
+  adaptive_duration: true
+  duration_estimation: true
+
+# Cycle Strength
+strength:
+  enabled: true
+  strength_metrics:
+    - "momentum_strength"
+    - "volume_strength"
+    - "breadth_strength"
+    - "sentiment_strength"
+    - "technical_strength"
+    - "fundamental_strength"
+  strength_scoring:
+    weak: 0.30
+    moderate: 0.50
+    strong: 0.70
+    very_strong: 0.90
+  combined_strength_calculation: "weighted_average"
+  min_strength_required: 0.40
+
+# Cycle Transition
+transition:
+  enabled: true
+  transition_indicators:
+    - "momentum_change"
+    - "volume_pattern_change"
+    - "volatility_regime_change"
+    - "sentiment_shift"
+    - "breadth_change"
+    - "valuation_change"
+  transition_threshold: 0.40
+  transition_confirmation_bars: 5
+  early_transition_detection: true
+  false_transition_filter: true
+
+# Market Breadth
+breadth:
+  enabled: true
+  breadth_indicators:
+    - "advance_decline_line"
+    - "new_highs_vs_lows"
+    - "percent_above_moving_average"
+    - "bullish_percent_index"
+    - "hight_low_index"
+    - "breadth_thrust"
+    - "mcclellan_oscillator"
+    - "upside_downside_volume"
+  breadth_thresholds:
+    expansion: 0.60
+    contraction: 0.40
+    extreme_optimism: 0.80
+    extreme_pessimism: 0.20
+  breadth_confirmation: true
+  breadth_lead_indicator: true
+
+# Sentiment Analysis
+sentiment_cycle:
+  enabled: true
+  sentiment_indicators:
+    - "fear_and_greed_index"
+    - "put_call_ratio"
+    - "vix_index"
+    - "margin_debt"
+    - "short_interest"
+    - "institutional_sentiment"
+    - "retail_sentiment"
+    - "insider_sentiment"
+    - "analyst_sentiment"
+  sentiment_phases:
+    - "extreme_fear"
+    - "fear"
+    - "neutral"
+    - "greed"
+    - "extreme_greed"
+  sentiment_cycle_correlation: true
+  sentiment_contrarian_signals: true
+
+# Cycle Forecasting
+forecasting:
+  enabled: true
+  forecast_horizon_bars: 50
+  forecast_models:
+    - "time_series"
+    - "machine_learning"
+    - "deep_learning"
+    - "ensemble"
+    - "statistical"
+  primary_model: "ensemble"
+  confidence_interval: 0.80
+  scenario_analysis: true
+  cycle_probability_distribution: true
+
+# Trading Strategy Alignment
+strategy_alignment:
+  enabled: true
+  phase_based_strategies:
+    accumulation: ["value_buying", "accumulation_zones"]
+    markup: ["trend_following", "momentum"]
+    distribution: ["profit_taking", "reduction"]
+    markdown: ["short_selling", "hedging"]
+  strategy_weights:
+    accumulation: 0.80
+    markup: 1.00
+    distribution: 0.60
+    markdown: 0.40
+  phase_transition_adjustment: true
+  dynamic_strategy_selection: true
+
+# Risk Adjustment
+risk_adjustment:
+  enabled: true
+  risk_levels:
+    accumulation: 0.50
+    markup: 0.75
+    distribution: 0.60
+    markdown: 0.30
+  position_sizing_phase_multipliers:
+    accumulation: 0.80
+    markup: 1.20
+    distribution: 0.90
+    markdown: 0.50
+  stop_loss_phase_adjustment: true
+  take_profit_phase_adjustment: true
+
+# Visualization
+visualization:
+  enabled: true
+  charts:
+    - "cycle_dashboard"
+    - "phase_detection_chart"
+    - "cycle_indicator_overlay"
+    - "strength_meter"
+    - "forecast_chart"
+    - "transition_warning"
+  update_interval_seconds: 60
+  dashboard_integration: true
+  real_time_updates: true
+
+# Alerting
+alerting:
+  enabled: true
+  alert_conditions:
+    - "phase_change_detected"
+    - "transition_warning"
+    - "cycle_strength_change"
+    - "strength_threshold_breach"
+    - "cycle_forecast_change"
+    - "contradictory_signals"
+  alert_channels:
+    - "email"
+    - "telegram"
+    - "slack"
+  alert_cooldown_seconds: 600
+
+# Reporting
+reporting:
+  enabled: true
+  report_types:
+    - "real_time_alerts"
+    - "daily_phase_summary"
+    - "weekly_cycle_analysis"
+    - "monthly_cycle_report"
+    - "phase_transition_report"
+  report_formats:
+    - "pdf"
+    - "html"
+    - "json"
+    - "csv"
+    - "excel"
+  report_recipients:
+    - "trading@example.com"
+    - "research@example.com"
+    - "strategy@example.com"
+
+# Storage
+storage:
+  enabled: true
+  storage_categories:
+    - "phase_detection"
+    - "cycle_indicators"
+    - "strength_scores"
+    - "transition_events"
+    - "forecast_results"
+    - "strategy_alignments"
+  retention_days: 365
+  compression: "zstd"
+  storage_format: "parquet"
+
+# Integration
+integration:
+  enabled: true
+  webhook_endpoint: "http://localhost:8080/market-cycle"
+  api_endpoint: "/api/v1/trading/market-cycle"
+  dashboard_url: "http://localhost:3000/market-cycle"
+  real_time_updates: true
+  data_sync_frequency_seconds: 30
+  external_systems:
+    - "trading_engine"
+    - "risk_management"
+    - "strategy_engine"
+    - "research_platform"
