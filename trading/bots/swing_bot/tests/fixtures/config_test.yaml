@@ -1,0 +1,306 @@
+# Swing Bot Test Configuration Fixture
+# This file provides test configuration data for unit tests
+
+# General test configuration
+test:
+  enabled: true
+  environment: "test"
+  debug: true
+  version: "3.0.0-test"
+
+# Database test configuration
+database:
+  host: "localhost"
+  port: 5432
+  name: "test_db"
+  user: "test_user"
+  password: "test_password"
+  pool_size: 5
+  timeout: 10
+
+# Redis test configuration
+redis:
+  host: "localhost"
+  port: 6379
+  db: 15
+  password: null
+  pool_size: 5
+
+# Market data test configuration
+market_data:
+  symbols:
+    - "AAPL"
+    - "GOOGL"
+    - "MSFT"
+    - "TSLA"
+    - "AMZN"
+  timeframe: "1m"
+  lookback_bars: 100
+  update_interval_seconds: 5
+
+# Trading test configuration
+trading:
+  enabled: true
+  mode: "paper"
+  initial_capital: 100000
+  max_positions: 10
+  risk_per_trade: 0.02
+  max_drawdown: 0.10
+
+# Strategy test configuration
+strategy:
+  type: "swing"
+  parameters:
+    fast_ma_period: 10
+    slow_ma_period: 30
+    rsi_period: 14
+    bb_period: 20
+    bb_std_dev: 2.0
+    stop_loss_percent: 0.02
+    take_profit_percent: 0.04
+
+# Risk test configuration
+risk:
+  enabled: true
+  var_confidence: 0.95
+  var_horizon: 1
+  max_leverage: 2.0
+  max_position_size: 0.10
+  max_sector_exposure: 0.30
+
+# Logging test configuration
+logging:
+  level: "DEBUG"
+  format: "json"
+  output: "console"
+  file_path: "/tmp/test.log"
+
+# Monitoring test configuration
+monitoring:
+  enabled: true
+  metrics_interval: 10
+  alert_channels:
+    - "email"
+    - "telegram"
+  health_check_interval: 30
+
+# API test configuration
+api:
+  host: "localhost"
+  port: 8080
+  timeout: 30
+  rate_limit: 100
+  auth_enabled: true
+  jwt_secret: "test_secret_key"
+
+# WebSocket test configuration
+websocket:
+  enabled: true
+  host: "localhost"
+  port: 8081
+  ping_interval: 30
+  reconnect_attempts: 5
+
+# Performance test configuration
+performance:
+  enabled: true
+  max_latency_ms: 100
+  min_throughput: 1000
+  max_memory_mb: 512
+  max_cpu_percent: 80
+
+# Security test configuration
+security:
+  enabled: true
+  encryption_enabled: true
+  auth_required: true
+  ssl_enabled: false
+  api_key_required: true
+
+# Mock data test configuration
+mock_data:
+  enabled: true
+  price_range:
+    min: 100.0
+    max: 200.0
+  volatility: 0.02
+  trend: 0.001
+  volume_range:
+    min: 1000000
+    max: 10000000
+  seed: 42
+
+# Test cases configuration
+test_cases:
+  - name: "test_buy_signal"
+    enabled: true
+    inputs:
+      price: 150.0
+      volume: 5000000
+      rsi: 25
+      bb_position: -0.8
+    expected:
+      signal: "buy"
+      confidence: 0.75
+  - name: "test_sell_signal"
+    enabled: true
+    inputs:
+      price: 180.0
+      volume: 8000000
+      rsi: 75
+      bb_position: 0.9
+    expected:
+      signal: "sell"
+      confidence: 0.80
+  - name: "test_hold_signal"
+    enabled: true
+    inputs:
+      price: 160.0
+      volume: 3000000
+      rsi: 50
+      bb_position: 0.0
+    expected:
+      signal: "hold"
+      confidence: 0.60
+
+# Edge cases test configuration
+edge_cases:
+  - name: "test_zero_volume"
+    enabled: true
+    inputs:
+      price: 150.0
+      volume: 0
+      rsi: 30
+    expected:
+      signal: "hold"
+      confidence: 0.40
+  - name: "test_negative_price"
+    enabled: true
+    inputs:
+      price: -100.0
+      volume: 5000000
+      rsi: 40
+    expected:
+      error: "InvalidPriceError"
+  - name: "test_extreme_rsi"
+    enabled: true
+    inputs:
+      price: 200.0
+      volume: 5000000
+      rsi: 95
+    expected:
+      signal: "strong_sell"
+      confidence: 0.90
+
+# Integration test configuration
+integration:
+  databases:
+    - "postgresql"
+    - "redis"
+  services:
+    - "market_data"
+    - "trading_engine"
+    - "risk_engine"
+  timeout_seconds: 30
+  retry_attempts: 3
+
+# Performance test configuration
+performance_tests:
+  - name: "concurrent_trades"
+    enabled: true
+    concurrent_users: 10
+    trades_per_user: 100
+    max_duration_seconds: 60
+  - name: "market_data_stream"
+    enabled: true
+    symbols: 100
+    messages_per_second: 1000
+    duration_seconds: 30
+  - name: "api_load_test"
+    enabled: true
+    requests_per_second: 1000
+    duration_seconds: 60
+
+# Reporting test configuration
+reporting:
+  enabled: true
+  formats:
+    - "json"
+    - "html"
+    - "csv"
+  output_dir: "/tmp/test_reports"
+  include_timestamps: true
+
+# Fixture data
+fixtures:
+  users:
+    - id: 1
+      username: "test_user_1"
+      email: "test1@example.com"
+      role: "trader"
+    - id: 2
+      username: "test_user_2"
+      email: "test2@example.com"
+      role: "admin"
+  portfolios:
+    - id: 1
+      user_id: 1
+      name: "Test Portfolio 1"
+      capital: 100000
+      currency: "USD"
+    - id: 2
+      user_id: 2
+      name: "Test Portfolio 2"
+      capital: 200000
+      currency: "USD"
+  positions:
+    - id: 1
+      portfolio_id: 1
+      symbol: "AAPL"
+      quantity: 100
+      entry_price: 150.0
+      current_price: 155.0
+    - id: 2
+      portfolio_id: 1
+      symbol: "GOOGL"
+      quantity: 50
+      entry_price: 2500.0
+      current_price: 2600.0
+  orders:
+    - id: 1
+      portfolio_id: 1
+      symbol: "AAPL"
+      side: "buy"
+      quantity: 50
+      price: 152.0
+      status: "filled"
+    - id: 2
+      portfolio_id: 1
+      symbol: "TSLA"
+      side: "sell"
+      quantity: 10
+      price: 800.0
+      status: "pending"
+
+# Test environment variables
+env_vars:
+  TEST_DATABASE_URL: "postgresql://test_user:test_password@localhost:5432/test_db"
+  TEST_REDIS_URL: "redis://localhost:6379/15"
+  TEST_API_KEY: "test_api_key_12345"
+  TEST_API_SECRET: "test_api_secret_67890"
+  TEST_JWT_SECRET: "test_jwt_secret_abcdef"
+
+# Test timeouts
+timeouts:
+  default: 30
+  slow_operations: 60
+  async_operations: 10
+  network_operations: 5
+  database_operations: 10
+
+# Test resources
+resources:
+  max_memory_mb: 1024
+  max_disk_space_mb: 1024
+  max_open_files: 100
+  max_connections: 50
