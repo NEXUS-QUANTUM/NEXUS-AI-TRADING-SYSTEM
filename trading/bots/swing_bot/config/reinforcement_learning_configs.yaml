@@ -1,0 +1,373 @@
+# Swing Bot Reinforcement Learning Configuration
+# Reinforcement Learning & Adaptive Learning Parameters
+
+# General RL Settings
+reinforcement_learning:
+  enabled: true
+  rl_mode: "online"  # online, offline, batch, hybrid
+  algorithm: "ppo"  # ppo, dqn, sac, td3, a2c, a3c, rainbow
+  learning_paradigm: "model_free"  # model_free, model_based, hybrid
+  version: "3.0.0"
+
+# RL Components
+components:
+  enabled: true
+  primary_components:
+    - "agent_training"
+    - "environment_simulation"
+    - "reward_engineering"
+    - "policy_optimization"
+    - "value_estimation"
+    - "exploration_management"
+  secondary_components:
+    - "experience_replay"
+    - "target_networks"
+    - "advantage_estimation"
+    - "entropy_regularization"
+    - "gradient_clipping"
+    - "hyperparameter_tuning"
+  component_weights:
+    agent_training: 0.25
+    environment_simulation: 0.15
+    reward_engineering: 0.15
+    policy_optimization: 0.15
+    value_estimation: 0.10
+    exploration_management: 0.10
+    experience_replay: 0.05
+    target_networks: 0.05
+
+# PPO Configuration
+ppo:
+  enabled: true
+  learning_rate: 0.0003
+  n_steps: 2048
+  batch_size: 64
+  n_epochs: 10
+  gamma: 0.99
+  gae_lambda: 0.95
+  clip_range: 0.20
+  ent_coef: 0.01
+  vf_coef: 0.50
+  max_grad_norm: 0.50
+  target_kl: 0.01
+  policy_kwargs:
+    net_arch: [256, 256]
+    activation_fn: "relu"
+  use_sde: false
+  sde_sample_freq: -1
+
+# DQN Configuration
+dqn:
+  enabled: true
+  learning_rate: 0.0001
+  buffer_size: 100000
+  batch_size: 64
+  gamma: 0.99
+  tau: 0.001
+  target_update_interval: 1000
+  exploration_fraction: 0.10
+  exploration_initial: 1.0
+  exploration_final: 0.01
+  train_freq: 4
+  gradient_steps: 1
+  double_q: true
+  dueling: true
+  prioritized_replay: true
+  policy_kwargs:
+    net_arch: [256, 256]
+    activation_fn: "relu"
+
+# SAC Configuration
+sac:
+  enabled: true
+  learning_rate: 0.0003
+  buffer_size: 100000
+  batch_size: 64
+  gamma: 0.99
+  tau: 0.005
+  alpha: 0.20
+  train_freq: 1
+  gradient_steps: 1
+  use_sde: false
+  sde_sample_freq: -1
+  policy_kwargs:
+    net_arch: [256, 256]
+    activation_fn: "relu"
+  use_automatic_alpha: true
+  target_entropy: "auto"
+
+# TD3 Configuration
+td3:
+  enabled: true
+  learning_rate: 0.0003
+  buffer_size: 100000
+  batch_size: 64
+  gamma: 0.99
+  tau: 0.005
+  policy_delay: 2
+  target_noise: 0.20
+  target_noise_clip: 0.50
+  train_freq: 1
+  gradient_steps: 1
+  use_sde: false
+  sde_sample_freq: -1
+  policy_kwargs:
+    net_arch: [256, 256]
+    activation_fn: "relu"
+
+# A2C Configuration
+a2c:
+  enabled: true
+  learning_rate: 0.0007
+  n_steps: 5
+  gamma: 0.99
+  gae_lambda: 1.0
+  ent_coef: 0.01
+  vf_coef: 0.50
+  max_grad_norm: 0.50
+  rms_prop_eps: 1e-5
+  use_rms_prop: true
+  policy_kwargs:
+    net_arch: [256, 256]
+    activation_fn: "relu"
+
+# A3C Configuration
+a3c:
+  enabled: true
+  learning_rate: 0.0007
+  n_workers: 4
+  n_steps: 5
+  gamma: 0.99
+  gae_lambda: 1.0
+  ent_coef: 0.01
+  vf_coef: 0.50
+  max_grad_norm: 0.50
+  policy_kwargs:
+    net_arch: [256, 256]
+    activation_fn: "relu"
+
+# Rainbow Configuration
+rainbow:
+  enabled: true
+  learning_rate: 0.0001
+  buffer_size: 100000
+  batch_size: 64
+  gamma: 0.99
+  tau: 0.001
+  target_update_interval: 1000
+  exploration_fraction: 0.10
+  exploration_initial: 1.0
+  exploration_final: 0.01
+  train_freq: 4
+  gradient_steps: 1
+  double_q: true
+  dueling: true
+  prioritized_replay: true
+  n_step_learning: 3
+  distributional: true
+  v_min: -10
+  v_max: 10
+  n_atoms: 51
+
+# Environment Configuration
+environment:
+  enabled: true
+  env_type: "trading"  # trading, portfolio, market, multi_agent
+  observation_space:
+    - "price_data"
+    - "volume_data"
+    - "technical_indicators"
+    - "fundamental_data"
+    - "market_state"
+    - "portfolio_state"
+  action_space:
+    - "buy"
+    - "sell"
+    - "hold"
+    - "short"
+    - "cover"
+    - "scale_in"
+    - "scale_out"
+  reward_function: "custom"  # custom, sharpe, drawdown, pnl, risk_adjusted
+  max_episode_steps: 100
+  render_mode: "none"
+
+# Reward Engineering
+reward:
+  enabled: true
+  reward_components:
+    - "pnl_reward": 0.30
+    - "sharpe_reward": 0.20
+    - "drawdown_penalty": 0.15
+    - "risk_adjusted_reward": 0.15
+    - "consistency_reward": 0.10
+    - "execution_reward": 0.10
+  reward_scaling: true
+  reward_clipping: true
+  reward_clip_range: [-10, 10]
+  shaping_reward: true
+
+# Policy Optimization
+policy:
+  enabled: true
+  policy_type: "mlp"  # mlp, lstm, transformer, cnn
+  policy_architecture:
+    - 256
+    - 256
+    - 128
+  activation_function: "relu"  # relu, tanh, elu, selu
+  policy_update_frequency: 10
+  policy_smoothing: true
+  policy_exploration: true
+
+# Value Estimation
+value:
+  enabled: true
+  value_function_type: "mlp"  # mlp, lstm, transformer
+  value_architecture:
+    - 256
+    - 256
+    - 128
+  value_update_frequency: 10
+  value_clipping: true
+  value_clip_range: [-10, 10]
+
+# Exploration Management
+exploration:
+  enabled: true
+  exploration_strategy: "epsilon_greedy"  # epsilon_greedy, entropy, noise, count_based
+  epsilon_start: 1.0
+  epsilon_end: 0.01
+  epsilon_decay: 0.995
+  noise_std: 0.10
+  entropy_coefficient: 0.01
+  intrinsic_reward: true
+  curiosity_driven: true
+
+# Experience Replay
+replay:
+  enabled: true
+  buffer_type: "prioritized"  # prioritized, uniform, her
+  buffer_size: 100000
+  batch_size: 64
+  alpha: 0.60
+  beta: 0.40
+  beta_increment: 0.001
+  n_step: 3
+  her_ratio: 0.10
+
+# Hyperparameters
+hyperparameters:
+  enabled: true
+  learning_rate: 0.0003
+  batch_size: 64
+  epochs: 100
+  training_episodes: 10000
+  validation_episodes: 100
+  early_stopping_patience: 50
+  model_checkpoint: true
+  tensorboard_logging: true
+
+# Performance Metrics
+performance:
+  enabled: true
+  metrics:
+    - "episode_reward"
+    - "episode_length"
+    - "policy_loss"
+    - "value_loss"
+    - "entropy"
+    - "learning_rate"
+    - "exploration_rate"
+    - "success_rate"
+  evaluation_period_episodes: 100
+  rolling_window_episodes: 50
+
+# Visualization
+visualization:
+  enabled: true
+  charts:
+    - "rl_dashboard"
+    - "training_progress"
+    - "reward_chart"
+    - "policy_chart"
+    - "value_chart"
+    - "exploration_chart"
+    - "performance_chart"
+  update_interval_seconds: 10
+  dashboard_integration: true
+  real_time_updates: true
+
+# Alerting
+alerting:
+  enabled: true
+  alert_conditions:
+    - "training_complete"
+    - "performance_drop"
+    - "exploration_collapse"
+    - "value_divergence"
+    - "reward_decline"
+    - "convergence_issue"
+  alert_thresholds:
+    performance_drop: 0.20
+    reward_decline: 0.30
+    convergence_threshold: 0.10
+  alert_channels:
+    - "email"
+    - "telegram"
+    - "slack"
+  alert_cooldown_seconds: 600
+
+# Reporting
+reporting:
+  enabled: true
+  report_types:
+    - "training_report"
+    - "performance_report"
+    - "policy_report"
+    - "value_report"
+    - "exploration_report"
+  report_formats:
+    - "pdf"
+    - "html"
+    - "json"
+    - "csv"
+    - "excel"
+  report_recipients:
+    - "trading@example.com"
+    - "research@example.com"
+    - "ai_team@example.com"
+
+# Storage
+storage:
+  enabled: true
+  storage_categories:
+    - "rl_data"
+    - "model_data"
+    - "training_data"
+    - "reward_data"
+    - "policy_data"
+    - "value_data"
+    - "exploration_data"
+    - "performance_metrics"
+    - "checkpoints"
+    - "alert_history"
+    - "report_history"
+  retention_days: 365
+  compression: "zstd"
+  storage_format: "parquet"
+
+# Integration
+integration:
+  enabled: true
+  webhook_endpoint: "http://localhost:8080/rl"
+  api_endpoint: "/api/v1/trading/rl"
+  dashboard_url: "http://localhost:3000/rl"
+  real_time_updates: true
+  data_sync_frequency_seconds: 5
+  external_systems:
+    - "trading_engine"
+    - "risk_management"
+    - "strategy_engine"
+    - "mlflow"
+    - "tensorboard"
