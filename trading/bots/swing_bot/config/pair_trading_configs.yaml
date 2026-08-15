@@ -1,0 +1,278 @@
+# Swing Bot Pair Trading Configuration
+# Statistical Arbitrage & Pairs Trading Parameters
+
+# General Pair Trading Settings
+pair_trading:
+  enabled: true
+  strategy_type: "statistical_arbitrage"  # statistical_arbitrage, correlation_based, cointegration_based
+  analysis_mode: "comprehensive"  # comprehensive, basic, advanced, real-time
+  update_frequency_seconds: 60
+  version: "3.0.0"
+
+# Pair Selection
+pair_selection:
+  enabled: true
+  selection_methods:
+    - "correlation"
+    - "cointegration"
+    - "distance_metric"
+    - "machine_learning"
+    - "fundamental_similarity"
+    - "sector_based"
+    - "index_based"
+  primary_method: "cointegration"
+  secondary_method: "correlation"
+  correlation_threshold: 0.70
+  cointegration_threshold: 0.05
+  max_pairs: 20
+  min_observations: 100
+
+# Cointegration Testing
+cointegration:
+  enabled: true
+  test_methods:
+    - "adf_test"
+    - "kpss_test"
+    - "pp_test"
+    - "johansen_test"
+    - "engle_granger"
+  primary_test: "adf_test"
+  confidence_level: 0.95
+  p_value_threshold: 0.05
+  lag_selection: "aic"  # aic, bic, hqic
+  trend_component: "constant"  # constant, constant_trend, none
+
+# Spread Calculation
+spread:
+  enabled: true
+  calculation_methods:
+    - "ratio"
+    - "difference"
+    - "log_ratio"
+    - "regression_based"
+    - "residual_based"
+  primary_method: "regression_based"
+  hedging_ratio: true
+  spread_smoothing: true
+  smoothing_period: 5
+  normalization: true
+  zscore_calculation: true
+
+# Z-Score Analysis
+zscore:
+  enabled: true
+  calculation_method: "rolling"  # rolling, expanding, hybrid
+  lookback_period_bars: 30
+  entry_threshold: 2.0
+  exit_threshold: 0.50
+  stop_threshold: 3.0
+  dynamic_threshold: true
+  volatility_adjustment: true
+
+# Entry Signals
+entry_signals:
+  enabled: true
+  signal_types:
+    - "long_spread"
+    - "short_spread"
+    - "long_pair"
+    - "short_pair"
+  entry_conditions:
+    zscore_threshold: 2.0
+    spread_extreme: true
+    volume_confirmation: true
+    trend_confirmation: true
+  signal_strength_calculation: "weighted_average"
+  min_signal_strength: 0.60
+
+# Exit Signals
+exit_signals:
+  enabled: true
+  exit_types:
+    - "zscore_reversion"
+    - "profit_target"
+    - "stop_loss"
+    - "cointegration_break"
+    - "correlation_break"
+  exit_confirmation: true
+  confirmation_bars: 1
+
+# Position Sizing
+position_sizing:
+  enabled: true
+  method: "risk_based"  # risk_based, equal_weight, volatility_weighted
+  risk_per_trade: 0.02
+  max_position_size: 0.05
+  min_position_size: 0.01
+  hedging_ratio_adjustment: true
+  dollar_neutral: true
+
+# Risk Management
+risk:
+  enabled: true
+  stop_loss:
+    method: "zscore_based"
+    zscore_stop: 3.0
+    fixed_percent: 0.02
+    volatility_adjustment: true
+  take_profit:
+    method: "zscore_based"
+    zscore_profit: 0.50
+    risk_reward_ratio: 2.0
+  max_drawdown: 0.10
+  max_daily_loss: 0.05
+  max_position_correlation: 0.70
+
+# Pair Performance
+performance:
+  enabled: true
+  metrics:
+    - "sharpe_ratio"
+    - "sortino_ratio"
+    - "win_rate"
+    - "average_return"
+    - "profit_factor"
+    - "max_drawdown"
+    - "recovery_factor"
+  evaluation_period_days: 30
+  rolling_window_days: 30
+  pair_performance_ranking: true
+  pair_selection_refresh_days: 7
+
+# Correlation Analysis
+correlation:
+  enabled: true
+  correlation_methods:
+    - "pearson"
+    - "spearman"
+    - "kendall"
+  primary_method: "pearson"
+  lookback_period_days: 30
+  rolling_correlation: true
+  correlation_break_threshold: 0.30
+  correlation_monitoring: true
+
+# Half-Life Analysis
+half_life:
+  enabled: true
+  calculation_method: "linear_regression"
+  lookback_period_bars: 30
+  half_life_estimation: true
+  reversion_speed: true
+  mean_reversion_confidence: true
+  min_half_life: 5
+  max_half_life: 30
+
+# Cointegration Dynamics
+cointegration_dynamics:
+  enabled: true
+  dynamics_metrics:
+    - "reversion_speed"
+    - "mean_reversion_strength"
+    - "cointegration_consistency"
+    - "spread_volatility"
+    - "spread_skew"
+    - "spread_kurtosis"
+  dynamics_monitoring: true
+  dynamics_break_threshold: 0.30
+
+# Pair Ranking
+ranking:
+  enabled: true
+  ranking_factors:
+    - "cointegration_strength": 0.25
+    - "correlation": 0.15
+    - "spread_volatility": 0.15
+    - "half_life": 0.15
+    - "historical_performance": 0.15
+    - "liquidity": 0.10
+    - "capacity": 0.05
+  ranking_update_frequency_days: 7
+  top_pairs_to_trade: 5
+  bottom_pairs_to_remove: 3
+
+# Visualization
+visualization:
+  enabled: true
+  charts:
+    - "pair_dashboard"
+    - "spread_chart"
+    - "zscore_chart"
+    - "correlation_heatmap"
+    - "performance_chart"
+    - "cointegration_analysis"
+  update_interval_seconds: 10
+  dashboard_integration: true
+  real_time_updates: true
+
+# Alerting
+alerting:
+  enabled: true
+  alert_conditions:
+    - "entry_signal"
+    - "exit_signal"
+    - "cointegration_break"
+    - "correlation_break"
+    - "stop_loss_trigger"
+    - "take_profit_trigger"
+    - "spread_extreme"
+  alert_thresholds:
+    entry_zscore: 2.0
+    stop_zscore: 3.0
+    correlation_break: 0.30
+  alert_channels:
+    - "email"
+    - "telegram"
+    - "slack"
+  alert_cooldown_seconds: 300
+
+# Reporting
+reporting:
+  enabled: true
+  report_types:
+    - "real_time_alerts"
+    - "daily_pair_summary"
+    - "weekly_pair_analysis"
+    - "monthly_pair_report"
+    - "cointegration_analysis_report"
+  report_formats:
+    - "pdf"
+    - "html"
+    - "json"
+    - "csv"
+    - "excel"
+  report_recipients:
+    - "trading@example.com"
+    - "research@example.com"
+    - "risk@example.com"
+
+# Storage
+storage:
+  enabled: true
+  storage_categories:
+    - "pair_data"
+    - "spread_data"
+    - "zscore_data"
+    - "signal_history"
+    - "trade_history"
+    - "performance_metrics"
+    - "cointegration_data"
+    - "correlation_data"
+    - "alert_history"
+  retention_days: 365
+  compression: "zstd"
+  storage_format: "parquet"
+
+# Integration
+integration:
+  enabled: true
+  webhook_endpoint: "http://localhost:8080/pair-trading"
+  api_endpoint: "/api/v1/trading/pair-trading"
+  dashboard_url: "http://localhost:3000/pair-trading"
+  real_time_updates: true
+  data_sync_frequency_seconds: 10
+  external_systems:
+    - "trading_engine"
+    - "risk_management"
+    - "research_platform"
+    - "order_management"
