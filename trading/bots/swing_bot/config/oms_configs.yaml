@@ -1,0 +1,491 @@
+# Swing Bot Order Management System (OMS) Configuration
+# Order Management, Workflow & Processing Parameters
+
+# General OMS Settings
+oms:
+  enabled: true
+  oms_mode: "hybrid"  # hybrid, automated, manual, semi_automated
+  order_processing: "streaming"  # streaming, batch, hybrid
+  workflow_type: "custom"  # custom, standard, institutional
+  version: "3.0.0"
+
+# Order Types
+order_types:
+  enabled: true
+  supported_orders:
+    - "market"
+    - "limit"
+    - "stop"
+    - "stop_limit"
+    - "trailing_stop"
+    - "trailing_stop_limit"
+    - "iceberg"
+    - "twap"
+    - "vwap"
+    - "oco"
+    - "oco_limit"
+    - "bracket"
+    - "scale"
+    - "market_on_close"
+    - "limit_on_close"
+    - "pegged"
+    - "relative"
+    - "snap_to_market"
+    - "snap_to_mid"
+    - "snap_to_primary"
+  default_order_type: "limit"
+  priority_order_type: "market"
+
+# Order Workflow
+workflow:
+  enabled: true
+  workflow_stages:
+    - "order_creation"
+    - "order_validation"
+    - "order_routing"
+    - "order_execution"
+    - "order_fill"
+    - "order_cancel"
+    - "order_modification"
+    - "order_acknowledgement"
+    - "order_reporting"
+    - "order_reconciliation"
+  workflow_automation: true
+  exception_handling: true
+  manual_intervention_required: false
+  audit_trail: true
+
+# Order Validation
+validation:
+  enabled: true
+  validation_checks:
+    - "symbol_check"
+    - "side_check"
+    - "quantity_check"
+    - "price_check"
+    - "order_type_check"
+    - "time_in_force_check"
+    - "account_check"
+    - "broker_check"
+    - "compliance_check"
+    - "risk_check"
+    - "margin_check"
+    - "position_check"
+  validation_failure_action: "reject"  # reject, modify, quarantine
+  validation_rules_config: true
+  custom_validators: true
+
+# Order Routing
+routing:
+  enabled: true
+  routing_strategy: "smart"  # smart, manual, venue_specific, cost_based
+  routing_venues:
+    - "primary_exchange"
+    - "secondary_exchange"
+    - "dark_pool"
+    - "ecn"
+    - "market_maker"
+    - "internal_match"
+    - "wholesale"
+  smart_routing:
+    enabled: true
+    criteria:
+      - "best_price"
+      - "best_liquidity"
+      - "lowest_cost"
+      - "fastest_execution"
+      - "lowest_market_impact"
+  venue_ranking: true
+  venue_allocation: true
+  dark_pool_enabled: true
+  dark_pool_allocation_percent: 20
+
+# Order Execution
+execution:
+  enabled: true
+  execution_methods:
+    - "immediate"
+    - "at_open"
+    - "at_close"
+    - "scheduled"
+    - "triggered"
+    - "conditional"
+    - "algorithmic"
+  execution_priority: "quality"  # speed, quality, cost, balanced
+  execution_timeouts:
+    market_order_seconds: 5
+    limit_order_minutes: 5
+    stop_order_minutes: 5
+    algorithmic_order_minutes: 30
+  partial_fill_handling: "aggressive"  # aggressive, passive, cancel_rest
+  fill_or_kill: false
+  immediate_or_cancel: false
+
+# Time In Force
+time_in_force:
+  enabled: true
+  supported_tif:
+    - "day"
+    - "gtc"
+    - "gtx"
+    - "ioc"
+    - "fok"
+    - "at_the_open"
+    - "at_the_close"
+    - "good_til_date"
+    - "market_on_open"
+    - "market_on_close"
+    - "limit_on_open"
+    - "limit_on_close"
+  default_tif: "day"
+  gtc_expiry_days: 30
+  good_til_date_timezone: "UTC"
+
+# Order Status
+status:
+  enabled: true
+  order_states:
+    - "pending_new"
+    - "new"
+    - "partially_filled"
+    - "filled"
+    - "done_for_day"
+    - "canceled"
+    - "pending_cancel"
+    - "stopped"
+    - "rejected"
+    - "suspended"
+    - "pending_replace"
+    - "replaced"
+    - "expired"
+    - "pending_new"
+    - "accepted"
+  status_transitions: true
+  status_update_frequency_ms: 100
+  status_broadcast: true
+
+# Order Tracking
+tracking:
+  enabled: true
+  tracking_fields:
+    - "order_id"
+    - "symbol"
+    - "side"
+    - "quantity"
+    - "price"
+    - "order_type"
+    - "time_in_force"
+    - "status"
+    - "filled_quantity"
+    - "average_price"
+    - "created_at"
+    - "updated_at"
+    - "executed_at"
+    - "canceled_at"
+    - "broker_order_id"
+    - "venue"
+    - "reason"
+  tracking_retention_days: 90
+  tracking_export: true
+  tracking_visualization: true
+
+# Order Modifications
+modification:
+  enabled: true
+  allowed_modifications:
+    - "price_change"
+    - "quantity_change"
+    - "time_in_force_change"
+    - "order_type_change"
+    - "stop_price_change"
+  modification_validation: true
+  modification_cancel_replacement: true
+  modification_cost_calculation: true
+  modification_history: true
+
+# Order Cancellation
+cancellation:
+  enabled: true
+  cancellation_methods:
+    - "single"
+    - "batch"
+    - "all"
+    - "by_symbol"
+    - "by_side"
+    - "by_order_type"
+    - "by_status"
+    - "by_time_range"
+  cancellation_confirmation: true
+  cancellation_reason_tracking: true
+  cancellation_processing_time_ms: 100
+  cancel_on_disconnect: true
+  cancel_on_risk_breach: true
+
+# Order Reporting
+reporting:
+  enabled: true
+  report_types:
+    - "order_acknowledgement"
+    - "order_status_update"
+    - "order_execution_report"
+    - "order_cancel_report"
+    - "order_replace_report"
+    - "order_reject_report"
+    - "daily_order_summary"
+    - "weekly_order_analysis"
+    - "monthly_order_report"
+  report_formats:
+    - "json"
+    - "xml"
+    - "csv"
+    - "fix"
+    - "html"
+    - "pdf"
+  report_recipients:
+    - "trading@example.com"
+    - "risk@example.com"
+    - "compliance@example.com"
+  real_time_reporting: true
+
+# Order Reconciliation
+reconciliation:
+  enabled: true
+  reconciliation_frequency_minutes: 15
+  reconciliation_methods:
+    - "trade_confirm"
+    - "trade_affirm"
+    - "trade_alloc"
+    - "trade_net"
+    - "position_reconcile"
+    - "balance_reconcile"
+  reconciliation_threshold: 0.001
+  mismatch_handling: "alert"  # alert, reject, quarantine
+  reconciliation_retry_attempts: 3
+  audit_trail: true
+
+# Risk Controls
+risk_controls:
+  enabled: true
+  risk_limits:
+    max_order_size: 100000
+    max_position_size: 1000000
+    max_daily_trades: 1000
+    max_daily_volume: 10000000
+    max_notional_value: 5000000
+    max_open_orders: 100
+    max_pending_orders: 50
+    max_cancel_rate: 0.30
+    max_spread_bps: 10
+  pre_trade_risk: true
+  post_trade_risk: true
+  risk_breach_action: "reject"  # reject, alert, quarantine
+
+# Compliance
+compliance:
+  enabled: true
+  compliance_checks:
+    - "regulatory_limits"
+    - "position_limits"
+    - "market_manipulation_prevention"
+    - "best_execution_compliance"
+    - "trade_reporting"
+    - "audit_trail"
+    - "client_suitability"
+  regulatory_reports: true
+  compliance_monitoring_frequency_seconds: 60
+  compliance_breach_action: "alert"  # alert, reject, quarantine
+
+# Order Queues
+queues:
+  enabled: true
+  queue_types:
+    - "pending"
+    - "processing"
+    - "executing"
+    - "completed"
+    - "failed"
+    - "quarantine"
+  queue_processing_order: "fifo"  # fifo, priority, custom
+  queue_priorities:
+    high: 3
+    medium: 2
+    low: 1
+  queue_monitoring: true
+  queue_cleanup_frequency_minutes: 30
+
+# Order Batching
+batching:
+  enabled: true
+  batch_types:
+    - "time_sliced"
+    - "volume_sliced"
+    - "price_sliced"
+    - "strategy_based"
+    - "manual"
+  batch_size: 100
+  batch_interval_seconds: 5
+  batch_processing_mode: "parallel"  # parallel, sequential
+  batch_aggregation: true
+  batch_efficiency_optimization: true
+
+# FIX Protocol
+fix:
+  enabled: true
+  fix_version: "4.4"
+  fix_session_config:
+    sender_comp_id: "NEXUS"
+    target_comp_id: "BROKER"
+    heartbeat_interval_seconds: 30
+    reconnect_attempts: 5
+    reconnect_interval_seconds: 10
+  fix_message_types:
+    - "new_order_single"
+    - "order_cancel_request"
+    - "order_cancel_replace_request"
+    - "order_status_request"
+    - "execution_report"
+    - "order_cancel_reject"
+    - "order_cancel_replace_reject"
+    - "heartbeat"
+  fix_logging: true
+
+# APIs
+apis:
+  enabled: true
+  rest_api:
+    enabled: true
+    endpoints:
+      - "/api/v1/orders"
+      - "/api/v1/orders/{order_id}"
+      - "/api/v1/orders/status/{order_id}"
+      - "/api/v1/orders/cancel"
+      - "/api/v1/orders/modify"
+      - "/api/v1/orders/history"
+      - "/api/v1/orders/batch"
+  websocket_api:
+    enabled: true
+    subscriptions:
+      - "order_updates"
+      - "trade_updates"
+      - "position_updates"
+      - "risk_updates"
+  authentication: true
+  rate_limiting: true
+
+# Performance
+performance:
+  enabled: true
+  performance_metrics:
+    - "order_processing_time"
+    - "order_execution_time"
+    - "order_fill_rate"
+    - "order_cancel_rate"
+    - "order_modification_rate"
+    - "latency"
+    - "throughput"
+    - "error_rate"
+  performance_targets:
+    processing_time_ms: 50
+    execution_time_ms: 100
+    fill_rate_min: 0.90
+    latency_max_ms: 20
+    error_rate_max: 0.01
+  performance_monitoring: true
+  performance_reporting: true
+
+# Alerting
+alerting:
+  enabled: true
+  alert_conditions:
+    - "order_rejection"
+    - "execution_error"
+    - "risk_breach"
+    - "compliance_breach"
+    - "system_failure"
+    - "queue_overflow"
+    - "performance_degradation"
+    - "reconciliation_mismatch"
+    - "order_expiry"
+  alert_channels:
+    - "email"
+    - "telegram"
+    - "slack"
+    - "sms"
+    - "pagerduty"
+  alert_cooldown_seconds: 300
+  escalation_policy: true
+
+# Visualization
+visualization:
+  enabled: true
+  charts:
+    - "order_status_dashboard"
+    - "order_flow_chart"
+    - "execution_quality_dashboard"
+    - "risk_monitoring_dashboard"
+    - "performance_metrics_dashboard"
+    - "reconciliation_dashboard"
+  update_interval_seconds: 5
+  dashboard_integration: true
+  real_time_updates: true
+
+# Integration
+integration:
+  enabled: true
+  internal_systems:
+    - "trading_engine"
+    - "execution_engine"
+    - "risk_management"
+    - "compliance_system"
+    - "accounting_system"
+    - "reporting_system"
+  external_systems:
+    - "broker_api"
+    - "exchange_api"
+    - "clearing_system"
+    - "market_data_feed"
+    - "prime_broker"
+  api_endpoints:
+    - "/api/v1/oms"
+    - "/api/v1/oms/order"
+    - "/api/v1/oms/status"
+    - "/api/v1/oms/risk"
+  webhook_endpoint: "http://localhost:8080/oms"
+  real_time_updates: true
+  data_sync_frequency_seconds: 5
+
+# Logging
+logging:
+  enabled: true
+  log_level: "info"
+  log_categories:
+    - "order_creation"
+    - "order_execution"
+    - "order_modification"
+    - "order_cancellation"
+    - "risk_events"
+    - "compliance_events"
+    - "system_events"
+    - "errors"
+    - "performance"
+  log_rotation: true
+  max_log_size_mb: 100
+  retention_days: 30
+  audit_trail: true
+
+# Storage
+storage:
+  enabled: true
+  storage_categories:
+    - "order_data"
+    - "execution_data"
+    - "trade_data"
+    - "modification_history"
+    - "cancel_history"
+    - "risk_data"
+    - "compliance_data"
+    - "audit_trail"
+  retention_days: 365
+  compression: "zstd"
+  storage_format: "parquet"
+  backup_frequency_days: 1
