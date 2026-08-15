@@ -1,0 +1,305 @@
+# Swing Bot Spoofing Detection Configuration
+# Spoofing Detection & Market Manipulation Parameters
+
+# General Spoofing Settings
+spoofing:
+  enabled: true
+  detection_mode: "comprehensive"  # comprehensive, basic, advanced, real-time
+  detection_method: "multi_factor"  # multi_factor, pattern_based, ml_based, hybrid
+  monitoring_level: "full"  # full, partial, critical
+  version: "3.0.0"
+
+# Detection Methods
+detection:
+  enabled: true
+  methods:
+    - "order_pattern_analysis"
+    - "cancel_pattern_analysis"
+    - "quote_update_analysis"
+    - "order_to_trade_ratio"
+    - "bid_ask_spread_analysis"
+    - "depth_manipulation_detection"
+    - "layering_detection"
+    - "quote_stuffing_detection"
+    - "machine_learning_classification"
+  primary_method: "order_pattern_analysis"
+  secondary_method: "cancel_pattern_analysis"
+  detection_confidence_threshold: 0.70
+
+# Order Pattern Analysis
+order_pattern:
+  enabled: true
+  pattern_parameters:
+    order_count_threshold: 10
+    cancellation_rate_threshold: 0.70
+    modification_rate_threshold: 0.50
+    order_size_variance: 0.50
+    price_level_variance: 0.02
+    time_between_orders_ms: 100
+  pattern_window_seconds: 30
+  min_orders_for_pattern: 5
+
+# Cancel Pattern Analysis
+cancel_pattern:
+  enabled: true
+  cancel_parameters:
+    cancel_rate_threshold: 0.70
+    cancel_to_fill_ratio: 5.0
+    cancel_to_modify_ratio: 2.0
+    order_lifetime_ms: 50
+    cancel_repeat_pattern: true
+  cancel_window_seconds: 30
+  min_cancels: 5
+
+# Quote Update Analysis
+quote_update:
+  enabled: true
+  quote_parameters:
+    quote_frequency_threshold: 100
+    quote_cancel_rate: 0.90
+    quote_lifetime_ms: 10
+    quote_size_variance: 0.50
+    quote_price_variance: 0.01
+  quote_window_seconds: 5
+  min_quotes: 50
+
+# Order-to-Trade Ratio
+order_to_trade:
+  enabled: true
+  ratio_parameters:
+    ratio_threshold: 10.0
+    time_window_seconds: 60
+    min_orders: 20
+    min_trades: 5
+    ratio_escalation: true
+  ratio_monitoring: true
+
+# Bid-Ask Spread Analysis
+spread_analysis:
+  enabled: true
+  spread_parameters:
+    spread_widening_threshold: 2.0
+    spread_narrowing_threshold: 0.50
+    spread_volatility_threshold: 3.0
+    min_spread_bps: 1
+    max_spread_bps: 10
+  spread_window_seconds: 30
+
+# Depth Manipulation
+depth_manipulation:
+  enabled: true
+  depth_parameters:
+    depth_variance_threshold: 0.50
+    depth_imbalance_threshold: 0.70
+    depth_wall_detection: true
+    depth_spoofing_detection: true
+    depth_levels: 10
+  depth_window_seconds: 10
+
+# Layering Detection
+layering:
+  enabled: true
+  layering_parameters:
+    layers_threshold: 5
+    cancel_rate_threshold: 0.80
+    order_size_variance: 0.50
+    price_level_spacing: 0.01
+    time_between_layers_ms: 50
+  layering_window_seconds: 30
+  min_layers: 3
+
+# Quote Stuffing
+quote_stuffing:
+  enabled: true
+  stuffing_parameters:
+    quote_rate_threshold: 1000
+    quote_cancel_rate: 0.90
+    quote_size_variance: 0.50
+    quote_lifetime_ms: 10
+    stuffing_window_seconds: 5
+  min_stuffing_quotes: 50
+
+# Machine Learning Detection
+ml_detection:
+  enabled: true
+  models:
+    - "isolation_forest"
+    - "autoencoder"
+    - "one_class_svm"
+    - "random_forest"
+    - "xgboost"
+    - "neural_network"
+  ensemble_method: "voting"
+  feature_columns:
+    - "order_size"
+    - "cancel_rate"
+    - "quote_rate"
+    - "trade_frequency"
+    - "price_velocity"
+    - "volume_velocity"
+    - "order_imbalance"
+    - "quote_lifetime"
+    - "spread_width"
+    - "depth_ratio"
+    - "fill_rate"
+    - "execution_delay"
+  model_retrain_frequency_hours: 24
+  anomaly_threshold: 0.80
+  confidence_required: 0.70
+
+# Spoofing Indicators
+indicators:
+  enabled: true
+  primary_indicators:
+    - "suspicious_cancel_rate"
+    - "high_order_to_trade_ratio"
+    - "quote_stuffing_rate"
+    - "depth_manipulation"
+    - "layering_pattern"
+  secondary_indicators:
+    - "spread_widening"
+    - "price_velocity"
+    - "volume_anomaly"
+    - "order_imbalance"
+    - "execution_delay"
+  indicator_weights:
+    suspicious_cancel_rate: 0.25
+    high_order_to_trade_ratio: 0.20
+    quote_stuffing_rate: 0.15
+    depth_manipulation: 0.15
+    layering_pattern: 0.10
+    spread_widening: 0.05
+    price_velocity: 0.05
+    volume_anomaly: 0.05
+
+# Spoofing Risk Scoring
+risk_scoring:
+  enabled: true
+  scoring_components:
+    - "detection_probability": 0.30
+    - "severity_score": 0.25
+    - "market_impact_score": 0.20
+    - "pattern_confidence": 0.15
+    - "historical_pattern_score": 0.10
+  risk_thresholds:
+    low_risk: 0.30
+    medium_risk: 0.60
+    high_risk: 0.80
+    critical_risk: 0.95
+  dynamic_scoring: true
+
+# Response Actions
+responses:
+  enabled: true
+  action_levels:
+    - "monitor_only"
+    - "alert"
+    - "investigate"
+    - "restrict"
+    - "block"
+    - "escalate"
+    - "report"
+  automated_actions:
+    - "cancel_suspicious_orders"
+    - "pause_trading"
+    - "adjust_position_size"
+    - "switch_venue"
+    - "delay_execution"
+    - "increase_monitoring"
+    - "send_alert"
+    - "generate_report"
+  action_cooldown_seconds: 300
+  max_automated_actions: 10
+
+# Visualization
+visualization:
+  enabled: true
+  charts:
+    - "spoofing_dashboard"
+    - "order_pattern_chart"
+    - "cancel_pattern_chart"
+    - "order_to_trade_ratio"
+    - "spread_analysis"
+    - "depth_manipulation"
+    - "risk_scoring_chart"
+  update_interval_seconds: 5
+  dashboard_integration: true
+  real_time_updates: true
+
+# Alerting
+alerting:
+  enabled: true
+  alert_conditions:
+    - "spoofing_detected"
+    - "layering_detected"
+    - "quote_stuffing_detected"
+    - "order_to_trade_ratio_breach"
+    - "cancel_rate_breach"
+    - "depth_manipulation_detected"
+    - "risk_threshold_breach"
+  alert_thresholds:
+    detection_confidence: 0.70
+    order_to_trade_ratio: 10.0
+    cancel_rate: 0.70
+    risk_threshold: 0.60
+  alert_channels:
+    - "email"
+    - "telegram"
+    - "slack"
+    - "sms"
+  alert_cooldown_seconds: 300
+  escalation_policy: true
+
+# Reporting
+reporting:
+  enabled: true
+  report_types:
+    - "real_time_alerts"
+    - "daily_spoofing_summary"
+    - "weekly_spoofing_analysis"
+    - "monthly_spoofing_report"
+    - "regulatory_reporting"
+  report_formats:
+    - "pdf"
+    - "html"
+    - "json"
+    - "csv"
+    - "excel"
+  report_recipients:
+    - "compliance@example.com"
+    - "risk@example.com"
+    - "trading@example.com"
+    - "regulatory@example.com"
+
+# Storage
+storage:
+  enabled: true
+  storage_categories:
+    - "spoofing_data"
+    - "order_pattern_data"
+    - "cancel_pattern_data"
+    - "quote_data"
+    - "risk_scores"
+    - "response_actions"
+    - "alert_history"
+    - "investigation_data"
+    - "regulatory_data"
+  retention_days: 365
+  compression: "zstd"
+  storage_format: "parquet"
+  backup_frequency_days: 1
+
+# Integration
+integration:
+  enabled: true
+  webhook_endpoint: "http://localhost:8080/spoofing"
+  api_endpoint: "/api/v1/trading/spoofing"
+  dashboard_url: "http://localhost:3000/spoofing"
+  real_time_updates: true
+  data_sync_frequency_seconds: 3
+  external_systems:
+    - "surveillance_system"
+    - "regulatory_reporting"
+    - "risk_management"
+    - "execution_management"
+    - "order_management"
