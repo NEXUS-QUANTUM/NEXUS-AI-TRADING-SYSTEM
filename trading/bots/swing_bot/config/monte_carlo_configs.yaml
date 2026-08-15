@@ -1,0 +1,261 @@
+# Swing Bot Monte Carlo Configuration
+# Monte Carlo Simulation Parameters for Risk Assessment & Portfolio Optimization
+
+# General Monte Carlo Settings
+monte_carlo:
+  enabled: true
+  simulation_mode: "full"  # full, fast, ultra_fast
+  num_simulations: 10000
+  num_parallel_workers: 8
+  random_seed: 42
+  confidence_interval: 0.95
+  convergence_tolerance: 0.001
+
+# Simulation Parameters
+simulation:
+  time_horizon_days: 365
+  time_steps: 252
+  initial_capital: 100000
+  rebalancing_frequency_days: 30
+  simulation_model: "geometric_brownian"  # geometric_brownian, jump_diffusion, stochastic_volatility
+  num_assets_min: 1
+  num_assets_max: 20
+
+# Price Models
+price_models:
+  geometric_brownian:
+    drift_method: "historical"
+    volatility_method: "historical"
+    enable_correlation: true
+    enable_mean_reversion: false
+  jump_diffusion:
+    jump_intensity: 0.05
+    jump_size_mean: 0.0
+    jump_size_std: 0.05
+    include_brownian: true
+    diffusion_weight: 0.70
+  stochastic_volatility:
+    volatility_mean_reversion: 0.50
+    long_term_volatility: 0.20
+    vol_of_vol: 0.40
+    correlation_rho: -0.70
+  regime_switching:
+    num_regimes: 3
+    transition_matrix:
+      - [0.85, 0.10, 0.05]
+      - [0.15, 0.70, 0.15]
+      - [0.05, 0.15, 0.80]
+    regimes:
+      - volatility: 0.10
+        drift: 0.15
+      - volatility: 0.25
+        drift: 0.05
+      - volatility: 0.40
+        drift: -0.10
+
+# Asset Return Models
+return_models:
+  normal_distribution: true
+  t_distribution: true
+  skewed_t_distribution: true
+  empirical_distribution: true
+  bootstrap_resampling: true
+  copula_method: "gaussian"  # gaussian, t, clayton, gumbel, frank
+  correlation_method: "pearson"  # pearson, spearman, kendall
+
+# Volatility Models
+volatility:
+  estimation_method: "garch"  # historical, garch, egarch, gjr_garch
+  window_days: 252
+  garch_p: 1
+  garch_q: 1
+  volatility_forecast_horizon: 30
+  volatility_clustering: true
+  leverage_effect: true
+
+# Risk Metrics
+risk_metrics:
+  var:
+    confidence_levels: [0.90, 0.95, 0.99]
+    calculation_methods:
+      - "historical"
+      - "parametric"
+      - "monte_carlo"
+  cvar:
+    confidence_levels: [0.90, 0.95, 0.99]
+    calculation_method: "monte_carlo"
+  expected_shortfall: true
+  drawdown_analysis: true
+  maximum_drawdown: true
+  average_drawdown: true
+  recovery_time: true
+  ulcer_index: true
+
+# Performance Metrics
+performance_metrics:
+  - "sharpe_ratio"
+  - "sortino_ratio"
+  - "calmar_ratio"
+  - "omega_ratio"
+  - "sterling_ratio"
+  - "burke_ratio"
+  - "martin_ratio"
+  - "information_ratio"
+  - "treynor_ratio"
+  - "jensen_alpha"
+  - "beta_coefficient"
+  - "r_squared"
+
+# Portfolio Optimization
+optimization:
+  objective_functions:
+    - "sharpe_ratio"
+    - "sortino_ratio"
+    - "minimum_variance"
+    - "maximum_return"
+    - "risk_parity"
+  constraints:
+    max_weight: 0.25
+    min_weight: 0.01
+    max_leverage: 1.0
+    max_sector_exposure: 0.50
+    max_asset_correlation: 0.90
+  optimization_algorithm: "quadratic_programming"
+  efficient_frontier_points: 100
+
+# Scenario Analysis
+scenarios:
+  base_case: true
+  stress_scenarios:
+    - "market_crash_2008"
+    - "covid_2020"
+    - "dot_com_bubble"
+    - "interest_rate_hike"
+    - "inflation_shock"
+    - "geopolitical_crisis"
+  user_defined_scenarios: true
+  scenario_probability_weighted: true
+
+# Stress Testing
+stress_test:
+  shocks:
+    - type: "market_shock"
+      magnitude: -0.20
+    - type: "volatility_shock"
+      magnitude: 2.0
+    - type: "correlation_shock"
+      magnitude: 0.50
+    - type: "liquidity_shock"
+      magnitude: -0.10
+  historical_events: true
+  reverse_stress_test: true
+
+# Correlation Analysis
+correlation:
+  dynamic_correlation: true
+  rolling_window_days: 60
+  correlation_regime_detection: true
+  tail_dependence: true
+  covariance_estimation: true
+  shrinkage_covariance: true
+
+# Distribution Analysis
+distribution:
+  moment_analysis: true
+  skewness_analysis: true
+  kurtosis_analysis: true
+  tail_analysis: true
+  goodness_of_fit: true
+  jarque_bera_test: true
+  kolmogorov_smirnov_test: true
+
+# Path Generation
+path_generation:
+  antithetic_variates: true
+  control_variates: true
+  importance_sampling: true
+  quasi_random_numbers: true
+  sobol_sequence: true
+  latin_hypercube: true
+  path_count_per_batch: 1000
+
+# Convergence Analysis
+convergence:
+  convergence_detection: true
+  convergence_threshold: 0.001
+  convergence_metric: "standard_error"
+  burn_in_period: 100
+  batch_size_analysis: true
+
+# Reporting
+reporting:
+  summary_statistics: true
+  percentile_analysis: true
+  probability_distribution: true
+  heatmaps: true
+  spider_charts: true
+  waterfall_charts: true
+  export_formats:
+    - "pdf"
+    - "excel"
+    - "json"
+    - "csv"
+    - "html"
+
+# Visualization
+visualization:
+  distribution_plot: true
+  efficient_frontier_plot: true
+  drawdown_plot: true
+  correlation_heatmap: true
+  scenario_analysis_plot: true
+  confidence_band_plot: true
+  dashboard_integration: true
+  update_interval_seconds: 60
+
+# Optimization Settings
+optimization_settings:
+  retry_attempts: 3
+  failover_strategy: "simple"
+  memory_limit_gb: 8
+  time_limit_seconds: 300
+  parallel_execution: true
+  max_workers: 8
+
+# Data Requirements
+data_requirements:
+  historical_days: 730
+  min_observations: 252
+  data_frequency: "daily"
+  data_quality_threshold: 0.90
+  outlier_removal: true
+  missing_data_method: "linear_interpolation"
+
+# Storage
+storage:
+  save_simulations: true
+  compression: "zstd"
+  retention_days: 30
+  storage_format: "parquet"
+  database: "timescaledb"
+
+# Alert Settings
+alerts:
+  var_exceeded_alert: true
+  drawdown_threshold_alert: true
+  correlation_breakdown_alert: true
+  convergence_failure_alert: true
+  performance_threshold_alert: true
+  alert_channels:
+    - "email"
+    - "telegram"
+    - "slack"
+
+# Integration
+integration:
+  trading_engine: true
+  risk_management: true
+  portfolio_optimization: true
+  backtesting: true
+  webhook_endpoint: "http://localhost:8080/monte_carlo"
+  dashboard_url: "http://localhost:3000/monte_carlo"
