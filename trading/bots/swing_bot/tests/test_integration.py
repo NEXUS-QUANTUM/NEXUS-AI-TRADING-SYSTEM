@@ -1,5 +1,5 @@
 """
-Swing Bot Integration Tests
+Swing Bot Integration Tests.
 ============================
 
 This module contains integration tests for the Swing Bot trading system.
