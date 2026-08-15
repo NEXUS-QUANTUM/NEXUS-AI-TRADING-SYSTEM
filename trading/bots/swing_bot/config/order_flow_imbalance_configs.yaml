@@ -1,0 +1,306 @@
+# Swing Bot Order Flow Imbalance Configuration
+# Order Flow Imbalance Analysis & Trading Parameters
+
+# General Order Flow Imbalance Settings
+order_flow_imbalance:
+  enabled: true
+  analysis_mode: "comprehensive"  # comprehensive, basic, advanced, real-time
+  imbalance_type: "order_flow"  # order_flow, volume, delta, hybrid
+  calculation_method: "tick_based"  # tick_based, time_based, volume_based
+  update_frequency_seconds: 1
+  version: "3.0.0"
+
+# Imbalance Calculation
+calculation:
+  enabled: true
+  methods:
+    - "bid_ask_imbalance"
+    - "trade_flow_imbalance"
+    - "volume_imbalance"
+    - "delta_imbalance"
+    - "depth_imbalance"
+    - "cumulative_imbalance"
+    - "rolling_imbalance"
+  primary_method: "bid_ask_imbalance"
+  secondary_method: "trade_flow_imbalance"
+  calculation_window_bars: 10
+  smoothing_period: 3
+  normalization: true
+  zscore_calculation: true
+
+# Imbalance Types
+types:
+  enabled: true
+  bid_ask_imbalance:
+    calculation: "order_book_based"
+    depth_levels: 10
+    weighting: "linear"  # linear, exponential, volume_weighted
+    threshold: 0.30
+  trade_flow_imbalance:
+    calculation: "trade_volume_based"
+    aggressor_detection: true
+    threshold: 0.40
+  volume_imbalance:
+    calculation: "bid_ask_volume"
+    lookback_bars: 20
+    threshold: 0.35
+  delta_imbalance:
+    calculation: "cumulative_delta"
+    smoothing: true
+    threshold: 0.30
+  depth_imbalance:
+    calculation: "order_book_depth"
+    levels: 5
+    weighting: "volume"
+
+# Imbalance Indicators
+indicators:
+  enabled: true
+  primary_indicators:
+    - "net_imbalance"
+    - "imbalance_ratio"
+    - "imbalance_velocity"
+    - "cumulative_imbalance"
+    - "imbalance_momentum"
+    - "imbalance_strength"
+    - "imbalance_divergence"
+  secondary_indicators:
+    - "buy_pressure"
+    - "sell_pressure"
+    - "aggressor_imbalance"
+    - "passive_imbalance"
+    - "institutional_imbalance"
+    - "retail_imbalance"
+  indicator_weights:
+    net_imbalance: 0.20
+    imbalance_ratio: 0.15
+    imbalance_velocity: 0.15
+    cumulative_imbalance: 0.10
+    imbalance_momentum: 0.10
+    imbalance_strength: 0.10
+    imbalance_divergence: 0.10
+    buy_pressure: 0.10
+
+# Net Imbalance
+net_imbalance:
+  enabled: true
+  calculation: "bid_ask_difference"
+  normalization: true
+  threshold_bullish: 0.30
+  threshold_bearish: -0.30
+  extreme_bullish: 0.60
+  extreme_bearish: -0.60
+  moving_average_period: 10
+
+# Imbalance Ratio
+imbalance_ratio:
+  enabled: true
+  calculation: "buy_volume_sell_volume"
+  normalization: true
+  threshold_bullish: 1.20
+  threshold_bearish: 0.80
+  extreme_bullish: 1.50
+  extreme_bearish: 0.50
+
+# Imbalance Velocity
+velocity:
+  enabled: true
+  calculation: "rate_of_change"
+  lookback_bars: 5
+  smoothing_period: 3
+  threshold_spike: 2.0
+  threshold_slow: 0.50
+
+# Cumulative Imbalance
+cumulative:
+  enabled: true
+  calculation: "running_total"
+  reset_period: "session"  # session, day, custom
+  custom_reset_bars: 100
+  divergence_detection: true
+  reversal_detection: true
+  strength_scoring: true
+
+# Imbalance Momentum
+momentum:
+  enabled: true
+  calculation: "rate_of_change"
+  lookback_bars: 5
+  smoothing_period: 3
+  threshold_momentum: 0.50
+
+# Imbalance Strength
+strength:
+  enabled: true
+  strength_metrics:
+    - "imbalance_magnitude"
+    - "imbalance_consistency"
+    - "imbalance_persistence"
+    - "volume_confirm"
+  strength_calculation: "weighted_average"
+  min_strength_required: 0.50
+
+# Imbalance Divergence
+divergence:
+  enabled: true
+  divergence_types:
+    - "price_imbalance_divergence"
+    - "volume_imbalance_divergence"
+    - "delta_imbalance_divergence"
+    - "momentum_imbalance_divergence"
+  detection_method: "comparison"
+  lookback_bars: 20
+  min_swing_size: 0.02
+  divergence_confirmation_bars: 3
+
+# Signal Generation
+signals:
+  enabled: true
+  signal_types:
+    - "bullish_imbalance"
+    - "bearish_imbalance"
+    - "imbalance_reversal"
+    - "imbalance_breakout"
+    - "imbalance_divergence"
+    - "imbalance_extreme"
+    - "cumulative_breakout"
+    - "cumulative_reversal"
+  confirmation_requirements:
+    min_indicators_confirmed: 2
+    volume_confirmation: true
+    price_confirmation: true
+  signal_strength_calculation: "weighted_average"
+  min_signal_strength: 0.60
+
+# Trading Rules
+trading_rules:
+  enabled: true
+  entry_rules:
+    - "imbalance_signal_bullish"
+    - "imbalance_strength_above_threshold"
+    - "price_confirmation"
+    - "volume_confirmation"
+    - "trend_confirmation"
+  exit_rules:
+    - "imbalance_reversal"
+    - "imbalance_strength_below_threshold"
+    - "take_profit_hit"
+    - "stop_loss_hit"
+  position_sizing:
+    method: "imbalance_based"
+    imbalance_strength_multiplier: 1.5
+    max_position_size: 0.05
+    min_position_size: 0.01
+
+# Stop Loss
+stop_loss:
+  enabled: true
+  stop_methods:
+    - "imbalance_reversal"
+    - "fixed_percent"
+    - "volatility_based"
+    - "trailing"
+  imbalance_reversal_threshold: 0.20
+  fixed_percent: 0.02
+  volatility_multiplier: 2.0
+  trailing_activation: 0.02
+  trailing_distance: 0.01
+
+# Take Profit
+take_profit:
+  enabled: true
+  profit_methods:
+    - "imbalance_exhaustion"
+    - "fixed_percent"
+    - "risk_reward_ratio"
+    - "trailing"
+  imbalance_exhaustion_threshold: 0.70
+  fixed_percent: 0.04
+  risk_reward_ratio: 2.0
+  trailing_activation: 0.02
+  trailing_distance: 0.01
+
+# Imbalance Visualization
+visualization:
+  enabled: true
+  charts:
+    - "imbalance_dashboard"
+    - "net_imbalance_chart"
+    - "imbalance_ratio_chart"
+    - "cumulative_imbalance"
+    - "imbalance_momentum"
+    - "imbalance_signals"
+    - "divergence_detection"
+  update_interval_seconds: 5
+  dashboard_integration: true
+  real_time_updates: true
+
+# Alerting
+alerting:
+  enabled: true
+  alert_conditions:
+    - "imbalance_signal"
+    - "imbalance_reversal"
+    - "imbalance_breakout"
+    - "imbalance_extreme"
+    - "cumulative_breakout"
+    - "divergence_detected"
+    - "imbalance_divergence"
+  alert_thresholds:
+    signal_confidence: 0.70
+    reversal_confidence: 0.75
+    breakout_confidence: 0.75
+    divergence_confidence: 0.70
+  alert_channels:
+    - "email"
+    - "telegram"
+    - "slack"
+  alert_cooldown_seconds: 300
+
+# Reporting
+reporting:
+  enabled: true
+  report_types:
+    - "real_time_alerts"
+    - "daily_imbalance_summary"
+    - "weekly_imbalance_analysis"
+    - "monthly_imbalance_report"
+  report_formats:
+    - "pdf"
+    - "html"
+    - "json"
+    - "csv"
+    - "excel"
+  report_recipients:
+    - "trading@example.com"
+    - "research@example.com"
+    - "market_structure@example.com"
+
+# Storage
+storage:
+  enabled: true
+  storage_categories:
+    - "imbalance_data"
+    - "signal_history"
+    - "divergence_data"
+    - "cumulative_data"
+    - "velocity_data"
+    - "strength_metrics"
+    - "alert_history"
+  retention_days: 365
+  compression: "zstd"
+  storage_format: "parquet"
+
+# Integration
+integration:
+  enabled: true
+  webhook_endpoint: "http://localhost:8080/order-flow-imbalance"
+  api_endpoint: "/api/v1/trading/order-flow-imbalance"
+  dashboard_url: "http://localhost:3000/order-flow-imbalance"
+  real_time_updates: true
+  data_sync_frequency_seconds: 3
+  external_systems:
+    - "trading_engine"
+    - "execution_engine"
+    - "research_platform"
+    - "market_data_feed"
