@@ -1,0 +1,739 @@
+# genetic_configs.yaml
+# Configuration complète pour l'algorithme génétique dans Swing Bot
+# Version: 4.0.0 - Production Ready
+
+# Paramètres généraux
+general:
+  enabled: true
+  mode: "comprehensive"
+  calculate_in_real_time: true
+  update_frequency_seconds: 1
+  lookback_periods:
+    - 5
+    - 10
+    - 20
+    - 50
+    - 100
+    - 200
+    - 500
+  history_length_days: 730
+  min_data_points: 100
+  max_data_points: 100000
+  genetic_version: "4.0.0"
+  environment: "production"
+
+# Paramètres génétiques
+genetic_parameters:
+  population:
+    enabled: true
+    initial_size: 100
+    max_size: 200
+    min_size: 50
+    growth_rate: 0.1
+    shrink_rate: 0.05
+    random_seed: 42
+  selection:
+    enabled: true
+    method: "tournament"
+    tournament_size: 5
+    elite_ratio: 0.1
+    fitness_sharing: true
+    niche_radius: 0.5
+    selection_pressure: 1.5
+  reproduction:
+    enabled: true
+    crossover_rate: 0.8
+    mutation_rate: 0.1
+    gene_mutation_rate: 0.05
+    gene_crossover_rate: 0.3
+    crossover_method: "uniform"
+    mutation_method: "gaussian"
+  termination:
+    enabled: true
+    max_generations: 100
+    max_time_seconds: 3600
+    fitness_threshold: 0.95
+    stagnation_threshold: 10
+    early_stopping: true
+    convergence_tolerance: 0.001
+
+# Types d'optimisation génétique
+optimization_types:
+  hyperparameter_optimization:
+    enabled: true
+    description: "Hyperparameter Optimization"
+    parameters:
+      - "stop_loss"
+      - "take_profit"
+      - "position_size"
+      - "entry_threshold"
+      - "exit_threshold"
+      - "volatility_multiplier"
+      - "risk_per_trade"
+    bounds:
+      stop_loss: [0.01, 0.10]
+      take_profit: [0.02, 0.20]
+      position_size: [0.01, 0.10]
+      entry_threshold: [0.01, 0.05]
+      exit_threshold: [0.01, 0.05]
+      volatility_multiplier: [0.5, 2.0]
+      risk_per_trade: [0.005, 0.02]
+    optimization_objective: "sharpe_ratio"
+  strategy_optimization:
+    enabled: true
+    description: "Strategy Optimization"
+    strategies:
+      - "momentum"
+      - "mean_reversion"
+      - "breakout"
+      - "scalping"
+      - "swing"
+    combination_method: "hybrid"
+    strategy_weights:
+      momentum: 0.25
+      mean_reversion: 0.25
+      breakout: 0.20
+      scalping: 0.15
+      swing: 0.15
+    optimization_objective: "profit_factor"
+  feature_selection:
+    enabled: true
+    description: "Feature Selection"
+    features:
+      - "rsi"
+      - "macd"
+      - "bollinger_bands"
+      - "atr"
+      - "volume"
+      - "momentum"
+      - "stochastic"
+      - "cci"
+      - "adx"
+      - "ichimoku"
+    max_features: 10
+    min_features: 3
+    optimization_objective: "f1_score"
+  weight_optimization:
+    enabled: true
+    description: "Weight Optimization"
+    weights:
+      - "strategy_weights"
+      - "indicator_weights"
+      - "ensemble_weights"
+    optimization_objective: "sharpe_ratio"
+    weight_bounds: [0.0, 1.0]
+
+# Fonctions de fitness
+fitness_functions:
+  performance:
+    enabled: true
+    metrics:
+      - "win_rate"
+      - "profit_factor"
+      - "sharpe_ratio"
+      - "sortino_ratio"
+      - "calmar_ratio"
+      - "omega_ratio"
+    weights:
+      - 0.25
+      - 0.25
+      - 0.20
+      - 0.15
+      - 0.10
+      - 0.05
+    maximize: true
+  risk_adjusted:
+    enabled: true
+    metrics:
+      - "sharpe_ratio"
+      - "sortino_ratio"
+      - "calmar_ratio"
+      - "omega_ratio"
+      - "upside_potential"
+    weights:
+      - 0.30
+      - 0.25
+      - 0.20
+      - 0.15
+      - 0.10
+    maximize: true
+  robustness:
+    enabled: true
+    metrics:
+      - "stability"
+      - "consistency"
+      - "reliability"
+      - "drawdown_recovery"
+      - "stress_test_score"
+    weights:
+      - 0.30
+      - 0.25
+      - 0.20
+      - 0.15
+      - 0.10
+    maximize: true
+  multi_objective:
+    enabled: true
+    objectives:
+      - "maximize_return"
+      - "minimize_risk"
+      - "maximize_sharpe"
+      - "minimize_drawdown"
+    weights:
+      - 0.30
+      - 0.25
+      - 0.25
+      - 0.20
+    constraints:
+      - "max_drawdown < 0.20"
+      - "min_sharpe > 1.0"
+      - "max_risk < 0.15"
+
+# Stratégies de croisement
+crossover_strategies:
+  single_point:
+    enabled: true
+    description: "Single Point Crossover"
+    probability: 0.8
+  two_point:
+    enabled: true
+    description: "Two Point Crossover"
+    probability: 0.7
+  uniform:
+    enabled: true
+    description: "Uniform Crossover"
+    probability: 0.9
+    swap_probability: 0.5
+  arithmetic:
+    enabled: true
+    description: "Arithmetic Crossover"
+    probability: 0.6
+    alpha: 0.5
+  heuristic:
+    enabled: true
+    description: "Heuristic Crossover"
+    probability: 0.5
+
+# Stratégies de mutation
+mutation_strategies:
+  gaussian:
+    enabled: true
+    description: "Gaussian Mutation"
+    probability: 0.1
+    sigma: 0.1
+  uniform:
+    enabled: true
+    description: "Uniform Mutation"
+    probability: 0.1
+    range: 0.1
+  non_uniform:
+    enabled: true
+    description: "Non-Uniform Mutation"
+    probability: 0.1
+    sigma: 0.1
+    decay: 0.95
+  polynomial:
+    enabled: true
+    description: "Polynomial Mutation"
+    probability: 0.1
+    distribution_index: 20
+
+# Indicateurs génétiques
+indicators:
+  genetic_fitness:
+    enabled: true
+    calculation: "weighted_average"
+    period: 14
+    smoothing: 3
+    threshold: 0.6
+  genetic_diversity:
+    enabled: true
+    calculation: "population_diversity"
+    period: 14
+    smoothing: 3
+    threshold: 0.3
+  genetic_convergence:
+    enabled: true
+    calculation: "convergence_rate"
+    period: 14
+    smoothing: 0
+    threshold: 0.1
+  genetic_velocity:
+    enabled: true
+    period: 5
+    smoothing: 0
+    threshold: 0.1
+  genetic_acceleration:
+    enabled: true
+    period: 10
+    smoothing: 0
+    threshold: 0.05
+
+# Analyse génétique
+analysis:
+  historical:
+    enabled: true
+    lookback_years: 5
+    compute_genetic_accuracy: true
+    compute_fitness_evolution: true
+    compute_diversity_metrics: true
+    compute_convergence_rate: true
+    compute_parameter_importance: true
+  real_time:
+    enabled: true
+    update_frequency_ms: 100
+    compute_instantaneous_fitness: true
+    compute_moving_average_fitness: true
+    compute_exponential_fitness: true
+    compute_weighted_fitness: true
+    compute_genetic_velocity: true
+    compute_genetic_acceleration: true
+  predictive:
+    enabled: true
+    model_type: "ensemble"
+    models:
+      - "lstm"
+      - "gru"
+      - "xgboost"
+      - "lightgbm"
+    features:
+      - "genetic_fitness"
+      - "genetic_diversity"
+      - "genetic_convergence"
+      - "genetic_velocity"
+      - "genetic_acceleration"
+      - "population_size"
+      - "generation_count"
+      - "fitness_variance"
+      - "selection_pressure"
+      - "mutation_rate"
+      - "crossover_rate"
+      - "time_of_day"
+      - "day_of_week"
+    forecast_horizons:
+      - 1
+      - 5
+      - 10
+      - 20
+    confidence_threshold: 0.7
+    retrain_frequency_hours: 24
+
+# Alertes et notifications
+alerts:
+  genetic_convergence:
+    enabled: true
+    threshold: 0.8
+    channels:
+      - "email"
+      - "telegram"
+      - "slack"
+      - "push_notification"
+    severity: "info"
+  genetic_stagnation:
+    enabled: true
+    threshold: 0.1
+    channels:
+      - "email"
+      - "telegram"
+      - "slack"
+    severity: "warning"
+  genetic_improvement:
+    enabled: true
+    threshold: 0.05
+    channels:
+      - "telegram"
+      - "push_notification"
+    severity: "success"
+  genetic_diversity_high:
+    enabled: true
+    threshold: 0.7
+    channels:
+      - "telegram"
+      - "push_notification"
+    severity: "info"
+  genetic_diversity_low:
+    enabled: true
+    threshold: 0.1
+    channels:
+      - "email"
+      - "telegram"
+      - "slack"
+    severity: "warning"
+
+# Actions automatiques
+auto_actions:
+  parameter_adjustment:
+    enabled: true
+    action_types:
+      - "adjust_parameters"
+      - "modify_strategy"
+      - "update_weights"
+      - "change_features"
+    adjustment_factor: 0.1
+    max_adjustment_percent: 20.0
+  optimization:
+    enabled: true
+    action_types:
+      - "rerun_optimization"
+      - "update_population"
+      - "change_selection"
+      - "modify_mutation"
+    optimization_factor: 0.1
+    max_optimization_percent: 15.0
+
+# Monitoring et journalisation
+monitoring:
+  logging:
+    enabled: true
+    level: "debug"
+    format: "json"
+    include_context: true
+    include_timestamp: true
+    include_metadata: true
+  metrics:
+    enabled: true
+    collect_every_seconds: 1
+    metrics_to_collect:
+      - "genetic_fitness"
+      - "genetic_diversity"
+      - "genetic_convergence"
+      - "genetic_velocity"
+      - "genetic_acceleration"
+      - "population_size"
+      - "generation_count"
+      - "best_fitness"
+      - "average_fitness"
+      - "worst_fitness"
+      - "fitness_variance"
+      - "selection_pressure"
+      - "mutation_rate"
+      - "crossover_rate"
+  dashboard:
+    enabled: true
+    update_interval_seconds: 1
+    charts:
+      - "fitness_evolution"
+      - "population_diversity"
+      - "convergence_analysis"
+      - "parameter_importance"
+      - "genetic_velocity"
+      - "genetic_acceleration"
+      - "selection_pressure"
+      - "mutation_analysis"
+
+# Backtesting
+backtesting:
+  enabled: true
+  use_historical_data: true
+  compute_genetic_accuracy: true
+  compute_optimization_effectiveness: true
+  compute_parameter_importance: true
+  compute_risk_adjusted_returns: true
+  report_metrics:
+    - "genetic_accuracy"
+    - "optimization_effectiveness"
+    - "parameter_importance"
+    - "win_rate"
+    - "profit_factor"
+    - "sharpe_ratio"
+    - "max_drawdown"
+
+# Configuration de la base de données
+database:
+  enabled: true
+  table_name: "genetic_metrics"
+  retention_days: 365
+  aggregation:
+    enabled: true
+    intervals:
+      - "1s"
+      - "5s"
+      - "15s"
+      - "30s"
+      - "1m"
+      - "5m"
+      - "15m"
+      - "1h"
+      - "4h"
+      - "24h"
+  compression: true
+  backup:
+    enabled: true
+    frequency: "daily"
+    retention_days: 30
+
+# Webhooks
+webhooks:
+  enabled: true
+  endpoints:
+    - url: "https://nexustradingia.com/api/webhooks/genetic"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      payload_template: "genetic_alert"
+    - url: "https://nexustradingia.com/api/webhooks/genetic-convergence"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      payload_template: "genetic_convergence"
+  retry:
+    enabled: true
+    max_attempts: 5
+    backoff_seconds: 30
+
+# Logging avancé
+advanced_logging:
+  enabled: true
+  levels:
+    - "info"
+    - "warning"
+    - "error"
+    - "critical"
+    - "debug"
+  output: "genetic_logs"
+  rotation:
+    enabled: true
+    max_size_mb: 100
+    max_files: 10
+  remote_logging:
+    enabled: true
+    endpoints:
+      - "https://nexustradingia.com/logs/genetic"
+  include_trace: true
+  include_stack_trace: true
+  include_context: true
+
+# Threading et performances
+performance:
+  thread_pool_size: 8
+  queue_size: 10000
+  batch_size: 1000
+  async_processing: true
+  cache_size: 10000
+  cache_ttl_seconds: 30
+  database_pool_size: 10
+  database_pool_max_overflow: 20
+  use_multiprocessing: true
+  max_workers: 8
+  use_cython: true
+  use_numba: true
+  use_gpu: true
+  gpu_device: 0
+
+# API de gestion
+management_api:
+  enabled: true
+  endpoints:
+    - "/api/v1/genetic/current"
+    - "/api/v1/genetic/history"
+    - "/api/v1/genetic/metrics"
+    - "/api/v1/genetic/status"
+    - "/api/v1/genetic/parameters"
+    - "/api/v1/genetic/population"
+    - "/api/v1/genetic/fitness"
+    - "/api/v1/genetic/optimization"
+  authentication_required: true
+  rate_limit: 100
+  rate_limit_interval_seconds: 60
+  version: "v1.0.0"
+
+# Export des données
+data_export:
+  enabled: true
+  formats:
+    - "csv"
+    - "json"
+    - "parquet"
+    - "avro"
+    - "feather"
+  schedule: "realtime"
+  batch_size: 1000
+  retention_days: 30
+  compression: "gzip"
+  destination: "s3://nexus-data/genetic/"
+  encrypt: true
+  encryption_key_id: "nexus-genetic-key"
+  partition_by:
+    - "symbol"
+    - "year"
+    - "month"
+    - "day"
+
+# Intégration avec d'autres modules
+integrations:
+  risk_engine:
+    enabled: true
+    sync_frequency_seconds: 1
+    share_metrics: true
+  execution_engine:
+    enabled: true
+    share_signals: true
+    require_confirmation: true
+  portfolio_manager:
+    enabled: true
+    share_positions: true
+    share_allocation: true
+  ai_engine:
+    enabled: true
+    use_ai_predictions: true
+    confidence_threshold: 0.7
+    model_endpoint: "http://ai-engine:8000/predict/genetic"
+  market_data:
+    enabled: true
+    sync_frequency_ms: 100
+    data_endpoint: "ws://market-data:8080/ws"
+
+# Tests et validation
+testing:
+  unit_tests:
+    enabled: true
+    coverage_threshold: 90
+  integration_tests:
+    enabled: true
+  stress_tests:
+    enabled: true
+    scenarios:
+      - "high_population"
+      - "low_population"
+      - "convergence_issues"
+      - "stagnation"
+      - "parameter_optimization"
+  validation:
+    enabled: true
+    validate_on_startup: true
+    validate_on_config_change: true
+    validation_rules:
+      - "genetic_parameters.population.initial_size > 0"
+      - "genetic_parameters.population.max_size > genetic_parameters.population.initial_size"
+      - "genetic_parameters.population.min_size > 0"
+      - "genetic_parameters.selection.tournament_size > 0"
+      - "genetic_parameters.selection.elite_ratio >= 0.0"
+      - "genetic_parameters.selection.elite_ratio <= 1.0"
+      - "genetic_parameters.reproduction.crossover_rate >= 0.0"
+      - "genetic_parameters.reproduction.crossover_rate <= 1.0"
+      - "genetic_parameters.reproduction.mutation_rate >= 0.0"
+      - "genetic_parameters.reproduction.mutation_rate <= 1.0"
+      - "genetic_parameters.termination.max_generations > 0"
+      - "fitness_functions.performance.weights.sum() == 1.0"
+      - "fitness_functions.risk_adjusted.weights.sum() == 1.0"
+      - "fitness_functions.robustness.weights.sum() == 1.0"
+      - "min_data_points > 0"
+
+# Market conditions adaptation
+market_adaptation:
+  enabled: true
+  regime_detection:
+    enabled: true
+    lookback_periods:
+      - 20
+      - 50
+      - 200
+    regimes:
+      - "trending"
+      - "ranging"
+      - "volatile"
+      - "stable"
+      - "bull"
+      - "bear"
+  regime_parameters:
+    trending:
+      genetic_multiplier: 1.2
+      selection_pressure_multiplier: 1.1
+      mutation_rate_multiplier: 0.9
+      crossover_rate_multiplier: 1.1
+    ranging:
+      genetic_multiplier: 0.8
+      selection_pressure_multiplier: 0.9
+      mutation_rate_multiplier: 1.2
+      crossover_rate_multiplier: 0.9
+    volatile:
+      genetic_multiplier: 0.7
+      selection_pressure_multiplier: 0.8
+      mutation_rate_multiplier: 1.3
+      crossover_rate_multiplier: 0.8
+    stable:
+      genetic_multiplier: 1.0
+      selection_pressure_multiplier: 1.0
+      mutation_rate_multiplier: 1.0
+      crossover_rate_multiplier: 1.0
+    bull:
+      genetic_multiplier: 1.1
+      selection_pressure_multiplier: 1.0
+      mutation_rate_multiplier: 1.0
+      crossover_rate_multiplier: 1.0
+    bear:
+      genetic_multiplier: 0.9
+      selection_pressure_multiplier: 1.0
+      mutation_rate_multiplier: 1.1
+      crossover_rate_multiplier: 0.9
+
+# Time-based configurations
+time_based:
+  enabled: true
+  sessions:
+    asia:
+      start: "00:00"
+      end: "08:00"
+      genetic_multiplier: 0.8
+      selection_pressure_multiplier: 0.9
+      mutation_rate_multiplier: 1.2
+      crossover_rate_multiplier: 0.9
+    london:
+      start: "08:00"
+      end: "16:00"
+      genetic_multiplier: 1.2
+      selection_pressure_multiplier: 1.1
+      mutation_rate_multiplier: 0.9
+      crossover_rate_multiplier: 1.1
+    newyork:
+      start: "13:00"
+      end: "22:00"
+      genetic_multiplier: 1.0
+      selection_pressure_multiplier: 1.0
+      mutation_rate_multiplier: 1.0
+      crossover_rate_multiplier: 1.0
+    overlap:
+      start: "13:00"
+      end: "16:00"
+      genetic_multiplier: 1.5
+      selection_pressure_multiplier: 1.2
+      mutation_rate_multiplier: 0.8
+      crossover_rate_multiplier: 1.2
+
+# Symbol-specific configurations
+symbol_configs:
+  BTCUSDT:
+    genetic_multiplier: 1.0
+    selection_pressure_multiplier: 1.0
+    mutation_rate_multiplier: 1.0
+    crossover_rate_multiplier: 1.0
+    population_size: 100
+    generations: 100
+  ETHUSDT:
+    genetic_multiplier: 1.1
+    selection_pressure_multiplier: 0.9
+    mutation_rate_multiplier: 1.1
+    crossover_rate_multiplier: 0.9
+    population_size: 90
+    generations: 90
+  SOLUSDT:
+    genetic_multiplier: 1.2
+    selection_pressure_multiplier: 0.8
+    mutation_rate_multiplier: 1.2
+    crossover_rate_multiplier: 0.8
+    population_size: 80
+    generations: 80
+  ADAUSDT:
+    genetic_multiplier: 0.9
+    selection_pressure_multiplier: 1.1
+    mutation_rate_multiplier: 0.9
+    crossover_rate_multiplier: 1.1
+    population_size: 70
+    generations: 70
+  XRPUSDT:
+    genetic_multiplier: 1.0
+    selection_pressure_multiplier: 1.0
+    mutation_rate_multiplier: 1.0
+    crossover_rate_multiplier: 1.0
+    population_size: 80
+    generations: 80
