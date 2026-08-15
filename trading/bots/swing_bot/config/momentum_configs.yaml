@@ -1,0 +1,380 @@
+# Swing Bot Momentum Configuration
+# Momentum Trading Strategy & Analysis Parameters
+
+# General Momentum Settings
+momentum:
+  enabled: true
+  strategy_type: "hybrid"  # pure, hybrid, adaptive, multi_factor
+  momentum_calculation: "rate_of_change"  # rate_of_change, moving_average, regression, custom
+  timeframe: "medium"  # short, medium, long, multi
+  version: "3.0.0"
+
+# Momentum Indicators
+indicators:
+  primary:
+    - "roc"
+    - "rsi"
+    - "macd"
+    - "stochastic"
+    - "cci"
+    - "williams_r"
+    - "momentum_line"
+    - "ultimate_oscillator"
+  secondary:
+    - "adx"
+    - "bollinger_bands"
+    - "moving_average"
+    - "parabolic_sar"
+    - "ichimoku"
+    - "keltner_channels"
+    - "donchian_channels"
+  weightings:
+    roc: 0.20
+    rsi: 0.20
+    macd: 0.20
+    stochastic: 0.15
+    cci: 0.10
+    williams_r: 0.10
+    momentum_line: 0.05
+
+# Rate of Change (ROC)
+roc:
+  enabled: true
+  periods: [10, 20, 30, 60]
+  primary_period: 20
+  smoothing_period: 5
+  threshold_buy: 5.0
+  threshold_sell: -5.0
+  threshold_strong: 10.0
+  threshold_weak: -10.0
+  center_line: 0.0
+  divergence_detection: true
+
+# Relative Strength Index (RSI)
+rsi:
+  enabled: true
+  period: 14
+  overbought_threshold: 70
+  oversold_threshold: 30
+  extreme_overbought: 80
+  extreme_oversold: 20
+  smoothing: true
+  moving_average_period: 3
+  divergence_detection: true
+  failure_swing_detection: true
+
+# MACD
+macd:
+  enabled: true
+  fast_period: 12
+  slow_period: 26
+  signal_period: 9
+  histogram: true
+  divergence_detection: true
+  crossover_sensitivity: 0.50
+  zero_line_cross: true
+  signal_line_cross: true
+
+# Stochastic Oscillator
+stochastic:
+  enabled: true
+  k_period: 14
+  d_period: 3
+  k_smoothing: 3
+  overbought_threshold: 80
+  oversold_threshold: 20
+  extreme_overbought: 90
+  extreme_oversold: 10
+  divergence_detection: true
+  crossover_detection: true
+
+# Commodity Channel Index (CCI)
+cci:
+  enabled: true
+  period: 20
+  overbought_threshold: 100
+  oversold_threshold: -100
+  extreme_overbought: 200
+  extreme_oversold: -200
+  divergence_detection: true
+  smoothing: true
+
+# Williams %R
+williams_r:
+  enabled: true
+  period: 14
+  overbought_threshold: -20
+  oversold_threshold: -80
+  extreme_overbought: -10
+  extreme_oversold: -90
+  divergence_detection: true
+  zero_line_cross: true
+
+# Momentum Line
+momentum_line:
+  enabled: true
+  period: 10
+  smoothing: true
+  smoothing_period: 3
+  center_line: 0.0
+  threshold_buy: 5.0
+  threshold_sell: -5.0
+
+# Ultimate Oscillator
+ultimate_oscillator:
+  enabled: true
+  short_period: 7
+  medium_period: 14
+  long_period: 28
+  overbought_threshold: 70
+  oversold_threshold: 30
+  divergence_detection: true
+  weighting:
+    short: 0.40
+    medium: 0.30
+    long: 0.30
+
+# ADX (Average Directional Index)
+adx:
+  enabled: true
+  period: 14
+  threshold_strong_trend: 25
+  threshold_weak_trend: 20
+  extreme_trend: 50
+  plus_di: true
+  minus_di: true
+  crossover_detection: true
+
+# Momentum Signals
+signals:
+  signal_types:
+    - "buy"
+    - "sell"
+    - "strong_buy"
+    - "strong_sell"
+    - "neutral"
+  confirmation_requirements:
+    min_confirmation_indicators: 3
+    divergence_confirmation: true
+    volume_confirmation: true
+    price_confirmation: true
+  signal_strength_calculation: "weighted_average"
+  min_signal_strength: 0.60
+
+# Momentum Divergence
+divergence:
+  enabled: true
+  divergence_types:
+    - "bullish_divergence"
+    - "bearish_divergence"
+    - "hidden_bullish_divergence"
+    - "hidden_bearish_divergence"
+  detection_method: "price_indicator_comparison"
+  lookback_bars: 20
+  min_swing_size: 0.02
+  divergence_confirmation_bars: 3
+  strength_weight: 0.30
+
+# Momentum Crossover
+crossover:
+  enabled: true
+  crossover_types:
+    - "price_ma_crossover"
+    - "ma_crossover"
+    - "macd_crossover"
+    - "stochastic_crossover"
+  confirmation_bars: 2
+  filter_noise: true
+  noise_threshold: 0.01
+  strength_measurement: true
+
+# Multi-Timeframe Momentum
+multi_timeframe:
+  enabled: true
+  timeframes:
+    - "daily"
+    - "hourly"
+    - "15min"
+    - "5min"
+  weighting:
+    daily: 0.40
+    hourly: 0.30
+    "15min": 0.20
+    "5min": 0.10
+  alignment_required: true
+  min_aligned_timeframes: 2
+  divergence_across_timeframes: true
+
+# Momentum Score
+momentum_score:
+  enabled: true
+  components:
+    - "price_momentum"
+    - "volume_momentum"
+    - "indicator_momentum"
+    - "relative_momentum"
+  weights:
+    price_momentum: 0.30
+    volume_momentum: 0.25
+    indicator_momentum: 0.25
+    relative_momentum: 0.20
+  score_range: [-1.0, 1.0]
+  thresholds:
+    strong_buy: 0.70
+    buy: 0.40
+    neutral: 0.20
+    sell: -0.40
+    strong_sell: -0.70
+
+# Relative Momentum
+relative_momentum:
+  enabled: true
+  benchmark: "s&p_500"
+  calculation_method: "ratio"  # ratio, difference, percentile, zscore
+  lookback_period_days: 90
+  smoothing_period_days: 5
+  momentum_ranking: true
+  percentile_threshold: 75
+
+# Momentum Filters
+filters:
+  enabled: true
+  filter_types:
+    - "volume_filter"
+    - "volatility_filter"
+    - "trend_filter"
+    - "regime_filter"
+    - "time_filter"
+  volume_filter:
+    min_volume_percentile: 20
+    max_volume_percentile: 95
+  volatility_filter:
+    max_volatility_percent: 50
+    min_volatility_percent: 5
+  trend_filter:
+    min_adx: 20
+    max_adx: 60
+  regime_filter:
+    allowed_regimes: ["trending", "high_volatility"]
+    disallowed_regimes: ["ranging", "low_volatility"]
+
+# Momentum Trading Rules
+trading_rules:
+  enabled: true
+  entry_rules:
+    - "momentum_score_above_threshold"
+    - "consecutive_buy_signals"
+    - "volume_confirmation"
+    - "trend_confirmation"
+    - "breakout_confirmation"
+  exit_rules:
+    - "momentum_reversal"
+    - "take_profit_hit"
+    - "stop_loss_hit"
+    - "momentum_score_below_threshold"
+    - "divergence_detected"
+  position_sizing:
+    method: "momentum_based"
+    momentum_strength_multiplier: 1.5
+    max_position_size: 0.05
+    min_position_size: 0.01
+
+# Momentum Stop Loss
+stop_loss:
+  enabled: true
+  stop_methods:
+    - "fixed_percent"
+    - "volatility_based"
+    - "momentum_based"
+    - "trailing"
+  fixed_percent: 0.02
+  volatility_multiplier: 2.0
+  momentum_reversal_threshold: 0.30
+  trailing_activation: 0.02
+  trailing_distance: 0.01
+
+# Momentum Take Profit
+take_profit:
+  enabled: true
+  profit_methods:
+    - "fixed_percent"
+    - "risk_reward_ratio"
+    - "momentum_target"
+    - "trailing"
+  fixed_percent: 0.04
+  risk_reward_ratio: 2.0
+  momentum_target_multiplier: 1.5
+  trailing_activation: 0.02
+  trailing_distance: 0.01
+
+# Performance Metrics
+performance:
+  enabled: true
+  metrics:
+    - "momentum_accuracy"
+    - "signal_accuracy"
+    - "win_rate"
+    - "average_return"
+    - "sharpe_ratio"
+    - "profit_factor"
+    - "average_hold_time"
+    - "momentum_efficiency"
+  evaluation_period_days: 30
+  rolling_window_days: 30
+  benchmark_comparison: true
+
+# Visualization
+visualization:
+  enabled: true
+  charts:
+    - "momentum_score_chart"
+    - "indicator_charts"
+    - "divergence_chart"
+    - "signal_chart"
+    - "performance_chart"
+  dashboard_integration: true
+  update_interval_seconds: 10
+  real_time_updates: true
+
+# Integration
+integration:
+  enabled: true
+  webhook_endpoint: "http://localhost:8080/momentum"
+  api_endpoint: "/api/v1/trading/momentum"
+  dashboard_url: "http://localhost:3000/momentum"
+  real_time_updates: true
+  data_sync_frequency_seconds: 5
+  external_systems:
+    - "trading_engine"
+    - "risk_management"
+    - "portfolio_management"
+
+# Alerting
+alerting:
+  enabled: true
+  alert_conditions:
+    - "strong_momentum_signal"
+    - "divergence_detected"
+    - "momentum_reversal"
+    - "signal_confirmation"
+    - "momentum_breakout"
+  alert_channels:
+    - "email"
+    - "telegram"
+    - "slack"
+  alert_cooldown_seconds: 300
+
+# Logging
+logging:
+  enabled: true
+  log_level: "info"
+  log_categories:
+    - "signal_generation"
+    - "divergence_detection"
+    - "momentum_calculation"
+    - "trade_execution"
+    - "performance"
+    - "errors"
+  log_rotation: true
+  max_log_size_mb: 100
+  retention_days: 30
