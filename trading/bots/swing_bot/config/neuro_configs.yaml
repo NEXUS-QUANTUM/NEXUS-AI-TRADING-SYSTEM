@@ -1,0 +1,666 @@
+# neuro_configs.yaml
+# Configuration complète pour l'analyse neuro-évolutionnaire dans Swing Bot
+# Version: 4.0.0 - Production Ready
+
+# Paramètres généraux
+general:
+  enabled: true
+  mode: "comprehensive"
+  calculate_in_real_time: true
+  update_frequency_seconds: 1
+  lookback_periods:
+    - 5
+    - 10
+    - 20
+    - 50
+    - 100
+    - 200
+    - 500
+  history_length_days: 730
+  min_data_points: 100
+  max_data_points: 100000
+  neuro_version: "4.0.0"
+  environment: "production"
+
+# Types de réseaux neuronaux
+neural_types:
+  feedforward:
+    enabled: true
+    description: "Feedforward Neural Network"
+    layers: [64, 32, 16]
+    activation: "relu"
+    output_activation: "linear"
+    optimizer: "adam"
+    learning_rate: 0.001
+    update_frequency_seconds: 60
+  lstm:
+    enabled: true
+    description: "LSTM Neural Network"
+    units: 64
+    layers: 2
+    dropout: 0.2
+    recurrent_dropout: 0.2
+    activation: "tanh"
+    recurrent_activation: "sigmoid"
+    optimizer: "adam"
+    learning_rate: 0.001
+    update_frequency_seconds: 60
+  gru:
+    enabled: true
+    description: "GRU Neural Network"
+    units: 64
+    layers: 2
+    dropout: 0.2
+    recurrent_dropout: 0.2
+    activation: "tanh"
+    recurrent_activation: "sigmoid"
+    optimizer: "adam"
+    learning_rate: 0.001
+    update_frequency_seconds: 60
+  transformer:
+    enabled: true
+    description: "Transformer Neural Network"
+    d_model: 64
+    n_heads: 4
+    d_ff: 128
+    n_layers: 2
+    dropout: 0.1
+    optimizer: "adam"
+    learning_rate: 0.001
+    update_frequency_seconds: 60
+  attention:
+    enabled: true
+    description: "Attention Neural Network"
+    attention_heads: 4
+    attention_dim: 64
+    dropout: 0.1
+    optimizer: "adam"
+    learning_rate: 0.001
+    update_frequency_seconds: 60
+  cnn:
+    enabled: true
+    description: "CNN Neural Network"
+    filters: 64
+    kernel_size: 3
+    layers: 2
+    pool_size: 2
+    dropout: 0.2
+    optimizer: "adam"
+    learning_rate: 0.001
+    update_frequency_seconds: 60
+
+# Paramètres neuro-évolutionnaires
+neuro_parameters:
+  population:
+    enabled: true
+    initial_size: 100
+    max_size: 200
+    min_size: 50
+    growth_rate: 0.1
+    shrink_rate: 0.05
+    random_seed: 42
+  selection:
+    enabled: true
+    method: "tournament"
+    tournament_size: 5
+    elite_ratio: 0.1
+    fitness_sharing: true
+    niche_radius: 0.5
+  evolution:
+    enabled: true
+    mutation_rate: 0.1
+    crossover_rate: 0.8
+    gene_mutation_rate: 0.05
+    gene_crossover_rate: 0.3
+    architecture_mutation: true
+    weight_mutation: true
+  termination:
+    enabled: true
+    max_generations: 100
+    max_time_seconds: 3600
+    fitness_threshold: 0.95
+    stagnation_threshold: 10
+
+# Fonctions d'activation
+activation_functions:
+  - "relu"
+  - "sigmoid"
+  - "tanh"
+  - "elu"
+  - "selu"
+  - "softplus"
+  - "softsign"
+  - "linear"
+  - "leaky_relu"
+  - "prelu"
+  - "parametric_relu"
+  - "swish"
+  - "gelu"
+  - "mish"
+
+# Optimiseurs
+optimizers:
+  - "adam"
+  - "sgd"
+  - "rmsprop"
+  - "adagrad"
+  - "adadelta"
+  - "adamax"
+  - "nadam"
+  - "ftrl"
+  - "adamw"
+  - "lamb"
+  - "lookahead"
+
+# Indicateurs neuro
+indicators:
+  neuro_accuracy:
+    enabled: true
+    calculation: "weighted_average"
+    period: 14
+    smoothing: 3
+    threshold: 0.6
+  neuro_confidence:
+    enabled: true
+    period: 14
+    smoothing: 0
+    threshold: 0.6
+  neuro_convergence:
+    enabled: true
+    period: 14
+    smoothing: 0
+    threshold: 0.1
+  neuro_diversity:
+    enabled: true
+    period: 14
+    smoothing: 0
+    threshold: 0.3
+  neuro_velocity:
+    enabled: true
+    period: 5
+    smoothing: 0
+    threshold: 0.2
+  neuro_acceleration:
+    enabled: true
+    period: 10
+    smoothing: 0
+    threshold: 0.1
+
+# Analyse neuro
+analysis:
+  historical:
+    enabled: true
+    lookback_years: 5
+    compute_neuro_accuracy: true
+    compute_neuro_confidence: true
+    compute_neuro_convergence: true
+    compute_neuro_diversity: true
+    compute_neuro_patterns: true
+    compute_neuro_correlation: true
+  real_time:
+    enabled: true
+    update_frequency_ms: 100
+    compute_instantaneous_neuro: true
+    compute_moving_average_neuro: true
+    compute_exponential_neuro: true
+    compute_weighted_neuro: true
+    compute_neuro_velocity: true
+    compute_neuro_acceleration: true
+  predictive:
+    enabled: true
+    model_type: "ensemble"
+    models:
+      - "lstm"
+      - "gru"
+      - "transformer"
+      - "xgboost"
+      - "lightgbm"
+    features:
+      - "neuro_accuracy"
+      - "neuro_confidence"
+      - "neuro_convergence"
+      - "neuro_diversity"
+      - "neuro_velocity"
+      - "neuro_acceleration"
+      - "price"
+      - "price_change"
+      - "volume"
+      - "volatility"
+      - "rsi"
+      - "macd"
+      - "time_of_day"
+      - "day_of_week"
+      - "market_condition"
+    forecast_horizons:
+      - 1
+      - 5
+      - 10
+      - 20
+    confidence_threshold: 0.7
+    retrain_frequency_hours: 24
+
+# Alertes et notifications
+alerts:
+  neuro_convergence:
+    enabled: true
+    threshold: 0.8
+    channels:
+      - "email"
+      - "telegram"
+      - "slack"
+      - "push_notification"
+    severity: "info"
+  neuro_diversity_change:
+    enabled: true
+    threshold: 0.2
+    channels:
+      - "email"
+      - "telegram"
+      - "slack"
+    severity: "warning"
+  neuro_accuracy_decline:
+    enabled: true
+    threshold: 0.1
+    channels:
+      - "email"
+      - "telegram"
+      - "slack"
+    severity: "critical"
+  neuro_improvement:
+    enabled: true
+    threshold: 0.05
+    channels:
+      - "telegram"
+      - "push_notification"
+    severity: "success"
+
+# Actions automatiques
+auto_actions:
+  network_adjustment:
+    enabled: true
+    action_types:
+      - "adjust_architecture"
+      - "modify_weights"
+      - "change_activation"
+      - "update_optimizer"
+    adjustment_factor: 0.1
+    max_adjustment_percent: 20.0
+  training_optimization:
+    enabled: true
+    action_types:
+      - "retrain_network"
+      - "adjust_learning_rate"
+      - "modify_batch_size"
+      - "update_epochs"
+    optimization_factor: 0.1
+    max_optimization_percent: 15.0
+  evolution_management:
+    enabled: true
+    action_types:
+      - "adjust_population"
+      - "modify_selection"
+      - "change_mutation"
+      - "update_crossover"
+    evolution_factor: 0.1
+    max_evolution_percent: 20.0
+
+# Monitoring et journalisation
+monitoring:
+  logging:
+    enabled: true
+    level: "debug"
+    format: "json"
+    include_context: true
+    include_timestamp: true
+    include_metadata: true
+  metrics:
+    enabled: true
+    collect_every_seconds: 1
+    metrics_to_collect:
+      - "neuro_accuracy"
+      - "neuro_confidence"
+      - "neuro_convergence"
+      - "neuro_diversity"
+      - "neuro_velocity"
+      - "neuro_acceleration"
+      - "population_size"
+      - "generation_count"
+      - "best_fitness"
+      - "average_fitness"
+      - "network_layers"
+      - "network_parameters"
+  dashboard:
+    enabled: true
+    update_interval_seconds: 1
+    charts:
+      - "neuro_analysis"
+      - "population_diversity"
+      - "convergence_analysis"
+      - "network_architecture"
+      - "accuracy_trend"
+      - "confidence_metrics"
+      - "neuro_velocity"
+      - "neuro_acceleration"
+
+# Backtesting
+backtesting:
+  enabled: true
+  use_historical_neuro: true
+  compute_neuro_accuracy: true
+  compute_evolution_effectiveness: true
+  compute_network_performance: true
+  compute_risk_adjusted_returns: true
+  report_metrics:
+    - "neuro_accuracy"
+    - "evolution_effectiveness"
+    - "network_performance"
+    - "win_rate"
+    - "profit_factor"
+    - "sharpe_ratio"
+    - "max_drawdown"
+
+# Configuration de la base de données
+database:
+  enabled: true
+  table_name: "neuro_metrics"
+  retention_days: 365
+  aggregation:
+    enabled: true
+    intervals:
+      - "1s"
+      - "5s"
+      - "15s"
+      - "30s"
+      - "1m"
+      - "5m"
+      - "15m"
+      - "1h"
+      - "4h"
+      - "24h"
+  compression: true
+  backup:
+    enabled: true
+    frequency: "daily"
+    retention_days: 30
+
+# Webhooks
+webhooks:
+  enabled: true
+  endpoints:
+    - url: "https://nexustradingia.com/api/webhooks/neuro"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      payload_template: "neuro_alert"
+    - url: "https://nexustradingia.com/api/webhooks/neuro-convergence"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      payload_template: "neuro_convergence"
+  retry:
+    enabled: true
+    max_attempts: 5
+    backoff_seconds: 30
+
+# Logging avancé
+advanced_logging:
+  enabled: true
+  levels:
+    - "info"
+    - "warning"
+    - "error"
+    - "critical"
+    - "debug"
+  output: "neuro_logs"
+  rotation:
+    enabled: true
+    max_size_mb: 100
+    max_files: 10
+  remote_logging:
+    enabled: true
+    endpoints:
+      - "https://nexustradingia.com/logs/neuro"
+  include_trace: true
+  include_stack_trace: true
+  include_context: true
+
+# Threading et performances
+performance:
+  thread_pool_size: 8
+  queue_size: 10000
+  batch_size: 1000
+  async_processing: true
+  cache_size: 10000
+  cache_ttl_seconds: 30
+  database_pool_size: 10
+  database_pool_max_overflow: 20
+  use_multiprocessing: true
+  max_workers: 8
+  use_cython: true
+  use_numba: true
+  use_gpu: true
+  gpu_device: 0
+
+# API de gestion
+management_api:
+  enabled: true
+  endpoints:
+    - "/api/v1/neuro/current"
+    - "/api/v1/neuro/history"
+    - "/api/v1/neuro/metrics"
+    - "/api/v1/neuro/status"
+    - "/api/v1/neuro/networks"
+    - "/api/v1/neuro/evolution"
+    - "/api/v1/neuro/accuracy"
+    - "/api/v1/neuro/forecast"
+  authentication_required: true
+  rate_limit: 100
+  rate_limit_interval_seconds: 60
+  version: "v1.0.0"
+
+# Export des données
+data_export:
+  enabled: true
+  formats:
+    - "csv"
+    - "json"
+    - "parquet"
+    - "avro"
+    - "feather"
+  schedule: "realtime"
+  batch_size: 1000
+  retention_days: 30
+  compression: "gzip"
+  destination: "s3://nexus-data/neuro/"
+  encrypt: true
+  encryption_key_id: "nexus-neuro-key"
+  partition_by:
+    - "symbol"
+    - "year"
+    - "month"
+    - "day"
+
+# Intégration avec d'autres modules
+integrations:
+  risk_engine:
+    enabled: true
+    sync_frequency_seconds: 1
+    share_metrics: true
+  execution_engine:
+    enabled: true
+    share_signals: true
+    require_confirmation: true
+  portfolio_manager:
+    enabled: true
+    share_positions: true
+    share_allocation: true
+  ai_engine:
+    enabled: true
+    use_ai_predictions: true
+    confidence_threshold: 0.7
+    model_endpoint: "http://ai-engine:8000/predict/neuro"
+  market_data:
+    enabled: true
+    sync_frequency_ms: 100
+    data_endpoint: "ws://market-data:8080/ws"
+
+# Tests et validation
+testing:
+  unit_tests:
+    enabled: true
+    coverage_threshold: 90
+  integration_tests:
+    enabled: true
+  stress_tests:
+    enabled: true
+    scenarios:
+      - "high_neuro_volume"
+      - "low_neuro_volume"
+      - "convergence_issues"
+      - "diversity_issues"
+      - "accuracy_validation"
+  validation:
+    enabled: true
+    validate_on_startup: true
+    validate_on_config_change: true
+    validation_rules:
+      - "confidence_threshold > 0.0"
+      - "confidence_threshold <= 1.0"
+      - "neural_types.feedforward.layers[0] > 0"
+      - "neural_types.lstm.units > 0"
+      - "neural_types.lstm.layers > 0"
+      - "neural_types.transformer.d_model > 0"
+      - "neural_types.transformer.n_heads > 0"
+      - "neuro_parameters.population.initial_size > 0"
+      - "neuro_parameters.population.max_size > neuro_parameters.population.initial_size"
+      - "neuro_parameters.population.min_size > 0"
+      - "neuro_parameters.selection.tournament_size > 0"
+      - "neuro_parameters.evolution.mutation_rate >= 0.0"
+      - "neuro_parameters.evolution.mutation_rate <= 1.0"
+      - "neuro_parameters.evolution.crossover_rate >= 0.0"
+      - "neuro_parameters.evolution.crossover_rate <= 1.0"
+      - "min_data_points > 0"
+
+# Market conditions adaptation
+market_adaptation:
+  enabled: true
+  regime_detection:
+    enabled: true
+    lookback_periods:
+      - 20
+      - 50
+      - 200
+    regimes:
+      - "trending"
+      - "ranging"
+      - "volatile"
+      - "stable"
+      - "bull"
+      - "bear"
+  regime_parameters:
+    trending:
+      neuro_multiplier: 1.2
+      population_multiplier: 1.1
+      mutation_rate_multiplier: 0.9
+      crossover_rate_multiplier: 1.1
+    ranging:
+      neuro_multiplier: 0.8
+      population_multiplier: 0.9
+      mutation_rate_multiplier: 1.2
+      crossover_rate_multiplier: 0.9
+    volatile:
+      neuro_multiplier: 0.7
+      population_multiplier: 0.8
+      mutation_rate_multiplier: 1.3
+      crossover_rate_multiplier: 0.8
+    stable:
+      neuro_multiplier: 1.0
+      population_multiplier: 1.0
+      mutation_rate_multiplier: 1.0
+      crossover_rate_multiplier: 1.0
+    bull:
+      neuro_multiplier: 1.1
+      population_multiplier: 1.0
+      mutation_rate_multiplier: 1.0
+      crossover_rate_multiplier: 1.0
+    bear:
+      neuro_multiplier: 0.9
+      population_multiplier: 1.0
+      mutation_rate_multiplier: 1.1
+      crossover_rate_multiplier: 0.9
+
+# Time-based configurations
+time_based:
+  enabled: true
+  sessions:
+    asia:
+      start: "00:00"
+      end: "08:00"
+      neuro_multiplier: 0.8
+      population_multiplier: 0.9
+      mutation_rate_multiplier: 1.2
+      crossover_rate_multiplier: 0.9
+    london:
+      start: "08:00"
+      end: "16:00"
+      neuro_multiplier: 1.2
+      population_multiplier: 1.1
+      mutation_rate_multiplier: 0.9
+      crossover_rate_multiplier: 1.1
+    newyork:
+      start: "13:00"
+      end: "22:00"
+      neuro_multiplier: 1.0
+      population_multiplier: 1.0
+      mutation_rate_multiplier: 1.0
+      crossover_rate_multiplier: 1.0
+    overlap:
+      start: "13:00"
+      end: "16:00"
+      neuro_multiplier: 1.5
+      population_multiplier: 1.2
+      mutation_rate_multiplier: 0.8
+      crossover_rate_multiplier: 1.2
+
+# Symbol-specific configurations
+symbol_configs:
+  BTCUSDT:
+    neuro_multiplier: 1.0
+    population_multiplier: 1.0
+    mutation_rate_multiplier: 1.0
+    crossover_rate_multiplier: 1.0
+    population_size: 100
+    generations: 100
+    network_layers: [64, 32, 16]
+  ETHUSDT:
+    neuro_multiplier: 1.1
+    population_multiplier: 0.9
+    mutation_rate_multiplier: 1.1
+    crossover_rate_multiplier: 0.9
+    population_size: 90
+    generations: 90
+    network_layers: [64, 32, 16]
+  SOLUSDT:
+    neuro_multiplier: 1.2
+    population_multiplier: 0.8
+    mutation_rate_multiplier: 1.2
+    crossover_rate_multiplier: 0.8
+    population_size: 80
+    generations: 80
+    network_layers: [128, 64, 32]
+  ADAUSDT:
+    neuro_multiplier: 0.9
+    population_multiplier: 1.1
+    mutation_rate_multiplier: 0.9
+    crossover_rate_multiplier: 1.1
+    population_size: 70
+    generations: 70
+    network_layers: [32, 16, 8]
+  XRPUSDT:
+    neuro_multiplier: 1.0
+    population_multiplier: 1.0
+    mutation_rate_multiplier: 1.0
+    crossover_rate_multiplier: 1.0
+    population_size: 80
+    generations: 80
+    network_layers: [64, 32, 16]
