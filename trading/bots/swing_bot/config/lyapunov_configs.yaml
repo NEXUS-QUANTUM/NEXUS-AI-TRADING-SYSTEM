@@ -1,0 +1,310 @@
+# Swing Bot Lyapunov Exponent Configuration
+# Chaos Theory & Lyapunov Analysis Parameters for Market Dynamics
+
+# General Lyapunov Settings
+lyapunov:
+  enabled: true
+  analysis_mode: "comprehensive"  # comprehensive, basic, advanced, real-time
+  calculation_method: "wolf"  # wolf, rosenstein, kantz, sano_sawada, neural
+  update_frequency_seconds: 60
+  version: "3.0.0"
+
+# Lyapunov Calculation Parameters
+calculation:
+  enabled: true
+  embedding_dimension: 5
+  time_delay: 1
+  max_lyapunov_exponent: true
+  average_lyapunov_exponent: true
+  local_lyapunov_exponents: true
+  divergence_rate: true
+  confidence_interval: 0.95
+  min_data_points: 1000
+  max_data_points: 10000
+
+# Wolf Method
+wolf_method:
+  enabled: true
+  embedding_dimension: 5
+  time_delay: 1
+  evolution_time: 10
+  neighbor_search: "nearest"  # nearest, adaptive, global
+  min_neighbor_distance: 0.001
+  max_neighbor_distance: 0.01
+  replacement_strategy: "adaptive"
+  norm_type: "euclidean"  # euclidean, manhattan, max
+
+# Rosenstein Method
+rosenstein:
+  enabled: true
+  embedding_dimension: 5
+  time_delay: 1
+  min_bars: 10
+  max_bars: 100
+  divergence_curve: true
+  linear_region_detection: true
+  regression_method: "least_squares"
+  confidence_level: 0.95
+
+# Kantz Method
+kantz:
+  enabled: true
+  embedding_dimension: 5
+  time_delay: 1
+  neighbor_search: "fixed"  # fixed, adaptive
+  neighborhood_size: 0.10
+  scaling_range: [1, 100]
+  divergence_calculation: "average"
+  regression_range: [10, 50]
+
+# Sano-Sawada Method
+sano_sawada:
+  enabled: true
+  embedding_dimension: 5
+  time_delay: 1
+  matrix_dimension: 3
+  jacobian_estimation: true
+  eigen_calculation: true
+  min_observations: 2000
+  noise_filter: true
+
+# Neural Network Method
+neural_method:
+  enabled: true
+  architecture: "lstm"  # lstm, gru, transformer, cnn
+  input_dimension: 10
+  hidden_layers: [64, 32]
+  output_dimension: 1
+  learning_rate: 0.001
+  epochs: 100
+  batch_size: 32
+  validation_split: 0.20
+  model_retrain_frequency_hours: 24
+
+# Chaos Indicators
+chaos_indicators:
+  enabled: true
+  indicators:
+    - "lyapunov_exponent"
+    - "correlation_dimension"
+    - "kolmogorov_entropy"
+    - "phase_space_dimension"
+    - "recurrence_quantification"
+    - "entropy_rate"
+    - "predictability_index"
+  correlation_dimension:
+    embedding_dimensions: [2, 10]
+    min_scale: 0.01
+    max_scale: 1.0
+  kolmogorov_entropy:
+    calculation_method: "grassberger_procaccia"
+    min_entropy: 0.01
+    max_entropy: 1.0
+
+# Phase Space Reconstruction
+phase_space:
+  enabled: true
+  embedding_method: "takens"  # takens, cao, false_nearest_neighbors
+  embedding_dimension_range: [2, 20]
+  time_delay_method: "mutual_information"  # mutual_information, autocorrelation, caos_method
+  min_time_delay: 1
+  max_time_delay: 20
+  reconstruction_quality: true
+  phase_space_visualization: true
+
+# Entropy Analysis
+entropy:
+  enabled: true
+  entropy_types:
+    - "kolmogorov_sinai_entropy"
+    - "approximate_entropy"
+    - "sample_entropy"
+    - "permutation_entropy"
+    - "renyi_entropy"
+    - "tsallis_entropy"
+  approximate_entropy:
+    m: 2
+    r: 0.20
+  sample_entropy:
+    m: 2
+    r: 0.20
+  permutation_entropy:
+    order: 3
+    delay: 1
+
+# Predictability Analysis
+predictability:
+  enabled: true
+  predictability_indicators:
+    - "lyapunov_time"
+    - "predictability_horizon"
+    - "forecast_skill"
+    - "prediction_uncertainty"
+    - "model_confidence"
+  lyapunov_time_calculation: true
+  predictability_horizon_bars: 100
+  forecast_skill_metrics:
+    - "mae"
+    - "rmse"
+    - "mape"
+    - "mase"
+  confidence_level: 0.95
+
+# Market Regime Classification
+regime_classification:
+  enabled: true
+  regime_types:
+    - "chaotic"
+    - "stable"
+    - "transitional"
+    - "periodic"
+    - "random"
+  classification_method: "clustering"
+  lyapunov_thresholds:
+    chaotic: 0.1
+    stable: 0.01
+    transitional: 0.05
+  regime_transition_detection: true
+  regime_switching_bars: 20
+
+# Stability Analysis
+stability:
+  enabled: true
+  stability_metrics:
+    - "global_stability"
+    - "local_stability"
+    - "orbital_stability"
+    - "structural_stability"
+    - "dynamical_stability"
+  stability_threshold: 0.50
+  instability_detection: true
+  bifurcation_analysis: true
+
+# Bifurcation Detection
+bifurcation:
+  enabled: true
+  bifurcation_types:
+    - "saddle_node"
+    - "transcritical"
+    - "pitchfork"
+    - "hopf"
+    - "period_doubling"
+  detection_method: "parameter_sweep"
+  bifurcation_parameter: "volatility"  # volatility, trend, momentum
+  parameter_range: [0.1, 1.0]
+  detection_sensitivity: 0.01
+
+# Forecasting Enhancement
+forecasting:
+  enabled: true
+  enhancement_methods:
+    - "lyapunov_correction"
+    - "chaos_based_forecasting"
+    - "hybrid_model"
+  correction_factor: 0.50
+  forecast_horizon_bars: 50
+  confidence_adjustment: true
+  dynamic_weighting: true
+
+# Risk Assessment
+risk_assessment:
+  enabled: true
+  risk_metrics:
+    - "chaos_risk"
+    - "stability_risk"
+    - "predictability_risk"
+    - "regime_risk"
+  risk_thresholds:
+    low_risk: 0.30
+    medium_risk: 0.60
+    high_risk: 0.80
+  position_adjustment: true
+  stop_loss_adjustment: true
+
+# Visualization
+visualization:
+  enabled: true
+  charts:
+    - "lyapunov_spectrum"
+    - "phase_space_plot"
+    - "divergence_curve"
+    - "entropy_plot"
+    - "regime_classification"
+    - "stability_metrics"
+    - "bifurcation_diagram"
+  update_interval_seconds: 60
+  dashboard_integration: true
+  real_time_updates: true
+
+# Alerting
+alerting:
+  enabled: true
+  alert_conditions:
+    - "chaotic_regime_detected"
+    - "stability_breach"
+    - "lyapunov_exponent_change"
+    - "regime_transition"
+    - "bifurcation_detected"
+    - "predictability_drop"
+  alert_thresholds:
+    lyapunov_change: 0.10
+    stability_breach: 0.40
+    predictability_drop: 0.30
+  alert_channels:
+    - "email"
+    - "telegram"
+    - "slack"
+  alert_cooldown_seconds: 600
+
+# Storage
+storage:
+  enabled: true
+  storage_categories:
+    - "lyapunov_exponents"
+    - "chaos_indicators"
+    - "entropy_metrics"
+    - "regime_classification"
+    - "stability_metrics"
+    - "bifurcation_data"
+    - "forecast_results"
+  retention_days: 365
+  compression: "zstd"
+  storage_format: "parquet"
+
+# Integration
+integration:
+  enabled: true
+  webhook_endpoint: "http://localhost:8080/lyapunov"
+  api_endpoint: "/api/v1/trading/lyapunov"
+  dashboard_url: "http://localhost:3000/lyapunov"
+  real_time_updates: true
+  data_sync_frequency_seconds: 30
+  external_systems:
+    - "trading_engine"
+    - "risk_management"
+    - "research_platform"
+
+# Performance Optimization
+performance:
+  enabled: true
+  parallel_computing: true
+  max_workers: 4
+  cache_results: true
+  cache_ttl_seconds: 300
+  incremental_update: true
+  batch_processing: true
+  batch_size: 1000
+
+# Logging
+logging:
+  enabled: true
+  log_level: "info"
+  log_categories:
+    - "calculations"
+    - "regime_classification"
+    - "alert_triggers"
+    - "performance"
+    - "errors"
+  log_rotation: true
+  max_log_size_mb: 100
+  retention_days: 30
