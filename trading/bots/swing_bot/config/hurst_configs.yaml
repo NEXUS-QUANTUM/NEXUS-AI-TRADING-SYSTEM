@@ -1,0 +1,258 @@
+# Swing Bot Hurst Exponent Configuration
+# Hurst Exponent Analysis Parameters for Market Memory & Fractal Analysis
+
+# General Hurst Settings
+hurst:
+  enabled: true
+  calculation_methods:
+    - "rescaled_range"
+    - "detrended_fluctuation_analysis"
+    - "generalized_hurst"
+    - "local_hurst"
+    - "wavelet_hurst"
+  primary_method: "rescaled_range"
+  update_frequency_seconds: 60
+
+# Calculation Parameters
+calculation:
+  min_window_size: 100
+  max_window_size: 5000
+  window_step_size: 50
+  min_lag: 5
+  max_lag: 500
+  num_lags: 20
+  overlap_percentage: 0.5
+  bootstrap_iterations: 1000
+  confidence_level: 0.95
+
+# Rescaled Range Method
+r_s_method:
+  use_log_bins: true
+  min_observations_per_bin: 10
+  regression_type: "ols"
+  robust_regression: true
+  outlier_removal: true
+  outlier_threshold: 3.0
+
+# Detrended Fluctuation Analysis
+dfa_method:
+  detrending_polynomial_order: 1
+  min_scale: 10
+  max_scale: 1000
+  scale_factor: 1.5
+  overlapping_segments: true
+  fluctuation_type: "rms"
+
+# Generalized Hurst Exponent
+generalized:
+  q_values: [-2.0, -1.0, 0.0, 1.0, 2.0, 3.0, 4.0, 5.0]
+  max_moment_order: 5
+  multifractal_analysis: true
+  singularity_spectrum: true
+
+# Local Hurst Estimation
+local:
+  window_size: 500
+  step_size: 50
+  smoothing: true
+  smoothing_window: 10
+  adaptive_window: true
+  min_window_size: 100
+  max_window_size: 1000
+
+# Wavelet Hurst
+wavelet:
+  wavelet_type: "db4"
+  decomposition_levels: 8
+  use_continuous_transform: false
+  scale_range: [1, 256]
+  scaling_exponent: 2.0
+
+# Market Memory Classification
+memory:
+  persistent_regime:
+    hurst_range: [0.5, 1.0]
+    classification: "trending"
+    signal_strength: "moderate"
+  random_walk_regime:
+    hurst_range: [0.45, 0.55]
+    classification: "random"
+    signal_strength: "neutral"
+  anti_persistent_regime:
+    hurst_range: [0.0, 0.45]
+    classification: "mean_reverting"
+    signal_strength: "moderate"
+
+# Fractal Properties
+fractal:
+  dimension_calculation: true
+  correlation_dimension: true
+  information_dimension: true
+  multifractal_spectrum: true
+  lacunarity: true
+  sucolacunarity: true
+
+# Advanced Metrics
+advanced_metrics:
+  - "gini_coefficient"
+  - "lyapunov_exponent"
+  - "entropy_estimate"
+  - "complexity_measure"
+  - "predictability_index"
+  - "shannon_entropy"
+  - "sample_entropy"
+  - "approximate_entropy"
+
+# Thresholds for Trading Signals
+signals:
+  trend_following:
+    hurst_threshold: 0.65
+    confidence_required: 0.80
+    min_duration_bars: 10
+  mean_reversion:
+    hurst_threshold: 0.35
+    confidence_required: 0.75
+    min_duration_bars: 5
+  ranging_market:
+    hurst_upper: 0.60
+    hurst_lower: 0.40
+    mean_reversion_signal: true
+    breakout_signal: true
+  regime_change:
+    hurst_delta_threshold: 0.15
+    lookback_period: 100
+    confirmation_bars: 5
+
+# Asset Class Specific
+asset_classes:
+  equities:
+    default_hurst: 0.55
+    threshold_low: 0.40
+    threshold_high: 0.70
+  forex:
+    default_hurst: 0.50
+    threshold_low: 0.35
+    threshold_high: 0.65
+  commodities:
+    default_hurst: 0.60
+    threshold_low: 0.45
+    threshold_high: 0.75
+  crypto:
+    default_hurst: 0.58
+    threshold_low: 0.42
+    threshold_high: 0.72
+  bonds:
+    default_hurst: 0.45
+    threshold_low: 0.30
+    threshold_high: 0.60
+
+# Timeframe Aggregation
+timeframes:
+  tick:
+    enabled: true
+    min_observations: 10000
+    aggregation: "tick"
+  one_minute:
+    enabled: true
+    min_observations: 1000
+    aggregation: "1m"
+  five_minute:
+    enabled: true
+    min_observations: 500
+    aggregation: "5m"
+  fifteen_minute:
+    enabled: true
+    min_observations: 200
+    aggregation: "15m"
+  hourly:
+    enabled: true
+    min_observations: 100
+    aggregation: "1h"
+  daily:
+    enabled: true
+    min_observations: 50
+    aggregation: "1d"
+
+# Prediction Models
+prediction:
+  model_types:
+    - "arima_hurst"
+    - "lstm_hurst"
+    - "transformer_hurst"
+  forecast_horizon_bars: 20
+  rolling_window_bars: 1000
+  retraining_frequency_bars: 100
+  ensemble_weighting: "performance_based"
+
+# Risk Adjustment
+risk_adjustment:
+  position_size_factor: 0.50
+  hurst_impact:
+    high_hurst_risk_reduction: 0.75
+    low_hurst_risk_reduction: 1.25
+  stop_loss_adjustment: true
+  take_profit_adjustment: true
+
+# Visualization
+visualization:
+  hurst_plot: true
+  fractal_dimension_plot: true
+  multifractal_spectrum_plot: true
+  update_interval_seconds: 30
+  dashboard_integration: true
+  export_charts: true
+
+# Data Storage
+storage:
+  hurst_values: true
+  fractal_dimensions: true
+  entropy_metrics: true
+  raw_calculations: false
+  retention_days: 30
+  compression: "lz4"
+  database: "timescaledb"
+
+# Alert Rules
+alerts:
+  hurst_change_threshold: 0.10
+  regime_change_alert: true
+  extreme_hurst_alert: true
+  low_observations_threshold: 50
+  calculation_error_alert: true
+  threshold_exceeded_alert: true
+  email_notification: true
+  telegram_notification: false
+
+# Performance Optimization
+performance:
+  parallel_computing: true
+  max_workers: 8
+  cache_results: true
+  cache_ttl_seconds: 300
+  incremental_update: true
+  batch_processing: true
+  batch_size: 1000
+
+# Time Series Filters
+filters:
+  volume_filter:
+    enabled: true
+    min_volume_percentile: 0.10
+  price_filter:
+    enabled: true
+    min_price: 0.01
+  volatility_filter:
+    enabled: true
+    max_volatility_percent: 50
+  outlier_filter:
+    enabled: true
+    zscore_threshold: 5.0
+
+# Integration Settings
+integration:
+  trading_engine: true
+  risk_management: true
+  portfolio_optimization: true
+  backtesting: true
+  real_time_monitoring: true
+  webhook_endpoint: "http://localhost:8080/hurst"
