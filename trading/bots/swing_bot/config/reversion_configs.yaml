@@ -1,0 +1,307 @@
+# Swing Bot Reversion Configuration
+# Mean Reversion & Statistical Reversion Parameters
+
+# General Reversion Settings
+reversion:
+  enabled: true
+  strategy_type: "mean_reversion"  # mean_reversion, statistical_reversion, hybrid_reversion
+  analysis_mode: "comprehensive"  # comprehensive, basic, advanced, real-time
+  calculation_method: "zscore"  # zscore, bollinger, ratio, regression
+  version: "3.0.0"
+
+# Reversion Components
+components:
+  enabled: true
+  primary_components:
+    - "mean_reversion"
+    - "statistical_reversion"
+    - "bollinger_reversion"
+    - "zscore_reversion"
+    - "rsi_reversion"
+    - "moving_average_reversion"
+  secondary_components:
+    - "price_to_ma_ratio"
+    - "convergence_divergence"
+    - "regression_reversion"
+    - "kalman_filter_reversion"
+    - "machine_learning_reversion"
+  component_weights:
+    mean_reversion: 0.25
+    statistical_reversion: 0.20
+    bollinger_reversion: 0.15
+    zscore_reversion: 0.15
+    rsi_reversion: 0.10
+    moving_average_reversion: 0.10
+    price_to_ma_ratio: 0.05
+
+# Mean Reversion
+mean_reversion:
+  enabled: true
+  calculation_method: "rolling_mean"  # rolling_mean, exponential_mean, weighted_mean
+  lookback_period_bars: 20
+  smoothing_period: 3
+  deviation_threshold: 2.0
+  reversion_speed: 0.50
+  mean_calculation: true
+  standard_deviation: true
+
+# Statistical Reversion
+statistical_reversion:
+  enabled: true
+  statistical_methods:
+    - "zscore"
+    - "t_statistic"
+    - "p_value"
+    - "confidence_interval"
+    - "standard_error"
+  primary_method: "zscore"
+  confidence_level: 0.95
+  zscore_threshold: 2.0
+  t_statistic_threshold: 2.5
+  p_value_threshold: 0.05
+
+# Bollinger Reversion
+bollinger_reversion:
+  enabled: true
+  period: 20
+  standard_deviations: 2.0
+  band_calculation: "sma"  # sma, ema, wma
+  squeeze_detection: true
+  band_width_indicator: true
+  percentage_b: true
+  entry_upper: 1.0
+  entry_lower: -1.0
+  exit_middle: 0.50
+
+# Z-Score Reversion
+zscore_reversion:
+  enabled: true
+  calculation_method: "rolling"
+  lookback_period_bars: 20
+  threshold_entry: 2.0
+  threshold_exit: 0.50
+  threshold_stop: 3.0
+  smoothing_period: 3
+  volatility_adjustment: true
+  dynamic_threshold: true
+
+# RSI Reversion
+rsi_reversion:
+  enabled: true
+  period: 14
+  overbought_threshold: 70
+  oversold_threshold: 30
+  extreme_overbought: 80
+  extreme_oversold: 20
+  divergence_detection: true
+  failure_swing_detection: true
+  smoothing: true
+  moving_average_period: 3
+
+# Moving Average Reversion
+ma_reversion:
+  enabled: true
+  fast_period: 10
+  slow_period: 30
+  signal_period: 10
+  divergence_detection: true
+  crossover_detection: true
+  zero_line_cross: true
+  entry_signal_strength: 0.50
+
+# Price-to-MA Ratio
+price_ma_ratio:
+  enabled: true
+  ma_period: 20
+  ma_type: "sma"  # sma, ema, wma
+  ratio_threshold: 0.05
+  smoothing_period: 3
+  divergence_detection: true
+  reversion_speed: 0.50
+
+# Reversion Strength
+strength:
+  enabled: true
+  strength_metrics:
+    - "deviation_magnitude"
+    - "reversion_velocity"
+    - "volume_confirm"
+    - "momentum_change"
+    - "indicator_extreme"
+  strength_calculation: "weighted_average"
+  min_strength_required: 0.60
+  max_strength_exit: 0.40
+
+# Entry Signals
+entry_signals:
+  enabled: true
+  signal_types:
+    - "oversold_buy"
+    - "overbought_sell"
+    - "zscore_entry"
+    - "bollinger_reversal"
+    - "rsi_divergence"
+    - "ma_convergence"
+  confirmation_requirements:
+    min_indicators_confirmed: 2
+    volume_confirmation: true
+    price_confirmation: true
+  signal_strength_calculation: "weighted_average"
+  min_signal_strength: 0.60
+
+# Exit Signals
+exit_signals:
+  enabled: true
+  exit_types:
+    - "reversion_to_mean"
+    - "zscore_exit"
+    - "profit_target"
+    - "stop_loss"
+    - "signal_reversal"
+    - "time_stop"
+  exit_condition: "any"  # any, all, majority
+  exit_confirmation: true
+  confirmation_bars: 1
+
+# Position Sizing
+position_sizing:
+  enabled: true
+  methods:
+    - "volatility_based"
+    - "risk_based"
+    - "kelly_based"
+    - "reversion_based"
+  primary_method: "volatility_based"
+  risk_per_trade: 0.02
+  volatility_multiplier: 2.0
+  max_position_size: 0.05
+  min_position_size: 0.01
+  adaptive_sizing: true
+
+# Stop Loss
+stop_loss:
+  enabled: true
+  stop_methods:
+    - "fixed_percent"
+    - "volatility_based"
+    - "zscore_based"
+    - "bollinger_based"
+    - "trailing"
+  fixed_percent: 0.02
+  volatility_multiplier: 2.0
+  zscore_stop: 3.0
+  trailing_activation: 0.02
+  trailing_distance: 0.01
+  dynamic_stop: true
+
+# Take Profit
+take_profit:
+  enabled: true
+  profit_methods:
+    - "fixed_percent"
+    - "risk_reward_ratio"
+    - "zscore_based"
+    - "bollinger_based"
+    - "trailing"
+  fixed_percent: 0.04
+  risk_reward_ratio: 2.0
+  zscore_profit: 0.50
+  trailing_activation: 0.02
+  trailing_distance: 0.01
+
+# Performance Metrics
+performance:
+  enabled: true
+  metrics:
+    - "sharpe_ratio"
+    - "sortino_ratio"
+    - "calmar_ratio"
+    - "win_rate"
+    - "average_return"
+    - "profit_factor"
+    - "maximum_drawdown"
+    - "recovery_factor"
+  evaluation_period_days: 30
+  rolling_window_days: 30
+  benchmark_comparison: true
+
+# Visualization
+visualization:
+  enabled: true
+  charts:
+    - "reversion_dashboard"
+    - "zscore_chart"
+    - "bollinger_chart"
+    - "rsi_chart"
+    - "ma_chart"
+    - "signal_chart"
+    - "performance_chart"
+  update_interval_seconds: 10
+  dashboard_integration: true
+  real_time_updates: true
+
+# Alerting
+alerting:
+  enabled: true
+  alert_conditions:
+    - "reversion_signal"
+    - "signal_confirmation"
+    - "stop_loss_trigger"
+    - "take_profit_trigger"
+    - "indicator_extreme"
+    - "divergence_detected"
+  alert_thresholds:
+    signal_confidence: 0.70
+    indicator_extreme: 80
+    divergence_confidence: 0.70
+  alert_channels:
+    - "email"
+    - "telegram"
+    - "slack"
+  alert_cooldown_seconds: 300
+
+# Reporting
+reporting:
+  enabled: true
+  report_types:
+    - "real_time_alerts"
+    - "daily_reversion_summary"
+    - "weekly_reversion_analysis"
+    - "monthly_reversion_report"
+  report_formats:
+    - "pdf"
+    - "html"
+    - "json"
+    - "csv"
+    - "excel"
+  report_recipients:
+    - "trading@example.com"
+    - "risk@example.com"
+    - "research@example.com"
+
+# Storage
+storage:
+  enabled: true
+  storage_categories:
+    - "reversion_data"
+    - "indicator_values"
+    - "signal_history"
+    - "trade_history"
+    - "performance_metrics"
+    - "alert_history"
+  retention_days: 365
+  compression: "zstd"
+  storage_format: "parquet"
+
+# Integration
+integration:
+  enabled: true
+  webhook_endpoint: "http://localhost:8080/reversion"
+  api_endpoint: "/api/v1/trading/reversion"
+  dashboard_url: "http://localhost:3000/reversion"
+  real_time_updates: true
+  data_sync_frequency_seconds: 5
+  external_systems:
+    - "trading_engine"
+    - "risk_management"
+    - "research_platform"
