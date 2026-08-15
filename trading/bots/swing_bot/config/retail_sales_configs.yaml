@@ -1,0 +1,263 @@
+# Swing Bot Retail Sales Configuration
+# Retail Sales Analysis & Trading Parameters
+
+# General Retail Sales Settings
+retail_sales:
+  enabled: true
+  analysis_mode: "comprehensive"  # comprehensive, basic, advanced, real-time
+  data_sources:
+    - "census_bureau"
+    - "nrf"
+    - "fed_reserve"
+    - "bls"
+    - "trading_economics"
+  update_frequency_hours: 6
+  version: "3.0.0"
+
+# Retail Sales Indicators
+indicators:
+  enabled: true
+  primary_indicators:
+    - "total_retail_sales"
+    - "core_retail_sales"
+    - "retail_sales_mom"
+    - "retail_sales_yoy"
+    - "retail_sales_forecast"
+    - "retail_sales_surprise"
+    - "retail_control_group"
+  secondary_indicators:
+    - "gasoline_sales"
+    - "auto_sales"
+    - "food_services"
+    - "building_materials"
+    - "electronics_sales"
+    - "clothing_sales"
+    - "furniture_sales"
+  leading_indicators:
+    - "consumer_confidence"
+    - "personal_income"
+    - "consumer_credit"
+    - "employment_growth"
+    - "wage_growth"
+    - "inflation_impact"
+
+# Retail Categories
+categories:
+  enabled: true
+  retail_categories:
+    - "food_and_beverage"
+    - "clothing_and_accessories"
+    - "electronics_and_appliances"
+    - "furniture_and_home"
+    - "building_materials"
+    - "automotive"
+    - "gasoline_stations"
+    - "food_services"
+    - "general_merchandise"
+    - "nonstore_retailers"
+    - "e_commerce"
+  category_weights:
+    food_and_beverage: 0.15
+    clothing_and_accessories: 0.10
+    electronics_and_appliances: 0.10
+    furniture_and_home: 0.08
+    building_materials: 0.07
+    automotive: 0.15
+    gasoline_stations: 0.07
+    food_services: 0.10
+    general_merchandise: 0.08
+    nonstore_retailers: 0.05
+    e_commerce: 0.05
+
+# Seasonal Analysis
+seasonal:
+  enabled: true
+  seasonal_factors:
+    - "holiday_season"
+    - "back_to_school"
+    - "summer_sales"
+    - "winter_sales"
+    - "spring_sales"
+    - "fall_sales"
+    - "black_friday"
+    - "cyber_monday"
+    - "boxing_day"
+    - "new_year_sales"
+    - "valentines_day"
+    - "easter"
+    - "mothers_day"
+    - "fathers_day"
+    - "labor_day"
+    - "thanksgiving"
+    - "christmas"
+  adjustment_method: "x13_arima"
+  seasonal_normalization: true
+
+# Retail Sales Analysis
+analysis:
+  enabled: true
+  analysis_metrics:
+    - "growth_rate_mom"
+    - "growth_rate_yoy"
+    - "sales_velocity"
+    - "sales_momentum"
+    - "sales_distribution"
+    - "sales_concentration"
+    - "sales_volatility"
+  analysis_methods:
+    - "trend_analysis"
+    - "cycle_analysis"
+    - "correlation_analysis"
+    - "forecast_analysis"
+    - "sector_analysis"
+    - "regional_analysis"
+
+# Forecast Models
+forecast:
+  enabled: true
+  forecast_horizons:
+    - "short_term": "1m"
+    - "medium_term": "3m"
+    - "long_term": "6m"
+  forecast_models:
+    - "time_series"
+    - "machine_learning"
+    - "econometric"
+    - "ensemble"
+  primary_model: "ensemble"
+  model_retrain_frequency_days: 7
+  confidence_interval: 0.90
+  scenario_analysis: true
+
+# Trading Signals
+signals:
+  enabled: true
+  signal_types:
+    - "sales_beat"
+    - "sales_miss"
+    - "sales_acceleration"
+    - "sales_deceleration"
+    - "sales_breakout"
+    - "sales_reversal"
+    - "sector_rotation"
+  signal_strength_calculation: "weighted_average"
+  min_signal_strength: 0.60
+  signal_confidence_threshold: 0.70
+
+# Sector Impact
+sector_impact:
+  enabled: true
+  impacted_sectors:
+    - "consumer_discretionary"
+    - "consumer_staples"
+    - "retail_etfs"
+    - "e_commerce"
+    - "logistics"
+    - "supply_chain"
+  impact_scoring:
+    retail_sales: 0.40
+    e_commerce: 0.30
+    consumer_discretionary: 0.20
+    logistics: 0.10
+  correlation_analysis: true
+
+# Risk Management
+risk_management:
+  enabled: true
+  risk_factors:
+    - "forecast_error_risk"
+    - "seasonal_risk"
+    - "sector_risk"
+    - "correlation_risk"
+  risk_limits:
+    forecast_risk: 0.15
+    seasonal_risk: 0.10
+    sector_risk: 0.20
+  position_sizing: "risk_based"
+  stop_loss_adjustment: true
+
+# Visualization
+visualization:
+  enabled: true
+  charts:
+    - "retail_sales_dashboard"
+    - "sales_trend_chart"
+    - "category_analysis"
+    - "forecast_chart"
+    - "seasonal_chart"
+    - "sector_impact_chart"
+    - "signal_chart"
+  update_interval_seconds: 60
+  dashboard_integration: true
+  real_time_updates: true
+
+# Alerting
+alerting:
+  enabled: true
+  alert_conditions:
+    - "sales_surprise"
+    - "sales_acceleration"
+    - "sales_deceleration"
+    - "sector_rotation"
+    - "forecast_deviation"
+    - "signal_generation"
+  alert_thresholds:
+    sales_surprise: 0.10
+    sales_acceleration: 0.05
+    forecast_deviation: 0.15
+    signal_confidence: 0.70
+  alert_channels:
+    - "email"
+    - "telegram"
+    - "slack"
+  alert_cooldown_seconds: 600
+
+# Reporting
+reporting:
+  enabled: true
+  report_types:
+    - "daily_retail_summary"
+    - "weekly_retail_analysis"
+    - "monthly_retail_report"
+    - "seasonal_retail_report"
+    - "forecast_report"
+  report_formats:
+    - "pdf"
+    - "html"
+    - "json"
+    - "csv"
+    - "excel"
+  report_recipients:
+    - "trading@example.com"
+    - "research@example.com"
+    - "risk@example.com"
+
+# Storage
+storage:
+  enabled: true
+  storage_categories:
+    - "retail_sales_data"
+    - "category_data"
+    - "seasonal_data"
+    - "forecast_data"
+    - "signal_history"
+    - "sector_impact_data"
+    - "alert_history"
+    - "report_history"
+  retention_days: 365
+  compression: "zstd"
+  storage_format: "parquet"
+
+# Integration
+integration:
+  enabled: true
+  webhook_endpoint: "http://localhost:8080/retail-sales"
+  api_endpoint: "/api/v1/trading/retail-sales"
+  dashboard_url: "http://localhost:3000/retail-sales"
+  real_time_updates: true
+  data_sync_frequency_seconds: 30
+  external_systems:
+    - "trading_engine"
+    - "risk_management"
+    - "research_platform"
+    - "economic_data_feed"
