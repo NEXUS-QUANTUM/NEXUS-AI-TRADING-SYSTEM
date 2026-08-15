@@ -1,0 +1,727 @@
+# time_price_opportunity_configs.yaml
+# Configuration complète pour l'analyse des opportunités temps-prix dans Swing Bot
+# Version: 4.0.0 - Production Ready
+
+# Paramètres généraux
+general:
+  enabled: true
+  mode: "comprehensive"
+  calculate_in_real_time: true
+  update_frequency_seconds: 1
+  lookback_periods:
+    - 5
+    - 10
+    - 20
+    - 50
+    - 100
+    - 200
+    - 500
+  history_length_days: 365
+  min_data_points: 50
+  max_data_points: 100000
+  time_price_opportunity_version: "4.0.0"
+  environment: "production"
+
+# Types d'opportunités temps-prix
+opportunity_types:
+  price_breakout:
+    enabled: true
+    description: "Price Breakout Opportunities"
+    min_time_window: 5
+    max_time_window: 50
+    min_price_movement: 1.0
+    max_price_movement: 10.0
+    min_confidence: 0.6
+    volume_requirement: "increasing"
+  time_breakout:
+    enabled: true
+    description: "Time Breakout Opportunities"
+    min_time_window: 10
+    max_time_window: 100
+    min_time_compression: 0.5
+    max_time_compression: 2.0
+    min_confidence: 0.6
+    volume_requirement: "stable"
+  price_reversal:
+    enabled: true
+    description: "Price Reversal Opportunities"
+    min_time_window: 5
+    max_time_window: 30
+    min_price_movement: 2.0
+    max_price_movement: 20.0
+    min_confidence: 0.6
+    volume_requirement: "increasing"
+  time_reversal:
+    enabled: true
+    description: "Time Reversal Opportunities"
+    min_time_window: 10
+    max_time_window: 50
+    min_time_expansion: 1.5
+    max_time_expansion: 3.0
+    min_confidence: 0.6
+    volume_requirement: "decreasing"
+  price_time_compression:
+    enabled: true
+    description: "Price-Time Compression Opportunities"
+    min_time_window: 5
+    max_time_window: 30
+    min_compression_ratio: 0.3
+    max_compression_ratio: 0.7
+    min_confidence: 0.5
+    volume_requirement: "decreasing"
+  price_time_expansion:
+    enabled: true
+    description: "Price-Time Expansion Opportunities"
+    min_time_window: 5
+    max_time_window: 30
+    min_expansion_ratio: 1.5
+    max_expansion_ratio: 3.0
+    min_confidence: 0.6
+    volume_requirement: "increasing"
+  divergence:
+    enabled: true
+    description: "Price-Time Divergence Opportunities"
+    min_time_window: 10
+    max_time_window: 50
+    min_divergence: 0.5
+    max_divergence: 2.0
+    min_confidence: 0.6
+    volume_requirement: "increasing"
+
+# Seuils de détection
+thresholds:
+  price:
+    min_movement_percent: 1.0
+    max_movement_percent: 20.0
+    min_velocity: 0.1
+    max_velocity: 5.0
+    min_acceleration: 0.05
+    max_acceleration: 2.0
+  time:
+    min_window: 5
+    max_window: 100
+    min_compression: 0.3
+    max_compression: 0.9
+    min_expansion: 1.1
+    max_expansion: 3.0
+  opportunity:
+    min_confidence: 0.5
+    max_confidence: 1.0
+    min_strength: 0.4
+    max_strength: 1.0
+    min_probability: 0.3
+    max_probability: 1.0
+  volume:
+    min_volume: 1000
+    max_volume: 1000000
+    volume_increase_threshold: 1.5
+    volume_decrease_threshold: 0.7
+
+# Indicateurs d'opportunités
+indicators:
+  opportunity_strength:
+    enabled: true
+    calculation: "weighted_average"
+    factors:
+      - "price_movement"
+      - "time_window"
+      - "volume_confirmation"
+      - "momentum"
+      - "volatility"
+      - "compression_ratio"
+    factor_weights:
+      price_movement: 0.25
+      time_window: 0.20
+      volume_confirmation: 0.20
+      momentum: 0.15
+      volatility: 0.10
+      compression_ratio: 0.10
+  opportunity_probability:
+    enabled: true
+    period: 14
+    smoothing: 3
+    threshold: 0.5
+  opportunity_momentum:
+    enabled: true
+    period: 14
+    smoothing: 3
+    threshold: 0.3
+  opportunity_velocity:
+    enabled: true
+    period: 5
+    smoothing: 0
+    threshold: 0.2
+  opportunity_acceleration:
+    enabled: true
+    period: 10
+    smoothing: 0
+    threshold: 0.1
+  opportunity_confidence:
+    enabled: true
+    period: 14
+    smoothing: 0
+    threshold: 0.6
+  time_price_ratio:
+    enabled: true
+    period: 14
+    smoothing: 3
+    threshold: 0.5
+  compression_expansion_index:
+    enabled: true
+    period: 14
+    smoothing: 3
+    threshold: 0.5
+
+# Analyse des opportunités
+analysis:
+  historical:
+    enabled: true
+    lookback_years: 5
+    compute_opportunity_accuracy: true
+    compute_opportunity_probability: true
+    compute_opportunity_distribution: true
+    compute_opportunity_patterns: true
+    compute_opportunity_cycles: true
+    compute_opportunity_success_rate: true
+  real_time:
+    enabled: true
+    update_frequency_ms: 100
+    compute_instantaneous_opportunity: true
+    compute_moving_average_opportunity: true
+    compute_exponential_opportunity: true
+    compute_weighted_opportunity: true
+    compute_opportunity_velocity: true
+    compute_opportunity_acceleration: true
+  predictive:
+    enabled: true
+    model_type: "ensemble"
+    models:
+      - "lstm"
+      - "gru"
+      - "xgboost"
+      - "lightgbm"
+    features:
+      - "opportunity_strength"
+      - "opportunity_probability"
+      - "opportunity_momentum"
+      - "opportunity_velocity"
+      - "opportunity_acceleration"
+      - "opportunity_confidence"
+      - "time_price_ratio"
+      - "compression_expansion_index"
+      - "price_movement"
+      - "time_window"
+      - "volume_confirmation"
+      - "price_change"
+      - "volume"
+      - "volatility"
+      - "time_of_day"
+      - "day_of_week"
+      - "market_condition"
+    forecast_horizons:
+      - 1
+      - 5
+      - 10
+      - 20
+    confidence_threshold: 0.7
+    retrain_frequency_hours: 24
+
+# Alertes et notifications
+alerts:
+  opportunity_detected:
+    enabled: true
+    confidence_threshold: 0.7
+    channels:
+      - "email"
+      - "telegram"
+      - "slack"
+      - "push_notification"
+    severity: "warning"
+  opportunity_high_probability:
+    enabled: true
+    confidence_threshold: 0.8
+    channels:
+      - "telegram"
+      - "push_notification"
+    severity: "critical"
+  opportunity_confirmed:
+    enabled: true
+    confidence_threshold: 0.9
+    channels:
+      - "email"
+      - "telegram"
+      - "slack"
+    severity: "info"
+  opportunity_expired:
+    enabled: true
+    confidence_threshold: 0.5
+    channels:
+      - "telegram"
+      - "push_notification"
+    severity: "warning"
+  opportunity_compression:
+    enabled: true
+    confidence_threshold: 0.6
+    channels:
+      - "telegram"
+      - "push_notification"
+    severity: "info"
+  opportunity_expansion:
+    enabled: true
+    confidence_threshold: 0.7
+    channels:
+      - "telegram"
+      - "push_notification"
+    severity: "info"
+
+# Actions automatiques
+auto_actions:
+  trade_entry:
+    enabled: true
+    action_types:
+      - "enter_on_breakout"
+      - "enter_on_compression"
+      - "enter_on_expansion"
+      - "enter_on_divergence"
+      - "enter_on_confirmation"
+    require_opportunity_confirmation: true
+    require_confidence: 0.7
+    max_position_size: 10000
+    min_position_size: 100
+  stop_loss:
+    enabled: true
+    methods:
+      - "time_price_based"
+      - "breakout_based"
+      - "compression_based"
+    opportunity_multiplier: 1.0
+    min_stop_percent: 0.5
+    max_stop_percent: 10.0
+    update_frequency_seconds: 10
+  take_profit:
+    enabled: true
+    methods:
+      - "time_projection"
+      - "price_projection"
+      - "compression_projection"
+    projection_multiplier: 1.0
+    min_profit_percent: 1.0
+    max_profit_percent: 20.0
+    update_frequency_seconds: 10
+  position_sizing:
+    enabled: true
+    method: "opportunity_strength_based"
+    opportunity_scale: 0.5
+    max_position_percent: 10.0
+    min_position_percent: 0.5
+    scaling_function: "linear"
+
+# Paramètres avancés
+advanced:
+  machine_learning:
+    enabled: true
+    model_type: "ensemble"
+    models:
+      - "random_forest"
+      - "xgboost"
+      - "lightgbm"
+      - "lstm"
+    features:
+      - "opportunity_strength"
+      - "opportunity_probability"
+      - "opportunity_momentum"
+      - "opportunity_velocity"
+      - "opportunity_acceleration"
+      - "opportunity_confidence"
+      - "time_price_ratio"
+      - "compression_expansion_index"
+      - "price_movement"
+      - "time_window"
+      - "volume_confirmation"
+      - "rsi"
+      - "macd"
+      - "bollinger_width"
+      - "atr"
+      - "price_change"
+      - "volume"
+      - "time_of_day"
+      - "day_of_week"
+      - "market_condition"
+    training_frequency_hours: 6
+    retrain_threshold: 0.9
+    validation_split: 0.2
+    random_seed: 42
+    ensemble_weights:
+      - 0.25
+      - 0.25
+      - 0.25
+      - 0.25
+  statistical_analysis:
+    enabled: true
+    calculate_opportunity_accuracy: true
+    calculate_opportunity_probability: true
+    calculate_opportunity_significance: true
+    calculate_opportunity_correlation: true
+    calculate_opportunity_success_rate: true
+    confidence_level: 95
+    p_value_threshold: 0.05
+  pattern_recognition:
+    enabled: true
+    patterns:
+      - "price_breakout"
+      - "time_breakout"
+      - "price_reversal"
+      - "time_reversal"
+      - "compression"
+      - "expansion"
+      - "divergence"
+    pattern_confidence_threshold: 0.7
+    pattern_accuracy_threshold: 0.8
+
+# Monitoring et journalisation
+monitoring:
+  logging:
+    enabled: true
+    level: "debug"
+    format: "json"
+    include_context: true
+    include_timestamp: true
+    include_metadata: true
+  metrics:
+    enabled: true
+    collect_every_seconds: 1
+    metrics_to_collect:
+      - "opportunity_strength"
+      - "opportunity_probability"
+      - "opportunity_momentum"
+      - "opportunity_velocity"
+      - "opportunity_acceleration"
+      - "opportunity_confidence"
+      - "opportunity_count"
+      - "opportunity_accuracy"
+      - "opportunity_success_rate"
+      - "compression_count"
+      - "expansion_count"
+      - "divergence_count"
+  dashboard:
+    enabled: true
+    update_interval_seconds: 1
+    charts:
+      - "opportunity_detection"
+      - "opportunity_analysis"
+      - "opportunity_accuracy"
+      - "opportunity_distribution"
+      - "opportunity_patterns"
+      - "compression_expansion_analysis"
+      - "opportunity_success_rate"
+      - "opportunity_predictive"
+
+# Backtesting
+backtesting:
+  enabled: true
+  use_historical_opportunities: true
+  compute_opportunity_accuracy: true
+  compute_compression_effectiveness: true
+  compute_pattern_accuracy: true
+  compute_risk_adjusted_returns: true
+  report_metrics:
+    - "opportunity_accuracy"
+    - "compression_effectiveness"
+    - "pattern_accuracy"
+    - "win_rate"
+    - "profit_factor"
+    - "sharpe_ratio"
+    - "max_drawdown"
+
+# Configuration de la base de données
+database:
+  enabled: true
+  table_name: "time_price_opportunity_metrics"
+  retention_days: 365
+  aggregation:
+    enabled: true
+    intervals:
+      - "1s"
+      - "5s"
+      - "15s"
+      - "30s"
+      - "1m"
+      - "5m"
+      - "15m"
+      - "1h"
+      - "4h"
+      - "24h"
+  compression: true
+  backup:
+    enabled: true
+    frequency: "daily"
+    retention_days: 30
+
+# Webhooks
+webhooks:
+  enabled: true
+  endpoints:
+    - url: "https://nexustradingia.com/api/webhooks/time-price-opportunity"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      payload_template: "time_price_opportunity_alert"
+    - url: "https://nexustradingia.com/api/webhooks/time-price-breakout"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      payload_template: "time_price_breakout"
+  retry:
+    enabled: true
+    max_attempts: 5
+    backoff_seconds: 30
+
+# Logging avancé
+advanced_logging:
+  enabled: true
+  levels:
+    - "info"
+    - "warning"
+    - "error"
+    - "critical"
+    - "debug"
+  output: "time_price_opportunity_logs"
+  rotation:
+    enabled: true
+    max_size_mb: 100
+    max_files: 10
+  remote_logging:
+    enabled: true
+    endpoints:
+      - "https://nexustradingia.com/logs/time-price-opportunity"
+  include_trace: true
+  include_stack_trace: true
+  include_context: true
+
+# Threading et performances
+performance:
+  thread_pool_size: 8
+  queue_size: 10000
+  batch_size: 1000
+  async_processing: true
+  cache_size: 10000
+  cache_ttl_seconds: 30
+  database_pool_size: 10
+  database_pool_max_overflow: 20
+  use_multiprocessing: true
+  max_workers: 8
+  use_cython: true
+  use_numba: true
+  use_gpu: false
+  gpu_device: 0
+
+# API de gestion
+management_api:
+  enabled: true
+  endpoints:
+    - "/api/v1/time-price-opportunity/current"
+    - "/api/v1/time-price-opportunity/history"
+    - "/api/v1/time-price-opportunity/metrics"
+    - "/api/v1/time-price-opportunity/status"
+    - "/api/v1/time-price-opportunity/patterns"
+    - "/api/v1/time-price-opportunity/probability"
+    - "/api/v1/time-price-opportunity/accuracy"
+    - "/api/v1/time-price-opportunity/forecast"
+  authentication_required: true
+  rate_limit: 100
+  rate_limit_interval_seconds: 60
+  version: "v1.0.0"
+
+# Export des données
+data_export:
+  enabled: true
+  formats:
+    - "csv"
+    - "json"
+    - "parquet"
+    - "avro"
+    - "feather"
+  schedule: "realtime"
+  batch_size: 1000
+  retention_days: 30
+  compression: "gzip"
+  destination: "s3://nexus-data/time-price-opportunity/"
+  encrypt: true
+  encryption_key_id: "nexus-time-price-opportunity-key"
+  partition_by:
+    - "symbol"
+    - "year"
+    - "month"
+    - "day"
+
+# Intégration avec d'autres modules
+integrations:
+  risk_engine:
+    enabled: true
+    sync_frequency_seconds: 1
+    share_metrics: true
+  execution_engine:
+    enabled: true
+    share_signals: true
+    require_confirmation: true
+  portfolio_manager:
+    enabled: true
+    share_positions: true
+    share_allocation: true
+  ai_engine:
+    enabled: true
+    use_ai_predictions: true
+    confidence_threshold: 0.7
+    model_endpoint: "http://ai-engine:8000/predict/time-price-opportunity"
+  market_data:
+    enabled: true
+    sync_frequency_ms: 100
+    data_endpoint: "ws://market-data:8080/ws"
+
+# Tests et validation
+testing:
+  unit_tests:
+    enabled: true
+    coverage_threshold: 90
+  integration_tests:
+    enabled: true
+  stress_tests:
+    enabled: true
+    scenarios:
+      - "high_opportunity_volume"
+      - "low_opportunity_volume"
+      - "pattern_volume"
+      - "accuracy_validation"
+      - "false_positive"
+  validation:
+    enabled: true
+    validate_on_startup: true
+    validate_on_config_change: true
+    validation_rules:
+      - "confidence_threshold > 0.0"
+      - "confidence_threshold <= 1.0"
+      - "opportunity_types.price_breakout.min_time_window > 0"
+      - "opportunity_types.price_breakout.max_time_window > opportunity_types.price_breakout.min_time_window"
+      - "thresholds.price.min_movement_percent >= 0.0"
+      - "thresholds.price.max_movement_percent > threshold.price.min_movement_percent"
+      - "thresholds.time.min_window > 0"
+      - "thresholds.time.max_window > threshold.time.min_window"
+      - "thresholds.opportunity.min_confidence >= 0.0"
+      - "thresholds.opportunity.min_confidence <= 1.0"
+      - "indicators.opportunity_strength.factor_weights.sum() == 1.0"
+      - "min_data_points > 0"
+
+# Market conditions adaptation
+market_adaptation:
+  enabled: true
+  volatility_adjustment: true
+  regime_detection:
+    enabled: true
+    lookback_periods:
+      - 20
+      - 50
+      - 200
+    regimes:
+      - "trending"
+      - "ranging"
+      - "volatile"
+      - "stable"
+      - "bull"
+      - "bear"
+  regime_parameters:
+    trending:
+      opportunity_multiplier: 1.2
+      threshold_multiplier: 0.8
+      confidence_multiplier: 1.1
+    ranging:
+      opportunity_multiplier: 0.8
+      threshold_multiplier: 1.2
+      confidence_multiplier: 0.9
+    volatile:
+      opportunity_multiplier: 0.7
+      threshold_multiplier: 1.3
+      confidence_multiplier: 0.8
+    stable:
+      opportunity_multiplier: 1.0
+      threshold_multiplier: 0.9
+      confidence_multiplier: 1.2
+    bull:
+      opportunity_multiplier: 1.1
+      threshold_multiplier: 0.9
+      confidence_multiplier: 1.0
+    bear:
+      opportunity_multiplier: 0.9
+      threshold_multiplier: 1.1
+      confidence_multiplier: 0.9
+
+# Time-based configurations
+time_based:
+  enabled: true
+  sessions:
+    asia:
+      start: "00:00"
+      end: "08:00"
+      opportunity_multiplier: 0.8
+      threshold_multiplier: 1.2
+      confidence_multiplier: 0.9
+    london:
+      start: "08:00"
+      end: "16:00"
+      opportunity_multiplier: 1.2
+      threshold_multiplier: 0.8
+      confidence_multiplier: 1.1
+    newyork:
+      start: "13:00"
+      end: "22:00"
+      opportunity_multiplier: 1.0
+      threshold_multiplier: 1.0
+      confidence_multiplier: 1.0
+    overlap:
+      start: "13:00"
+      end: "16:00"
+      opportunity_multiplier: 1.5
+      threshold_multiplier: 0.7
+      confidence_multiplier: 1.2
+
+# Symbol-specific configurations
+symbol_configs:
+  BTCUSDT:
+    opportunity_multiplier: 1.0
+    threshold_multiplier: 1.0
+    confidence_multiplier: 1.0
+    confidence_threshold: 0.7
+    pattern_confidence: 0.6
+    min_time_window: 5
+    max_time_window: 50
+  ETHUSDT:
+    opportunity_multiplier: 1.1
+    threshold_multiplier: 0.9
+    confidence_multiplier: 1.0
+    confidence_threshold: 0.7
+    pattern_confidence: 0.6
+    min_time_window: 5
+    max_time_window: 40
+  SOLUSDT:
+    opportunity_multiplier: 1.2
+    threshold_multiplier: 0.8
+    confidence_multiplier: 0.9
+    confidence_threshold: 0.7
+    pattern_confidence: 0.6
+    min_time_window: 5
+    max_time_window: 40
+  ADAUSDT:
+    opportunity_multiplier: 0.9
+    threshold_multiplier: 1.1
+    confidence_multiplier: 1.1
+    confidence_threshold: 0.7
+    pattern_confidence: 0.6
+    min_time_window: 5
+    max_time_window: 50
+  XRPUSDT:
+    opportunity_multiplier: 1.0
+    threshold_multiplier: 1.0
+    confidence_multiplier: 1.0
+    confidence_threshold: 0.7
+    pattern_confidence: 0.6
+    min_time_window: 5
+    max_time_window: 50
