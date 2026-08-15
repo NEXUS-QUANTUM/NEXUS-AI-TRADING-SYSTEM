@@ -1,0 +1,330 @@
+# Swing Bot Market Impact Configuration
+# Market Impact Analysis & Mitigation Parameters
+
+# General Market Impact Settings
+market_impact:
+  enabled: true
+  analysis_mode: "comprehensive"  # comprehensive, basic, advanced, real-time
+  impact_measurement: "multi_factor"  # multi_factor, empirical, theoretical, hybrid
+  update_frequency_seconds: 5
+  version: "3.0.0"
+
+# Impact Models
+models:
+  enabled: true
+  primary_model: "almgren_chriss"  # almgren_chriss, kyle, huberman_stanzl, zhang, empirical
+  secondary_model: "empirical"
+  backup_model: "kyle"
+  model_ensemble: true
+  model_weights:
+    almgren_chriss: 0.40
+    empirical: 0.30
+    kyle: 0.20
+    huberman_stanzl: 0.10
+
+# Almgren-Chriss Model
+almgren_chriss:
+  enabled: true
+  parameters:
+    daily_volume: 1000000
+    volatility_annual: 0.25
+    liquidity_parameter: 0.50
+    risk_aversion: 0.10
+    trade_rate_limit: 0.10
+    time_horizon_hours: 4
+  impact_components:
+    permanent_impact_coefficient: 0.001
+    temporary_impact_coefficient: 0.002
+    impact_decay_rate: 0.50
+    price_reversion_rate: 0.30
+  optimal_trajectory: true
+  dynamic_parameter_adjustment: true
+
+# Kyle Model
+kyle:
+  enabled: true
+  parameters:
+    lambda_parameter: 0.0001
+    sigma_parameter: 0.20
+    phi_parameter: 0.50
+    informed_trading_probability: 0.30
+    noise_trading_variance: 0.10
+  market_depth: 100000
+  price_impact_sensitivity: 0.50
+  information_asymmetry: 0.30
+
+# Huberman-Stanzl Model
+huberman_stanzl:
+  enabled: true
+  parameters:
+    gamma_parameter: 0.01
+    eta_parameter: 0.02
+    beta_parameter: 0.50
+    theta_parameter: 0.10
+    tau_parameter: 60
+    alpha_parameter: 0.001
+    delta_parameter: 0.0005
+    rho_parameter: 0.30
+    omega_parameter: 0.40
+
+# Empirical Model
+empirical:
+  enabled: true
+  lookback_period_days: 30
+  min_observations: 100
+  impact_calculation: "regression"  # regression, average, percentile
+  regression_method: "ols"  # ols, ridge, lasso, robust
+  confidence_interval: 0.95
+  outlier_removal: true
+  outlier_threshold: 3.0
+
+# Impact Components
+components:
+  enabled: true
+  permanent_impact:
+    enabled: true
+    calculation_method: "price_reversion"
+    impact_duration_hours: 24
+    price_reversion_rate: 0.50
+  temporary_impact:
+    enabled: true
+    calculation_method: "order_flow"
+    impact_duration_minutes: 60
+    decay_factor: 0.70
+  information_impact:
+    enabled: true
+    calculation_method: "signal_strength"
+    information_leakage: true
+    leakage_rate: 0.30
+  timing_impact:
+    enabled: true
+    calculation_method: "execution_timing"
+    urgency_factor: 0.50
+    patience_factor: 1.50
+
+# Impact Metrics
+metrics:
+  enabled: true
+  primary_metrics:
+    - "price_impact_bps"
+    - "impact_cost_bps"
+    - "temporary_impact_bps"
+    - "permanent_impact_bps"
+    - "total_impact_bps"
+  secondary_metrics:
+    - "impact_velocity"
+    - "impact_elasticity"
+    - "impact_distribution"
+    - "impact_volatility"
+    - "impact_percentile"
+  calculation_methods:
+    - "realized"
+    - "expected"
+    - "forecasted"
+  metric_aggregation: "weighted_average"
+
+# Impact Forecasting
+forecasting:
+  enabled: true
+  forecast_horizons:
+    - "ultra_short": "1m"
+    - "short_term": "5m"
+    - "medium_term": "1h"
+    - "long_term": "24h"
+  forecast_models:
+    - "time_series"
+    - "machine_learning"
+    - "deep_learning"
+    - "ensemble"
+  primary_model: "ensemble"
+  model_retrain_frequency_hours: 6
+  confidence_interval: 0.90
+  feature_columns:
+    - "order_size"
+    - "total_volume"
+    - "spread"
+    - "volatility"
+    - "depth_at_price"
+    - "time_of_day"
+    - "day_of_week"
+    - "market_cap"
+    - "liquidity_score"
+
+# Impact Mitigation
+mitigation:
+  enabled: true
+  strategies:
+    - "order_slicing"
+    - "timing_optimization"
+    - "venue_selection"
+    - "liquidity_provision"
+    - "dark_pool_usage"
+    - "participation_rate_control"
+    - "price_improvement"
+  strategy_selection: "adaptive"
+  mitigation_effectiveness_monitoring: true
+  mitigation_optimization: true
+
+# Order Slicing
+slicing:
+  enabled: true
+  slicing_strategies:
+    - "fixed_size"
+    - "adaptive_size"
+    - "volume_weighted"
+    - "time_weighted"
+    - "price_weighted"
+    - "smart"
+  primary_strategy: "smart"
+  slice_count: 20
+  min_slice_size: 100
+  max_slice_size: 10000
+  slice_interval_seconds: 60
+  adaptive_slicing: true
+
+# Timing Optimization
+timing_optimization:
+  enabled: true
+  optimization_objectives:
+    - "minimize_impact"
+    - "minimize_cost"
+    - "maximize_speed"
+    - "balance"
+  optimization_algorithm: "genetic"
+  timing_window_seconds: 300
+  trade_scheduling: true
+  market_condition_aware: true
+  volume_profile_aware: true
+
+# Venue Selection
+venue_selection:
+  enabled: true
+  venues:
+    - "primary_exchange"
+    - "secondary_exchange"
+    - "dark_pool_1"
+    - "dark_pool_2"
+    - "ecn"
+    - "market_maker"
+    - "internal_match"
+  venue_selection_criteria:
+    - "liquidity"
+    - "impact_cost"
+    - "execution_speed"
+    - "fill_rate"
+    - "anonymity"
+  dynamic_venue_allocation: true
+  venue_ranking: true
+
+# Participation Rate
+participation:
+  enabled: true
+  participation_rate: 0.10
+  max_participation_rate: 0.20
+  min_participation_rate: 0.05
+  adaptive_participation: true
+  participation_model: "volume_based"
+  market_volume_lookback_minutes: 30
+  participation_optimization: true
+
+# Impact Risk
+impact_risk:
+  enabled: true
+  risk_metrics:
+    - "impact_volatility"
+    - "impact_uncertainty"
+    - "impact_tail_risk"
+    - "impact_skew"
+    - "impact_kurtosis"
+  risk_thresholds:
+    low_risk: 0.30
+    medium_risk: 0.60
+    high_risk: 0.80
+  risk_monitoring: true
+  risk_limits:
+    max_impact_bps: 10
+    max_impact_volatility: 0.50
+    max_tail_risk: 0.20
+
+# Impact Visualization
+visualization:
+  enabled: true
+  charts:
+    - "impact_curve_chart"
+    - "impact_component_chart"
+    - "impact_forecast_chart"
+    - "impact_heatmap"
+    - "impact_risk_chart"
+    - "mitigation_effectiveness"
+  update_interval_seconds: 10
+  dashboard_integration: true
+  real_time_updates: true
+
+# Alerting
+alerting:
+  enabled: true
+  alert_conditions:
+    - "impact_exceeded"
+    - "impact_spike"
+    - "forecast_deviation"
+    - "mitigation_failure"
+    - "risk_limit_breach"
+    - "model_divergence"
+  alert_thresholds:
+    impact_exceeded_bps: 10
+    impact_spike_bps: 5
+    forecast_deviation_percent: 30
+  alert_channels:
+    - "email"
+    - "telegram"
+    - "slack"
+  alert_cooldown_seconds: 300
+
+# Reporting
+reporting:
+  enabled: true
+  report_types:
+    - "real_time_impact"
+    - "daily_impact_summary"
+    - "weekly_impact_analysis"
+    - "monthly_impact_report"
+    - "mitigation_effectiveness"
+    - "venue_impact_comparison"
+  report_formats:
+    - "pdf"
+    - "html"
+    - "json"
+    - "csv"
+    - "excel"
+  report_recipients:
+    - "trading@example.com"
+    - "risk@example.com"
+    - "execution@example.com"
+
+# Storage
+storage:
+  enabled: true
+  storage_categories:
+    - "impact_metrics"
+    - "forecast_results"
+    - "mitigation_data"
+    - "venue_impact_data"
+    - "risk_metrics"
+    - "alert_history"
+  retention_days: 365
+  compression: "zstd"
+  storage_format: "parquet"
+
+# Integration
+integration:
+  enabled: true
+  webhook_endpoint: "http://localhost:8080/market-impact"
+  api_endpoint: "/api/v1/trading/market-impact"
+  dashboard_url: "http://localhost:3000/market-impact"
+  real_time_updates: true
+  data_sync_frequency_seconds: 5
+  external_systems:
+    - "trading_engine"
+    - "execution_engine"
+    - "risk_management"
+    - "order_management"
