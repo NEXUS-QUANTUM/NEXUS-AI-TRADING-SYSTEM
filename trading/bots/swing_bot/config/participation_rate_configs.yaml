@@ -1,0 +1,333 @@
+# Swing Bot Participation Rate Configuration
+# Market Participation Rate Analysis & Trading Parameters
+
+# General Participation Rate Settings
+participation_rate:
+  enabled: true
+  analysis_mode: "comprehensive"  # comprehensive, basic, advanced, real-time
+  calculation_method: "volume_based"  # volume_based, order_based, hybrid
+  update_frequency_seconds: 5
+  version: "3.0.0"
+
+# Participation Rate Calculation
+calculation:
+  enabled: true
+  methods:
+    - "volume_participation"
+    - "order_participation"
+    - "trade_participation"
+    - "market_share"
+    - "liquidity_provision"
+    - "quote_participation"
+  primary_method: "volume_participation"
+  secondary_method: "trade_participation"
+  calculation_window_bars: 20
+  smoothing_period: 3
+  volume_source: "trade_volume"  # trade_volume, quote_volume, total_volume
+  order_source: "limit_orders"  # limit_orders, market_orders, all_orders
+
+# Rate Types
+rate_types:
+  enabled: true
+  primary_rates:
+    - "total_participation"
+    - "buy_participation"
+    - "sell_participation"
+    - "aggressive_participation"
+    - "passive_participation"
+    - "institutional_participation"
+    - "retail_participation"
+  secondary_rates:
+    - "liquidity_taking"
+    - "liquidity_providing"
+    - "momentum_participation"
+    - "contrarian_participation"
+    - "arbitrage_participation"
+  rate_thresholds:
+    low: 0.10
+    moderate: 0.30
+    high: 0.50
+    extreme: 0.70
+
+# Volume Participation
+volume_participation:
+  enabled: true
+  calculation: "trade_volume_ratio"
+  total_market_volume: true
+  volume_source: "exchange"
+  participation_thresholds:
+    low: 0.05
+    moderate: 0.15
+    high: 0.30
+    extreme: 0.50
+  smoothing_period: 5
+
+# Order Participation
+order_participation:
+  enabled: true
+  calculation: "order_volume_ratio"
+  order_types:
+    - "limit_orders"
+    - "market_orders"
+    - "stop_orders"
+    - "iceberg_orders"
+  participation_thresholds:
+    low: 0.10
+    moderate: 0.25
+    high: 0.40
+    extreme: 0.60
+  smoothing_period: 3
+
+# Trade Participation
+trade_participation:
+  enabled: true
+  calculation: "trade_count_ratio"
+  trade_types:
+    - "market_trades"
+    - "limit_trades"
+    - "cross_trades"
+  participation_thresholds:
+    low: 0.05
+    moderate: 0.15
+    high: 0.30
+    extreme: 0.50
+  smoothing_period: 3
+
+# Aggressor Participation
+aggressor:
+  enabled: true
+  aggressor_rates:
+    - "buyer_initiated"
+    - "seller_initiated"
+    - "market_order_initiated"
+    - "limit_order_initiated"
+  aggressor_thresholds:
+    low: 0.20
+    moderate: 0.40
+    high: 0.60
+    extreme: 0.80
+  aggressor_ratio: true
+  aggressor_momentum: true
+
+# Institutional Participation
+institutional:
+  enabled: true
+  detection_methods:
+    - "large_trades"
+    - "block_trades"
+    - "algorithmic_trades"
+    - "dark_pool_trades"
+  institutional_rates:
+    - "institutional_volume"
+    - "institutional_trades"
+    - "institutional_orders"
+  threshold_large_trade: 100000
+  threshold_block_trade: 500000
+  institutional_participation_ratio: true
+
+# Retail Participation
+retail:
+  enabled: true
+  detection_methods:
+    - "small_trades"
+    - "retail_orders"
+    - "retail_patterns"
+  retail_rates:
+    - "retail_volume"
+    - "retail_trades"
+    - "retail_orders"
+  threshold_retail_trade: 10000
+  retail_participation_ratio: true
+
+# Participation Velocity
+velocity:
+  enabled: true
+  velocity_metrics:
+    - "participation_rate_of_change"
+    - "acceleration"
+    - "momentum"
+    - "deceleration"
+  lookback_bars: 5
+  smoothing_period: 3
+  velocity_threshold: 0.10
+
+# Participation Concentration
+concentration:
+  enabled: true
+  concentration_metrics:
+    - "herfindahl_index"
+    - "gini_coefficient"
+    - "cramer_von_mises"
+    - "top_participants_share"
+  concentration_thresholds:
+    low: 0.30
+    moderate: 0.50
+    high: 0.70
+  top_participants_count: 5
+
+# Participation Signals
+signals:
+  enabled: true
+  signal_types:
+    - "rising_participation"
+    - "falling_participation"
+    - "participation_breakout"
+    - "participation_divergence"
+    - "participation_exhaustion"
+    - "institutional_surge"
+    - "retail_surge"
+  confirmation_requirements:
+    min_indicators_confirmed: 2
+    volume_confirmation: true
+    price_confirmation: true
+  signal_strength_calculation: "weighted_average"
+  min_signal_strength: 0.60
+
+# Trading Rules
+trading_rules:
+  enabled: true
+  entry_rules:
+    - "participation_signal_bullish"
+    - "institutional_participation"
+    - "volume_confirmation"
+    - "price_confirmation"
+    - "trend_confirmation"
+  exit_rules:
+    - "participation_reversal"
+    - "participation_exhaustion"
+    - "take_profit_hit"
+    - "stop_loss_hit"
+  position_sizing:
+    method: "participation_based"
+    participation_strength_multiplier: 1.5
+    max_position_size: 0.05
+    min_position_size: 0.01
+
+# Stop Loss
+stop_loss:
+  enabled: true
+  stop_methods:
+    - "participation_reversal"
+    - "fixed_percent"
+    - "volatility_based"
+    - "trailing"
+  participation_reversal_threshold: 0.20
+  fixed_percent: 0.02
+  volatility_multiplier: 2.0
+  trailing_activation: 0.02
+  trailing_distance: 0.01
+
+# Take Profit
+take_profit:
+  enabled: true
+  profit_methods:
+    - "participation_exhaustion"
+    - "fixed_percent"
+    - "risk_reward_ratio"
+    - "trailing"
+  participation_exhaustion_threshold: 0.70
+  fixed_percent: 0.04
+  risk_reward_ratio: 2.0
+  trailing_activation: 0.02
+  trailing_distance: 0.01
+
+# Performance Metrics
+performance:
+  enabled: true
+  metrics:
+    - "participation_accuracy"
+    - "signal_accuracy"
+    - "win_rate"
+    - "average_return"
+    - "sharpe_ratio"
+    - "profit_factor"
+    - "average_hold_time"
+    - "participation_efficiency"
+  evaluation_period_days: 30
+  rolling_window_days: 30
+
+# Visualization
+visualization:
+  enabled: true
+  charts:
+    - "participation_dashboard"
+    - "participation_rate_chart"
+    - "aggressor_chart"
+    - "institutional_retail_chart"
+    - "velocity_chart"
+    - "concentration_chart"
+    - "signal_chart"
+  update_interval_seconds: 5
+  dashboard_integration: true
+  real_time_updates: true
+
+# Alerting
+alerting:
+  enabled: true
+  alert_conditions:
+    - "participation_signal"
+    - "institutional_surge"
+    - "retail_surge"
+    - "participation_reversal"
+    - "participation_exhaustion"
+    - "concentration_extreme"
+    - "velocity_spike"
+  alert_thresholds:
+    signal_confidence: 0.70
+    reversal_confidence: 0.75
+    exhaustion_confidence: 0.80
+  alert_channels:
+    - "email"
+    - "telegram"
+    - "slack"
+  alert_cooldown_seconds: 300
+
+# Reporting
+reporting:
+  enabled: true
+  report_types:
+    - "real_time_alerts"
+    - "daily_participation_summary"
+    - "weekly_participation_analysis"
+    - "monthly_participation_report"
+  report_formats:
+    - "pdf"
+    - "html"
+    - "json"
+    - "csv"
+    - "excel"
+  report_recipients:
+    - "trading@example.com"
+    - "research@example.com"
+    - "market_structure@example.com"
+
+# Storage
+storage:
+  enabled: true
+  storage_categories:
+    - "participation_data"
+    - "rate_data"
+    - "aggressor_data"
+    - "institutional_data"
+    - "retail_data"
+    - "velocity_data"
+    - "concentration_data"
+    - "signal_history"
+    - "alert_history"
+  retention_days: 365
+  compression: "zstd"
+  storage_format: "parquet"
+
+# Integration
+integration:
+  enabled: true
+  webhook_endpoint: "http://localhost:8080/participation-rate"
+  api_endpoint: "/api/v1/trading/participation-rate"
+  dashboard_url: "http://localhost:3000/participation-rate"
+  real_time_updates: true
+  data_sync_frequency_seconds: 3
+  external_systems:
+    - "trading_engine"
+    - "execution_engine"
+    - "research_platform"
+    - "market_data_feed"
