@@ -1,0 +1,331 @@
+# Swing Bot Recommendation Engine Configuration
+# Core Recommendation Engine & Action Suggestion Parameters
+
+# General Recommendation Engine Settings
+recommendation_engine:
+  enabled: true
+  engine_mode: "hybrid"  # hybrid, rule_based, ml_based, ensemble
+  recommendation_paradigm: "multi_criteria"  # multi_criteria, single_criteria, adaptive
+  engine_level: "advanced"  # basic, intermediate, advanced, expert
+  version: "3.0.0"
+
+# Engine Architecture
+architecture:
+  engine_type: "modular"  # modular, monolithic, distributed, microservices
+  modules:
+    - "recommendation_generator"
+    - "recommendation_ranker"
+    - "recommendation_filter"
+    - "recommendation_scorer"
+    - "personalization_engine"
+    - "context_analyzer"
+    - "action_evaluator"
+    - "feedback_processor"
+    - "explanation_generator"
+    - "performance_monitor"
+  module_interaction: "pipeline"  # pipeline, event_driven, message_based
+  parallel_execution: true
+  max_workers: 8
+  pipeline_buffer_size: 10000
+
+# Recommendation Generator
+recommendation_generator:
+  enabled: true
+  recommendation_types:
+    - "trading_actions"
+    - "risk_actions"
+    - "strategy_actions"
+    - "execution_actions"
+    - "portfolio_actions"
+    - "position_actions"
+    - "entry_exit_actions"
+    - "hedging_actions"
+    - "optimization_actions"
+  generation_methods:
+    - "rule_based"
+    - "machine_learning"
+    - "deep_learning"
+    - "ensemble"
+  primary_method: "ensemble"
+  generation_frequency_seconds: 10
+  max_recommendations: 10
+
+# Recommendation Ranker
+recommendation_ranker:
+  enabled: true
+  ranking_methods:
+    - "confidence_based"
+    - "urgency_based"
+    - "impact_based"
+    - "relevance_based"
+    - "multi_criteria"
+  primary_method: "multi_criteria"
+  ranking_criteria:
+    - "confidence_score": 0.25
+    - "urgency_score": 0.20
+    - "impact_score": 0.20
+    - "relevance_score": 0.15
+    - "timeliness_score": 0.10
+    - "actionability_score": 0.10
+  top_n_recommendations: 5
+  dynamic_ranking: true
+
+# Recommendation Filter
+recommendation_filter:
+  enabled: true
+  filter_criteria:
+    - "risk_filter"
+    - "context_filter"
+    - "time_filter"
+    - "market_filter"
+    - "regime_filter"
+    - "correlation_filter"
+    - "capacity_filter"
+    - "regulatory_filter"
+  filter_strictness: "moderate"  # strict, moderate, flexible
+  min_filter_score: 0.50
+  filter_override: true
+
+# Recommendation Scorer
+recommendation_scorer:
+  enabled: true
+  score_components:
+    - "confidence_score": 0.25
+    - "relevance_score": 0.20
+    - "timeliness_score": 0.15
+    - "impact_score": 0.15
+    - "probability_score": 0.10
+    - "urgency_score": 0.10
+    - "actionability_score": 0.05
+  score_range: [0, 100]
+  thresholds:
+    excellent: 85
+    good: 70
+    moderate: 50
+    poor: 30
+  dynamic_scoring: true
+
+# Personalization Engine
+personalization:
+  enabled: true
+  personalization_factors:
+    - "risk_tolerance"
+    - "trading_style"
+    - "experience_level"
+    - "capital_available"
+    - "time_horizon"
+    - "preferences"
+    - "performance_history"
+    - "behavioral_patterns"
+  adaptation_methods:
+    - "rule_based"
+    - "machine_learning"
+    - "collaborative_filtering"
+    - "content_based"
+  primary_method: "machine_learning"
+  adaptation_speed: 0.50
+  learning_rate: 0.10
+  user_profile_update_frequency_hours: 24
+
+# Context Analyzer
+context_analyzer:
+  enabled: true
+  context_types:
+    - "market_context"
+    - "risk_context"
+    - "strategy_context"
+    - "execution_context"
+    - "portfolio_context"
+    - "temporal_context"
+    - "geographic_context"
+  context_factors:
+    - "market_regime"
+    - "risk_environment"
+    - "strategy_performance"
+    - "execution_quality"
+    - "portfolio_status"
+    - "time_of_day"
+    - "day_of_week"
+    - "economic_events"
+  context_confidence_threshold: 0.70
+
+# Action Evaluator
+action_evaluator:
+  enabled: true
+  evaluation_criteria:
+    - "expected_return"
+    - "risk_adjusted_return"
+    - "drawdown_risk"
+    - "liquidity_impact"
+    - "market_impact"
+    - "execution_feasibility"
+    - "cost_effectiveness"
+  evaluation_methods:
+    - "simulation"
+    - "historical_analysis"
+    - "forecast_analysis"
+    - "scenario_analysis"
+  primary_method: "scenario_analysis"
+  confidence_interval: 0.95
+
+# Feedback Processor
+feedback_processor:
+  enabled: true
+  feedback_types:
+    - "user_feedback"
+    - "performance_feedback"
+    - "outcome_feedback"
+    - "explicit_feedback"
+    - "implicit_feedback"
+  feedback_mechanisms:
+    - "rating"
+    - "accept_reject"
+    - "performance_metrics"
+    - "behavioral_tracking"
+  learning_from_feedback: true
+  feedback_weight: 0.50
+  feedback_retention_days: 90
+
+# Explanation Generator
+explanation_generator:
+  enabled: true
+  explanation_methods:
+    - "rule_trace"
+    - "feature_importance"
+    - "shap_values"
+    - "lime_explanations"
+    - "counterfactual_explanations"
+    - "natural_language"
+  primary_method: "natural_language"
+  explanation_depth: "comprehensive"  # basic, intermediate, comprehensive
+  explanation_visualization: true
+  explanation_retention_days: 30
+
+# Performance Monitor
+performance_monitor:
+  enabled: true
+  monitoring_frequency_seconds: 60
+  metrics:
+    - "recommendation_accuracy"
+    - "recommendation_precision"
+    - "recommendation_recall"
+    - "recommendation_f1_score"
+    - "user_satisfaction"
+    - "action_success_rate"
+    - "recommendation_speed"
+  alert_thresholds:
+    accuracy_drop: 0.15
+    success_rate_drop: 0.20
+    speed_drop: 0.30
+
+# Recommendation Quality
+quality:
+  enabled: true
+  quality_metrics:
+    - "recommendation_accuracy"
+    - "relevance"
+    - "timeliness"
+    - "actionability"
+    - "impact_effectiveness"
+    - "user_satisfaction"
+    - "consistency"
+  quality_thresholds:
+    poor: 0.40
+    moderate: 0.60
+    good: 0.80
+    excellent: 0.95
+  quality_monitoring: true
+
+# Visualization
+visualization:
+  enabled: true
+  charts:
+    - "recommendation_dashboard"
+    - "recommendation_timeline"
+    - "confidence_chart"
+    - "scoring_chart"
+    - "action_tracker"
+    - "performance_chart"
+    - "feedback_chart"
+    - "personalization_chart"
+  update_interval_seconds: 10
+  dashboard_integration: true
+  real_time_updates: true
+
+# Alerting
+alerting:
+  enabled: true
+  alert_conditions:
+    - "high_confidence_recommendation"
+    - "urgent_recommendation"
+    - "critical_action_needed"
+    - "performance_drop"
+    - "personalization_update"
+    - "feedback_required"
+    - "quality_degradation"
+  alert_thresholds:
+    confidence_high: 85
+    urgency_high: 80
+    quality_drop: 0.15
+  alert_channels:
+    - "email"
+    - "telegram"
+    - "slack"
+    - "pagerduty"
+  alert_cooldown_seconds: 300
+
+# Reporting
+reporting:
+  enabled: true
+  report_types:
+    - "recommendation_summary"
+    - "performance_report"
+    - "quality_report"
+    - "personalization_report"
+    - "feedback_analysis"
+    - "explanation_report"
+  report_formats:
+    - "pdf"
+    - "html"
+    - "json"
+    - "csv"
+    - "excel"
+  report_recipients:
+    - "trading@example.com"
+    - "risk@example.com"
+    - "strategy@example.com"
+    - "management@example.com"
+
+# Storage
+storage:
+  enabled: true
+  storage_categories:
+    - "recommendation_data"
+    - "scoring_data"
+    - "personalization_data"
+    - "context_data"
+    - "feedback_data"
+    - "explanation_data"
+    - "performance_data"
+    - "quality_data"
+    - "alert_history"
+    - "report_history"
+  retention_days: 365
+  compression: "zstd"
+  storage_format: "parquet"
+
+# Integration
+integration:
+  enabled: true
+  webhook_endpoint: "http://localhost:8080/recommendation-engine"
+  api_endpoint: "/api/v1/trading/recommendation-engine"
+  dashboard_url: "http://localhost:3000/recommendation-engine"
+  real_time_updates: true
+  data_sync_frequency_seconds: 5
+  external_systems:
+    - "trading_engine"
+    - "risk_management"
+    - "strategy_engine"
+    - "execution_engine"
+    - "portfolio_management"
+    - "user_profile_system"
