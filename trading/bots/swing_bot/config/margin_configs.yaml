@@ -1,0 +1,367 @@
+# Swing Bot Margin Configuration
+# Margin Management, Requirements & Optimization Parameters
+
+# General Margin Settings
+margin:
+  enabled: true
+  margin_type: "cross"  # cross, isolated, portfolio, multi_currency
+  margin_mode: "dynamic"  # fixed, dynamic, adaptive, risk_based
+  calculation_method: "regulatory"  # regulatory, risk_based, portfolio, hybrid
+  version: "3.0.0"
+
+# Margin Requirements
+requirements:
+  enabled: true
+  initial_margin:
+    default: 0.10
+    minimum: 0.05
+    maximum: 0.50
+    tiered: true
+  maintenance_margin:
+    default: 0.05
+    minimum: 0.02
+    maximum: 0.30
+    tiered: true
+  variation_margin:
+    enabled: true
+    calculation_frequency_seconds: 60
+    threshold: 0.02
+  margin_buffer:
+    default: 0.10
+    minimum: 0.05
+    recommended: 0.15
+
+# Tiered Margins
+tiers:
+  enabled: true
+  tier_structure:
+    tier_1:
+      account_balance_range: [0, 10000]
+      initial_margin: 0.20
+      maintenance_margin: 0.10
+      leverage_max: 5.0
+    tier_2:
+      account_balance_range: [10000, 50000]
+      initial_margin: 0.15
+      maintenance_margin: 0.08
+      leverage_max: 6.0
+    tier_3:
+      account_balance_range: [50000, 100000]
+      initial_margin: 0.10
+      maintenance_margin: 0.05
+      leverage_max: 10.0
+    tier_4:
+      account_balance_range: [100000, 500000]
+      initial_margin: 0.08
+      maintenance_margin: 0.04
+      leverage_max: 12.0
+    tier_5:
+      account_balance_range: [500000, 1000000]
+      initial_margin: 0.06
+      maintenance_margin: 0.03
+      leverage_max: 15.0
+    tier_6:
+      account_balance_range: [1000000, null]
+      initial_margin: 0.05
+      maintenance_margin: 0.02
+      leverage_max: 20.0
+
+# Cross Margin
+cross_margin:
+  enabled: true
+  cross_margin_method: "portfolio"  # portfolio, account, global
+  netting_enabled: true
+  hedging_benefits: true
+  correlation_benefits: true
+  diversification_benefits: true
+  cross_currency_netting: true
+  cross_product_netting: true
+
+# Isolated Margin
+isolated_margin:
+  enabled: true
+  isolation_level: "position"  # position, strategy, asset
+  separate_accounting: true
+  independent_requirements: true
+  no_netting: true
+  no_hedging_benefits: true
+  risk_isolation: true
+
+# Portfolio Margin
+portfolio_margin:
+  enabled: true
+  portfolio_method: "risk_based"  # risk_based, historical, monte_carlo
+  var_calculation:
+    confidence_level: 0.99
+    time_horizon_days: 1
+    calculation_method: "historical"  # historical, parametric, monte_carlo
+  correlation_matrix: true
+  stress_testing: true
+  scenario_analysis: true
+  diversification_benefits: true
+  hedging_benefits: true
+
+# Risk-Based Margin
+risk_based_margin:
+  enabled: true
+  risk_factors:
+    - "volatility"
+    - "liquidity"
+    - "concentration"
+    - "correlation"
+    - "market_risk"
+    - "credit_risk"
+  risk_weights:
+    volatility: 0.25
+    liquidity: 0.20
+    concentration: 0.20
+    correlation: 0.15
+    market_risk: 0.10
+    credit_risk: 0.10
+  var_method: "historical"  # historical, parametric, monte_carlo
+  confidence_level: 0.99
+  margin_multiplier: 1.5
+
+# Margin Calculation
+calculation:
+  enabled: true
+  calculation_methods:
+    - "regulatory_standard"
+    - "internal_model"
+    - "hybrid"
+  primary_method: "hybrid"
+  mark_to_market:
+    enabled: true
+    frequency_seconds: 5
+    pricing_source: "market"  # market, model, mid
+  valuation_method: "mark_to_market"  # mark_to_market, mark_to_model
+  collateral_valuation: true
+  net_open_position: true
+  gross_position: true
+
+# Margin Monitoring
+monitoring:
+  enabled: true
+  monitoring_frequency_seconds: 5
+  metrics:
+    - "used_margin"
+    - "available_margin"
+    - "margin_ratio"
+    - "initial_margin_used"
+    - "maintenance_margin_used"
+    - "margin_buffer"
+    - "margin_call_level"
+    - "liquidation_level"
+  thresholds:
+    margin_ratio_warning: 0.70
+    margin_ratio_alert: 0.80
+    margin_call_level: 0.85
+    liquidation_level: 0.95
+    buffer_low_warning: 0.10
+  dashboard_integration: true
+
+# Margin Calls
+margin_calls:
+  enabled: true
+  call_methods:
+    - "automatic"
+    - "manual"
+    - "hybrid"
+  primary_method: "automatic"
+  call_threshold: 0.85
+  call_frequency_minutes: 5
+  escalation_policy: true
+  call_recipients:
+    - "trading@example.com"
+    - "risk@example.com"
+  call_actions:
+    - "reduce_position"
+    - "add_collateral"
+    - "close_position"
+    - "hedge_position"
+  auto_reduce: true
+  auto_reduce_threshold: 0.90
+
+# Liquidation
+liquidation:
+  enabled: true
+  liquidation_threshold: 0.95
+  liquidation_method: "partial"  # partial, full, partial_to_threshold
+  liquidation_priority: "loss_minimization"  # loss_minimization, liquidity_based, random
+  liquidation_order_types:
+    - "market"
+    - "limit"
+    - "stop"
+  slippage_consideration: true
+  market_impact_consideration: true
+  liquidation_protection: true
+
+# Collateral Management
+collateral:
+  enabled: true
+  collateral_types:
+    - "cash"
+    - "securities"
+    - "government_bonds"
+    - "corporate_bonds"
+    - "etfs"
+    - "mutual_funds"
+    - "physical_commodities"
+  haircuts:
+    cash: 0
+    government_bonds: 0.02
+    corporate_bonds: 0.05
+    etfs: 0.10
+    equities: 0.15
+  collateral_valuation_frequency_hours: 1
+  collateral_substitution: true
+  collateral_reuse: true
+
+# Leverage Constraints
+leverage:
+  enabled: true
+  max_leverage: 10.0
+  min_leverage: 1.0
+  default_leverage: 2.0
+  leverage_based_on_margin: true
+  tiered_leverage: true
+  dynamic_leverage: true
+  leverage_adjustment:
+    method: "risk_based"
+    frequency_minutes: 15
+    smoothing_factor: 0.50
+
+# Position Sizing
+position_sizing:
+  enabled: true
+  methods:
+    - "margin_based"
+    - "risk_based"
+    - "kelly_criterion"
+    - "fixed_fraction"
+    - "variable_fraction"
+  primary_method: "risk_based"
+  risk_per_trade: 0.02
+  max_position_size_percent: 0.20
+  min_position_size_percent: 0.01
+  position_correlation_adjustment: true
+  diversification_adjustment: true
+
+# Stress Testing
+stress_testing:
+  enabled: true
+  stress_scenarios:
+    - "market_crash"
+    - "volatility_shock"
+    - "liquidity_crisis"
+    - "correlation_breakdown"
+    - "margin_spike"
+    - "counterparty_default"
+  scenario_impact_analysis: true
+  margin_adequacy_testing: true
+  stress_test_frequency_days: 1
+  worst_case_scenario: true
+
+# Margin Optimization
+optimization:
+  enabled: true
+  optimization_objectives:
+    - "minimize_margin"
+    - "maximize_leverage"
+    - "minimize_risk"
+    - "maximize_return"
+  optimization_constraints:
+    - "margin_requirements"
+    - "risk_limits"
+    - "concentration_limits"
+    - "liquidity_constraints"
+  optimization_algorithm: "genetic"
+  optimization_frequency_hours: 6
+  convergence_threshold: 0.001
+
+# Reporting
+reporting:
+  enabled: true
+  report_types:
+    - "margin_summary"
+    - "margin_usage_report"
+    - "margin_call_report"
+    - "collateral_report"
+    - "stress_test_report"
+    - "optimization_report"
+  report_formats:
+    - "pdf"
+    - "html"
+    - "json"
+    - "csv"
+    - "excel"
+  report_recipients:
+    - "trading@example.com"
+    - "risk@example.com"
+    - "finance@example.com"
+    - "compliance@example.com"
+  report_frequency_hours: 24
+
+# Visualization
+visualization:
+  enabled: true
+  charts:
+    - "margin_usage_dashboard"
+    - "margin_ratio_trend"
+    - "collateral_composition"
+    - "leverage_trend"
+    - "position_sizing_chart"
+    - "stress_test_results"
+  update_interval_seconds: 10
+  dashboard_integration: true
+  real_time_updates: true
+
+# Alerting
+alerting:
+  enabled: true
+  alert_conditions:
+    - "margin_ratio_high"
+    - "margin_call_triggered"
+    - "liquidation_risk"
+    - "collateral_deficit"
+    - "stress_test_failure"
+    - "leverage_limit_breach"
+    - "optimization_failure"
+  alert_channels:
+    - "email"
+    - "telegram"
+    - "slack"
+    - "sms"
+    - "pagerduty"
+  alert_cooldown_seconds: 300
+  escalation_policy: true
+
+# Storage
+storage:
+  enabled: true
+  storage_categories:
+    - "margin_metrics"
+    - "collateral_data"
+    - "margin_call_history"
+    - "liquidation_events"
+    - "stress_test_results"
+    - "optimization_results"
+    - "report_history"
+  retention_days: 365
+  compression: "zstd"
+  storage_format: "parquet"
+
+# Integration
+integration:
+  enabled: true
+  webhook_endpoint: "http://localhost:8080/margin"
+  api_endpoint: "/api/v1/trading/margin"
+  dashboard_url: "http://localhost:3000/margin"
+  real_time_updates: true
+  data_sync_frequency_seconds: 5
+  external_systems:
+    - "trading_engine"
+    - "risk_management"
+    - "prime_broker"
+    - "clearing_system"
+    - "accounting_system"
