@@ -1,0 +1,345 @@
+# Swing Bot Liquidity Analysis Configuration
+# Liquidity Analysis & Management Parameters
+
+# General Liquidity Settings
+liquidity:
+  enabled: true
+  analysis_mode: "comprehensive"  # comprehensive, basic, advanced, real-time
+  liquidity_measure: "order_book"  # order_book, volume, spread, multi_factor
+  update_frequency_seconds: 5
+  version: "3.0.0"
+
+# Order Book Liquidity
+order_book:
+  enabled: true
+  depth_levels: 20
+  liquidity_metrics:
+    - "bid_ask_spread"
+    - "market_depth"
+    - "order_flow_imbalance"
+    - "quote_density"
+    - "liquidity_score"
+    - "book_pressure"
+    - "depth_imbalance"
+  calculation_frequency_ms: 100
+  min_order_size: 100
+  max_order_size: 100000
+  depth_weighting: "linear"  # linear, exponential, logarithmic, custom
+  spread_calculation: "weighted"  # weighted, simple, mid_price
+
+# Spread Analysis
+spread:
+  enabled: true
+  spread_metrics:
+    - "bid_ask_spread_bps"
+    - "quoted_spread"
+    - "effective_spread"
+    - "realized_spread"
+    - "relative_spread"
+    - "spread_percentile"
+  calculation_methods:
+    - "current"
+    - "moving_average"
+    - "volume_weighted"
+    - "time_weighted"
+  lookback_period_bars: 20
+  moving_average_period: 10
+  spread_thresholds:
+    low_spread: 2
+    medium_spread: 5
+    high_spread: 10
+    extreme_spread: 20
+
+# Market Depth
+market_depth:
+  enabled: true
+  depth_metrics:
+    - "bid_depth"
+    - "ask_depth"
+    - "total_depth"
+    - "depth_imbalance"
+    - "depth_weighted_price"
+    - "cumulative_depth"
+  depth_levels: 10
+  depth_calculation: "cumulative"  # cumulative, level_based, weighted
+  depth_weighting_method: "linear"
+  imbalance_threshold: 0.30
+  depth_update_frequency_ms: 100
+
+# Volume Liquidity
+volume_liquidity:
+  enabled: true
+  volume_metrics:
+    - "trading_volume"
+    - "turnover"
+    - "volume_velocity"
+    - "volume_spike"
+    - "volume_consistency"
+    - "volume_stability"
+  lookback_period_days: 30
+  moving_average_periods: [5, 10, 20, 50]
+  volume_spike_threshold: 2.0
+  volume_consistency_period: 20
+  volume_stability_threshold: 0.30
+
+# Liquidity Score
+liquidity_score:
+  enabled: true
+  score_components:
+    - "spread_score": 0.20
+    - "depth_score": 0.20
+    - "volume_score": 0.15
+    - "turnover_score": 0.15
+    - "order_flow_score": 0.10
+    - "market_impact_score": 0.10
+    - "price_impact_score": 0.10
+  score_range: [0, 100]
+  thresholds:
+    excellent: 80
+    good: 60
+    average: 40
+    poor: 20
+    very_poor: 0
+  dynamic_scoring: true
+  real_time_update: true
+
+# Order Flow Analysis
+order_flow:
+  enabled: true
+  flow_metrics:
+    - "order_flow_imbalance"
+    - "trade_direction"
+    - "aggressive_orders"
+    - "passive_orders"
+    - "order_execution_speed"
+    - "fill_rate"
+  calculation_window_bars: 20
+  imbalance_threshold: 0.30
+  aggressive_order_threshold: 0.60
+  fill_rate_analysis: true
+  execution_speed_ms: 50
+
+# Market Impact
+market_impact:
+  enabled: true
+  impact_metrics:
+    - "price_impact"
+    - "impact_cost"
+    - "liquidity_consumption"
+    - "market_impact_score"
+    - "temporary_impact"
+    - "permanent_impact"
+  calculation_method: "empirical"  # empirical, theoretical, model_based
+  order_size_threshold: 10000
+  impact_window_bars: 10
+  impact_model: "almgren_chriss"
+  max_impact_bps: 10
+
+# Liquidity Providers
+providers:
+  enabled: true
+  provider_types:
+    - "market_makers"
+    - "institutional"
+    - "retail"
+    - "algo_traders"
+    - "arbitrageurs"
+    - "hedge_funds"
+  provider_detection: true
+  market_maker_identification: true
+  institutional_flow_detection: true
+  provider_share_calculation: true
+  provider_analysis_window_bars: 100
+
+# Dark Pool Liquidity
+dark_pool:
+  enabled: true
+  dark_pool_metrics:
+    - "dark_pool_volume"
+    - "dark_pool_trades"
+    - "dark_pool_share"
+    - "dark_pool_depth"
+    - "dark_pool_impact"
+  detection_threshold: 100000
+  volume_threshold: 0.10
+  trade_size_threshold: 10000
+  dark_pool_share_calculation: true
+  cross_venue_analysis: true
+
+# Liquidity Risk
+liquidity_risk:
+  enabled: true
+  risk_metrics:
+    - "liquidity_dry_up_risk"
+    - "spread_widening_risk"
+    - "depth_depletion_risk"
+    - "execution_risk"
+    - "slippage_risk"
+    - "market_impact_risk"
+  risk_thresholds:
+    low_risk: 0.30
+    medium_risk: 0.60
+    high_risk: 0.80
+  monitoring_frequency_seconds: 10
+  alert_on_risk_change: true
+
+# Slippage Analysis
+slippage:
+  enabled: true
+  slippage_metrics:
+    - "expected_slippage"
+    - "realized_slippage"
+    - "slippage_distribution"
+    - "slippage_percentile"
+    - "slippage_volatility"
+  calculation_method: "historical"  # historical, model_based, real_time
+  lookback_period_days: 30
+  confidence_level: 0.95
+  max_acceptable_slippage_bps: 5
+  slippage_forecast: true
+
+# Liquidity Forecasting
+forecasting:
+  enabled: true
+  forecast_horizons:
+    - "short_term": "5m"
+    - "medium_term": "1h"
+    - "long_term": "24h"
+  forecast_models:
+    - "time_series"
+    - "machine_learning"
+    - "deep_learning"
+    - "ensemble"
+  primary_model: "ensemble"
+  model_retrain_frequency_hours: 24
+  confidence_interval: 0.95
+  feature_columns:
+    - "historical_liquidity"
+    - "volume"
+    - "volatility"
+    - "spread"
+    - "time_of_day"
+    - "day_of_week"
+
+# Liquidity Thresholds
+thresholds:
+  enabled: true
+  thresholds:
+    min_liquidity_score: 30
+    min_depth_required: 10000
+    max_spread_bps: 10
+    min_volume_required: 100000
+    max_volume_spike: 3.0
+    max_market_impact_bps: 5
+    max_slippage_bps: 5
+    min_order_flow_balance: -0.30
+    max_order_flow_imbalance: 0.30
+  breach_action: "alert"
+  threshold_violation_cooldown_seconds: 300
+
+# Liquidity Scoring Algorithms
+algorithms:
+  enabled: true
+  algorithms:
+    - name: "liquidity_score_linear"
+      type: "linear"
+      weight: 0.50
+    - name: "liquidity_score_exponential"
+      type: "exponential"
+      weight: 0.30
+    - name: "liquidity_score_machine_learning"
+      type: "machine_learning"
+      weight: 0.20
+  primary_algorithm: "liquidity_score_linear"
+  algorithm_combiner: "weighted_average"
+
+# Visualization
+visualization:
+  enabled: true
+  charts:
+    - "liquidity_score_dashboard"
+    - "order_book_depth_chart"
+    - "spread_evolution_chart"
+    - "volume_liquidity_chart"
+    - "market_impact_chart"
+    - "slippage_distribution"
+    - "liquidity_heatmap"
+  update_interval_seconds: 10
+  dashboard_integration: true
+  real_time_updates: true
+
+# Alerting
+alerting:
+  enabled: true
+  alert_conditions:
+    - "liquidity_score_drop"
+    - "spread_widening"
+    - "depth_depletion"
+    - "volume_anomaly"
+    - "high_slippage"
+    - "market_impact_exceeded"
+    - "order_flow_imbalance"
+    - "dark_pool_activity"
+  alert_thresholds:
+    liquidity_score_drop: 20
+    spread_widening_bps: 10
+    depth_depletion_percent: 50
+    volume_anomaly_multiplier: 2.0
+    slippage_exceeded_bps: 5
+  alert_channels:
+    - "email"
+    - "telegram"
+    - "slack"
+    - "sms"
+  alert_cooldown_seconds: 300
+
+# Reporting
+reporting:
+  enabled: true
+  report_types:
+    - "real_time_alerts"
+    - "daily_liquidity_summary"
+    - "weekly_liquidity_analysis"
+    - "monthly_liquidity_report"
+    - "liquidity_risk_report"
+    - "execution_quality_report"
+  report_formats:
+    - "pdf"
+    - "html"
+    - "json"
+    - "csv"
+    - "excel"
+  report_recipients:
+    - "trading@example.com"
+    - "risk@example.com"
+    - "compliance@example.com"
+
+# Storage
+storage:
+  enabled: true
+  storage_categories:
+    - "liquidity_metrics"
+    - "order_book_snapshots"
+    - "volume_data"
+    - "spread_data"
+    - "slippage_data"
+    - "alert_history"
+    - "forecast_results"
+  retention_days: 365
+  compression: "zstd"
+  storage_format: "parquet"
+  backup_frequency_days: 1
+
+# Integration
+integration:
+  enabled: true
+  webhook_endpoint: "http://localhost:8080/liquidity"
+  api_endpoint: "/api/v1/trading/liquidity"
+  dashboard_url: "http://localhost:3000/liquidity"
+  real_time_updates: true
+  data_sync_frequency_seconds: 5
+  external_systems:
+    - "trading_engine"
+    - "risk_management"
+    - "execution_platform"
+    - "market_data_feed"
