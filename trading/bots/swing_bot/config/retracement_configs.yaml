@@ -1,0 +1,332 @@
+# Swing Bot Retracement Configuration
+# Fibonacci Retracement & Price Retracement Parameters
+
+# General Retracement Settings
+retracement:
+  enabled: true
+  analysis_mode: "comprehensive"  # comprehensive, basic, advanced, real-time
+  calculation_method: "fibonacci"  # fibonacci, percentage, dynamic, hybrid
+  strategy_type: "retracement_trading"  # retracement_trading, pullback_trading, correction_trading
+  version: "3.0.0"
+
+# Retracement Types
+types:
+  enabled: true
+  primary_types:
+    - "fibonacci_retracement"
+    - "fibonacci_extension"
+    - "fibonacci_projection"
+    - "percentage_retracement"
+    - "dynamic_retracement"
+    - "volatility_adjusted"
+  secondary_types:
+    - "time_retracement"
+    - "volume_retracement"
+    - "momentum_retracement"
+    - "support_resistance_retracement"
+    - "moving_average_retracement"
+  type_weights:
+    fibonacci_retracement: 0.30
+    fibonacci_extension: 0.20
+    fibonacci_projection: 0.15
+    percentage_retracement: 0.15
+    dynamic_retracement: 0.10
+    volatility_adjusted: 0.10
+
+# Fibonacci Retracement
+fibonacci:
+  enabled: true
+  retracement_levels:
+    - 0.0
+    - 0.236
+    - 0.382
+    - 0.500
+    - 0.618
+    - 0.786
+    - 1.0
+  extension_levels:
+    - 1.272
+    - 1.382
+    - 1.618
+    - 2.0
+    - 2.618
+  projection_levels:
+    - 0.618
+    - 1.0
+    - 1.272
+    - 1.618
+  swing_lookback_bars: 100
+  min_swing_size: 0.02
+  confluence_threshold: 0.01
+  primary_levels:
+    - 0.382
+    - 0.500
+    - 0.618
+
+# Percentage Retracement
+percentage:
+  enabled: true
+  retracement_levels:
+    - 0.10
+    - 0.20
+    - 0.30
+    - 0.40
+    - 0.50
+    - 0.60
+    - 0.70
+    - 0.80
+    - 0.90
+  primary_levels:
+    - 0.30
+    - 0.50
+    - 0.70
+  swing_lookback_bars: 50
+  min_swing_size: 0.02
+  confluence_threshold: 0.01
+
+# Dynamic Retracement
+dynamic:
+  enabled: true
+  calculation_methods:
+    - "volatility_based"
+    - "momentum_based"
+    - "trend_based"
+    - "market_regime_based"
+    - "machine_learning"
+  primary_method: "volatility_based"
+  lookback_period_bars: 20
+  volatility_multiplier: 0.50
+  momentum_adjustment: true
+  dynamic_levels: true
+  adaptive_calculation: true
+
+# Volatility-Adjusted Retracement
+volatility_adjusted:
+  enabled: true
+  adjustment_methods:
+    - "atr_based"
+    - "standard_deviation_based"
+    - "historical_volatility_based"
+  primary_method: "atr_based"
+  atr_period: 14
+  adjustment_multiplier: 0.50
+  min_adjustment: 0.10
+  max_adjustment: 1.50
+  dynamic_adjustment: true
+
+# Retracement Strength
+strength:
+  enabled: true
+  strength_metrics:
+    - "price_level_touch_count"
+    - "volume_at_level"
+    - "time_at_level"
+    - "confluence_strength"
+    - "fibonacci_cluster_strength"
+    - "market_profile_strength"
+  strength_calculation: "weighted_average"
+  strength_thresholds:
+    weak: 0.30
+    moderate: 0.50
+    strong: 0.70
+    very_strong: 0.85
+
+# Retracement Signals
+signals:
+  enabled: true
+  signal_types:
+    - "retracement_support"
+    - "retracement_resistance"
+    - "retracement_breakout"
+    - "retracement_rejection"
+    - "retracement_continuation"
+    - "retracement_reversal"
+  signal_strength_calculation: "weighted_average"
+  min_signal_strength: 0.60
+  signal_confidence_threshold: 0.70
+
+# Trading Strategies
+strategies:
+  enabled: true
+  retracement_strategies:
+    - "retracement_bounce"
+    - "retracement_breakout"
+    - "retracement_continuation"
+    - "fibonacci_trading"
+    - "confluence_trading"
+    - "trend_continuation"
+    - "reversal_trading"
+  strategy_selection: "context_based"
+  strategy_confidence_threshold: 0.70
+  strategy_confirmation_bars: 2
+
+# Entry Signals
+entry_signals:
+  enabled: true
+  entry_types:
+    - "bounce_entry"
+    - "breakout_entry"
+    - "continuation_entry"
+    - "confluence_entry"
+    - "fibonacci_entry"
+    - "reversal_entry"
+  confirmation_requirements:
+    min_indicators_confirmed: 2
+    volume_confirmation: true
+    price_confirmation: true
+  signal_strength_calculation: "weighted_average"
+  min_signal_strength: 0.60
+
+# Stop Loss
+stop_loss:
+  enabled: true
+  stop_methods:
+    - "level_break"
+    - "fixed_percent"
+    - "volatility_based"
+    - "next_level"
+    - "trailing"
+  level_break_threshold: 0.01
+  fixed_percent: 0.02
+  volatility_multiplier: 2.0
+  next_level_distance: 0.005
+  trailing_activation: 0.02
+  trailing_distance: 0.01
+
+# Take Profit
+take_profit:
+  enabled: true
+  profit_methods:
+    - "next_fibonacci_level"
+    - "fixed_percent"
+    - "risk_reward_ratio"
+    - "target_level"
+    - "trailing"
+  next_fibonacci_multiplier: 1.0
+  fixed_percent: 0.04
+  risk_reward_ratio: 2.0
+  target_level_multiplier: 1.5
+  trailing_activation: 0.02
+  trailing_distance: 0.01
+
+# Confluence Analysis
+confluence:
+  enabled: true
+  confluence_types:
+    - "fibonacci_confluence"
+    - "support_resistance_confluence"
+    - "moving_average_confluence"
+    - "trendline_confluence"
+    - "volume_node_confluence"
+    - "pivot_confluence"
+  confluence_radius: 0.005
+  min_confluence_count: 2
+  confluence_score_weights:
+    fibonacci: 0.30
+    support_resistance: 0.25
+    moving_average: 0.15
+    trendline: 0.10
+    volume_node: 0.10
+    pivot: 0.10
+  confluence_visualization: true
+
+# Performance Metrics
+performance:
+  enabled: true
+  metrics:
+    - "retracement_accuracy"
+    - "fibonacci_accuracy"
+    - "confluence_accuracy"
+    - "win_rate"
+    - "average_return"
+    - "profit_factor"
+    - "sharpe_ratio"
+    - "max_drawdown"
+    - "average_hold_time"
+  evaluation_period_days: 30
+  rolling_window_days: 30
+
+# Visualization
+visualization:
+  enabled: true
+  charts:
+    - "retracement_dashboard"
+    - "fibonacci_chart"
+    - "confluence_chart"
+    - "strength_chart"
+    - "signal_chart"
+    - "performance_chart"
+    - "level_visualization"
+  update_interval_seconds: 10
+  dashboard_integration: true
+  real_time_updates: true
+
+# Alerting
+alerting:
+  enabled: true
+  alert_conditions:
+    - "retracement_level_reached"
+    - "fibonacci_level_reached"
+    - "confluence_detected"
+    - "entry_signal"
+    - "exit_signal"
+    - "level_break"
+    - "level_rejection"
+  alert_thresholds:
+    level_confidence: 0.70
+    confluence_confidence: 0.70
+    signal_confidence: 0.70
+  alert_channels:
+    - "email"
+    - "telegram"
+    - "slack"
+  alert_cooldown_seconds: 300
+
+# Reporting
+reporting:
+  enabled: true
+  report_types:
+    - "real_time_alerts"
+    - "daily_retracement_summary"
+    - "weekly_retracement_analysis"
+    - "monthly_retracement_report"
+  report_formats:
+    - "pdf"
+    - "html"
+    - "json"
+    - "csv"
+    - "excel"
+  report_recipients:
+    - "trading@example.com"
+    - "research@example.com"
+    - "strategy@example.com"
+
+# Storage
+storage:
+  enabled: true
+  storage_categories:
+    - "retracement_data"
+    - "fibonacci_data"
+    - "confluence_data"
+    - "strength_scores"
+    - "signal_history"
+    - "trade_history"
+    - "performance_metrics"
+    - "alert_history"
+  retention_days: 365
+  compression: "zstd"
+  storage_format: "parquet"
+
+# Integration
+integration:
+  enabled: true
+  webhook_endpoint: "http://localhost:8080/retracement"
+  api_endpoint: "/api/v1/trading/retracement"
+  dashboard_url: "http://localhost:3000/retracement"
+  real_time_updates: true
+  data_sync_frequency_seconds: 5
+  external_systems:
+    - "trading_engine"
+    - "risk_management"
+    - "strategy_engine"
+    - "research_platform"
