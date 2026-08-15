@@ -1,0 +1,289 @@
+# Swing Bot Mean Reversion Configuration
+# Mean Reversion Strategy & Statistical Arbitrage Parameters
+
+# General Mean Reversion Settings
+mean_reversion:
+  enabled: true
+  strategy_type: "hybrid"  # pure, hybrid, adaptive, multi_factor
+  reversion_calculation: "zscore"  # zscore, bollinger, ratio, statistical_arbitrage
+  timeframe: "medium"  # short, medium, long, multi
+  version: "3.0.0"
+
+# Statistical Indicators
+indicators:
+  enabled: true
+  primary_indicators:
+    - "zscore"
+    - "bollinger_bands"
+    - "rsi"
+    - "stochastic"
+    - "moving_average_crossover"
+    - "price_to_ma_ratio"
+  secondary_indicators:
+    - "cci"
+    - "williams_r"
+    - "adx"
+    - "macd"
+    - "keltner_channels"
+    - "donchian_channels"
+  indicator_weights:
+    zscore: 0.25
+    bollinger_bands: 0.20
+    rsi: 0.15
+    stochastic: 0.15
+    moving_average_crossover: 0.15
+    price_to_ma_ratio: 0.10
+
+# Z-Score Analysis
+zscore:
+  enabled: true
+  calculation_method: "rolling"  # rolling, expanding, hybrid
+  lookback_period_bars: 20
+  threshold_entry: 2.0
+  threshold_exit: 0.50
+  threshold_stop: 3.0
+  smoothing_period: 3
+  volatility_adjustment: true
+  dynamic_threshold: true
+
+# Bollinger Bands
+bollinger_bands:
+  enabled: true
+  period: 20
+  standard_deviations: 2.0
+  band_calculation: "sma"  # sma, ema, wma
+  squeeze_detection: true
+  band_width_indicator: true
+  percentage_b: true
+  entry_upper: 1.0
+  entry_lower: -1.0
+  exit_middle: 0.50
+
+# RSI Strategy
+rsi:
+  enabled: true
+  period: 14
+  overbought_threshold: 70
+  oversold_threshold: 30
+  extreme_overbought: 80
+  extreme_oversold: 20
+  divergence_detection: true
+  failure_swing_detection: true
+  smoothing: true
+  moving_average_period: 3
+
+# Moving Average Convergence
+ma_convergence:
+  enabled: true
+  fast_period: 10
+  slow_period: 30
+  signal_period: 10
+  divergence_detection: true
+  crossover_detection: true
+  zero_line_cross: true
+  entry_signal_strength: 0.50
+
+# Statistical Arbitrage
+stat_arbitrage:
+  enabled: true
+  pairs_trading: true
+  cointegration_test: true
+  cointegration_test_method: "adf"  # adf, kpss, pp
+  lookback_period_days: 90
+  spread_calculation: "ratio"  # ratio, difference, regression
+  entry_zscore: 2.0
+  exit_zscore: 0.50
+  stop_zscore: 3.0
+  half_life_calculation: true
+  hedging_ratio: true
+
+# Pairs Trading
+pairs_trading:
+  enabled: true
+  pair_selection_method: "correlation"  # correlation, cointegration, distance, ml_based
+  correlation_threshold: 0.70
+  cointegration_threshold: 0.05
+  max_pairs: 10
+  min_observations: 100
+  spread_smoothing: true
+  smoothing_period: 5
+  entry_zscore: 2.0
+  exit_zscore: 0.50
+  stop_zscore: 3.0
+
+# Entry Signals
+entry_signals:
+  enabled: true
+  signal_types:
+    - "oversold_buy"
+    - "overbought_sell"
+    - "zscore_entry"
+    - "bollinger_reversal"
+    - "rsi_divergence"
+    - "ma_convergence"
+  confirmation_requirements:
+    min_indicators_confirmed: 2
+    volume_confirmation: true
+    price_confirmation: true
+  signal_strength_calculation: "weighted_average"
+  min_signal_strength: 0.60
+
+# Exit Signals
+exit_signals:
+  enabled: true
+  exit_types:
+    - "reversion_to_mean"
+    - "zscore_exit"
+    - "profit_target"
+    - "stop_loss"
+    - "signal_reversal"
+    - "time_stop"
+  exit_condition: "any"  # any, all, majority
+  exit_confirmation: true
+  confirmation_bars: 1
+
+# Position Sizing
+position_sizing:
+  enabled: true
+  method: "volatility_based"  # fixed, volatility_based, kelly_based, risk_based
+  risk_per_trade: 0.02
+  volatility_multiplier: 2.0
+  max_position_size: 0.05
+  min_position_size: 0.01
+  adaptive_sizing: true
+
+# Stop Loss
+stop_loss:
+  enabled: true
+  stop_methods:
+    - "fixed_percent"
+    - "volatility_based"
+    - "zscore_based"
+    - "bollinger_based"
+    - "trailing"
+  fixed_percent: 0.02
+  volatility_multiplier: 2.0
+  zscore_stop: 3.0
+  trailing_activation: 0.02
+  trailing_distance: 0.01
+  dynamic_stop: true
+
+# Take Profit
+take_profit:
+  enabled: true
+  profit_methods:
+    - "fixed_percent"
+    - "risk_reward_ratio"
+    - "zscore_based"
+    - "bollinger_based"
+    - "trailing"
+  fixed_percent: 0.04
+  risk_reward_ratio: 2.0
+  zscore_profit: 0.50
+  trailing_activation: 0.02
+  trailing_distance: 0.01
+
+# Performance Metrics
+performance:
+  enabled: true
+  metrics:
+    - "sharpe_ratio"
+    - "sortino_ratio"
+    - "calmar_ratio"
+    - "win_rate"
+    - "average_return"
+    - "profit_factor"
+    - "maximum_drawdown"
+    - "recovery_factor"
+  evaluation_period_days: 30
+  rolling_window_days: 30
+  benchmark_comparison: true
+
+# Reversion Strength
+reversion_strength:
+  enabled: true
+  strength_metrics:
+    - "price_deviation"
+    - "indicator_extreme"
+    - "volume_confirm"
+    - "momentum_change"
+  strength_calculation: "weighted_average"
+  min_strength_required: 0.60
+  max_strength_exit: 0.40
+
+# Visualization
+visualization:
+  enabled: true
+  charts:
+    - "reversion_dashboard"
+    - "zscore_chart"
+    - "bollinger_chart"
+    - "rsi_chart"
+    - "pairs_spread_chart"
+    - "performance_chart"
+  update_interval_seconds: 10
+  dashboard_integration: true
+  real_time_updates: true
+
+# Alerting
+alerting:
+  enabled: true
+  alert_conditions:
+    - "reversion_signal"
+    - "signal_confirmation"
+    - "stop_loss_trigger"
+    - "take_profit_trigger"
+    - "pairs_trading_signal"
+    - "indicator_extreme"
+  alert_channels:
+    - "email"
+    - "telegram"
+    - "slack"
+  alert_cooldown_seconds: 300
+
+# Reporting
+reporting:
+  enabled: true
+  report_types:
+    - "real_time_alerts"
+    - "daily_reversion_summary"
+    - "weekly_reversion_analysis"
+    - "monthly_reversion_report"
+    - "pairs_trading_report"
+  report_formats:
+    - "pdf"
+    - "html"
+    - "json"
+    - "csv"
+    - "excel"
+  report_recipients:
+    - "trading@example.com"
+    - "risk@example.com"
+    - "research@example.com"
+
+# Storage
+storage:
+  enabled: true
+  storage_categories:
+    - "reversion_signals"
+    - "indicator_values"
+    - "trade_history"
+    - "performance_metrics"
+    - "pairs_data"
+    - "alert_history"
+  retention_days: 365
+  compression: "zstd"
+  storage_format: "parquet"
+
+# Integration
+integration:
+  enabled: true
+  webhook_endpoint: "http://localhost:8080/mean-reversion"
+  api_endpoint: "/api/v1/trading/mean-reversion"
+  dashboard_url: "http://localhost:3000/mean-reversion"
+  real_time_updates: true
+  data_sync_frequency_seconds: 5
+  external_systems:
+    - "trading_engine"
+    - "risk_management"
+    - "research_platform"
