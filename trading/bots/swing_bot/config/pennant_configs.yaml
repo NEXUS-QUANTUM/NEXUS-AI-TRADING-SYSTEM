@@ -1,0 +1,331 @@
+# Swing Bot Pennant Pattern Configuration
+# Pennant Pattern Analysis & Trading Parameters
+
+# General Pennant Settings
+pennant:
+  enabled: true
+  analysis_mode: "comprehensive"  # comprehensive, basic, advanced, real-time
+  pattern_detection: "multi_timeframe"  # multi_timeframe, single_timeframe, hybrid
+  update_frequency_seconds: 10
+  version: "3.0.0"
+
+# Pattern Types
+pattern_types:
+  enabled: true
+  primary_patterns:
+    - "bullish_pennant"
+    - "bearish_pennant"
+    - "symmetrical_pennant"
+    - "flag_pennant"
+    - "wedge_pennant"
+  pattern_phases:
+    - "pole_formation"
+    - "flag_formation"
+    - "breakout"
+    - "pullback"
+    - "continuation"
+  pattern_detection_methods:
+    - "trendline_detection"
+    - "price_action"
+    - "volume_confirmation"
+    - "momentum_analysis"
+
+# Pole Formation
+pole:
+  enabled: true
+  pole_characteristics:
+    - "pole_length_bars"
+    - "pole_slope"
+    - "pole_angle"
+    - "pole_volume"
+    - "pole_velocity"
+    - "pole_strength"
+  pole_requirements:
+    min_length_bars: 5
+    max_length_bars: 30
+    min_slope: 0.05
+    max_slope: 0.50
+    volume_surge_factor: 1.5
+  pole_strength_scoring: true
+
+# Flag Formation
+flag:
+  enabled: true
+  flag_characteristics:
+    - "flag_length_bars"
+    - "flag_width"
+    - "flag_slope"
+    - "flag_angle"
+    - "flag_volume"
+    - "flag_consolidation"
+    - "flag_symmetry"
+  flag_requirements:
+    min_length_bars: 3
+    max_length_bars: 20
+    max_slope: 0.10
+    volume_decline_factor: 0.50
+    consolidation_ratio: 0.30
+  flag_strength_scoring: true
+
+# Breakout Analysis
+breakout:
+  enabled: true
+  breakout_types:
+    - "upside_breakout"
+    - "downside_breakout"
+    - "volume_breakout"
+    - "momentum_breakout"
+    - "price_breakout"
+  breakout_requirements:
+    min_breakout_percent: 0.01
+    volume_breakout_factor: 1.5
+    momentum_breakout_factor: 0.50
+    confirmation_bars: 2
+  breakout_strength_scoring: true
+
+# Pattern Confirmation
+confirmation:
+  enabled: true
+  confirmation_methods:
+    - "volume_confirmation"
+    - "price_confirmation"
+    - "momentum_confirmation"
+    - "indicator_confirmation"
+    - "trend_confirmation"
+  confirmation_requirements:
+    min_confirmations_required: 2
+    volume_confirmation_threshold: 1.2
+    price_confirmation_threshold: 0.02
+    momentum_confirmation_threshold: 0.30
+    indicator_confirmation_threshold: 0.50
+
+# Technical Indicators
+indicators:
+  enabled: true
+  primary_indicators:
+    - "volume"
+    - "relative_strength"
+    - "momentum"
+    - "moving_average"
+    - "adx"
+    - "bollinger_bands"
+  secondary_indicators:
+    - "rsi"
+    - "macd"
+    - "stochastic"
+    - "cci"
+    - "williams_r"
+    - "obv"
+  indicator_weights:
+    volume: 0.25
+    relative_strength: 0.20
+    momentum: 0.15
+    moving_average: 0.15
+    adx: 0.10
+    bollinger_bands: 0.10
+    rsi: 0.05
+
+# Pattern Quality
+quality:
+  enabled: true
+  quality_factors:
+    - "pattern_symmetry"
+    - "volume_consistency"
+    - "price_consistency"
+    - "trend_strength"
+    - "clear_breakout"
+    - "low_noise"
+  quality_scoring: "weighted_average"
+  quality_thresholds:
+    poor: 0.40
+    moderate: 0.60
+    good: 0.70
+    excellent: 0.85
+  min_quality_required: 0.60
+
+# Pattern Strength
+strength:
+  enabled: true
+  strength_metrics:
+    - "pole_strength"
+    - "flag_strength"
+    - "breakout_strength"
+    - "volume_strength"
+    - "momentum_strength"
+    - "trend_strength"
+  strength_calculation: "weighted_average"
+  strength_thresholds:
+    weak: 0.30
+    moderate: 0.50
+    strong: 0.70
+    very_strong: 0.90
+  min_strength_required: 0.50
+
+# Pattern Targets
+targets:
+  enabled: true
+  target_calculation:
+    - "pole_measurement"
+    - "flag_measurement"
+    - "fibonacci_extension"
+    - "volatility_based"
+    - "risk_reward_ratio"
+  primary_target_method: "pole_measurement"
+  minimum_target: 0.02
+  maximum_target: 0.20
+  risk_reward_ratio: 2.0
+
+# Entry Signals
+entry_signals:
+  enabled: true
+  signal_types:
+    - "breakout_entry"
+    - "pullback_entry"
+    - "continuation_entry"
+    - "retest_entry"
+  entry_requirements:
+    pattern_quality: 0.60
+    breakout_confirmation: true
+    volume_confirmation: true
+    price_confirmation: true
+  signal_strength_calculation: "weighted_average"
+  min_signal_strength: 0.60
+
+# Exit Signals
+exit_signals:
+  enabled: true
+  exit_types:
+    - "target_hit"
+    - "stop_loss_hit"
+    - "pattern_failure"
+    - "momentum_reversal"
+    - "volume_exhaustion"
+  exit_confirmation: true
+  confirmation_bars: 1
+
+# Stop Loss
+stop_loss:
+  enabled: true
+  stop_methods:
+    - "pattern_failure"
+    - "flag_break"
+    - "fixed_percent"
+    - "volatility_based"
+    - "trailing"
+  pattern_failure_threshold: 0.01
+  fixed_percent: 0.02
+  volatility_multiplier: 2.0
+  trailing_activation: 0.02
+  trailing_distance: 0.01
+
+# Take Profit
+take_profit:
+  enabled: true
+  profit_methods:
+    - "target_based"
+    - "fibonacci_extension"
+    - "risk_reward_ratio"
+    - "trailing"
+  target_multiplier: 1.0
+  risk_reward_ratio: 2.0
+  trailing_activation: 0.02
+  trailing_distance: 0.01
+
+# Performance Metrics
+performance:
+  enabled: true
+  metrics:
+    - "pattern_success_rate"
+    - "pattern_win_rate"
+    - "average_return"
+    - "profit_factor"
+    - "sharpe_ratio"
+    - "max_drawdown"
+    - "average_hold_time"
+  evaluation_period_days: 30
+  rolling_window_days: 30
+  benchmark_comparison: true
+
+# Visualization
+visualization:
+  enabled: true
+  charts:
+    - "pennant_dashboard"
+    - "pattern_identification"
+    - "breakout_analysis"
+    - "target_projection"
+    - "quality_scoring"
+    - "performance_chart"
+  update_interval_seconds: 10
+  dashboard_integration: true
+  real_time_updates: true
+
+# Alerting
+alerting:
+  enabled: true
+  alert_conditions:
+    - "pattern_detected"
+    - "breakout_detected"
+    - "entry_signal"
+    - "exit_signal"
+    - "pattern_failure"
+    - "target_hit"
+    - "quality_threshold_breach"
+  alert_thresholds:
+    pattern_confidence: 0.70
+    breakout_confidence: 0.75
+    quality_threshold: 0.60
+  alert_channels:
+    - "email"
+    - "telegram"
+    - "slack"
+  alert_cooldown_seconds: 300
+
+# Reporting
+reporting:
+  enabled: true
+  report_types:
+    - "real_time_alerts"
+    - "daily_pennant_summary"
+    - "weekly_pennant_analysis"
+    - "monthly_pennant_report"
+  report_formats:
+    - "pdf"
+    - "html"
+    - "json"
+    - "csv"
+    - "excel"
+  report_recipients:
+    - "trading@example.com"
+    - "research@example.com"
+    - "strategy@example.com"
+
+# Storage
+storage:
+  enabled: true
+  storage_categories:
+    - "pattern_data"
+    - "breakout_data"
+    - "quality_scores"
+    - "strength_metrics"
+    - "target_data"
+    - "signal_history"
+    - "performance_metrics"
+    - "alert_history"
+  retention_days: 365
+  compression: "zstd"
+  storage_format: "parquet"
+
+# Integration
+integration:
+  enabled: true
+  webhook_endpoint: "http://localhost:8080/pennant"
+  api_endpoint: "/api/v1/trading/pennant"
+  dashboard_url: "http://localhost:3000/pennant"
+  real_time_updates: true
+  data_sync_frequency_seconds: 5
+  external_systems:
+    - "trading_engine"
+    - "risk_management"
+    - "strategy_engine"
+    - "research_platform"
