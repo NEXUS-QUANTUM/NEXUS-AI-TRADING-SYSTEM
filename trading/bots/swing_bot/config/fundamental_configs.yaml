@@ -1,0 +1,608 @@
+# fundamental_configs.yaml
+# Configuration complète pour l'analyse fondamentale dans Swing Bot
+# Version: 4.0.0 - Production Ready
+
+# Paramètres généraux
+general:
+  enabled: true
+  mode: "comprehensive"
+  calculate_in_real_time: true
+  update_frequency_seconds: 60
+  lookback_periods:
+    - 5
+    - 10
+    - 20
+    - 50
+    - 100
+    - 200
+  history_length_days: 365
+  min_data_points: 20
+  max_data_points: 1000
+  fundamental_version: "4.0.0"
+  environment: "production"
+
+# Types d'analyse fondamentale
+fundamental_types:
+  economic_indicators:
+    enabled: true
+    description: "Economic Indicators Analysis"
+    indicators:
+      - "gdp_growth"
+      - "inflation_rate"
+      - "unemployment_rate"
+      - "interest_rate"
+      - "consumer_confidence"
+      - "manufacturing_pmi"
+      - "services_pmi"
+      - "retail_sales"
+      - "industrial_production"
+      - "trade_balance"
+    frequency: "monthly"
+    update_frequency_seconds: 300
+  company_fundamentals:
+    enabled: true
+    description: "Company Fundamentals Analysis"
+    metrics:
+      - "market_cap"
+      - "pe_ratio"
+      - "pb_ratio"
+      - "ps_ratio"
+      - "peg_ratio"
+      - "dividend_yield"
+      - "roe"
+      - "roa"
+      - "debt_to_equity"
+      - "current_ratio"
+      - "quick_ratio"
+      - "net_margin"
+      - "gross_margin"
+      - "operating_margin"
+      - "eps_growth"
+      - "revenue_growth"
+      - "free_cash_flow"
+    frequency: "quarterly"
+    update_frequency_seconds: 600
+  sector_analysis:
+    enabled: true
+    description: "Sector Analysis"
+    sectors:
+      - "technology"
+      - "finance"
+      - "healthcare"
+      - "energy"
+      - "consumer"
+      - "industrial"
+      - "materials"
+      - "utilities"
+      - "real_estate"
+      - "communication"
+    frequency: "monthly"
+    update_frequency_seconds: 600
+  market_valuation:
+    enabled: true
+    description: "Market Valuation Analysis"
+    metrics:
+      - "market_cap_gdp_ratio"
+      - "shiller_pe"
+      - "cape_ratio"
+      - "margin_debt"
+      - "sentiment_indicators"
+      - "fear_greed_index"
+      - "vix_level"
+      - "put_call_ratio"
+    frequency: "weekly"
+    update_frequency_seconds: 600
+  crypto_fundamentals:
+    enabled: true
+    description: "Cryptocurrency Fundamentals Analysis"
+    metrics:
+      - "network_hashrate"
+      - "active_addresses"
+      - "transaction_volume"
+      - "whale_activity"
+      - "exchange_flows"
+      - "on_chain_volume"
+      - "fees_paid"
+      - "total_supply"
+      - "circulating_supply"
+      - "market_dominance"
+      - "correlation"
+      - "volatility"
+    frequency: "daily"
+    update_frequency_seconds: 300
+
+# Seuils fondamentaux
+thresholds:
+  economic:
+    gdp_growth_min: 0.01
+    gdp_growth_max: 0.05
+    inflation_min: 0.01
+    inflation_max: 0.04
+    unemployment_max: 0.05
+    interest_rate_min: 0.01
+    interest_rate_max: 0.06
+    consumer_confidence_min: 80
+    consumer_confidence_max: 120
+  company:
+    pe_min: 5
+    pe_max: 50
+    pb_min: 0.5
+    pb_max: 5
+    roe_min: 0.10
+    roe_max: 0.30
+    debt_to_equity_min: 0
+    debt_to_equity_max: 2
+    eps_growth_min: 0.05
+    eps_growth_max: 0.30
+  crypto:
+    hashrate_growth_min: 0.05
+    active_addresses_growth_min: 0.02
+    transaction_volume_growth_min: 0.03
+    market_dominance_min: 0.10
+    market_dominance_max: 0.50
+
+# Indicateurs fondamentaux
+indicators:
+  fundamental_strength:
+    enabled: true
+    calculation: "weighted_average"
+    factors:
+      - "economic_indicators"
+      - "company_fundamentals"
+      - "sector_analysis"
+      - "market_valuation"
+      - "crypto_fundamentals"
+    factor_weights:
+      economic_indicators: 0.25
+      company_fundamentals: 0.25
+      sector_analysis: 0.20
+      market_valuation: 0.15
+      crypto_fundamentals: 0.15
+  fundamental_trend:
+    enabled: true
+    period: 14
+    smoothing: 3
+    threshold: 0.1
+  fundamental_momentum:
+    enabled: true
+    period: 14
+    smoothing: 3
+    threshold: 0.05
+  fundamental_velocity:
+    enabled: true
+    period: 5
+    smoothing: 0
+    threshold: 0.02
+  fundamental_acceleration:
+    enabled: true
+    period: 10
+    smoothing: 0
+    threshold: 0.01
+  fundamental_confidence:
+    enabled: true
+    period: 14
+    smoothing: 0
+    threshold: 0.6
+
+# Analyse fondamentale
+analysis:
+  historical:
+    enabled: true
+    lookback_years: 10
+    compute_fundamental_mean: true
+    compute_fundamental_median: true
+    compute_fundamental_std: true
+    compute_percentiles: true
+    percentile_values:
+      - 5
+      - 10
+      - 25
+      - 50
+      - 75
+      - 90
+      - 95
+    compute_fundamental_trends: true
+    compute_fundamental_cycles: true
+    compute_correlation: true
+  real_time:
+    enabled: true
+    update_frequency_seconds: 5
+    compute_instantaneous_fundamental: true
+    compute_moving_average_fundamental: true
+    compute_exponential_fundamental: true
+    compute_weighted_fundamental: true
+    compute_fundamental_velocity: true
+    compute_fundamental_acceleration: true
+  predictive:
+    enabled: true
+    model_type: "ensemble"
+    models:
+      - "lstm"
+      - "gru"
+      - "xgboost"
+      - "lightgbm"
+    features:
+      - "fundamental_strength"
+      - "fundamental_trend"
+      - "fundamental_momentum"
+      - "fundamental_velocity"
+      - "fundamental_acceleration"
+      - "fundamental_confidence"
+      - "gdp_growth"
+      - "inflation_rate"
+      - "pe_ratio"
+      - "pb_ratio"
+      - "roe"
+      - "market_cap_gdp_ratio"
+      - "network_hashrate"
+      - "active_addresses"
+      - "time_of_year"
+    forecast_horizons:
+      - 1
+      - 3
+      - 6
+      - 12
+    confidence_threshold: 0.7
+    retrain_frequency_hours: 24
+
+# Alertes et notifications
+alerts:
+  fundamental_change:
+    enabled: true
+    threshold: 0.1
+    channels:
+      - "email"
+      - "telegram"
+      - "slack"
+      - "push_notification"
+    severity: "warning"
+  fundamental_improvement:
+    enabled: true
+    threshold: 0.05
+    channels:
+      - "telegram"
+      - "push_notification"
+    severity: "info"
+  fundamental_decline:
+    enabled: true
+    threshold: 0.05
+    channels:
+      - "email"
+      - "telegram"
+      - "slack"
+    severity: "critical"
+  fundamental_breakthrough:
+    enabled: true
+    threshold: 0.1
+    channels:
+      - "telegram"
+      - "push_notification"
+    severity: "success"
+
+# Actions automatiques
+auto_actions:
+  position_adjustment:
+    enabled: true
+    action_types:
+      - "adjust_position_size"
+      - "modify_asset_allocation"
+      - "rebalance_portfolio"
+      - "change_instrument"
+    adjustment_factor: 0.5
+    max_adjustment_percent: 25.0
+  strategy_adjustment:
+    enabled: true
+    action_types:
+      - "change_strategy"
+      - "adjust_parameters"
+      - "modify_timeframe"
+      - "update_indicators"
+    adjustment_factor: 0.5
+    max_adjustment_percent: 20.0
+  risk_management:
+    enabled: true
+    action_types:
+      - "reduce_exposure"
+      - "increase_hedge"
+      - "pause_trading"
+      - "reset_parameters"
+    risk_multiplier: 1.5
+    pause_duration_minutes: 30
+
+# Monitoring et journalisation
+monitoring:
+  logging:
+    enabled: true
+    level: "debug"
+    format: "json"
+    include_context: true
+    include_timestamp: true
+    include_metadata: true
+  metrics:
+    enabled: true
+    collect_every_seconds: 5
+    metrics_to_collect:
+      - "fundamental_strength"
+      - "fundamental_trend"
+      - "fundamental_momentum"
+      - "fundamental_velocity"
+      - "fundamental_acceleration"
+      - "fundamental_confidence"
+      - "gdp_growth"
+      - "inflation_rate"
+      - "pe_ratio"
+      - "roe"
+      - "network_hashrate"
+      - "market_dominance"
+  dashboard:
+    enabled: true
+    update_interval_seconds: 5
+    charts:
+      - "fundamental_analysis"
+      - "economic_indicators"
+      - "company_fundamentals"
+      - "sector_analysis"
+      - "market_valuation"
+      - "crypto_fundamentals"
+      - "trend_analysis"
+      - "correlation_analysis"
+
+# Backtesting
+backtesting:
+  enabled: true
+  use_historical_fundamentals: true
+  compute_fundamental_accuracy: true
+  compute_strategy_performance: true
+  compute_risk_adjusted_returns: true
+  compute_correlation_effectiveness: true
+  report_metrics:
+    - "fundamental_accuracy"
+    - "correlation_effectiveness"
+    - "win_rate"
+    - "profit_factor"
+    - "sharpe_ratio"
+    - "max_drawdown"
+
+# Configuration de la base de données
+database:
+  enabled: true
+  table_name: "fundamental_metrics"
+  retention_days: 730
+  aggregation:
+    enabled: true
+    intervals:
+      - "1d"
+      - "7d"
+      - "30d"
+      - "90d"
+      - "365d"
+  compression: true
+  backup:
+    enabled: true
+    frequency: "daily"
+    retention_days: 30
+
+# Webhooks
+webhooks:
+  enabled: true
+  endpoints:
+    - url: "https://nexustradingia.com/api/webhooks/fundamental"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      payload_template: "fundamental_alert"
+    - url: "https://nexustradingia.com/api/webhooks/fundamental-decline"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      payload_template: "fundamental_decline"
+  retry:
+    enabled: true
+    max_attempts: 5
+    backoff_seconds: 30
+
+# Logging avancé
+advanced_logging:
+  enabled: true
+  levels:
+    - "info"
+    - "warning"
+    - "error"
+    - "critical"
+    - "debug"
+  output: "fundamental_logs"
+  rotation:
+    enabled: true
+    max_size_mb: 100
+    max_files: 10
+  remote_logging:
+    enabled: true
+    endpoints:
+      - "https://nexustradingia.com/logs/fundamental"
+  include_trace: true
+  include_stack_trace: true
+  include_context: true
+
+# Threading et performances
+performance:
+  thread_pool_size: 4
+  queue_size: 1000
+  batch_size: 100
+  async_processing: true
+  cache_size: 5000
+  cache_ttl_seconds: 300
+  database_pool_size: 5
+  database_pool_max_overflow: 10
+  use_multiprocessing: false
+  max_workers: 4
+
+# API de gestion
+management_api:
+  enabled: true
+  endpoints:
+    - "/api/v1/fundamental/current"
+    - "/api/v1/fundamental/history"
+    - "/api/v1/fundamental/metrics"
+    - "/api/v1/fundamental/status"
+    - "/api/v1/fundamental/forecast"
+    - "/api/v1/fundamental/economic"
+    - "/api/v1/fundamental/company"
+    - "/api/v1/fundamental/crypto"
+  authentication_required: true
+  rate_limit: 100
+  rate_limit_interval_seconds: 60
+  version: "v1.0.0"
+
+# Export des données
+data_export:
+  enabled: true
+  formats:
+    - "csv"
+    - "json"
+    - "parquet"
+  schedule: "daily"
+  retention_days: 30
+  compression: "gzip"
+  destination: "s3://nexus-data/fundamental/"
+  encrypt: true
+  encryption_key_id: "nexus-fundamental-key"
+  partition_by:
+    - "symbol"
+    - "year"
+    - "month"
+
+# Intégration avec d'autres modules
+integrations:
+  risk_engine:
+    enabled: true
+    sync_frequency_seconds: 5
+    share_metrics: true
+  execution_engine:
+    enabled: true
+    share_signals: true
+    require_confirmation: true
+  portfolio_manager:
+    enabled: true
+    share_positions: true
+    share_allocation: true
+  ai_engine:
+    enabled: true
+    use_ai_predictions: true
+    confidence_threshold: 0.7
+    model_endpoint: "http://ai-engine:8000/predict/fundamental"
+  market_data:
+    enabled: true
+    sync_frequency_seconds: 5
+    data_endpoint: "ws://market-data:8080/ws"
+  economic_calendar:
+    enabled: true
+    sync_frequency_seconds: 30
+    data_endpoint: "http://economic-calendar:8000/api/v1/events"
+
+# Tests et validation
+testing:
+  unit_tests:
+    enabled: true
+    coverage_threshold: 90
+  integration_tests:
+    enabled: true
+  stress_tests:
+    enabled: true
+    scenarios:
+      - "high_fundamental_volume"
+      - "multiple_data_sources"
+      - "economic_crisis"
+      - "market_volatility"
+  validation:
+    enabled: true
+    validate_on_startup: true
+    validate_on_config_change: true
+    validation_rules:
+      - "fundamental_types.economic_indicators.indicators.length > 0"
+      - "fundamental_types.company_fundamentals.metrics.length > 0"
+      - "thresholds.economic.gdp_growth_min < thresholds.economic.gdp_growth_max"
+      - "thresholds.economic.inflation_min < thresholds.economic.inflation_max"
+      - "thresholds.company.pe_min < thresholds.company.pe_max"
+      - "thresholds.company.roe_min < thresholds.company.roe_max"
+      - "indicators.fundamental_strength.factor_weights.sum() == 1.0"
+      - "min_data_points > 0"
+
+# Market conditions adaptation
+market_adaptation:
+  enabled: true
+  regime_detection:
+    enabled: true
+    lookback_periods:
+      - 20
+      - 50
+      - 200
+    regimes:
+      - "bull"
+      - "bear"
+      - "sideways"
+      - "volatile"
+      - "stable"
+      - "recession"
+      - "recovery"
+  regime_parameters:
+    bull:
+      fundamental_multiplier: 1.2
+      threshold_multiplier: 0.8
+      confidence_multiplier: 1.1
+    bear:
+      fundamental_multiplier: 0.8
+      threshold_multiplier: 1.2
+      confidence_multiplier: 0.9
+    sideways:
+      fundamental_multiplier: 1.0
+      threshold_multiplier: 1.0
+      confidence_multiplier: 1.0
+    volatile:
+      fundamental_multiplier: 0.7
+      threshold_multiplier: 1.3
+      confidence_multiplier: 0.8
+    stable:
+      fundamental_multiplier: 1.0
+      threshold_multiplier: 0.9
+      confidence_multiplier: 1.2
+    recession:
+      fundamental_multiplier: 0.6
+      threshold_multiplier: 1.5
+      confidence_multiplier: 0.7
+    recovery:
+      fundamental_multiplier: 1.1
+      threshold_multiplier: 0.9
+      confidence_multiplier: 1.1
+
+# Symbol-specific configurations
+symbol_configs:
+  BTCUSDT:
+    fundamental_multiplier: 1.0
+    threshold_multiplier: 1.0
+    confidence_multiplier: 1.0
+    economic_sensitivity: 0.6
+    crypto_sensitivity: 1.0
+  ETHUSDT:
+    fundamental_multiplier: 1.1
+    threshold_multiplier: 0.9
+    confidence_multiplier: 1.0
+    economic_sensitivity: 0.7
+    crypto_sensitivity: 1.0
+  SOLUSDT:
+    fundamental_multiplier: 1.2
+    threshold_multiplier: 0.8
+    confidence_multiplier: 0.9
+    economic_sensitivity: 0.5
+    crypto_sensitivity: 1.2
+  ADAUSDT:
+    fundamental_multiplier: 0.9
+    threshold_multiplier: 1.1
+    confidence_multiplier: 1.1
+    economic_sensitivity: 0.4
+    crypto_sensitivity: 0.9
+  XRPUSDT:
+    fundamental_multiplier: 1.0
+    threshold_multiplier: 1.0
+    confidence_multiplier: 1.0
+    economic_sensitivity: 0.6
+    crypto_sensitivity: 1.0
