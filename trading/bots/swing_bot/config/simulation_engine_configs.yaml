@@ -1,0 +1,288 @@
+# Swing Bot Simulation Engine Configuration
+# Core Simulation Engine & Virtual Trading Parameters
+
+# General Simulation Engine Settings
+simulation_engine:
+  enabled: true
+  engine_mode: "full_simulation"  # full_simulation, fast_simulation, monte_carlo, backtesting
+  simulation_type: "market_simulation"  # market_simulation, strategy_simulation, portfolio_simulation
+  accuracy_level: "high"  # low, medium, high, ultra
+  version: "3.0.0"
+
+# Engine Architecture
+architecture:
+  engine_type: "modular"  # modular, monolithic, distributed, microservices
+  modules:
+    - "market_simulator"
+    - "order_simulator"
+    - "execution_simulator"
+    - "portfolio_simulator"
+    - "risk_simulator"
+    - "strategy_simulator"
+    - "data_generator"
+    - "event_processor"
+    - "analysis_module"
+    - "reporting_module"
+  module_interaction: "pipeline"  # pipeline, event_driven, message_based
+  parallel_execution: true
+  max_workers: 8
+  pipeline_buffer_size: 10000
+
+# Market Simulator
+market_simulator:
+  enabled: true
+  simulation_models:
+    - "geometric_brownian"
+    - "jump_diffusion"
+    - "stochastic_volatility"
+    - "regime_switching"
+    - "copula_based"
+    - "historical_resampling"
+  primary_model: "geometric_brownian"
+  secondary_model: "stochastic_volatility"
+  parameters:
+    drift: 0.05
+    volatility: 0.20
+    jump_intensity: 0.05
+    jump_size_mean: 0.0
+    jump_size_std: 0.05
+  time_steps: 1000
+  number_of_paths: 100
+  random_seed: 42
+
+# Order Simulator
+order_simulator:
+  enabled: true
+  order_types:
+    - "market"
+    - "limit"
+    - "stop"
+    - "stop_limit"
+    - "trailing_stop"
+    - "iceberg"
+    - "twap"
+    - "vwap"
+  execution_models:
+    - "immediate_execution"
+    - "delayed_execution"
+    - "probabilistic_execution"
+    - "partial_fill"
+    - "no_fill"
+  fill_probability: 0.85
+  partial_fill_probability: 0.15
+  execution_delay_ms: 50
+
+# Execution Simulator
+execution_simulator:
+  enabled: true
+  execution_models:
+    - "slippage_model"
+    - "market_impact_model"
+    - "latency_model"
+    - "spread_model"
+    - "fill_model"
+  slippage_parameters:
+    base_slippage_bps: 2
+    volatility_multiplier: 0.50
+    size_multiplier: 0.30
+  market_impact_parameters:
+    permanent_impact: 0.001
+    temporary_impact: 0.002
+    decay_rate: 0.50
+
+# Portfolio Simulator
+portfolio_simulator:
+  enabled: true
+  asset_classes:
+    - "equities"
+    - "fixed_income"
+    - "commodities"
+    - "currencies"
+    - "crypto"
+    - "derivatives"
+  allocation_methods:
+    - "fixed_weight"
+    - "risk_parity"
+    - "mean_variance"
+    - "monte_carlo"
+  initial_capital: 1000000
+  rebalancing_frequency: "daily"
+  performance_tracking: true
+
+# Risk Simulator
+risk_simulator:
+  enabled: true
+  risk_metrics:
+    - "value_at_risk"
+    - "expected_shortfall"
+    - "maximum_drawdown"
+    - "volatility"
+    - "beta"
+    - "correlation"
+    - "concentration"
+  var_confidence_levels: [0.90, 0.95, 0.99]
+  var_time_horizons_days: [1, 5, 10, 30]
+  stress_scenarios: true
+  tail_risk_analysis: true
+
+# Strategy Simulator
+strategy_simulator:
+  enabled: true
+  strategy_types:
+    - "trend_following"
+    - "mean_reversion"
+    - "momentum"
+    - "breakout"
+    - "arbitrage"
+    - "market_making"
+    - "hybrid"
+  strategy_parameters:
+    lookback_period: 20
+    entry_threshold: 0.50
+    exit_threshold: 0.30
+    stop_loss: 0.02
+    take_profit: 0.04
+  performance_evaluation: true
+
+# Data Generator
+data_generator:
+  enabled: true
+  data_types:
+    - "price_data"
+    - "volume_data"
+    - "order_book_data"
+    - "trade_data"
+    - "sentiment_data"
+  generation_methods:
+    - "statistical_generation"
+    - "historical_resampling"
+    - "bootstrap_sampling"
+    - "synthetic_generation"
+  data_frequency: "minute"  # tick, second, minute, hour, day
+  historical_period_days: 365
+  synthetic_data_count: 100000
+
+# Event Processor
+event_processor:
+  enabled: true
+  event_types:
+    - "market_events"
+    - "order_events"
+    - "execution_events"
+    - "risk_events"
+    - "strategy_events"
+    - "system_events"
+  processing_mode: "parallel"  # sequential, parallel, hybrid
+  event_queue_size: 10000
+  event_processing_speed: 1.0
+
+# Analysis Module
+analysis_module:
+  enabled: true
+  analysis_types:
+    - "performance_analysis"
+    - "risk_analysis"
+    - "strategy_analysis"
+    - "market_analysis"
+    - "portfolio_analysis"
+    - "sensitivity_analysis"
+  analysis_depth: "comprehensive"  # basic, intermediate, comprehensive
+  statistical_significance: true
+  confidence_level: 0.95
+
+# Reporting Module
+reporting_module:
+  enabled: true
+  report_types:
+    - "simulation_summary"
+    - "performance_report"
+    - "risk_report"
+    - "strategy_report"
+    - "portfolio_report"
+    - "detailed_analysis"
+  report_formats:
+    - "pdf"
+    - "html"
+    - "json"
+    - "csv"
+    - "excel"
+    - "markdown"
+  report_recipients:
+    - "research@example.com"
+    - "trading@example.com"
+    - "risk@example.com"
+
+# Performance Metrics
+performance:
+  enabled: true
+  metrics:
+    - "simulation_accuracy"
+    - "execution_speed"
+    - "processing_throughput"
+    - "resource_utilization"
+    - "error_rate"
+  performance_targets:
+    accuracy_min: 0.95
+    processing_speed_events_sec: 1000
+    throughput_min: 10000
+    error_rate_max: 0.01
+
+# Visualization
+visualization:
+  enabled: true
+  charts:
+    - "simulation_dashboard"
+    - "market_paths_chart"
+    - "portfolio_performance"
+    - "risk_metrics_chart"
+    - "strategy_performance"
+    - "analysis_results"
+  update_interval_seconds: 60
+  dashboard_integration: true
+
+# Alerting
+alerting:
+  enabled: true
+  alert_conditions:
+    - "simulation_error"
+    - "performance_degradation"
+    - "data_quality_issue"
+    - "risk_limit_breach"
+    - "strategy_failure"
+  alert_channels:
+    - "email"
+    - "telegram"
+    - "slack"
+    - "pagerduty"
+  alert_cooldown_seconds: 600
+
+# Storage
+storage:
+  enabled: true
+  storage_categories:
+    - "simulation_data"
+    - "market_data"
+    - "order_data"
+    - "execution_data"
+    - "portfolio_data"
+    - "risk_data"
+    - "strategy_data"
+    - "analysis_results"
+    - "report_history"
+  retention_days: 365
+  compression: "zstd"
+  storage_format: "parquet"
+
+# Integration
+integration:
+  enabled: true
+  webhook_endpoint: "http://localhost:8080/simulation-engine"
+  api_endpoint: "/api/v1/trading/simulation-engine"
+  dashboard_url: "http://localhost:3000/simulation-engine"
+  real_time_updates: true
+  data_sync_frequency_seconds: 30
+  external_systems:
+    - "trading_engine"
+    - "risk_management"
+    - "strategy_engine"
+    - "research_platform"
