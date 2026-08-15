@@ -1,0 +1,438 @@
+# Swing Bot Manufacturing Analysis Configuration
+# Manufacturing Sector Analysis & Industrial Production Parameters
+
+# General Manufacturing Settings
+manufacturing:
+  enabled: true
+  analysis_mode: "comprehensive"  # comprehensive, basic, advanced, real-time
+  data_sources:
+    - "ism"
+    - "pmi"
+    - "bls"
+    - "census_bureau"
+    - "fed_reserve"
+    - "industry_associations"
+  update_frequency_hours: 6
+  version: "3.0.0"
+
+# Manufacturing Indicators
+indicators:
+  enabled: true
+  primary:
+    - "pmi_manufacturing"
+    - "ism_manufacturing"
+    - "industrial_production"
+    - "capacity_utilization"
+    - "manufacturing_jobs"
+    - "factory_orders"
+    - "durable_goods_orders"
+    - "inventory_to_sales_ratio"
+  secondary:
+    - "production_index"
+    - "employment_index"
+    - "new_orders_index"
+    - "supplier_deliveries_index"
+    - "inventory_index"
+    - "prices_paid_index"
+    - "backlog_orders"
+    - "export_orders"
+    - "import_orders"
+  leading:
+    - "lead_time"
+    - "order_backlog"
+    - "supplier_deliveries"
+    - "price_trends"
+    - "raw_material_costs"
+  lagging:
+    - "inventory_levels"
+    - "capacity_utilization"
+    - "manufacturing_employment"
+
+# PMI Analysis
+pmi:
+  enabled: true
+  pmi_sources:
+    - "s&p_global"
+    - "ism"
+    - "markit"
+    - "national_pmis"
+  pmi_calculation:
+    method: "diffusion_index"
+    components:
+      new_orders: 0.25
+      production: 0.25
+      employment: 0.20
+      supplier_deliveries: 0.15
+      inventory: 0.15
+  thresholds:
+    expansion: 50
+    contraction: 50
+    strong_expansion: 55
+    strong_contraction: 45
+    extreme_expansion: 60
+    extreme_contraction: 40
+
+# ISM Manufacturing Index
+ism:
+  enabled: true
+  ism_components:
+    - "new_orders"
+    - "production"
+    - "employment"
+    - "supplier_deliveries"
+    - "inventories"
+    - "customers_inventories"
+    - "prices"
+    - "backlog_orders"
+    - "exports"
+    - "imports"
+  diffusion_index: true
+  composite_index: true
+  sector_breakdown: true
+  regional_variation: true
+
+# Industrial Production
+industrial_production:
+  enabled: true
+  production_components:
+    - "manufacturing"
+    - "mining"
+    - "utilities"
+    - "durable_goods"
+    - "nondurable_goods"
+    - "automotive"
+    - "electronics"
+    - "machinery"
+  capacity_utilization:
+    total: true
+    manufacturing: true
+    mining: true
+    utilities: true
+    durable_goods: true
+    nondurable_goods: true
+  production_forecast: true
+  production_gap: true
+
+# Manufacturing Employment
+employment:
+  enabled: true
+  employment_metrics:
+    - "manufacturing_jobs"
+    - "factory_employment"
+    - "production_workers"
+    - "average_hours_worked"
+    - "overtime_hours"
+    - "wage_growth"
+    - "labor_productivity"
+  employment_trend: true
+  job_openings: true
+  hiring_rates: true
+  separation_rates: true
+
+# Factory Orders
+orders:
+  enabled: true
+  order_types:
+    - "new_orders"
+    - "unfilled_orders"
+    - "shipments"
+    - "inventories"
+    - "inventory_to_sales_ratio"
+    - "order_backlog"
+    - "order_cancellations"
+  durable_goods:
+    - "transportation"
+    - "machinery"
+    - "electronics"
+    - "primary_metals"
+    - "fabricated_metals"
+  nondurable_goods:
+    - "food"
+    - "beverages"
+    - "textiles"
+    - "chemicals"
+    - "pharmaceuticals"
+  defense_orders:
+    - "military_equipment"
+    - "aerospace"
+    - "defense_contracts"
+
+# Supplier Deliveries
+supplier:
+  enabled: true
+  delivery_metrics:
+    - "supplier_delivery_time"
+    - "lead_time"
+    - "on_time_delivery"
+    - "order_fill_rate"
+    - "supply_chain_disruption"
+    - "shipping_cost"
+  delivery_index: true
+  supply_chain_stress: true
+  logistics_performance: true
+
+# Inventory Analysis
+inventory:
+  enabled: true
+  inventory_metrics:
+    - "raw_materials"
+    - "work_in_process"
+    - "finished_goods"
+    - "inventory_to_sales_ratio"
+    - "inventory_turnover"
+    - "days_of_inventory"
+  inventory_cycle: true
+  inventory_restocking: true
+  inventory_liquidation: true
+
+# Manufacturing Costs
+costs:
+  enabled: true
+  cost_categories:
+    - "raw_materials"
+    - "energy_costs"
+    - "labor_costs"
+    - "transportation_costs"
+    - "overhead_costs"
+    - "capital_costs"
+  cost_indices:
+    - "ppi_manufacturing"
+    - "input_cost_index"
+    - "output_price_index"
+    - "unit_labor_cost"
+  cost_forecast: true
+  margin_analysis: true
+
+# Sector Analysis
+sectors:
+  enabled: true
+  major_sectors:
+    - "automotive"
+    - "aerospace"
+    - "electronics"
+    - "machinery"
+    - "chemicals"
+    - "pharmaceuticals"
+    - "food_processing"
+    - "textiles"
+    - "primary_metals"
+    - "fabricated_metals"
+    - "paper"
+    - "plastics"
+  sector_weights:
+    automotive: 0.10
+    aerospace: 0.08
+    electronics: 0.12
+    machinery: 0.10
+    chemicals: 0.10
+    pharmaceuticals: 0.08
+    food_processing: 0.08
+    textiles: 0.05
+    primary_metals: 0.06
+    fabricated_metals: 0.06
+    paper: 0.04
+    plastics: 0.05
+  sector_rotation: true
+  sector_performance: true
+
+# Regional Analysis
+regions:
+  enabled: true
+  major_regions:
+    - "china"
+    - "europe"
+    - "united_states"
+    - "japan"
+    - "germany"
+    - "south_korea"
+    - "taiwan"
+    - "india"
+    - "brazil"
+    - "mexico"
+  regional_weights:
+    china: 0.25
+    europe: 0.20
+    united_states: 0.20
+    japan: 0.10
+    germany: 0.08
+    south_korea: 0.05
+    taiwan: 0.04
+    india: 0.03
+    brazil: 0.03
+    mexico: 0.02
+  regional_comparison: true
+  regional_competitiveness: true
+
+# Technology Adoption
+technology:
+  enabled: true
+  adoption_metrics:
+    - "automation_level"
+    - "robotics_adoption"
+    - "ai_implementation"
+    - "industry_4_0"
+    - "iot_adoption"
+    - "cloud_usage"
+    - "cybersecurity"
+    - "data_analytics"
+  investment_metrics:
+    - "r_and_d_spending"
+    - "capex_intentions"
+    - "digital_investment"
+    - "innovation_index"
+  technology_impact: true
+  productivity_gains: true
+
+# Global Supply Chain
+supply_chain:
+  enabled: true
+  chain_metrics:
+    - "global_pmi"
+    - "supply_chain_pressure"
+    - "shipping_rates"
+    - "port_congestion"
+    - "logistics_performance"
+    - "freight_volumes"
+  disruption_indicators:
+    - "trade_restrictions"
+    - "tariff_impact"
+    - "geopolitical_risk"
+    - "natural_disasters"
+    - "pandemic_impact"
+  supply_chain_resilience: true
+  nearshoring_trends: true
+
+# Manufacturing Confidence
+confidence:
+  enabled: true
+  confidence_metrics:
+    - "business_confidence"
+    - "manufacturing_confidence"
+    - "capacity_expansion"
+    - "hiring_intentions"
+    - "capital_spending_plans"
+  confidence_index: true
+  sentiment_analysis: true
+  expectations_vs_reality: true
+
+# Manufacturing Forecasting
+forecasting:
+  enabled: true
+  forecast_horizons:
+    - "short_term": "1m"
+    - "medium_term": "3m"
+    - "long_term": "6m"
+  forecast_models:
+    - "time_series"
+    - "machine_learning"
+    - "econometric"
+    - "ensemble"
+  primary_model: "ensemble"
+  model_retrain_frequency_days: 7
+  confidence_interval: 0.90
+  scenario_analysis: true
+
+# Manufacturing Scoring
+scoring:
+  enabled: true
+  score_components:
+    - "pmi_score": 0.20
+    - "production_score": 0.20
+    - "employment_score": 0.15
+    - "orders_score": 0.15
+    - "inventory_score": 0.10
+    - "cost_score": 0.10
+    - "confidence_score": 0.10
+  score_range: [-1.0, 1.0]
+  thresholds:
+    strong_expansion: 0.70
+    expansion: 0.40
+    neutral: 0.20
+    contraction: -0.40
+    strong_contraction: -0.70
+
+# Visualization
+visualization:
+  enabled: true
+  charts:
+    - "manufacturing_dashboard"
+    - "pmi_trend_chart"
+    - "production_index_chart"
+    - "employment_trends"
+    - "inventory_cycle_chart"
+    - "sector_performance"
+    - "regional_comparison"
+    - "supply_chain_index"
+  update_interval_seconds: 60
+  dashboard_integration: true
+  real_time_updates: true
+
+# Alerting
+alerting:
+  enabled: true
+  alert_conditions:
+    - "pmi_contraction"
+    - "production_drop"
+    - "supply_chain_disruption"
+    - "cost_spike"
+    - "sector_decline"
+    - "regional_shock"
+    - "confidence_collapse"
+  alert_thresholds:
+    pmi_drop: 3
+    production_drop_percent: 5
+    cost_spike_percent: 10
+  alert_channels:
+    - "email"
+    - "telegram"
+    - "slack"
+  alert_cooldown_seconds: 600
+
+# Reporting
+reporting:
+  enabled: true
+  report_types:
+    - "real_time_alerts"
+    - "daily_manufacturing_summary"
+    - "weekly_manufacturing_analysis"
+    - "monthly_manufacturing_report"
+    - "quarterly_manufacturing_outlook"
+  report_formats:
+    - "pdf"
+    - "html"
+    - "json"
+    - "csv"
+    - "excel"
+  report_recipients:
+    - "trading@example.com"
+    - "research@example.com"
+    - "industrial_analytics@example.com"
+
+# Storage
+storage:
+  enabled: true
+  storage_categories:
+    - "manufacturing_indicators"
+    - "pmi_data"
+    - "production_data"
+    - "employment_data"
+    - "orders_data"
+    - "cost_data"
+    - "forecast_results"
+  retention_days: 365
+  compression: "zstd"
+  storage_format: "parquet"
+
+# Integration
+integration:
+  enabled: true
+  webhook_endpoint: "http://localhost:8080/manufacturing"
+  api_endpoint: "/api/v1/trading/manufacturing"
+  dashboard_url: "http://localhost:3000/manufacturing"
+  real_time_updates: true
+  data_sync_frequency_seconds: 30
+  external_systems:
+    - "trading_engine"
+    - "risk_management"
+    - "research_platform"
+    - "data_feed_providers"
