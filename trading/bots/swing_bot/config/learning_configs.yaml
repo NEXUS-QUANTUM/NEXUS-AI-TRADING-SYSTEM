@@ -1,0 +1,447 @@
+# Swing Bot Learning System Configuration
+# Comprehensive Learning & Adaptation Parameters
+
+# General Learning Settings
+learning:
+  enabled: true
+  learning_paradigm: "hybrid"  # supervised, unsupervised, reinforcement, hybrid, meta
+  learning_mode: "online"  # online, batch, incremental, continuous
+  learning_speed: "adaptive"  # slow, moderate, fast, adaptive
+  version: "3.0.0"
+
+# Supervised Learning
+supervised_learning:
+  enabled: true
+  algorithms:
+    - "linear_regression"
+    - "logistic_regression"
+    - "random_forest"
+    - "xgboost"
+    - "lightgbm"
+    - "catboost"
+    - "gradient_boosting"
+    - "svm"
+    - "neural_network"
+    - "deep_learning"
+  ensemble_method: "stacking"  # voting, averaging, stacking, bagging, boosting
+  validation_split: 0.20
+  test_split: 0.10
+  cross_validation_folds: 5
+  early_stopping_patience: 10
+  hyperparameter_optimization: true
+  feature_selection: true
+  class_weighting: "balanced"
+
+# Unsupervised Learning
+unsupervised_learning:
+  enabled: true
+  algorithms:
+    - "kmeans"
+    - "dbscan"
+    - "hierarchical_clustering"
+    - "pca"
+    - "tsne"
+    - "umap"
+    - "autoencoder"
+    - "isolation_forest"
+    - "one_class_svm"
+    - "gaussian_mixture"
+  clustering_methods:
+    - "regime_detection"
+    - "pattern_discovery"
+    - "anomaly_detection"
+    - "feature_extraction"
+    - "dimensionality_reduction"
+  n_clusters: 10
+  cluster_evaluation: "silhouette"  # silhouette, davies_bouldin, calinski_harabasz
+  anomaly_threshold: 0.95
+
+# Reinforcement Learning
+reinforcement_learning:
+  enabled: true
+  algorithms:
+    - "q_learning"
+    - "dqn"
+    - "double_dqn"
+    - "dueling_dqn"
+    - "ppo"
+    - "sac"
+    - "td3"
+    - "a2c"
+    - "a3c"
+    - "rainbow"
+  primary_algorithm: "ppo"
+  learning_rate: 0.0003
+  discount_factor: 0.99
+  exploration_rate: 0.10
+  exploration_decay: 0.995
+  min_exploration_rate: 0.01
+  batch_size: 64
+  replay_buffer_size: 100000
+  target_update_frequency: 1000
+  episode_length_bars: 100
+  training_episodes: 10000
+  reward_function: "custom"  # custom, sharpe, drawdown, pnl, risk_adjusted
+  reward_scaling: true
+  gradient_clip: 0.50
+
+# Deep Learning
+deep_learning:
+  enabled: true
+  architectures:
+    - "feedforward"
+    - "cnn"
+    - "rnn"
+    - "lstm"
+    - "gru"
+    - "transformer"
+    - "attention"
+    - "memory_networks"
+    - "graph_neural_networks"
+  primary_architecture: "transformer"
+  network_config:
+    hidden_layers: [256, 256, 128]
+    activation: "relu"
+    dropout: 0.10
+    batch_norm: true
+    residual_connections: true
+  optimizer: "adamw"
+  learning_rate: 0.0001
+  weight_decay: 0.01
+  warmup_steps: 1000
+  gradient_clip: 1.0
+  training_batch_size: 64
+  epochs: 100
+
+# Transfer Learning
+transfer_learning:
+  enabled: true
+  transfer_methods:
+    - "fine_tuning"
+    - "feature_extraction"
+    - "domain_adaptation"
+    - "task_adaptation"
+    - "parameter_sharing"
+    - "knowledge_distillation"
+    - "progressive_learning"
+  source_domains:
+    - "equity_markets"
+    - "forex_markets"
+    - "commodity_markets"
+    - "crypto_markets"
+    - "fixed_income"
+    - "derivatives"
+  target_domain: "multi_asset"
+  transfer_strategy: "adaptive"
+  knowledge_preservation: true
+  domain_discriminator: true
+
+# Meta-Learning
+meta_learning:
+  enabled: true
+  algorithms:
+    - "maml"
+    - "reptile"
+    - "meta_sgd"
+    - "meta_critic"
+    - "learn2learn"
+    - "rl_meta_learning"
+  meta_tasks: 10
+  meta_batch_size: 4
+  meta_learning_rate: 0.01
+  inner_learning_rate: 0.01
+  inner_steps: 5
+  meta_optimizer: "adam"
+  rapid_adaptation: true
+  few_shot_learning: true
+  task_sampling: "random"
+
+# Online Learning
+online_learning:
+  enabled: true
+  algorithms:
+    - "sgd"
+    - "passive_aggressive"
+    - "perceptron"
+    - "winnow"
+    - "online_random_forest"
+    - "online_bagging"
+    - "online_boosting"
+  update_frequency_bars: 10
+  batch_size: 100
+  learning_rate: 0.001
+  decay_rate: 0.99
+  drift_detection: true
+  drift_detection_method: "ddm"  # ddm, eddm, hddm, adwin
+  concept_drift_threshold: 0.15
+
+# Incremental Learning
+incremental_learning:
+  enabled: true
+  methods:
+    - "incremental_pca"
+    - "incremental_svm"
+    - "incremental_decision_tree"
+    - "incremental_random_forest"
+    - "incremental_boosting"
+    - "incremental_bagging"
+  update_frequency_hours: 6
+  memory_efficient: true
+  forgetting_factor: 0.90
+  importance_weighting: true
+  catastrophic_forgetting_prevention: true
+
+# Federated Learning
+federated_learning:
+  enabled: true
+  federation_nodes: 10
+  aggregation_method: "fedavg"  # fedavg, fedprox, fedadam, fedyogi
+  local_epochs: 5
+  global_epochs: 100
+  learning_rate: 0.01
+  batch_size: 64
+  client_sampling: 0.50
+  secure_aggregation: true
+  differential_privacy: true
+  privacy_budget: 10.0
+
+# Active Learning
+active_learning:
+  enabled: true
+  strategies:
+    - "uncertainty_sampling"
+    - "query_by_committee"
+    - "expected_model_change"
+    - "expected_error_reduction"
+    - "variance_reduction"
+    - "density_weighted"
+  query_strategy: "uncertainty_sampling"
+  batch_size: 10
+  sampling_frequency_bars: 100
+  labeling_budget: 1000
+  human_in_the_loop: true
+
+# Curriculum Learning
+curriculum_learning:
+  enabled: true
+  curriculum_methods:
+    - "difficulty_ranking"
+    - "easy_to_hard"
+    - "self_paced"
+    - "transfer"
+    - "adaptive"
+  difficulty_metrics:
+    - "volatility"
+    - "noise_level"
+    - "complexity"
+    - "sample_size"
+  pacing_function: "exponential"
+  max_difficulty: 1.0
+  min_difficulty: 0.0
+  curriculum_steps: 100
+
+# Self-Supervised Learning
+self_supervised:
+  enabled: true
+  pretext_tasks:
+    - "contrastive_learning"
+    - "masked_prediction"
+    - "rotation_prediction"
+    - "relative_position"
+    - "simclr"
+    - "moco"
+    - "byol"
+  primary_pretext: "contrastive_learning"
+  representation_dimension: 128
+  projection_head_layers: [512, 256]
+  temperature: 0.10
+  batch_size: 256
+  negative_samples: 4096
+
+# Imitation Learning
+imitation_learning:
+  enabled: true
+  methods:
+    - "behavioral_cloning"
+    - "dagger"
+    - "airl"
+    - "gail"
+    - "apprenticeship_learning"
+  expert_data_source: "historical_trades"
+  demonstration_quality_threshold: 0.80
+  expert_confidence_weight: 0.50
+  behavioral_cloning_epochs: 100
+  daagger_iterations: 10
+
+# Model Selection & Optimization
+model_selection:
+  enabled: true
+  selection_method: "cross_validation"  # cross_validation, bayesian, grid_search, random_search
+  evaluation_metrics:
+    - "accuracy"
+    - "precision"
+    - "recall"
+    - "f1_score"
+    - "roc_auc"
+    - "log_loss"
+    - "mse"
+    - "mae"
+    - "r2_score"
+  optimization_objective: "f1_score"
+  model_comparison: true
+  model_versioning: true
+  model_rollback: true
+
+# Feature Engineering
+feature_engineering:
+  enabled: true
+  methods:
+    - "polynomial_features"
+    - "interaction_features"
+    - "binning"
+    - "encoding"
+    - "scaling"
+    - "normalization"
+    - "dimension_reduction"
+    - "feature_selection"
+    - "feature_extraction"
+    - "target_encoding"
+  feature_selection_method: "mutual_information"
+  max_features: 50
+  min_feature_importance: 0.01
+  auto_feature_engineering: true
+
+# Hyperparameter Optimization
+hyperparameter_optimization:
+  enabled: true
+  optimization_algorithm: "bayesian"  # bayesian, grid, random, genetic, hyperband
+  max_iterations: 100
+  early_stopping_rounds: 10
+  validation_folds: 3
+  objective_function: "minimize_loss"
+  parallel_execution: true
+  result_visualization: true
+
+# Training Pipeline
+training_pipeline:
+  enabled: true
+  pipeline_stages:
+    - "data_collection"
+    - "data_cleaning"
+    - "data_transformation"
+    - "feature_engineering"
+    - "model_training"
+    - "model_validation"
+    - "model_testing"
+    - "model_deployment"
+    - "model_monitoring"
+  pipeline_frequency_days: 1
+  full_pipeline: true
+  incremental_updates: true
+  pipeline_automation: true
+
+# Model Registry
+model_registry:
+  enabled: true
+  registry_type: "mlflow"
+  models_tracked:
+    - "prediction_models"
+    - "classification_models"
+    - "regression_models"
+    - "ensemble_models"
+    - "deep_learning_models"
+    - "reinforcement_models"
+  version_control: true
+  model_metrics_tracking: true
+  model_comparison: true
+  model_deployment_tracking: true
+  registry_storage_days: 365
+
+# Data Management
+data_management:
+  enabled: true
+  data_sources:
+    - "market_data"
+    - "trade_data"
+    - "performance_data"
+    - "risk_data"
+    - "external_data"
+  data_quality_checks: true
+  data_cleaning: true
+  data_augmentation: true
+  data_validation: true
+  data_versioning: true
+  data_retention_days: 365
+
+# Performance Monitoring
+performance_monitoring:
+  enabled: true
+  monitoring_frequency_seconds: 60
+  metrics:
+    - "model_accuracy"
+    - "training_speed"
+    - "inference_speed"
+    - "memory_usage"
+    - "cpu_usage"
+    - "gpu_usage"
+    - "error_rate"
+    - "drift_detection"
+  alert_thresholds:
+    accuracy_drop: 0.10
+    inference_time_ms: 100
+    error_rate: 0.05
+  dashboard_integration: true
+
+# Integration
+integration:
+  enabled: true
+  webhook_endpoint: "http://localhost:8080/learning"
+  api_endpoint: "/api/v1/trading/learning"
+  dashboard_url: "http://localhost:3000/learning"
+  real_time_updates: true
+  data_sync_frequency_seconds: 10
+  ml_platforms:
+    - "tensorflow"
+    - "pytorch"
+    - "sklearn"
+    - "mlflow"
+    - "wandb"
+    - "comet"
+
+# Logging & Auditing
+logging:
+  enabled: true
+  log_level: "info"
+  log_categories:
+    - "training"
+    - "inference"
+    - "model_management"
+    - "data_management"
+    - "performance"
+    - "errors"
+    - "system"
+  log_rotation: true
+  max_log_size_mb: 100
+  retention_days: 30
+  audit_trail: true
+
+# Alerting
+alerting:
+  enabled: true
+  alert_conditions:
+    - "model_drift"
+    - "performance_degradation"
+    - "training_failure"
+    - "data_quality_issue"
+    - "prediction_error"
+    - "learning_stagnation"
+  alert_thresholds:
+    model_drift: 0.15
+    performance_degradation: 0.10
+    prediction_error: 0.20
+  alert_channels:
+    - "email"
+    - "telegram"
+    - "slack"
+    - "pagerduty"
+  alert_cooldown_seconds: 600
