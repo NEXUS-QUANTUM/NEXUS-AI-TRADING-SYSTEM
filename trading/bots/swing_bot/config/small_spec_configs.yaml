@@ -1,0 +1,329 @@
+# Swing Bot Small Speculative Configuration
+# Small Speculative Trading Strategy & Risk Parameters
+
+# General Small Spec Settings
+small_spec:
+  enabled: true
+  strategy_type: "micro_spec"  # micro_spec, mini_spec, hybrid_spec
+  risk_profile: "moderate"  # conservative, moderate, aggressive
+  time_horizon: "ultra_short"  # ultra_short, short, flexible
+  version: "3.0.0"
+
+# Strategy Components
+components:
+  enabled: true
+  primary_components:
+    - "scalping_spec"
+    - "momentum_spec"
+    - "breakout_spec"
+    - "reversal_spec"
+    - "range_spec"
+  secondary_components:
+    - "volume_spec"
+    - "level_spec"
+    - "pattern_spec"
+    - "order_flow_spec"
+    - "volatility_spec"
+  component_weights:
+    scalping_spec: 0.25
+    momentum_spec: 0.20
+    breakout_spec: 0.20
+    reversal_spec: 0.15
+    range_spec: 0.10
+    volume_spec: 0.10
+
+# Scalping Speculation
+scalping_spec:
+  enabled: true
+  scalping_parameters:
+    min_profit_bps: 2
+    max_hold_bars: 3
+    volume_confirm: true
+    spread_tolerance: 0.005
+    execution_speed: "fast"  # fast, medium, slow
+  entry_threshold: 0.60
+  exit_threshold: 0.40
+
+# Momentum Speculation
+momentum_spec:
+  enabled: true
+  momentum_parameters:
+    lookback_bars: 5
+    momentum_threshold: 0.02
+    acceleration_threshold: 0.01
+    volume_confirm: true
+    volatility_adjust: true
+  entry_threshold: 0.60
+  exit_threshold: 0.40
+
+# Breakout Speculation
+breakout_spec:
+  enabled: true
+  breakout_parameters:
+    lookback_bars: 10
+    breakout_percentage: 0.01
+    volume_multiplier: 1.2
+    confirmation_bars: 1
+    pullback_tolerance: 0.005
+  entry_threshold: 0.60
+  exit_threshold: 0.40
+
+# Reversal Speculation
+reversal_spec:
+  enabled: true
+  reversal_parameters:
+    pattern_completion_bars: 5
+    confirmation_bars: 1
+    volume_confirm: true
+    divergence_detection: true
+    reversal_strength_threshold: 0.50
+  entry_threshold: 0.60
+  exit_threshold: 0.40
+
+# Range Speculation
+range_spec:
+  enabled: true
+  range_parameters:
+    range_detection_bars: 10
+    range_width_threshold: 0.02
+    touch_count: 2
+    bounce_confirmation: true
+    breakout_failure: true
+  entry_threshold: 0.60
+  exit_threshold: 0.40
+
+# Volume Speculation
+volume_spec:
+  enabled: true
+  volume_parameters:
+    volume_spike_multiplier: 1.5
+    volume_climax_detection: true
+    volume_divergence_detection: true
+    min_volume_threshold: 50000
+    volume_confirmation: true
+  entry_threshold: 0.60
+  exit_threshold: 0.40
+
+# Level Speculation
+level_spec:
+  enabled: true
+  level_parameters:
+    level_touch_count: 2
+    level_strength_threshold: 0.40
+    price_proximity_threshold: 0.005
+    bounce_confirmation: true
+    breakout_failure: true
+  entry_threshold: 0.60
+  exit_threshold: 0.40
+
+# Pattern Speculation
+pattern_spec:
+  enabled: true
+  pattern_types:
+    - "pin_bar"
+    - "engulfing"
+    - "harami"
+    - "doji"
+    - "inside_bar"
+    - "outside_bar"
+  pattern_parameters:
+    min_pattern_size: 0.005
+    confirmation_bars: 1
+    volume_confirm: true
+    pattern_strength_threshold: 0.50
+  entry_threshold: 0.60
+  exit_threshold: 0.40
+
+# Order Flow Speculation
+order_flow_spec:
+  enabled: true
+  order_flow_parameters:
+    flow_imbalance_threshold: 0.30
+    aggressor_ratio_threshold: 0.60
+    execution_velocity_threshold: 0.02
+    depth_imbalance_threshold: 0.30
+    flow_confirmation: true
+  entry_threshold: 0.60
+  exit_threshold: 0.40
+
+# Position Sizing
+position_sizing:
+  enabled: true
+  methods:
+    - "fixed_fraction"
+    - "risk_based"
+    - "volatility_based"
+    - "scalping_sizing"
+  primary_method: "risk_based"
+  risk_per_trade: 0.005
+  max_position_size: 0.01
+  min_position_size: 0.002
+  dynamic_sizing: true
+
+# Risk Management
+risk_management:
+  enabled: true
+  stop_loss:
+    methods:
+      - "tight_stop"
+      - "volatility_based"
+      - "atr_based"
+      - "level_based"
+      - "trailing"
+    tight_distance: 0.005
+    atr_multiplier: 0.5
+    trailing_activation: 0.005
+    trailing_distance: 0.003
+  take_profit:
+    methods:
+      - "tight_target"
+      - "risk_reward_ratio"
+      - "level_target"
+      - "trailing"
+    tight_target_multiplier: 0.5
+    risk_reward_ratio: 1.0
+    scaling_targets:
+      - level: 0.50
+        at_multiple: 0.5
+      - level: 0.30
+        at_multiple: 1.0
+      - level: 0.20
+        at_multiple: 1.5
+  risk_limits:
+    max_daily_loss: 0.02
+    max_drawdown: 0.05
+    max_position_exposure: 0.05
+    max_trades_per_day: 20
+
+# Entry Signals
+entry_signals:
+  enabled: true
+  signal_types:
+    - "scalp_buy"
+    - "scalp_sell"
+    - "momentum_buy"
+    - "momentum_sell"
+    - "breakout_buy"
+    - "breakout_sell"
+    - "reversal_buy"
+    - "reversal_sell"
+    - "range_buy"
+    - "range_sell"
+    - "volume_buy"
+    - "volume_sell"
+    - "level_buy"
+    - "level_sell"
+    - "pattern_buy"
+    - "pattern_sell"
+    - "order_flow_buy"
+    - "order_flow_sell"
+  confirmation_requirements:
+    min_indicators_confirmed: 2
+    volume_confirmation: true
+    price_confirmation: true
+  signal_strength_calculation: "weighted_average"
+  min_signal_strength: 0.60
+
+# Performance Metrics
+performance:
+  enabled: true
+  metrics:
+    - "small_spec_accuracy"
+    - "signal_accuracy"
+    - "win_rate"
+    - "average_return"
+    - "profit_factor"
+    - "sharpe_ratio"
+    - "max_drawdown"
+    - "average_hold_time"
+    - "trades_per_day"
+  evaluation_period_days: 30
+  rolling_window_days: 30
+
+# Visualization
+visualization:
+  enabled: true
+  charts:
+    - "small_spec_dashboard"
+    - "scalping_chart"
+    - "signal_chart"
+    - "performance_chart"
+    - "risk_chart"
+    - "trade_distribution_chart"
+  update_interval_seconds: 5
+  dashboard_integration: true
+  real_time_updates: true
+
+# Alerting
+alerting:
+  enabled: true
+  alert_conditions:
+    - "small_spec_signal"
+    - "scalping_signal"
+    - "momentum_signal"
+    - "breakout_signal"
+    - "reversal_signal"
+    - "range_signal"
+    - "volume_signal"
+    - "level_signal"
+    - "pattern_signal"
+    - "order_flow_signal"
+    - "risk_breach"
+  alert_thresholds:
+    signal_confidence: 0.60
+    momentum_shift: 0.02
+    breakout_confidence: 0.60
+    reversal_confidence: 0.60
+    range_confidence: 0.60
+  alert_channels:
+    - "email"
+    - "telegram"
+    - "slack"
+  alert_cooldown_seconds: 300
+
+# Reporting
+reporting:
+  enabled: true
+  report_types:
+    - "real_time_alerts"
+    - "daily_small_spec_summary"
+    - "weekly_small_spec_analysis"
+    - "monthly_small_spec_report"
+  report_formats:
+    - "pdf"
+    - "html"
+    - "json"
+    - "csv"
+    - "excel"
+  report_recipients:
+    - "trading@example.com"
+    - "risk@example.com"
+    - "strategy@example.com"
+
+# Storage
+storage:
+  enabled: true
+  storage_categories:
+    - "small_spec_data"
+    - "signal_history"
+    - "trade_history"
+    - "performance_metrics"
+    - "risk_metrics"
+    - "alert_history"
+  retention_days: 365
+  compression: "zstd"
+  storage_format: "parquet"
+
+# Integration
+integration:
+  enabled: true
+  webhook_endpoint: "http://localhost:8080/small-spec"
+  api_endpoint: "/api/v1/trading/small-spec"
+  dashboard_url: "http://localhost:3000/small-spec"
+  real_time_updates: true
+  data_sync_frequency_seconds: 3
+  external_systems:
+    - "trading_engine"
+    - "risk_management"
+    - "order_management"
+    - "execution_platform"
