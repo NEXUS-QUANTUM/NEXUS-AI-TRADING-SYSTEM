@@ -1,0 +1,293 @@
+# Swing Bot Hybrid Strategy Configuration
+# Multi-Strategy Hybrid Trading Configuration for Adaptive Market Conditions
+
+# General Hybrid Settings
+hybrid:
+  enabled: true
+  mode: "dynamic"  # dynamic, static, adaptive
+  strategy_combinations:
+    - "momentum_swing"
+    - "mean_reversion_swing"
+    - "breakout_swing"
+    - "trend_following_swing"
+    - "counter_trend_swing"
+  primary_strategy: "momentum_swing"
+  fallback_strategy: "mean_reversion_swing"
+  rebalance_frequency_bars: 10
+  adaptation_threshold: 0.65
+
+# Strategy Selection Logic
+selection:
+  method: "machine_learning"  # rules_based, machine_learning, genetic, hybrid
+  model_type: "random_forest"
+  lookback_window_bars: 100
+  confidence_threshold: 0.70
+  switching_cooldown_bars: 5
+  minimum_trades_per_strategy: 5
+  evaluation_metric: "sharpe_ratio"
+
+# Machine Learning Selection
+ml_selection:
+  models:
+    - "random_forest"
+    - "xgboost"
+    - "lightgbm"
+    - "catboost"
+    - "neural_network"
+  ensemble_method: "voting"
+  retrain_frequency_bars: 500
+  feature_count: 50
+  validation_size: 0.20
+  early_stopping: true
+  min_observations: 1000
+
+# Genetic Algorithm Selection
+genetic_selection:
+  population_size: 100
+  generations: 50
+  mutation_rate: 0.10
+  crossover_rate: 0.80
+  tournament_size: 5
+  fitness_function: "sharpe_ratio"
+  elitism: 0.10
+
+# Strategy Weighting
+weighting:
+  method: "performance_based"  # equal, performance, volatility, dynamic
+  performance_lookback_bars: 50
+  weight_clipping_min: 0.05
+  weight_clipping_max: 0.50
+  decay_factor: 0.90
+  reweight_frequency_bars: 10
+  momentum_weight: 0.35
+  mean_reversion_weight: 0.25
+  breakout_weight: 0.20
+  trend_following_weight: 0.15
+  counter_trend_weight: 0.05
+
+# Market Regime Detection
+regime_detection:
+  methods:
+    - "volatility_regime"
+    - "trend_regime"
+    - "volume_regime"
+    - "correlation_regime"
+    - "momentum_regime"
+  lookback_window_bars: 50
+  regime_switching_threshold: 0.60
+  number_of_regimes: 4
+  regime_labels:
+    - "trending_high_vol"
+    - "trending_low_vol"
+    - "ranging_high_vol"
+    - "ranging_low_vol"
+
+# Volatility Regime
+volatility_regime:
+  calculation_method: "atr"  # atr, standard_deviation, parkinson, garman_klass
+  atr_period: 14
+  high_volatility_threshold: 0.03
+  low_volatility_threshold: 0.01
+  lookback_bars: 20
+
+# Trend Regime
+trend_regime:
+  indicators:
+    - "adx"
+    - "moving_average"
+    - "price_position"
+    - "linear_regression"
+  adx_period: 14
+  trend_threshold: 25
+  strong_trend_threshold: 40
+  no_trend_threshold: 20
+
+# Volume Regime
+volume_regime:
+  volume_ma_period: 20
+  high_volume_threshold: 1.5
+  low_volume_threshold: 0.5
+  volume_spike_threshold: 2.0
+  accumulation_distribution: true
+
+# Strategy Parameters - Momentum
+momentum:
+  fast_ma_period: 10
+  slow_ma_period: 30
+  momentum_period: 14
+  rsi_period: 14
+  macd_fast: 12
+  macd_slow: 26
+  macd_signal: 9
+  threshold_entry: 0.02
+  threshold_exit: -0.01
+
+# Strategy Parameters - Mean Reversion
+mean_reversion:
+  bb_period: 20
+  bb_std_dev: 2.0
+  rsi_oversold: 30
+  rsi_overbought: 70
+  stoch_k: 14
+  stoch_d: 3
+  stoch_overbought: 80
+  stoch_oversold: 20
+  entry_zscore: 2.0
+  exit_zscore: 0.5
+
+# Strategy Parameters - Breakout
+breakout:
+  lookback_high: 20
+  lookback_low: 20
+  breakout_confirmation_bars: 2
+  pullback_percentage: 0.618
+  false_breakout_threshold: 0.02
+  volume_breakout_multiplier: 1.5
+  atr_multiplier_entry: 0.5
+
+# Strategy Parameters - Trend Following
+trend_following:
+  adx_trend_threshold: 25
+  ma_crossover_fast: 20
+  ma_crossover_slow: 50
+  parabolic_sar_step: 0.02
+  parabolic_sar_max: 0.20
+  trailing_stop_multiplier: 2.0
+  trend_strength_min: 30
+
+# Strategy Parameters - Counter Trend
+counter_trend:
+  extreme_zone: 2.5
+  reversal_zone: 1.5
+  confirmation_bars: 3
+  retracement_min: 0.382
+  retracement_max: 0.618
+  volume_confirmation: true
+  divergence_detection: true
+
+# Divergence Detection
+divergence:
+  enabled: true
+  lookback_bars: 20
+  rsi_period: 14
+  macd_period: 14
+  price_divergence_threshold: 0.02
+  rsi_divergence_threshold: 5
+  require_confirmation: true
+
+# Risk Parameters
+risk:
+  base_position_size: 0.02
+  max_position_size: 0.05
+  max_strategy_exposure: 0.15
+  max_correlation: 0.70
+  stop_loss_percent: 0.02
+  take_profit_percent: 0.04
+  risk_reward_ratio: 2.0
+  trailing_stop_activation: 0.02
+  trailing_stop_distance: 0.01
+
+# Performance Metrics
+performance:
+  evaluation_metrics:
+    - "sharpe_ratio"
+    - "sortino_ratio"
+    - "calmar_ratio"
+    - "win_rate"
+    - "profit_factor"
+    - "average_return"
+    - "max_drawdown"
+  min_sharpe_ratio: 0.50
+  min_win_rate: 0.40
+  max_drawdown_limit: 0.15
+  rolling_window_bars: 100
+
+# Portfolio Allocation
+portfolio:
+  allocation_method: "risk_parity"
+  max_asset_exposure: 0.25
+  min_asset_exposure: 0.05
+  rebalance_frequency_bars: 20
+  diversification_limit: 8
+  sector_limits: true
+  correlation_limit: 0.70
+
+# Cross-Strategy Validation
+validation:
+  conflict_resolution: "consensus"  # consensus, majority, weighted
+  required_agreement: 0.60
+  veto_power_strategies:
+    - "counter_trend"
+    - "mean_reversion"
+  consistency_check_bars: 5
+  signal_filtering: true
+
+# Stop Loss Management
+stop_loss:
+  strategy_specific: true
+  volatility_adjustment: true
+  max_stop_distance: 0.05
+  min_stop_distance: 0.005
+  breakeven_after_bars: 5
+  trailing_step_bars: 3
+
+# Take Profit Management
+take_profit:
+  strategy_specific: true
+  volatility_adjustment: true
+  partial_profit_levels:
+    - percentage: 0.50
+      at_multiple: 1.0
+    - percentage: 0.30
+      at_multiple: 2.0
+    - percentage: 0.20
+      at_multiple: 3.0
+  scale_out_enabled: true
+  profit_target_multiplier: 1.5
+
+# Market Data Requirements
+data_requirements:
+  minimum_historical_bars: 200
+  update_frequency_seconds: 5
+  required_symbols: 10
+  data_quality_threshold: 0.95
+  outlier_removal: true
+  volume_threshold: 100000
+
+# Alert Settings
+alerts:
+  strategy_change_alert: true
+  signal_generation_alert: true
+  performance_degradation_alert: true
+  regime_change_alert: true
+  risk_limit_alert: true
+  error_alert: true
+  alert_cooldown_seconds: 300
+
+# Logging
+logging:
+  log_level: "info"
+  signal_logging: true
+  performance_logging: true
+  strategy_state_logging: true
+  log_rotation: true
+  max_log_size_mb: 100
+  retention_days: 30
+
+# Backtesting
+backtesting:
+  walk_forward: true
+  validation_period_bars: 1000
+  test_period_bars: 500
+  optimization_metric: "sharpe_ratio"
+  monte_carlo_simulations: 1000
+  out_of_sample_testing: true
+  transaction_cost_model: true
+
+# Integration
+integration:
+  webhook_url: "http://localhost:8080/hybrid"
+  dashboard_update_interval_seconds: 10
+  trade_export: true
+  performance_export: true
+  real_time_monitoring: true
