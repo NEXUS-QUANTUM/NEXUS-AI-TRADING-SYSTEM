@@ -1,0 +1,340 @@
+# Swing Bot Portfolio Management System (PMS) Configuration
+# Portfolio Management & Optimization Parameters
+
+# General PMS Settings
+pms:
+  enabled: true
+  management_mode: "active"  # active, passive, hybrid, adaptive
+  optimization_goal: "risk_adjusted_return"  # risk_adjusted_return, max_return, min_risk, max_diversification
+  rebalancing_frequency: "adaptive"  # adaptive, daily, weekly, monthly, quarterly
+  version: "3.0.0"
+
+# Portfolio Structure
+structure:
+  enabled: true
+  asset_classes:
+    - "equities"
+    - "fixed_income"
+    - "commodities"
+    - "currencies"
+    - "crypto"
+    - "derivatives"
+    - "real_estate"
+  sectors:
+    - "technology"
+    - "financials"
+    - "healthcare"
+    - "energy"
+    - "consumer"
+    - "industrial"
+    - "utilities"
+    - "materials"
+    - "real_estate"
+  regions:
+    - "north_america"
+    - "europe"
+    - "asia_pacific"
+    - "emerging_markets"
+    - "middle_east"
+    - "latin_america"
+
+# Portfolio Allocation
+allocation:
+  enabled: true
+  allocation_methods:
+    - "strategic"
+    - "tactical"
+    - "dynamic"
+    - "risk_parity"
+    - "mean_variance"
+    - "black_litterman"
+    - "machine_learning"
+  primary_method: "risk_parity"
+  target_allocations:
+    equities: 0.40
+    fixed_income: 0.30
+    commodities: 0.10
+    currencies: 0.10
+    crypto: 0.05
+    derivatives: 0.03
+    real_estate: 0.02
+  allocation_ranges:
+    min_per_asset: 0.01
+    max_per_asset: 0.25
+    min_per_sector: 0.05
+    max_per_sector: 0.35
+    min_per_region: 0.05
+    max_per_region: 0.40
+
+# Position Management
+position:
+  enabled: true
+  position_types:
+    - "long"
+    - "short"
+    - "hedge"
+    - "spread"
+    - "pair"
+    - "basket"
+  position_sizing:
+    methods:
+      - "risk_based"
+      - "kelly_criterion"
+      - "volatility_based"
+      - "fixed_fraction"
+      - "dynamic"
+    primary_method: "risk_based"
+    risk_per_position: 0.02
+    max_position_size: 0.05
+    min_position_size: 0.01
+  position_limits:
+    max_positions: 20
+    max_concentration: 0.25
+    max_sector_exposure: 0.35
+    max_region_exposure: 0.40
+    max_correlation: 0.70
+
+# Risk Management
+risk_management:
+  enabled: true
+  risk_metrics:
+    - "value_at_risk"
+    - "expected_shortfall"
+    - "maximum_drawdown"
+    - "volatility"
+    - "beta"
+    - "correlation"
+    - "concentration"
+    - "liquidity"
+  risk_limits:
+    var_limit: 0.05
+    expected_shortfall: 0.07
+    max_drawdown: 0.10
+    max_volatility: 0.20
+    max_beta: 1.20
+    max_correlation: 0.70
+    max_concentration: 0.25
+  risk_monitoring: true
+  risk_reporting: true
+
+# Performance Metrics
+performance:
+  enabled: true
+  metrics:
+    - "total_return"
+    - "annualized_return"
+    - "sharpe_ratio"
+    - "sortino_ratio"
+    - "calmar_ratio"
+    - "omega_ratio"
+    - "information_ratio"
+    - "treynor_ratio"
+    - "alpha"
+    - "beta"
+    - "capture_ratio"
+    - "upside_capture"
+    - "downside_capture"
+  evaluation_period_days: 30
+  rolling_window_days: 30
+  benchmark: "s&p_500"
+  benchmark_comparison: true
+
+# Rebalancing
+rebalancing:
+  enabled: true
+  rebalancing_methods:
+    - "threshold_based"
+    - "time_based"
+    - "dynamic"
+    - "tax_efficient"
+    - "cost_efficient"
+  threshold_parameters:
+    rebalance_threshold: 0.05
+    drift_tolerance: 0.10
+    min_rebalance_percent: 0.20
+  rebalancing_frequency:
+    daily: false
+    weekly: true
+    monthly: true
+    quarterly: true
+    adaptive: true
+  rebalancing_optimization: true
+
+# Tax Management
+tax_management:
+  enabled: true
+  tax_considerations:
+    - "capital_gains"
+    - "loss_harvesting"
+    - "tax_lot_management"
+    - "wash_sale_rules"
+    - "tax_efficient_placement"
+  harvest_loss_threshold: 0.02
+  holding_period_threshold_days: 365
+  tax_efficiency_optimization: true
+  tax_reporting: true
+
+# Diversification
+diversification:
+  enabled: true
+  diversification_metrics:
+    - "herfindahl_index"
+    - "gini_coefficient"
+    - "effective_number_of_bets"
+    - "concentration_ratio"
+    - "correlation_matrix"
+  diversification_targets:
+    min_effective_bets: 10
+    max_concentration_index: 0.20
+    max_correlation: 0.60
+  diversification_optimization: true
+
+# Correlation Management
+correlation:
+  enabled: true
+  correlation_methods:
+    - "pearson"
+    - "spearman"
+    - "kendall"
+    - "dynamic_conditional"
+  correlation_parameters:
+    lookback_period_days: 60
+    rolling_window_days: 30
+    correlation_threshold: 0.70
+  dynamic_correlation: true
+  regime_correlation: true
+
+# Optimization
+optimization:
+  enabled: true
+  optimization_methods:
+    - "mean_variance"
+    - "risk_parity"
+    - "black_litterman"
+    - "monte_carlo"
+    - "machine_learning"
+  primary_method: "risk_parity"
+  optimization_frequency_hours: 6
+  constraints:
+    - "max_weight"
+    - "min_weight"
+    - "max_sector_exposure"
+    - "max_region_exposure"
+    - "max_correlation"
+    - "min_diversification"
+  optimization_objectives:
+    - "maximize_sharpe"
+    - "minimize_risk"
+    - "maximize_diversification"
+
+# Performance Attribution
+attribution:
+  enabled: true
+  attribution_methods:
+    - "brinson_attribution"
+    - "factor_attribution"
+    - "returns_based_attribution"
+    - "holdings_based_attribution"
+  attribution_components:
+    - "asset_allocation"
+    - "security_selection"
+    - "sector_allocation"
+    - "region_allocation"
+    - "style_allocation"
+  attribution_frequency: "monthly"
+
+# Visualization
+visualization:
+  enabled: true
+  charts:
+    - "portfolio_dashboard"
+    - "allocation_chart"
+    - "performance_chart"
+    - "risk_chart"
+    - "diversification_chart"
+    - "correlation_heatmap"
+    - "attribution_chart"
+    - "rebalancing_tracking"
+  update_interval_seconds: 10
+  dashboard_integration: true
+  real_time_updates: true
+
+# Alerting
+alerting:
+  enabled: true
+  alert_conditions:
+    - "risk_limit_breach"
+    - "drawdown_exceeded"
+    - "allocation_deviation"
+    - "correlation_breakdown"
+    - "performance_drop"
+    - "rebalancing_required"
+    - "tax_event_triggered"
+  alert_thresholds:
+    risk_breach: 0.80
+    drawdown_exceeded: 0.10
+    allocation_deviation: 0.05
+    performance_drop: 0.10
+  alert_channels:
+    - "email"
+    - "telegram"
+    - "slack"
+  alert_cooldown_seconds: 600
+
+# Reporting
+reporting:
+  enabled: true
+  report_types:
+    - "real_time_alerts"
+    - "daily_portfolio_summary"
+    - "weekly_portfolio_analysis"
+    - "monthly_portfolio_report"
+    - "quarterly_portfolio_review"
+    - "annual_portfolio_report"
+    - "risk_report"
+    - "attribution_report"
+  report_formats:
+    - "pdf"
+    - "html"
+    - "json"
+    - "csv"
+    - "excel"
+  report_recipients:
+    - "trading@example.com"
+    - "risk@example.com"
+    - "management@example.com"
+
+# Storage
+storage:
+  enabled: true
+  storage_categories:
+    - "portfolio_data"
+    - "allocation_data"
+    - "position_data"
+    - "risk_data"
+    - "performance_data"
+    - "rebalancing_data"
+    - "tax_data"
+    - "correlation_data"
+    - "optimization_data"
+    - "attribution_data"
+    - "alert_history"
+    - "report_history"
+  retention_days: 365
+  compression: "zstd"
+  storage_format: "parquet"
+
+# Integration
+integration:
+  enabled: true
+  webhook_endpoint: "http://localhost:8080/pms"
+  api_endpoint: "/api/v1/trading/pms"
+  dashboard_url: "http://localhost:3000/pms"
+  real_time_updates: true
+  data_sync_frequency_seconds: 10
+  external_systems:
+    - "trading_engine"
+    - "risk_management"
+    - "order_management"
+    - "tax_system"
+    - "reporting_system"
