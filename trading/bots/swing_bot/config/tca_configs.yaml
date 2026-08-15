@@ -1,0 +1,806 @@
+# tca_configs.yaml
+# Configuration complète pour l'analyse des coûts de transaction (TCA) dans Swing Bot
+# Version: 4.0.0 - Production Ready
+
+# Paramètres généraux
+general:
+  enabled: true
+  mode: "comprehensive"
+  calculate_in_real_time: true
+  update_frequency_seconds: 1
+  lookback_periods:
+    - 5
+    - 10
+    - 20
+    - 50
+    - 100
+    - 200
+    - 500
+  history_length_days: 365
+  min_data_points: 50
+  max_data_points: 100000
+  tca_version: "4.0.0"
+  environment: "production"
+  base_currency: "USD"
+
+# Types d'analyse TCA
+tca_types:
+  explicit_costs:
+    enabled: true
+    description: "Explicit Transaction Costs"
+    components:
+      - "broker_commission"
+      - "exchange_fees"
+      - "clearing_fees"
+      - "settlement_fees"
+      - "regulatory_fees"
+      - "taxes"
+    update_frequency_seconds: 60
+  implicit_costs:
+    enabled: true
+    description: "Implicit Transaction Costs"
+    components:
+      - "bid_ask_spread"
+      - "market_impact"
+      - "slippage"
+      - "timing_cost"
+      - "opportunity_cost"
+      - "price_appreciation"
+    update_frequency_seconds: 60
+  total_costs:
+    enabled: true
+    description: "Total Transaction Costs"
+    components:
+      - "explicit_costs"
+      - "implicit_costs"
+      - "execution_costs"
+      - "administration_costs"
+      - "financing_costs"
+    update_frequency_seconds: 60
+  execution_quality:
+    enabled: true
+    description: "Execution Quality Analysis"
+    components:
+      - "price_improvement"
+      - "execution_speed"
+      - "fill_rate"
+      - "order_size"
+      - "market_condition"
+    update_frequency_seconds: 60
+  comparative:
+    enabled: true
+    description: "Comparative TCA Analysis"
+    components:
+      - "broker_comparison"
+      - "venue_comparison"
+      - "strategy_comparison"
+      - "time_comparison"
+      - "symbol_comparison"
+    update_frequency_seconds: 300
+
+# Composantes des coûts
+cost_components:
+  explicit:
+    broker_commission:
+      enabled: true
+      calculation: "percentage"
+      rate: 0.001
+      min_fee: 1.0
+      max_fee: 100.0
+      fee_currency: "USD"
+    exchange_fees:
+      enabled: true
+      calculation: "percentage"
+      rate: 0.0005
+      min_fee: 0.5
+      max_fee: 50.0
+      fee_currency: "USD"
+    clearing_fees:
+      enabled: true
+      calculation: "fixed"
+      rate: 0.01
+      min_fee: 0.01
+      max_fee: 10.0
+      fee_currency: "USD"
+    settlement_fees:
+      enabled: true
+      calculation: "fixed"
+      rate: 0.005
+      min_fee: 0.005
+      max_fee: 5.0
+      fee_currency: "USD"
+    regulatory_fees:
+      enabled: true
+      calculation: "percentage"
+      rate: 0.0001
+      min_fee: 0.001
+      max_fee: 1.0
+      fee_currency: "USD"
+    taxes:
+      enabled: true
+      calculation: "percentage"
+      rate: 0.001
+      min_fee: 0.01
+      max_fee: 10.0
+      fee_currency: "USD"
+  implicit:
+    bid_ask_spread:
+      enabled: true
+      calculation: "percentage_of_price"
+      rate: 0.001
+      include_volatility: true
+      include_liquidity: true
+    market_impact:
+      enabled: true
+      calculation: "linear"
+      rate: 0.0005
+      include_order_size: true
+      include_liquidity: true
+      include_volatility: true
+    slippage:
+      enabled: true
+      calculation: "percentage"
+      rate: 0.0002
+      include_volatility: true
+      include_liquidity: true
+      include_order_size: true
+    timing_cost:
+      enabled: true
+      calculation: "percentage"
+      rate: 0.0001
+      include_market_movement: true
+      include_volatility: true
+    opportunity_cost:
+      enabled: true
+      calculation: "percentage"
+      rate: 0.0003
+      include_market_movement: true
+      include_time_delay: true
+
+# Seuils de coûts
+thresholds:
+  explicit:
+    warning: 0.01
+    danger: 0.02
+    critical: 0.05
+    emergency: 0.10
+  implicit:
+    warning: 0.02
+    danger: 0.04
+    critical: 0.08
+    emergency: 0.15
+  total:
+    warning: 0.03
+    danger: 0.06
+    critical: 0.12
+    emergency: 0.20
+  execution_quality:
+    excellent: 0.95
+    good: 0.85
+    average: 0.70
+    poor: 0.50
+    critical: 0.30
+
+# Indicateurs TCA
+indicators:
+  cost_efficiency:
+    enabled: true
+    calculation: "weighted_average"
+    factors:
+      - "explicit_costs"
+      - "implicit_costs"
+      - "execution_quality"
+      - "market_impact"
+      - "slippage"
+    factor_weights:
+      explicit_costs: 0.20
+      implicit_costs: 0.30
+      execution_quality: 0.25
+      market_impact: 0.15
+      slippage: 0.10
+  cost_trend:
+    enabled: true
+    period: 14
+    smoothing: 3
+    threshold: 0.02
+  cost_momentum:
+    enabled: true
+    period: 14
+    smoothing: 3
+    threshold: 0.01
+  cost_velocity:
+    enabled: true
+    period: 5
+    smoothing: 0
+    threshold: 0.005
+  cost_acceleration:
+    enabled: true
+    period: 10
+    smoothing: 0
+    threshold: 0.002
+  cost_stability:
+    enabled: true
+    period: 20
+    smoothing: 0
+    threshold: 0.01
+  cost_volatility:
+    enabled: true
+    period: 20
+    smoothing: 3
+    threshold: 0.02
+
+# Analyse TCA
+analysis:
+  historical:
+    enabled: true
+    lookback_years: 5
+    compute_mean_costs: true
+    compute_median_costs: true
+    compute_std_costs: true
+    compute_percentiles: true
+    percentile_values:
+      - 1
+      - 5
+      - 10
+      - 25
+      - 50
+      - 75
+      - 90
+      - 95
+      - 99
+    compute_cost_distribution: true
+    compute_cost_patterns: true
+    compute_cost_cycles: true
+    compute_cost_correlation: true
+  real_time:
+    enabled: true
+    update_frequency_ms: 100
+    compute_instantaneous_costs: true
+    compute_moving_average_costs: true
+    compute_exponential_costs: true
+    compute_weighted_costs: true
+    compute_cost_velocity: true
+    compute_cost_acceleration: true
+  predictive:
+    enabled: true
+    model_type: "ensemble"
+    models:
+      - "lstm"
+      - "gru"
+      - "xgboost"
+      - "lightgbm"
+    features:
+      - "explicit_costs"
+      - "implicit_costs"
+      - "total_costs"
+      - "execution_quality"
+      - "cost_efficiency"
+      - "cost_trend"
+      - "cost_momentum"
+      - "cost_velocity"
+      - "cost_acceleration"
+      - "cost_stability"
+      - "cost_volatility"
+      - "order_size"
+      - "volatility"
+      - "liquidity"
+      - "time_of_day"
+      - "day_of_week"
+      - "market_condition"
+    forecast_horizons:
+      - 1
+      - 5
+      - 10
+      - 20
+    confidence_threshold: 0.7
+    retrain_frequency_hours: 24
+  comparative:
+    enabled: true
+    compare_to_benchmark: true
+    compare_to_historical: true
+    compare_to_industry: true
+    compare_to_competitors: true
+    benchmark_symbols:
+      - "SP500"
+      - "NASDAQ"
+      - "BTCUSDT"
+      - "ETHUSDT"
+
+# Alertes et notifications
+alerts:
+  cost_threshold:
+    enabled: true
+    threshold: 0.05
+    channels:
+      - "email"
+      - "telegram"
+      - "slack"
+      - "push_notification"
+    severity: "warning"
+  cost_spike:
+    enabled: true
+    threshold: 0.10
+    channels:
+      - "email"
+      - "telegram"
+      - "slack"
+    severity: "critical"
+  cost_reduction:
+    enabled: true
+    threshold: 0.02
+    channels:
+      - "telegram"
+      - "push_notification"
+    severity: "info"
+  execution_quality_decline:
+    enabled: true
+    threshold: 0.70
+    channels:
+      - "email"
+      - "telegram"
+      - "slack"
+    severity: "critical"
+  execution_quality_improvement:
+    enabled: true
+    threshold: 0.10
+    channels:
+      - "telegram"
+      - "push_notification"
+    severity: "success"
+
+# Actions automatiques
+auto_actions:
+  cost_optimization:
+    enabled: true
+    action_types:
+      - "adjust_order_size"
+      - "change_venue"
+      - "modify_timing"
+      - "alter_execution_algorithm"
+      - "reduce_slippage"
+    optimization_factor: 0.1
+    max_optimization_percent: 20.0
+  execution_improvement:
+    enabled: true
+    action_types:
+      - "improve_price"
+      - "increase_speed"
+      - "enhance_fill_rate"
+      - "reduce_market_impact"
+      - "optimize_order_routing"
+    improvement_factor: 0.1
+    max_improvement_percent: 15.0
+  cost_correction:
+    enabled: true
+    action_types:
+      - "correct_cost_deviations"
+      - "restore_cost_targets"
+      - "reset_execution_parameters"
+      - "recalibrate_cost_models"
+    correction_factor: 0.1
+    max_correction_percent: 10.0
+
+# Paramètres avancés
+advanced:
+  machine_learning:
+    enabled: true
+    model_type: "ensemble"
+    models:
+      - "random_forest"
+      - "xgboost"
+      - "lightgbm"
+      - "lstm"
+    features:
+      - "explicit_costs"
+      - "implicit_costs"
+      - "total_costs"
+      - "execution_quality"
+      - "cost_efficiency"
+      - "cost_trend"
+      - "cost_momentum"
+      - "cost_velocity"
+      - "cost_acceleration"
+      - "cost_stability"
+      - "cost_volatility"
+      - "order_size"
+      - "volatility"
+      - "liquidity"
+      - "time_of_day"
+      - "day_of_week"
+      - "market_condition"
+    training_frequency_hours: 6
+    retrain_threshold: 0.9
+    validation_split: 0.2
+    random_seed: 42
+    ensemble_weights:
+      - 0.25
+      - 0.25
+      - 0.25
+      - 0.25
+  statistical_analysis:
+    enabled: true
+    calculate_descriptive_stats: true
+    calculate_inferential_stats: true
+    calculate_cost_distribution: true
+    calculate_cost_capability: true
+    calculate_cost_improvement: true
+    confidence_level: 95
+    p_value_threshold: 0.05
+  benchmarking:
+    enabled: true
+    benchmarks:
+      - "industry_standard"
+      - "competitor_performance"
+      - "historical_best"
+      - "theoretical_optimal"
+    compare_to_benchmark: true
+    benchmark_update_frequency: "daily"
+    benchmark_tolerance: 0.1
+
+# Monitoring et journalisation
+monitoring:
+  logging:
+    enabled: true
+    level: "debug"
+    format: "json"
+    include_context: true
+    include_timestamp: true
+    include_metadata: true
+  metrics:
+    enabled: true
+    collect_every_seconds: 1
+    metrics_to_collect:
+      - "explicit_costs"
+      - "implicit_costs"
+      - "total_costs"
+      - "execution_quality"
+      - "cost_efficiency"
+      - "cost_trend"
+      - "cost_momentum"
+      - "cost_velocity"
+      - "cost_acceleration"
+      - "cost_stability"
+      - "cost_volatility"
+      - "bid_ask_spread"
+      - "market_impact"
+      - "slippage"
+      - "fill_rate"
+  dashboard:
+    enabled: true
+    update_interval_seconds: 1
+    charts:
+      - "cost_analysis_chart"
+      - "execution_quality_chart"
+      - "cost_distribution"
+      - "cost_trend_analysis"
+      - "benchmark_comparison"
+      - "cost_improvement_tracking"
+      - "predictive_analysis"
+      - "cost_components"
+
+# Backtesting
+backtesting:
+  enabled: true
+  use_historical_tca: true
+  compute_cost_accuracy: true
+  compute_improvement_effectiveness: true
+  compute_benchmark_performance: true
+  compute_cost_capability: true
+  report_metrics:
+    - "cost_accuracy"
+    - "improvement_rate"
+    - "benchmark_comparison"
+    - "cost_capability"
+    - "win_rate"
+    - "profit_factor"
+    - "sharpe_ratio"
+    - "max_drawdown"
+
+# Configuration de la base de données
+database:
+  enabled: true
+  table_name: "tca_metrics"
+  retention_days: 365
+  aggregation:
+    enabled: true
+    intervals:
+      - "1s"
+      - "5s"
+      - "15s"
+      - "30s"
+      - "1m"
+      - "5m"
+      - "15m"
+      - "1h"
+      - "4h"
+      - "24h"
+  compression: true
+  backup:
+    enabled: true
+    frequency: "daily"
+    retention_days: 30
+
+# Webhooks
+webhooks:
+  enabled: true
+  endpoints:
+    - url: "https://nexustradingia.com/api/webhooks/tca"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      payload_template: "tca_alert"
+    - url: "https://nexustradingia.com/api/webhooks/tca-improvement"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      payload_template: "tca_improvement"
+  retry:
+    enabled: true
+    max_attempts: 5
+    backoff_seconds: 30
+
+# Logging avancé
+advanced_logging:
+  enabled: true
+  levels:
+    - "info"
+    - "warning"
+    - "error"
+    - "critical"
+    - "debug"
+  output: "tca_logs"
+  rotation:
+    enabled: true
+    max_size_mb: 100
+    max_files: 10
+  remote_logging:
+    enabled: true
+    endpoints:
+      - "https://nexustradingia.com/logs/tca"
+  include_trace: true
+  include_stack_trace: true
+  include_context: true
+
+# Threading et performances
+performance:
+  thread_pool_size: 8
+  queue_size: 10000
+  batch_size: 1000
+  async_processing: true
+  cache_size: 10000
+  cache_ttl_seconds: 30
+  database_pool_size: 10
+  database_pool_max_overflow: 20
+  use_multiprocessing: true
+  max_workers: 8
+  use_cython: true
+  use_numba: true
+  use_gpu: false
+  gpu_device: 0
+
+# API de gestion
+management_api:
+  enabled: true
+  endpoints:
+    - "/api/v1/tca/current"
+    - "/api/v1/tca/history"
+    - "/api/v1/tca/metrics"
+    - "/api/v1/tca/status"
+    - "/api/v1/tca/components"
+    - "/api/v1/tca/indicators"
+    - "/api/v1/tca/benchmark"
+    - "/api/v1/tca/forecast"
+  authentication_required: true
+  rate_limit: 100
+  rate_limit_interval_seconds: 60
+  version: "v1.0.0"
+
+# Export des données
+data_export:
+  enabled: true
+  formats:
+    - "csv"
+    - "json"
+    - "parquet"
+    - "avro"
+    - "feather"
+  schedule: "realtime"
+  batch_size: 1000
+  retention_days: 30
+  compression: "gzip"
+  destination: "s3://nexus-data/tca/"
+  encrypt: true
+  encryption_key_id: "nexus-tca-key"
+  partition_by:
+    - "symbol"
+    - "year"
+    - "month"
+    - "day"
+
+# Intégration avec d'autres modules
+integrations:
+  risk_engine:
+    enabled: true
+    sync_frequency_seconds: 1
+    share_metrics: true
+  execution_engine:
+    enabled: true
+    share_signals: true
+    require_confirmation: true
+  portfolio_manager:
+    enabled: true
+    share_positions: true
+    share_allocation: true
+  ai_engine:
+    enabled: true
+    use_ai_predictions: true
+    confidence_threshold: 0.7
+    model_endpoint: "http://ai-engine:8000/predict/tca"
+  market_data:
+    enabled: true
+    sync_frequency_ms: 100
+    data_endpoint: "ws://market-data:8080/ws"
+
+# Tests et validation
+testing:
+  unit_tests:
+    enabled: true
+    coverage_threshold: 90
+  integration_tests:
+    enabled: true
+  stress_tests:
+    enabled: true
+    scenarios:
+      - "high_cost_volume"
+      - "low_cost_volume"
+      - "cost_spike"
+      - "cost_reduction"
+      - "benchmark_comparison"
+  validation:
+    enabled: true
+    validate_on_startup: true
+    validate_on_config_change: true
+    validation_rules:
+      - "thresholds.explicit.warning < thresholds.explicit.danger"
+      - "thresholds.explicit.danger < thresholds.explicit.critical"
+      - "thresholds.explicit.critical < thresholds.explicit.emergency"
+      - "thresholds.implicit.warning < thresholds.implicit.danger"
+      - "thresholds.implicit.danger < thresholds.implicit.critical"
+      - "thresholds.implicit.critical < thresholds.implicit.emergency"
+      - "thresholds.total.warning < thresholds.total.danger"
+      - "thresholds.total.danger < thresholds.total.critical"
+      - "thresholds.total.critical < thresholds.total.emergency"
+      - "cost_components.explicit.broker_commission.rate >= 0.0"
+      - "cost_components.implicit.bid_ask_spread.rate >= 0.0"
+      - "indicators.cost_efficiency.factor_weights.sum() == 1.0"
+      - "min_data_points > 0"
+
+# Market conditions adaptation
+market_adaptation:
+  enabled: true
+  volatility_adjustment: true
+  regime_detection:
+    enabled: true
+    lookback_periods:
+      - 20
+      - 50
+      - 200
+    regimes:
+      - "low_volatility"
+      - "normal_volatility"
+      - "high_volatility"
+      - "extreme_volatility"
+      - "low_liquidity"
+      - "high_liquidity"
+  regime_parameters:
+    low_volatility:
+      cost_multiplier: 0.8
+      threshold_multiplier: 1.2
+      spread_multiplier: 0.7
+      impact_multiplier: 0.7
+    normal_volatility:
+      cost_multiplier: 1.0
+      threshold_multiplier: 1.0
+      spread_multiplier: 1.0
+      impact_multiplier: 1.0
+    high_volatility:
+      cost_multiplier: 1.5
+      threshold_multiplier: 0.8
+      spread_multiplier: 1.5
+      impact_multiplier: 1.5
+    extreme_volatility:
+      cost_multiplier: 2.0
+      threshold_multiplier: 0.6
+      spread_multiplier: 2.0
+      impact_multiplier: 2.0
+    low_liquidity:
+      cost_multiplier: 1.8
+      threshold_multiplier: 0.7
+      spread_multiplier: 1.8
+      impact_multiplier: 1.8
+    high_liquidity:
+      cost_multiplier: 0.7
+      threshold_multiplier: 1.3
+      spread_multiplier: 0.6
+      impact_multiplier: 0.6
+
+# Time-based configurations
+time_based:
+  enabled: true
+  sessions:
+    asia:
+      start: "00:00"
+      end: "08:00"
+      cost_multiplier: 1.2
+      threshold_multiplier: 0.9
+      spread_multiplier: 1.2
+      impact_multiplier: 1.2
+    london:
+      start: "08:00"
+      end: "16:00"
+      cost_multiplier: 0.8
+      threshold_multiplier: 1.1
+      spread_multiplier: 0.8
+      impact_multiplier: 0.8
+    newyork:
+      start: "13:00"
+      end: "22:00"
+      cost_multiplier: 1.0
+      threshold_multiplier: 1.0
+      spread_multiplier: 1.0
+      impact_multiplier: 1.0
+    overlap:
+      start: "13:00"
+      end: "16:00"
+      cost_multiplier: 0.7
+      threshold_multiplier: 1.2
+      spread_multiplier: 0.7
+      impact_multiplier: 0.7
+
+# Symbol-specific configurations
+symbol_configs:
+  BTCUSDT:
+    cost_multiplier: 1.0
+    threshold_multiplier: 1.0
+    spread_multiplier: 1.0
+    impact_multiplier: 1.0
+    broker_commission: 0.001
+    exchange_fee: 0.0005
+    spread: 0.001
+    impact: 0.0005
+  ETHUSDT:
+    cost_multiplier: 1.1
+    threshold_multiplier: 0.9
+    spread_multiplier: 1.1
+    impact_multiplier: 1.1
+    broker_commission: 0.001
+    exchange_fee: 0.0005
+    spread: 0.0012
+    impact: 0.0006
+  SOLUSDT:
+    cost_multiplier: 1.2
+    threshold_multiplier: 0.8
+    spread_multiplier: 1.2
+    impact_multiplier: 1.2
+    broker_commission: 0.001
+    exchange_fee: 0.0005
+    spread: 0.0015
+    impact: 0.0008
+  ADAUSDT:
+    cost_multiplier: 0.9
+    threshold_multiplier: 1.1
+    spread_multiplier: 0.9
+    impact_multiplier: 0.9
+    broker_commission: 0.001
+    exchange_fee: 0.0005
+    spread: 0.0008
+    impact: 0.0004
+  XRPUSDT:
+    cost_multiplier: 1.0
+    threshold_multiplier: 1.0
+    spread_multiplier: 1.0
+    impact_multiplier: 1.0
+    broker_commission: 0.001
+    exchange_fee: 0.0005
+    spread: 0.001
+    impact: 0.0005
