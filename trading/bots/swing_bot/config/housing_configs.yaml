@@ -1,0 +1,323 @@
+# Swing Bot Housing Market Configuration
+# Economic Data Parameters for Housing Market Analysis & Trading Strategy
+
+# General Housing Settings
+housing:
+  enabled: true
+  data_sources:
+    - "census_bureau"
+    - "fred"
+    - "zillow"
+    - "realtor_com"
+    - "redfin"
+    - "bls"
+    - "fhfa"
+  update_frequency_hours: 6
+  historical_years: 10
+  region_coverage: "national"  # national, regional, metropolitan
+
+# Housing Market Indicators
+indicators:
+  prices:
+    - "median_home_price"
+    - "average_home_price"
+    - "case_shiller_index"
+    - "fhfa_house_price_index"
+    - "repeat_sales_index"
+    - "new_home_price"
+    - "existing_home_price"
+  sales:
+    - "new_home_sales"
+    - "existing_home_sales"
+    - "pending_home_sales"
+    - "housing_starts"
+    - "building_permits"
+    - "housing_completions"
+  inventory:
+    - "months_of_supply"
+    - "active_listings"
+    - "new_listings"
+    - "days_on_market"
+    - "inventory_level"
+    - "absorption_rate"
+  affordability:
+    - "home_affordability_index"
+    - "median_income_to_price_ratio"
+    - "rent_to_price_ratio"
+    - "price_to_income_ratio"
+    - "mortgage_payment_to_income"
+  mortgage:
+    - "30_year_fixed_rate"
+    - "15_year_fixed_rate"
+    - "5_1_arm_rate"
+    - "jumbo_rate"
+    - "mortgage_applications"
+    - "refinance_applications"
+    - "purchase_applications"
+  construction:
+    - "construction_spending"
+    - "material_costs"
+    - "labor_costs"
+    - "contractor_index"
+    - "permits_issued"
+    - "units_under_construction"
+  rental:
+    - "median_rent"
+    - "rental_vacancy_rate"
+    - "rental_yield"
+    - "rental_demand_index"
+    - "occupancy_rate"
+
+# Price Indices
+price_indices:
+  case_shiller:
+    composite_10: true
+    composite_20: true
+    national: true
+    regional_breakdown: true
+    city_level: true
+    seasonal_adjustment: true
+  fhfa:
+    purchase_only: true
+    all_transactions: true
+    seasonal_adjustment: true
+    regional_breakdown: true
+
+# Weighting & Prioritization
+weighting:
+  sales_data: 0.25
+  price_data: 0.30
+  inventory_data: 0.15
+  mortgage_data: 0.20
+  construction_data: 0.05
+  rental_data: 0.05
+
+# Scoring System
+scoring:
+  market_health_score:
+    components:
+      - price_stability: 0.20
+      - sales_velocity: 0.15
+      - inventory_balance: 0.15
+      - affordability: 0.10
+      - mortgage_accessibility: 0.10
+      - construction_activity: 0.10
+      - rental_market: 0.10
+      - economic_factors: 0.10
+  thresholds:
+    excellent: 80
+    good: 60
+    fair: 40
+    poor: 20
+
+# Economic Correlations
+correlations:
+  primary_factors:
+    - "gdp_growth"
+    - "unemployment_rate"
+    - "consumer_confidence"
+    - "inflation_rate"
+    - "federal_funds_rate"
+  secondary_factors:
+    - "stock_market_performance"
+    - "bond_yields"
+    - "demographic_trends"
+    - "migration_patterns"
+    - "population_growth"
+
+# Regional Analysis
+regions:
+  northeast:
+    states:
+      - "CT"
+      - "ME"
+      - "MA"
+      - "NH"
+      - "NJ"
+      - "NY"
+      - "PA"
+      - "RI"
+      - "VT"
+    weight: 0.20
+  midwest:
+    states:
+      - "IL"
+      - "IN"
+      - "IA"
+      - "KS"
+      - "MI"
+      - "MN"
+      - "MO"
+      - "NE"
+      - "ND"
+      - "OH"
+      - "SD"
+      - "WI"
+    weight: 0.20
+  south:
+    states:
+      - "AL"
+      - "AR"
+      - "DE"
+      - "DC"
+      - "FL"
+      - "GA"
+      - "KY"
+      - "LA"
+      - "MD"
+      - "MS"
+      - "NC"
+      - "OK"
+      - "SC"
+      - "TN"
+      - "TX"
+      - "VA"
+      - "WV"
+    weight: 0.35
+  west:
+    states:
+      - "AK"
+      - "AZ"
+      - "CA"
+      - "CO"
+      - "HI"
+      - "ID"
+      - "MT"
+      - "NV"
+      - "NM"
+      - "OR"
+      - "UT"
+      - "WA"
+      - "WY"
+    weight: 0.25
+
+# Metropolitan Statistical Areas
+msas:
+  tracked:
+    - "New_York"
+    - "Los_Angeles"
+    - "Chicago"
+    - "Dallas"
+    - "Houston"
+    - "Miami"
+    - "Atlanta"
+    - "Washington_DC"
+    - "Boston"
+    - "San_Francisco"
+    - "Denver"
+    - "Seattle"
+    - "Phoenix"
+    - "Las_Vegas"
+    - "Austin"
+  weight_by_population: true
+
+# Thresholds for Trading Signals
+signals:
+  buy_thresholds:
+    price_correction: -0.15
+    inventory_surplus: 6.0
+    affordability_improvement: 10.0
+    mortgage_rate_drop: -1.0
+    sales_surge: 0.20
+  sell_thresholds:
+    price_appreciation: 0.25
+    inventory_shortage: 2.0
+    affordability_decline: -10.0
+    mortgage_rate_rise: 1.0
+    sales_slump: -0.20
+
+# Real Estate Investment Trusts (REIT)
+reit:
+  sectors:
+    - "residential"
+    - "commercial"
+    - "industrial"
+    - "retail"
+    - "healthcare"
+    - "data_centers"
+    - "self_storage"
+  correlation_coefficient: 0.75
+  lag_months: 3
+
+# Data Refresh Schedule
+refresh_schedule:
+  daily:
+    - "new_home_sales"
+    - "existing_home_sales"
+    - "pending_home_sales"
+  weekly:
+    - "mortgage_applications"
+    - "active_listings"
+    - "new_listings"
+  monthly:
+    - "case_shiller"
+    - "fhfa_index"
+    - "housing_starts"
+    - "building_permits"
+    - "construction_spending"
+    - "rental_data"
+  quarterly:
+    - "home_affordability_index"
+    - "regional_breakdowns"
+    - "demographic_trends"
+
+# Seasonal Adjustments
+seasonal:
+  enabled: true
+  factors:
+    - "spring_buying_season"
+    - "summer_slowdown"
+    - "fall_recovery"
+    - "winter_lull"
+  adjustment_method: "x13_arima"
+
+# Forecasting Models
+forecasting:
+  models:
+    - "arima"
+    - "sarima"
+    - "prophet"
+    - "lstm"
+    - "xgboost"
+    - "ensemble"
+  forecast_horizon_months: 6
+  confidence_interval: 0.95
+
+# Risk Factors
+risk_factors:
+  market_bubble_indicators:
+    - "price_to_rent_ratio"
+    - "price_to_income_ratio"
+    - "speculative_activity"
+    - "investor_participation"
+    - "cash_sales_percentage"
+  interest_rate_risk:
+    - "mortgage_rate_sensitivity"
+    - "affordability_shock"
+    - "refinance_burnout"
+  regulatory_risk:
+    - "zoning_changes"
+    - "tax_policy"
+    - "rent_control"
+    - "building_codes"
+
+# Alert Rules
+alerts:
+  price_deviation_percent: 5
+  inventory_abnormal_threshold: 3.0
+  sales_growth_threshold: 0.15
+  mortgage_rate_change_bps: 25
+  affordability_threshold: 5
+  data_latency_hours: 4
+  historical_anomaly_zscore: 3.0
+
+# Export Settings
+export:
+  formats:
+    - "json"
+    - "csv"
+    - "parquet"
+  frequency_hours: 24
+  retention_days: 365
+  compression: "gzip"
+  partition_by: "region"
