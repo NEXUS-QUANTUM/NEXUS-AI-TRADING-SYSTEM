@@ -1,0 +1,769 @@
+# target_configs.yaml
+# Configuration complète pour la gestion des objectifs de trading dans Swing Bot
+# Version: 4.0.0 - Production Ready
+
+# Paramètres généraux
+general:
+  enabled: true
+  mode: "comprehensive"
+  calculate_in_real_time: true
+  update_frequency_seconds: 1
+  lookback_periods:
+    - 5
+    - 10
+    - 20
+    - 50
+    - 100
+    - 200
+    - 500
+  history_length_days: 365
+  min_data_points: 50
+  max_data_points: 100000
+  target_version: "4.0.0"
+  environment: "production"
+
+# Types d'objectifs
+target_types:
+  profit_target:
+    enabled: true
+    description: "Profit Target Management"
+    methods:
+      - "fixed_percent"
+      - "volatility_based"
+      - "support_resistance_based"
+      - "fibonacci_based"
+      - "trend_based"
+      - "pattern_based"
+    fixed_percent:
+      - 1.0
+      - 2.0
+      - 5.0
+      - 10.0
+      - 20.0
+    update_frequency_seconds: 60
+  stop_loss:
+    enabled: true
+    description: "Stop Loss Management"
+    methods:
+      - "fixed_percent"
+      - "volatility_based"
+      - "support_resistance_based"
+      - "fibonacci_based"
+      - "trend_based"
+      - "pattern_based"
+    fixed_percent:
+      - 0.5
+      - 1.0
+      - 2.0
+      - 5.0
+      - 10.0
+    update_frequency_seconds: 60
+  risk_reward:
+    enabled: true
+    description: "Risk-Reward Management"
+    min_ratio: 1.0
+    max_ratio: 5.0
+    default_ratio: 2.0
+    calculation_method: "dynamic"
+    update_frequency_seconds: 60
+  trailing_stop:
+    enabled: true
+    description: "Trailing Stop Management"
+    activation_percent: 1.0
+    trailing_percent: 0.5
+    trailing_step: 0.25
+    min_trailing_percent: 0.1
+    max_trailing_percent: 2.0
+    update_frequency_seconds: 10
+  breakeven:
+    enabled: true
+    description: "Breakeven Management"
+    activation_percent: 0.5
+    breakeven_offset: 0.1
+    update_frequency_seconds: 10
+  scaling:
+    enabled: true
+    description: "Scaling Target Management"
+    levels:
+      - percent: 25.0
+        target: 1.0
+      - percent: 50.0
+        target: 2.0
+      - percent: 25.0
+        target: 3.0
+    update_frequency_seconds: 60
+
+# Seuils d'objectifs
+thresholds:
+  profit:
+    minimum: 0.5
+    maximum: 50.0
+    default: 5.0
+    aggressive: 10.0
+    conservative: 2.0
+  stop:
+    minimum: 0.1
+    maximum: 20.0
+    default: 2.0
+    aggressive: 1.0
+    conservative: 5.0
+  risk_reward:
+    minimum: 0.5
+    maximum: 10.0
+    default: 2.0
+    aggressive: 3.0
+    conservative: 1.5
+  trailing:
+    minimum: 0.1
+    maximum: 5.0
+    default: 0.5
+    aggressive: 0.3
+    conservative: 1.0
+
+# Méthodes de calcul
+calculation_methods:
+  volatility_based:
+    enabled: true
+    atr_period: 14
+    atr_multiplier_profit: 2.0
+    atr_multiplier_stop: 1.5
+    volatility_period: 20
+    volatility_multiplier_profit: 1.5
+    volatility_multiplier_stop: 1.0
+    update_frequency_seconds: 60
+  support_resistance_based:
+    enabled: true
+    lookback_period: 50
+    min_touch_points: 2
+    validation_period: 5
+    breakout_confirmation: 3
+    update_frequency_seconds: 60
+  fibonacci_based:
+    enabled: true
+    retracement_levels:
+      - 0.236
+      - 0.382
+      - 0.5
+      - 0.618
+      - 0.786
+    extension_levels:
+      - 1.272
+      - 1.618
+      - 2.0
+      - 2.618
+      - 3.0
+    update_frequency_seconds: 60
+  trend_based:
+    enabled: true
+    trend_period: 20
+    trend_strength_threshold: 0.5
+    projection_period: 10
+    update_frequency_seconds: 60
+  pattern_based:
+    enabled: true
+    pattern_types:
+      - "flag"
+      - "pennant"
+      - "triangle"
+      - "wedge"
+      - "channel"
+    pattern_confidence: 0.7
+    projection_method: "height"
+    update_frequency_seconds: 60
+
+# Indicateurs d'objectifs
+indicators:
+  target_achievement:
+    enabled: true
+    calculation: "percentage_complete"
+    period: 14
+    smoothing: 3
+    threshold: 0.7
+  target_momentum:
+    enabled: true
+    period: 14
+    smoothing: 3
+    threshold: 0.3
+  target_velocity:
+    enabled: true
+    period: 5
+    smoothing: 0
+    threshold: 0.2
+  target_acceleration:
+    enabled: true
+    period: 10
+    smoothing: 0
+    threshold: 0.1
+  target_probability:
+    enabled: true
+    period: 14
+    smoothing: 0
+    threshold: 0.6
+  target_confidence:
+    enabled: true
+    period: 14
+    smoothing: 0
+    threshold: 0.7
+
+# Analyse des objectifs
+analysis:
+  historical:
+    enabled: true
+    lookback_years: 5
+    compute_target_accuracy: true
+    compute_target_probability: true
+    compute_target_distribution: true
+    compute_target_patterns: true
+    compute_target_cycles: true
+    compute_target_success_rate: true
+  real_time:
+    enabled: true
+    update_frequency_ms: 100
+    compute_instantaneous_target: true
+    compute_moving_average_target: true
+    compute_exponential_target: true
+    compute_weighted_target: true
+    compute_target_velocity: true
+    compute_target_acceleration: true
+  predictive:
+    enabled: true
+    model_type: "ensemble"
+    models:
+      - "lstm"
+      - "gru"
+      - "xgboost"
+      - "lightgbm"
+    features:
+      - "target_profit"
+      - "target_stop"
+      - "target_risk_reward"
+      - "target_trailing"
+      - "target_breakeven"
+      - "target_achievement"
+      - "target_momentum"
+      - "target_velocity"
+      - "target_acceleration"
+      - "target_probability"
+      - "target_confidence"
+      - "price"
+      - "price_change"
+      - "volume"
+      - "volatility"
+      - "time_of_day"
+      - "day_of_week"
+      - "market_condition"
+    forecast_horizons:
+      - 1
+      - 5
+      - 10
+      - 20
+    confidence_threshold: 0.7
+    retrain_frequency_hours: 24
+
+# Alertes et notifications
+alerts:
+  target_reached:
+    enabled: true
+    threshold: 0.95
+    channels:
+      - "email"
+      - "telegram"
+      - "slack"
+      - "push_notification"
+    severity: "info"
+  target_breached:
+    enabled: true
+    threshold: 1.05
+    channels:
+      - "telegram"
+      - "push_notification"
+    severity: "critical"
+  stop_approaching:
+    enabled: true
+    threshold: 0.5
+    channels:
+      - "email"
+      - "telegram"
+      - "push_notification"
+    severity: "warning"
+  stop_hit:
+    enabled: true
+    threshold: 1.0
+    channels:
+      - "email"
+      - "telegram"
+      - "slack"
+    severity: "critical"
+  risk_reward_improvement:
+    enabled: true
+    threshold: 0.5
+    channels:
+      - "telegram"
+      - "push_notification"
+    severity: "info"
+  risk_reward_decline:
+    enabled: true
+    threshold: 0.5
+    channels:
+      - "email"
+      - "telegram"
+      - "slack"
+    severity: "warning"
+
+# Actions automatiques
+auto_actions:
+  target_adjustment:
+    enabled: true
+    action_types:
+      - "adjust_profit_target"
+      - "adjust_stop_loss"
+      - "adjust_risk_reward"
+      - "adjust_trailing_stop"
+      - "adjust_breakeven"
+    adjustment_factor: 0.1
+    max_adjustment_percent: 20.0
+  stop_movement:
+    enabled: true
+    action_types:
+      - "move_stop_to_breakeven"
+      - "move_stop_to_profit"
+      - "tighten_stop"
+      - "widen_stop"
+    movement_factor: 0.5
+    max_movement_percent: 50.0
+  position_sizing:
+    enabled: true
+    action_types:
+      - "scale_in"
+      - "scale_out"
+      - "partial_take_profit"
+      - "partial_stop_loss"
+    sizing_factor: 0.5
+    max_sizing_percent: 50.0
+
+# Paramètres avancés
+advanced:
+  machine_learning:
+    enabled: true
+    model_type: "ensemble"
+    models:
+      - "random_forest"
+      - "xgboost"
+      - "lightgbm"
+      - "lstm"
+    features:
+      - "target_profit"
+      - "target_stop"
+      - "target_risk_reward"
+      - "target_trailing"
+      - "target_breakeven"
+      - "target_achievement"
+      - "target_momentum"
+      - "target_velocity"
+      - "target_acceleration"
+      - "target_probability"
+      - "target_confidence"
+      - "price"
+      - "price_change"
+      - "volume"
+      - "volatility"
+      - "rsi"
+      - "macd"
+      - "bollinger_width"
+      - "atr"
+      - "time_of_day"
+      - "day_of_week"
+      - "market_condition"
+    training_frequency_hours: 6
+    retrain_threshold: 0.9
+    validation_split: 0.2
+    random_seed: 42
+    ensemble_weights:
+      - 0.25
+      - 0.25
+      - 0.25
+      - 0.25
+  statistical_analysis:
+    enabled: true
+    calculate_target_accuracy: true
+    calculate_target_probability: true
+    calculate_target_significance: true
+    calculate_target_correlation: true
+    calculate_target_success_rate: true
+    confidence_level: 95
+    p_value_threshold: 0.05
+  optimization:
+    enabled: true
+    optimize_targets: true
+    optimization_method: "bayesian"
+    optimization_iterations: 100
+    optimization_random_state: 42
+    optimization_early_stopping: true
+
+# Monitoring et journalisation
+monitoring:
+  logging:
+    enabled: true
+    level: "debug"
+    format: "json"
+    include_context: true
+    include_timestamp: true
+    include_metadata: true
+  metrics:
+    enabled: true
+    collect_every_seconds: 1
+    metrics_to_collect:
+      - "target_profit"
+      - "target_stop"
+      - "target_risk_reward"
+      - "target_trailing"
+      - "target_breakeven"
+      - "target_achievement"
+      - "target_momentum"
+      - "target_velocity"
+      - "target_acceleration"
+      - "target_probability"
+      - "target_confidence"
+      - "target_count"
+      - "target_accuracy"
+      - "target_success_rate"
+  dashboard:
+    enabled: true
+    update_interval_seconds: 1
+    charts:
+      - "target_analysis"
+      - "target_achievement"
+      - "target_distribution"
+      - "target_velocity"
+      - "target_acceleration"
+      - "risk_reward_analysis"
+      - "stop_loss_analysis"
+      - "trailing_stop_analysis"
+
+# Backtesting
+backtesting:
+  enabled: true
+  use_historical_targets: true
+  compute_target_accuracy: true
+  compute_risk_reward_effectiveness: true
+  compute_stop_effectiveness: true
+  compute_risk_adjusted_returns: true
+  report_metrics:
+    - "target_accuracy"
+    - "risk_reward_effectiveness"
+    - "stop_effectiveness"
+    - "win_rate"
+    - "profit_factor"
+    - "sharpe_ratio"
+    - "max_drawdown"
+
+# Configuration de la base de données
+database:
+  enabled: true
+  table_name: "target_metrics"
+  retention_days: 365
+  aggregation:
+    enabled: true
+    intervals:
+      - "1s"
+      - "5s"
+      - "15s"
+      - "30s"
+      - "1m"
+      - "5m"
+      - "15m"
+      - "1h"
+      - "4h"
+      - "24h"
+  compression: true
+  backup:
+    enabled: true
+    frequency: "daily"
+    retention_days: 30
+
+# Webhooks
+webhooks:
+  enabled: true
+  endpoints:
+    - url: "https://nexustradingia.com/api/webhooks/target"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      payload_template: "target_alert"
+    - url: "https://nexustradingia.com/api/webhooks/target-achievement"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      payload_template: "target_achievement"
+  retry:
+    enabled: true
+    max_attempts: 5
+    backoff_seconds: 30
+
+# Logging avancé
+advanced_logging:
+  enabled: true
+  levels:
+    - "info"
+    - "warning"
+    - "error"
+    - "critical"
+    - "debug"
+  output: "target_logs"
+  rotation:
+    enabled: true
+    max_size_mb: 100
+    max_files: 10
+  remote_logging:
+    enabled: true
+    endpoints:
+      - "https://nexustradingia.com/logs/target"
+  include_trace: true
+  include_stack_trace: true
+  include_context: true
+
+# Threading et performances
+performance:
+  thread_pool_size: 8
+  queue_size: 10000
+  batch_size: 1000
+  async_processing: true
+  cache_size: 10000
+  cache_ttl_seconds: 30
+  database_pool_size: 10
+  database_pool_max_overflow: 20
+  use_multiprocessing: true
+  max_workers: 8
+  use_cython: true
+  use_numba: true
+  use_gpu: false
+  gpu_device: 0
+
+# API de gestion
+management_api:
+  enabled: true
+  endpoints:
+    - "/api/v1/target/current"
+    - "/api/v1/target/history"
+    - "/api/v1/target/metrics"
+    - "/api/v1/target/status"
+    - "/api/v1/target/methods"
+    - "/api/v1/target/achievement"
+    - "/api/v1/target/optimization"
+    - "/api/v1/target/forecast"
+  authentication_required: true
+  rate_limit: 100
+  rate_limit_interval_seconds: 60
+  version: "v1.0.0"
+
+# Export des données
+data_export:
+  enabled: true
+  formats:
+    - "csv"
+    - "json"
+    - "parquet"
+    - "avro"
+    - "feather"
+  schedule: "realtime"
+  batch_size: 1000
+  retention_days: 30
+  compression: "gzip"
+  destination: "s3://nexus-data/target/"
+  encrypt: true
+  encryption_key_id: "nexus-target-key"
+  partition_by:
+    - "symbol"
+    - "year"
+    - "month"
+    - "day"
+
+# Intégration avec d'autres modules
+integrations:
+  risk_engine:
+    enabled: true
+    sync_frequency_seconds: 1
+    share_metrics: true
+  execution_engine:
+    enabled: true
+    share_signals: true
+    require_confirmation: true
+  portfolio_manager:
+    enabled: true
+    share_positions: true
+    share_allocation: true
+  ai_engine:
+    enabled: true
+    use_ai_predictions: true
+    confidence_threshold: 0.7
+    model_endpoint: "http://ai-engine:8000/predict/target"
+  market_data:
+    enabled: true
+    sync_frequency_ms: 100
+    data_endpoint: "ws://market-data:8080/ws"
+
+# Tests et validation
+testing:
+  unit_tests:
+    enabled: true
+    coverage_threshold: 90
+  integration_tests:
+    enabled: true
+  stress_tests:
+    enabled: true
+    scenarios:
+      - "high_target_volume"
+      - "low_target_volume"
+      - "target_achievement"
+      - "stop_hit"
+      - "risk_reward_changes"
+  validation:
+    enabled: true
+    validate_on_startup: true
+    validate_on_config_change: true
+    validation_rules:
+      - "thresholds.profit.minimum > 0"
+      - "thresholds.profit.maximum > threshold.profit.minimum"
+      - "thresholds.stop.minimum > 0"
+      - "thresholds.stop.maximum > threshold.stop.minimum"
+      - "thresholds.risk_reward.minimum >= 0.5"
+      - "thresholds.risk_reward.maximum <= 10.0"
+      - "target_types.profit_target.fixed_percent[0] > 0"
+      - "target_types.stop_loss.fixed_percent[0] > 0"
+      - "target_types.scaling.levels[0].percent > 0"
+      - "target_types.scaling.levels[0].target > 0"
+      - "calculation_methods.volatility_based.atr_period > 0"
+      - "calculation_methods.fibonacci_based.retracement_levels[0] >= 0"
+      - "min_data_points > 0"
+      - "confidence_threshold > 0.0"
+      - "confidence_threshold <= 1.0"
+
+# Market conditions adaptation
+market_adaptation:
+  enabled: true
+  volatility_adjustment: true
+  regime_detection:
+    enabled: true
+    lookback_periods:
+      - 20
+      - 50
+      - 200
+    regimes:
+      - "trending"
+      - "ranging"
+      - "volatile"
+      - "stable"
+      - "bull"
+      - "bear"
+  regime_parameters:
+    trending:
+      target_multiplier: 1.2
+      threshold_multiplier: 0.8
+      risk_reward_multiplier: 1.2
+      trailing_multiplier: 1.1
+    ranging:
+      target_multiplier: 0.8
+      threshold_multiplier: 1.2
+      risk_reward_multiplier: 0.8
+      trailing_multiplier: 0.9
+    volatile:
+      target_multiplier: 0.7
+      threshold_multiplier: 1.3
+      risk_reward_multiplier: 0.7
+      trailing_multiplier: 0.8
+    stable:
+      target_multiplier: 1.0
+      threshold_multiplier: 0.9
+      risk_reward_multiplier: 1.0
+      trailing_multiplier: 1.0
+    bull:
+      target_multiplier: 1.1
+      threshold_multiplier: 0.9
+      risk_reward_multiplier: 1.1
+      trailing_multiplier: 1.1
+    bear:
+      target_multiplier: 0.9
+      threshold_multiplier: 1.1
+      risk_reward_multiplier: 0.9
+      trailing_multiplier: 0.9
+
+# Time-based configurations
+time_based:
+  enabled: true
+  sessions:
+    asia:
+      start: "00:00"
+      end: "08:00"
+      target_multiplier: 0.8
+      threshold_multiplier: 1.2
+      risk_reward_multiplier: 0.9
+      trailing_multiplier: 0.9
+    london:
+      start: "08:00"
+      end: "16:00"
+      target_multiplier: 1.2
+      threshold_multiplier: 0.8
+      risk_reward_multiplier: 1.1
+      trailing_multiplier: 1.1
+    newyork:
+      start: "13:00"
+      end: "22:00"
+      target_multiplier: 1.0
+      threshold_multiplier: 1.0
+      risk_reward_multiplier: 1.0
+      trailing_multiplier: 1.0
+    overlap:
+      start: "13:00"
+      end: "16:00"
+      target_multiplier: 1.5
+      threshold_multiplier: 0.7
+      risk_reward_multiplier: 1.3
+      trailing_multiplier: 1.2
+
+# Symbol-specific configurations
+symbol_configs:
+  BTCUSDT:
+    target_multiplier: 1.0
+    threshold_multiplier: 1.0
+    risk_reward_multiplier: 1.0
+    trailing_multiplier: 1.0
+    profit_target: 5.0
+    stop_loss: 2.0
+    risk_reward: 2.5
+    trailing_percent: 0.5
+  ETHUSDT:
+    target_multiplier: 1.1
+    threshold_multiplier: 0.9
+    risk_reward_multiplier: 1.1
+    trailing_multiplier: 1.0
+    profit_target: 4.5
+    stop_loss: 2.0
+    risk_reward: 2.25
+    trailing_percent: 0.5
+  SOLUSDT:
+    target_multiplier: 1.2
+    threshold_multiplier: 0.8
+    risk_reward_multiplier: 1.2
+    trailing_multiplier: 0.9
+    profit_target: 6.0
+    stop_loss: 2.5
+    risk_reward: 2.4
+    trailing_percent: 0.6
+  ADAUSDT:
+    target_multiplier: 0.9
+    threshold_multiplier: 1.1
+    risk_reward_multiplier: 0.9
+    trailing_multiplier: 1.1
+    profit_target: 3.5
+    stop_loss: 1.5
+    risk_reward: 2.33
+    trailing_percent: 0.4
+  XRPUSDT:
+    target_multiplier: 1.0
+    threshold_multiplier: 1.0
+    risk_reward_multiplier: 1.0
+    trailing_multiplier: 1.0
+    profit_target: 4.0
+    stop_loss: 2.0
+    risk_reward: 2.0
+    trailing_percent: 0.5
