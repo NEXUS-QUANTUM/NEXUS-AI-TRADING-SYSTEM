@@ -1,0 +1,724 @@
+# fud_configs.yaml
+# Configuration complète pour la gestion FUD (Fear, Uncertainty, Doubt) dans Swing Bot
+# Version: 4.0.0 - Production Ready
+
+# Paramètres généraux
+general:
+  enabled: true
+  mode: "comprehensive"
+  calculate_in_real_time: true
+  update_frequency_seconds: 1
+  lookback_periods:
+    - 5
+    - 10
+    - 20
+    - 50
+    - 100
+    - 200
+    - 500
+  history_length_days: 365
+  min_data_points: 50
+  max_data_points: 100000
+  fud_version: "4.0.0"
+  environment: "production"
+
+# Types de FUD
+fud_types:
+  news_fud:
+    enabled: true
+    description: "News-based FUD Detection"
+    sources:
+      - "financial_news"
+      - "crypto_news"
+      - "mainstream_media"
+      - "social_media"
+      - "blogs"
+    keywords:
+      - "crash"
+      - "collapse"
+      - "bankruptcy"
+      - "scam"
+      - "fraud"
+      - "hack"
+      - "regulate"
+      - "ban"
+      - "death"
+      - "crisis"
+    sentiment_threshold: -0.3
+    update_frequency_seconds: 60
+  market_fud:
+    enabled: true
+    description: "Market-based FUD Detection"
+    indicators:
+      - "volatility_spike"
+      - "volume_surge"
+      - "price_drop"
+      - "sell_off"
+      - "margin_call"
+      - "liquidity_crisis"
+    threshold: 0.3
+    update_frequency_seconds: 60
+  social_fud:
+    enabled: true
+    description: "Social Media FUD Detection"
+    platforms:
+      - "twitter"
+      - "reddit"
+      - "telegram"
+      - "youtube"
+      - "discord"
+    sentiment_threshold: -0.2
+    volume_threshold: 1000
+    update_frequency_seconds: 60
+  regulatory_fud:
+    enabled: true
+    description: "Regulatory FUD Detection"
+    events:
+      - "regulation_announcement"
+      - "legal_action"
+      - "government_statement"
+      - "policy_change"
+      - "ban_announcement"
+    impact_level: "high"
+    update_frequency_seconds: 300
+  panic_fud:
+    enabled: true
+    description: "Panic-based FUD Detection"
+    indicators:
+      - "fear_greed_index"
+      - "put_call_ratio"
+      - "volatility_index"
+      - "market_uncertainty"
+    threshold: 0.5
+    update_frequency_seconds: 60
+
+# Seuils FUD
+thresholds:
+  sentiment:
+    extreme_negative: -0.7
+    high_negative: -0.5
+    medium_negative: -0.3
+    low_negative: -0.1
+  volatility:
+    spike_threshold: 2.0
+    extreme_spike: 3.0
+    panic_threshold: 1.5
+  volume:
+    surge_threshold: 2.0
+    extreme_surge: 3.0
+    panic_volume: 2.5
+  market:
+    drop_threshold: 5.0
+    crash_threshold: 10.0
+    panic_threshold: 7.0
+  social:
+    volume_threshold: 1000
+    extreme_volume: 5000
+    panic_volume: 3000
+
+# Indicateurs FUD
+indicators:
+  fud_strength:
+    enabled: true
+    calculation: "weighted_average"
+    factors:
+      - "sentiment"
+      - "volatility"
+      - "volume"
+      - "market_drop"
+      - "social_volume"
+    factor_weights:
+      sentiment: 0.25
+      volatility: 0.20
+      volume: 0.20
+      market_drop: 0.20
+      social_volume: 0.15
+  fud_probability:
+    enabled: true
+    period: 14
+    smoothing: 3
+    threshold: 0.5
+  fud_momentum:
+    enabled: true
+    period: 14
+    smoothing: 3
+    threshold: 0.3
+  fud_velocity:
+    enabled: true
+    period: 5
+    smoothing: 0
+    threshold: 0.2
+  fud_acceleration:
+    enabled: true
+    period: 10
+    smoothing: 0
+    threshold: 0.1
+  fud_confidence:
+    enabled: true
+    period: 14
+    smoothing: 0
+    threshold: 0.6
+
+# Analyse FUD
+analysis:
+  historical:
+    enabled: true
+    lookback_years: 5
+    compute_fud_accuracy: true
+    compute_fud_probability: true
+    compute_fud_distribution: true
+    compute_fud_patterns: true
+    compute_fud_cycles: true
+    compute_fud_correlation: true
+  real_time:
+    enabled: true
+    update_frequency_ms: 100
+    compute_instantaneous_fud: true
+    compute_moving_average_fud: true
+    compute_exponential_fud: true
+    compute_weighted_fud: true
+    compute_fud_velocity: true
+    compute_fud_acceleration: true
+  predictive:
+    enabled: true
+    model_type: "ensemble"
+    models:
+      - "lstm"
+      - "gru"
+      - "xgboost"
+      - "lightgbm"
+    features:
+      - "fud_strength"
+      - "fud_probability"
+      - "fud_momentum"
+      - "fud_velocity"
+      - "fud_acceleration"
+      - "fud_confidence"
+      - "sentiment"
+      - "volatility"
+      - "volume"
+      - "market_drop"
+      - "social_volume"
+      - "price_change"
+      - "volume"
+      - "time_of_day"
+      - "day_of_week"
+      - "market_condition"
+    forecast_horizons:
+      - 1
+      - 5
+      - 10
+      - 20
+    confidence_threshold: 0.7
+    retrain_frequency_hours: 24
+
+# Alertes et notifications
+alerts:
+  fud_detected:
+    enabled: true
+    confidence_threshold: 0.7
+    channels:
+      - "email"
+      - "telegram"
+      - "slack"
+      - "push_notification"
+    severity: "warning"
+  fud_high_risk:
+    enabled: true
+    confidence_threshold: 0.8
+    channels:
+      - "telegram"
+      - "push_notification"
+    severity: "critical"
+  fud_confirmed:
+    enabled: true
+    confidence_threshold: 0.9
+    channels:
+      - "email"
+      - "telegram"
+      - "slack"
+    severity: "info"
+  fud_panic:
+    enabled: true
+    confidence_threshold: 0.8
+    channels:
+      - "email"
+      - "telegram"
+      - "slack"
+      - "push_notification"
+    severity: "emergency"
+  fud_recovery:
+    enabled: true
+    confidence_threshold: 0.6
+    channels:
+      - "telegram"
+      - "push_notification"
+    severity: "success"
+
+# Actions automatiques
+auto_actions:
+  fud_avoidance:
+    enabled: true
+    action_types:
+      - "avoid_entry"
+      - "delay_entry"
+      - "reduce_position"
+      - "close_position"
+      - "cancel_order"
+    confidence_threshold: 0.7
+    max_avoidance_percent: 100.0
+    delay_seconds: 300
+  position_adjustment:
+    enabled: true
+    action_types:
+      - "reduce_exposure"
+      - "tighten_stop_loss"
+      - "move_take_profit"
+      - "add_hedge"
+      - "scale_out"
+    adjustment_factor: 0.5
+    max_adjustment_percent: 75.0
+    hedge_ratio: 0.5
+  risk_management:
+    enabled: true
+    action_types:
+      - "reduce_leverage"
+      - "increase_cash"
+      - "pause_trading"
+      - "rebalance_portfolio"
+      - "reset_parameters"
+    risk_multiplier: 2.0
+    pause_duration_minutes: 60
+
+# Paramètres avancés
+advanced:
+  machine_learning:
+    enabled: true
+    model_type: "ensemble"
+    models:
+      - "random_forest"
+      - "xgboost"
+      - "lightgbm"
+      - "lstm"
+    features:
+      - "fud_strength"
+      - "fud_probability"
+      - "fud_momentum"
+      - "fud_velocity"
+      - "fud_acceleration"
+      - "fud_confidence"
+      - "sentiment"
+      - "volatility"
+      - "volume"
+      - "market_drop"
+      - "social_volume"
+      - "rsi"
+      - "macd"
+      - "bollinger_width"
+      - "atr"
+      - "price_change"
+      - "volume"
+      - "time_of_day"
+      - "day_of_week"
+      - "market_condition"
+    training_frequency_hours: 6
+    retrain_threshold: 0.9
+    validation_split: 0.2
+    random_seed: 42
+    ensemble_weights:
+      - 0.25
+      - 0.25
+      - 0.25
+      - 0.25
+  statistical_analysis:
+    enabled: true
+    calculate_fud_accuracy: true
+    calculate_fud_probability: true
+    calculate_fud_significance: true
+    calculate_fud_correlation: true
+    calculate_fud_panic_indicators: true
+    confidence_level: 95
+    p_value_threshold: 0.05
+  sentiment_analysis:
+    enabled: true
+    sentiment_sources:
+      - "news"
+      - "social_media"
+      - "forums"
+      - "blogs"
+      - "youtube"
+    sentiment_threshold: 0.3
+    sentiment_method: "nlp"
+    model_type: "finbert"
+    update_frequency_seconds: 60
+
+# Monitoring et journalisation
+monitoring:
+  logging:
+    enabled: true
+    level: "debug"
+    format: "json"
+    include_context: true
+    include_timestamp: true
+    include_metadata: true
+  metrics:
+    enabled: true
+    collect_every_seconds: 1
+    metrics_to_collect:
+      - "fud_strength"
+      - "fud_probability"
+      - "fud_momentum"
+      - "fud_velocity"
+      - "fud_acceleration"
+      - "fud_confidence"
+      - "fud_count"
+      - "fud_accuracy"
+      - "fud_panic_count"
+      - "sentiment_score"
+      - "volatility_level"
+      - "social_volume"
+      - "avoided_entries"
+  dashboard:
+    enabled: true
+    update_interval_seconds: 1
+    charts:
+      - "fud_detection"
+      - "fud_analysis"
+      - "fud_accuracy"
+      - "sentiment_analysis"
+      - "volatility_analysis"
+      - "social_volume_analysis"
+      - "panic_detection"
+      - "avoided_trades"
+
+# Backtesting
+backtesting:
+  enabled: true
+  use_historical_fud: true
+  compute_fud_accuracy: true
+  compute_avoidance_effectiveness: true
+  compute_sentiment_effectiveness: true
+  compute_risk_adjusted_returns: true
+  report_metrics:
+    - "fud_accuracy"
+    - "avoidance_effectiveness"
+    - "sentiment_effectiveness"
+    - "panic_detection_rate"
+    - "win_rate"
+    - "profit_factor"
+    - "sharpe_ratio"
+    - "max_drawdown"
+
+# Configuration de la base de données
+database:
+  enabled: true
+  table_name: "fud_metrics"
+  retention_days: 365
+  aggregation:
+    enabled: true
+    intervals:
+      - "1s"
+      - "5s"
+      - "15s"
+      - "30s"
+      - "1m"
+      - "5m"
+      - "15m"
+      - "1h"
+      - "4h"
+      - "24h"
+  compression: true
+  backup:
+    enabled: true
+    frequency: "daily"
+    retention_days: 30
+
+# Webhooks
+webhooks:
+  enabled: true
+  endpoints:
+    - url: "https://nexustradingia.com/api/webhooks/fud"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      payload_template: "fud_alert"
+    - url: "https://nexustradingia.com/api/webhooks/fud-panic"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      payload_template: "fud_panic"
+  retry:
+    enabled: true
+    max_attempts: 5
+    backoff_seconds: 30
+
+# Logging avancé
+advanced_logging:
+  enabled: true
+  levels:
+    - "info"
+    - "warning"
+    - "error"
+    - "critical"
+    - "debug"
+  output: "fud_logs"
+  rotation:
+    enabled: true
+    max_size_mb: 100
+    max_files: 10
+  remote_logging:
+    enabled: true
+    endpoints:
+      - "https://nexustradingia.com/logs/fud"
+  include_trace: true
+  include_stack_trace: true
+  include_context: true
+
+# Threading et performances
+performance:
+  thread_pool_size: 8
+  queue_size: 10000
+  batch_size: 1000
+  async_processing: true
+  cache_size: 10000
+  cache_ttl_seconds: 30
+  database_pool_size: 10
+  database_pool_max_overflow: 20
+  use_multiprocessing: true
+  max_workers: 8
+  use_cython: true
+  use_numba: true
+  use_gpu: false
+  gpu_device: 0
+
+# API de gestion
+management_api:
+  enabled: true
+  endpoints:
+    - "/api/v1/fud/current"
+    - "/api/v1/fud/history"
+    - "/api/v1/fud/metrics"
+    - "/api/v1/fud/status"
+    - "/api/v1/fud/types"
+    - "/api/v1/fud/probability"
+    - "/api/v1/fud/accuracy"
+    - "/api/v1/fud/forecast"
+  authentication_required: true
+  rate_limit: 100
+  rate_limit_interval_seconds: 60
+  version: "v1.0.0"
+
+# Export des données
+data_export:
+  enabled: true
+  formats:
+    - "csv"
+    - "json"
+    - "parquet"
+    - "avro"
+    - "feather"
+  schedule: "realtime"
+  batch_size: 1000
+  retention_days: 30
+  compression: "gzip"
+  destination: "s3://nexus-data/fud/"
+  encrypt: true
+  encryption_key_id: "nexus-fud-key"
+  partition_by:
+    - "symbol"
+    - "year"
+    - "month"
+    - "day"
+
+# Intégration avec d'autres modules
+integrations:
+  risk_engine:
+    enabled: true
+    sync_frequency_seconds: 1
+    share_metrics: true
+  execution_engine:
+    enabled: true
+    share_signals: true
+    require_confirmation: true
+  portfolio_manager:
+    enabled: true
+    share_positions: true
+    share_allocation: true
+  ai_engine:
+    enabled: true
+    use_ai_predictions: true
+    confidence_threshold: 0.7
+    model_endpoint: "http://ai-engine:8000/predict/fud"
+  market_data:
+    enabled: true
+    sync_frequency_ms: 100
+    data_endpoint: "ws://market-data:8080/ws"
+  sentiment_analyzer:
+    enabled: true
+    sync_frequency_seconds: 60
+    data_endpoint: "http://sentiment-analyzer:8000/api/v1/sentiment"
+
+# Tests et validation
+testing:
+  unit_tests:
+    enabled: true
+    coverage_threshold: 90
+  integration_tests:
+    enabled: true
+  stress_tests:
+    enabled: true
+    scenarios:
+      - "high_fud_volume"
+      - "low_fud_volume"
+      - "sentiment_spike"
+      - "panic_scenario"
+      - "news_campaign"
+  validation:
+    enabled: true
+    validate_on_startup: true
+    validate_on_config_change: true
+    validation_rules:
+      - "confidence_threshold > 0.0"
+      - "confidence_threshold <= 1.0"
+      - "fud_types.news_fud.sentiment_threshold < 0.0"
+      - "fud_types.news_fud.sentiment_threshold >= -1.0"
+      - "fud_types.market_fud.threshold >= 0.0"
+      - "fud_types.market_fud.threshold <= 1.0"
+      - "thresholds.sentiment.extreme_negative < thresholds.sentiment.high_negative"
+      - "thresholds.sentiment.high_negative < thresholds.sentiment.medium_negative"
+      - "thresholds.sentiment.medium_negative < thresholds.sentiment.low_negative"
+      - "thresholds.volatility.spike_threshold < thresholds.volatility.extreme_spike"
+      - "thresholds.volume.surge_threshold < thresholds.volume.extreme_surge"
+      - "thresholds.market.drop_threshold < thresholds.market.crash_threshold"
+      - "indicators.fud_strength.factor_weights.sum() == 1.0"
+      - "min_data_points > 0"
+
+# Market conditions adaptation
+market_adaptation:
+  enabled: true
+  regime_detection:
+    enabled: true
+    lookback_periods:
+      - 20
+      - 50
+      - 200
+    regimes:
+      - "bull"
+      - "bear"
+      - "sideways"
+      - "volatile"
+      - "stable"
+      - "panic"
+      - "recovery"
+  regime_parameters:
+    bull:
+      fud_multiplier: 0.8
+      threshold_multiplier: 0.7
+      confidence_multiplier: 0.9
+      risk_multiplier: 0.7
+    bear:
+      fud_multiplier: 1.5
+      threshold_multiplier: 1.3
+      confidence_multiplier: 1.2
+      risk_multiplier: 1.8
+    sideways:
+      fud_multiplier: 1.0
+      threshold_multiplier: 1.0
+      confidence_multiplier: 1.0
+      risk_multiplier: 1.0
+    volatile:
+      fud_multiplier: 1.3
+      threshold_multiplier: 1.2
+      confidence_multiplier: 1.1
+      risk_multiplier: 1.5
+    stable:
+      fud_multiplier: 0.7
+      threshold_multiplier: 0.8
+      confidence_multiplier: 1.1
+      risk_multiplier: 0.6
+    panic:
+      fud_multiplier: 2.0
+      threshold_multiplier: 1.5
+      confidence_multiplier: 1.3
+      risk_multiplier: 2.5
+    recovery:
+      fud_multiplier: 0.6
+      threshold_multiplier: 0.7
+      confidence_multiplier: 1.0
+      risk_multiplier: 0.6
+
+# Time-based configurations
+time_based:
+  enabled: true
+  sessions:
+    asia:
+      start: "00:00"
+      end: "08:00"
+      fud_multiplier: 0.8
+      threshold_multiplier: 1.2
+      confidence_multiplier: 0.9
+      risk_multiplier: 1.2
+    london:
+      start: "08:00"
+      end: "16:00"
+      fud_multiplier: 1.2
+      threshold_multiplier: 0.8
+      confidence_multiplier: 1.1
+      risk_multiplier: 0.8
+    newyork:
+      start: "13:00"
+      end: "22:00"
+      fud_multiplier: 1.0
+      threshold_multiplier: 1.0
+      confidence_multiplier: 1.0
+      risk_multiplier: 1.0
+    overlap:
+      start: "13:00"
+      end: "16:00"
+      fud_multiplier: 1.5
+      threshold_multiplier: 0.7
+      confidence_multiplier: 1.2
+      risk_multiplier: 0.7
+
+# Symbol-specific configurations
+symbol_configs:
+  BTCUSDT:
+    fud_multiplier: 1.0
+    threshold_multiplier: 1.0
+    confidence_multiplier: 1.0
+    risk_multiplier: 1.0
+    confidence_threshold: 0.7
+    sentiment_sensitivity: 0.6
+    volatility_sensitivity: 0.5
+  ETHUSDT:
+    fud_multiplier: 1.1
+    threshold_multiplier: 0.9
+    confidence_multiplier: 1.0
+    risk_multiplier: 1.1
+    confidence_threshold: 0.7
+    sentiment_sensitivity: 0.7
+    volatility_sensitivity: 0.6
+  SOLUSDT:
+    fud_multiplier: 1.2
+    threshold_multiplier: 0.8
+    confidence_multiplier: 0.9
+    risk_multiplier: 1.2
+    confidence_threshold: 0.7
+    sentiment_sensitivity: 0.8
+    volatility_sensitivity: 0.7
+  ADAUSDT:
+    fud_multiplier: 0.9
+    threshold_multiplier: 1.1
+    confidence_multiplier: 1.1
+    risk_multiplier: 0.9
+    confidence_threshold: 0.7
+    sentiment_sensitivity: 0.5
+    volatility_sensitivity: 0.4
+  XRPUSDT:
+    fud_multiplier: 1.0
+    threshold_multiplier: 1.0
+    confidence_multiplier: 1.0
+    risk_multiplier: 1.0
+    confidence_threshold: 0.7
+    sentiment_sensitivity: 0.6
+    volatility_sensitivity: 0.5
