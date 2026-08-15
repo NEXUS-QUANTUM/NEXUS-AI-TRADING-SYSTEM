@@ -1,0 +1,320 @@
+# Swing Bot Leverage Configuration
+# Leverage Management & Optimization Parameters
+
+# General Leverage Settings
+leverage:
+  enabled: true
+  leverage_mode: "dynamic"  # fixed, dynamic, adaptive, risk_based
+  max_leverage: 10.0
+  min_leverage: 1.0
+  default_leverage: 2.0
+  version: "3.0.0"
+
+# Leverage Types
+leverage_types:
+  enabled: true
+  types:
+    - "margin_based"
+    - "risk_based"
+    - "volatility_based"
+    - "position_based"
+    - "account_based"
+    - "strategy_based"
+    - "regime_based"
+    - "adaptive"
+  primary_type: "risk_based"
+  fallback_type: "fixed"
+
+# Margin-Based Leverage
+margin_based:
+  enabled: true
+  margin_requirement: 0.10
+  maintenance_margin: 0.05
+  initial_margin: 0.10
+  margin_call_threshold: 0.80
+  liquidation_threshold: 0.50
+  margin_buffer: 0.10
+  cross_margin_enabled: true
+  isolated_margin_enabled: true
+
+# Risk-Based Leverage
+risk_based:
+  enabled: true
+  risk_metrics:
+    - "value_at_risk"
+    - "expected_shortfall"
+    - "volatility"
+    - "maximum_drawdown"
+    - "sharpe_ratio"
+    - "sortino_ratio"
+  var_confidence_level: 0.95
+  var_time_horizon_days: 1
+  risk_tolerance: "moderate"  # conservative, moderate, aggressive
+  risk_adjustment_factor: 0.50
+  max_risk_per_trade: 0.02
+  max_risk_per_day: 0.05
+
+# Volatility-Based Leverage
+volatility_based:
+  enabled: true
+  volatility_measure: "atr"  # atr, standard_deviation, historical_volatility, implied_volatility
+  lookback_period_days: 20
+  atr_multiplier: 2.0
+  high_volatility_threshold: 0.03
+  low_volatility_threshold: 0.01
+  volatility_lookback_days: 30
+  leverage_scaling_factor: 0.50
+
+# Position-Based Leverage
+position_based:
+  enabled: true
+  position_size_threshold: 0.10
+  leverage_inverse_relationship: true
+  max_positions: 10
+  max_position_size_percent: 0.20
+  position_concentration_limit: 0.25
+  scaling_factor: 0.90
+
+# Account-Based Leverage
+account_based:
+  enabled: true
+  account_equity_based: true
+  available_margin_based: true
+  account_growth_adjustment: true
+  drawdown_adjustment: true
+  pnl_adjustment: true
+  initial_balance: 100000
+  min_balance_required: 10000
+  max_loss_per_day: 0.05
+
+# Strategy-Based Leverage
+strategy_based:
+  enabled: true
+  strategy_risk_profile:
+    momentum: 1.5
+    mean_reversion: 1.0
+    breakout: 2.0
+    trend_following: 1.5
+    counter_trend: 1.0
+    hybrid: 1.5
+  strategy_win_rate_adjustment: true
+  strategy_sharpe_adjustment: true
+  strategy_drawdown_adjustment: true
+
+# Regime-Based Leverage
+regime_based:
+  enabled: true
+  regime_types:
+    - "trending"
+    - "ranging"
+    - "high_volatility"
+    - "low_volatility"
+    - "bull_market"
+    - "bear_market"
+    - "sideways"
+  leverage_multipliers:
+    trending: 1.5
+    ranging: 0.8
+    high_volatility: 0.6
+    low_volatility: 1.2
+    bull_market: 1.3
+    bear_market: 0.7
+    sideways: 0.9
+
+# Dynamic Leverage
+dynamic:
+  enabled: true
+  adjustment_frequency_seconds: 60
+  adjustment_triggers:
+    - "volatility_change"
+    - "drawdown_change"
+    - "pnl_change"
+    - "regime_change"
+    - "position_change"
+    - "margin_change"
+  adjustment_mechanism: "adaptive"
+  smoothing_factor: 0.50
+  min_adjustment_step: 0.10
+  max_adjustment_step: 0.50
+
+# Leverage Optimization
+optimization:
+  enabled: true
+  objective_function: "maximize_risk_adjusted_return"
+  constraints:
+    - "max_leverage"
+    - "min_leverage"
+    - "max_drawdown"
+    - "max_var"
+    - "margin_requirement"
+  optimization_algorithm: "genetic"
+  population_size: 50
+  generations: 30
+  convergence_threshold: 0.001
+
+# Leverage Limits
+limits:
+  enabled: true
+  hard_limits:
+    max_absolute_leverage: 10.0
+    min_absolute_leverage: 1.0
+    max_position_leverage: 5.0
+    max_account_leverage: 3.0
+  soft_limits:
+    max_recommended_leverage: 4.0
+    min_recommended_leverage: 1.5
+    warning_threshold: 0.80
+    alert_threshold: 0.90
+  tiered_limits:
+    account_size_1: {min: 0, max: 10000, leverage: 2.0}
+    account_size_2: {min: 10000, max: 50000, leverage: 3.0}
+    account_size_3: {min: 50000, max: 100000, leverage: 4.0}
+    account_size_4: {min: 100000, max: 1000000, leverage: 5.0}
+    account_size_5: {min: 1000000, max: null, leverage: 3.0}
+
+# Risk Controls
+risk_controls:
+  enabled: true
+  controls:
+    - "var_control"
+    - "drawdown_control"
+    - "margin_control"
+    - "correlation_control"
+    - "concentration_control"
+  var_control:
+    enabled: true
+    confidence_level: 0.95
+    max_var_percent: 5.0
+  drawdown_control:
+    enabled: true
+    max_drawdown_percent: 10.0
+    drawdown_recovery_threshold: 0.50
+  correlation_control:
+    enabled: true
+    max_correlation: 0.70
+    leverage_correlation_adjustment: true
+  concentration_control:
+    enabled: true
+    max_asset_concentration: 0.25
+    max_sector_concentration: 0.40
+
+# Leverage Calculation
+calculation:
+  enabled: true
+  calculation_methods:
+    - "kelly_criterion"
+    - "risk_of_ruin"
+    - "optimal_f"
+    - "fixed_fraction"
+    - "variable_fraction"
+    - "security_ratio"
+  primary_method: "kelly_criterion"
+  kelly_fraction: 0.50
+  risk_of_ruin_tolerance: 0.01
+  optimal_f_confidence: 0.95
+
+# Kelly Criterion
+kelly:
+  enabled: true
+  win_rate_method: "historical"
+  average_win: 1.5
+  average_loss: 1.0
+  kelly_fraction: 0.50
+  half_kelly: true
+  quarter_kelly: true
+  dynamic_kelly: true
+  kelly_adjustment_factor: 0.75
+
+# Margin Management
+margin:
+  enabled: true
+  initial_margin_requirement: 0.10
+  maintenance_margin_requirement: 0.05
+  margin_call_trigger: 0.80
+  liquidation_trigger: 0.50
+  margin_buffer_percent: 10.0
+  auto_margin_calls: true
+  margin_top_up_threshold: 0.70
+  margin_surplus_utilization: true
+
+# Leverage Monitoring
+monitoring:
+  enabled: true
+  monitoring_frequency_seconds: 5
+  metrics:
+    - "current_leverage"
+    - "available_margin"
+    - "used_margin"
+    - "margin_ratio"
+    - "position_leverage"
+    - "account_leverage"
+    - "risk_adjusted_leverage"
+  alert_thresholds:
+    leverage_warning: 0.75
+    leverage_alert: 0.85
+    margin_warning: 0.70
+    margin_alert: 0.80
+    liquidation_warning: 0.50
+  dashboard_integration: true
+
+# Performance Impact
+performance:
+  enabled: true
+  metrics:
+    - "leverage_efficiency"
+    - "risk_adjusted_return"
+    - "capital_utilization"
+    - "margin_efficiency"
+    - "drawdown_impact"
+  optimization_goals:
+    maximize_leverage_efficiency: true
+    maximize_risk_adjusted_return: true
+    minimize_drawdown: true
+  performance_monitoring_frequency_hours: 1
+
+# Integration
+integration:
+  enabled: true
+  webhook_endpoint: "http://localhost:8080/leverage"
+  api_endpoint: "/api/v1/trading/leverage"
+  dashboard_url: "http://localhost:3000/leverage"
+  real_time_updates: true
+  data_sync_frequency_seconds: 5
+  external_systems:
+    - "trading_engine"
+    - "risk_management"
+    - "margin_system"
+    - "accounting_system"
+
+# Logging
+logging:
+  enabled: true
+  log_level: "info"
+  log_categories:
+    - "leverage_updates"
+    - "margin_updates"
+    - "risk_adjustments"
+    - "alert_triggers"
+    - "optimization"
+    - "errors"
+  log_rotation: true
+  max_log_size_mb: 100
+  retention_days: 30
+
+# Alerting
+alerting:
+  enabled: true
+  alert_conditions:
+    - "leverage_exceeded"
+    - "margin_call_triggered"
+    - "liquidation_risk"
+    - "leverage_adjustment"
+    - "risk_limit_breach"
+    - "drawdown_warning"
+  alert_channels:
+    - "email"
+    - "telegram"
+    - "slack"
+    - "sms"
+  alert_cooldown_seconds: 300
+  escalation_policy: true
