@@ -1,5 +1,5 @@
 """
-Swing Bot Performance Tests
+Swing Bot Performance Tests.
 ============================
 
 This module contains performance tests for the Swing Bot trading system.
