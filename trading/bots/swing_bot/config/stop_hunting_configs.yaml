@@ -1,0 +1,316 @@
+# Swing Bot Stop Hunting Detection Configuration
+# Stop Hunting Detection & Trading Parameters
+
+# General Stop Hunting Settings
+stop_hunting:
+  enabled: true
+  analysis_mode: "comprehensive"  # comprehensive, basic, advanced, real-time
+  detection_method: "multi_factor"  # multi_factor, pattern_based, ml_based, hybrid
+  update_frequency_seconds: 5
+  version: "3.0.0"
+
+# Detection Methods
+detection:
+  enabled: true
+  methods:
+    - "price_level_analysis"
+    - "volume_spike_detection"
+    - "order_book_analysis"
+    - "support_resistance_analysis"
+    - "pattern_recognition"
+    - "liquidity_detection"
+    - "machine_learning_classification"
+    - "statistical_anomaly_detection"
+  primary_method: "price_level_analysis"
+  secondary_method: "order_book_analysis"
+  detection_confidence_threshold: 0.70
+
+# Price Level Analysis
+price_level:
+  enabled: true
+  level_types:
+    - "support_levels"
+    - "resistance_levels"
+    - "pivot_levels"
+    - "round_numbers"
+    - "fibonacci_levels"
+    - "moving_averages"
+    - "previous_highs_lows"
+  level_parameters:
+    lookback_bars: 100
+    level_validation_touches: 2
+    level_strength_threshold: 0.50
+    price_proximity_threshold: 0.005
+  stop_concentration_detection: true
+
+# Volume Spike Detection
+volume_spike:
+  enabled: true
+  spike_parameters:
+    volume_multiplier: 2.0
+    lookback_period_bars: 20
+    spike_confirmation_bars: 2
+    min_volume_threshold: 100000
+  spike_analysis:
+    volume_surge_detection: true
+    volume_spike_distribution: true
+    volume_velocity: true
+    volume_consistency: true
+
+# Order Book Analysis
+order_book:
+  enabled: true
+  order_book_parameters:
+    depth_levels: 10
+    liquidity_pool_threshold: 100000
+    iceberg_detection: true
+    order_flow_imbalance: true
+    quote_stuffing_detection: true
+    layering_detection: true
+  analysis_frequency_ms: 100
+
+# Support/Resistance Breach
+s_r_breach:
+  enabled: true
+  breach_parameters:
+    breach_threshold: 0.005
+    confirmation_bars: 2
+    volume_confirmation: true
+    rejection_detection: true
+    false_breakout_detection: true
+  pattern_recognition:
+    shakeout_detection: true
+    stop_run_detection: true
+    liquidity_grab_detection: true
+
+# Pattern Recognition
+patterns:
+  enabled: true
+  pattern_types:
+    - "stop_hunt_pattern"
+    - "liquidity_grab_pattern"
+    - "shakeout_pattern"
+    - "stop_run_pattern"
+    - "false_breakout_pattern"
+    - "reversal_pattern"
+    - "continuation_pattern"
+  pattern_parameters:
+    min_pattern_length_bars: 5
+    max_pattern_length_bars: 20
+    pattern_confidence: 0.70
+    pattern_confirmation_bars: 2
+
+# Liquidity Detection
+liquidity_detection:
+  enabled: true
+  liquidity_types:
+    - "stop_liquidity"
+    - "limit_liquidity"
+    - "iceberg_liquidity"
+    - "hidden_liquidity"
+    - "pooled_liquidity"
+  liquidity_parameters:
+    stop_concentration_threshold: 100000
+    liquidity_pool_size: 500000
+    depth_analysis: true
+    order_flow_analysis: true
+
+# Stop Hunt Indicators
+indicators:
+  enabled: true
+  primary_indicators:
+    - "price_velocity"
+    - "volume_surge"
+    - "order_flow_imbalance"
+    - "bid_ask_spread_widening"
+    - "depth_depletion"
+    - "price_rejection"
+  secondary_indicators:
+    - "rsi_divergence"
+    - "macd_divergence"
+    - "momentum_shift"
+    - "volatility_spike"
+    - "sentiment_extreme"
+  indicator_weights:
+    price_velocity: 0.20
+    volume_surge: 0.15
+    order_flow_imbalance: 0.15
+    bid_ask_spread_widening: 0.10
+    depth_depletion: 0.10
+    price_rejection: 0.10
+    rsi_divergence: 0.10
+    macd_divergence: 0.10
+
+# Stop Hunt Signals
+signals:
+  enabled: true
+  signal_types:
+    - "stop_hunt_detected"
+    - "liquidity_grab_detected"
+    - "shakeout_detected"
+    - "stop_run_detected"
+    - "false_breakout_detected"
+    - "reversal_signal"
+    - "continuation_signal"
+  signal_strength_calculation: "weighted_average"
+  min_signal_strength: 0.60
+  signal_confidence_threshold: 0.70
+
+# Trading Strategies
+strategies:
+  enabled: true
+  stop_hunt_strategies:
+    - "stop_hunt_entry"
+    - "liquidity_grab_entry"
+    - "shakeout_entry"
+    - "false_breakout_entry"
+    - "stop_run_entry"
+    - "reversal_entry"
+  strategy_selection: "context_based"
+  strategy_confidence_threshold: 0.70
+  strategy_confirmation_bars: 2
+
+# Entry Signals
+entry_signals:
+  enabled: true
+  entry_types:
+    - "stop_hunt_buy"
+    - "stop_hunt_sell"
+    - "liquidity_grab_buy"
+    - "liquidity_grab_sell"
+    - "shakeout_buy"
+    - "shakeout_sell"
+  confirmation_requirements:
+    min_indicators_confirmed: 2
+    volume_confirmation: true
+    price_confirmation: true
+  signal_strength_calculation: "weighted_average"
+  min_signal_strength: 0.60
+
+# Stop Loss
+stop_loss:
+  enabled: true
+  stop_methods:
+    - "stop_hunt_recovery"
+    - "fixed_percent"
+    - "volatility_based"
+    - "level_based"
+    - "trailing"
+  stop_hunt_recovery_threshold: 0.01
+  fixed_percent: 0.02
+  volatility_multiplier: 1.5
+  level_break_threshold: 0.01
+  trailing_activation: 0.02
+  trailing_distance: 0.01
+
+# Take Profit
+take_profit:
+  enabled: true
+  profit_methods:
+    - "next_liquidity_level"
+    - "fixed_percent"
+    - "risk_reward_ratio"
+    - "trailing"
+  next_level_multiplier: 1.0
+  fixed_percent: 0.04
+  risk_reward_ratio: 2.0
+  trailing_activation: 0.02
+  trailing_distance: 0.01
+
+# Performance Metrics
+performance:
+  enabled: true
+  metrics:
+    - "stop_hunt_accuracy"
+    - "signal_accuracy"
+    - "win_rate"
+    - "average_return"
+    - "profit_factor"
+    - "sharpe_ratio"
+    - "max_drawdown"
+    - "average_hold_time"
+  evaluation_period_days: 30
+  rolling_window_days: 30
+
+# Visualization
+visualization:
+  enabled: true
+  charts:
+    - "stop_hunt_dashboard"
+    - "detection_chart"
+    - "liquidity_heatmap"
+    - "signal_chart"
+    - "performance_chart"
+    - "pattern_recognition"
+  update_interval_seconds: 5
+  dashboard_integration: true
+  real_time_updates: true
+
+# Alerting
+alerting:
+  enabled: true
+  alert_conditions:
+    - "stop_hunt_detected"
+    - "liquidity_grab_detected"
+    - "shakeout_detected"
+    - "stop_run_detected"
+    - "entry_signal"
+    - "exit_signal"
+    - "false_breakout_detected"
+  alert_thresholds:
+    detection_confidence: 0.70
+    signal_strength: 0.60
+    pattern_confidence: 0.70
+  alert_channels:
+    - "email"
+    - "telegram"
+    - "slack"
+  alert_cooldown_seconds: 300
+
+# Reporting
+reporting:
+  enabled: true
+  report_types:
+    - "real_time_alerts"
+    - "daily_stop_hunt_summary"
+    - "weekly_stop_hunt_analysis"
+    - "monthly_stop_hunt_report"
+  report_formats:
+    - "pdf"
+    - "html"
+    - "json"
+    - "csv"
+    - "excel"
+  report_recipients:
+    - "trading@example.com"
+    - "research@example.com"
+    - "risk@example.com"
+
+# Storage
+storage:
+  enabled: true
+  storage_categories:
+    - "detection_data"
+    - "pattern_data"
+    - "signal_history"
+    - "liquidity_data"
+    - "trade_history"
+    - "performance_metrics"
+    - "alert_history"
+  retention_days: 365
+  compression: "zstd"
+  storage_format: "parquet"
+
+# Integration
+integration:
+  enabled: true
+  webhook_endpoint: "http://localhost:8080/stop-hunting"
+  api_endpoint: "/api/v1/trading/stop-hunting"
+  dashboard_url: "http://localhost:3000/stop-hunting"
+  real_time_updates: true
+  data_sync_frequency_seconds: 3
+  external_systems:
+    - "trading_engine"
+    - "risk_management"
+    - "execution_engine"
+    - "research_platform"
