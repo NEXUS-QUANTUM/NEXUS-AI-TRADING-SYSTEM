@@ -1,0 +1,304 @@
+# Swing Bot Statistical Arbitrage Configuration
+# Statistical Arbitrage & Quantitative Trading Parameters
+
+# General Statistical Arbitrage Settings
+statistical_arbitrage:
+  enabled: true
+  strategy_type: "multi_factor"  # multi_factor, pairs_trading, index_arbitrage, volatility_arbitrage
+  analysis_mode: "comprehensive"  # comprehensive, basic, advanced, real-time
+  update_frequency_seconds: 60
+  version: "3.0.0"
+
+# Strategy Components
+components:
+  enabled: true
+  primary_components:
+    - "pairs_trading"
+    - "index_arbitrage"
+    - "volatility_arbitrage"
+    - "triangular_arbitrage"
+    - "cross_asset_arbitrage"
+    - "statistical_arbitrage_ml"
+  secondary_components:
+    - "momentum_arbitrage"
+    - "mean_reversion_arbitrage"
+    - "event_driven_arbitrage"
+    - "risk_arbitrage"
+    - "capital_structure_arbitrage"
+  component_weights:
+    pairs_trading: 0.30
+    index_arbitrage: 0.20
+    volatility_arbitrage: 0.15
+    triangular_arbitrage: 0.10
+    cross_asset_arbitrage: 0.10
+    statistical_arbitrage_ml: 0.15
+
+# Pairs Trading
+pairs_trading:
+  enabled: true
+  pair_selection:
+    methods:
+      - "correlation"
+      - "cointegration"
+      - "distance_metric"
+      - "machine_learning"
+    correlation_threshold: 0.70
+    cointegration_threshold: 0.05
+    max_pairs: 20
+    min_observations: 100
+  spread_calculation:
+    method: "regression_based"  # regression_based, ratio, difference, log_ratio
+    hedging_ratio: true
+    smoothing_period: 5
+    normalization: true
+  zscore:
+    lookback_period_bars: 30
+    entry_threshold: 2.0
+    exit_threshold: 0.50
+    stop_threshold: 3.0
+    dynamic_threshold: true
+
+# Index Arbitrage
+index_arbitrage:
+  enabled: true
+  index_types:
+    - "s&p_500"
+    - "nasdaq_100"
+    - "dow_jones"
+    - "ftse_100"
+    - "dax"
+    - "cac_40"
+    - "nikkei_225"
+    - "hang_seng"
+    - "shanghai_composite"
+  arbitrage_methods:
+    - "etf_arbitrage"
+    - "futures_arbitrage"
+    - "options_arbitrage"
+    - "synthetic_arbitrage"
+    - "cash_futures_arbitrage"
+  components:
+    - "etf_composition"
+    - "futures_contracts"
+    - "options_pricing"
+    - "synthetic_creation"
+
+# Volatility Arbitrage
+volatility_arbitrage:
+  enabled: true
+  volatility_metrics:
+    - "historical_volatility"
+    - "implied_volatility"
+    - "volatility_skew"
+    - "volatility_smile"
+    - "volatility_term_structure"
+  arbitrage_methods:
+    - "straddle_arbitrage"
+    - "strangle_arbitrage"
+    - "spread_arbitrage"
+    - "calendar_spread"
+    - "vertical_spread"
+  implied_vs_historical: true
+
+# Triangular Arbitrage
+triangular_arbitrage:
+  enabled: true
+  currency_triples:
+    - ["EUR", "USD", "GBP"]
+    - ["USD", "JPY", "EUR"]
+    - ["GBP", "CHF", "USD"]
+    - ["AUD", "USD", "JPY"]
+    - ["CAD", "USD", "CHF"]
+    - ["NZD", "USD", "AUD"]
+  detection_methods:
+    - "direct_calculation"
+    - "matrix_approach"
+    - "machine_learning"
+  threshold_min_profit: 0.0001
+  max_transaction_cost: 0.0005
+
+# Cross-Asset Arbitrage
+cross_asset:
+  enabled: true
+  asset_pairs:
+    - ["equities", "bonds"]
+    - ["commodities", "currencies"]
+    - ["equities", "commodities"]
+    - ["bonds", "currencies"]
+    - ["crypto", "equities"]
+  correlation_analysis: true
+  regime_detection: true
+  relationship_modeling: true
+
+# Statistical Arbitrage ML
+stat_arb_ml:
+  enabled: true
+  models:
+    - "linear_regression"
+    - "random_forest"
+    - "xgboost"
+    - "neural_network"
+    - "ensemble"
+  features:
+    - "price_data"
+    - "volume_data"
+    - "volatility_data"
+    - "correlation_data"
+    - "fundamental_data"
+    - "sentiment_data"
+  training:
+    lookback_period_days: 90
+    retrain_frequency_days: 7
+    validation_split: 0.20
+    test_split: 0.10
+
+# Cointegration Testing
+cointegration:
+  enabled: true
+  test_methods:
+    - "adf_test"
+    - "kpss_test"
+    - "pp_test"
+    - "johansen_test"
+    - "engle_granger"
+  primary_test: "adf_test"
+  confidence_level: 0.95
+  p_value_threshold: 0.05
+  lag_selection: "aic"
+
+# Half-Life Analysis
+half_life:
+  enabled: true
+  calculation_method: "linear_regression"
+  lookback_period_bars: 30
+  half_life_estimation: true
+  reversion_speed: true
+  mean_reversion_confidence: true
+  min_half_life: 5
+  max_half_life: 30
+
+# Risk Management
+risk_management:
+  enabled: true
+  stop_loss:
+    method: "zscore_based"
+    zscore_stop: 3.0
+    fixed_percent: 0.02
+    volatility_adjustment: true
+  take_profit:
+    method: "zscore_based"
+    zscore_profit: 0.50
+    risk_reward_ratio: 2.0
+  position_sizing:
+    method: "risk_based"
+    risk_per_trade: 0.02
+    max_position_size: 0.05
+    min_position_size: 0.01
+  max_drawdown: 0.10
+  max_daily_loss: 0.05
+  max_position_correlation: 0.70
+
+# Performance Metrics
+performance:
+  enabled: true
+  metrics:
+    - "sharpe_ratio"
+    - "sortino_ratio"
+    - "calmar_ratio"
+    - "win_rate"
+    - "profit_factor"
+    - "average_return"
+    - "max_drawdown"
+    - "recovery_factor"
+    - "arbitrage_efficiency"
+    - "execution_quality"
+  evaluation_period_days: 30
+  rolling_window_days: 30
+
+# Visualization
+visualization:
+  enabled: true
+  charts:
+    - "arbitrage_dashboard"
+    - "pairs_chart"
+    - "spread_chart"
+    - "zscore_chart"
+    - "volatility_surface"
+    - "triangular_arbitrage"
+    - "performance_chart"
+  update_interval_seconds: 10
+  dashboard_integration: true
+  real_time_updates: true
+
+# Alerting
+alerting:
+  enabled: true
+  alert_conditions:
+    - "arbitrage_opportunity"
+    - "spread_extreme"
+    - "cointegration_break"
+    - "correlation_break"
+    - "entry_signal"
+    - "exit_signal"
+    - "stop_loss_trigger"
+    - "take_profit_trigger"
+  alert_thresholds:
+    opportunity_confidence: 0.70
+    spread_extreme: 3.0
+    correlation_break: 0.30
+    cointegration_break: 0.05
+  alert_channels:
+    - "email"
+    - "telegram"
+    - "slack"
+  alert_cooldown_seconds: 300
+
+# Reporting
+reporting:
+  enabled: true
+  report_types:
+    - "real_time_alerts"
+    - "daily_arbitrage_summary"
+    - "weekly_arbitrage_analysis"
+    - "monthly_arbitrage_report"
+    - "pairs_trading_report"
+  report_formats:
+    - "pdf"
+    - "html"
+    - "json"
+    - "csv"
+    - "excel"
+  report_recipients:
+    - "trading@example.com"
+    - "research@example.com"
+    - "risk@example.com"
+
+# Storage
+storage:
+  enabled: true
+  storage_categories:
+    - "arbitrage_data"
+    - "spread_data"
+    - "cointegration_data"
+    - "correlation_data"
+    - "signal_history"
+    - "trade_history"
+    - "performance_metrics"
+    - "alert_history"
+  retention_days: 365
+  compression: "zstd"
+  storage_format: "parquet"
+
+# Integration
+integration:
+  enabled: true
+  webhook_endpoint: "http://localhost:8080/statistical-arbitrage"
+  api_endpoint: "/api/v1/trading/statistical-arbitrage"
+  dashboard_url: "http://localhost:3000/statistical-arbitrage"
+  real_time_updates: true
+  data_sync_frequency_seconds: 10
+  external_systems:
+    - "trading_engine"
+    - "risk_management"
+    - "research_platform"
+    - "order_management"
