@@ -1,0 +1,243 @@
+# Swing Bot Iceberg Order Configuration
+# Iceberg Order Execution Parameters for Large Order Disguise & Slippage Reduction
+
+# General Iceberg Settings
+iceberg:
+  enabled: true
+  order_types:
+    - "limit"
+    - "market"
+    - "stop_limit"
+    - "trailing_stop"
+  default_order_type: "limit"
+  update_frequency_seconds: 1
+  execution_style: "hidden"  # hidden, visible, hybrid
+
+# Order Size Configuration
+size:
+  total_order_size_min: 1000
+  total_order_size_max: 10000000
+  visible_chunk_size: 100
+  min_visible_chunk: 10
+  max_visible_chunk: 10000
+  chunk_variance_percent: 20
+  dynamic_sizing: true
+  adaptive_sizing: true
+
+# Display Configuration
+display:
+  display_quantity_percent: 0.10
+  min_display_quantity: 10
+  max_display_quantity: 1000
+  randomize_display: true
+  display_variance_percent: 30
+  refresh_display_frequency: 5
+  display_refresh_strategy: "random"  # random, timed, volume_based
+
+# Execution Timing
+timing:
+  execution_duration_minutes: 60
+  min_execution_duration_minutes: 5
+  max_execution_duration_minutes: 480
+  chunk_interval_seconds: 5
+  randomize_timing: true
+  timing_variance_percent: 25
+  aggressive_timing_multiplier: 0.50
+  passive_timing_multiplier: 1.50
+
+# Volume Participation
+volume:
+  participation_rate: 0.10
+  max_participation_rate: 0.20
+  min_participation_rate: 0.05
+  dynamic_participation: true
+  participation_based_on_volume: true
+  volume_weighted: true
+  market_volume_window_seconds: 60
+
+# Price Settings
+price:
+  offset_bps: 5
+  max_offset_bps: 20
+  min_offset_bps: 1
+  dynamic_offset: true
+  aggressive_offset: 0
+  passive_offset: 10
+  price_improvement: true
+  price_improvement_bps: 1
+
+# Liquidity Detection
+liquidity:
+  min_liquidity_ratio: 0.05
+  max_spread_bps: 50
+  depth_levels: 10
+  liquidity_provider_detection: true
+  market_impact_model: true
+  impact_tolerance_bps: 5
+
+# Market Impact
+market_impact:
+  model: "linear"  # linear, square_root, exponential, custom
+  coefficient: 0.001
+  permanent_impact_factor: 0.50
+  temporary_impact_factor: 0.30
+  urgent_impact_multiplier: 2.0
+  max_impact_bps: 10
+  impact_monitoring: true
+
+# Order Progress
+progress:
+  progress_interval_percent: 10
+  progress_reporting: true
+  remaining_time_estimation: true
+  speed_adjustment: true
+  progress_threshold_pause: 75
+  progress_threshold_accelerate: 25
+
+# Chunk Management
+chunk:
+  chunk_size_strategy: "adaptive"  # fixed, adaptive, random
+  max_chunks: 1000
+  min_chunks: 10
+  chunk_expiry_seconds: 30
+  chunk_cancel_on_reject: true
+  chunk_resubmit_on_error: true
+  chunk_parallel_execution: false
+
+# Order Book Interaction
+order_book:
+  ping_pong_pattern: true
+  quote_rotation: true
+  book_movement_detection: true
+  book_imbalance_threshold: 1.5
+  spread_impact: true
+  depth_percentage: 10
+
+# Time Slicing
+time_slicing:
+  slice_count: 10
+  slice_duration_seconds: 60
+  random_slicing: true
+  slicing_variance_percent: 20
+  slice_algorithm: "vwap"  # vwap, twap, pwp, pvolume
+  time_weighted_average_price: true
+  volume_weighted_average_price: true
+
+# Execution Algorithms
+algorithms:
+  primary: "iceberg"
+  secondary: "twap"
+  fallback: "market"
+  algorithm_switching: true
+  switch_conditions:
+    - "liquidity_drop"
+    - "price_movement"
+    - "time_constraint"
+
+# Risk Controls
+risk:
+  max_price_slippage_bps: 10
+  max_market_impact_bps: 5
+  max_execution_time_seconds: 300
+  max_partial_fills: 100
+  max_chunk_attempts: 5
+  circuit_breaker: true
+  circuit_breaker_threshold: 20
+
+# Slippage Control
+slippage:
+  tolerance_bps: 2
+  max_slippage_bps: 10
+  slippage_tracking: true
+  slippage_adjustment: true
+  slippage_limits:
+    market: 5
+    limit: 2
+    stop_limit: 3
+
+# Cost Management
+cost:
+  commission_optimization: true
+  fee_schedule: "tiered"
+  cost_estimation: true
+  max_cost_bps: 5
+  spread_cost_included: true
+  priority: "cost_based"
+
+# Monitoring
+monitoring:
+  chunk_tracking: true
+  progress_monitoring: true
+  market_impact_monitoring: true
+  slippage_monitoring: true
+  execution_speed_monitoring: true
+  alert_on_deviation: true
+  performance_metrics: true
+
+# Alert Thresholds
+alerts:
+  deviation_threshold_percent: 5
+  speed_variance_threshold: 30
+  chunk_failure_threshold: 3
+  price_drift_threshold_bps: 5
+  volume_anomaly_threshold: 2.0
+  latency_warning_ms: 100
+
+# Dark Pool Integration
+dark_pools:
+  enabled: true
+  venues:
+    - "alternative"
+    - "internal"
+    - "external"
+  allocation_percent: 30
+  min_dark_pool_size: 1000
+  dark_pool_preference: "price"
+  dark_pool_detection: true
+
+# Regulatory Compliance
+compliance:
+  reg_nms: true
+  reg_mifi: true
+  best_execution: true
+  trade_reporting: true
+  order_book_visibility: true
+  regulatory_limits: true
+  audit_trail: true
+
+# Performance Optimization
+performance:
+  cache_orders: true
+  pre_allocate_chunks: true
+  async_execution: true
+  thread_pool_size: 4
+  memory_optimization: true
+  batch_processing: true
+  latency_optimization: true
+
+# Visualization
+visualization:
+  progress_chart: true
+  execution_timeline: true
+  market_impact_chart: true
+  dashboard_integration: true
+  update_interval_seconds: 5
+
+# Storage
+storage:
+  execution_logging: true
+  chunk_history: true
+  performance_metrics: true
+  retention_days: 30
+  compression: true
+  export_format: "json"
+
+# Backtesting
+backtesting:
+  slippage_model: true
+  market_impact_model: true
+  execution_delay_ms: 100
+  fill_model: "probabilistic"
+  latency_model: true
+  historical_execution: true
+  benchmarking: true
