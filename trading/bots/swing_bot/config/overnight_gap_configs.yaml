@@ -1,0 +1,308 @@
+# Swing Bot Overnight Gap Configuration
+# Overnight Gap Analysis & Trading Parameters
+
+# General Overnight Gap Settings
+overnight_gap:
+  enabled: true
+  analysis_mode: "comprehensive"  # comprehensive, basic, advanced, real-time
+  gap_calculation: "close_open"  # close_open, close_next_open, custom
+  update_frequency_seconds: 60
+  version: "3.0.0"
+
+# Gap Types
+gap_types:
+  enabled: true
+  primary_gaps:
+    - "breakaway_gap"
+    - "runaway_gap"
+    - "exhaustion_gap"
+    - "common_gap"
+    - "island_gap"
+    - "morning_gap"
+    - "evening_gap"
+  gap_detection_methods:
+    - "price_difference"
+    - "percentage_change"
+    - "volatility_adjusted"
+    - "statistical_threshold"
+  threshold_method: "percentage"  # percentage, absolute, volatility
+
+# Gap Measurement
+measurement:
+  enabled: true
+  gap_calculation:
+    method: "close_to_open"
+    include_after_hours: true
+    include_pre_market: true
+    price_source: "official"  # official, vwap, weighted
+  gap_thresholds:
+    min_gap_percent: 0.01
+    max_gap_percent: 0.10
+    min_gap_absolute: 0.10
+    max_gap_absolute: 10.00
+  gap_measurement_metrics:
+    - "gap_size_abs"
+    - "gap_size_percent"
+    - "gap_direction"
+    - "gap_velocity"
+    - "gap_volume"
+    - "gap_volatility"
+
+# Gap Direction
+direction:
+  enabled: true
+  gap_directions:
+    - "gap_up"
+    - "gap_down"
+    - "neutral"
+  direction_analysis:
+    bull_bear_ratio: true
+    consecutive_gaps: true
+    gap_direction_strength: true
+  direction_threshold:
+    gap_up_min: 0.005
+    gap_down_min: -0.005
+
+# Gap Patterns
+patterns:
+  enabled: true
+  pattern_types:
+    - "gap_and_go"
+    - "gap_and_stall"
+    - "gap_and_reverse"
+    - "gap_fill"
+    - "gap_failure"
+    - "gap_island_reversal"
+    - "breakaway_gap_follow_through"
+    - "runaway_gap_continuation"
+    - "exhaustion_gap_reversal"
+  pattern_detection_confidence: 0.70
+  pattern_confirmation_bars: 3
+  pattern_lookback_bars: 20
+
+# Gap Fill Analysis
+gap_fill:
+  enabled: true
+  fill_analysis:
+    full_fill: true
+    partial_fill: true
+    fill_probability: true
+    fill_time_estimation: true
+    fill_velocity: true
+  fill_thresholds:
+    full_fill_percent: 100
+    partial_fill_percent: 50
+    min_fill_probability: 0.60
+    max_fill_time_bars: 10
+  fill_detection:
+    full_fill_bars: 5
+    partial_fill_bars: 10
+    no_fill_bars: 20
+
+# Gap Volume
+gap_volume:
+  enabled: true
+  volume_analysis:
+    gap_volume_abs: true
+    gap_volume_relative: true
+    gap_volume_ratio: true
+    volume_spike_detection: true
+    volume_confirmation: true
+  volume_thresholds:
+    min_gap_volume: 100000
+    volume_spike_factor: 2.0
+    volume_consistency_factor: 1.5
+
+# Gap Strength
+strength:
+  enabled: true
+  strength_metrics:
+    - "gap_size"
+    - "gap_volume"
+    - "gap_velocity"
+    - "gap_volatility"
+    - "gap_continuation"
+    - "gap_consistency"
+  strength_calculation: "weighted_average"
+  strength_thresholds:
+    weak: 0.30
+    moderate: 0.50
+    strong: 0.70
+    very_strong: 0.90
+  min_strength_required: 0.40
+
+# Gap Context
+context:
+  enabled: true
+  context_types:
+    - "trend_context"
+    - "volatility_context"
+    - "volume_context"
+    - "sentiment_context"
+    - "market_context"
+  trend_context:
+    uptrend_confirmation: true
+    downtrend_confirmation: true
+    trend_strength: true
+  volatility_context:
+    high_volatility_adjustment: true
+    low_volatility_adjustment: true
+    volatility_ratio: true
+
+# Trading Strategies
+strategies:
+  enabled: true
+  gap_strategies:
+    - "gap_and_go"
+    - "gap_fade"
+    - "gap_fill"
+    - "gap_failure"
+    - "breakaway_gap"
+    - "exhaustion_gap"
+    - "island_reversal"
+  strategy_selection: "context_based"
+  strategy_confidence_threshold: 0.70
+  strategy_confirmation_bars: 2
+
+# Entry Signals
+entry_signals:
+  enabled: true
+  signal_types:
+    - "bullish_gap"
+    - "bearish_gap"
+    - "gap_fill_entry"
+    - "gap_failure_entry"
+    - "breakaway_entry"
+    - "exhaustion_entry"
+  confirmation_requirements:
+    min_indicators_confirmed: 2
+    volume_confirmation: true
+    price_confirmation: true
+  signal_strength_calculation: "weighted_average"
+  min_signal_strength: 0.60
+
+# Exit Signals
+exit_signals:
+  enabled: true
+  exit_types:
+    - "gap_fill_complete"
+    - "gap_target_hit"
+    - "gap_reversal"
+    - "stop_loss_hit"
+    - "take_profit_hit"
+    - "time_stop"
+  exit_confirmation: true
+  confirmation_bars: 1
+
+# Risk Management
+risk:
+  enabled: true
+  position_sizing:
+    method: "gap_based"
+    gap_strength_multiplier: 1.5
+    max_position_size: 0.05
+    min_position_size: 0.01
+  stop_loss:
+    method: "volatility_based"
+    gap_adjustment: true
+    fixed_percent: 0.02
+    volatility_multiplier: 2.0
+    gap_adjustment_factor: 0.50
+  take_profit:
+    method: "gap_based"
+    gap_multiplier: 1.0
+    risk_reward_ratio: 2.0
+    gap_target: true
+
+# Performance Metrics
+performance:
+  enabled: true
+  metrics:
+    - "gap_success_rate"
+    - "gap_profit_factor"
+    - "gap_win_rate"
+    - "gap_average_return"
+    - "gap_sharpe_ratio"
+    - "gap_max_drawdown"
+  evaluation_period_days: 30
+  rolling_window_days: 30
+  benchmark_comparison: true
+
+# Visualization
+visualization:
+  enabled: true
+  charts:
+    - "gap_dashboard"
+    - "gap_size_chart"
+    - "gap_fill_analysis"
+    - "gap_pattern_chart"
+    - "gap_signal_chart"
+    - "performance_chart"
+  update_interval_seconds: 60
+  dashboard_integration: true
+  real_time_updates: true
+
+# Alerting
+alerting:
+  enabled: true
+  alert_conditions:
+    - "gap_detected"
+    - "gap_signal_generated"
+    - "gap_fill_detected"
+    - "gap_failure_detected"
+    - "gap_pattern_detected"
+    - "strength_threshold_breach"
+  alert_channels:
+    - "email"
+    - "telegram"
+    - "slack"
+  alert_cooldown_seconds: 300
+
+# Reporting
+reporting:
+  enabled: true
+  report_types:
+    - "real_time_alerts"
+    - "daily_gap_summary"
+    - "weekly_gap_analysis"
+    - "monthly_gap_report"
+    - "pattern_analysis_report"
+  report_formats:
+    - "pdf"
+    - "html"
+    - "json"
+    - "csv"
+    - "excel"
+  report_recipients:
+    - "trading@example.com"
+    - "research@example.com"
+    - "strategy@example.com"
+
+# Storage
+storage:
+  enabled: true
+  storage_categories:
+    - "gap_data"
+    - "pattern_detections"
+    - "signal_history"
+    - "fill_analysis"
+    - "strength_scores"
+    - "performance_metrics"
+    - "alert_history"
+  retention_days: 365
+  compression: "zstd"
+  storage_format: "parquet"
+
+# Integration
+integration:
+  enabled: true
+  webhook_endpoint: "http://localhost:8080/overnight-gap"
+  api_endpoint: "/api/v1/trading/overnight-gap"
+  dashboard_url: "http://localhost:3000/overnight-gap"
+  real_time_updates: true
+  data_sync_frequency_seconds: 30
+  external_systems:
+    - "trading_engine"
+    - "risk_management"
+    - "strategy_engine"
+    - "research_platform"
