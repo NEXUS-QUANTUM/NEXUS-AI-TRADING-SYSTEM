@@ -1,0 +1,331 @@
+# Swing Bot Sniper Configuration
+# Sniper Strategy & Precision Trading Parameters
+
+# General Sniper Settings
+sniper:
+  enabled: true
+  strategy_type: "precision"  # precision, momentum, breakout, reversal, hybrid
+  execution_style: "surgical"  # surgical, aggressive, conservative, adaptive
+  time_horizon: "ultra_short"  # ultra_short, short, medium, flexible
+  version: "3.0.0"
+
+# Sniper Components
+components:
+  enabled: true
+  primary_components:
+    - "price_action_sniper"
+    - "level_sniper"
+    - "momentum_sniper"
+    - "breakout_sniper"
+    - "reversal_sniper"
+    - "volume_sniper"
+  secondary_components:
+    - "order_flow_sniper"
+    - "sentiment_sniper"
+    - "volatility_sniper"
+    - "pattern_sniper"
+    - "liquidity_sniper"
+  component_weights:
+    price_action_sniper: 0.25
+    level_sniper: 0.20
+    momentum_sniper: 0.15
+    breakout_sniper: 0.15
+    reversal_sniper: 0.10
+    volume_sniper: 0.10
+    order_flow_sniper: 0.05
+
+# Price Action Sniper
+price_action_sniper:
+  enabled: true
+  price_patterns:
+    - "pin_bar"
+    - "engulfing"
+    - "harami"
+    - "doji"
+    - "hammer"
+    - "shooting_star"
+    - "morning_star"
+    - "evening_star"
+    - "three_white_soldiers"
+    - "three_black_crows"
+    - "bullish_fractal"
+    - "bearish_fractal"
+  pattern_parameters:
+    min_pattern_size: 0.01
+    confirmation_bars: 2
+    volume_confirm: true
+    pattern_strength_threshold: 0.60
+
+# Level Sniper
+level_sniper:
+  enabled: true
+  level_types:
+    - "support_resistance"
+    - "pivot_points"
+    - "fibonacci_levels"
+    - "round_numbers"
+    - "volume_nodes"
+    - "poc_levels"
+    - "vah_val_levels"
+  level_parameters:
+    level_validation_touches: 2
+    level_strength_threshold: 0.50
+    price_proximity_threshold: 0.005
+    bounce_confirmation_bars: 2
+
+# Momentum Sniper
+momentum_sniper:
+  enabled: true
+  momentum_indicators:
+    - "rsi"
+    - "macd"
+    - "stochastic"
+    - "momentum_oscillator"
+    - "roc"
+    - "cci"
+  momentum_parameters:
+    momentum_threshold: 0.05
+    acceleration_threshold: 0.02
+    divergence_detection: true
+    confirmation_bars: 2
+
+# Breakout Sniper
+breakout_sniper:
+  enabled: true
+  breakout_patterns:
+    - "flag_breakout"
+    - "pennant_breakout"
+    - "wedge_breakout"
+    - "triangle_breakout"
+    - "range_breakout"
+    - "channel_breakout"
+  breakout_parameters:
+    breakout_threshold: 0.02
+    volume_multiplier: 1.5
+    confirmation_bars: 2
+    pullback_tolerance: 0.01
+
+# Reversal Sniper
+reversal_sniper:
+  enabled: true
+  reversal_patterns:
+    - "double_top"
+    - "double_bottom"
+    - "head_and_shoulders"
+    - "inverse_head_and_shoulders"
+    - "rounded_top"
+    - "rounded_bottom"
+    - "cup_and_handle"
+  reversal_parameters:
+    pattern_completion_bars: 10
+    confirmation_bars: 2
+    volume_confirm: true
+    reversal_strength_threshold: 0.60
+
+# Volume Sniper
+volume_sniper:
+  enabled: true
+  volume_patterns:
+    - "volume_spike"
+    - "volume_climax"
+    - "volume_exhaustion"
+    - "volume_breakout"
+    - "volume_divergence"
+    - "accumulation_volume"
+    - "distribution_volume"
+  volume_parameters:
+    volume_spike_multiplier: 2.0
+    volume_confirmation: true
+    volume_trend_confirmation: true
+    min_volume_threshold: 100000
+
+# Sniper Entry
+entry:
+  enabled: true
+  entry_types:
+    - "precision_entry"
+    - "momentum_entry"
+    - "breakout_entry"
+    - "reversal_entry"
+    - "level_entry"
+    - "volume_entry"
+  entry_conditions:
+    - "pattern_confirmed"
+    - "level_confirmed"
+    - "momentum_confirmed"
+    - "volume_confirmed"
+    - "price_confirmed"
+  entry_priority: "precision"  # precision, speed, balance
+  min_confirmation_indicators: 2
+
+# Position Sizing
+position_sizing:
+  enabled: true
+  methods:
+    - "fixed_fraction"
+    - "risk_based"
+    - "volatility_based"
+    - "sniper_sizing"
+  primary_method: "risk_based"
+  risk_per_trade: 0.01
+  max_position_size: 0.02
+  min_position_size: 0.005
+  dynamic_sizing: true
+
+# Risk Management
+risk_management:
+  enabled: true
+  stop_loss:
+    methods:
+      - "precision_stop"
+      - "volatility_based"
+      - "atr_based"
+      - "level_based"
+      - "trailing"
+    precision_distance: 0.005
+    atr_multiplier: 1.0
+    trailing_activation: 0.01
+    trailing_distance: 0.005
+    tight_stop: true
+  take_profit:
+    methods:
+      - "precision_target"
+      - "risk_reward_ratio"
+      - "level_target"
+      - "trailing"
+      - "scaling"
+    precision_target_multiplier: 1.5
+    risk_reward_ratio: 1.5
+    scaling_targets:
+      - level: 0.50
+        at_multiple: 1.0
+      - level: 0.30
+        at_multiple: 2.0
+      - level: 0.20
+        at_multiple: 3.0
+    trailing_activation: 0.01
+    trailing_distance: 0.005
+  risk_limits:
+    max_daily_loss: 0.02
+    max_drawdown: 0.05
+    max_position_exposure: 0.10
+
+# Sniper Signals
+signals:
+  enabled: true
+  signal_types:
+    - "sniper_buy"
+    - "sniper_sell"
+    - "sniper_short"
+    - "sniper_cover"
+    - "sniper_exit"
+  confirmation_requirements:
+    min_indicators_confirmed: 3
+    volume_confirmation: true
+    price_confirmation: true
+    level_confirmation: true
+  signal_strength_calculation: "weighted_average"
+  min_signal_strength: 0.70
+
+# Performance Metrics
+performance:
+  enabled: true
+  metrics:
+    - "sniper_accuracy"
+    - "signal_accuracy"
+    - "win_rate"
+    - "average_return"
+    - "profit_factor"
+    - "sharpe_ratio"
+    - "max_drawdown"
+    - "average_hold_time"
+    - "precision_efficiency"
+  evaluation_period_days: 30
+  rolling_window_days: 30
+  benchmark_comparison: true
+
+# Visualization
+visualization:
+  enabled: true
+  charts:
+    - "sniper_dashboard"
+    - "precision_chart"
+    - "entry_exit_chart"
+    - "signal_chart"
+    - "performance_chart"
+    - "risk_chart"
+    - "pattern_recognition"
+  update_interval_seconds: 5
+  dashboard_integration: true
+  real_time_updates: true
+
+# Alerting
+alerting:
+  enabled: true
+  alert_conditions:
+    - "sniper_signal"
+    - "pattern_detected"
+    - "level_reached"
+    - "momentum_shift"
+    - "breakout_signal"
+    - "reversal_signal"
+    - "volume_spike"
+  alert_thresholds:
+    signal_confidence: 0.70
+    pattern_confidence: 0.70
+    level_confidence: 0.70
+    momentum_shift: 0.05
+  alert_channels:
+    - "email"
+    - "telegram"
+    - "slack"
+  alert_cooldown_seconds: 300
+
+# Reporting
+reporting:
+  enabled: true
+  report_types:
+    - "real_time_alerts"
+    - "daily_sniper_summary"
+    - "weekly_sniper_analysis"
+    - "monthly_sniper_report"
+    - "performance_report"
+  report_formats:
+    - "pdf"
+    - "html"
+    - "json"
+    - "csv"
+    - "excel"
+  report_recipients:
+    - "trading@example.com"
+    - "risk@example.com"
+    - "strategy@example.com"
+
+# Storage
+storage:
+  enabled: true
+  storage_categories:
+    - "sniper_data"
+    - "pattern_data"
+    - "signal_history"
+    - "trade_history"
+    - "performance_metrics"
+    - "risk_metrics"
+    - "alert_history"
+  retention_days: 365
+  compression: "zstd"
+  storage_format: "parquet"
+
+# Integration
+integration:
+  enabled: true
+  webhook_endpoint: "http://localhost:8080/sniper"
+  api_endpoint: "/api/v1/trading/sniper"
+  dashboard_url: "http://localhost:3000/sniper"
+  real_time_updates: true
+  data_sync_frequency_seconds: 3
+  external_systems:
+    - "trading_engine"
+    - "risk_management"
+    - "order_management"
+    - "research_platform"
