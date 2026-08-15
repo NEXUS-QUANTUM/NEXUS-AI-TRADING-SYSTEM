@@ -1,0 +1,656 @@
+# nlp_engine_configs.yaml
+# Configuration complète pour le moteur NLP (Natural Language Processing) dans Swing Bot
+# Version: 4.0.0 - Production Ready
+
+# Paramètres généraux
+general:
+  enabled: true
+  mode: "comprehensive"
+  calculate_in_real_time: true
+  update_frequency_seconds: 30
+  lookback_days: 30
+  history_length_days: 365
+  min_data_points: 10
+  max_data_points: 1000
+  nlp_version: "4.0.0"
+  environment: "production"
+  language: "multi"
+
+# Modèles NLP
+nlp_models:
+  finbert:
+    enabled: true
+    description: "Financial BERT Model"
+    model_name: "yiyanghkust/finbert-tone"
+    max_length: 512
+    batch_size: 32
+    device: "cuda"
+    update_frequency_seconds: 60
+  roberta:
+    enabled: true
+    description: "RoBERTa Model"
+    model_name: "cardiffnlp/twitter-roberta-base-sentiment"
+    max_length: 512
+    batch_size: 32
+    device: "cuda"
+    update_frequency_seconds: 60
+  distilbert:
+    enabled: true
+    description: "DistilBERT Model"
+    model_name: "distilbert-base-uncased-finetuned-sst-2-english"
+    max_length: 512
+    batch_size: 32
+    device: "cuda"
+    update_frequency_seconds: 60
+  bert_base:
+    enabled: true
+    description: "BERT Base Model"
+    model_name: "bert-base-uncased"
+    max_length: 512
+    batch_size: 32
+    device: "cuda"
+    update_frequency_seconds: 60
+  custom_financial:
+    enabled: true
+    description: "Custom Financial NLP Model"
+    model_name: "custom_financial_model"
+    max_length: 512
+    batch_size: 32
+    device: "cuda"
+    update_frequency_seconds: 60
+
+# Types d'analyse NLP
+nlp_analysis_types:
+  sentiment_analysis:
+    enabled: true
+    description: "Sentiment Analysis"
+    methods:
+      - "finbert"
+      - "roberta"
+      - "distilbert"
+    aggregation_method: "weighted_average"
+    weights:
+      finbert: 0.4
+      roberta: 0.3
+      distilbert: 0.3
+    update_frequency_seconds: 60
+  entity_recognition:
+    enabled: true
+    description: "Named Entity Recognition"
+    entity_types:
+      - "PERSON"
+      - "ORGANIZATION"
+      - "LOCATION"
+      - "DATE"
+      - "MONEY"
+      - "PERCENT"
+      - "PRODUCT"
+      - "EVENT"
+    model: "bert_base"
+    update_frequency_seconds: 60
+  topic_modeling:
+    enabled: true
+    description: "Topic Modeling"
+    algorithm: "lda"
+    n_topics: 10
+    max_iterations: 100
+    random_state: 42
+    update_frequency_seconds: 300
+  keyword_extraction:
+    enabled: true
+    description: "Keyword Extraction"
+    method: "rake"
+    max_keywords: 20
+    min_keyword_length: 3
+    update_frequency_seconds: 60
+  summarization:
+    enabled: true
+    description: "Text Summarization"
+    model: "bart"
+    max_length: 150
+    min_length: 50
+    length_penalty: 2.0
+    num_beams: 4
+    update_frequency_seconds: 300
+
+# Seuils NLP
+thresholds:
+  sentiment:
+    very_positive: 0.8
+    positive: 0.6
+    neutral: 0.4
+    negative: 0.2
+    very_negative: 0.0
+  confidence:
+    min: 0.5
+    default: 0.7
+    max: 1.0
+  relevance:
+    low: 0.2
+    medium: 0.5
+    high: 0.7
+    very_high: 0.9
+  entity_confidence:
+    min: 0.3
+    default: 0.6
+    max: 1.0
+
+# Indicateurs NLP
+indicators:
+  nlp_sentiment:
+    enabled: true
+    calculation: "weighted_average"
+    period: 14
+    smoothing: 3
+    threshold: 0.5
+  nlp_confidence:
+    enabled: true
+    period: 14
+    smoothing: 0
+    threshold: 0.6
+  nlp_relevance:
+    enabled: true
+    period: 14
+    smoothing: 0
+    threshold: 0.5
+  nlp_momentum:
+    enabled: true
+    period: 14
+    smoothing: 3
+    threshold: 0.3
+  nlp_velocity:
+    enabled: true
+    period: 5
+    smoothing: 0
+    threshold: 0.2
+  nlp_acceleration:
+    enabled: true
+    period: 10
+    smoothing: 0
+    threshold: 0.1
+
+# Analyse NLP
+analysis:
+  historical:
+    enabled: true
+    lookback_years: 5
+    compute_nlp_accuracy: true
+    compute_nlp_probability: true
+    compute_nlp_distribution: true
+    compute_nlp_patterns: true
+    compute_nlp_cycles: true
+    compute_nlp_correlation: true
+  real_time:
+    enabled: true
+    update_frequency_seconds: 5
+    compute_instantaneous_nlp: true
+    compute_moving_average_nlp: true
+    compute_exponential_nlp: true
+    compute_weighted_nlp: true
+    compute_nlp_velocity: true
+    compute_nlp_acceleration: true
+  predictive:
+    enabled: true
+    model_type: "ensemble"
+    models:
+      - "lstm"
+      - "gru"
+      - "xgboost"
+      - "lightgbm"
+    features:
+      - "nlp_sentiment"
+      - "nlp_confidence"
+      - "nlp_relevance"
+      - "nlp_momentum"
+      - "nlp_velocity"
+      - "nlp_acceleration"
+      - "entity_count"
+      - "topic_distribution"
+      - "keyword_count"
+      - "sentiment_score"
+      - "relevance_score"
+      - "price_change"
+      - "volume"
+      - "time_of_day"
+      - "day_of_week"
+      - "market_condition"
+    forecast_horizons:
+      - 1
+      - 5
+      - 10
+      - 20
+    confidence_threshold: 0.7
+    retrain_frequency_hours: 24
+
+# Alertes et notifications
+alerts:
+  nlp_sentiment_change:
+    enabled: true
+    threshold: 0.2
+    channels:
+      - "email"
+      - "telegram"
+      - "slack"
+      - "push_notification"
+    severity: "warning"
+  nlp_entity_detected:
+    enabled: true
+    confidence_threshold: 0.7
+    channels:
+      - "telegram"
+      - "push_notification"
+    severity: "info"
+  nlp_topic_emergence:
+    enabled: true
+    threshold: 0.3
+    channels:
+      - "email"
+      - "telegram"
+      - "slack"
+    severity: "info"
+  nlp_high_relevance:
+    enabled: true
+    threshold: 0.8
+    channels:
+      - "telegram"
+      - "push_notification"
+    severity: "critical"
+  nlp_keyword_detected:
+    enabled: true
+    keyword_importance: 0.5
+    channels:
+      - "telegram"
+      - "push_notification"
+    severity: "warning"
+
+# Actions automatiques
+auto_actions:
+  sentiment_response:
+    enabled: true
+    action_types:
+      - "adjust_position"
+      - "modify_strategy"
+      - "update_risk"
+      - "change_allocation"
+    sentiment_threshold: 0.6
+    response_factor: 0.5
+    max_response_percent: 20.0
+  entity_response:
+    enabled: true
+    action_types:
+      - "track_entity"
+      - "analyze_entity"
+      - "respond_to_entity"
+      - "update_reference"
+    entity_confidence_threshold: 0.7
+    response_factor: 0.5
+  topic_response:
+    enabled: true
+    action_types:
+      - "adjust_strategy"
+      - "update_keywords"
+      - "modify_analysis"
+      - "change_focus"
+    topic_threshold: 0.3
+    response_factor: 0.5
+
+# Monitoring et journalisation
+monitoring:
+  logging:
+    enabled: true
+    level: "debug"
+    format: "json"
+    include_context: true
+    include_timestamp: true
+    include_metadata: true
+  metrics:
+    enabled: true
+    collect_every_seconds: 5
+    metrics_to_collect:
+      - "nlp_sentiment"
+      - "nlp_confidence"
+      - "nlp_relevance"
+      - "nlp_momentum"
+      - "nlp_velocity"
+      - "nlp_acceleration"
+      - "entity_count"
+      - "topic_count"
+      - "keyword_count"
+      - "processing_time"
+      - "token_count"
+      - "model_accuracy"
+  dashboard:
+    enabled: true
+    update_interval_seconds: 5
+    charts:
+      - "nlp_sentiment"
+      - "entity_analysis"
+      - "topic_distribution"
+      - "keyword_extraction"
+      - "relevance_analysis"
+      - "model_accuracy"
+      - "processing_metrics"
+
+# Backtesting
+backtesting:
+  enabled: true
+  use_historical_nlp: true
+  compute_nlp_accuracy: true
+  compute_sentiment_effectiveness: true
+  compute_entity_effectiveness: true
+  compute_topic_effectiveness: true
+  report_metrics:
+    - "nlp_accuracy"
+    - "sentiment_effectiveness"
+    - "entity_effectiveness"
+    - "topic_effectiveness"
+    - "win_rate"
+    - "profit_factor"
+    - "sharpe_ratio"
+    - "max_drawdown"
+
+# Configuration de la base de données
+database:
+  enabled: true
+  table_name: "nlp_metrics"
+  retention_days: 365
+  aggregation:
+    enabled: true
+    intervals:
+      - "1s"
+      - "5s"
+      - "15s"
+      - "30s"
+      - "1m"
+      - "5m"
+      - "15m"
+      - "1h"
+      - "4h"
+      - "24h"
+  compression: true
+  backup:
+    enabled: true
+    frequency: "daily"
+    retention_days: 30
+
+# Webhooks
+webhooks:
+  enabled: true
+  endpoints:
+    - url: "https://nexustradingia.com/api/webhooks/nlp"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      payload_template: "nlp_alert"
+    - url: "https://nexustradingia.com/api/webhooks/nlp-sentiment"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      payload_template: "nlp_sentiment"
+  retry:
+    enabled: true
+    max_attempts: 5
+    backoff_seconds: 30
+
+# Logging avancé
+advanced_logging:
+  enabled: true
+  levels:
+    - "info"
+    - "warning"
+    - "error"
+    - "critical"
+    - "debug"
+  output: "nlp_logs"
+  rotation:
+    enabled: true
+    max_size_mb: 100
+    max_files: 10
+  remote_logging:
+    enabled: true
+    endpoints:
+      - "https://nexustradingia.com/logs/nlp"
+  include_trace: true
+  include_stack_trace: true
+  include_context: true
+
+# Threading et performances
+performance:
+  thread_pool_size: 8
+  queue_size: 10000
+  batch_size: 1000
+  async_processing: true
+  cache_size: 10000
+  cache_ttl_seconds: 30
+  database_pool_size: 10
+  database_pool_max_overflow: 20
+  use_multiprocessing: true
+  max_workers: 8
+  use_cython: true
+  use_numba: true
+  use_gpu: true
+  gpu_device: 0
+
+# API de gestion
+management_api:
+  enabled: true
+  endpoints:
+    - "/api/v1/nlp/current"
+    - "/api/v1/nlp/history"
+    - "/api/v1/nlp/metrics"
+    - "/api/v1/nlp/status"
+    - "/api/v1/nlp/sentiment"
+    - "/api/v1/nlp/entities"
+    - "/api/v1/nlp/topics"
+    - "/api/v1/nlp/keywords"
+    - "/api/v1/nlp/forecast"
+  authentication_required: true
+  rate_limit: 100
+  rate_limit_interval_seconds: 60
+  version: "v1.0.0"
+
+# Export des données
+data_export:
+  enabled: true
+  formats:
+    - "csv"
+    - "json"
+    - "parquet"
+    - "avro"
+    - "feather"
+  schedule: "realtime"
+  batch_size: 1000
+  retention_days: 30
+  compression: "gzip"
+  destination: "s3://nexus-data/nlp/"
+  encrypt: true
+  encryption_key_id: "nexus-nlp-key"
+  partition_by:
+    - "symbol"
+    - "year"
+    - "month"
+    - "day"
+
+# Intégration avec d'autres modules
+integrations:
+  risk_engine:
+    enabled: true
+    sync_frequency_seconds: 5
+    share_metrics: true
+  execution_engine:
+    enabled: true
+    share_signals: true
+    require_confirmation: true
+  portfolio_manager:
+    enabled: true
+    share_positions: true
+    share_allocation: true
+  ai_engine:
+    enabled: true
+    use_ai_predictions: true
+    confidence_threshold: 0.7
+    model_endpoint: "http://ai-engine:8000/predict/nlp"
+  market_data:
+    enabled: true
+    sync_frequency_seconds: 5
+    data_endpoint: "ws://market-data:8080/ws"
+  sentiment_analyzer:
+    enabled: true
+    sync_frequency_seconds: 30
+    data_endpoint: "http://sentiment-analyzer:8000/api/v1/sentiment"
+
+# Tests et validation
+testing:
+  unit_tests:
+    enabled: true
+    coverage_threshold: 90
+  integration_tests:
+    enabled: true
+  stress_tests:
+    enabled: true
+    scenarios:
+      - "high_nlp_volume"
+      - "low_nlp_volume"
+      - "sentiment_spike"
+      - "entity_volume"
+      - "topic_emergence"
+  validation:
+    enabled: true
+    validate_on_startup: true
+    validate_on_config_change: true
+    validation_rules:
+      - "confidence_threshold > 0.0"
+      - "confidence_threshold <= 1.0"
+      - "nlp_models.finbert.max_length > 0"
+      - "nlp_models.finbert.batch_size > 0"
+      - "nlp_analysis_types.sentiment_analysis.weights.sum() == 1.0"
+      - "nlp_analysis_types.topic_modeling.n_topics > 0"
+      - "nlp_analysis_types.topic_modeling.max_iterations > 0"
+      - "thresholds.sentiment.very_positive > threshold.sentiment.positive"
+      - "thresholds.sentiment.positive > threshold.sentiment.neutral"
+      - "thresholds.sentiment.neutral > threshold.sentiment.negative"
+      - "thresholds.sentiment.negative > threshold.sentiment.very_negative"
+      - "thresholds.relevance.low < threshold.relevance.medium"
+      - "thresholds.relevance.medium < threshold.relevance.high"
+      - "thresholds.relevance.high < threshold.relevance.very_high"
+      - "indicators.nlp_sentiment.calculation in ['weighted_average', 'simple_average', 'median']"
+      - "min_data_points > 0"
+
+# Market conditions adaptation
+market_adaptation:
+  enabled: true
+  regime_detection:
+    enabled: true
+    lookback_periods:
+      - 20
+      - 50
+      - 200
+    regimes:
+      - "bull"
+      - "bear"
+      - "sideways"
+      - "volatile"
+      - "stable"
+      - "transitional"
+  regime_parameters:
+    bull:
+      nlp_multiplier: 1.2
+      threshold_multiplier: 0.8
+      confidence_multiplier: 1.1
+      sentiment_multiplier: 1.1
+    bear:
+      nlp_multiplier: 0.8
+      threshold_multiplier: 1.2
+      confidence_multiplier: 0.9
+      sentiment_multiplier: 0.9
+    sideways:
+      nlp_multiplier: 1.0
+      threshold_multiplier: 1.0
+      confidence_multiplier: 1.0
+      sentiment_multiplier: 1.0
+    volatile:
+      nlp_multiplier: 0.7
+      threshold_multiplier: 1.3
+      confidence_multiplier: 0.8
+      sentiment_multiplier: 0.8
+    stable:
+      nlp_multiplier: 1.0
+      threshold_multiplier: 0.9
+      confidence_multiplier: 1.2
+      sentiment_multiplier: 1.0
+    transitional:
+      nlp_multiplier: 1.3
+      threshold_multiplier: 1.1
+      confidence_multiplier: 1.1
+      sentiment_multiplier: 1.2
+
+# Time-based configurations
+time_based:
+  enabled: true
+  sessions:
+    asia:
+      start: "00:00"
+      end: "08:00"
+      nlp_multiplier: 0.8
+      threshold_multiplier: 1.2
+      confidence_multiplier: 0.9
+      sentiment_multiplier: 0.8
+    london:
+      start: "08:00"
+      end: "16:00"
+      nlp_multiplier: 1.2
+      threshold_multiplier: 0.8
+      confidence_multiplier: 1.1
+      sentiment_multiplier: 1.2
+    newyork:
+      start: "13:00"
+      end: "22:00"
+      nlp_multiplier: 1.0
+      threshold_multiplier: 1.0
+      confidence_multiplier: 1.0
+      sentiment_multiplier: 1.0
+    overlap:
+      start: "13:00"
+      end: "16:00"
+      nlp_multiplier: 1.5
+      threshold_multiplier: 0.7
+      confidence_multiplier: 1.2
+      sentiment_multiplier: 1.5
+
+# Symbol-specific configurations
+symbol_configs:
+  BTCUSDT:
+    nlp_multiplier: 1.0
+    threshold_multiplier: 1.0
+    confidence_multiplier: 1.0
+    sentiment_multiplier: 1.0
+    confidence_threshold: 0.7
+    model_sensitivity: 0.6
+  ETHUSDT:
+    nlp_multiplier: 1.1
+    threshold_multiplier: 0.9
+    confidence_multiplier: 1.0
+    sentiment_multiplier: 1.1
+    confidence_threshold: 0.7
+    model_sensitivity: 0.7
+  SOLUSDT:
+    nlp_multiplier: 1.2
+    threshold_multiplier: 0.8
+    confidence_multiplier: 0.9
+    sentiment_multiplier: 1.2
+    confidence_threshold: 0.7
+    model_sensitivity: 0.8
+  ADAUSDT:
+    nlp_multiplier: 0.9
+    threshold_multiplier: 1.1
+    confidence_multiplier: 1.1
+    sentiment_multiplier: 0.9
+    confidence_threshold: 0.7
+    model_sensitivity: 0.5
+  XRPUSDT:
+    nlp_multiplier: 1.0
+    threshold_multiplier: 1.0
+    confidence_multiplier: 1.0
+    sentiment_multiplier: 1.0
+    confidence_threshold: 0.7
+    model_sensitivity: 0.6
