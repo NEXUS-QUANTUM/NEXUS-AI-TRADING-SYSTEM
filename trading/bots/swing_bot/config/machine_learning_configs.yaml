@@ -1,0 +1,508 @@
+# Swing Bot Machine Learning Configuration
+# Machine Learning Model & Training Parameters
+
+# General ML Settings
+machine_learning:
+  enabled: true
+  ml_mode: "hybrid"  # supervised, unsupervised, reinforcement, hybrid, meta
+  learning_paradigm: "online"  # online, batch, incremental, continuous
+  model_selection: "ensemble"  # single, ensemble, stacking, voting
+  version: "3.0.0"
+
+# Model Types
+model_types:
+  enabled: true
+  supervised:
+    - "linear_regression"
+    - "logistic_regression"
+    - "ridge"
+    - "lasso"
+    - "elastic_net"
+    - "svm"
+    - "decision_tree"
+    - "random_forest"
+    - "xgboost"
+    - "lightgbm"
+    - "catboost"
+    - "gradient_boosting"
+    - "neural_network"
+  unsupervised:
+    - "kmeans"
+    - "dbscan"
+    - "hierarchical_clustering"
+    - "pca"
+    - "tsne"
+    - "umap"
+    - "autoencoder"
+    - "isolation_forest"
+    - "one_class_svm"
+  reinforcement:
+    - "q_learning"
+    - "dqn"
+    - "ppo"
+    - "sac"
+    - "td3"
+    - "a2c"
+    - "a3c"
+  ensemble:
+    - "voting"
+    - "averaging"
+    - "stacking"
+    - "bagging"
+    - "boosting"
+    - "blending"
+
+# Supervised Learning
+supervised:
+  enabled: true
+  regression_models:
+    primary: "xgboost"
+    secondary: "random_forest"
+    backup: "linear_regression"
+  classification_models:
+    primary: "xgboost"
+    secondary: "random_forest"
+    backup: "logistic_regression"
+  validation_split: 0.20
+  test_split: 0.10
+  cross_validation_folds: 5
+  early_stopping_patience: 10
+  hyperparameter_optimization: true
+  feature_selection: true
+
+# XGBoost
+xgboost:
+  enabled: true
+  parameters:
+    n_estimators: 100
+    max_depth: 6
+    learning_rate: 0.10
+    subsample: 0.80
+    colsample_bytree: 0.80
+    min_child_weight: 1
+    gamma: 0
+    reg_alpha: 0
+    reg_lambda: 1
+    objective: "reg:squarederror"
+    eval_metric: "rmse"
+  early_stopping_rounds: 10
+  cross_validation: true
+  feature_importance: true
+  tree_method: "hist"
+  gpu_enabled: false
+
+# Random Forest
+random_forest:
+  enabled: true
+  parameters:
+    n_estimators: 100
+    max_depth: 10
+    min_samples_split: 2
+    min_samples_leaf: 1
+    max_features: "sqrt"
+    bootstrap: true
+    oob_score: true
+  criterion: "gini"  # gini, entropy, mse, mae
+  feature_importance: true
+  parallel_jobs: -1
+  random_state: 42
+
+# LightGBM
+lightgbm:
+  enabled: true
+  parameters:
+    boosting_type: "gbdt"
+    num_leaves: 31
+    max_depth: -1
+    learning_rate: 0.10
+    n_estimators: 100
+    subsample_for_bin: 200000
+    min_child_samples: 20
+    reg_alpha: 0
+    reg_lambda: 0
+    colsample_bytree: 1.0
+    subsample: 1.0
+    seed: 42
+  early_stopping_rounds: 10
+  feature_importance: true
+  categorical_features: true
+  gpu_enabled: false
+
+# CatBoost
+catboost:
+  enabled: true
+  parameters:
+    iterations: 100
+    learning_rate: 0.10
+    depth: 6
+    l2_leaf_reg: 3
+    border_count: 254
+    loss_function: "RMSE"
+    eval_metric: "RMSE"
+    random_seed: 42
+  early_stopping_rounds: 10
+  feature_importance: true
+  categorical_features: true
+  gpu_enabled: false
+
+# Neural Networks
+neural_networks:
+  enabled: true
+  architectures:
+    - "feedforward"
+    - "cnn"
+    - "rnn"
+    - "lstm"
+    - "gru"
+    - "transformer"
+    - "attention"
+  primary_architecture: "transformer"
+  feedforward:
+    hidden_layers: [256, 256, 128]
+    activation: "relu"
+    dropout: 0.10
+    batch_norm: true
+  cnn:
+    conv_layers: [64, 128]
+    kernel_size: 3
+    pooling: "max"
+    activation: "relu"
+  lstm:
+    hidden_size: 256
+    num_layers: 2
+    bidirectional: true
+    dropout: 0.10
+  transformer:
+    num_layers: 4
+    num_heads: 8
+    d_model: 512
+    d_ff: 2048
+    dropout: 0.10
+  optimizer: "adamw"
+  learning_rate: 0.0001
+  weight_decay: 0.01
+  warmup_steps: 1000
+  gradient_clip: 1.0
+  batch_size: 64
+  epochs: 100
+
+# Deep Learning
+deep_learning:
+  enabled: true
+  frameworks:
+    - "pytorch"
+    - "tensorflow"
+    - "keras"
+  primary_framework: "pytorch"
+  training_config:
+    batch_size: 64
+    epochs: 100
+    learning_rate: 0.001
+    optimizer: "adam"
+    loss_function: "mse"
+    validation_split: 0.20
+    early_stopping_patience: 10
+    model_checkpoint: true
+  hardware:
+    gpu_enabled: true
+    gpu_memory_fraction: 0.80
+    multi_gpu: false
+    cpu_cores: 8
+
+# Unsupervised Learning
+unsupervised:
+  enabled: true
+  clustering:
+    algorithm: "kmeans"
+    n_clusters: 10
+    max_iterations: 300
+    n_init: 10
+    algorithm: "lloyd"  # lloyd, elkan, full, auto
+  dimensionality_reduction:
+    algorithm: "pca"
+    n_components: 10
+    svd_solver: "auto"
+  anomaly_detection:
+    algorithm: "isolation_forest"
+    contamination: 0.10
+    n_estimators: 100
+    max_samples: 256
+  evaluation:
+    silhouette_score: true
+    davies_bouldin_score: true
+    calinski_harabasz_score: true
+
+# Reinforcement Learning
+reinforcement:
+  enabled: true
+  algorithms:
+    primary: "ppo"
+    secondary: "dqn"
+    backup: "sac"
+  ppo:
+    learning_rate: 0.0003
+    n_steps: 2048
+    batch_size: 64
+    n_epochs: 10
+    gamma: 0.99
+    gae_lambda: 0.95
+    clip_range: 0.20
+    ent_coef: 0.01
+    vf_coef: 0.50
+  dqn:
+    learning_rate: 0.0001
+    buffer_size: 100000
+    batch_size: 64
+    gamma: 0.99
+    tau: 0.001
+    target_update_interval: 1000
+    exploration_fraction: 0.10
+    exploration_initial: 1.0
+    exploration_final: 0.01
+  sac:
+    learning_rate: 0.0003
+    buffer_size: 100000
+    batch_size: 64
+    gamma: 0.99
+    tau: 0.005
+    alpha: 0.20
+
+# Ensemble Methods
+ensemble:
+  enabled: true
+  methods:
+    - "voting"
+    - "stacking"
+    - "bagging"
+    - "boosting"
+    - "blending"
+  primary_method: "stacking"
+  voting:
+    weights: "uniform"  # uniform, performance_based, rank_based
+    min_agreement: 0.60
+  stacking:
+    base_models: 5
+    meta_model: "logistic_regression"
+    cross_validation: true
+  bagging:
+    n_estimators: 10
+    max_samples: 1.0
+    bootstrap: true
+  boosting:
+    n_estimators: 50
+    learning_rate: 1.0
+    algorithm: "samme"
+
+# Feature Engineering
+feature_engineering:
+  enabled: true
+  methods:
+    - "polynomial_features"
+    - "interaction_features"
+    - "binning"
+    - "encoding"
+    - "scaling"
+    - "normalization"
+    - "dimension_reduction"
+    - "feature_selection"
+    - "feature_extraction"
+    - "target_encoding"
+  feature_selection:
+    method: "mutual_information"
+    k_features: 50
+    threshold: 0.01
+  scaling:
+    method: "standard"  # standard, minmax, robust, maxabs
+  encoding:
+    categorical_method: "onehot"  # onehot, label, target, frequency
+  interaction_features:
+    max_degree: 2
+    include_interactions: true
+
+# Hyperparameter Optimization
+hyperparameter_optimization:
+  enabled: true
+  optimization_algorithm: "bayesian"  # bayesian, grid, random, genetic, hyperband
+  max_iterations: 100
+  early_stopping_rounds: 10
+  validation_folds: 3
+  objective_function: "maximize_accuracy"
+  parallel_execution: true
+  result_visualization: true
+  search_space:
+    learning_rate: [0.0001, 0.1]
+    n_estimators: [50, 500]
+    max_depth: [3, 15]
+    min_samples_split: [2, 20]
+
+# Model Evaluation
+evaluation:
+  enabled: true
+  metrics:
+    - "accuracy"
+    - "precision"
+    - "recall"
+    - "f1_score"
+    - "roc_auc"
+    - "mse"
+    - "mae"
+    - "rmse"
+    - "r2_score"
+    - "mape"
+    - "mase"
+  evaluation_strategy: "cross_validation"
+  test_split: 0.10
+  confusion_matrix: true
+  feature_importance: true
+  model_interpretability: true
+  benchmarking: true
+
+# Model Selection
+model_selection:
+  enabled: true
+  selection_criteria:
+    - "performance_score"
+    - "generalization_capability"
+    - "computational_efficiency"
+    - "robustness"
+    - "interpretability"
+  selection_weights:
+    performance_score: 0.30
+    generalization: 0.25
+    computational_efficiency: 0.20
+    robustness: 0.15
+    interpretability: 0.10
+  top_k_models: 5
+  min_performance_threshold: 0.70
+
+# Model Registry
+model_registry:
+  enabled: true
+  registry_type: "mlflow"
+  version_control: true
+  model_metrics_tracking: true
+  model_comparison: true
+  model_deployment_tracking: true
+  registry_storage_days: 365
+  registered_models:
+    - "price_prediction_v1"
+    - "trend_prediction_v1"
+    - "signal_generation_v1"
+    - "risk_prediction_v1"
+
+# Training Pipeline
+training_pipeline:
+  enabled: true
+  pipeline_stages:
+    - "data_collection"
+    - "data_cleaning"
+    - "data_transformation"
+    - "feature_engineering"
+    - "model_training"
+    - "model_validation"
+    - "model_testing"
+    - "model_deployment"
+    - "model_monitoring"
+  pipeline_frequency_days: 1
+  full_pipeline: true
+  incremental_updates: true
+  pipeline_automation: true
+
+# Online Learning
+online_learning:
+  enabled: true
+  algorithms:
+    - "sgd"
+    - "passive_aggressive"
+    - "perceptron"
+    - "winnow"
+    - "online_random_forest"
+  update_frequency_bars: 10
+  batch_size: 100
+  learning_rate: 0.001
+  decay_rate: 0.99
+  drift_detection: true
+  drift_detection_method: "ddm"  # ddm, eddm, hddm, adwin
+  concept_drift_threshold: 0.15
+
+# Model Monitoring
+model_monitoring:
+  enabled: true
+  monitoring_frequency_seconds: 60
+  metrics:
+    - "model_accuracy"
+    - "inference_speed"
+    - "training_speed"
+    - "memory_usage"
+    - "cpu_usage"
+    - "gpu_usage"
+    - "error_rate"
+    - "drift_detection"
+  alert_thresholds:
+    accuracy_drop: 0.10
+    inference_time_ms: 100
+    error_rate: 0.05
+  dashboard_integration: true
+
+# MLflow Integration
+mlflow:
+  enabled: true
+  tracking_uri: "http://localhost:5000"
+  experiment_name: "nexus_trading"
+  artifact_location: "s3://mlflow-artifacts"
+  run_tags:
+    - "version"
+    - "model_type"
+    - "dataset_version"
+  metrics_logging: true
+  params_logging: true
+  artifacts_logging: true
+  model_registration: true
+
+# Integration
+integration:
+  enabled: true
+  webhook_endpoint: "http://localhost:8080/ml"
+  api_endpoint: "/api/v1/trading/ml"
+  dashboard_url: "http://localhost:3000/ml"
+  real_time_updates: true
+  data_sync_frequency_seconds: 5
+  external_systems:
+    - "mlflow"
+    - "wandb"
+    - "kubeflow"
+    - "tensorboard"
+    - "grafana"
+
+# Logging
+logging:
+  enabled: true
+  log_level: "info"
+  log_categories:
+    - "training"
+    - "evaluation"
+    - "inference"
+    - "model_management"
+    - "performance"
+    - "errors"
+  log_rotation: true
+  max_log_size_mb: 100
+  retention_days: 30
+
+# Alerting
+alerting:
+  enabled: true
+  alert_conditions:
+    - "model_degradation"
+    - "training_failure"
+    - "drift_detected"
+    - "performance_drop"
+    - "system_failure"
+    - "data_quality_issue"
+  alert_channels:
+    - "email"
+    - "telegram"
+    - "slack"
+    - "pagerduty"
+  alert_cooldown_seconds: 600
+  escalation_policy: true
