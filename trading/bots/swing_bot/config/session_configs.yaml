@@ -1,0 +1,328 @@
+# Swing Bot Trading Session Configuration
+# Trading Session & Market Hours Parameters
+
+# General Session Settings
+session:
+  enabled: true
+  trading_mode: "active"  # active, passive, hybrid, adaptive
+  session_type: "global"  # global, regional, custom, hybrid
+  timezone: "UTC"
+  version: "3.0.0"
+
+# Session Types
+session_types:
+  enabled: true
+  primary_sessions:
+    - "asia_session"
+    - "europe_session"
+    - "us_session"
+    - "global_session"
+    - "24_7_session"
+    - "custom_session"
+  regional_sessions:
+    - "tokyo"
+    - "hong_kong"
+    - "singapore"
+    - "sydney"
+    - "london"
+    - "frankfurt"
+    - "new_york"
+    - "chicago"
+  session_priorities:
+    global_session: 1
+    us_session: 2
+    europe_session: 3
+    asia_session: 4
+    regional_sessions: 5
+
+# Asia Session
+asia_session:
+  enabled: true
+  timezone: "Asia/Tokyo"
+  start_time: "00:00"
+  end_time: "08:00"
+  overlapping: true
+  hours: 8
+  liquidity_score: 0.60
+  volatility_score: 0.50
+  active_markets:
+    - "japan"
+    - "china"
+    - "hong_kong"
+    - "singapore"
+    - "australia"
+    - "south_korea"
+    - "india"
+
+# Europe Session
+europe_session:
+  enabled: true
+  timezone: "Europe/London"
+  start_time: "08:00"
+  end_time: "16:00"
+  overlapping: true
+  hours: 8
+  liquidity_score: 0.80
+  volatility_score: 0.60
+  active_markets:
+    - "london"
+    - "frankfurt"
+    - "paris"
+    - "zurich"
+    - "milan"
+    - "madrid"
+    - "amsterdam"
+
+# US Session
+us_session:
+  enabled: true
+  timezone: "America/New_York"
+  start_time: "13:00"
+  end_time: "21:00"
+  overlapping: true
+  hours: 8
+  liquidity_score: 0.90
+  volatility_score: 0.70
+  active_markets:
+    - "new_york"
+    - "chicago"
+    - "toronto"
+    - "mexico_city"
+    - "sao_paulo"
+
+# Global Session
+global_session:
+  enabled: true
+  timezone: "UTC"
+  start_time: "00:00"
+  end_time: "24:00"
+  hours: 24
+  liquidity_score: 0.70
+  volatility_score: 0.60
+  active_markets:
+    - "global_all"
+
+# Session Overlaps
+overlaps:
+  enabled: true
+  overlap_periods:
+    - name: "asia_europe_overlap"
+      start_time: "08:00"
+      end_time: "09:00"
+      sessions: ["asia_session", "europe_session"]
+      liquidity_boost: 0.20
+    - name: "europe_us_overlap"
+      start_time: "13:00"
+      end_time: "16:00"
+      sessions: ["europe_session", "us_session"]
+      liquidity_boost: 0.30
+    - name: "us_asia_overlap"
+      start_time: "21:00"
+      end_time: "00:00"
+      sessions: ["us_session", "asia_session"]
+      liquidity_boost: 0.10
+
+# Trading Hours
+trading_hours:
+  enabled: true
+  market_hours:
+    - market: "nyse"
+      timezone: "America/New_York"
+      start_time: "09:30"
+      end_time: "16:00"
+      extended_hours: false
+    - market: "nasdaq"
+      timezone: "America/New_York"
+      start_time: "09:30"
+      end_time: "16:00"
+      extended_hours: false
+    - market: "lse"
+      timezone: "Europe/London"
+      start_time: "08:00"
+      end_time: "16:30"
+      extended_hours: false
+    - market: "tse"
+      timezone: "Asia/Tokyo"
+      start_time: "09:00"
+      end_time: "15:00"
+      extended_hours: false
+    - market: "hkg"
+      timezone: "Asia/Hong_Kong"
+      start_time: "09:30"
+      end_time: "16:00"
+      extended_hours: false
+    - market: "sse"
+      timezone: "Asia/Shanghai"
+      start_time: "09:30"
+      end_time: "15:00"
+      extended_hours: false
+    - market: "asx"
+      timezone: "Australia/Sydney"
+      start_time: "10:00"
+      end_time: "16:00"
+      extended_hours: false
+
+# Session Strategies
+strategies:
+  enabled: true
+  session_strategies:
+    - "asia_strategy"
+    - "europe_strategy"
+    - "us_strategy"
+    - "overlap_strategy"
+    - "non_overlap_strategy"
+    - "global_strategy"
+  strategy_selection: "session_based"
+  strategy_parameters:
+    asia:
+      volatility_multiplier: 0.80
+      liquidity_multiplier: 0.80
+      risk_multiplier: 0.90
+    europe:
+      volatility_multiplier: 1.00
+      liquidity_multiplier: 1.00
+      risk_multiplier: 1.00
+    us:
+      volatility_multiplier: 1.20
+      liquidity_multiplier: 1.20
+      risk_multiplier: 1.10
+    overlap:
+      volatility_multiplier: 1.30
+      liquidity_multiplier: 1.40
+      risk_multiplier: 1.20
+
+# Session Indicators
+indicators:
+  enabled: true
+  session_indicators:
+    - "current_session"
+    - "session_liquidity"
+    - "session_volatility"
+    - "session_activity"
+    - "session_phase"
+    - "session_trend"
+  indicator_parameters:
+    liquidity_measure: "order_book_depth"
+    volatility_measure: "atr"
+    activity_measure: "volume"
+    phase_detection: true
+    trend_detection: true
+
+# Session Scoring
+scoring:
+  enabled: true
+  score_components:
+    - "liquidity_score": 0.25
+    - "volatility_score": 0.20
+    - "activity_score": 0.15
+    - "trend_score": 0.15
+    - "phase_score": 0.10
+    - "overlap_score": 0.10
+    - "historical_score": 0.05
+  score_thresholds:
+    excellent: 0.80
+    good: 0.60
+    fair: 0.40
+    poor: 0.20
+
+# Session Risk
+risk:
+  enabled: true
+  session_risk_factors:
+    - "liquidity_risk"
+    - "volatility_risk"
+    - "gap_risk"
+    - "execution_risk"
+    - "operational_risk"
+  risk_multipliers:
+    asia: 0.90
+    europe: 1.00
+    us: 1.10
+    overlap: 1.20
+    non_overlap: 0.80
+  position_sizing_adjustment: true
+  stop_loss_adjustment: true
+
+# Visualization
+visualization:
+  enabled: true
+  charts:
+    - "session_dashboard"
+    - "session_timeline"
+    - "liquidity_chart"
+    - "volatility_chart"
+    - "activity_chart"
+    - "scoring_chart"
+  update_interval_seconds: 60
+  dashboard_integration: true
+  real_time_updates: true
+
+# Alerting
+alerting:
+  enabled: true
+  alert_conditions:
+    - "session_change"
+    - "session_overlap_start"
+    - "session_overlap_end"
+    - "liquidity_change"
+    - "volatility_spike"
+    - "activity_change"
+    - "score_threshold_breach"
+  alert_thresholds:
+    liquidity_change: 0.20
+    volatility_spike: 0.30
+    activity_change: 0.20
+    score_threshold: 0.40
+  alert_channels:
+    - "email"
+    - "telegram"
+    - "slack"
+  alert_cooldown_seconds: 300
+
+# Reporting
+reporting:
+  enabled: true
+  report_types:
+    - "daily_session_summary"
+    - "weekly_session_analysis"
+    - "monthly_session_report"
+    - "session_performance_report"
+  report_formats:
+    - "pdf"
+    - "html"
+    - "json"
+    - "csv"
+    - "excel"
+  report_recipients:
+    - "trading@example.com"
+    - "research@example.com"
+    - "strategy@example.com"
+
+# Storage
+storage:
+  enabled: true
+  storage_categories:
+    - "session_data"
+    - "liquidity_data"
+    - "volatility_data"
+    - "activity_data"
+    - "scoring_data"
+    - "risk_data"
+    - "alert_history"
+  retention_days: 365
+  compression: "zstd"
+  storage_format: "parquet"
+
+# Integration
+integration:
+  enabled: true
+  webhook_endpoint: "http://localhost:8080/session"
+  api_endpoint: "/api/v1/trading/session"
+  dashboard_url: "http://localhost:3000/session"
+  real_time_updates: true
+  data_sync_frequency_seconds: 60
+  external_systems:
+    - "trading_engine"
+    - "risk_management"
+    - "strategy_engine"
+    - "calendar_system"
