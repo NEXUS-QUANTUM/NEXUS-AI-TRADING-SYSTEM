@@ -1,0 +1,359 @@
+# Swing Bot Reversal Configuration
+# Reversal Pattern Detection & Trading Parameters
+
+# General Reversal Settings
+reversal:
+  enabled: true
+  analysis_mode: "comprehensive"  # comprehensive, basic, advanced, real-time
+  pattern_detection: "multi_timeframe"  # multi_timeframe, single_timeframe, hybrid
+  strategy_type: "trend_reversal"  # trend_reversal, counter_trend, momentum_reversal
+  version: "3.0.0"
+
+# Pattern Types
+patterns:
+  enabled: true
+  primary_patterns:
+    - "double_top"
+    - "double_bottom"
+    - "head_and_shoulders"
+    - "inverse_head_and_shoulders"
+    - "rounded_top"
+    - "rounded_bottom"
+    - "cup_and_handle"
+    - "bullish_engulfing"
+    - "bearish_engulfing"
+    - "hammer"
+    - "shooting_star"
+    - "morning_star"
+    - "evening_star"
+    - "three_white_soldiers"
+    - "three_black_crows"
+    - "rising_three_methods"
+    - "falling_three_methods"
+    - "piercing_pattern"
+    - "dark_cloud_cover"
+  secondary_patterns:
+    - "abandoned_baby"
+    - "belthold"
+    - "breakaway"
+    - "close_doji"
+    - "doji_star"
+    - "dragonfly_doji"
+    - "gravestone_doji"
+    - "harami_cross"
+    - "high_wave"
+    - "long_legged_doji"
+    - "matching_low"
+    - "meeting_lines"
+    - "onslaught"
+    - "separating_lines"
+    - "tweezer_bottom"
+    - "tweezer_top"
+  pattern_weights:
+    double_top: 0.15
+    double_bottom: 0.15
+    head_and_shoulders: 0.10
+    inverse_head_and_shoulders: 0.10
+    rounded_top: 0.08
+    rounded_bottom: 0.08
+    cup_and_handle: 0.08
+    bullish_engulfing: 0.05
+    bearish_engulfing: 0.05
+    hammer: 0.04
+    shooting_star: 0.04
+    morning_star: 0.03
+    evening_star: 0.03
+    three_white_soldiers: 0.02
+    three_black_crows: 0.02
+    rising_three_methods: 0.02
+    falling_three_methods: 0.02
+
+# Double Top/Bottom
+double_top_bottom:
+  enabled: true
+  detection_parameters:
+    lookback_bars: 50
+    confirmation_bars: 3
+    min_peak_distance: 10
+    max_peak_distance: 30
+    peak_similarity_threshold: 0.02
+    valley_threshold: 0.01
+    volume_confirm: true
+  validation:
+    min_pattern_size: 0.02
+    max_pattern_size: 0.10
+    confidence_threshold: 0.70
+
+# Head & Shoulders
+head_shoulders:
+  enabled: true
+  detection_parameters:
+    lookback_bars: 100
+    confirmation_bars: 3
+    min_shoulder_distance: 5
+    max_shoulder_distance: 20
+    shoulder_similarity_threshold: 0.02
+    head_shoulder_ratio: 1.20
+    neckline_confirmation: true
+    volume_confirm: true
+  validation:
+    min_pattern_size: 0.03
+    max_pattern_size: 0.15
+    confidence_threshold: 0.75
+
+# Rounded Top/Bottom
+rounded:
+  enabled: true
+  detection_parameters:
+    lookback_bars: 60
+    confirmation_bars: 5
+    curve_detection: true
+    curvature_threshold: 0.01
+    volume_confirm: true
+    pattern_completion: true
+  validation:
+    min_pattern_size: 0.03
+    max_pattern_size: 0.12
+    confidence_threshold: 0.70
+
+# Cup & Handle
+cup_handle:
+  enabled: true
+  detection_parameters:
+    lookback_bars: 80
+    confirmation_bars: 3
+    cup_depth: 0.30
+    handle_depth: 0.10
+    handle_length: 10
+    volume_confirm: true
+    breakout_confirmation: true
+  validation:
+    min_pattern_size: 0.04
+    max_pattern_size: 0.15
+    confidence_threshold: 0.70
+
+# Candlestick Reversal Patterns
+candlestick:
+  enabled: true
+  candlestick_patterns:
+    - "engulfing"
+    - "hammer"
+    - "shooting_star"
+    - "morning_star"
+    - "evening_star"
+    - "three_white_soldiers"
+    - "three_black_crows"
+    - "piercing_pattern"
+    - "dark_cloud_cover"
+  detection_parameters:
+    confirmation_bars: 1
+    volume_confirm: true
+    shadow_ratio: 0.50
+    body_ratio: 0.30
+    doji_threshold: 0.01
+  validation:
+    min_pattern_size: 0.01
+    max_pattern_size: 0.05
+    confidence_threshold: 0.65
+
+# Reversal Indicators
+indicators:
+  enabled: true
+  primary_indicators:
+    - "rsi_divergence"
+    - "macd_divergence"
+    - "momentum_divergence"
+    - "volume_divergence"
+    - "obv_divergence"
+    - "bollinger_squeeze"
+  secondary_indicators:
+    - "stochastic_divergence"
+    - "cci_divergence"
+    - "williams_divergence"
+    - "adx_turn"
+    - "moving_average_crossover"
+  indicator_weights:
+    rsi_divergence: 0.20
+    macd_divergence: 0.15
+    momentum_divergence: 0.15
+    volume_divergence: 0.15
+    obv_divergence: 0.10
+    bollinger_squeeze: 0.10
+    stochastic_divergence: 0.05
+    cci_divergence: 0.05
+    adx_turn: 0.05
+
+# Divergence Detection
+divergence:
+  enabled: true
+  divergence_types:
+    - "bullish_divergence"
+    - "bearish_divergence"
+    - "hidden_bullish_divergence"
+    - "hidden_bearish_divergence"
+  detection_method: "price_indicator_comparison"
+  lookback_bars: 20
+  min_swing_size: 0.02
+  divergence_confirmation_bars: 3
+  strength_weight: 0.30
+
+# Entry Signals
+entry_signals:
+  enabled: true
+  signal_types:
+    - "reversal_buy"
+    - "reversal_sell"
+    - "divergence_buy"
+    - "divergence_sell"
+    - "pattern_buy"
+    - "pattern_sell"
+    - "confirmation_buy"
+    - "confirmation_sell"
+  confirmation_requirements:
+    min_indicators_confirmed: 2
+    pattern_confirmation: true
+    volume_confirmation: true
+    price_confirmation: true
+  signal_strength_calculation: "weighted_average"
+  min_signal_strength: 0.60
+
+# Exit Signals
+exit_signals:
+  enabled: true
+  exit_types:
+    - "pattern_completion"
+    - "target_hit"
+    - "stop_loss_hit"
+    - "reversal_failure"
+    - "momentum_reversal"
+  exit_confirmation: true
+  confirmation_bars: 2
+
+# Stop Loss
+stop_loss:
+  enabled: true
+  stop_methods:
+    - "pattern_failure"
+    - "fixed_percent"
+    - "volatility_based"
+    - "level_based"
+    - "trailing"
+  pattern_failure_threshold: 0.01
+  fixed_percent: 0.02
+  volatility_multiplier: 2.0
+  level_break_threshold: 0.01
+  trailing_activation: 0.02
+  trailing_distance: 0.01
+
+# Take Profit
+take_profit:
+  enabled: true
+  profit_methods:
+    - "fibonacci_extension"
+    - "risk_reward_ratio"
+    - "target_level"
+    - "trailing"
+  fibonacci_levels: [0.618, 1.0, 1.272, 1.618]
+  risk_reward_ratio: 2.0
+  target_multiplier: 1.0
+  trailing_activation: 0.02
+  trailing_distance: 0.01
+
+# Performance Metrics
+performance:
+  enabled: true
+  metrics:
+    - "reversal_accuracy"
+    - "pattern_accuracy"
+    - "divergence_accuracy"
+    - "win_rate"
+    - "average_return"
+    - "profit_factor"
+    - "sharpe_ratio"
+    - "max_drawdown"
+    - "average_hold_time"
+  evaluation_period_days: 30
+  rolling_window_days: 30
+
+# Visualization
+visualization:
+  enabled: true
+  charts:
+    - "reversal_dashboard"
+    - "pattern_chart"
+    - "divergence_chart"
+    - "signal_chart"
+    - "performance_chart"
+    - "candlestick_chart"
+  update_interval_seconds: 10
+  dashboard_integration: true
+  real_time_updates: true
+
+# Alerting
+alerting:
+  enabled: true
+  alert_conditions:
+    - "reversal_pattern_detected"
+    - "divergence_detected"
+    - "entry_signal"
+    - "exit_signal"
+    - "pattern_failure"
+    - "stop_loss_trigger"
+    - "take_profit_trigger"
+  alert_thresholds:
+    pattern_confidence: 0.70
+    divergence_confidence: 0.70
+    signal_confidence: 0.70
+  alert_channels:
+    - "email"
+    - "telegram"
+    - "slack"
+  alert_cooldown_seconds: 300
+
+# Reporting
+reporting:
+  enabled: true
+  report_types:
+    - "real_time_alerts"
+    - "daily_reversal_summary"
+    - "weekly_reversal_analysis"
+    - "monthly_reversal_report"
+  report_formats:
+    - "pdf"
+    - "html"
+    - "json"
+    - "csv"
+    - "excel"
+  report_recipients:
+    - "trading@example.com"
+    - "research@example.com"
+    - "strategy@example.com"
+
+# Storage
+storage:
+  enabled: true
+  storage_categories:
+    - "reversal_data"
+    - "pattern_data"
+    - "divergence_data"
+    - "signal_history"
+    - "trade_history"
+    - "performance_metrics"
+    - "alert_history"
+  retention_days: 365
+  compression: "zstd"
+  storage_format: "parquet"
+
+# Integration
+integration:
+  enabled: true
+  webhook_endpoint: "http://localhost:8080/reversal"
+  api_endpoint: "/api/v1/trading/reversal"
+  dashboard_url: "http://localhost:3000/reversal"
+  real_time_updates: true
+  data_sync_frequency_seconds: 5
+  external_systems:
+    - "trading_engine"
+    - "risk_management"
+    - "strategy_engine"
+    - "research_platform"
