@@ -1,0 +1,311 @@
+# Swing Bot Sector Analysis Configuration
+# Sector Analysis & Rotation Parameters
+
+# General Sector Settings
+sector:
+  enabled: true
+  analysis_mode: "comprehensive"  # comprehensive, basic, advanced, real-time
+  classification_system: "gics"  # gics, icb, custom
+  sector_coverage: "all"  # all, major, selected
+  version: "3.0.0"
+
+# Sector Classification
+classification:
+  enabled: true
+  gics:
+    - "energy"
+    - "materials"
+    - "industrials"
+    - "consumer_discretionary"
+    - "consumer_staples"
+    - "health_care"
+    - "financials"
+    - "information_technology"
+    - "communication_services"
+    - "utilities"
+    - "real_estate"
+  icb:
+    - "oil_and_gas"
+    - "basic_materials"
+    - "industrials"
+    - "consumer_goods"
+    - "health_care"
+    - "telecommunications"
+    - "utilities"
+    - "financials"
+    - "technology"
+    - "real_estate"
+  custom_sectors:
+    - "green_energy"
+    - "ai_technology"
+    - "crypto_economy"
+    - "biotech"
+    - "fintech"
+    - "cybersecurity"
+
+# Sector Indicators
+indicators:
+  enabled: true
+  primary_indicators:
+    - "relative_strength"
+    - "momentum"
+    - "valuation"
+    - "earnings_growth"
+    - "flow"
+    - "sentiment"
+    - "volatility"
+    - "correlation"
+  secondary_indicators:
+    - "dividend_yield"
+    - "beta"
+    - "sharpe_ratio"
+    - "turnover"
+    - "concentration"
+    - "diversification"
+  indicator_weights:
+    relative_strength: 0.20
+    momentum: 0.15
+    valuation: 0.15
+    earnings_growth: 0.15
+    flow: 0.10
+    sentiment: 0.10
+    volatility: 0.10
+    correlation: 0.05
+
+# Relative Strength
+relative_strength:
+  enabled: true
+  calculation_method: "rank"  # rank, percentile, zscore, ratio
+  lookback_period_days: 90
+  smoothing_period_days: 10
+  threshold_top_percentile: 25
+  threshold_bottom_percentile: 25
+  momentum_weights: true
+  volatility_adjustment: true
+
+# Sector Momentum
+momentum:
+  enabled: true
+  timeframes:
+    short_term: 10
+    medium_term: 30
+    long_term: 90
+  momentum_indicators:
+    - "price_momentum"
+    - "volume_momentum"
+    - "relative_momentum"
+    - "composite_momentum"
+  momentum_score_weights:
+    short_term: 0.30
+    medium_term: 0.40
+    long_term: 0.30
+  threshold_momentum_positive: 0.05
+  threshold_momentum_negative: -0.05
+
+# Sector Valuation
+valuation:
+  enabled: true
+  valuation_metrics:
+    - "pe_ratio"
+    - "pb_ratio"
+    - "ps_ratio"
+    - "peg_ratio"
+    - "ev_ebitda"
+    - "dividend_yield"
+  relative_valuation: true
+  valuation_normalization: true
+  historical_percentile_ranking: true
+  valuation_threshold_high: 80
+  valuation_threshold_low: 20
+
+# Sector Earnings
+earnings:
+  enabled: true
+  earnings_metrics:
+    - "earnings_growth"
+    - "earnings_surprise"
+    - "revenue_growth"
+    - "margin_expansion"
+  lookback_quarters: 8
+  forecast_horizon_quarters: 4
+  consensus_earnings: true
+
+# Sector Flow
+flow:
+  enabled: true
+  flow_indicators:
+    - "etf_flows"
+    - "mutual_fund_flows"
+    - "hedge_fund_positioning"
+    - "institutional_flow"
+    - "retail_flow"
+  lookback_period_days: 30
+  flow_threshold_percentile: 70
+
+# Sector Sentiment
+sentiment:
+  enabled: true
+  sentiment_indicators:
+    - "analyst_sentiment"
+    - "news_sentiment"
+    - "social_sentiment"
+    - "investor_sentiment"
+  lookback_period_days: 30
+  sentiment_threshold: 0.30
+
+# Sector Scoring
+scoring:
+  enabled: true
+  score_components:
+    - "momentum": 0.25
+    - "fundamentals": 0.20
+    - "valuation": 0.15
+    - "flow": 0.15
+    - "sentiment": 0.10
+    - "technical": 0.10
+    - "correlation": 0.05
+  scoring_method: "weighted_average"
+  normalization: true
+  zscore_calculation: true
+  percentile_ranking: true
+
+# Sector Rotation
+rotation:
+  enabled: true
+  rotation_indicators:
+    - "relative_strength"
+    - "momentum"
+    - "valuation"
+    - "earnings_momentum"
+    - "economic_cycle"
+  rotation_frequency_days: 30
+  max_sectors_held: 5
+  min_sectors_held: 3
+  rebalance_threshold: 0.10
+  rotation_strategy: "momentum_based"
+
+# Economic Cycle
+economic_cycle:
+  enabled: true
+  cycle_phases:
+    - "early_expansion"
+    - "mid_expansion"
+    - "late_expansion"
+    - "early_contraction"
+    - "mid_contraction"
+    - "late_contraction"
+    - "recovery"
+  phase_detection_indicators:
+    - "gdp_growth"
+    - "unemployment_rate"
+    - "consumer_confidence"
+    - "industrial_production"
+    - "inflation_rate"
+    - "interest_rates"
+  sector_cycle_mappings:
+    early_expansion: ["financials", "industrials", "materials"]
+    mid_expansion: ["information_technology", "consumer_discretionary", "industrials"]
+    late_expansion: ["energy", "materials", "utilities"]
+    early_contraction: ["consumer_staples", "health_care", "utilities"]
+    mid_contraction: ["consumer_staples", "health_care", "real_estate"]
+    late_contraction: ["financials", "consumer_discretionary", "information_technology"]
+    recovery: ["financials", "industrials", "materials"]
+
+# Sector Weighting
+weighting:
+  enabled: true
+  strategy: "dynamic"  # equal, market_cap, risk_parity, dynamic, optimized
+  constraints:
+    max_weight: 0.35
+    min_weight: 0.05
+    max_sector_exposure: 0.50
+  rebalance_frequency_days: 30
+  drift_tolerance: 0.05
+
+# Visualization
+visualization:
+  enabled: true
+  charts:
+    - "sector_dashboard"
+    - "relative_strength_chart"
+    - "rotation_heatmap"
+    - "momentum_chart"
+    - "valuation_chart"
+    - "scoring_chart"
+    - "correlation_matrix"
+  update_interval_seconds: 60
+  dashboard_integration: true
+  real_time_updates: true
+
+# Alerting
+alerting:
+  enabled: true
+  alert_conditions:
+    - "sector_rotation_signal"
+    - "relative_strength_change"
+    - "valuation_extreme"
+    - "momentum_shift"
+    - "flow_anomaly"
+    - "sentiment_shift"
+    - "correlation_break"
+  alert_thresholds:
+    rotation_confidence: 0.70
+    strength_change: 0.20
+    valuation_extreme: 30
+    momentum_shift: 0.15
+    flow_anomaly: 2.0
+    correlation_break: 0.30
+  alert_channels:
+    - "email"
+    - "telegram"
+    - "slack"
+  alert_cooldown_seconds: 600
+
+# Reporting
+reporting:
+  enabled: true
+  report_types:
+    - "daily_sector_summary"
+    - "weekly_sector_analysis"
+    - "monthly_sector_report"
+    - "rotation_report"
+    - "valuation_report"
+  report_formats:
+    - "pdf"
+    - "html"
+    - "json"
+    - "csv"
+    - "excel"
+  report_recipients:
+    - "trading@example.com"
+    - "research@example.com"
+    - "strategy@example.com"
+
+# Storage
+storage:
+  enabled: true
+  storage_categories:
+    - "sector_data"
+    - "rotation_data"
+    - "scoring_data"
+    - "valuation_data"
+    - "flow_data"
+    - "sentiment_data"
+    - "alert_history"
+  retention_days: 365
+  compression: "zstd"
+  storage_format: "parquet"
+
+# Integration
+integration:
+  enabled: true
+  webhook_endpoint: "http://localhost:8080/sector"
+  api_endpoint: "/api/v1/trading/sector"
+  dashboard_url: "http://localhost:3000/sector"
+  real_time_updates: true
+  data_sync_frequency_seconds: 30
+  external_systems:
+    - "trading_engine"
+    - "risk_management"
+    - "strategy_engine"
+    - "research_platform"
