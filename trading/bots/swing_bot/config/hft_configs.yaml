@@ -1,0 +1,216 @@
+# Swing Bot HFT Configuration
+# High-Frequency Trading Parameters for Swing Strategy Execution
+
+# General HFT Settings
+hft:
+  enabled: true
+  mode: "adaptive"  # adaptive, aggressive, conservative
+  priority: "speed"  # speed, accuracy, balance
+  latency_threshold_ms: 10
+  max_order_rate_per_second: 100
+  cooldown_ms: 1
+  batch_size: 50
+
+# Order Execution Settings
+execution:
+  order_types:
+    - "market"
+    - "limit"
+    - "stop"
+    - "stop_limit"
+    - "trailing_stop"
+  default_order_type: "limit"
+  iceberg:
+    enabled: true
+    max_visible_size: 5
+    min_visible_size: 1
+  twap:
+    enabled: true
+    slice_count: 10
+    slice_interval_ms: 100
+  vwap:
+    enabled: true
+    participation_rate: 0.1
+    aggressive_limit: 0.2
+
+# Latency Optimization
+latency:
+  co_location: true
+  direct_market_access: true
+  fiber_connection: true
+  hardware_clock_sync: true
+  kernel_bypass: true
+  rdma_enabled: true
+  tick_to_trade_ms: 5
+  order_to_ack_ms: 2
+
+# Market Data Settings
+market_data:
+  depth_levels: 10
+  tick_frequency_hz: 1000
+  snapshot_interval_ms: 50
+  delta_updates: true
+  l2_book_enabled: true
+  mbo_enabled: true
+  sbe_decoding: true
+
+# Risk Controls
+risk:
+  max_position_size_percent: 2.0
+  max_order_size_percent: 0.5
+  max_open_orders: 50
+  max_trade_frequency_per_second: 20
+  max_daily_trades: 10000
+  max_daily_volume_percent: 5.0
+  stop_loss_percent: 1.0
+  take_profit_percent: 0.5
+  trailing_stop_activation: 0.3
+  trailing_stop_distance: 0.2
+
+# Algorithmic Strategies
+algorithms:
+  market_making:
+    enabled: true
+    spread_multiplier: 1.5
+    quote_lifetime_ms: 100
+    max_spread_bps: 5
+    min_spread_bps: 1
+  arbitrage:
+    enabled: true
+    min_profit_bps: 0.5
+    max_execution_time_ms: 50
+    cross_exchange: true
+  momentum:
+    enabled: true
+    window_ms: 1000
+    threshold_bps: 2
+  mean_reversion:
+    enabled: true
+    window_ms: 5000
+    z_score_threshold: 2.0
+  statistical_arbitrage:
+    enabled: true
+    lookback_bars: 20
+    spread_entry: 2.0
+    spread_exit: 0.5
+
+# Smart Order Routing
+sor:
+  enabled: true
+  venues:
+    - "primary"
+    - "secondary"
+    - "dark_pool"
+  smart_routing_algorithm: "cost_based"
+  hidden_orders: true
+  dark_pool_participation: true
+  sweep_to_fill: true
+  min_venue_liquidity_percent: 0.1
+
+# Co-location Settings
+colocation:
+  provider: "equinix"
+  region: "ny4"
+  rack_u: 42
+  power_redundant: true
+  network_redundant: true
+  cross_connects:
+    - "exchange_a"
+    - "exchange_b"
+    - "exchange_c"
+
+# Hardware Acceleration
+hardware:
+  fpga_acceleration: true
+  gpu_acceleration: false
+  custom_nic: true
+  low_latency_switch: true
+  ram_disk_enabled: true
+  cpu_pinning: true
+  isolated_cores: 4
+
+# Network Settings
+network:
+  multicast_enabled: true
+  tcp_nodelay: true
+  so_linger: 0
+  receive_buffer_size: 16777216
+  send_buffer_size: 16777216
+  keepalive: true
+  keepalive_interval: 60
+
+# Throttling & Rate Limiting
+throttling:
+  burst_limit: 200
+  sustained_limit: 100
+  recovery_time_seconds: 10
+  backoff_multiplier: 1.5
+  max_retries: 3
+
+# Monitoring & Logging
+monitoring:
+  performance_metrics: true
+  latency_histogram: true
+  order_flow_logging: true
+  market_data_logging: false
+  alert_threshold_ms: 50
+  log_interval_seconds: 10
+  metric_aggregation: "last_value"
+
+# Failover & Redundancy
+failover:
+  primary: "primary_node"
+  secondary: "secondary_node"
+  heartbeat_interval_ms: 100
+  failover_timeout_ms: 500
+  auto_failover: true
+  data_sync: true
+
+# Compliance & Regulatory
+compliance:
+  reg_nms: true
+  reg_mifi: true
+  reporting_required: true
+  audit_trail: true
+  order_book_snapshots: true
+  regulatory_delay_ms: 0
+  max_order_rate_regulatory: 500
+
+# Performance Tuning
+performance:
+  thread_pool_size: 8
+  event_loop_threads: 4
+  gc_optimization: true
+  object_pooling: true
+  pre_allocated_buffers: true
+  cache_line_alignment: true
+  memory_pool_size_mb: 1024
+
+# Order Management
+order_management:
+  order_expiry_ms: 5000
+  partial_fill_policy: "aggressive"
+  post_only: true
+  reduce_only: false
+  time_in_force: "IOC"
+  self_trade_prevention: true
+
+# Market Impact
+market_impact:
+  model: "linear"
+  impact_factor: 0.001
+  urgency_factor: 0.5
+  participation_rate: 0.2
+  max_impact_percent: 0.5
+
+# Session Management
+session:
+  pre_market: false
+  regular_trading: true
+  after_hours: false
+  weekends: false
+  holidays_closed: true
+  session_timezone: "America/New_York"
+  trading_hours:
+    start: "09:30"
+    end: "16:00"
