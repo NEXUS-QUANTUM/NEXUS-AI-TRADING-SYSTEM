@@ -1,0 +1,383 @@
+# Swing Bot Machine Learning Engine Configuration
+# Core ML Engine & Model Management Parameters
+
+# General ML Engine Settings
+ml_engine:
+  enabled: true
+  engine_mode: "hybrid"  # hybrid, supervised, unsupervised, reinforcement, autonomous
+  learning_paradigm: "meta_learning"  # meta_learning, transfer_learning, multi_task_learning
+  development_stage: "advanced"  # basic, intermediate, advanced, expert
+  version: "3.0.0"
+
+# Engine Architecture
+architecture:
+  engine_type: "modular"  # modular, monolithic, distributed, microservices
+  modules:
+    - "data_pipeline"
+    - "feature_engine"
+    - "model_trainer"
+    - "model_evaluator"
+    - "model_selector"
+    - "hyperparameter_optimizer"
+    - "ensemble_manager"
+    - "prediction_engine"
+    - "adaptation_manager"
+    - "model_registry"
+    - "performance_monitor"
+  module_interaction: "pipeline"  # pipeline, event_driven, message_based
+  parallel_execution: true
+  max_workers: 8
+  pipeline_buffer_size: 10000
+
+# Data Pipeline
+data_pipeline:
+  enabled: true
+  data_sources:
+    - "market_data"
+    - "trade_data"
+    - "performance_data"
+    - "risk_data"
+    - "alternative_data"
+    - "external_data"
+  pipeline_stages:
+    - "ingestion"
+    - "cleaning"
+    - "validation"
+    - "transformation"
+    - "normalization"
+    - "augmentation"
+    - "encoding"
+    - "sequencing"
+  batch_size: 1000
+  processing_mode: "streaming"  # streaming, batch, hybrid
+  data_quality_threshold: 0.95
+  outlier_removal: true
+  missing_value_handling: "interpolate"  # interpolate, drop, fill, model_based
+
+# Feature Engine
+feature_engine:
+  enabled: true
+  feature_types:
+    - "technical_indicators"
+    - "price_features"
+    - "volume_features"
+    - "volatility_features"
+    - "momentum_features"
+    - "trend_features"
+    - "statistical_features"
+    - "pattern_features"
+    - "sentiment_features"
+    - "fundamental_features"
+    - "alternative_features"
+  feature_selection_method: "mutual_information"  # mutual_information, chi2, rfe, l1, tree_based
+  max_features: 100
+  min_feature_importance: 0.005
+  auto_feature_engineering: true
+  feature_interaction: true
+  polynomial_features: true
+  feature_grouping: true
+
+# Model Trainer
+model_trainer:
+  enabled: true
+  model_types:
+    - "linear_models"
+    - "tree_based_models"
+    - "ensemble_models"
+    - "neural_networks"
+    - "deep_learning_models"
+    - "reinforcement_learning_models"
+    - "probabilistic_models"
+    - "hybrid_models"
+  training_paradigm: "hybrid"  # supervised, unsupervised, reinforcement, hybrid
+  training_strategy: "adaptive"  # adaptive, scheduled, manual
+  batch_size: 64
+  epochs: 100
+  early_stopping_patience: 10
+  validation_split: 0.20
+  cross_validation_folds: 5
+  learning_rate: 0.001
+  optimization_algorithm: "adam"  # adam, sgd, rmsprop, adamw
+  loss_function: "custom"  # mse, mae, cross_entropy, custom, huber
+  gradient_clip: 1.0
+  weight_decay: 0.01
+
+# Model Evaluator
+model_evaluator:
+  enabled: true
+  evaluation_metrics:
+    - "accuracy"
+    - "precision"
+    - "recall"
+    - "f1_score"
+    - "roc_auc"
+    - "mse"
+    - "mae"
+    - "rmse"
+    - "r2_score"
+    - "sharpe_ratio"
+    - "sortino_ratio"
+    - "calmar_ratio"
+    - "win_rate"
+    - "profit_factor"
+    - "information_ratio"
+    - "treynor_ratio"
+  evaluation_strategy: "cross_validation"  # cross_validation, holdout, walk_forward
+  test_split: 0.10
+  confusion_matrix: true
+  feature_importance: true
+  model_interpretability: true
+  benchmarking: true
+  model_comparison: true
+
+# Model Selector
+model_selector:
+  enabled: true
+  selection_method: "ensemble"  # single, ensemble, stacking, voting
+  selection_criteria:
+    - "performance_score"
+    - "generalization_capability"
+    - "computational_efficiency"
+    - "robustness"
+    - "interpretability"
+    - "adaptability"
+  selection_weights:
+    performance_score: 0.30
+    generalization: 0.20
+    computational_efficiency: 0.15
+    robustness: 0.15
+    interpretability: 0.10
+    adaptability: 0.10
+  top_k_models: 5
+  min_performance_threshold: 0.70
+  dynamic_selection: true
+
+# Hyperparameter Optimizer
+hyperparameter_optimizer:
+  enabled: true
+  optimization_methods:
+    - "bayesian_optimization"
+    - "grid_search"
+    - "random_search"
+    - "genetic_algorithm"
+    - "hyperband"
+    - "optuna"
+  primary_method: "bayesian_optimization"
+  max_iterations: 100
+  early_stopping_rounds: 10
+  validation_folds: 3
+  objective_function: "maximize_f1"  # maximize_f1, minimize_loss, maximize_sharpe
+  parallel_execution: true
+  result_logging: true
+  visualization: true
+  search_space_config: true
+
+# Ensemble Manager
+ensemble_manager:
+  enabled: true
+  ensemble_methods:
+    - "voting"
+    - "averaging"
+    - "stacking"
+    - "bagging"
+    - "boosting"
+    - "blending"
+    - "weighted_average"
+  primary_method: "stacking"
+  base_models_count: 5
+  meta_model: "linear_regression"  # linear_regression, logistic_regression, random_forest, xgboost
+  cross_validation: true
+  diversity_measurement: true
+  dynamic_weighting: true
+  ensemble_optimization: true
+
+# Prediction Engine
+prediction_engine:
+  enabled: true
+  prediction_types:
+    - "price_prediction"
+    - "trend_prediction"
+    - "volatility_prediction"
+    - "volume_prediction"
+    - "signal_prediction"
+    - "risk_prediction"
+    - "performance_prediction"
+    - "class_probability"
+  prediction_horizons:
+    - "ultra_short": "1m"
+    - "short_term": "5m"
+    - "medium_term": "1h"
+    - "long_term": "24h"
+    - "ultra_long": "7d"
+  prediction_confidence_level: 0.95
+  prediction_uncertainty: true
+  prediction_calibration: true
+  real_time_predictions: true
+  batch_predictions: true
+  prediction_aggregation: "weighted"  # weighted, majority, average
+
+# Adaptation Manager
+adaptation_manager:
+  enabled: true
+  adaptation_types:
+    - "parameter_adaptation"
+    - "structure_adaptation"
+    - "strategy_adaptation"
+    - "model_adaptation"
+    - "regime_adaptation"
+    - "environment_adaptation"
+    - "behavioral_adaptation"
+  adaptation_frequency_minutes: 5
+  adaptation_threshold: 0.50
+  adaptation_speed: "adaptive"  # slow, moderate, fast, adaptive
+  drift_detection: true
+  drift_threshold: 0.15
+  concept_drift_handling: "retraining"  # retraining, adaptation, ensemble
+  periodic_retraining_hours: 6
+  online_learning: true
+
+# Model Registry
+model_registry:
+  enabled: true
+  registry_type: "mlflow"  # mlflow, wandb, kubeflow, custom
+  models_tracked:
+    - "prediction_models"
+    - "classification_models"
+    - "regression_models"
+    - "ensemble_models"
+    - "deep_learning_models"
+    - "reinforcement_models"
+  version_control: true
+  model_metrics_tracking: true
+  model_comparison: true
+  model_deployment_tracking: true
+  registry_storage_days: 365
+  model_metadata: true
+  model_artifacts: true
+
+# Performance Monitor
+performance_monitor:
+  enabled: true
+  monitoring_frequency_seconds: 10
+  metrics:
+    - "model_accuracy"
+    - "inference_speed"
+    - "training_speed"
+    - "memory_usage"
+    - "cpu_usage"
+    - "gpu_usage"
+    - "error_rate"
+    - "drift_metrics"
+    - "performance_degradation"
+  alert_thresholds:
+    accuracy_drop: 0.10
+    inference_time_ms: 50
+    error_rate: 0.05
+    memory_usage_percent: 85
+    cpu_usage_percent: 80
+  dashboard_integration: true
+  real_time_alerts: true
+  performance_logging: true
+
+# Model Deployment
+deployment:
+  enabled: true
+  deployment_strategy: "canary"  # canary, blue_green, rolling, shadow
+  canary_percentage: 10
+  deployment_automation: true
+  health_check: true
+  rollback_threshold: 0.90
+  environment:
+    - "development"
+    - "staging"
+    - "production"
+  approval_required: false
+  deployment_logging: true
+
+# MLflow Integration
+mlflow:
+  enabled: true
+  tracking_uri: "http://localhost:5000"
+  experiment_name: "nexus_trading"
+  artifact_location: "s3://mlflow-artifacts"
+  run_tags:
+    - "version"
+    - "model_type"
+    - "dataset_version"
+    - "environment"
+  metrics_logging: true
+  params_logging: true
+  artifacts_logging: true
+  model_registration: true
+  model_staging: true
+  model_archiving: true
+
+# Integration
+integration:
+  enabled: true
+  webhook_endpoint: "http://localhost:8080/ml-engine"
+  api_endpoint: "/api/v1/trading/ml-engine"
+  dashboard_url: "http://localhost:3000/ml-engine"
+  real_time_updates: true
+  data_sync_frequency_seconds: 5
+  external_systems:
+    - "mlflow"
+    - "wandb"
+    - "kubeflow"
+    - "tensorboard"
+    - "grafana"
+    - "prometheus"
+    - "elasticsearch"
+    - "kafka"
+
+# Logging
+logging:
+  enabled: true
+  log_level: "info"  # debug, info, warn, error, critical
+  log_categories:
+    - "training"
+    - "evaluation"
+    - "prediction"
+    - "adaptation"
+    - "deployment"
+    - "performance"
+    - "errors"
+    - "system"
+    - "audit"
+  log_rotation: true
+  max_log_size_mb: 100
+  retention_days: 30
+  audit_trail: true
+
+# Alerting
+alerting:
+  enabled: true
+  alert_conditions:
+    - "model_degradation"
+    - "training_failure"
+    - "data_quality_issue"
+    - "drift_detected"
+    - "performance_drop"
+    - "system_failure"
+    - "deployment_failure"
+    - "prediction_error"
+  alert_channels:
+    - "email"
+    - "telegram"
+    - "slack"
+    - "pagerduty"
+    - "sms"
+  alert_cooldown_seconds: 600
+  escalation_policy: true
+
+# Security
+security:
+  enabled: true
+  model_encryption: true
+  data_encryption: true
+  access_control: true
+  audit_logging: true
+  secure_deployment: true
+  vulnerability_scanning: true
+  model_validations: true
+  compliance_checks: true
