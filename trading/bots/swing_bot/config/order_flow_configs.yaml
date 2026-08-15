@@ -1,0 +1,299 @@
+# Swing Bot Order Flow Configuration
+# Order Flow Analysis & Market Microstructure Parameters
+
+# General Order Flow Settings
+order_flow:
+  enabled: true
+  analysis_mode: "comprehensive"  # comprehensive, basic, advanced, real-time
+  flow_calculation: "multi_factor"  # multi_factor, volume_based, delta_based, hybrid
+  update_frequency_seconds: 5
+  version: "3.0.0"
+
+# Order Flow Indicators
+indicators:
+  enabled: true
+  primary_indicators:
+    - "cummulative_delta"
+    - "volume_weighted_price"
+    - "order_flow_imbalance"
+    - "trade_flow"
+    - "volume_delta"
+    - "bid_ask_volume"
+    - "order_flow_velocity"
+    - "aggressor_ratio"
+  secondary_indicators:
+    - "delta_divergence"
+    - "flow_reversal"
+    - "absorption_volume"
+    - "exhaustion_volume"
+    - "smart_money_flow"
+    - "retail_flow"
+    - "institutional_flow"
+    - "arbitrage_flow"
+  indicator_weights:
+    cummulative_delta: 0.20
+    volume_weighted_price: 0.15
+    order_flow_imbalance: 0.15
+    trade_flow: 0.10
+    volume_delta: 0.10
+    bid_ask_volume: 0.10
+    order_flow_velocity: 0.10
+    aggressor_ratio: 0.10
+
+# Cumulative Delta
+cummulative_delta:
+  enabled: true
+  calculation_method: "trade_volume"  # trade_volume, tick_volume, contract_volume
+  delta_types:
+    - "total_delta"
+    - "bid_delta"
+    - "ask_delta"
+    - "net_delta"
+    - "cumulative_delta"
+    - "delta_velocity"
+  smoothing: true
+  smoothing_period: 3
+  divergence_detection: true
+  reversal_detection: true
+  strength_scoring: true
+
+# Volume Weighted Price
+vwap:
+  enabled: true
+  calculation_method: "standard"  # standard, anchored, moving, volume_weighted
+  vwap_period_bars: 20
+  vwap_bands: true
+  band_width: 2
+  vwap_breakout: true
+  vwap_reversal: true
+  anchoring_points:
+    - "session_open"
+    - "day_open"
+    - "custom_levels"
+
+# Order Flow Imbalance
+imbalance:
+  enabled: true
+  calculation_method: "bid_ask_imbalance"  # bid_ask_imbalance, order_book_imbalance, trade_flow_imbalance
+  imbalance_types:
+    - "order_book_imbalance"
+    - "trade_flow_imbalance"
+    - "volume_imbalance"
+    - "delta_imbalance"
+    - "depth_imbalance"
+  threshold_imbalance: 0.30
+  imbalance_score: true
+  imbalance_prediction: true
+  imbalance_reversal: true
+
+# Aggressor Analysis
+aggressor:
+  enabled: true
+  aggressor_types:
+    - "buyer_initiated"
+    - "seller_initiated"
+    - "market_orders"
+    - "limit_orders"
+    - "aggressive_orders"
+    - "passive_orders"
+  aggressor_ratio_calculation: "volume_based"  # volume_based, count_based
+  aggressor_threshold: 0.60
+  passive_threshold: 0.40
+  institutional_aggressor: true
+  retail_aggressor: true
+
+# Order Flow Velocity
+velocity:
+  enabled: true
+  velocity_metrics:
+    - "trade_velocity"
+    - "quote_velocity"
+    - "order_velocity"
+    - "cancellation_velocity"
+    - "modification_velocity"
+  calculation_window_bars: 5
+  velocity_ma_period: 10
+  velocity_spike_threshold: 2.0
+  velocity_slowing_threshold: 0.50
+  velocity_breakout: true
+  velocity_reversal: true
+
+# Absorption Volume
+absorption:
+  enabled: true
+  absorption_types:
+    - "buy_absorption"
+    - "sell_absorption"
+    - "passive_absorption"
+    - "active_absorption"
+  absorption_threshold: 100000
+  absorption_detection: true
+  absorption_strength: true
+  absorption_confirmation: true
+  absorption_failure: true
+
+# Exhaustion Volume
+exhaustion:
+  enabled: true
+  exhaustion_types:
+    - "buy_exhaustion"
+    - "sell_exhaustion"
+    - "volume_exhaustion"
+    - "delta_exhaustion"
+    - "order_flow_exhaustion"
+  exhaustion_detection: true
+  exhaustion_threshold: 0.80
+  exhaustion_confirmation_bars: 2
+  reversal_probability: true
+
+# Smart Money Flow
+smart_money:
+  enabled: true
+  detection_methods:
+    - "large_trades"
+    - "institutional_orders"
+    - "block_trades"
+    - "program_trades"
+    - "algorithmic_trades"
+  threshold_large_trade: 100000
+  threshold_block_trade: 500000
+  accumulation_distribution: true
+  smart_money_flow_score: true
+  retail_flow_score: true
+
+# Order Flow Analysis
+analysis:
+  enabled: true
+  analysis_types:
+    - "order_flow_trend"
+    - "order_flow_cycle"
+    - "order_flow_momentum"
+    - "order_flow_reversal"
+    - "order_flow_consolidation"
+    - "order_flow_breakout"
+  analysis_window_bars: 50
+  confirmation_bars: 3
+  signal_strength: true
+  contextual_analysis: true
+  historical_comparison: true
+
+# Order Flow Signals
+signals:
+  enabled: true
+  signal_types:
+    - "bullish_flow"
+    - "bearish_flow"
+    - "flow_reversal"
+    - "flow_breakout"
+    - "flow_divergence"
+    - "flow_exhaustion"
+    - "flow_absorption"
+    - "smart_money_buying"
+    - "smart_money_selling"
+  confirmation_requirements:
+    min_indicators_confirmed: 2
+    volume_confirmation: true
+    price_confirmation: true
+  signal_strength_calculation: "weighted_average"
+  min_signal_strength: 0.60
+
+# Divergence Detection
+divergence:
+  enabled: true
+  divergence_types:
+    - "bullish_divergence"
+    - "bearish_divergence"
+    - "hidden_bullish_divergence"
+    - "hidden_bearish_divergence"
+  detection_method: "price_flow_comparison"
+  lookback_bars: 20
+  min_swing_size: 0.02
+  divergence_confirmation_bars: 3
+  strength_weight: 0.30
+
+# Order Flow Visualization
+visualization:
+  enabled: true
+  charts:
+    - "order_flow_dashboard"
+    - "cummulative_delta_chart"
+    - "order_flow_imbalance"
+    - "vwap_chart"
+    - "aggressor_analysis"
+    - "flow_signals"
+    - "smart_money_flow"
+  update_interval_seconds: 5
+  dashboard_integration: true
+  real_time_updates: true
+
+# Alerting
+alerting:
+  enabled: true
+  alert_conditions:
+    - "flow_reversal"
+    - "flow_breakout"
+    - "flow_divergence"
+    - "flow_exhaustion"
+    - "absorption_detected"
+    - "smart_money_activity"
+    - "imbalance_extreme"
+    - "velocity_spike"
+  alert_thresholds:
+    reversal_confidence: 0.70
+    breakout_confidence: 0.75
+    divergence_confidence: 0.70
+    exhaustion_confidence: 0.80
+  alert_channels:
+    - "email"
+    - "telegram"
+    - "slack"
+  alert_cooldown_seconds: 300
+
+# Reporting
+reporting:
+  enabled: true
+  report_types:
+    - "real_time_alerts"
+    - "daily_order_flow_summary"
+    - "weekly_order_flow_analysis"
+    - "monthly_order_flow_report"
+  report_formats:
+    - "pdf"
+    - "html"
+    - "json"
+    - "csv"
+    - "excel"
+  report_recipients:
+    - "trading@example.com"
+    - "research@example.com"
+    - "market_structure@example.com"
+
+# Storage
+storage:
+  enabled: true
+  storage_categories:
+    - "order_flow_data"
+    - "delta_data"
+    - "imbalance_data"
+    - "aggressor_data"
+    - "velocity_data"
+    - "signal_history"
+    - "smart_money_data"
+    - "alert_history"
+  retention_days: 365
+  compression: "zstd"
+  storage_format: "parquet"
+
+# Integration
+integration:
+  enabled: true
+  webhook_endpoint: "http://localhost:8080/order-flow"
+  api_endpoint: "/api/v1/trading/order-flow"
+  dashboard_url: "http://localhost:3000/order-flow"
+  real_time_updates: true
+  data_sync_frequency_seconds: 3
+  external_systems:
+    - "trading_engine"
+    - "execution_engine"
+    - "research_platform"
+    - "market_data_feed"
