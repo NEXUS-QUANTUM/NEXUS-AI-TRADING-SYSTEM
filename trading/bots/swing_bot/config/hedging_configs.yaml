@@ -1,0 +1,716 @@
+# hedging_configs.yaml
+# Configuration complète pour la gestion de couverture (Hedging) dans Swing Bot
+# Version: 4.0.0 - Production Ready
+
+# Paramètres généraux
+general:
+  enabled: true
+  mode: "comprehensive"
+  calculate_in_real_time: true
+  update_frequency_seconds: 1
+  lookback_periods:
+    - 5
+    - 10
+    - 20
+    - 50
+    - 100
+    - 200
+    - 500
+  history_length_days: 365
+  min_data_points: 50
+  max_data_points: 100000
+  hedging_version: "4.0.0"
+  environment: "production"
+
+# Types de couverture
+hedging_types:
+  delta_hedging:
+    enabled: true
+    description: "Delta Hedging"
+    hedge_ratio: 0.5
+    rebalance_frequency_seconds: 60
+    min_confidence: 0.6
+    update_frequency_seconds: 60
+  gamma_hedging:
+    enabled: true
+    description: "Gamma Hedging"
+    hedge_ratio: 0.3
+    rebalance_frequency_seconds: 60
+    min_confidence: 0.6
+    update_frequency_seconds: 60
+  vega_hedging:
+    enabled: true
+    description: "Vega Hedging"
+    hedge_ratio: 0.3
+    rebalance_frequency_seconds: 60
+    min_confidence: 0.6
+    update_frequency_seconds: 60
+  cross_hedging:
+    enabled: true
+    description: "Cross Hedging"
+    correlation_threshold: 0.7
+    hedge_ratio: 0.4
+    rebalance_frequency_seconds: 60
+    min_confidence: 0.6
+    update_frequency_seconds: 60
+  dynamic_hedging:
+    enabled: true
+    description: "Dynamic Hedging"
+    hedge_ratio: 0.5
+    rebalance_frequency_seconds: 30
+    min_confidence: 0.6
+    update_frequency_seconds: 30
+  option_hedging:
+    enabled: true
+    description: "Option Hedging"
+    hedge_ratio: 0.3
+    rebalance_frequency_seconds: 60
+    min_confidence: 0.6
+    update_frequency_seconds: 60
+  futures_hedging:
+    enabled: true
+    description: "Futures Hedging"
+    hedge_ratio: 0.5
+    rebalance_frequency_seconds: 60
+    min_confidence: 0.6
+    update_frequency_seconds: 60
+
+# Instruments de couverture
+hedging_instruments:
+  spot:
+    enabled: true
+    instruments:
+      - "BTCUSDT"
+      - "ETHUSDT"
+      - "SOLUSDT"
+      - "ADAUSDT"
+      - "XRPUSDT"
+    max_exposure: 50000
+    min_exposure: 100
+  futures:
+    enabled: true
+    instruments:
+      - "BTCUSDT_PERP"
+      - "ETHUSDT_PERP"
+      - "SOLUSDT_PERP"
+    max_exposure: 100000
+    min_exposure: 1000
+    leverage: 1.0
+  options:
+    enabled: true
+    instruments:
+      - "BTCUSDT_OPT"
+      - "ETHUSDT_OPT"
+    max_exposure: 50000
+    min_exposure: 1000
+    strike_selection: "at_the_money"
+  forex:
+    enabled: true
+    instruments:
+      - "EURUSD"
+      - "GBPUSD"
+      - "USDJPY"
+    max_exposure: 100000
+    min_exposure: 10000
+  commodities:
+    enabled: true
+    instruments:
+      - "GOLD"
+      - "SILVER"
+      - "OIL"
+    max_exposure: 50000
+    min_exposure: 5000
+
+# Seuils de couverture
+thresholds:
+  exposure:
+    warning: 0.6
+    danger: 0.8
+    critical: 0.9
+    emergency: 1.0
+  correlation:
+    high: 0.7
+    medium: 0.5
+    low: 0.3
+    very_low: 0.1
+  hedge_ratio:
+    min: 0.1
+    default: 0.5
+    max: 1.0
+  volatility:
+    low: 0.1
+    medium: 0.3
+    high: 0.5
+    extreme: 0.7
+  confidence:
+    min: 0.5
+    default: 0.7
+    max: 1.0
+
+# Indicateurs de couverture
+indicators:
+  hedge_effectiveness:
+    enabled: true
+    calculation: "correlation_coefficient"
+    period: 14
+    smoothing: 3
+    threshold: 0.5
+  hedge_ratio_optimal:
+    enabled: true
+    calculation: "minimum_variance"
+    period: 14
+    smoothing: 3
+    threshold: 0.5
+  hedge_cost:
+    enabled: true
+    calculation: "total_hedge_cost"
+    period: 14
+    smoothing: 3
+    threshold: 0.01
+  hedge_profit:
+    enabled: true
+    calculation: "hedge_pnl"
+    period: 14
+    smoothing: 3
+    threshold: 0.01
+  hedge_confidence:
+    enabled: true
+    period: 14
+    smoothing: 0
+    threshold: 0.6
+
+# Analyse de couverture
+analysis:
+  historical:
+    enabled: true
+    lookback_years: 5
+    compute_hedge_effectiveness: true
+    compute_hedge_cost: true
+    compute_hedge_profit: true
+    compute_hedge_ratio_optimal: true
+    compute_hedge_distribution: true
+    compute_hedge_correlation: true
+  real_time:
+    enabled: true
+    update_frequency_ms: 100
+    compute_instantaneous_hedge: true
+    compute_moving_average_hedge: true
+    compute_exponential_hedge: true
+    compute_weighted_hedge: true
+    compute_hedge_velocity: true
+    compute_hedge_acceleration: true
+  predictive:
+    enabled: true
+    model_type: "ensemble"
+    models:
+      - "lstm"
+      - "gru"
+      - "xgboost"
+      - "lightgbm"
+    features:
+      - "hedge_effectiveness"
+      - "hedge_ratio_optimal"
+      - "hedge_cost"
+      - "hedge_profit"
+      - "hedge_confidence"
+      - "correlation"
+      - "volatility"
+      - "exposure"
+      - "price_change"
+      - "volume"
+      - "time_of_day"
+      - "day_of_week"
+      - "market_condition"
+    forecast_horizons:
+      - 1
+      - 5
+      - 10
+      - 20
+    confidence_threshold: 0.7
+    retrain_frequency_hours: 24
+
+# Alertes et notifications
+alerts:
+  hedge_triggered:
+    enabled: true
+    confidence_threshold: 0.7
+    channels:
+      - "email"
+      - "telegram"
+      - "slack"
+      - "push_notification"
+    severity: "warning"
+  hedge_adjusted:
+    enabled: true
+    confidence_threshold: 0.6
+    channels:
+      - "telegram"
+      - "push_notification"
+    severity: "info"
+  hedge_cost_high:
+    enabled: true
+    threshold: 0.02
+    channels:
+      - "email"
+      - "telegram"
+      - "slack"
+    severity: "warning"
+  hedge_ineffective:
+    enabled: true
+    threshold: 0.3
+    channels:
+      - "email"
+      - "telegram"
+      - "slack"
+    severity: "critical"
+  hedge_profit_high:
+    enabled: true
+    threshold: 0.02
+    channels:
+      - "telegram"
+      - "push_notification"
+    severity: "success"
+
+# Actions automatiques
+auto_actions:
+  hedge_activation:
+    enabled: true
+    action_types:
+      - "activate_hedge"
+      - "increase_hedge"
+      - "decrease_hedge"
+      - "deactivate_hedge"
+    confidence_threshold: 0.7
+    hedge_ratio: 0.5
+    max_hedge_percent: 100.0
+  hedge_rebalancing:
+    enabled: true
+    action_types:
+      - "rebalance_hedge"
+      - "adjust_hedge_ratio"
+      - "change_hedge_instrument"
+      - "optimize_hedge"
+    rebalance_factor: 0.5
+    max_rebalance_percent: 50.0
+  risk_management:
+    enabled: true
+    action_types:
+      - "reduce_exposure"
+      - "increase_hedge"
+      - "pause_trading"
+      - "reset_parameters"
+    risk_multiplier: 1.5
+    pause_duration_minutes: 30
+
+# Paramètres avancés
+advanced:
+  machine_learning:
+    enabled: true
+    model_type: "ensemble"
+    models:
+      - "random_forest"
+      - "xgboost"
+      - "lightgbm"
+      - "lstm"
+    features:
+      - "hedge_effectiveness"
+      - "hedge_ratio_optimal"
+      - "hedge_cost"
+      - "hedge_profit"
+      - "hedge_confidence"
+      - "correlation"
+      - "volatility"
+      - "exposure"
+      - "price_change"
+      - "volume"
+      - "rsi"
+      - "macd"
+      - "bollinger_width"
+      - "atr"
+      - "time_of_day"
+      - "day_of_week"
+      - "market_condition"
+    training_frequency_hours: 6
+    retrain_threshold: 0.9
+    validation_split: 0.2
+    random_seed: 42
+    ensemble_weights:
+      - 0.25
+      - 0.25
+      - 0.25
+      - 0.25
+  risk_management:
+    enabled: true
+    max_hedge_exposure: 100000
+    max_hedge_percent: 50.0
+    min_hedge_ratio: 0.1
+    max_hedge_ratio: 1.0
+    risk_check_frequency_seconds: 5
+  optimization:
+    enabled: true
+    optimize_hedge_ratio: true
+    optimization_method: "minimum_variance"
+    optimization_frequency_seconds: 60
+    optimization_period: 20
+
+# Monitoring et journalisation
+monitoring:
+  logging:
+    enabled: true
+    level: "debug"
+    format: "json"
+    include_context: true
+    include_timestamp: true
+    include_metadata: true
+  metrics:
+    enabled: true
+    collect_every_seconds: 1
+    metrics_to_collect:
+      - "hedge_effectiveness"
+      - "hedge_ratio_optimal"
+      - "hedge_cost"
+      - "hedge_profit"
+      - "hedge_confidence"
+      - "hedge_exposure"
+      - "hedge_percent"
+      - "correlation"
+      - "volatility"
+      - "hedge_count"
+  dashboard:
+    enabled: true
+    update_interval_seconds: 1
+    charts:
+      - "hedge_analysis"
+      - "hedge_effectiveness"
+      - "hedge_ratio"
+      - "hedge_cost"
+      - "hedge_profit"
+      - "correlation_analysis"
+      - "exposure_analysis"
+      - "risk_metrics"
+
+# Backtesting
+backtesting:
+  enabled: true
+  use_historical_hedges: true
+  compute_hedge_accuracy: true
+  compute_hedge_effectiveness: true
+  compute_risk_adjusted_returns: true
+  compute_cost_effectiveness: true
+  report_metrics:
+    - "hedge_accuracy"
+    - "hedge_effectiveness"
+    - "cost_effectiveness"
+    - "win_rate"
+    - "profit_factor"
+    - "sharpe_ratio"
+    - "max_drawdown"
+
+# Configuration de la base de données
+database:
+  enabled: true
+  table_name: "hedging_metrics"
+  retention_days: 365
+  aggregation:
+    enabled: true
+    intervals:
+      - "1s"
+      - "5s"
+      - "15s"
+      - "30s"
+      - "1m"
+      - "5m"
+      - "15m"
+      - "1h"
+      - "4h"
+      - "24h"
+  compression: true
+  backup:
+    enabled: true
+    frequency: "daily"
+    retention_days: 30
+
+# Webhooks
+webhooks:
+  enabled: true
+  endpoints:
+    - url: "https://nexustradingia.com/api/webhooks/hedging"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      payload_template: "hedging_alert"
+    - url: "https://nexustradingia.com/api/webhooks/hedge-adjustment"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      payload_template: "hedge_adjustment"
+  retry:
+    enabled: true
+    max_attempts: 5
+    backoff_seconds: 30
+
+# Logging avancé
+advanced_logging:
+  enabled: true
+  levels:
+    - "info"
+    - "warning"
+    - "error"
+    - "critical"
+    - "debug"
+  output: "hedging_logs"
+  rotation:
+    enabled: true
+    max_size_mb: 100
+    max_files: 10
+  remote_logging:
+    enabled: true
+    endpoints:
+      - "https://nexustradingia.com/logs/hedging"
+  include_trace: true
+  include_stack_trace: true
+  include_context: true
+
+# Threading et performances
+performance:
+  thread_pool_size: 8
+  queue_size: 10000
+  batch_size: 1000
+  async_processing: true
+  cache_size: 10000
+  cache_ttl_seconds: 30
+  database_pool_size: 10
+  database_pool_max_overflow: 20
+  use_multiprocessing: true
+  max_workers: 8
+  use_cython: true
+  use_numba: true
+  use_gpu: false
+  gpu_device: 0
+
+# API de gestion
+management_api:
+  enabled: true
+  endpoints:
+    - "/api/v1/hedging/current"
+    - "/api/v1/hedging/history"
+    - "/api/v1/hedging/metrics"
+    - "/api/v1/hedging/status"
+    - "/api/v1/hedging/types"
+    - "/api/v1/hedging/instruments"
+    - "/api/v1/hedging/effectiveness"
+    - "/api/v1/hedging/forecast"
+  authentication_required: true
+  rate_limit: 100
+  rate_limit_interval_seconds: 60
+  version: "v1.0.0"
+
+# Export des données
+data_export:
+  enabled: true
+  formats:
+    - "csv"
+    - "json"
+    - "parquet"
+    - "avro"
+    - "feather"
+  schedule: "realtime"
+  batch_size: 1000
+  retention_days: 30
+  compression: "gzip"
+  destination: "s3://nexus-data/hedging/"
+  encrypt: true
+  encryption_key_id: "nexus-hedging-key"
+  partition_by:
+    - "symbol"
+    - "year"
+    - "month"
+    - "day"
+
+# Intégration avec d'autres modules
+integrations:
+  risk_engine:
+    enabled: true
+    sync_frequency_seconds: 1
+    share_metrics: true
+  execution_engine:
+    enabled: true
+    share_signals: true
+    require_confirmation: true
+  portfolio_manager:
+    enabled: true
+    share_positions: true
+    share_allocation: true
+  ai_engine:
+    enabled: true
+    use_ai_predictions: true
+    confidence_threshold: 0.7
+    model_endpoint: "http://ai-engine:8000/predict/hedging"
+  market_data:
+    enabled: true
+    sync_frequency_ms: 100
+    data_endpoint: "ws://market-data:8080/ws"
+
+# Tests et validation
+testing:
+  unit_tests:
+    enabled: true
+    coverage_threshold: 90
+  integration_tests:
+    enabled: true
+  stress_tests:
+    enabled: true
+    scenarios:
+      - "high_hedge_volume"
+      - "low_hedge_volume"
+      - "correlation_changes"
+      - "volatility_spike"
+      - "market_crash"
+  validation:
+    enabled: true
+    validate_on_startup: true
+    validate_on_config_change: true
+    validation_rules:
+      - "confidence_threshold > 0.0"
+      - "confidence_threshold <= 1.0"
+      - "hedging_types.delta_hedging.hedge_ratio >= 0.0"
+      - "hedging_types.delta_hedging.hedge_ratio <= 1.0"
+      - "hedging_types.gamma_hedging.hedge_ratio >= 0.0"
+      - "hedging_types.gamma_hedging.hedge_ratio <= 1.0"
+      - "hedging_types.vega_hedging.hedge_ratio >= 0.0"
+      - "hedging_types.vega_hedging.hedge_ratio <= 1.0"
+      - "thresholds.exposure.warning < thresholds.exposure.danger"
+      - "thresholds.exposure.danger < thresholds.exposure.critical"
+      - "thresholds.exposure.critical < thresholds.exposure.emergency"
+      - "thresholds.correlation.high > thresholds.correlation.medium"
+      - "thresholds.correlation.medium > thresholds.correlation.low"
+      - "thresholds.correlation.low > thresholds.correlation.very_low"
+      - "hedging_instruments.spot.max_exposure > 0"
+      - "hedging_instruments.futures.max_exposure > 0"
+      - "hedging_instruments.options.max_exposure > 0"
+      - "min_data_points > 0"
+
+# Market conditions adaptation
+market_adaptation:
+  enabled: true
+  volatility_adjustment: true
+  regime_detection:
+    enabled: true
+    lookback_periods:
+      - 20
+      - 50
+      - 200
+    regimes:
+      - "bull"
+      - "bear"
+      - "sideways"
+      - "volatile"
+      - "stable"
+      - "transitional"
+  regime_parameters:
+    bull:
+      hedge_multiplier: 0.8
+      threshold_multiplier: 0.7
+      confidence_multiplier: 0.9
+      hedge_ratio_multiplier: 0.7
+    bear:
+      hedge_multiplier: 1.5
+      threshold_multiplier: 1.3
+      confidence_multiplier: 1.2
+      hedge_ratio_multiplier: 1.5
+    sideways:
+      hedge_multiplier: 1.0
+      threshold_multiplier: 1.0
+      confidence_multiplier: 1.0
+      hedge_ratio_multiplier: 1.0
+    volatile:
+      hedge_multiplier: 1.3
+      threshold_multiplier: 1.2
+      confidence_multiplier: 1.1
+      hedge_ratio_multiplier: 1.3
+    stable:
+      hedge_multiplier: 0.7
+      threshold_multiplier: 0.8
+      confidence_multiplier: 1.1
+      hedge_ratio_multiplier: 0.7
+    transitional:
+      hedge_multiplier: 1.2
+      threshold_multiplier: 1.1
+      confidence_multiplier: 1.1
+      hedge_ratio_multiplier: 1.2
+
+# Time-based configurations
+time_based:
+  enabled: true
+  sessions:
+    asia:
+      start: "00:00"
+      end: "08:00"
+      hedge_multiplier: 0.8
+      threshold_multiplier: 1.2
+      confidence_multiplier: 0.9
+      hedge_ratio_multiplier: 0.8
+    london:
+      start: "08:00"
+      end: "16:00"
+      hedge_multiplier: 1.2
+      threshold_multiplier: 0.8
+      confidence_multiplier: 1.1
+      hedge_ratio_multiplier: 1.2
+    newyork:
+      start: "13:00"
+      end: "22:00"
+      hedge_multiplier: 1.0
+      threshold_multiplier: 1.0
+      confidence_multiplier: 1.0
+      hedge_ratio_multiplier: 1.0
+    overlap:
+      start: "13:00"
+      end: "16:00"
+      hedge_multiplier: 1.5
+      threshold_multiplier: 0.7
+      confidence_multiplier: 1.2
+      hedge_ratio_multiplier: 1.5
+
+# Symbol-specific configurations
+symbol_configs:
+  BTCUSDT:
+    hedge_multiplier: 1.0
+    threshold_multiplier: 1.0
+    confidence_multiplier: 1.0
+    hedge_ratio_multiplier: 1.0
+    hedge_ratio: 0.5
+    max_hedge_exposure: 50000
+    min_hedge_exposure: 100
+  ETHUSDT:
+    hedge_multiplier: 1.1
+    threshold_multiplier: 0.9
+    confidence_multiplier: 1.0
+    hedge_ratio_multiplier: 1.1
+    hedge_ratio: 0.5
+    max_hedge_exposure: 40000
+    min_hedge_exposure: 80
+  SOLUSDT:
+    hedge_multiplier: 1.2
+    threshold_multiplier: 0.8
+    confidence_multiplier: 0.9
+    hedge_ratio_multiplier: 1.2
+    hedge_ratio: 0.6
+    max_hedge_exposure: 30000
+    min_hedge_exposure: 60
+  ADAUSDT:
+    hedge_multiplier: 0.9
+    threshold_multiplier: 1.1
+    confidence_multiplier: 1.1
+    hedge_ratio_multiplier: 0.9
+    hedge_ratio: 0.4
+    max_hedge_exposure: 20000
+    min_hedge_exposure: 40
+  XRPUSDT:
+    hedge_multiplier: 1.0
+    threshold_multiplier: 1.0
+    confidence_multiplier: 1.0
+    hedge_ratio_multiplier: 1.0
+    hedge_ratio: 0.5
+    max_hedge_exposure: 20000
+    min_hedge_exposure: 40
