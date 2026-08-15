@@ -1,0 +1,325 @@
+# Swing Bot Relative Strength Configuration
+# Relative Strength Analysis & Trading Parameters
+
+# General Relative Strength Settings
+relative_strength:
+  enabled: true
+  analysis_mode: "comprehensive"  # comprehensive, basic, advanced, real-time
+  calculation_method: "rank"  # rank, ratio, zscore, percentile, custom
+  comparison_type: "sector"  # sector, market, peer_group, custom
+  version: "3.0.0"
+
+# Relative Strength Components
+components:
+  enabled: true
+  primary_components:
+    - "price_relative_strength"
+    - "volume_relative_strength"
+    - "momentum_relative_strength"
+    - "fundamental_relative_strength"
+    - "sentiment_relative_strength"
+    - "risk_relative_strength"
+  secondary_components:
+    - "growth_relative_strength"
+    - "value_relative_strength"
+    - "quality_relative_strength"
+    - "volatility_relative_strength"
+    - "flow_relative_strength"
+    - "technical_relative_strength"
+  component_weights:
+    price_relative_strength: 0.25
+    volume_relative_strength: 0.15
+    momentum_relative_strength: 0.15
+    fundamental_relative_strength: 0.15
+    sentiment_relative_strength: 0.10
+    risk_relative_strength: 0.10
+    growth_relative_strength: 0.05
+    value_relative_strength: 0.05
+
+# Price Relative Strength
+price_rs:
+  enabled: true
+  calculation_periods:
+    short_term_days: 10
+    medium_term_days: 30
+    long_term_days: 90
+  normalization: true
+  smoothing: true
+  smoothing_period: 3
+  benchmark: "s&p_500"
+  relative_price_ratio: true
+
+# Volume Relative Strength
+volume_rs:
+  enabled: true
+  calculation_periods:
+    short_term_days: 10
+    medium_term_days: 30
+    long_term_days: 90
+  normalization: true
+  smoothing: true
+  smoothing_period: 3
+  relative_volume_ratio: true
+  volume_consistency: true
+
+# Momentum Relative Strength
+momentum_rs:
+  enabled: true
+  momentum_indicators:
+    - "price_momentum"
+    - "volume_momentum"
+    - "relative_momentum"
+    - "composite_momentum"
+  calculation_periods:
+    short_term_bars: 10
+    medium_term_bars: 30
+    long_term_bars: 90
+  momentum_scoring:
+    short_term_weight: 0.30
+    medium_term_weight: 0.40
+    long_term_weight: 0.30
+  threshold_positive: 0.05
+  threshold_negative: -0.05
+
+# Fundamental Relative Strength
+fundamental_rs:
+  enabled: true
+  fundamental_metrics:
+    - "pe_ratio"
+    - "pb_ratio"
+    - "ps_ratio"
+    - "peg_ratio"
+    - "ev_ebitda"
+    - "dividend_yield"
+    - "roe"
+    - "roic"
+  relative_valuation: true
+  normalization: true
+  percentile_ranking: true
+  scoring_method: "weighted_average"
+
+# Sentiment Relative Strength
+sentiment_rs:
+  enabled: true
+  sentiment_metrics:
+    - "analyst_sentiment"
+    - "news_sentiment"
+    - "social_sentiment"
+    - "investor_sentiment"
+  relative_sentiment: true
+  normalization: true
+  scoring_method: "weighted_average"
+
+# Risk Relative Strength
+risk_rs:
+  enabled: true
+  risk_metrics:
+    - "beta"
+    - "volatility"
+    - "sharpe_ratio"
+    - "sortino_ratio"
+    - "max_drawdown"
+  relative_risk: true
+  normalization: true
+  scoring_method: "weighted_average"
+
+# RSI Calculation
+rsi:
+  enabled: true
+  period: 14
+  overbought_threshold: 70
+  oversold_threshold: 30
+  extreme_overbought: 80
+  extreme_oversold: 20
+  smoothing: true
+  moving_average_period: 3
+  divergence_detection: true
+  failure_swing_detection: true
+
+# Relative Strength Ranking
+ranking:
+  enabled: true
+  ranking_method: "percentile"  # percentile, rank, zscore
+  comparison_universe: "sector"  # sector, market, peer_group
+  ranking_frequency_days: 1
+  top_rank_threshold: 75
+  bottom_rank_threshold: 25
+  ranking_visualization: true
+
+# Relative Strength Signals
+signals:
+  enabled: true
+  signal_types:
+    - "relative_strength_buy"
+    - "relative_strength_sell"
+    - "relative_strength_improving"
+    - "relative_strength_declining"
+    - "relative_strength_breakout"
+    - "relative_strength_divergence"
+  signal_strength_calculation: "weighted_average"
+  min_signal_strength: 0.60
+  signal_confidence_threshold: 0.70
+
+# Trading Strategies
+strategies:
+  enabled: true
+  relative_strength_strategies:
+    - "relative_strength_following"
+    - "relative_strength_reversal"
+    - "relative_strength_rotation"
+    - "relative_strength_breakout"
+    - "relative_strength_divergence"
+  strategy_selection: "context_based"
+  strategy_confidence_threshold: 0.70
+  strategy_confirmation_bars: 2
+
+# Entry Signals
+entry_signals:
+  enabled: true
+  entry_types:
+    - "strength_buy"
+    - "strength_sell"
+    - "improving_buy"
+    - "declining_sell"
+    - "breakout_buy"
+    - "breakout_sell"
+    - "divergence_buy"
+    - "divergence_sell"
+  confirmation_requirements:
+    min_indicators_confirmed: 2
+    volume_confirmation: true
+    price_confirmation: true
+  signal_strength_calculation: "weighted_average"
+  min_signal_strength: 0.60
+
+# Stop Loss
+stop_loss:
+  enabled: true
+  stop_methods:
+    - "relative_strength_reversal"
+    - "fixed_percent"
+    - "volatility_based"
+    - "level_based"
+    - "trailing"
+  strength_reversal_threshold: 0.20
+  fixed_percent: 0.02
+  volatility_multiplier: 2.0
+  level_break_threshold: 0.01
+  trailing_activation: 0.02
+  trailing_distance: 0.01
+
+# Take Profit
+take_profit:
+  enabled: true
+  profit_methods:
+    - "relative_strength_exhaustion"
+    - "fixed_percent"
+    - "risk_reward_ratio"
+    - "level_target"
+    - "trailing"
+  strength_exhaustion_threshold: 0.70
+  fixed_percent: 0.04
+  risk_reward_ratio: 2.0
+  level_target_multiplier: 1.5
+  trailing_activation: 0.02
+  trailing_distance: 0.01
+
+# Performance Metrics
+performance:
+  enabled: true
+  metrics:
+    - "relative_strength_accuracy"
+    - "signal_accuracy"
+    - "win_rate"
+    - "average_return"
+    - "profit_factor"
+    - "sharpe_ratio"
+    - "max_drawdown"
+    - "relative_performance"
+  evaluation_period_days: 30
+  rolling_window_days: 30
+
+# Visualization
+visualization:
+  enabled: true
+  charts:
+    - "relative_strength_dashboard"
+    - "strength_chart"
+    - "ranking_chart"
+    - "rsi_chart"
+    - "signal_chart"
+    - "performance_chart"
+    - "comparison_chart"
+  update_interval_seconds: 30
+  dashboard_integration: true
+  real_time_updates: true
+
+# Alerting
+alerting:
+  enabled: true
+  alert_conditions:
+    - "relative_strength_signal"
+    - "ranking_change"
+    - "rsi_extreme"
+    - "divergence_detected"
+    - "breakout_signal"
+    - "entry_signal"
+    - "exit_signal"
+  alert_thresholds:
+    signal_confidence: 0.70
+    ranking_change: 10
+    rsi_extreme: 80
+    divergence_confidence: 0.70
+  alert_channels:
+    - "email"
+    - "telegram"
+    - "slack"
+  alert_cooldown_seconds: 300
+
+# Reporting
+reporting:
+  enabled: true
+  report_types:
+    - "real_time_alerts"
+    - "daily_relative_strength_summary"
+    - "weekly_relative_strength_analysis"
+    - "monthly_relative_strength_report"
+  report_formats:
+    - "pdf"
+    - "html"
+    - "json"
+    - "csv"
+    - "excel"
+  report_recipients:
+    - "trading@example.com"
+    - "research@example.com"
+    - "strategy@example.com"
+
+# Storage
+storage:
+  enabled: true
+  storage_categories:
+    - "relative_strength_data"
+    - "ranking_data"
+    - "rsi_data"
+    - "signal_history"
+    - "trade_history"
+    - "performance_metrics"
+    - "alert_history"
+  retention_days: 365
+  compression: "zstd"
+  storage_format: "parquet"
+
+# Integration
+integration:
+  enabled: true
+  webhook_endpoint: "http://localhost:8080/relative-strength"
+  api_endpoint: "/api/v1/trading/relative-strength"
+  dashboard_url: "http://localhost:3000/relative-strength"
+  real_time_updates: true
+  data_sync_frequency_seconds: 30
+  external_systems:
+    - "trading_engine"
+    - "risk_management"
+    - "strategy_engine"
+    - "research_platform"
