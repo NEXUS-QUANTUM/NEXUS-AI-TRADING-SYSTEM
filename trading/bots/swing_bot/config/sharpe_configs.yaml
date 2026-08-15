@@ -1,0 +1,220 @@
+# Swing Bot Sharpe Ratio Configuration
+# Sharpe Ratio Analysis & Risk-Adjusted Performance Parameters
+
+# General Sharpe Settings
+sharpe:
+  enabled: true
+  analysis_mode: "comprehensive"  # comprehensive, basic, advanced, real-time
+  calculation_method: "standard"  # standard, modified, rolling, weighted
+  update_frequency_seconds: 60
+  version: "3.0.0"
+
+# Calculation Parameters
+calculation:
+  enabled: true
+  methods:
+    - "standard_sharpe"
+    - "modified_sharpe"
+    - "rolling_sharpe"
+    - "weighted_sharpe"
+    - "conditional_sharpe"
+    - "probabilistic_sharpe"
+  primary_method: "standard_sharpe"
+  secondary_method: "rolling_sharpe"
+  lookback_period_days: 30
+  rolling_window_days: 30
+  minimum_observations: 20
+  annualization_factor: 252
+
+# Standard Sharpe
+standard_sharpe:
+  enabled: true
+  calculation: "excess_return_volatility"
+  risk_free_rate: 0.02
+  return_frequency: "daily"  # daily, weekly, monthly
+  annualization: true
+  volatility_calculation: "standard_deviation"
+  use_excess_returns: true
+
+# Modified Sharpe
+modified_sharpe:
+  enabled: true
+  calculation: "modified_volatility"
+  volatility_method: "semi_deviation"  # semi_deviation, downside_deviation, target_semi_deviation
+  asymmetry_adjustment: true
+  tail_weighting: true
+  target_return: 0.0
+
+# Rolling Sharpe
+rolling_sharpe:
+  enabled: true
+  window_size_days: 30
+  step_size_days: 5
+  calculation_method: "rolling_window"
+  output_metrics:
+    - "current_ratio"
+    - "rolling_average"
+    - "rolling_volatility"
+    - "trend_direction"
+  visualization: true
+
+# Weighted Sharpe
+weighted_sharpe:
+  enabled: true
+  weighting_methods:
+    - "exponential"
+    - "linear"
+    - "performance_based"
+    - "volatility_based"
+  primary_method: "exponential"
+  decay_factor: 0.90
+  lookback_period_days: 60
+  recent_weight_multiplier: 1.5
+
+# Probabilistic Sharpe
+probabilistic_sharpe:
+  enabled: true
+  calculation_method: "probabilistic"
+  confidence_level: 0.95
+  bootstrap_iterations: 1000
+  distribution: "normal"  # normal, t, empirical
+  statistical_significance: true
+
+# Risk-Free Rate
+risk_free_rate:
+  enabled: true
+  rate_source: "treasury"  # treasury, libor, sofr, custom
+  treasury_tenor: "10y"  # 3m, 6m, 1y, 2y, 5y, 10y, 30y
+  custom_rate: 0.02
+  dynamic_rate: true
+  rate_update_frequency_hours: 24
+
+# Performance Metrics
+performance_metrics:
+  enabled: true
+  metrics:
+    - "sharpe_ratio"
+    - "modified_sharpe"
+    - "probabilistic_sharpe"
+    - "deflated_sharpe"
+    - "sharpe_ratio_distribution"
+  evaluation_period_days: 30
+  rolling_window_days: 30
+  benchmark_comparison: true
+
+# Interpretation
+interpretation:
+  enabled: true
+  thresholds:
+    excellent: 2.0
+    good: 1.5
+    average: 1.0
+    poor: 0.5
+    very_poor: 0.0
+  benchmarking: true
+  percentile_ranking: true
+  peer_comparison: true
+
+# Optimization
+optimization:
+  enabled: true
+  optimization_objectives:
+    - "maximize_sharpe"
+    - "maximize_modified_sharpe"
+    - "maximize_probabilistic_sharpe"
+  optimization_methods:
+    - "genetic_algorithm"
+    - "particle_swarm"
+    - "bayesian_optimization"
+    - "mean_variance_optimization"
+  constraints:
+    - "max_drawdown"
+    - "max_var"
+    - "max_volatility"
+    - "min_diversification"
+  optimization_frequency_days: 7
+
+# Visualization
+visualization:
+  enabled: true
+  charts:
+    - "sharpe_dashboard"
+    - "sharpe_trend_chart"
+    - "rolling_sharpe_chart"
+    - "performance_comparison"
+    - "risk_return_scatter"
+    - "optimization_results"
+    - "distribution_chart"
+  update_interval_seconds: 60
+  dashboard_integration: true
+  real_time_updates: true
+
+# Alerting
+alerting:
+  enabled: true
+  alert_conditions:
+    - "sharpe_drop"
+    - "negative_sharpe"
+    - "performance_degradation"
+    - "threshold_breach"
+    - "optimization_signal"
+    - "risk_free_change"
+  alert_thresholds:
+    sharpe_drop: 0.20
+    performance_degradation: 0.10
+    sharpe_threshold: 0.50
+  alert_channels:
+    - "email"
+    - "telegram"
+    - "slack"
+  alert_cooldown_seconds: 600
+
+# Reporting
+reporting:
+  enabled: true
+  report_types:
+    - "daily_sharpe_summary"
+    - "weekly_sharpe_analysis"
+    - "monthly_sharpe_report"
+    - "quarterly_performance_review"
+    - "optimization_report"
+  report_formats:
+    - "pdf"
+    - "html"
+    - "json"
+    - "csv"
+    - "excel"
+  report_recipients:
+    - "trading@example.com"
+    - "risk@example.com"
+    - "performance@example.com"
+    - "management@example.com"
+
+# Storage
+storage:
+  enabled: true
+  storage_categories:
+    - "sharpe_data"
+    - "volatility_data"
+    - "performance_data"
+    - "risk_free_data"
+    - "optimization_results"
+    - "alert_history"
+    - "report_history"
+  retention_days: 365
+  compression: "zstd"
+  storage_format: "parquet"
+
+# Integration
+integration:
+  enabled: true
+  webhook_endpoint: "http://localhost:8080/sharpe"
+  api_endpoint: "/api/v1/risk/sharpe"
+  dashboard_url: "http://localhost:3000/sharpe"
+  real_time_updates: true
+  data_sync_frequency_seconds: 30
+  external_systems:
+    - "risk_management"
+    - "portfolio_management"
+    - "performance_analysis"
+    - "trading_engine"
