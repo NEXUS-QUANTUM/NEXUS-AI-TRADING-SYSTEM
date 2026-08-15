@@ -1,0 +1,775 @@
+# forecast_engine_configs.yaml
+# Configuration complète pour le moteur de prévision dans Swing Bot
+# Version: 4.0.0 - Production Ready
+
+# Paramètres généraux
+general:
+  enabled: true
+  mode: "comprehensive"
+  calculate_in_real_time: true
+  update_frequency_seconds: 1
+  lookback_periods:
+    - 5
+    - 10
+    - 20
+    - 50
+    - 100
+    - 200
+    - 500
+  history_length_days: 730
+  min_data_points: 100
+  max_data_points: 100000
+  forecast_engine_version: "4.0.0"
+  environment: "production"
+
+# Types de moteurs de prévision
+engine_types:
+  price_engine:
+    enabled: true
+    description: "Price Prediction Engine"
+    models:
+      - "lstm"
+      - "gru"
+      - "transformer"
+      - "xgboost"
+      - "lightgbm"
+    ensemble_method: "stacking"
+    horizons:
+      - 1
+      - 5
+      - 10
+      - 20
+      - 50
+    confidence_interval: 95
+    update_frequency_seconds: 60
+  volatility_engine:
+    enabled: true
+    description: "Volatility Prediction Engine"
+    models:
+      - "garch"
+      - "egarch"
+      - "gjr_garch"
+      - "stochastic_volatility"
+    ensemble_method: "averaging"
+    horizons:
+      - 1
+      - 5
+      - 10
+      - 20
+    confidence_interval: 95
+    update_frequency_seconds: 60
+  volume_engine:
+    enabled: true
+    description: "Volume Prediction Engine"
+    models:
+      - "lstm"
+      - "gru"
+      - "xgboost"
+      - "lightgbm"
+    ensemble_method: "weighted"
+    horizons:
+      - 1
+      - 5
+      - 10
+      - 20
+    confidence_interval: 90
+    update_frequency_seconds: 60
+  trend_engine:
+    enabled: true
+    description: "Trend Prediction Engine"
+    models:
+      - "pattern"
+      - "statistical"
+      - "machine_learning"
+    ensemble_method: "voting"
+    horizons:
+      - 1
+      - 5
+      - 10
+      - 20
+    confidence_interval: 85
+    update_frequency_seconds: 60
+  risk_engine:
+    enabled: true
+    description: "Risk Prediction Engine"
+    models:
+      - "var"
+      - "cvar"
+      - "expected_shortfall"
+      - "tail_risk"
+    ensemble_method: "weighted"
+    horizons:
+      - 1
+      - 5
+      - 10
+      - 20
+    confidence_interval: 99
+    update_frequency_seconds: 60
+  sentiment_engine:
+    enabled: true
+    description: "Sentiment Prediction Engine"
+    models:
+      - "nlp"
+      - "social_sentiment"
+      - "news_sentiment"
+      - "market_sentiment"
+    ensemble_method: "averaging"
+    horizons:
+      - 1
+      - 5
+      - 10
+      - 20
+    confidence_interval: 90
+    update_frequency_seconds: 60
+  composite_engine:
+    enabled: true
+    description: "Composite Prediction Engine"
+    engines:
+      - "price_engine"
+      - "volatility_engine"
+      - "volume_engine"
+      - "trend_engine"
+      - "risk_engine"
+      - "sentiment_engine"
+    engine_weights:
+      price_engine: 0.25
+      volatility_engine: 0.20
+      volume_engine: 0.15
+      trend_engine: 0.15
+      risk_engine: 0.15
+      sentiment_engine: 0.10
+    update_frequency_seconds: 60
+
+# Modèles de prévision
+forecast_models:
+  lstm:
+    enabled: true
+    units: 64
+    layers: 2
+    dropout: 0.2
+    recurrent_dropout: 0.2
+    activation: "tanh"
+    recurrent_activation: "sigmoid"
+    optimizer: "adam"
+    learning_rate: 0.001
+    batch_size: 32
+    epochs: 50
+    random_state: 42
+  gru:
+    enabled: true
+    units: 64
+    layers: 2
+    dropout: 0.2
+    recurrent_dropout: 0.2
+    activation: "tanh"
+    recurrent_activation: "sigmoid"
+    optimizer: "adam"
+    learning_rate: 0.001
+    batch_size: 32
+    epochs: 50
+    random_state: 42
+  transformer:
+    enabled: true
+    d_model: 64
+    n_heads: 4
+    d_ff: 128
+    n_layers: 2
+    dropout: 0.1
+    optimizer: "adam"
+    learning_rate: 0.001
+    batch_size: 32
+    epochs: 50
+    random_state: 42
+  xgboost:
+    enabled: true
+    n_estimators: 100
+    max_depth: 6
+    learning_rate: 0.1
+    subsample: 0.8
+    colsample_bytree: 0.8
+    min_child_weight: 1
+    gamma: 0
+    reg_alpha: 0
+    reg_lambda: 1
+    random_state: 42
+  lightgbm:
+    enabled: true
+    n_estimators: 100
+    max_depth: 6
+    learning_rate: 0.1
+    num_leaves: 31
+    subsample: 0.8
+    colsample_bytree: 0.8
+    min_child_weight: 1
+    reg_alpha: 0
+    reg_lambda: 1
+    random_state: 42
+  garch:
+    enabled: true
+    p: 1
+    q: 1
+    distribution: "normal"
+    resi_corr: true
+  egarch:
+    enabled: true
+    p: 1
+    q: 1
+    distribution: "student_t"
+    resi_corr: true
+  gjr_garch:
+    enabled: true
+    p: 1
+    q: 1
+    distribution: "skew_student"
+    resi_corr: true
+  stochastic_volatility:
+    enabled: true
+    iterations: 1000
+    burn_in: 500
+    thinning: 2
+    random_state: 42
+  var:
+    enabled: true
+    confidence_levels:
+      - 90
+      - 95
+      - 99
+    time_horizons:
+      - 1
+      - 5
+      - 10
+      - 20
+    calculation_method: "historical"
+  cvar:
+    enabled: true
+    confidence_levels:
+      - 95
+      - 99
+    time_horizons:
+      - 1
+      - 5
+      - 10
+      - 20
+    calculation_method: "historical"
+
+# Méthodes d'ensemble
+ensemble_methods:
+  averaging:
+    enabled: true
+    description: "Simple Averaging"
+    method: "mean"
+  weighted:
+    enabled: true
+    description: "Weighted Averaging"
+    method: "weighted_mean"
+    weights_optimization: true
+  stacking:
+    enabled: true
+    description: "Stacking Ensemble"
+    method: "stacking"
+    meta_model: "xgboost"
+    cv_folds: 5
+  voting:
+    enabled: true
+    description: "Voting Ensemble"
+    method: "voting"
+    voting_type: "soft"
+  boosting:
+    enabled: true
+    description: "Boosting Ensemble"
+    method: "boosting"
+    n_estimators: 100
+    learning_rate: 0.1
+
+# Stratégies de prévision
+forecast_strategies:
+  rolling:
+    enabled: true
+    description: "Rolling Window Forecast"
+    window_size: 100
+    step_size: 10
+    retrain_frequency: 100
+  expanding:
+    enabled: true
+    description: "Expanding Window Forecast"
+    initial_window: 100
+    retrain_frequency: 50
+  walk_forward:
+    enabled: true
+    description: "Walk Forward Forecast"
+    train_size: 0.7
+    test_size: 0.3
+    step_size: 10
+  adaptive:
+    enabled: true
+    description: "Adaptive Forecast"
+    adaptation_method: "online_learning"
+    learning_rate: 0.001
+    adaptation_frequency: 60
+
+# Indicateurs de performance
+performance_indicators:
+  accuracy:
+    enabled: true
+    metrics:
+      - "mse"
+      - "rmse"
+      - "mae"
+      - "mape"
+      - "smape"
+      - "r2_score"
+    threshold: 0.8
+  bias:
+    enabled: true
+    metrics:
+      - "mean_error"
+      - "median_error"
+      - "max_error"
+    threshold: 0.05
+  confidence:
+    enabled: true
+    metrics:
+      - "prediction_interval_coverage"
+      - "hit_rate"
+      - "forecast_interval_width"
+    threshold: 0.7
+  stability:
+    enabled: true
+    metrics:
+      - "variance"
+      - "std_dev"
+      - "coefficient_of_variation"
+    threshold: 0.1
+
+# Analyse de performance
+analysis:
+  historical:
+    enabled: true
+    lookback_years: 5
+    compute_forecast_accuracy: true
+    compute_model_comparison: true
+    compute_ensemble_effectiveness: true
+    compute_forecast_distribution: true
+    compute_forecast_patterns: true
+  real_time:
+    enabled: true
+    update_frequency_ms: 100
+    compute_instantaneous_forecast: true
+    compute_moving_average_forecast: true
+    compute_exponential_forecast: true
+    compute_weighted_forecast: true
+    compute_forecast_velocity: true
+    compute_forecast_acceleration: true
+  comparative:
+    enabled: true
+    compare_models: true
+    compare_ensembles: true
+    compare_to_benchmark: true
+    compare_to_actual: true
+
+# Alertes et notifications
+alerts:
+  forecast_accuracy_decline:
+    enabled: true
+    threshold: 0.1
+    channels:
+      - "email"
+      - "telegram"
+      - "slack"
+      - "push_notification"
+    severity: "critical"
+  forecast_confidence_decline:
+    enabled: true
+    threshold: 0.1
+    channels:
+      - "email"
+      - "telegram"
+      - "slack"
+    severity: "warning"
+  forecast_break:
+    enabled: true
+    threshold: 0.1
+    channels:
+      - "telegram"
+      - "push_notification"
+    severity: "critical"
+  model_performance_decline:
+    enabled: true
+    threshold: 0.1
+    channels:
+      - "email"
+      - "telegram"
+      - "slack"
+    severity: "warning"
+
+# Actions automatiques
+auto_actions:
+  model_retraining:
+    enabled: true
+    action_types:
+      - "retrain_models"
+      - "update_hyperparameters"
+      - "rebalance_ensemble"
+    retraining_threshold: 0.1
+    max_retraining_percent: 20.0
+  ensemble_adjustment:
+    enabled: true
+    action_types:
+      - "adjust_weights"
+      - "add_models"
+      - "remove_models"
+    adjustment_threshold: 0.05
+    max_adjustment_percent: 15.0
+  forecast_optimization:
+    enabled: true
+    action_types:
+      - "optimize_features"
+      - "improve_accuracy"
+      - "reduce_bias"
+    optimization_threshold: 0.05
+    max_optimization_percent: 10.0
+
+# Monitoring et journalisation
+monitoring:
+  logging:
+    enabled: true
+    level: "debug"
+    format: "json"
+    include_context: true
+    include_timestamp: true
+    include_metadata: true
+  metrics:
+    enabled: true
+    collect_every_seconds: 1
+    metrics_to_collect:
+      - "forecast_accuracy"
+      - "forecast_bias"
+      - "forecast_confidence"
+      - "forecast_stability"
+      - "model_performance"
+      - "ensemble_performance"
+      - "mse"
+      - "rmse"
+      - "mae"
+      - "mape"
+      - "r2_score"
+  dashboard:
+    enabled: true
+    update_interval_seconds: 1
+    charts:
+      - "forecast_chart"
+      - "forecast_accuracy"
+      - "model_comparison"
+      - "ensemble_performance"
+      - "forecast_distribution"
+      - "forecast_confidence"
+      - "forecast_velocity"
+      - "forecast_acceleration"
+
+# Backtesting
+backtesting:
+  enabled: true
+  use_historical_forecasts: true
+  compute_forecast_accuracy: true
+  compute_model_performance: true
+  compute_ensemble_effectiveness: true
+  compute_strategy_performance: true
+  report_metrics:
+    - "forecast_accuracy"
+    - "model_performance"
+    - "ensemble_effectiveness"
+    - "strategy_performance"
+    - "mse"
+    - "rmse"
+    - "mae"
+    - "mape"
+    - "r2_score"
+
+# Configuration de la base de données
+database:
+  enabled: true
+  table_name: "forecast_engine_metrics"
+  retention_days: 365
+  aggregation:
+    enabled: true
+    intervals:
+      - "1s"
+      - "5s"
+      - "15s"
+      - "30s"
+      - "1m"
+      - "5m"
+      - "15m"
+      - "1h"
+      - "4h"
+      - "24h"
+  compression: true
+  backup:
+    enabled: true
+    frequency: "daily"
+    retention_days: 30
+
+# Webhooks
+webhooks:
+  enabled: true
+  endpoints:
+    - url: "https://nexustradingia.com/api/webhooks/forecast-engine"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      payload_template: "forecast_engine_alert"
+    - url: "https://nexustradingia.com/api/webhooks/forecast-accuracy"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      payload_template: "forecast_accuracy"
+  retry:
+    enabled: true
+    max_attempts: 5
+    backoff_seconds: 30
+
+# Logging avancé
+advanced_logging:
+  enabled: true
+  levels:
+    - "info"
+    - "warning"
+    - "error"
+    - "critical"
+    - "debug"
+  output: "forecast_engine_logs"
+  rotation:
+    enabled: true
+    max_size_mb: 100
+    max_files: 10
+  remote_logging:
+    enabled: true
+    endpoints:
+      - "https://nexustradingia.com/logs/forecast-engine"
+  include_trace: true
+  include_stack_trace: true
+  include_context: true
+
+# Threading et performances
+performance:
+  thread_pool_size: 8
+  queue_size: 10000
+  batch_size: 1000
+  async_processing: true
+  cache_size: 10000
+  cache_ttl_seconds: 30
+  database_pool_size: 10
+  database_pool_max_overflow: 20
+  use_multiprocessing: true
+  max_workers: 8
+  use_cython: true
+  use_numba: true
+  use_gpu: true
+  gpu_device: 0
+
+# API de gestion
+management_api:
+  enabled: true
+  endpoints:
+    - "/api/v1/forecast-engine/current"
+    - "/api/v1/forecast-engine/history"
+    - "/api/v1/forecast-engine/metrics"
+    - "/api/v1/forecast-engine/status"
+    - "/api/v1/forecast-engine/models"
+    - "/api/v1/forecast-engine/ensembles"
+    - "/api/v1/forecast-engine/accuracy"
+    - "/api/v1/forecast-engine/performance"
+  authentication_required: true
+  rate_limit: 100
+  rate_limit_interval_seconds: 60
+  version: "v1.0.0"
+
+# Export des données
+data_export:
+  enabled: true
+  formats:
+    - "csv"
+    - "json"
+    - "parquet"
+    - "avro"
+    - "feather"
+  schedule: "realtime"
+  batch_size: 1000
+  retention_days: 30
+  compression: "gzip"
+  destination: "s3://nexus-data/forecast-engine/"
+  encrypt: true
+  encryption_key_id: "nexus-forecast-engine-key"
+  partition_by:
+    - "symbol"
+    - "year"
+    - "month"
+    - "day"
+
+# Intégration avec d'autres modules
+integrations:
+  risk_engine:
+    enabled: true
+    sync_frequency_seconds: 1
+    share_metrics: true
+  execution_engine:
+    enabled: true
+    share_signals: true
+    require_confirmation: true
+  portfolio_manager:
+    enabled: true
+    share_positions: true
+    share_allocation: true
+  ai_engine:
+    enabled: true
+    use_ai_predictions: true
+    confidence_threshold: 0.7
+    model_endpoint: "http://ai-engine:8000/predict/forecast-engine"
+  market_data:
+    enabled: true
+    sync_frequency_ms: 100
+    data_endpoint: "ws://market-data:8080/ws"
+
+# Tests et validation
+testing:
+  unit_tests:
+    enabled: true
+    coverage_threshold: 90
+  integration_tests:
+    enabled: true
+  stress_tests:
+    enabled: true
+    scenarios:
+      - "high_forecast_volume"
+      - "low_forecast_volume"
+      - "model_retraining"
+      - "ensemble_rebalancing"
+      - "accuracy_validation"
+  validation:
+    enabled: true
+    validate_on_startup: true
+    validate_on_config_change: true
+    validation_rules:
+      - "engine_types.price_engine.horizons[0] > 0"
+      - "engine_types.price_engine.confidence_interval > 0"
+      - "engine_types.price_engine.confidence_interval < 100"
+      - "forecast_models.lstm.units > 0"
+      - "forecast_models.lstm.layers > 0"
+      - "forecast_models.garch.p > 0"
+      - "forecast_models.garch.q > 0"
+      - "ensemble_methods.averaging.method in ['mean', 'median']"
+      - "ensemble_methods.weighted.weights_optimization in [True, False]"
+      - "forecast_strategies.rolling.window_size > 0"
+      - "performance_indicators.accuracy.threshold > 0.0"
+      - "performance_indicators.accuracy.threshold <= 1.0"
+      - "min_data_points > 0"
+
+# Market conditions adaptation
+market_adaptation:
+  enabled: true
+  volatility_adjustment: true
+  regime_detection:
+    enabled: true
+    lookback_periods:
+      - 20
+      - 50
+      - 200
+    regimes:
+      - "trending"
+      - "ranging"
+      - "volatile"
+      - "stable"
+      - "bull"
+      - "bear"
+  regime_parameters:
+    trending:
+      forecast_multiplier: 1.2
+      confidence_multiplier: 1.1
+      accuracy_multiplier: 1.1
+    ranging:
+      forecast_multiplier: 0.8
+      confidence_multiplier: 0.9
+      accuracy_multiplier: 0.9
+    volatile:
+      forecast_multiplier: 0.7
+      confidence_multiplier: 0.8
+      accuracy_multiplier: 0.8
+    stable:
+      forecast_multiplier: 1.0
+      confidence_multiplier: 1.2
+      accuracy_multiplier: 1.2
+    bull:
+      forecast_multiplier: 1.1
+      confidence_multiplier: 1.0
+      accuracy_multiplier: 1.0
+    bear:
+      forecast_multiplier: 0.9
+      confidence_multiplier: 0.9
+      accuracy_multiplier: 0.9
+
+# Time-based configurations
+time_based:
+  enabled: true
+  sessions:
+    asia:
+      start: "00:00"
+      end: "08:00"
+      forecast_multiplier: 0.8
+      confidence_multiplier: 0.9
+      accuracy_multiplier: 0.9
+    london:
+      start: "08:00"
+      end: "16:00"
+      forecast_multiplier: 1.2
+      confidence_multiplier: 1.1
+      accuracy_multiplier: 1.1
+    newyork:
+      start: "13:00"
+      end: "22:00"
+      forecast_multiplier: 1.0
+      confidence_multiplier: 1.0
+      accuracy_multiplier: 1.0
+    overlap:
+      start: "13:00"
+      end: "16:00"
+      forecast_multiplier: 1.5
+      confidence_multiplier: 1.2
+      accuracy_multiplier: 1.2
+
+# Symbol-specific configurations
+symbol_configs:
+  BTCUSDT:
+    forecast_multiplier: 1.0
+    confidence_multiplier: 1.0
+    accuracy_multiplier: 1.0
+    horizon_short: 1
+    horizon_medium: 5
+    horizon_long: 20
+  ETHUSDT:
+    forecast_multiplier: 1.1
+    confidence_multiplier: 0.9
+    accuracy_multiplier: 1.0
+    horizon_short: 1
+    horizon_medium: 5
+    horizon_long: 20
+  SOLUSDT:
+    forecast_multiplier: 1.2
+    confidence_multiplier: 0.8
+    accuracy_multiplier: 0.9
+    horizon_short: 1
+    horizon_medium: 5
+    horizon_long: 20
+  ADAUSDT:
+    forecast_multiplier: 0.9
+    confidence_multiplier: 1.1
+    accuracy_multiplier: 1.1
+    horizon_short: 1
+    horizon_medium: 5
+    horizon_long: 20
+  XRPUSDT:
+    forecast_multiplier: 1.0
+    confidence_multiplier: 1.0
+    accuracy_multiplier: 1.0
+    horizon_short: 1
+    horizon_medium: 5
+    horizon_long: 20
