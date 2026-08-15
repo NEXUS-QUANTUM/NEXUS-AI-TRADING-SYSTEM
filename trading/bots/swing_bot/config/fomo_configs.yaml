@@ -1,0 +1,694 @@
+# fomo_configs.yaml
+# Configuration complète pour la gestion FOMO (Fear Of Missing Out) dans Swing Bot
+# Version: 4.0.0 - Production Ready
+
+# Paramètres généraux
+general:
+  enabled: true
+  mode: "comprehensive"
+  calculate_in_real_time: true
+  update_frequency_seconds: 1
+  lookback_periods:
+    - 5
+    - 10
+    - 20
+    - 50
+    - 100
+    - 200
+    - 500
+  history_length_days: 365
+  min_data_points: 50
+  max_data_points: 100000
+  fomo_version: "4.0.0"
+  environment: "production"
+
+# Types de FOMO
+fomo_types:
+  breakout_fomo:
+    enabled: true
+    description: "Breakout FOMO - Fear of missing breakout"
+    trigger_conditions:
+      - "price_breakout"
+      - "volume_surge"
+      - "momentum_increase"
+      - "social_sentiment"
+    risk_level: "high"
+    action_threshold: 0.7
+  reversal_fomo:
+    enabled: true
+    description: "Reversal FOMO - Fear of missing reversal"
+    trigger_conditions:
+      - "price_reversal"
+      - "pattern_formation"
+      - "indicator_turn"
+      - "support_resistance_break"
+    risk_level: "medium"
+    action_threshold: 0.6
+  trend_fomo:
+    enabled: true
+    description: "Trend FOMO - Fear of missing trend continuation"
+    trigger_conditions:
+      - "trend_strength"
+      - "momentum_continuation"
+      - "volume_confirmation"
+      - "market_sentiment"
+    risk_level: "high"
+    action_threshold: 0.8
+  sector_fomo:
+    enabled: true
+    description: "Sector FOMO - Fear of missing sector rotation"
+    trigger_conditions:
+      - "sector_rotation"
+      - "sector_performance"
+      - "capital_flow"
+      - "relative_strength"
+    risk_level: "medium"
+    action_threshold: 0.6
+  social_fomo:
+    enabled: true
+    description: "Social FOMO - Fear of missing social sentiment"
+    trigger_conditions:
+      - "social_volume"
+      - "sentiment_score"
+      - "influencer_activity"
+      - "hashtag_trend"
+    risk_level: "medium"
+    action_threshold: 0.5
+
+# Seuils FOMO
+thresholds:
+  price:
+    breakout_threshold: 2.0
+    reversal_threshold: 1.0
+    trend_threshold: 1.5
+    sector_threshold: 1.0
+  volume:
+    surge_threshold: 2.0
+    confirmation_threshold: 1.5
+    sector_flow_threshold: 1.5
+    social_volume_threshold: 3.0
+  momentum:
+    increase_threshold: 0.3
+    continuation_threshold: 0.2
+    reversal_threshold: 0.4
+  sentiment:
+    social_sentiment_threshold: 0.6
+    market_sentiment_threshold: 0.7
+    influencer_activity_threshold: 0.5
+
+# Indicateurs FOMO
+indicators:
+  fomo_strength:
+    enabled: true
+    calculation: "weighted_average"
+    factors:
+      - "price_movement"
+      - "volume_surge"
+      - "momentum"
+      - "sentiment"
+      - "social_activity"
+    factor_weights:
+      price_movement: 0.25
+      volume_surge: 0.20
+      momentum: 0.20
+      sentiment: 0.20
+      social_activity: 0.15
+  fomo_probability:
+    enabled: true
+    period: 14
+    smoothing: 3
+    threshold: 0.5
+  fomo_momentum:
+    enabled: true
+    period: 14
+    smoothing: 3
+    threshold: 0.3
+  fomo_velocity:
+    enabled: true
+    period: 5
+    smoothing: 0
+    threshold: 0.2
+  fomo_acceleration:
+    enabled: true
+    period: 10
+    smoothing: 0
+    threshold: 0.1
+  fomo_confidence:
+    enabled: true
+    period: 14
+    smoothing: 0
+    threshold: 0.6
+
+# Analyse FOMO
+analysis:
+  historical:
+    enabled: true
+    lookback_years: 5
+    compute_fomo_accuracy: true
+    compute_fomo_probability: true
+    compute_fomo_distribution: true
+    compute_fomo_patterns: true
+    compute_fomo_cycles: true
+    compute_fomo_success_rate: true
+  real_time:
+    enabled: true
+    update_frequency_ms: 100
+    compute_instantaneous_fomo: true
+    compute_moving_average_fomo: true
+    compute_exponential_fomo: true
+    compute_weighted_fomo: true
+    compute_fomo_velocity: true
+    compute_fomo_acceleration: true
+  predictive:
+    enabled: true
+    model_type: "ensemble"
+    models:
+      - "lstm"
+      - "gru"
+      - "xgboost"
+      - "lightgbm"
+    features:
+      - "fomo_strength"
+      - "fomo_probability"
+      - "fomo_momentum"
+      - "fomo_velocity"
+      - "fomo_acceleration"
+      - "fomo_confidence"
+      - "price_movement"
+      - "volume_surge"
+      - "momentum"
+      - "sentiment"
+      - "social_activity"
+      - "price_change"
+      - "volume"
+      - "volatility"
+      - "time_of_day"
+      - "day_of_week"
+      - "market_condition"
+    forecast_horizons:
+      - 1
+      - 5
+      - 10
+      - 20
+    confidence_threshold: 0.7
+    retrain_frequency_hours: 24
+
+# Alertes et notifications
+alerts:
+  fomo_detected:
+    enabled: true
+    confidence_threshold: 0.7
+    channels:
+      - "email"
+      - "telegram"
+      - "slack"
+      - "push_notification"
+    severity: "warning"
+  fomo_high_risk:
+    enabled: true
+    confidence_threshold: 0.8
+    channels:
+      - "telegram"
+      - "push_notification"
+    severity: "critical"
+  fomo_confirmed:
+    enabled: true
+    confidence_threshold: 0.9
+    channels:
+      - "email"
+      - "telegram"
+      - "slack"
+    severity: "info"
+  fomo_avoided:
+    enabled: true
+    confidence_threshold: 0.6
+    channels:
+      - "telegram"
+      - "push_notification"
+    severity: "success"
+  fomo_social_spike:
+    enabled: true
+    confidence_threshold: 0.7
+    channels:
+      - "telegram"
+      - "push_notification"
+    severity: "warning"
+
+# Actions automatiques
+auto_actions:
+  fomo_avoidance:
+    enabled: true
+    action_types:
+      - "avoid_entry"
+      - "delay_entry"
+      - "reduce_position"
+      - "cancel_order"
+      - "wait_for_confirmation"
+    confidence_threshold: 0.7
+    max_avoidance_percent: 100.0
+    delay_seconds: 60
+  position_adjustment:
+    enabled: true
+    action_types:
+      - "reduce_exposure"
+      - "tighten_stop_loss"
+      - "move_take_profit"
+      - "add_hedge"
+      - "scale_out"
+    adjustment_factor: 0.5
+    max_adjustment_percent: 50.0
+    hedge_ratio: 0.3
+  risk_management:
+    enabled: true
+    action_types:
+      - "reduce_leverage"
+      - "increase_cash"
+      - "pause_trading"
+      - "rebalance_portfolio"
+      - "reset_parameters"
+    risk_multiplier: 1.5
+    pause_duration_minutes: 30
+
+# Paramètres avancés
+advanced:
+  machine_learning:
+    enabled: true
+    model_type: "ensemble"
+    models:
+      - "random_forest"
+      - "xgboost"
+      - "lightgbm"
+      - "lstm"
+    features:
+      - "fomo_strength"
+      - "fomo_probability"
+      - "fomo_momentum"
+      - "fomo_velocity"
+      - "fomo_acceleration"
+      - "fomo_confidence"
+      - "price_movement"
+      - "volume_surge"
+      - "momentum"
+      - "sentiment"
+      - "social_activity"
+      - "rsi"
+      - "macd"
+      - "bollinger_width"
+      - "atr"
+      - "price_change"
+      - "volume"
+      - "time_of_day"
+      - "day_of_week"
+      - "market_condition"
+    training_frequency_hours: 6
+    retrain_threshold: 0.9
+    validation_split: 0.2
+    random_seed: 42
+    ensemble_weights:
+      - 0.25
+      - 0.25
+      - 0.25
+      - 0.25
+  statistical_analysis:
+    enabled: true
+    calculate_fomo_accuracy: true
+    calculate_fomo_probability: true
+    calculate_fomo_significance: true
+    calculate_fomo_correlation: true
+    calculate_fomo_success_rate: true
+    confidence_level: 95
+    p_value_threshold: 0.05
+  sentiment_analysis:
+    enabled: true
+    sentiment_sources:
+      - "social_media"
+      - "news"
+      - "forums"
+      - "blogs"
+      - "youtube"
+    sentiment_threshold: 0.6
+    social_volume_threshold: 1000
+    influencer_activity_threshold: 0.5
+
+# Monitoring et journalisation
+monitoring:
+  logging:
+    enabled: true
+    level: "debug"
+    format: "json"
+    include_context: true
+    include_timestamp: true
+    include_metadata: true
+  metrics:
+    enabled: true
+    collect_every_seconds: 1
+    metrics_to_collect:
+      - "fomo_strength"
+      - "fomo_probability"
+      - "fomo_momentum"
+      - "fomo_velocity"
+      - "fomo_acceleration"
+      - "fomo_confidence"
+      - "fomo_count"
+      - "fomo_accuracy"
+      - "fomo_success_rate"
+      - "breakout_fomo_count"
+      - "reversal_fomo_count"
+      - "social_fomo_count"
+      - "avoided_entries"
+  dashboard:
+    enabled: true
+    update_interval_seconds: 1
+    charts:
+      - "fomo_detection"
+      - "fomo_analysis"
+      - "fomo_accuracy"
+      - "fomo_distribution"
+      - "fomo_types"
+      - "sentiment_analysis"
+      - "avoided_trades"
+      - "fomo_predictive"
+
+# Backtesting
+backtesting:
+  enabled: true
+  use_historical_fomo: true
+  compute_fomo_accuracy: true
+  compute_avoidance_effectiveness: true
+  compute_sentiment_effectiveness: true
+  compute_risk_adjusted_returns: true
+  report_metrics:
+    - "fomo_accuracy"
+    - "avoidance_effectiveness"
+    - "sentiment_effectiveness"
+    - "win_rate"
+    - "profit_factor"
+    - "sharpe_ratio"
+    - "max_drawdown"
+
+# Configuration de la base de données
+database:
+  enabled: true
+  table_name: "fomo_metrics"
+  retention_days: 365
+  aggregation:
+    enabled: true
+    intervals:
+      - "1s"
+      - "5s"
+      - "15s"
+      - "30s"
+      - "1m"
+      - "5m"
+      - "15m"
+      - "1h"
+      - "4h"
+      - "24h"
+  compression: true
+  backup:
+    enabled: true
+    frequency: "daily"
+    retention_days: 30
+
+# Webhooks
+webhooks:
+  enabled: true
+  endpoints:
+    - url: "https://nexustradingia.com/api/webhooks/fomo"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      payload_template: "fomo_alert"
+    - url: "https://nexustradingia.com/api/webhooks/fomo-sentiment"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      payload_template: "fomo_sentiment"
+  retry:
+    enabled: true
+    max_attempts: 5
+    backoff_seconds: 30
+
+# Logging avancé
+advanced_logging:
+  enabled: true
+  levels:
+    - "info"
+    - "warning"
+    - "error"
+    - "critical"
+    - "debug"
+  output: "fomo_logs"
+  rotation:
+    enabled: true
+    max_size_mb: 100
+    max_files: 10
+  remote_logging:
+    enabled: true
+    endpoints:
+      - "https://nexustradingia.com/logs/fomo"
+  include_trace: true
+  include_stack_trace: true
+  include_context: true
+
+# Threading et performances
+performance:
+  thread_pool_size: 8
+  queue_size: 10000
+  batch_size: 1000
+  async_processing: true
+  cache_size: 10000
+  cache_ttl_seconds: 30
+  database_pool_size: 10
+  database_pool_max_overflow: 20
+  use_multiprocessing: true
+  max_workers: 8
+  use_cython: true
+  use_numba: true
+  use_gpu: false
+  gpu_device: 0
+
+# API de gestion
+management_api:
+  enabled: true
+  endpoints:
+    - "/api/v1/fomo/current"
+    - "/api/v1/fomo/history"
+    - "/api/v1/fomo/metrics"
+    - "/api/v1/fomo/status"
+    - "/api/v1/fomo/types"
+    - "/api/v1/fomo/probability"
+    - "/api/v1/fomo/accuracy"
+    - "/api/v1/fomo/forecast"
+  authentication_required: true
+  rate_limit: 100
+  rate_limit_interval_seconds: 60
+  version: "v1.0.0"
+
+# Export des données
+data_export:
+  enabled: true
+  formats:
+    - "csv"
+    - "json"
+    - "parquet"
+    - "avro"
+    - "feather"
+  schedule: "realtime"
+  batch_size: 1000
+  retention_days: 30
+  compression: "gzip"
+  destination: "s3://nexus-data/fomo/"
+  encrypt: true
+  encryption_key_id: "nexus-fomo-key"
+  partition_by:
+    - "symbol"
+    - "year"
+    - "month"
+    - "day"
+
+# Intégration avec d'autres modules
+integrations:
+  risk_engine:
+    enabled: true
+    sync_frequency_seconds: 1
+    share_metrics: true
+  execution_engine:
+    enabled: true
+    share_signals: true
+    require_confirmation: true
+  portfolio_manager:
+    enabled: true
+    share_positions: true
+    share_allocation: true
+  ai_engine:
+    enabled: true
+    use_ai_predictions: true
+    confidence_threshold: 0.7
+    model_endpoint: "http://ai-engine:8000/predict/fomo"
+  market_data:
+    enabled: true
+    sync_frequency_ms: 100
+    data_endpoint: "ws://market-data:8080/ws"
+  sentiment_analyzer:
+    enabled: true
+    sync_frequency_seconds: 60
+    data_endpoint: "http://sentiment-analyzer:8000/api/v1/sentiment"
+
+# Tests et validation
+testing:
+  unit_tests:
+    enabled: true
+    coverage_threshold: 90
+  integration_tests:
+    enabled: true
+  stress_tests:
+    enabled: true
+    scenarios:
+      - "high_fomo_volume"
+      - "low_fomo_volume"
+      - "sentiment_spike"
+      - "social_media_campaign"
+      - "market_breakout"
+  validation:
+    enabled: true
+    validate_on_startup: true
+    validate_on_config_change: true
+    validation_rules:
+      - "confidence_threshold > 0.0"
+      - "confidence_threshold <= 1.0"
+      - "fomo_types.breakout_fomo.risk_level in ['low', 'medium', 'high']"
+      - "fomo_types.breakout_fomo.action_threshold > 0.0"
+      - "fomo_types.breakout_fomo.action_threshold <= 1.0"
+      - "thresholds.price.breakout_threshold >= 0.0"
+      - "thresholds.volume.surge_threshold >= 0.0"
+      - "thresholds.momentum.increase_threshold >= 0.0"
+      - "thresholds.sentiment.social_sentiment_threshold >= 0.0"
+      - "thresholds.sentiment.social_sentiment_threshold <= 1.0"
+      - "indicators.fomo_strength.factor_weights.sum() == 1.0"
+      - "min_data_points > 0"
+
+# Market conditions adaptation
+market_adaptation:
+  enabled: true
+  volatility_adjustment: true
+  regime_detection:
+    enabled: true
+    lookback_periods:
+      - 20
+      - 50
+      - 200
+    regimes:
+      - "bull"
+      - "bear"
+      - "sideways"
+      - "volatile"
+      - "stable"
+      - "transitional"
+  regime_parameters:
+    bull:
+      fomo_multiplier: 1.2
+      threshold_multiplier: 0.8
+      confidence_multiplier: 1.1
+      risk_multiplier: 0.8
+    bear:
+      fomo_multiplier: 0.8
+      threshold_multiplier: 1.2
+      confidence_multiplier: 0.9
+      risk_multiplier: 1.5
+    sideways:
+      fomo_multiplier: 1.0
+      threshold_multiplier: 1.0
+      confidence_multiplier: 1.0
+      risk_multiplier: 1.0
+    volatile:
+      fomo_multiplier: 0.7
+      threshold_multiplier: 1.3
+      confidence_multiplier: 0.8
+      risk_multiplier: 2.0
+    stable:
+      fomo_multiplier: 1.0
+      threshold_multiplier: 0.9
+      confidence_multiplier: 1.2
+      risk_multiplier: 0.6
+    transitional:
+      fomo_multiplier: 1.3
+      threshold_multiplier: 1.1
+      confidence_multiplier: 1.1
+      risk_multiplier: 1.2
+
+# Time-based configurations
+time_based:
+  enabled: true
+  sessions:
+    asia:
+      start: "00:00"
+      end: "08:00"
+      fomo_multiplier: 0.8
+      threshold_multiplier: 1.2
+      confidence_multiplier: 0.9
+      risk_multiplier: 1.2
+    london:
+      start: "08:00"
+      end: "16:00"
+      fomo_multiplier: 1.2
+      threshold_multiplier: 0.8
+      confidence_multiplier: 1.1
+      risk_multiplier: 0.8
+    newyork:
+      start: "13:00"
+      end: "22:00"
+      fomo_multiplier: 1.0
+      threshold_multiplier: 1.0
+      confidence_multiplier: 1.0
+      risk_multiplier: 1.0
+    overlap:
+      start: "13:00"
+      end: "16:00"
+      fomo_multiplier: 1.5
+      threshold_multiplier: 0.7
+      confidence_multiplier: 1.2
+      risk_multiplier: 0.7
+
+# Symbol-specific configurations
+symbol_configs:
+  BTCUSDT:
+    fomo_multiplier: 1.0
+    threshold_multiplier: 1.0
+    confidence_multiplier: 1.0
+    risk_multiplier: 1.0
+    confidence_threshold: 0.7
+    social_sensitivity: 0.5
+    momentum_sensitivity: 0.6
+  ETHUSDT:
+    fomo_multiplier: 1.1
+    threshold_multiplier: 0.9
+    confidence_multiplier: 1.0
+    risk_multiplier: 1.1
+    confidence_threshold: 0.7
+    social_sensitivity: 0.6
+    momentum_sensitivity: 0.6
+  SOLUSDT:
+    fomo_multiplier: 1.2
+    threshold_multiplier: 0.8
+    confidence_multiplier: 0.9
+    risk_multiplier: 1.2
+    confidence_threshold: 0.7
+    social_sensitivity: 0.7
+    momentum_sensitivity: 0.7
+  ADAUSDT:
+    fomo_multiplier: 0.9
+    threshold_multiplier: 1.1
+    confidence_multiplier: 1.1
+    risk_multiplier: 0.9
+    confidence_threshold: 0.7
+    social_sensitivity: 0.4
+    momentum_sensitivity: 0.5
+  XRPUSDT:
+    fomo_multiplier: 1.0
+    threshold_multiplier: 1.0
+    confidence_multiplier: 1.0
+    risk_multiplier: 1.0
+    confidence_threshold: 0.7
+    social_sensitivity: 0.5
+    momentum_sensitivity: 0.6
