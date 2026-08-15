@@ -1,0 +1,272 @@
+# Swing Bot Market Making Configuration
+# Market Making Strategy & Liquidity Provision Parameters
+
+# General Market Making Settings
+market_making:
+  enabled: true
+  strategy_type: "hybrid"  # hybrid, passive, aggressive, adaptive
+  market_making_mode: "continuous"  # continuous, periodic, event_driven
+  liquidity_provision: "both"  # bid, ask, both
+  version: "3.0.0"
+
+# Quote Management
+quotes:
+  enabled: true
+  quote_types:
+    - "two_sided"
+    - "one_sided_bid"
+    - "one_sided_ask"
+    - "pegged"
+    - "relative"
+  default_quote_type: "two_sided"
+  quote_lifetime_seconds: 5
+  quote_refresh_frequency_ms: 100
+  quote_size: 1000
+  min_quote_size: 100
+  max_quote_size: 10000
+  dynamic_quote_sizing: true
+
+# Spread Management
+spread:
+  enabled: true
+  spread_calculation: "adaptive"  # fixed, adaptive, volatility_based, volume_based
+  base_spread_bps: 2
+  min_spread_bps: 1
+  max_spread_bps: 10
+  spread_adjustment_factors:
+    volatility: 0.50
+    volume: 0.30
+    inventory: 0.20
+  dynamic_spread: true
+  spread_optimization: true
+
+# Pricing Models
+pricing:
+  enabled: true
+  pricing_model: "mid_price_based"  # mid_price_based, fair_value_based, model_based
+  fair_value_calculation:
+    method: "lstm"  # lstm, transformer, ensemble, statistical
+    lookback_bars: 100
+    confidence_interval: 0.95
+  price_adjustment_factors:
+    inventory_skew: 0.30
+    market_impact: 0.20
+    risk_premium: 0.20
+    competition: 0.15
+    time_decay: 0.15
+  price_improvement: true
+
+# Inventory Management
+inventory:
+  enabled: true
+  inventory_target: 0.50
+  inventory_tolerance: 0.20
+  max_inventory_percent: 0.80
+  min_inventory_percent: 0.20
+  inventory_risk_premium: 0.10
+  inventory_hedging: true
+  inventory_rebalancing: true
+  rebalancing_threshold: 0.10
+  inventory_optimization: true
+
+# Inventory Skew
+inventory_skew:
+  enabled: true
+  skew_adjustment: "linear"  # linear, exponential, sigmoid
+  skew_factor: 0.50
+  max_skew: 1.50
+  min_skew: 0.50
+  skew_sensitivity: 0.80
+  dynamic_skew: true
+  skew_reversal_threshold: 0.30
+
+# Risk Management
+risk:
+  enabled: true
+  risk_limits:
+    max_position_size: 100000
+    max_daily_turnover: 1000000
+    max_exposure: 500000
+    max_drawdown: 0.05
+    max_var: 0.02
+  risk_metrics:
+    - "value_at_risk"
+    - "expected_shortfall"
+    - "maximum_drawdown"
+    - "volatility"
+    - "beta"
+    - "correlation"
+  stop_loss:
+    enabled: true
+    type: "dynamic"  # fixed, dynamic, trailing
+    threshold: 0.02
+  take_profit:
+    enabled: true
+    type: "dynamic"
+    threshold: 0.04
+
+# Market Making Algorithms
+algorithms:
+  enabled: true
+  primary_algorithm: "adaptive_mm"  # adaptive_mm, constant_spread, competitive, ml_based
+  secondary_algorithm: "competitive"
+  algorithm_selection: "performance_based"
+  algorithm_parameters:
+    - "spread_multiplier"
+    - "quote_size_multiplier"
+    - "order_book_depth"
+    - "fill_probability"
+  algorithm_optimization_frequency_hours: 6
+
+# Competitive Strategy
+competitive:
+  enabled: true
+  strategy_type: "price_taker"  # price_maker, price_taker, balanced
+  bid_offset_bps: 0
+  ask_offset_bps: 0
+  queue_position_optimization: true
+  fill_rate_target: 0.50
+  aggressive_factor: 0.30
+  passive_factor: 0.70
+
+# Adaptive Strategy
+adaptive:
+  enabled: true
+  adaptation_frequency_seconds: 10
+  adaptation_parameters:
+    - "spread"
+    - "quote_size"
+    - "inventory_target"
+    - "skew"
+  market_condition_adaptation: true
+  regime_based_adaptation: true
+  performance_based_adaptation: true
+  adaptation_speed: 0.50
+
+# Liquidity Provision
+liquidity:
+  enabled: true
+  liquidity_provision_style: "active"  # active, passive, hybrid
+  order_book_depth: 10
+  liquidity_detection: true
+  liquidity_taking: true
+  take_liquidity_threshold: 0.30
+  provide_liquidity_threshold: 0.70
+  dynamic_liquidity_provision: true
+
+# Execution
+execution:
+  enabled: true
+  execution_methods:
+    - "limit_orders"
+    - "market_orders"
+    - "iceberg_orders"
+    - "pegged_orders"
+  default_method: "limit_orders"
+  order_cancellation: true
+  order_modification: true
+  partial_fill_handling: "adaptive"
+  execution_monitoring: true
+  execution_optimization: true
+
+# Performance Metrics
+performance:
+  enabled: true
+  metrics:
+    - "spread_capture"
+    - "inventory_turnover"
+    - "fill_rate"
+    - "profit_loss"
+    - "sharpe_ratio"
+    - "win_rate"
+    - "average_trade_size"
+    - "market_making_efficiency"
+  performance_targets:
+    spread_capture_bps: 2
+    fill_rate_min: 0.50
+    sharpe_ratio_min: 1.0
+    win_rate_min: 0.60
+  performance_monitoring: true
+  performance_reporting: true
+
+# Visualization
+visualization:
+  enabled: true
+  charts:
+    - "quote_dashboard"
+    - "inventory_chart"
+    - "spread_evolution"
+    - "profit_loss_chart"
+    - "fill_rate_chart"
+    - "risk_metrics_chart"
+  update_interval_seconds: 5
+  dashboard_integration: true
+  real_time_updates: true
+
+# Alerting
+alerting:
+  enabled: true
+  alert_conditions:
+    - "inventory_breach"
+    - "risk_limit_breach"
+    - "performance_degradation"
+    - "quote_rejection"
+    - "execution_failure"
+    - "spread_widening"
+  alert_thresholds:
+    inventory_breach: 0.80
+    risk_breach: 0.90
+    performance_drop_percent: 20
+  alert_channels:
+    - "email"
+    - "telegram"
+    - "slack"
+  alert_cooldown_seconds: 300
+
+# Reporting
+reporting:
+  enabled: true
+  report_types:
+    - "real_time_alerts"
+    - "daily_performance_summary"
+    - "weekly_market_making_analysis"
+    - "monthly_performance_report"
+    - "liquidity_provision_report"
+  report_formats:
+    - "pdf"
+    - "html"
+    - "json"
+    - "csv"
+    - "excel"
+  report_recipients:
+    - "trading@example.com"
+    - "liquidity@example.com"
+    - "risk@example.com"
+
+# Storage
+storage:
+  enabled: true
+  storage_categories:
+    - "quote_data"
+    - "trade_data"
+    - "inventory_data"
+    - "performance_metrics"
+    - "risk_metrics"
+    - "alert_history"
+  retention_days: 365
+  compression: "zstd"
+  storage_format: "parquet"
+
+# Integration
+integration:
+  enabled: true
+  webhook_endpoint: "http://localhost:8080/market-making"
+  api_endpoint: "/api/v1/trading/market-making"
+  dashboard_url: "http://localhost:3000/market-making"
+  real_time_updates: true
+  data_sync_frequency_seconds: 5
+  external_systems:
+    - "trading_engine"
+    - "execution_engine"
+    - "risk_management"
+    - "order_management"
