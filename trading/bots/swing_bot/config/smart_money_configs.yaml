@@ -1,0 +1,323 @@
+# Swing Bot Smart Money Configuration
+# Smart Money Detection & Tracking Parameters
+
+# General Smart Money Settings
+smart_money:
+  enabled: true
+  analysis_mode: "comprehensive"  # comprehensive, basic, advanced, real-time
+  detection_method: "multi_factor"  # multi_factor, pattern_based, ml_based, hybrid
+  tracking_level: "full"  # full, partial, critical
+  version: "3.0.0"
+
+# Detection Methods
+detection:
+  enabled: true
+  methods:
+    - "large_trade_detection"
+    - "block_trade_detection"
+    - "institutional_order_flow"
+    - "dark_pool_activity"
+    - "smart_money_flow"
+    - "accumulation_distribution"
+    - "momentum_shift"
+    - "volume_analysis"
+    - "machine_learning_classification"
+  primary_method: "large_trade_detection"
+  secondary_method: "institutional_order_flow"
+  detection_confidence_threshold: 0.70
+
+# Large Trade Detection
+large_trade:
+  enabled: true
+  large_trade_parameters:
+    threshold_percentile: 90
+    min_trade_size: 100000
+    max_trade_size: 10000000
+    volume_confirm: true
+    price_confirm: true
+    time_window_seconds: 30
+  detection_window_bars: 10
+  min_large_trades: 3
+
+# Block Trade Detection
+block_trade:
+  enabled: true
+  block_trade_parameters:
+    threshold_percentile: 95
+    min_block_size: 500000
+    max_block_size: 50000000
+    price_impact_threshold: 0.02
+    execution_time_seconds: 60
+  detection_window_bars: 5
+  min_block_trades: 2
+
+# Institutional Order Flow
+institutional_flow:
+  enabled: true
+  flow_parameters:
+    flow_direction: "directional"  # directional, net, gross
+    flow_velocity_threshold: 0.05
+    flow_consistency: true
+    flow_confirmation: true
+    flow_volume_threshold: 100000
+  flow_window_bars: 20
+  min_flow_signal: 0.60
+
+# Dark Pool Activity
+dark_pool:
+  enabled: true
+  dark_pool_parameters:
+    dark_pool_volume_threshold: 100000
+    dark_pool_trade_count: 5
+    dark_pool_share_threshold: 0.10
+    detection_window_seconds: 60
+    price_impact_analysis: true
+  dark_pool_sources:
+    - "primary_dp"
+    - "secondary_dp"
+    - "alternative_dp"
+
+# Smart Money Flow
+smart_money_flow:
+  enabled: true
+  flow_indicators:
+    - "accumulation_distribution_line"
+    - "chaikin_money_flow"
+    - "money_flow_index"
+    - "on_balance_volume"
+    - "volume_weighted_price"
+    - "market_facilitation_index"
+  flow_parameters:
+    flow_threshold: 0.05
+    divergence_detection: true
+    confirmation_bars: 2
+    volume_confirm: true
+
+# Accumulation Distribution
+accumulation_distribution:
+  enabled: true
+  ad_indicators:
+    - "accumulation_distribution_line"
+    - "chaikin_oscillator"
+    - "volume_momentum"
+    - "price_volume_trend"
+  ad_parameters:
+    ad_threshold: 0.10
+    divergence_detection: true
+    confirmation_bars: 2
+    volume_confirm: true
+
+# Momentum Shift Detection
+momentum_shift:
+  enabled: true
+  shift_parameters:
+    momentum_change_threshold: 0.03
+    velocity_change_threshold: 0.02
+    acceleration_change_threshold: 0.01
+    shift_confirmation_bars: 2
+    volume_confirm: true
+
+# Smart Money Indicators
+indicators:
+  enabled: true
+  primary_indicators:
+    - "smart_money_index"
+    - "institutional_flow_index"
+    - "accumulation_distribution_score"
+    - "momentum_score"
+    - "volume_score"
+  secondary_indicators:
+    - "dark_pool_activity_score"
+    - "large_trade_score"
+    - "block_trade_score"
+    - "flow_velocity_score"
+    - "divergence_score"
+  indicator_weights:
+    smart_money_index: 0.25
+    institutional_flow_index: 0.20
+    accumulation_distribution_score: 0.15
+    momentum_score: 0.15
+    volume_score: 0.10
+    dark_pool_activity_score: 0.05
+    large_trade_score: 0.05
+    flow_velocity_score: 0.05
+
+# Smart Money Signals
+signals:
+  enabled: true
+  signal_types:
+    - "smart_money_buying"
+    - "smart_money_selling"
+    - "institutional_accumulation"
+    - "institutional_distribution"
+    - "accumulation_signal"
+    - "distribution_signal"
+    - "momentum_shift_bullish"
+    - "momentum_shift_bearish"
+    - "dark_pool_buying"
+    - "dark_pool_selling"
+  signal_strength_calculation: "weighted_average"
+  min_signal_strength: 0.60
+  signal_confidence_threshold: 0.70
+
+# Trading Strategies
+strategies:
+  enabled: true
+  smart_money_strategies:
+    - "follow_smart_money"
+    - "contrarian_smart_money"
+    - "accumulation_trading"
+    - "distribution_trading"
+    - "momentum_shift_trading"
+  strategy_selection: "context_based"
+  strategy_confidence_threshold: 0.70
+  strategy_confirmation_bars: 2
+
+# Entry Signals
+entry_signals:
+  enabled: true
+  entry_types:
+    - "smart_money_buy"
+    - "smart_money_sell"
+    - "institutional_buy"
+    - "institutional_sell"
+    - "accumulation_entry"
+    - "distribution_entry"
+  confirmation_requirements:
+    min_indicators_confirmed: 3
+    volume_confirmation: true
+    price_confirmation: true
+  signal_strength_calculation: "weighted_average"
+  min_signal_strength: 0.60
+
+# Stop Loss
+stop_loss:
+  enabled: true
+  stop_methods:
+    - "smart_money_failure"
+    - "fixed_percent"
+    - "volatility_based"
+    - "level_based"
+    - "trailing"
+  smart_money_failure_threshold: 0.02
+  fixed_percent: 0.02
+  volatility_multiplier: 1.5
+  level_break_threshold: 0.01
+  trailing_activation: 0.02
+  trailing_distance: 0.01
+
+# Take Profit
+take_profit:
+  enabled: true
+  profit_methods:
+    - "smart_money_exhaustion"
+    - "fixed_percent"
+    - "risk_reward_ratio"
+    - "trailing"
+  smart_money_exhaustion_threshold: 0.05
+  fixed_percent: 0.04
+  risk_reward_ratio: 2.0
+  trailing_activation: 0.02
+  trailing_distance: 0.01
+
+# Performance Metrics
+performance:
+  enabled: true
+  metrics:
+    - "smart_money_accuracy"
+    - "institutional_flow_accuracy"
+    - "signal_accuracy"
+    - "win_rate"
+    - "average_return"
+    - "profit_factor"
+    - "sharpe_ratio"
+    - "max_drawdown"
+    - "average_hold_time"
+  evaluation_period_days: 30
+  rolling_window_days: 30
+
+# Visualization
+visualization:
+  enabled: true
+  charts:
+    - "smart_money_dashboard"
+    - "institutional_flow_chart"
+    - "accumulation_distribution_chart"
+    - "dark_pool_activity_chart"
+    - "momentum_shift_chart"
+    - "signal_chart"
+    - "performance_chart"
+  update_interval_seconds: 5
+  dashboard_integration: true
+  real_time_updates: true
+
+# Alerting
+alerting:
+  enabled: true
+  alert_conditions:
+    - "smart_money_buying"
+    - "smart_money_selling"
+    - "institutional_flow_change"
+    - "accumulation_signal"
+    - "distribution_signal"
+    - "momentum_shift"
+    - "dark_pool_activity"
+  alert_thresholds:
+    signal_confidence: 0.70
+    flow_change: 0.05
+    accumulation_confidence: 0.70
+  alert_channels:
+    - "email"
+    - "telegram"
+    - "slack"
+  alert_cooldown_seconds: 300
+
+# Reporting
+reporting:
+  enabled: true
+  report_types:
+    - "real_time_alerts"
+    - "daily_smart_money_summary"
+    - "weekly_smart_money_analysis"
+    - "monthly_smart_money_report"
+  report_formats:
+    - "pdf"
+    - "html"
+    - "json"
+    - "csv"
+    - "excel"
+  report_recipients:
+    - "trading@example.com"
+    - "research@example.com"
+    - "risk@example.com"
+
+# Storage
+storage:
+  enabled: true
+  storage_categories:
+    - "smart_money_data"
+    - "institutional_flow_data"
+    - "dark_pool_data"
+    - "accumulation_distribution_data"
+    - "momentum_shift_data"
+    - "signal_history"
+    - "trade_history"
+    - "performance_metrics"
+    - "alert_history"
+  retention_days: 365
+  compression: "zstd"
+  storage_format: "parquet"
+
+# Integration
+integration:
+  enabled: true
+  webhook_endpoint: "http://localhost:8080/smart-money"
+  api_endpoint: "/api/v1/trading/smart-money"
+  dashboard_url: "http://localhost:3000/smart-money"
+  real_time_updates: true
+  data_sync_frequency_seconds: 3
+  external_systems:
+    - "trading_engine"
+    - "risk_management"
+    - "execution_engine"
+    - "research_platform"
