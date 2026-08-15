@@ -1,0 +1,214 @@
+# Swing Bot Simulation Configuration
+# Simulation & Virtual Trading Parameters
+
+# General Simulation Settings
+simulation:
+  enabled: true
+  simulation_type: "market_sim"  # market_sim, strategy_sim, portfolio_sim, monte_carlo
+  simulation_mode: "full"  # full, fast, ultra_fast, custom
+  accuracy_level: "high"  # low, medium, high, ultra
+  version: "3.0.0"
+
+# Simulation Parameters
+parameters:
+  enabled: true
+  time_steps: 1000
+  number_of_paths: 100
+  random_seed: 42
+  simulation_duration_days: 365
+  time_frequency: "daily"  # tick, minute, hour, daily, weekly, monthly
+  burn_in_period: 50
+
+# Market Simulation
+market_simulation:
+  enabled: true
+  price_models:
+    - "geometric_brownian"
+    - "jump_diffusion"
+    - "stochastic_volatility"
+    - "regime_switching"
+    - "historical_resampling"
+  primary_model: "geometric_brownian"
+  secondary_model: "stochastic_volatility"
+  parameters:
+    drift: 0.05
+    volatility: 0.20
+    jump_intensity: 0.05
+    jump_size_mean: 0.0
+    jump_size_std: 0.05
+  volatility_models:
+    - "constant_volatility"
+    - "garch"
+    - "egarch"
+    - "stochastic_volatility"
+  correlation_structure: true
+
+# Order Simulation
+order_simulation:
+  enabled: true
+  order_types:
+    - "market_orders"
+    - "limit_orders"
+    - "stop_orders"
+    - "stop_limit_orders"
+    - "trailing_stop_orders"
+    - "iceberg_orders"
+  execution_models:
+    - "immediate"
+    - "delayed"
+    - "probabilistic"
+    - "partial_fill"
+  fill_probability: 0.85
+  partial_fill_probability: 0.15
+  execution_delay_ms: 50
+
+# Execution Simulation
+execution_simulation:
+  enabled: true
+  slippage_model: true
+  market_impact_model: true
+  latency_model: true
+  spread_model: true
+  slippage_parameters:
+    base_slippage_bps: 2
+    volatility_multiplier: 0.50
+    size_multiplier: 0.30
+  market_impact_parameters:
+    permanent_impact: 0.001
+    temporary_impact: 0.002
+    decay_rate: 0.50
+
+# Portfolio Simulation
+portfolio_simulation:
+  enabled: true
+  asset_classes:
+    - "equities"
+    - "fixed_income"
+    - "commodities"
+    - "currencies"
+    - "crypto"
+  allocation_methods:
+    - "fixed_weight"
+    - "risk_parity"
+    - "mean_variance"
+    - "monte_carlo"
+  initial_capital: 1000000
+  rebalancing_frequency: "daily"
+
+# Strategy Simulation
+strategy_simulation:
+  enabled: true
+  strategy_types:
+    - "trend_following"
+    - "mean_reversion"
+    - "momentum"
+    - "breakout"
+    - "arbitrage"
+    - "market_making"
+  strategy_parameters:
+    lookback_period: 20
+    entry_threshold: 0.50
+    exit_threshold: 0.30
+    stop_loss: 0.02
+    take_profit: 0.04
+  performance_evaluation: true
+
+# Monte Carlo Simulation
+monte_carlo:
+  enabled: true
+  iterations: 10000
+  confidence_level: 0.95
+  convergence_tolerance: 0.001
+  parallel_execution: true
+  batch_size: 1000
+  random_seed: 42
+  variance_reduction: true
+
+# Risk Metrics
+risk_metrics:
+  enabled: true
+  metrics:
+    - "value_at_risk"
+    - "expected_shortfall"
+    - "maximum_drawdown"
+    - "volatility"
+    - "beta"
+    - "correlation"
+    - "concentration"
+  var_confidence_levels: [0.90, 0.95, 0.99]
+  var_time_horizons_days: [1, 5, 10, 30]
+
+# Performance Metrics
+performance:
+  enabled: true
+  metrics:
+    - "total_return"
+    - "annualized_return"
+    - "sharpe_ratio"
+    - "sortino_ratio"
+    - "calmar_ratio"
+    - "omega_ratio"
+    - "information_ratio"
+    - "treynor_ratio"
+  benchmark_comparison: true
+  benchmark: "s&p_500"
+
+# Visualization
+visualization:
+  enabled: true
+  charts:
+    - "simulation_dashboard"
+    - "price_paths_chart"
+    - "distribution_chart"
+    - "performance_chart"
+    - "risk_chart"
+    - "sensitivity_chart"
+  update_interval_seconds: 60
+  dashboard_integration: true
+
+# Reporting
+reporting:
+  enabled: true
+  report_types:
+    - "simulation_summary"
+    - "performance_report"
+    - "risk_report"
+    - "strategy_report"
+  report_formats:
+    - "pdf"
+    - "html"
+    - "json"
+    - "csv"
+    - "excel"
+  report_recipients:
+    - "research@example.com"
+    - "trading@example.com"
+    - "risk@example.com"
+
+# Storage
+storage:
+  enabled: true
+  storage_categories:
+    - "simulation_data"
+    - "market_data"
+    - "order_data"
+    - "execution_data"
+    - "portfolio_data"
+    - "risk_data"
+    - "performance_data"
+  retention_days: 365
+  compression: "zstd"
+  storage_format: "parquet"
+
+# Integration
+integration:
+  enabled: true
+  webhook_endpoint: "http://localhost:8080/simulation"
+  api_endpoint: "/api/v1/trading/simulation"
+  dashboard_url: "http://localhost:3000/simulation"
+  real_time_updates: true
+  data_sync_frequency_seconds: 30
+  external_systems:
+    - "trading_engine"
+    - "risk_management"
+    - "research_platform"
