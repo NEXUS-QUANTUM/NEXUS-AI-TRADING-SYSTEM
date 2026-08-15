@@ -1,0 +1,349 @@
+# Swing Bot Support & Resistance Configuration
+# Support & Resistance Detection & Trading Parameters
+
+# General Support & Resistance Settings
+support_resistance:
+  enabled: true
+  analysis_mode: "comprehensive"  # comprehensive, basic, advanced, real-time
+  detection_method: "multi_factor"  # multi_factor, swing_high_low, pivot_points, volume_profile
+  update_frequency_seconds: 10
+  version: "3.0.0"
+
+# Detection Methods
+detection:
+  enabled: true
+  methods:
+    - "swing_high_low"
+    - "pivot_points"
+    - "volume_profile"
+    - "market_profile"
+    - "fibonacci_retracement"
+    - "moving_average"
+    - "trendline"
+    - "round_numbers"
+    - "order_book"
+    - "machine_learning"
+  primary_method: "swing_high_low"
+  secondary_method: "volume_profile"
+  method_combination: "weighted"  # weighted, consensus, hierarchical
+
+# Swing High/Low
+swing_high_low:
+  enabled: true
+  parameters:
+    left_bars: 5
+    right_bars: 5
+    min_price_range: 0.01
+    min_touch_distance: 0.01
+    merge_threshold: 0.005
+    strength_metric: "touch_count"  # touch_count, volume_at_level, time_at_level
+    min_strength: 2
+    max_levels: 20
+  support_detection: true
+  resistance_detection: true
+  level_validation: true
+
+# Pivot Points
+pivot_points:
+  enabled: true
+  pivot_methods:
+    - "standard"
+    - "woodie"
+    - "camarilla"
+    - "demark"
+    - "fibonacci"
+  primary_method: "standard"
+  timeframe: "daily"  # daily, weekly, monthly
+  levels:
+    - "pivot"
+    - "r1"
+    - "r2"
+    - "r3"
+    - "r4"
+    - "s1"
+    - "s2"
+    - "s3"
+    - "s4"
+  include_midpoints: true
+  include_fibonacci: true
+
+# Volume Profile Levels
+volume_profile:
+  enabled: true
+  profile_period_bars: 50
+  value_area_volume_percent: 70
+  poc_volume_percent: 50
+  high_volume_node_threshold: 30
+  low_volume_node_threshold: 10
+  volume_buckets: 50
+  include_poc: true
+  include_vah_val: true
+  include_hvn_lvn: true
+
+# Market Profile Levels
+market_profile:
+  enabled: true
+  profile_period_bars: 50
+  value_area_percent: 70
+  poc_detection: true
+  initial_balance: true
+  developing_range: true
+  low_volume_area: true
+  high_volume_area: true
+
+# Fibonacci Levels
+fibonacci:
+  enabled: true
+  retracement_levels:
+    - 0.0
+    - 0.236
+    - 0.382
+    - 0.500
+    - 0.618
+    - 0.786
+    - 1.0
+  extension_levels:
+    - 1.272
+    - 1.382
+    - 1.618
+    - 2.0
+    - 2.618
+  projection_levels:
+    - 0.618
+    - 1.0
+    - 1.272
+    - 1.618
+  swing_lookback_bars: 100
+  min_swing_size: 0.02
+  confluence_threshold: 0.01
+
+# Support/Resistance Strength
+strength:
+  enabled: true
+  strength_factors:
+    - "touch_count": 0.25
+    - "volume_at_level": 0.20
+    - "time_at_level": 0.15
+    - "distance_from_price": 0.10
+    - "confluence_count": 0.10
+    - "historical_importance": 0.10
+    - "market_profile": 0.05
+    - "order_book": 0.05
+  strength_thresholds:
+    weak: 0.30
+    moderate: 0.50
+    strong: 0.70
+    very_strong: 0.85
+  dynamic_scoring: true
+
+# Confluence Analysis
+confluence:
+  enabled: true
+  confluence_types:
+    - "support_resistance"
+    - "fibonacci"
+    - "moving_average"
+    - "trendline"
+    - "volume_node"
+    - "pivot"
+    - "round_number"
+  confluence_radius: 0.005
+  min_confluence_count: 2
+  confluence_score_weights:
+    support_resistance: 0.30
+    fibonacci: 0.20
+    moving_average: 0.15
+    trendline: 0.10
+    volume_node: 0.10
+    pivot: 0.10
+    round_number: 0.05
+  confluence_visualization: true
+
+# Level Validation
+validation:
+  enabled: true
+  validation_methods:
+    - "touch_test"
+    - "retest_test"
+    - "breakthrough_test"
+    - "volume_confirmation"
+    - "time_confirmation"
+  min_touches: 2
+  min_retests: 1
+  validation_window_bars: 50
+  breakthrough_threshold: 0.02
+  false_breakout_threshold: 0.01
+
+# Trading Strategies
+strategies:
+  enabled: true
+  level_strategies:
+    - "bounce_trading"
+    - "breakout_trading"
+    - "breakout_retest"
+    - "level_reversal"
+    - "level_continuation"
+    - "range_trading"
+    - "pivot_trading"
+  strategy_selection: "context_based"
+  strategy_confidence_threshold: 0.70
+  strategy_confirmation_bars: 2
+
+# Entry Signals
+entry_signals:
+  enabled: true
+  signal_types:
+    - "bounce_entry"
+    - "breakout_entry"
+    - "retest_entry"
+    - "reversal_entry"
+    - "continuation_entry"
+    - "range_entry"
+    - "pivot_entry"
+  confirmation_requirements:
+    min_indicators_confirmed: 2
+    volume_confirmation: true
+    price_confirmation: true
+  signal_strength_calculation: "weighted_average"
+  min_signal_strength: 0.60
+
+# Exit Signals
+exit_signals:
+  enabled: true
+  exit_types:
+    - "target_level_hit"
+    - "opposite_level_hit"
+    - "stop_loss_hit"
+    - "pattern_failure"
+    - "momentum_reversal"
+  exit_confirmation: true
+  confirmation_bars: 1
+
+# Stop Loss
+stop_loss:
+  enabled: true
+  stop_methods:
+    - "level_break"
+    - "fixed_percent"
+    - "volatility_based"
+    - "trailing"
+  level_break_threshold: 0.01
+  fixed_percent: 0.02
+  volatility_multiplier: 2.0
+  trailing_activation: 0.02
+  trailing_distance: 0.01
+
+# Take Profit
+take_profit:
+  enabled: true
+  profit_methods:
+    - "next_level"
+    - "fibonacci_extension"
+    - "risk_reward_ratio"
+    - "trailing"
+  next_level_multiplier: 1.0
+  risk_reward_ratio: 2.0
+  trailing_activation: 0.02
+  trailing_distance: 0.01
+
+# Performance Metrics
+performance:
+  enabled: true
+  metrics:
+    - "level_accuracy"
+    - "bounce_success_rate"
+    - "breakout_success_rate"
+    - "win_rate"
+    - "average_return"
+    - "profit_factor"
+    - "sharpe_ratio"
+    - "max_drawdown"
+  evaluation_period_days: 30
+  rolling_window_days: 30
+  benchmark_comparison: true
+
+# Visualization
+visualization:
+  enabled: true
+  charts:
+    - "s_r_dashboard"
+    - "level_detection_chart"
+    - "strength_visualization"
+    - "confluence_analysis"
+    - "trading_signals"
+    - "performance_chart"
+  update_interval_seconds: 10
+  dashboard_integration: true
+  real_time_updates: true
+
+# Alerting
+alerting:
+  enabled: true
+  alert_conditions:
+    - "level_detected"
+    - "level_break"
+    - "level_retest"
+    - "bounce_signal"
+    - "breakout_signal"
+    - "reversal_signal"
+    - "confluence_detected"
+    - "strength_threshold_breach"
+  alert_thresholds:
+    level_confidence: 0.70
+    breakout_confidence: 0.75
+    retest_confidence: 0.70
+    bounce_confidence: 0.70
+  alert_channels:
+    - "email"
+    - "telegram"
+    - "slack"
+  alert_cooldown_seconds: 300
+
+# Reporting
+reporting:
+  enabled: true
+  report_types:
+    - "real_time_alerts"
+    - "daily_s_r_summary"
+    - "weekly_s_r_analysis"
+    - "monthly_s_r_report"
+    - "level_performance_report"
+  report_formats:
+    - "pdf"
+    - "html"
+    - "json"
+    - "csv"
+    - "excel"
+  report_recipients:
+    - "trading@example.com"
+    - "research@example.com"
+    - "strategy@example.com"
+
+# Storage
+storage:
+  enabled: true
+  storage_categories:
+    - "level_data"
+    - "confluence_data"
+    - "strength_scores"
+    - "validation_results"
+    - "signal_history"
+    - "performance_metrics"
+    - "alert_history"
+  retention_days: 365
+  compression: "zstd"
+  storage_format: "parquet"
+
+# Integration
+integration:
+  enabled: true
+  webhook_endpoint: "http://localhost:8080/support-resistance"
+  api_endpoint: "/api/v1/trading/support-resistance"
+  dashboard_url: "http://localhost:3000/support-resistance"
+  real_time_updates: true
+  data_sync_frequency_seconds: 5
+  external_systems:
+    - "trading_engine"
+    - "risk_management"
+    - "strategy_engine"
+    - "charting_platform"
