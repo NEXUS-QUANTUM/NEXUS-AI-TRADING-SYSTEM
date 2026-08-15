@@ -1,0 +1,280 @@
+# Swing Bot Point of Control (POC) Configuration
+# POC Analysis & Trading Parameters
+
+# General POC Settings
+poc:
+  enabled: true
+  analysis_mode: "comprehensive"  # comprehensive, basic, advanced, real-time
+  calculation_method: "volume"  # volume, tpo, weighted, hybrid
+  update_frequency_seconds: 60
+  version: "3.0.0"
+
+# POC Calculation
+calculation:
+  enabled: true
+  methods:
+    - "volume_poc"
+    - "tpo_poc"
+    - "weighted_poc"
+    - "hybrid_poc"
+    - "rolling_poc"
+    - "session_poc"
+  primary_method: "volume_poc"
+  secondary_method: "tpo_poc"
+  profile_period_bars: 50
+  price_buckets: 50
+  bucket_size: "dynamic"  # dynamic, fixed, adaptive
+  volume_threshold: 0.50
+
+# Volume POC
+volume_poc:
+  enabled: true
+  calculation: "max_volume_level"
+  volume_source: "total_volume"  # total_volume, bid_volume, ask_volume
+  smoothing_period: 3
+  min_volume_threshold: 1000
+  volume_confirmation: true
+  volume_weighting: true
+
+# TPO POC
+tpo_poc:
+  enabled: true
+  calculation: "max_tpo_count"
+  tpo_period_bars: 50
+  tpo_price_buckets: 50
+  tpo_smoothing: true
+  smoothing_period: 3
+  min_tpo_threshold: 5
+
+# Weighted POC
+weighted_poc:
+  enabled: true
+  weighting_factors:
+    volume: 0.50
+    tpo: 0.30
+    time: 0.20
+  calculation: "weighted_average"
+  normalization: true
+  validation: true
+
+# POC Strength
+strength:
+  enabled: true
+  strength_factors:
+    - "volume_density": 0.25
+    - "tpo_count": 0.20
+    - "time_spent": 0.15
+    - "touch_count": 0.15
+    - "profile_symmetry": 0.10
+    - "historical_importance": 0.10
+    - "market_profile": 0.05
+  strength_thresholds:
+    weak: 0.30
+    moderate: 0.50
+    strong: 0.70
+    very_strong: 0.85
+  dynamic_scoring: true
+
+# POC Zone
+poc_zone:
+  enabled: true
+  zone_calculation: "standard_deviation"  # standard_deviation, atr, percentile
+  zone_width_multiplier: 0.50
+  zone_width_bps: 5
+  inner_zone_width: 0.25
+  outer_zone_width: 0.75
+  zone_confirmation: true
+
+# POC Dynamics
+dynamics:
+  enabled: true
+  dynamics_types:
+    - "poc_shift"
+    - "poc_rotation"
+    - "poc_breakout"
+    - "poc_rejection"
+    - "poc_consolidation"
+    - "poc_expansion"
+    - "poc_contraction"
+  shift_threshold: 0.01
+  rotation_detection: true
+  breakout_detection: true
+  rejection_detection: true
+
+# POC Signals
+signals:
+  enabled: true
+  signal_types:
+    - "poc_bounce"
+    - "poc_breakout"
+    - "poc_retest"
+    - "poc_rejection"
+    - "poc_shift"
+    - "poc_rotation"
+    - "poc_breakdown"
+  signal_strength_calculation: "weighted_average"
+  min_signal_strength: 0.60
+  signal_confirmation_bars: 2
+
+# Trading Strategies
+strategies:
+  enabled: true
+  poc_strategies:
+    - "poc_bounce_trading"
+    - "poc_breakout_trading"
+    - "poc_retest_trading"
+    - "poc_rejection_trading"
+    - "poc_shift_trading"
+    - "poc_rotation_trading"
+  strategy_selection: "context_based"
+  strategy_confidence_threshold: 0.70
+  strategy_confirmation_bars: 2
+
+# Entry Signals
+entry_signals:
+  enabled: true
+  entry_types:
+    - "poc_bounce_buy"
+    - "poc_bounce_sell"
+    - "poc_breakout_buy"
+    - "poc_breakout_sell"
+    - "poc_retest_buy"
+    - "poc_retest_sell"
+  confirmation_requirements:
+    min_indicators_confirmed: 2
+    volume_confirmation: true
+    price_confirmation: true
+  signal_strength_calculation: "weighted_average"
+  min_signal_strength: 0.60
+
+# Stop Loss
+stop_loss:
+  enabled: true
+  stop_methods:
+    - "poc_break"
+    - "fixed_percent"
+    - "volatility_based"
+    - "zone_break"
+    - "trailing"
+  poc_break_threshold: 0.01
+  fixed_percent: 0.02
+  volatility_multiplier: 1.5
+  zone_break_threshold: 0.005
+  trailing_activation: 0.02
+  trailing_distance: 0.01
+
+# Take Profit
+take_profit:
+  enabled: true
+  profit_methods:
+    - "next_poc"
+    - "fixed_percent"
+    - "risk_reward_ratio"
+    - "zone_target"
+    - "trailing"
+  next_poc_multiplier: 1.0
+  fixed_percent: 0.04
+  risk_reward_ratio: 2.0
+  zone_target_multiplier: 0.50
+  trailing_activation: 0.02
+  trailing_distance: 0.01
+
+# Performance Metrics
+performance:
+  enabled: true
+  metrics:
+    - "poc_accuracy"
+    - "signal_accuracy"
+    - "win_rate"
+    - "average_return"
+    - "profit_factor"
+    - "sharpe_ratio"
+    - "max_drawdown"
+    - "average_hold_time"
+  evaluation_period_days: 30
+  rolling_window_days: 30
+
+# Visualization
+visualization:
+  enabled: true
+  charts:
+    - "poc_dashboard"
+    - "poc_volume_profile"
+    - "poc_strength_chart"
+    - "poc_zone_chart"
+    - "poc_dynamics_chart"
+    - "signal_chart"
+    - "performance_chart"
+  update_interval_seconds: 60
+  dashboard_integration: true
+  real_time_updates: true
+
+# Alerting
+alerting:
+  enabled: true
+  alert_conditions:
+    - "poc_detected"
+    - "poc_shift"
+    - "poc_breakout"
+    - "poc_rejection"
+    - "poc_signal"
+    - "poc_rotation"
+  alert_thresholds:
+    signal_confidence: 0.70
+    shift_confidence: 0.60
+    breakout_confidence: 0.75
+    rejection_confidence: 0.70
+  alert_channels:
+    - "email"
+    - "telegram"
+    - "slack"
+  alert_cooldown_seconds: 300
+
+# Reporting
+reporting:
+  enabled: true
+  report_types:
+    - "real_time_alerts"
+    - "daily_poc_summary"
+    - "weekly_poc_analysis"
+    - "monthly_poc_report"
+  report_formats:
+    - "pdf"
+    - "html"
+    - "json"
+    - "csv"
+    - "excel"
+  report_recipients:
+    - "trading@example.com"
+    - "research@example.com"
+    - "strategy@example.com"
+
+# Storage
+storage:
+  enabled: true
+  storage_categories:
+    - "poc_data"
+    - "strength_scores"
+    - "zone_data"
+    - "dynamics_data"
+    - "signal_history"
+    - "trade_history"
+    - "performance_metrics"
+    - "alert_history"
+  retention_days: 365
+  compression: "zstd"
+  storage_format: "parquet"
+
+# Integration
+integration:
+  enabled: true
+  webhook_endpoint: "http://localhost:8080/poc"
+  api_endpoint: "/api/v1/trading/poc"
+  dashboard_url: "http://localhost:3000/poc"
+  real_time_updates: true
+  data_sync_frequency_seconds: 30
+  external_systems:
+    - "trading_engine"
+    - "risk_management"
+    - "strategy_engine"
+    - "research_platform"
