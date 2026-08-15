@@ -1,0 +1,317 @@
+# Swing Bot Sector Rotation Configuration
+# Sector Rotation Analysis & Trading Parameters
+
+# General Rotation Settings
+rotation:
+  enabled: true
+  analysis_mode: "comprehensive"  # comprehensive, basic, advanced, real-time
+  rotation_type: "sector_rotation"  # sector_rotation, style_rotation, factor_rotation
+  strategy_type: "momentum_rotation"  # momentum_rotation, value_rotation, hybrid_rotation
+  version: "3.0.0"
+
+# Rotation Components
+components:
+  enabled: true
+  primary_components:
+    - "sector_momentum"
+    - "sector_value"
+    - "sector_quality"
+    - "sector_growth"
+    - "sector_volatility"
+    - "sector_sentiment"
+  secondary_components:
+    - "sector_flow"
+    - "sector_earnings"
+    - "sector_valuation"
+    - "sector_technical"
+    - "sector_correlation"
+    - "sector_alpha"
+  component_weights:
+    sector_momentum: 0.25
+    sector_value: 0.15
+    sector_quality: 0.15
+    sector_growth: 0.15
+    sector_volatility: 0.10
+    sector_sentiment: 0.10
+    sector_flow: 0.10
+
+# Sector Momentum
+sector_momentum:
+  enabled: true
+  momentum_timeframes:
+    short_term_bars: 10
+    medium_term_bars: 30
+    long_term_bars: 90
+  momentum_indicators:
+    - "price_momentum"
+    - "volume_momentum"
+    - "relative_momentum"
+    - "composite_momentum"
+  momentum_scoring:
+    short_term_weight: 0.30
+    medium_term_weight: 0.40
+    long_term_weight: 0.30
+  threshold_positive: 0.03
+  threshold_negative: -0.03
+
+# Sector Value
+sector_value:
+  enabled: true
+  value_metrics:
+    - "pe_ratio"
+    - "pb_ratio"
+    - "ps_ratio"
+    - "peg_ratio"
+    - "ev_ebitda"
+    - "dividend_yield"
+  value_scoring:
+    normalization: true
+    percentile_ranking: true
+    relative_valuation: true
+  threshold_undervalued: 30
+  threshold_overvalued: 70
+
+# Sector Quality
+sector_quality:
+  enabled: true
+  quality_metrics:
+    - "roic"
+    - "roe"
+    - "profit_margin"
+    - "debt_to_equity"
+    - "earnings_stability"
+    - "cash_flow"
+  quality_scoring:
+    normalization: true
+    composite_score: true
+  threshold_high_quality: 0.70
+  threshold_low_quality: 0.30
+
+# Sector Growth
+sector_growth:
+  enabled: true
+  growth_metrics:
+    - "earnings_growth"
+    - "revenue_growth"
+    - "cash_flow_growth"
+    - "dividend_growth"
+    - "margin_expansion"
+  growth_timeframes:
+    short_term_quarters: 4
+    medium_term_quarters: 8
+    long_term_quarters: 12
+  growth_scoring:
+    short_term_weight: 0.30
+    medium_term_weight: 0.40
+    long_term_weight: 0.30
+
+# Sector Volatility
+sector_volatility:
+  enabled: true
+  volatility_metrics:
+    - "price_volatility"
+    - "earnings_volatility"
+    - "beta"
+    - "volatility_skew"
+  volatility_scoring:
+    normalization: true
+    risk_adjustment: true
+  threshold_high_volatility: 0.30
+  threshold_low_volatility: 0.15
+
+# Sector Sentiment
+sector_sentiment:
+  enabled: true
+  sentiment_sources:
+    - "analyst_sentiment"
+    - "news_sentiment"
+    - "social_sentiment"
+    - "investor_sentiment"
+  sentiment_scoring:
+    normalization: true
+    consensus_measurement: true
+  threshold_bullish: 0.60
+  threshold_bearish: -0.60
+
+# Rotation Strategy
+strategy:
+  enabled: true
+  rotation_methods:
+    - "momentum_rotation"
+    - "value_rotation"
+    - "growth_rotation"
+    - "volatility_rotation"
+    - "hybrid_rotation"
+  primary_method: "hybrid_rotation"
+  rotation_frequency_bars: 20
+  max_sectors_held: 5
+  min_sectors_held: 3
+  rebalance_threshold: 0.10
+  confirmation_bars: 2
+
+# Rotation Signals
+signals:
+  enabled: true
+  signal_types:
+    - "buy_sector"
+    - "sell_sector"
+    - "hold_sector"
+    - "rotate_to_sector"
+    - "rotate_from_sector"
+    - "increase_weight"
+    - "decrease_weight"
+  signal_strength_calculation: "weighted_average"
+  min_signal_strength: 0.60
+  signal_confidence_threshold: 0.70
+
+# Sector Scoring
+scoring:
+  enabled: true
+  score_components:
+    - "momentum_score": 0.25
+    - "value_score": 0.15
+    - "quality_score": 0.15
+    - "growth_score": 0.15
+    - "volatility_score": 0.10
+    - "sentiment_score": 0.10
+    - "flow_score": 0.10
+  score_range: [0, 100]
+  normalization: true
+  percentile_ranking: true
+
+# Rotation Execution
+execution:
+  enabled: true
+  execution_methods:
+    - "immediate"
+    - "scheduled"
+    - "adaptive"
+    - "phased"
+  primary_method: "adaptive"
+  execution_parameters:
+    max_trades_per_day: 5
+    trade_size_limit: 0.10
+    price_tolerance: 0.01
+  slippage_control: true
+  market_impact_control: true
+
+# Risk Management
+risk_management:
+  enabled: true
+  risk_limits:
+    max_sector_exposure: 0.30
+    max_sector_turnover: 0.20
+    max_correlation: 0.70
+    max_drawdown: 0.10
+  stop_loss:
+    enabled: true
+    sector_level: 0.05
+    portfolio_level: 0.08
+  position_sizing: "risk_based"
+  diversification_requirements: true
+
+# Performance Metrics
+performance:
+  enabled: true
+  metrics:
+    - "rotation_efficiency"
+    - "sector_accuracy"
+    - "signal_accuracy"
+    - "win_rate"
+    - "average_return"
+    - "profit_factor"
+    - "sharpe_ratio"
+    - "max_drawdown"
+    - "turnover"
+  evaluation_period_days: 30
+  rolling_window_days: 30
+  benchmark_comparison: true
+
+# Visualization
+visualization:
+  enabled: true
+  charts:
+    - "rotation_dashboard"
+    - "sector_ranking_chart"
+    - "rotation_heatmap"
+    - "momentum_chart"
+    - "scoring_chart"
+    - "performance_chart"
+    - "execution_chart"
+  update_interval_seconds: 30
+  dashboard_integration: true
+  real_time_updates: true
+
+# Alerting
+alerting:
+  enabled: true
+  alert_conditions:
+    - "rotation_signal"
+    - "sector_ranking_change"
+    - "momentum_shift"
+    - "valuation_extreme"
+    - "scoring_change"
+    - "execution_signal"
+    - "risk_breach"
+  alert_thresholds:
+    signal_confidence: 0.70
+    ranking_change: 5
+    momentum_shift: 0.05
+    valuation_extreme: 30
+    scoring_change: 10
+  alert_channels:
+    - "email"
+    - "telegram"
+    - "slack"
+  alert_cooldown_seconds: 300
+
+# Reporting
+reporting:
+  enabled: true
+  report_types:
+    - "daily_rotation_summary"
+    - "weekly_rotation_analysis"
+    - "monthly_rotation_report"
+    - "sector_performance_report"
+    - "execution_report"
+  report_formats:
+    - "pdf"
+    - "html"
+    - "json"
+    - "csv"
+    - "excel"
+  report_recipients:
+    - "trading@example.com"
+    - "research@example.com"
+    - "strategy@example.com"
+
+# Storage
+storage:
+  enabled: true
+  storage_categories:
+    - "rotation_data"
+    - "sector_data"
+    - "scoring_data"
+    - "signal_history"
+    - "execution_data"
+    - "performance_metrics"
+    - "risk_metrics"
+    - "alert_history"
+    - "report_history"
+  retention_days: 365
+  compression: "zstd"
+  storage_format: "parquet"
+
+# Integration
+integration:
+  enabled: true
+  webhook_endpoint: "http://localhost:8080/rotation"
+  api_endpoint: "/api/v1/trading/rotation"
+  dashboard_url: "http://localhost:3000/rotation"
+  real_time_updates: true
+  data_sync_frequency_seconds: 30
+  external_systems:
+    - "trading_engine"
+    - "risk_management"
+    - "strategy_engine"
+    - "research_platform"
