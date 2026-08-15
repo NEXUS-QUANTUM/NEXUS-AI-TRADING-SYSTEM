@@ -1,0 +1,319 @@
+# Swing Bot Power Hour Configuration
+# Power Hour Trading Strategy & Parameters
+
+# General Power Hour Settings
+power_hour:
+  enabled: true
+  strategy_type: "momentum_power"  # momentum_power, reversal_power, volatility_power
+  execution_style: "aggressive"  # aggressive, moderate, conservative, adaptive
+  time_window: "power_hour"  # power_hour, golden_hour, opening_hour, closing_hour
+  version: "3.0.0"
+
+# Power Hour Components
+components:
+  enabled: true
+  primary_components:
+    - "momentum_trading"
+    - "breakout_trading"
+    - "reversal_trading"
+    - "volume_spike_trading"
+    - "volatility_trading"
+  secondary_components:
+    - "scalping"
+    - "trend_following"
+    - "range_trading"
+    - "order_flow_trading"
+    - "sentiment_trading"
+  component_weights:
+    momentum_trading: 0.25
+    breakout_trading: 0.20
+    reversal_trading: 0.15
+    volume_spike_trading: 0.15
+    volatility_trading: 0.10
+    scalping: 0.10
+    trend_following: 0.05
+
+# Power Hour Timing
+timing:
+  enabled: true
+  power_hour_window:
+    start_time: "14:00"
+    end_time: "16:00"
+    timezone: "America/New_York"
+  pre_power_hour:
+    start_time: "13:30"
+    end_time: "14:00"
+  post_power_hour:
+    start_time: "16:00"
+    end_time: "16:30"
+  golden_hour:
+    start_time: "15:00"
+    end_time: "16:00"
+  opening_hour:
+    start_time: "09:30"
+    end_time: "10:30"
+  closing_hour:
+    start_time: "15:00"
+    end_time: "16:00"
+  trading_days:
+    - "monday"
+    - "tuesday"
+    - "wednesday"
+    - "thursday"
+    - "friday"
+
+# Power Hour Indicators
+indicators:
+  enabled: true
+  primary_indicators:
+    - "volume_spike"
+    - "price_momentum"
+    - "volatility_spike"
+    - "breakout_levels"
+    - "reversal_patterns"
+    - "order_flow_imbalance"
+  secondary_indicators:
+    - "rsi"
+    - "macd"
+    - "stochastic"
+    - "moving_average"
+    - "bollinger_bands"
+    - "atr"
+  indicator_weights:
+    volume_spike: 0.20
+    price_momentum: 0.20
+    volatility_spike: 0.15
+    breakout_levels: 0.15
+    reversal_patterns: 0.10
+    order_flow_imbalance: 0.10
+    rsi: 0.05
+    macd: 0.05
+
+# Momentum Trading
+momentum_trading:
+  enabled: true
+  momentum_parameters:
+    lookback_bars: 5
+    momentum_threshold: 0.03
+    acceleration_threshold: 0.01
+    volume_confirm: true
+    volatility_adjust: true
+  entry_threshold: 0.60
+  exit_threshold: 0.40
+
+# Breakout Trading
+breakout_trading:
+  enabled: true
+  breakout_parameters:
+    lookback_bars: 10
+    breakout_percentage: 0.02
+    volume_multiplier: 1.5
+    confirmation_bars: 1
+    pullback_tolerance: 0.005
+  entry_threshold: 0.60
+  exit_threshold: 0.40
+
+# Reversal Trading
+reversal_trading:
+  enabled: true
+  reversal_parameters:
+    divergence_detection: true
+    exhaustion_detection: true
+    volume_confirm: true
+    confirmation_bars: 1
+    reversal_strength_threshold: 0.50
+  entry_threshold: 0.60
+  exit_threshold: 0.40
+
+# Volume Spike Trading
+volume_spike_trading:
+  enabled: true
+  volume_parameters:
+    spike_multiplier: 2.0
+    min_volume_threshold: 500000
+    volume_consistency: true
+    volume_confirm: true
+    volume_velocity: true
+  entry_threshold: 0.60
+  exit_threshold: 0.40
+
+# Volatility Trading
+volatility_trading:
+  enabled: true
+  volatility_parameters:
+    volatility_threshold: 0.02
+    atr_multiplier: 1.0
+    volatility_confirm: true
+    volatility_velocity: true
+  entry_threshold: 0.60
+  exit_threshold: 0.40
+
+# Position Sizing
+position_sizing:
+  enabled: true
+  methods:
+    - "risk_based"
+    - "volatility_based"
+    - "momentum_based"
+    - "power_hour_sizing"
+  primary_method: "risk_based"
+  risk_per_trade: 0.02
+  max_position_size: 0.05
+  min_position_size: 0.01
+  power_hour_multiplier: 1.5
+
+# Risk Management
+risk_management:
+  enabled: true
+  stop_loss:
+    methods:
+      - "volatility_based"
+      - "fixed_percent"
+      - "atr_based"
+      - "trailing"
+      - "level_based"
+    volatility_multiplier: 1.5
+    fixed_percent: 0.02
+    atr_multiplier: 1.0
+    trailing_activation: 0.02
+    trailing_distance: 0.01
+  take_profit:
+    methods:
+      - "risk_reward_ratio"
+      - "fixed_percent"
+      - "momentum_based"
+      - "trailing"
+    risk_reward_ratio: 2.0
+    fixed_percent: 0.04
+    momentum_multiplier: 0.50
+    trailing_activation: 0.02
+    trailing_distance: 0.01
+  risk_limits:
+    max_daily_loss: 0.03
+    max_drawdown: 0.08
+    max_position_exposure: 0.15
+
+# Entry Signals
+entry_signals:
+  enabled: true
+  signal_types:
+    - "power_buy"
+    - "power_sell"
+    - "momentum_buy"
+    - "momentum_sell"
+    - "breakout_buy"
+    - "breakout_sell"
+    - "reversal_buy"
+    - "reversal_sell"
+    - "volume_buy"
+    - "volume_sell"
+    - "volatility_buy"
+    - "volatility_sell"
+  confirmation_requirements:
+    min_indicators_confirmed: 2
+    volume_confirmation: true
+    price_confirmation: true
+  signal_strength_calculation: "weighted_average"
+  min_signal_strength: 0.60
+
+# Performance Metrics
+performance:
+  enabled: true
+  metrics:
+    - "power_hour_accuracy"
+    - "signal_accuracy"
+    - "win_rate"
+    - "average_return"
+    - "profit_factor"
+    - "sharpe_ratio"
+    - "max_drawdown"
+    - "average_hold_time"
+  evaluation_period_days: 30
+  rolling_window_days: 30
+
+# Visualization
+visualization:
+  enabled: true
+  charts:
+    - "power_hour_dashboard"
+    - "volume_spike_chart"
+    - "momentum_chart"
+    - "volatility_chart"
+    - "signal_chart"
+    - "performance_chart"
+    - "trade_distribution_chart"
+  update_interval_seconds: 5
+  dashboard_integration: true
+  real_time_updates: true
+
+# Alerting
+alerting:
+  enabled: true
+  alert_conditions:
+    - "power_hour_signal"
+    - "volume_spike"
+    - "momentum_signal"
+    - "breakout_signal"
+    - "reversal_signal"
+    - "volatility_spike"
+    - "risk_breach"
+  alert_thresholds:
+    signal_confidence: 0.60
+    volume_spike: 2.0
+    momentum_shift: 0.03
+    volatility_spike: 0.02
+  alert_channels:
+    - "email"
+    - "telegram"
+    - "slack"
+  alert_cooldown_seconds: 300
+
+# Reporting
+reporting:
+  enabled: true
+  report_types:
+    - "real_time_alerts"
+    - "daily_power_hour_summary"
+    - "weekly_power_hour_analysis"
+    - "monthly_power_hour_report"
+  report_formats:
+    - "pdf"
+    - "html"
+    - "json"
+    - "csv"
+    - "excel"
+  report_recipients:
+    - "trading@example.com"
+    - "risk@example.com"
+    - "strategy@example.com"
+
+# Storage
+storage:
+  enabled: true
+  storage_categories:
+    - "power_hour_data"
+    - "volume_data"
+    - "momentum_data"
+    - "volatility_data"
+    - "signal_history"
+    - "trade_history"
+    - "performance_metrics"
+    - "risk_metrics"
+    - "alert_history"
+  retention_days: 365
+  compression: "zstd"
+  storage_format: "parquet"
+
+# Integration
+integration:
+  enabled: true
+  webhook_endpoint: "http://localhost:8080/power-hour"
+  api_endpoint: "/api/v1/trading/power-hour"
+  dashboard_url: "http://localhost:3000/power-hour"
+  real_time_updates: true
+  data_sync_frequency_seconds: 3
+  external_systems:
+    - "trading_engine"
+    - "risk_management"
+    - "order_management"
+    - "execution_platform"
