@@ -1,0 +1,291 @@
+# Swing Bot Recommendation Configuration
+# Recommendation Engine & Action Suggestion Parameters
+
+# General Recommendation Settings
+recommendation:
+  enabled: true
+  engine_mode: "hybrid"  # hybrid, rule_based, ml_based, ensemble
+  recommendation_type: "trading"  # trading, risk, strategy, execution
+  personalization: true  # true, false, adaptive
+  version: "3.0.0"
+
+# Recommendation Components
+components:
+  enabled: true
+  primary_components:
+    - "trading_recommendations"
+    - "risk_recommendations"
+    - "strategy_recommendations"
+    - "execution_recommendations"
+    - "portfolio_recommendations"
+    - "entry_exit_recommendations"
+  secondary_components:
+    - "position_sizing_recommendations"
+    - "stop_loss_recommendations"
+    - "take_profit_recommendations"
+    - "timing_recommendations"
+    - "venue_recommendations"
+    - "hedging_recommendations"
+  component_weights:
+    trading_recommendations: 0.25
+    risk_recommendations: 0.15
+    strategy_recommendations: 0.15
+    execution_recommendations: 0.15
+    portfolio_recommendations: 0.10
+    entry_exit_recommendations: 0.10
+    position_sizing_recommendations: 0.05
+    stop_loss_recommendations: 0.05
+
+# Trading Recommendations
+trading:
+  enabled: true
+  recommendation_types:
+    - "buy_recommendation"
+    - "sell_recommendation"
+    - "hold_recommendation"
+    - "short_recommendation"
+    - "cover_recommendation"
+    - "enter_recommendation"
+    - "exit_recommendation"
+    - "scale_in_recommendation"
+    - "scale_out_recommendation"
+  confidence_threshold: 0.70
+  action_priority: "high_confidence"
+  recommendation_horizon: "short_term"  # short_term, medium_term, long_term
+
+# Risk Recommendations
+risk:
+  enabled: true
+  recommendation_types:
+    - "reduce_position_risk"
+    - "increase_hedge"
+    - "adjust_stop_loss"
+    - "adjust_take_profit"
+    - "diversify"
+    - "reduce_leverage"
+    - "increase_leverage"
+    - "cash_protection"
+  risk_thresholds:
+    moderate_risk: 0.50
+    high_risk: 0.70
+    critical_risk: 0.90
+  confidence_threshold: 0.70
+
+# Strategy Recommendations
+strategy:
+  enabled: true
+  recommendation_types:
+    - "strategy_switch"
+    - "strategy_adjustment"
+    - "strategy_rotation"
+    - "strategy_enhancement"
+    - "strategy_pause"
+    - "strategy_resume"
+  strategy_selection: "context_based"
+  confidence_threshold: 0.70
+  transition_smoothness: 0.50
+
+# Execution Recommendations
+execution:
+  enabled: true
+  recommendation_types:
+    - "order_type_recommendation"
+    - "timing_recommendation"
+    - "venue_recommendation"
+    - "slicing_recommendation"
+    - "speed_recommendation"
+    - "urgency_recommendation"
+  execution_quality: "balanced"  # speed, quality, cost, balanced
+  confidence_threshold: 0.70
+  urgency_level: "normal"  # low, normal, high, urgent
+
+# Portfolio Recommendations
+portfolio:
+  enabled: true
+  recommendation_types:
+    - "asset_allocation"
+    - "sector_allocation"
+    - "region_allocation"
+    - "rebalancing"
+    - "diversification"
+    - "concentration_reduction"
+  portfolio_style: "balanced"  # aggressive, balanced, conservative
+  confidence_threshold: 0.70
+  rebalancing_threshold: 0.05
+
+# Entry/Exit Recommendations
+entry_exit:
+  enabled: true
+  recommendation_types:
+    - "entry_point"
+    - "exit_point"
+    - "entry_zone"
+    - "exit_zone"
+    - "entry_trigger"
+    - "exit_trigger"
+    - "partial_entry"
+    - "partial_exit"
+  entry_exit_style: "precision"  # precision, momentum, level_based
+  confidence_threshold: 0.70
+
+# Position Sizing Recommendations
+position_sizing:
+  enabled: true
+  sizing_methods:
+    - "risk_based_sizing"
+    - "volatility_based_sizing"
+    - "kelly_based_sizing"
+    - "confidence_based_sizing"
+  primary_method: "risk_based"
+  risk_per_trade: 0.02
+  max_position_size: 0.05
+  min_position_size: 0.01
+
+# Stop Loss Recommendations
+stop_loss:
+  enabled: true
+  stop_methods:
+    - "volatility_based"
+    - "level_based"
+    - "fixed_percent"
+    - "trailing_stop"
+  primary_method: "volatility_based"
+  default_percent: 0.02
+  volatility_multiplier: 2.0
+
+# Take Profit Recommendations
+take_profit:
+  enabled: true
+  profit_methods:
+    - "risk_reward_ratio"
+    - "level_based"
+    - "fixed_percent"
+    - "trailing_profit"
+  primary_method: "risk_reward_ratio"
+  risk_reward_ratio: 2.0
+  default_percent: 0.04
+
+# Recommendation Scoring
+scoring:
+  enabled: true
+  score_components:
+    - "confidence_score": 0.25
+    - "relevance_score": 0.20
+    - "timeliness_score": 0.15
+    - "impact_score": 0.15
+    - "probability_score": 0.10
+    - "urgency_score": 0.10
+    - "actionability_score": 0.05
+  score_thresholds:
+    low: 0.30
+    moderate: 0.50
+    high: 0.70
+    very_high: 0.85
+
+# Recommendation Filters
+filters:
+  enabled: true
+  filter_types:
+    - "risk_filter"
+    - "context_filter"
+    - "time_filter"
+    - "market_filter"
+    - "regime_filter"
+    - "correlation_filter"
+  filter_strictness: "moderate"  # strict, moderate, flexible
+  min_filter_score: 0.50
+
+# Personalization
+personalization:
+  enabled: true
+  personalization_factors:
+    - "risk_tolerance"
+    - "trading_style"
+    - "experience_level"
+    - "capital_available"
+    - "time_horizon"
+    - "preferences"
+  adaptation_speed: 0.50
+  learning_rate: 0.10
+
+# Visualization
+visualization:
+  enabled: true
+  charts:
+    - "recommendation_dashboard"
+    - "recommendation_timeline"
+    - "confidence_chart"
+    - "scoring_chart"
+    - "action_tracker"
+    - "performance_chart"
+  update_interval_seconds: 10
+  dashboard_integration: true
+  real_time_updates: true
+
+# Alerting
+alerting:
+  enabled: true
+  alert_conditions:
+    - "high_confidence_recommendation"
+    - "urgent_recommendation"
+    - "critical_risk_recommendation"
+    - "strategy_change_recommendation"
+    - "entry_exit_recommendation"
+    - "position_sizing_recommendation"
+  alert_thresholds:
+    confidence_high: 0.85
+    urgency_high: 0.80
+    risk_critical: 0.90
+  alert_channels:
+    - "email"
+    - "telegram"
+    - "slack"
+  alert_cooldown_seconds: 300
+
+# Reporting
+reporting:
+  enabled: true
+  report_types:
+    - "daily_recommendation_summary"
+    - "weekly_recommendation_analysis"
+    - "monthly_recommendation_report"
+    - "recommendation_performance_report"
+  report_formats:
+    - "pdf"
+    - "html"
+    - "json"
+    - "csv"
+    - "excel"
+  report_recipients:
+    - "trading@example.com"
+    - "risk@example.com"
+    - "strategy@example.com"
+
+# Storage
+storage:
+  enabled: true
+  storage_categories:
+    - "recommendation_data"
+    - "scoring_data"
+    - "action_history"
+    - "performance_metrics"
+    - "personalization_data"
+    - "alert_history"
+    - "report_history"
+  retention_days: 365
+  compression: "zstd"
+  storage_format: "parquet"
+
+# Integration
+integration:
+  enabled: true
+  webhook_endpoint: "http://localhost:8080/recommendation"
+  api_endpoint: "/api/v1/trading/recommendation"
+  dashboard_url: "http://localhost:3000/recommendation"
+  real_time_updates: true
+  data_sync_frequency_seconds: 5
+  external_systems:
+    - "trading_engine"
+    - "risk_management"
+    - "strategy_engine"
+    - "execution_engine"
