@@ -1,0 +1,347 @@
+# Swing Bot Pre-Market Configuration
+# Pre-Market Analysis & Trading Parameters
+
+# General Pre-Market Settings
+pre_market:
+  enabled: true
+  analysis_mode: "comprehensive"  # comprehensive, basic, advanced, real-time
+  trading_style: "pre_market"  # pre_market, opening, gap_trading
+  time_window: "pre_market"  # pre_market, after_hours, extended_hours
+  version: "3.0.0"
+
+# Pre-Market Components
+components:
+  enabled: true
+  primary_components:
+    - "pre_market_price_action"
+    - "pre_market_volume"
+    - "pre_market_volatility"
+    - "pre_market_orders"
+    - "pre_market_news"
+    - "pre_market_sentiment"
+  secondary_components:
+    - "overnight_gap_analysis"
+    - "opening_range_analysis"
+    - "early_momentum"
+    - "pre_market_flow"
+    - "overnight_indicators"
+  component_weights:
+    pre_market_price_action: 0.25
+    pre_market_volume: 0.15
+    pre_market_volatility: 0.15
+    pre_market_orders: 0.15
+    pre_market_news: 0.10
+    pre_market_sentiment: 0.10
+    overnight_gap_analysis: 0.05
+    opening_range_analysis: 0.05
+
+# Pre-Market Timing
+timing:
+  enabled: true
+  pre_market_window:
+    start_time: "04:00"
+    end_time: "09:30"
+    timezone: "America/New_York"
+  after_hours_window:
+    start_time: "16:00"
+    end_time: "20:00"
+    timezone: "America/New_York"
+  extended_hours_window:
+    start_time: "04:00"
+    end_time: "20:00"
+    timezone: "America/New_York"
+  opening_range:
+    start_time: "09:30"
+    end_time: "10:00"
+    timezone: "America/New_York"
+  trading_days:
+    - "monday"
+    - "tuesday"
+    - "wednesday"
+    - "thursday"
+    - "friday"
+
+# Pre-Market Indicators
+indicators:
+  enabled: true
+  primary_indicators:
+    - "pre_market_price_change"
+    - "pre_market_volume_ratio"
+    - "pre_market_spread"
+    - "pre_market_volatility"
+    - "pre_market_order_book"
+    - "pre_market_depth"
+  secondary_indicators:
+    - "overnight_gap_size"
+    - "opening_range_width"
+    - "pre_market_momentum"
+    - "pre_market_flow_imbalance"
+    - "pre_market_sentiment_score"
+  indicator_weights:
+    pre_market_price_change: 0.20
+    pre_market_volume_ratio: 0.15
+    pre_market_spread: 0.15
+    pre_market_volatility: 0.15
+    pre_market_order_book: 0.15
+    pre_market_depth: 0.10
+    overnight_gap_size: 0.05
+    opening_range_width: 0.05
+
+# Price Action Analysis
+price_action:
+  enabled: true
+  price_metrics:
+    - "pre_market_high"
+    - "pre_market_low"
+    - "pre_market_close"
+    - "pre_market_open"
+    - "pre_market_range"
+    - "pre_market_high_low_range"
+  analysis_window: "pre_market"
+  volatility_calculation: "atr"  # atr, standard_deviation, range
+  threshold_price_change: 0.01
+  confirmation_bars: 3
+
+# Volume Analysis
+volume_analysis:
+  enabled: true
+  volume_metrics:
+    - "pre_market_volume"
+    - "pre_market_volume_ratio"
+    - "pre_market_volume_velocity"
+    - "pre_market_volume_spike"
+    - "pre_market_volume_distribution"
+  lookback_period_days: 20
+  volume_ratio_threshold: 1.5
+  volume_spike_threshold: 2.0
+  min_pre_market_volume: 100000
+
+# Order Analysis
+order_analysis:
+  enabled: true
+  order_metrics:
+    - "pre_market_order_book_depth"
+    - "pre_market_bid_ask_spread"
+    - "pre_market_order_flow"
+    - "pre_market_order_imbalance"
+    - "pre_market_iceberg_orders"
+  depth_levels: 10
+  spread_threshold: 0.01
+  imbalance_threshold: 0.30
+  monitoring_frequency_ms: 100
+
+# News & Sentiment
+news_sentiment:
+  enabled: true
+  news_sources:
+    - "bloomberg"
+    - "reuters"
+    - "wsj"
+    - "cnbc"
+    - "seeking_alpha"
+    - "yahoo_finance"
+  sentiment_analysis: true
+  news_impact_scoring: true
+  sentiment_threshold: 0.30
+  update_frequency_minutes: 5
+
+# Pre-Market Signals
+signals:
+  enabled: true
+  signal_types:
+    - "pre_market_bullish"
+    - "pre_market_bearish"
+    - "pre_market_gap_up"
+    - "pre_market_gap_down"
+    - "pre_market_momentum"
+    - "pre_market_reversal"
+    - "opening_range_breakout"
+    - "opening_range_failure"
+  signal_strength_calculation: "weighted_average"
+  min_signal_strength: 0.60
+  signal_confidence_threshold: 0.70
+
+# Trading Strategies
+strategies:
+  enabled: true
+  pre_market_strategies:
+    - "gap_trading"
+    - "opening_range_breakout"
+    - "opening_range_fade"
+    - "pre_market_momentum"
+    - "pre_market_reversal"
+    - "news_based_trading"
+  strategy_selection: "context_based"
+  strategy_confidence_threshold: 0.70
+  strategy_confirmation_bars: 2
+
+# Entry Signals
+entry_signals:
+  enabled: true
+  entry_types:
+    - "gap_up_entry"
+    - "gap_down_entry"
+    - "opening_range_breakout_buy"
+    - "opening_range_breakout_sell"
+    - "pre_market_momentum_buy"
+    - "pre_market_momentum_sell"
+    - "reversal_entry"
+  confirmation_requirements:
+    min_indicators_confirmed: 2
+    volume_confirmation: true
+    price_confirmation: true
+  signal_strength_calculation: "weighted_average"
+  min_signal_strength: 0.60
+
+# Position Sizing
+position_sizing:
+  enabled: true
+  methods:
+    - "risk_based"
+    - "volatility_based"
+    - "gap_based"
+    - "pre_market_sizing"
+  primary_method: "risk_based"
+  risk_per_trade: 0.02
+  max_position_size: 0.05
+  min_position_size: 0.01
+  pre_market_multiplier: 1.5
+
+# Risk Management
+risk_management:
+  enabled: true
+  stop_loss:
+    methods:
+      - "volatility_based"
+      - "fixed_percent"
+      - "gap_based"
+      - "opening_range_based"
+      - "trailing"
+    volatility_multiplier: 1.5
+    fixed_percent: 0.02
+    gap_stop_percent: 0.01
+    opening_range_stop: 0.01
+    trailing_activation: 0.02
+    trailing_distance: 0.01
+  take_profit:
+    methods:
+      - "risk_reward_ratio"
+      - "fixed_percent"
+      - "gap_target"
+      - "opening_range_target"
+      - "trailing"
+    risk_reward_ratio: 2.0
+    fixed_percent: 0.04
+    gap_target_multiplier: 1.0
+    opening_range_target: 0.02
+    trailing_activation: 0.02
+    trailing_distance: 0.01
+  risk_limits:
+    max_daily_loss: 0.03
+    max_drawdown: 0.08
+    max_position_exposure: 0.15
+
+# Performance Metrics
+performance:
+  enabled: true
+  metrics:
+    - "pre_market_accuracy"
+    - "gap_accuracy"
+    - "opening_range_accuracy"
+    - "win_rate"
+    - "average_return"
+    - "profit_factor"
+    - "sharpe_ratio"
+    - "max_drawdown"
+    - "average_hold_time"
+  evaluation_period_days: 30
+  rolling_window_days: 30
+
+# Visualization
+visualization:
+  enabled: true
+  charts:
+    - "pre_market_dashboard"
+    - "gap_chart"
+    - "opening_range_chart"
+    - "volume_chart"
+    - "sentiment_chart"
+    - "signal_chart"
+    - "performance_chart"
+  update_interval_seconds: 5
+  dashboard_integration: true
+  real_time_updates: true
+
+# Alerting
+alerting:
+  enabled: true
+  alert_conditions:
+    - "pre_market_signal"
+    - "gap_detected"
+    - "opening_range_breakout"
+    - "volume_spike"
+    - "sentiment_change"
+    - "entry_signal"
+    - "exit_signal"
+    - "risk_breach"
+  alert_thresholds:
+    signal_confidence: 0.70
+    gap_confidence: 0.70
+    volume_spike: 2.0
+    sentiment_change: 0.30
+  alert_channels:
+    - "email"
+    - "telegram"
+    - "slack"
+  alert_cooldown_seconds: 300
+
+# Reporting
+reporting:
+  enabled: true
+  report_types:
+    - "real_time_alerts"
+    - "daily_pre_market_summary"
+    - "weekly_pre_market_analysis"
+    - "monthly_pre_market_report"
+  report_formats:
+    - "pdf"
+    - "html"
+    - "json"
+    - "csv"
+    - "excel"
+  report_recipients:
+    - "trading@example.com"
+    - "research@example.com"
+    - "strategy@example.com"
+
+# Storage
+storage:
+  enabled: true
+  storage_categories:
+    - "pre_market_data"
+    - "gap_data"
+    - "opening_range_data"
+    - "volume_data"
+    - "sentiment_data"
+    - "signal_history"
+    - "trade_history"
+    - "performance_metrics"
+    - "risk_metrics"
+    - "alert_history"
+  retention_days: 365
+  compression: "zstd"
+  storage_format: "parquet"
+
+# Integration
+integration:
+  enabled: true
+  webhook_endpoint: "http://localhost:8080/pre-market"
+  api_endpoint: "/api/v1/trading/pre-market"
+  dashboard_url: "http://localhost:3000/pre-market"
+  real_time_updates: true
+  data_sync_frequency_seconds: 3
+  external_systems:
+    - "trading_engine"
+    - "risk_management"
+    - "order_management"
+    - "news_platform"
