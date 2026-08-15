@@ -1,5 +1,5 @@
 """
-Swing Bot File Utilities Module
+Swing Bot File Utilities Module.
 ================================
 
 This module provides file utilities for the Swing Bot trading system.
