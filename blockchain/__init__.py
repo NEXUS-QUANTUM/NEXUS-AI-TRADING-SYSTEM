@@ -1,4 +1,3 @@
-```python
 """
 Blockchain Package
 ====================
@@ -27,7 +26,9 @@ __version__ = "3.0.0"
 __author__ = "NEXUS QUANTUM LTD"
 __copyright__ = "© 2026 NEXUS QUANTUM LTD - All Rights Reserved"
 
-# Import Web3 subpackage
+# ============================================================
+# Web3 subpackage (core)
+# ============================================================
 from .web3 import (
     # Alchemy
     AlchemyClient,
@@ -163,7 +164,9 @@ from .web3 import (
     reverse_resolve,
 )
 
-# Import Bridges
+# ============================================================
+# Bridges subpackage
+# ============================================================
 try:
     from .bridges import (
         ArbitrumBridge,
@@ -196,7 +199,9 @@ except ImportError as e:
     OptimismBridge = PolygonBridge = SolanaBridge = None
     create_bridge_manager = get_bridge_manager = None
 
-# Import DeFi
+# ============================================================
+# DeFi subpackage
+# ============================================================
 try:
     from .defi import (
         AaveProtocol,
@@ -215,7 +220,7 @@ try:
         LiquidityPool,
         MakerDAO,
         PancakeSwap,
-        StakingManager,
+        StakingManager as DeFiStakingManager,
         UniswapProtocol,
         YieldFarming,
         create_defi_manager,
@@ -228,16 +233,18 @@ except ImportError as e:
     DeFiAnalytics = DeFiConfig = DeFiManager = DeFiRisk = None
     FlashLoanManager = LendingManager = LidoProtocol = None
     LiquidityPool = MakerDAO = PancakeSwap = None
-    StakingManager = UniswapProtocol = YieldFarming = None
+    DeFiStakingManager = UniswapProtocol = YieldFarming = None
     create_defi_manager = get_defi_manager = None
 
-# Import NFT
+# ============================================================
+# NFT subpackage
+# ============================================================
 try:
     from .nft import (
         BaseNFT,
         BlurMarketplace,
-        ERC1155Contract,
-        ERC721Contract,
+        ERC1155Contract as NFTERC1155Contract,
+        ERC721Contract as NFTERC721Contract,
         LooksRareMarketplace,
         NFTAnalytics,
         NFTCollection,
@@ -257,14 +264,16 @@ try:
     )
 except ImportError as e:
     warnings.warn(f"NFT module import error: {e}")
-    BaseNFT = BlurMarketplace = ERC1155Contract = None
-    ERC721Contract = LooksRareMarketplace = NFTAnalytics = None
+    BaseNFT = BlurMarketplace = NFTERC1155Contract = None
+    NFTERC721Contract = LooksRareMarketplace = NFTAnalytics = None
     NFTCollection = NFTConfig = NFTLending = NFTManager = None
     NFTMarketplace = NFTMetadata = NFTRarity = NFTStaking = None
     NFTTrading = NFTValuation = NFTWhaleTracker = None
     OpenSeaMarketplace = create_nft_manager = get_nft_manager = None
 
-# Import Nodes
+# ============================================================
+# Nodes subpackage
+# ============================================================
 try:
     from .nodes import (
         BaseNode,
@@ -296,7 +305,9 @@ except ImportError as e:
     PolygonNode = SolanaNode = None
     create_node_manager = get_node_manager = None
 
-# Import On-Chain Analysis
+# ============================================================
+# On-Chain Analysis subpackage
+# ============================================================
 try:
     from .onchain_analysis import (
         AnalysisConfig,
@@ -327,7 +338,9 @@ except ImportError as e:
     SmartMoneyTracker = TokenAnalyzer = VolumeAnalyzer = None
     WhaleTracker = create_onchain_analyzer = get_onchain_analyzer = None
 
-# Import Smart Contracts
+# ============================================================
+# Smart Contracts subpackage
+# ============================================================
 try:
     from .smart_contracts import (
         AaveContract,
@@ -361,7 +374,9 @@ except ImportError as e:
     SmartERC721Contract = PancakeContract = UniswapContract = None
     create_contract_manager = get_contract_manager = None
 
-# Import Staking
+# ============================================================
+# Staking subpackage
+# ============================================================
 try:
     from .staking import (
         AtomStaking,
@@ -391,7 +406,9 @@ except ImportError as e:
     StakingRewards = StakingRisk = StakingValidator = None
     create_staking_manager = get_staking_manager = None
 
-# Import Wallets
+# ============================================================
+# Wallets subpackage
+# ============================================================
 try:
     from .wallets import (
         BaseWallet,
@@ -426,14 +443,17 @@ except ImportError as e:
     create_wallet_manager = get_wallet_manager = None
 
 
+# ============================================================
 # Convenience functions for blockchain operations
+# ============================================================
+
 def get_blockchain_manager(chain: str = "ethereum") -> Optional[Any]:
     """
     Get the appropriate blockchain manager for a chain.
-    
+
     Args:
         chain: Chain name ('ethereum', 'bsc', 'polygon', etc.)
-        
+
     Returns:
         Blockchain manager instance or None.
     """
@@ -464,10 +484,10 @@ def get_blockchain_manager(chain: str = "ethereum") -> Optional[Any]:
 def get_chain_id(chain: str) -> int:
     """
     Get the chain ID for a chain name.
-    
+
     Args:
         chain: Chain name.
-        
+
     Returns:
         Chain ID.
     """
@@ -489,14 +509,14 @@ def get_chain_id(chain: str) -> int:
 def is_supported_chain(chain: str) -> bool:
     """
     Check if a chain is supported.
-    
+
     Args:
         chain: Chain name.
-        
+
     Returns:
         True if supported, False otherwise.
     """
-    supported = ['ethereum', 'goerli', 'sepolia', 'polygon', 'bsc', 
+    supported = ['ethereum', 'goerli', 'sepolia', 'polygon', 'bsc',
                  'arbitrum', 'optimism', 'avalanche', 'fantom', 'solana']
     return chain.lower() in supported
 
@@ -504,11 +524,11 @@ def is_supported_chain(chain: str) -> bool:
 def get_supported_chains() -> List[str]:
     """
     Get list of supported chains.
-    
+
     Returns:
         List of chain names.
     """
-    return ['ethereum', 'goerli', 'sepolia', 'polygon', 'bsc', 
+    return ['ethereum', 'goerli', 'sepolia', 'polygon', 'bsc',
             'arbitrum', 'optimism', 'avalanche', 'fantom', 'solana']
 
 
@@ -516,15 +536,15 @@ def get_supported_chains() -> List[str]:
 _blockchain_utils = None
 
 
-def get_blockchain_utils(chain: str = "ethereum") -> Web3Utils:
+def get_blockchain_utils(chain: str = "ethereum") -> Optional[Web3Utils]:
     """
     Get blockchain utilities for a specific chain.
-    
+
     Args:
         chain: Chain name.
-        
+
     Returns:
-        Web3Utils instance.
+        Web3Utils instance or None.
     """
     global _blockchain_utils
     if _blockchain_utils is None:
@@ -534,13 +554,16 @@ def get_blockchain_utils(chain: str = "ethereum") -> Web3Utils:
     return _blockchain_utils
 
 
-# Export all public classes and functions
+# ============================================================
+# Package exports
+# ============================================================
+
 __all__ = [
     # Version info
     '__version__',
     '__author__',
     '__copyright__',
-    
+
     # Web3 (all exports from web3 package)
     'AlchemyClient',
     'create_alchemy_client',
@@ -639,8 +662,8 @@ __all__ = [
     'send_eth',
     'resolve_ens',
     'reverse_resolve',
-    
-    # Bridges (if available)
+
+    # Bridges
     'ArbitrumBridge',
     'AvalancheBridge',
     'BaseBridge',
@@ -661,8 +684,8 @@ __all__ = [
     'SolanaBridge',
     'create_bridge_manager',
     'get_bridge_manager',
-    
-    # DeFi (if available)
+
+    # DeFi
     'AaveProtocol',
     'BaseProtocol',
     'BorrowingManager',
@@ -679,17 +702,17 @@ __all__ = [
     'LiquidityPool',
     'MakerDAO',
     'PancakeSwap',
-    'StakingManager',
+    'DeFiStakingManager',
     'UniswapProtocol',
     'YieldFarming',
     'create_defi_manager',
     'get_defi_manager',
-    
-    # NFT (if available)
+
+    # NFT
     'BaseNFT',
     'BlurMarketplace',
-    'ERC1155Contract',
-    'ERC721Contract',
+    'NFTERC1155Contract',
+    'NFTERC721Contract',
     'LooksRareMarketplace',
     'NFTAnalytics',
     'NFTCollection',
@@ -706,8 +729,8 @@ __all__ = [
     'OpenSeaMarketplace',
     'create_nft_manager',
     'get_nft_manager',
-    
-    # Nodes (if available)
+
+    # Nodes
     'BaseNode',
     'BSCNode',
     'EthNode',
@@ -727,8 +750,8 @@ __all__ = [
     'SolanaNode',
     'create_node_manager',
     'get_node_manager',
-    
-    # On-Chain Analysis (if available)
+
+    # On-Chain Analysis
     'AnalysisConfig',
     'BaseAnalyzer',
     'DeFiAnalyzer',
@@ -747,8 +770,8 @@ __all__ = [
     'WhaleTracker',
     'create_onchain_analyzer',
     'get_onchain_analyzer',
-    
-    # Smart Contracts (if available)
+
+    # Smart Contracts
     'AaveContract',
     'BaseContract',
     'CompoundContract',
@@ -769,8 +792,8 @@ __all__ = [
     'UniswapContract',
     'create_contract_manager',
     'get_contract_manager',
-    
-    # Staking (if available)
+
+    # Staking
     'AtomStaking',
     'BaseStaking',
     'BNBStaking',
@@ -788,8 +811,8 @@ __all__ = [
     'StakingValidator',
     'create_staking_manager',
     'get_staking_manager',
-    
-    # Wallets (if available)
+
+    # Wallets
     'BaseWallet',
     'BSCWallet',
     'EthereumWallet',
@@ -810,7 +833,7 @@ __all__ = [
     'WalletTransaction',
     'create_wallet_manager',
     'get_wallet_manager',
-    
+
     # Convenience functions
     'get_blockchain_manager',
     'get_chain_id',
@@ -823,4 +846,3 @@ __all__ = [
 import logging
 logger = logging.getLogger(__name__)
 logger.info(f"Blockchain package version {__version__} initialized")
-```
