@@ -7,7 +7,7 @@ CEO: Dr X... - Majority Shareholder
 
 File: tests/ai/test_model_optimization.py
 Description: Comprehensive unit and integration tests for AI model optimization
-             including hyperparameter tuning, pruning, quantization, model selection,
+             including hyperparameter tuning, pruning, quantization, model selection,.
              and performance evaluation.
 """
 
