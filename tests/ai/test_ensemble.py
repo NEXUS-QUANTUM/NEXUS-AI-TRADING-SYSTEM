@@ -1,5 +1,5 @@
 """
-AI Ensemble Tests
+AI Ensemble Tests.
 ===================
 
 This module contains tests for the AI ensemble model components.
