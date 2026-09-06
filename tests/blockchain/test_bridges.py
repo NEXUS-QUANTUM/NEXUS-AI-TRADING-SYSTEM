@@ -1,4 +1,4 @@
-# tests/blockchain/test_bridges.py
+# tests/blockchain/test_bridges.py.
 """
 Bridge Tests for the NEXUS AI Trading System.
 
